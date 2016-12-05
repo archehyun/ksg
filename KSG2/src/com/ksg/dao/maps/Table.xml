@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Table">
+
+	<!-- ===========================================  
+		 
+		============================================== 
+-->
+ 
+ 
+	<sql id="TableListSQL">
+	select * from TB_TABLE_INFO
+	</sql>
+	<sql id="ADVListSQL">
+	select * from TB_ADV_INFO
+	</sql>
+	
+	<sql id="TableList">
+		<include refid="TableListSQL"/>
+		<isNotNull prepend="where" property="company_abbr">
+		company_abbr=#company_abbr#
+		<isNotNull prepend="AND" property="date_isusse">
+		date_isusse=#date_isusse#
+		</isNotNull>
+		<isNotNull prepend="AND" property="table_id">
+		table_id=#table_id#
+		</isNotNull>
+		<isGreaterThan prepend="AND" property="table_index" compareValue="-1">
+		table_index=#table_index#
+		</isGreaterThan>
+		
+		</isNotNull>
+		
+	</sql>
+	<sql id="ADVList">
+	<include refid="ADVListSQL"/>
+		<isNotNull prepend="where" property="company_abbr">
+		company_abbr=#company_abbr#	 
+	</isNotNull>
+	</sql>
+	
+	<select id="selectTableByCompanyList" parameterClass="com.ksg.domain.ShippersTable" resultClass="com.ksg.domain.ShippersTable">
+		<include refid="TableList"/> order by table_index,date_isusse asc
+	</select>
+	
+	<insert id="insertTableInfo" parameterClass="com.ksg.domain.ShippersTable">
+		insert TB_TABLE_INFO(
+		table_id,
+		port_col,
+		vsl_row,
+		othercell,
+		company_abbr,
+		page,
+		bookPage,
+		table_index,
+		out_port,
+		out_to_port,
+		in_port,
+		in_to_port,
+		agent,		
+		title,
+		quark_format,
+		common_shipping,
+		gubun,
+		console_cfs,
+		d_time,
+		c_time,		
+		console_page,
+		inland_indexs
+		)
+		 values(
+		#table_id#,
+		#port_col#,
+		#vsl_row#,
+		#othercell#,
+		#company_abbr#,
+		#page#,
+		#bookPage#,
+		#table_index#,
+		#out_port#,
+		#out_to_port#,
+		#in_port#,
+		#in_to_port#,
+		#agent#,
+		#title#,		
+		#quark_format#,				
+		#common_shipping#,
+		#gubun#,
+		#console_cfs#,
+		#d_time#,
+		#c_time#,		
+		#console_page#,
+		#inland_indexs#
+		)
+	</insert>
+	<delete id="deleteTableInfo" parameterClass="com.ksg.domain.ShippersTable">
+		delete from TB_TABLE_INFO where table_index=#table_index# and company_abbr=#company_abbr# and table_id=#table_id#
+	</delete>
+	
+	<update id="updateTable" parameterClass="com.ksg.domain.ShippersTable">
+		update TB_TABLE_INFO set
+		table_id=#table_id#
+		<isNotEqual compareValue="-1" prepend="," property="port_col">
+		port_col=#port_col#
+		</isNotEqual>
+		<isNotEqual compareValue="-1" prepend="," property="vsl_row">
+		vsl_row=#vsl_row#
+		</isNotEqual>
+		<isNotEqual compareValue="-1" prepend="," property="othercell">
+		othercell=#othercell#				
+		</isNotEqual>
+		
+		<isNotEqual compareValue="-1" prepend="," property="page">
+		page=#page#
+		</isNotEqual>
+		<isNotNull prepend="," property="bookPage">
+		bookPage=#bookPage#		
+		</isNotNull>		
+		<isNotNull prepend="," property="quark_format">
+		quark_format=#quark_format#		
+		</isNotNull>		 
+		<isNotEmpty prepend="," property="title">
+		title=#title#		
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="company_abbr">
+		company_abbr=#company_abbr#		
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="agent">
+		agent=#agent#		
+		</isNotEmpty> 
+		<isNotEqual compareValue="-1" prepend="," property="table_index">
+		table_index=#table_index#		
+		</isNotEqual>
+		<isNotEmpty prepend="," property="company_name">
+		company_name=#company_name#				
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="common_shipping">
+		common_shipping=#common_shipping#				
+		</isNotEmpty>
+		
+		<isNotNull prepend="," property="out_to_port">
+		out_to_port=#out_to_port#				
+		</isNotNull>		
+		
+		<isNotNull prepend="," property="in_to_port">
+		in_to_port=#in_to_port#
+		</isNotNull>
+		
+		<isNotNull prepend="," property="out_port">
+		out_port=#out_port#
+		</isNotNull>		
+		
+		<isNotNull prepend="," property="in_port">
+		in_port=#in_port#
+		</isNotNull>
+		
+		<isNotEmpty prepend="," property="gubun">
+		gubun=#gubun#				
+		</isNotEmpty>
+		
+		<isEmpty prepend="," property="gubun">
+		gubun=#gubun#				
+		</isEmpty>
+
+		
+		
+		<isNotNull prepend="," property="console_cfs">
+		console_cfs=#console_cfs#
+		</isNotNull>
+		<isNotNull prepend="," property="console_page">
+		console_page=#console_page#
+		</isNotNull>
+		<isNotNull prepend="," property="inland_indexs">					
+		inland_indexs=#inland_indexs#
+		</isNotNull>
+		<isNotEqual compareValue="-1" prepend="," property="c_time">
+		c_time=#c_time#
+		</isNotEqual>
+		<isNotEqual compareValue="-1" prepend="," property="d_time">
+		d_time=#d_time#
+		</isNotEqual>
+		
+		
+		where table_id=#table_id#
+	</update>
+	
+	<update id="updateTableDate" parameterClass="com.ksg.domain.ADVData">
+		update TB_TABLE_INFO set
+		 <isNull property="date_isusse"> 
+		 date_isusse = NULL
+		 </isNull>
+		 <isNotNull property="date_isusse">
+		 date_isusse=#date_isusse#
+		 </isNotNull>
+		where table_id=#table_id#
+	</update>
+	
+	
+		<update id="updateTableDateAll" parameterClass="com.ksg.domain.ShippersTable">
+		update TB_TABLE_INFO set
+		 <isNull property="date_isusse"> 
+		 date_isusse = NULL
+		 </isNull>
+		 <isNotNull property="date_isusse">
+		 date_isusse=#date_isusse#
+		 </isNotNull>		 
+		 <isNotNull property="table_id" prepend="where">
+		 table_id=#table_id#
+		 </isNotNull>
+		
+	</update>
+	
+	
+	<update id="updateTablePortCount" parameterClass="com.ksg.domain.ShippersTable">
+		update TB_TABLE_INFO set
+		
+		port_col=#port_col#
+		 
+		where table_id=#table_id#
+	</update>
+	<update id="updateTableVesselCount" parameterClass="com.ksg.domain.ShippersTable">
+		update TB_TABLE_INFO set
+		
+		vsl_row=#vsl_row#
+		 
+		where table_id=#table_id#
+	</update>
+	
+	<update id="updateTableDate_issuse" parameterClass="com.ksg.domain.ShippersTable">
+		update TB_TABLE_INFO set
+		 <isNull property="date_isusse"> 
+		 date_isusse = NULL
+		 </isNull>
+		 <isNotNull property="date_isusse">
+		 date_isusse=#date_isusse#
+		 </isNotNull>
+		 
+		where table_id=#table_id#
+	</update>
+	
+	
+	
+	<delete id="deleteTable" parameterClass="com.ksg.domain.ShippersTable">
+		delete from TB_TABLE_INFO where table_id=#table_id#
+	</delete>
+	<select id="selectTableByID" resultClass="com.ksg.domain.ShippersTable">
+		<include refid="TableListSQL"/>where table_id=#table_id#
+	</select>
+	<select id="selectQuarkformat" resultClass="com.ksg.domain.ShippersTable">
+		<include refid="TableListSQL"/> where company_abbr=#company_abbr# and date_isusse=#date_isusse# 
+	</select>
+
+	
+	<!-- selectCompanyList -->
+	<select id="selectCompanyList" resultClass="com.ksg.domain.Company">
+	select * from TB_COMPANY
+	</select>
+	
+	<!-- selectCompanyListGroupByCompany_abbr -->
+	<select id="selectCompanyListGroupByCompany_abbr" resultClass="com.ksg.domain.ShippersTable">
+		select TB_COMPANY.company_abbr, TB_TABLE_INFO.date_isusse
+		from TB_COMPANY,TB_TABLE_INFO 
+		where TB_COMPANY.company_abbr=TB_TABLE_INFO.company_abbr
+		<isNotEmpty prepend="and">
+		TB_TABLE_INFO.date_isusse =#date_isusse#		
+		</isNotEmpty> 
+		group by TB_COMPANY.company_abbr
+	</select>
+	
+	<!-- selectCompany -->
+	<select id="selectCompany" resultClass="com.ksg.domain.ShippersTable">
+		select * from TB_COMPANY order by page
+	</select>
+	
+	<!-- selectCompanyList -->
+	<select id="selectTableInfoByCompany" resultClass="com.ksg.domain.ShippersTable">
+		select *, select count(*) TB_TABLE_PORTLIST where TB_TABLE_PORTLIST.table_id=TB_TABLE.table_id as r_port_col from TB_TABLE_INFO where company_abbr=#company_abbr# order by table_index	
+	</select>
+	<select id="selectTableInfoByPage" resultClass="com.ksg.domain.ShippersTable">
+		select * from TB_TABLE_INFO where page=#page# order by table_index	
+	</select>
+	
+	<select id="selectTableByShipperListByDate" resultClass="com.ksg.domain.ShippersTable">
+		<include refid="ADVList"/> group by date_isusse
+	</select>
+	
+	<select id="selectTableListByTableCount" resultClass="com.ksg.domain.ShippersTable">
+		select  TB_COMPANY.company_abbr,
+		(select count(table_id) from TB_TABLE_INFO where TB_TABLE_INFO.company_abbr=TB_COMPANY.company_abbr) as tableCount,
+		TB_TABLE_INFO.page
+ 		from TB_COMPANY,TB_TABLE_INFO,tb_page_info 
+		where TB_COMPANY.company_abbr=TB_TABLE_INFO.company_abbr		 
+		group by TB_COMPANY.company_abbr,TB_TABLE_INFO.page order by TB_TABLE_INFO.page
+	</select>
+	<!-- table_id","page","company_abbr","port_col","vsl_row","date_isusse" -->
+	<select id="getTableListByPage" resultClass="com.ksg.domain.ShippersTable">
+	select 
+	*
+	, (select count(*) from TB_TABLE_PORTLIST where TB_TABLE_PORTLIST.table_id=TB_TABLE_INFO.table_id) as r_port_col
+	from TB_TABLE_INFO where 	
+	TB_TABLE_INFO.page>=#start# and 
+	<![CDATA[
+	TB_TABLE_INFO.page<=#end# 
+	]]>
+	order by page	
+	</select>
+	
+	<!-- getTableListByCompany_temp -->
+	
+	<select id="getTableListByCompany_temp" resultClass="com.ksg.domain.ShippersTable">
+	select 
+	TB_TABLE_INFO.table_id,
+	TB_TABLE_INFO.company_abbr,
+	TB_TABLE_INFO.table_index,	
+	TB_TABLE_INFO.date_isusse,
+	TB_TABLE_INFO.quark_format,	
+	TB_TABLE_INFO.TS,
+	TB_TABLE_INFO.title,
+	TB_TABLE_INFO.page
+	
+	<isNotNull prepend="," property="vsl_row"> 
+	TB_TABLE_INFO.vsl_row
+	</isNotNull>
+	<isNotNull prepend="," property="port_col">
+	TB_TABLE_INFO.port_col
+	</isNotNull>
+	from TB_TABLE_INFO
+	 	 
+	<isNotEmpty prepend="where" property="company_abbr">
+	TB_TABLE_INFO.company_abbr =#company_abbr#		
+	</isNotEmpty> 
+	order by TB_TABLE_INFO.page, TB_TABLE_INFO.table_index	
+	</select>
+	
+	
+	<select id="getTableList" resultClass="com.ksg.domain.ShippersTable">
+	</select>
+	
+	<select id="getTableListByCompany" resultClass="com.ksg.domain.ShippersTable">
+	select 
+	*
+	, (select count(*) from TB_TABLE_PORTLIST where TB_TABLE_PORTLIST.table_id=TB_TABLE_INFO.table_id) as r_port_col	
+	from TB_TABLE_INFO 
+	
+	<isNotEmpty prepend="where" property="company_abbr">
+	TB_TABLE_INFO.company_abbr =#company_abbr#
+	<isNotEmpty prepend="and" property="page">
+	TB_TABLE_INFO.page =#page#		
+	</isNotEmpty>		
+	</isNotEmpty>
+	order by TB_TABLE_INFO.page, TB_TABLE_INFO.table_index
+	</select>
+	<select id="getTablePageListByCompany" resultClass="com.ksg.domain.ShippersTable">
+	select	
+	page	
+	from TB_TABLE_INFO 
+	
+	<isNotEmpty prepend="where" property="company_abbr">
+	TB_TABLE_INFO.company_abbr =#company_abbr#
+	</isNotEmpty>
+	group by page
+	</select>
+	<select id="getTableCompanyListByPage" resultClass="com.ksg.domain.ShippersTable">
+	select	
+	company_abbr	
+	from TB_TABLE_INFO 
+	
+	<isNotEmpty prepend="where" property="page">
+	TB_TABLE_INFO.page =#page#
+	</isNotEmpty>
+	group by company_abbr
+	</select>
+	
+	<select id="selectLastTableIndex" resultClass="int">
+	select max(table_index) from TB_TABLE_INFO where company_abbr=#company_abbr#
+	</select> 
+	
+	<select id="selectTotalTableList" resultClass="com.ksg.domain.ShippersTable">
+	select * from TB_TABLE_INFO 
+	</select>
+	
+	<select id="selectCompanyListGroupByPage" resultClass="com.ksg.domain.ShippersTable">
+	select	page, company_abbr from TB_TABLE_INFO group by page, company_abbr
+	</select>
+	<select id="selectTableListByPage" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
+	select * from TB_TABLE_INFO where page=#page# 
+	 <isNotNull prepend="and" property="date_isusse">
+		 date_isusse=#date_isusse#
+	</isNotNull>
+	 order by table_index
+	</select>
+	
+	<select id="selectAllTableList" resultClass="com.ksg.domain.ShippersTable">
+	select * from TB_TABLE_INFO
+	</select>
+	<select id="selectTableList" resultClass="com.ksg.domain.ShippersTable">
+	select * from TB_TABLE_INFO
+	
+		<dynamic prepend="where">
+		<isNotEmpty prepend="and" property="table_id">
+		table_id = #table_id#
+		</isNotEmpty>
+		<isGreaterThan prepend="and" property="page" compareValue="-1">
+		page = #page#
+		</isGreaterThan>
+		<isGreaterThan prepend="and" property="table_index" compareValue="-1">
+		table_index = #table_index#
+		</isGreaterThan>
+		<isNotEmpty prepend="and" property="company_abbr">
+		company_abbr = #company_abbr#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="title">
+		title = #title#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="agent">
+		agent = #agent#
+		</isNotNull>
+		<isNotNull prepend="and" property="gubun">
+		gubun = #gubun#
+		</isNotNull>
+		
+		</dynamic>
+	order by page, table_index 
+	</select>
+	
+	<select id="selectTableInfoByIndex" resultClass="com.ksg.domain.ShippersTable">
+	select	*  from TB_TABLE_INFO where company_abbr=#company_abbr#
+	and table_index = #table_index#
+	and page=#page#
+	 </select>
+	 <select id="getParentPortList" resultClass="com.ksg.domain.Table_Port">
+		select * from TB_TABLE_PORTLIST where port_type='P' and table_id=#table_id# order by port_index
+	 </select>
+	 <insert id="insertPortList" parameterClass="com.ksg.domain.Table_Port">
+	 insert TB_TABLE_PORTLIST (table_id,port_name, port_index, parent_port,port_type)
+	  values(
+	  #table_id#,
+	  #port_name#,
+	  #port_index#,
+	  #parent_port#,
+	  #port_type#
+	  )
+	 </insert>
+	  <select id="getTablePortList" resultClass="com.ksg.domain.Table_Port">
+		select * from TB_TABLE_PORTLIST where table_id=#table_id#
+	
+	 	<isNotEmpty prepend="and" property="port_name">
+		 port_name =#port_name#
+		</isNotEmpty>
+	<isNotEmpty prepend="and" property="port_type">
+	port_type =#port_type#
+	</isNotEmpty>
+	<isNotEmpty prepend="and" property="parent_port">
+	parent_port = #parent_port#
+	</isNotEmpty>
+	
+	<isGreaterThan prepend="AND" property="port_index" compareValue="0">
+		port_index = #port_index#
+		</isGreaterThan>
+		
+	order by port_index
+	 </select>
+	 
+	 
+	 
+	 <delete id="deleteTablePort" parameterClass="com.ksg.domain.Table_Port">
+		delete from TB_TABLE_PORTLIST where table_id=#table_id#
+		<isNotEmpty prepend="and" property="parent_port">
+		parent_port = #parent_port#
+		</isNotEmpty>
+		 <isNotEmpty prepend="and" property="port_name">
+		port_name =#port_name#
+		</isNotEmpty>
+			<isNotEmpty prepend="and" property="port_type">
+			port_type =#port_type#
+		</isNotEmpty>
+		<isGreaterThan prepend="AND" property="port_index" compareValue="0">
+			port_index=#port_index#
+		</isGreaterThan>
+	</delete>
+	
+	
+	 <select id="	getTablePortByIndex" resultClass="com.ksg.domain.Table_Port">
+	select * from TB_TABLE_PORTLIST where table_id=#table_id# and port_index=#port_index#
+	 </select>
+	 <update id="updateTablePort">
+	 update TB_TABLE_PORTLIST set
+		
+		port_index=#port_index#
+		<isNotEmpty prepend="," property="port_name">
+		port_name= #port_name#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="parent_port">
+		parent_port= #parent_port#
+		</isNotEmpty>
+		where table_id=#table_id#
+		<isGreaterThan prepend="AND" property="port_index" compareValue="0">
+		port_index = #port_index#
+		</isGreaterThan>
+		<isNotEmpty prepend="AND" property="port_type">
+		port_type= #port_type#
+		</isNotEmpty>
+		
+	 </update>
+	
+	  <select id="selectTableInfoList" parameterClass="com.ksg.domain.ShippersTable"  resultClass="com.ksg.domain.ShippersTable">
+	 select * from TB_TABLE_INFO where company_abbr=#company_abbr# and page=#page# order by table_index
+	 </select>	
+	 <select id="selectMaxPortIndex" parameterClass="string"  resultClass="int">
+	 select max(port_index) from TB_TABLE_PORTLIST where table_id=#table_id# and port_type='P'
+	 </select>
+	 
+	 <update id="updateTablePortIndex">
+	 update TB_TABLE_PORTLIST set
+		
+		port_index=port_index+1
+		<isNotEmpty prepend="," property="port_name">
+		port_name= #port_name#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="parent_port">
+		parent_port= #parent_port#
+		</isNotEmpty>
+		where table_id=#table_id#
+		<isGreaterThan prepend="AND" property="port_index" compareValue="0">
+		port_index >= #port_index#
+		</isGreaterThan>
+		<isGreaterThan prepend="AND" property="new_port_index" compareValue="0">
+		#new_port_index# > port_index  
+		</isGreaterThan>
+		<isNotEmpty prepend="AND" property="port_type">
+		port_type= #port_type#
+		</isNotEmpty>
+		
+	 </update>
+	  <select id="getTableCountByDate" parameterClass="string"  resultClass="int">
+		select count(table_id) FROM TB_TABLE_INFO where date_isusse=#date_isusse#
+	 </select>
+	 
+	 <select id="selectTablePropetyList" resultClass="com.ksg.domain.Table_Property">
+	 select * from TB_TABLE_PROPERTY
+	 </select>
+	  <select id="selectTablePropetyListByPro" resultClass="com.ksg.domain.Table_Property" parameterClass="com.ksg.domain.Table_Property">
+	 select * from TB_TABLE_PROPERTY where company_abbr=#company_abbr# and page=#page#
+	 </select>
+	  <insert id="insertTableProperty" parameterClass="com.ksg.domain.Table_Property">
+	 insert TB_TABLE_PROPERTY (table_id,voyage, vesselvoydivider, vesselvoycount,under_port,company_abbr,page,table_type,port_type,eta)
+	  values(
+	  #table_id#,
+	  #voyage#,
+	  #vesselvoydivider#,
+	  #vesselvoycount#,
+	  #under_port#,
+	  #company_abbr#,
+	  #page#,
+	  #table_type#,
+	  #eta#
+	  
+	  <isNull prepend="," property="port_type">
+	  0
+	  </isNull>
+	   <isNotNull prepend="," property="port_type">
+	  #port_type#
+	  </isNotNull>
+	  )
+	 </insert>
+	  <update id="updateTableProperty">
+	   update TB_TABLE_PROPERTY set
+	   
+		 voyage=#voyage#
+		 <isNotEmpty prepend="," property="table_type">
+		 table_type=#table_type#
+		 </isNotEmpty>
+		 
+	<isNotEmpty prepend="," property="vesselvoydivider">
+	  vesselvoydivider=#vesselvoydivider#
+	  </isNotEmpty>
+	  <isNotEmpty prepend="," property="vesselvoycount">
+	  vesselvoycount=#vesselvoycount#
+	  </isNotEmpty>
+	  <isNotEmpty prepend="," property="under_port">
+	  under_port=#under_port#
+	  </isNotEmpty>
+	  <isNotEmpty prepend="," property="company_abbr">
+	  company_abbr=#company_abbr#
+	  </isNotEmpty>
+	  <isNotEmpty prepend="," property="page">
+	  page=#page#
+	  </isNotEmpty>
+	    <isNotEmpty prepend="," property="port_type">
+	  port_type=#port_type#
+	  </isNotEmpty>
+	  <isNull prepend="," property="port_type">
+	  port_type=0
+	  </isNull>
+	  <isNotEmpty prepend="," property="eta">
+	  eta=#eta#
+	  </isNotEmpty>
+		where table_id=#table_id#
+	  </update>
+	  <update id="updateTablePortIndex2">
+	 update TB_TABLE_PORTLIST set
+		
+		port_index=#new_port_index#
+		
+		
+		where table_id=#table_id#
+		<isGreaterThan prepend="AND" property="port_index" compareValue="0">
+		port_index = #port_index#
+		</isGreaterThan>		
+		<isNotEmpty prepend="AND" property="port_type">
+		port_type= #port_type#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="port_name">
+		port_name= #port_name#
+		</isNotEmpty>
+		
+	 </update>
+	 <update id="updateTablePortName">
+	 update TB_TABLE_PORTLIST set
+		
+		port_name=#new_port_name#
+		
+		
+		where table_id=#table_id#
+		<isGreaterThan prepend="AND" property="port_index" compareValue="0">
+		port_index = #port_index#
+		</isGreaterThan>		
+		<isNotEmpty prepend="AND" property="port_type">
+		port_type= #port_type#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="port_name">
+		port_name= #port_name#
+		</isNotEmpty>
+		
+	 </update>
+	 
+	 <sql id="TableListByDate">
+	 select *, (select count(*) from TB_TABLE_PORTLIST where TB_TABLE_PORTLIST.table_id=TB_TABLE_INFO.table_id) as r_port_col 
+	 from TB_TABLE_INFO where date_isusse=#date_isusse#
+	 <isNotEmpty prepend="AND" property="company_abbr">
+		company_abbr= #company_abbr#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="gubun">
+		gubun= #gubun#
+	</isNotEmpty>
+	 
+	 <isGreaterThan prepend="AND" property="page" compareValue="0">
+		page= #page#
+		</isGreaterThan>
+	 </sql>
+	  <select id="getTableListByDate" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
+	 <include refid="TableListByDate"/>
+	 </select>
+	  <select id="getScheduleTableListByDate" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
+	 <include refid="TableListByDate"/> and gubun  NOT IN ('NNN')
+	 </select>
+	 
+	 <select id="selectTableByAgent" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
+	 	 select * from TB_TABLE_INFO where agent=#agent# order by page, table_index
+	 </select>
+	 <select id="selectTableAgentByPage" resultClass="string" parameterClass="com.ksg.domain.ShippersTable">
+	 	 select agent from TB_TABLE_INFO where page=#page# group by agent
+	 </select>
+	<select id="selectTablePortCount" resultClass="int" parameterClass="string">
+		select COUNT(*)  from (select port_index from TB_TABLE_PORTLIST where table_id=#table_id# group by port_index) as t
+	</select>
+	<select id="selectTableDateList" resultClass="com.ksg.domain.ShippersTable">
+		select date_isusse  from TB_TABLE_INFO group by date_isusse order by date_isusse desc
+	</select>	
+	<select id="selectSystemTableList" resultClass="string">
+	    SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE 'TB_%'
+	</select>
+	<select id="selectTableColumnList" resultClass="string" parameterClass="string">
+	    SELECT column_name, data_type FROM INFORMATION_SCHEMA.columns WHERE TABLE_NAME=#table#;
+	</select>
+	<select id="selectSystemDataList" resultClass="hashmap" parameterClass="string">
+	    SELECT * FROM $table_name$;
+	</select>
+	
+	<select id="selectSystemDataTB_PORT" resultClass="hashmap">
+	    SELECT * FROM TB_PORT;
+	</select>
+	<select id="selectSystemDataTB_ADV_INFO" resultClass="hashmap">
+	    SELECT * FROM TB_ADV_INFO;
+	</select>	
+	<select id="selectSystemDataTB_AREA" resultClass="hashmap">
+	    SELECT * FROM TB_AREA;
+	</select>
+	<select id="selectSystemDataTB_CODE_INFO" resultClass="hashmap">
+	    SELECT * FROM TB_CODE_INFO;
+	</select>
+	<select id="selectSystemDataTB_COMPANY" resultClass="hashmap">
+	    SELECT * FROM TB_COMPANY;
+	</select>
+	<select id="selectSystemDataTB_INLAND_SCHEDULE_INFO" resultClass="hashmap">
+	    SELECT * FROM TB_INLAND_SCHEDULE_INFO;
+	</select>				
+	<select id="selectSystemDataTB_MEMBER" resultClass="hashmap">
+	    SELECT * FROM TB_MEMBER;
+	</select>
+	<select id="selectSystemDataTB_MEBER" resultClass="hashmap">
+	    SELECT * FROM TB_MEBER;
+	</select>			
+	<select id="selectSystemDataTB_PORT_ABBR" resultClass="hashmap">
+	    SELECT * FROM TB_PORT_ABBR;
+	</select>
+	<select id="selectSystemDataTB_SCHEDULE_INFO" resultClass="hashmap">
+	    SELECT * FROM TB_SCHEDULE_INFO;
+	</select>		 
+	<select id="selectSystemDataTB_TABLE_INFO" resultClass="hashmap">
+	    SELECT * FROM TB_TABLE_INFO;
+	</select>
+	<select id="selectSystemDataTB_TABLE_PORTLIST" resultClass="hashmap">
+	    SELECT * FROM TB_TABLE_PORTLIST;
+	</select>	
+	<select id="selectSystemDataTB_TABLE_PROPERTY" resultClass="hashmap">
+	    SELECT * FROM TB_TABLE_PROPERTY;
+	</select>
+	<select id="selectSystemDataTB_VESSEL" resultClass="hashmap">
+	    SELECT * FROM TB_VESSEL;
+	</select>
+</sqlMap>
