@@ -207,6 +207,8 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 	private Table_Port tablePort;
 
 	private TableService 	tableService;
+	
+	// test
 
 	private JTable 			tblPropertyTable,tblSelectedCompany;
 
