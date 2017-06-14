@@ -6,22 +6,25 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,6 +32,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.TransferHandler;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -39,7 +43,7 @@ import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.dialog.PortSearchDialog;
 import com.ksg.view.search.SearchUI;
@@ -47,7 +51,7 @@ import com.ksg.view.util.ViewUtil;
 
 /**
  * @author 박창현
- * @explanatoin 항구 정보를 등록/ 삭제 수정 하는 창을 표시
+ * @explanation 항구 정보를 등록/ 삭제 수정 하는 창을 표시
  * 
  */
 @SuppressWarnings("serial")
@@ -59,10 +63,9 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	public static int CANCEL_OPTION=0;
 	public int OPTION;
 	private String table_id;
-	private JTable tblPortList;
+	private PortListTable tblPortList;
 	private JTable currentTable;
-	private int selectedportindex;
-	private int selectedindex;
+
 
 	private SearchUI base;
 	private JCheckBox cbxD;
@@ -75,7 +78,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	public int selectedcolIndex;
 	private JTextField txfUpdatePortName;
 	private String portName;
-	private int index;
+	private int portIndex;
 	public ManagePortDialog(String table_id,SearchUI base) 
 	{	
 		this.base =base;
@@ -85,7 +88,9 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		baseService  = manager.createBaseService();
 	}
 	public void createAndUpdateUI() {
+
 		setTitle(this.table_id+"테이블 항구 관리");
+
 		setModal(true);
 
 		getContentPane().add(buildCenter());
@@ -109,14 +114,9 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		gridLayout.setHgap(5);
 		pnPortMain.setLayout(gridLayout);
 
-		tblPortList = new JTable();
-		
-		tblPortList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		tblPortList.setName(Table_Port.TYPE_PARENT);
-		tblPortList.addMouseListener(new MyMouseAdapter());
-		currentTable =tblPortList;
+		tblPortList = new PortListTable(this.table_id);
 
-		tblPortList.addKeyListener(new MyKeyAdapter());
+		currentTable =tblPortList;
 
 
 		JPanel pnLeft = new JPanel();
@@ -133,7 +133,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				if(row==-1)
 					return;
 
-				selectedindex = row;
+				tblPortList.selectedindex = row;
 				txfUpdatePortName.setText(String.valueOf(tblPortList.getValueAt(row, PORT_NAME_COLUM)));
 				txfIndex.setText(String.valueOf(tblPortList.getValueAt(row, PORT_INDEX_COLUM)));
 
@@ -144,57 +144,55 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 
 			}});
-		txfIndex.addKeyListener(new KeyListener()
+
+		txfIndex.addKeyListener(new KeyAdapter()
 		{
-			String portName;
-			int index;
+
 			public void keyPressed(KeyEvent arg0) 
 			{
-				if(arg0.getKeyCode()==KeyEvent.VK_UP)
+
+				if(arg0.getKeyCode()==KeyEvent.VK_UP||arg0.getKeyCode()==KeyEvent.VK_DOWN)
 				{
-					if(selectedindex>0)
-						selectedindex-=1;
-					txfUpdatePortName.setText(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM)));
-					portName =String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM)); 
-					txfIndex.setText(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_INDEX_COLUM)));
-					index = Integer.parseInt(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_INDEX_COLUM)));
-					
-					tblPortList.changeSelection(selectedindex, PORT_INDEX_COLUM, false, false);
-				}
-				else if(arg0.getKeyCode()==KeyEvent.VK_DOWN)
-				{					
-					selectedindex+=1;
-					if(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM)==null)
-					{
-						selectedindex-=1;
-						return;
+					switch (arg0.getKeyCode()) {
+					case KeyEvent.VK_UP:
+
+						if(tblPortList.selectedindex>0)
+							tblPortList.selectedindex-=1;
+						break;
+					case KeyEvent.VK_DOWN:
+						if(tblPortList.getValueAt(tblPortList.selectedindex, PORT_NAME_COLUM)==null)
+						{
+							tblPortList.selectedindex-=1;
+							return;
+						}
+						break;	
+
+					default:
+						break;
 					}
-					txfUpdatePortName.setText(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM)));
-					portName =String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM));
-					txfIndex.setText(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_INDEX_COLUM)));
-					index = Integer.parseInt(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_INDEX_COLUM)));
-					tblPortList.changeSelection(selectedindex, PORT_INDEX_COLUM, false, false);
+
+					showSelectedTable();
 				}
+
 				else if(arg0.getKeyCode()==KeyEvent.VK_ENTER)
 				{
 					try 
 					{
-						Table_Port port = new Table_Port();
-						port.setPort_type(Table_Port.TYPE_PARENT);
+						TablePort port = new TablePort();
+						port.setPort_type(TablePort.TYPE_PARENT);
 
-						if(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM))==null)
+						if(String.valueOf(tblPortList.getValueAt(tblPortList.selectedindex, PORT_NAME_COLUM))==null)
 						{
 							return;
 						}
-						port.setPort_name(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM)));
-						port.setPort_index(index);
-						System.out.println(portName);
+						port.setPort_name(String.valueOf(tblPortList.getValueAt(tblPortList.selectedindex, PORT_NAME_COLUM)));
+						port.setPort_index(portIndex);
 						port.setNew_port_index(Integer.parseInt(txfIndex.getText()));
 						port.setTable_id(ManagePortDialog.this.table_id);
 						tableService.updateTablePortIndex2(port);
 
 						portName =port.getPort_name();
-						index = port.getNew_port_index();
+						portIndex = port.getNew_port_index();
 
 
 					} catch (SQLException e1) 
@@ -203,9 +201,10 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 						if(e1.getErrorCode()==2627)
 						{
 							tblPortList.clearSelection();
-							JOptionPane.showMessageDialog(ManagePortDialog.this, "해당 인덱스에 동일한 항구명이 존재합니다."+e1.getErrorCode());
+							String message1 = "해당 인덱스에 동일한 항구명이 존재합니다.";
+							JOptionPane.showMessageDialog(ManagePortDialog.this, message1+e1.getErrorCode());
 							try {
-								updatePortTable();
+								tblPortList.updatePort();
 							} catch (SQLException e2) {
 								// TODO Auto-generated catch block
 								e2.printStackTrace();
@@ -223,13 +222,13 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 					finally
 					{
 						try {
-							updatePortTable();
+							tblPortList.updatePort();
 							int ind=0;
 							for(int i=0;i<tblPortList.getRowCount();i++)
 							{
 								try{
 									int vindex = Integer.parseInt(String.valueOf(tblPortList.getValueAt(i, 0)));
-									if(vindex==index&&tblPortList.getValueAt(i, 1).equals(portName))
+									if(vindex==portIndex&&tblPortList.getValueAt(i, 1).equals(portName))
 									{
 										ind=i;
 									}
@@ -237,8 +236,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 								{
 									continue;
 								}
-
-
 							}
 							tblPortList.changeSelection(ind, 0, false, false);
 						} catch (SQLException e1) {
@@ -251,47 +248,36 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 			}
 
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+		});
 
-			}
-
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}});
 		txfUpdatePortName = new JTextField(30);
-
-
-		txfUpdatePortName.addKeyListener(new KeyListener(){
-
-
+		txfUpdatePortName.addKeyListener(new KeyAdapter(){
 
 			public void keyPressed(KeyEvent arg0) 
 			{
-				if(arg0.getKeyCode()==KeyEvent.VK_UP)
+				if(arg0.getKeyCode()==KeyEvent.VK_UP||arg0.getKeyCode()==KeyEvent.VK_DOWN)
 				{
-					if(selectedindex>0)
-						selectedindex-=1;
-					txfUpdatePortName.setText(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM)));
-					portName =String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM));
-					txfIndex.setText(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_INDEX_COLUM)));
-					index = Integer.parseInt(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_INDEX_COLUM)));
-					tblPortList.changeSelection(selectedindex, PORT_NAME_COLUM, false, false);
-				}
-				else if(arg0.getKeyCode()==KeyEvent.VK_DOWN)
-				{					
-					selectedindex+=1;
-					if(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM)==null)
-					{
-						selectedindex-=1;
-						return;
+					switch (arg0.getKeyCode()) {
+					case KeyEvent.VK_UP:
+
+						if(tblPortList.selectedindex>0)
+							tblPortList.selectedindex-=1;
+						break;
+					case KeyEvent.VK_DOWN:
+						if(tblPortList.getValueAt(tblPortList.selectedindex, PORT_NAME_COLUM)==null)
+						{
+							tblPortList.selectedindex-=1;
+							return;
+						}
+						break;	
+
+					default:
+						break;
 					}
-					txfUpdatePortName.setText(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM)));
-					portName =String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM));
-					txfIndex.setText(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_INDEX_COLUM)));
-					index = Integer.parseInt(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_INDEX_COLUM)));
-					tblPortList.changeSelection(selectedindex, PORT_INDEX_COLUM, false, false);
+
+					showSelectedTable();
+
+					tblPortList.changeSelection(tblPortList.selectedindex, PORT_INDEX_COLUM, false, false);
 				}
 				else if(arg0.getKeyCode()==KeyEvent.VK_ENTER)
 				{
@@ -335,22 +321,16 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 						}
 						try 
 						{
-							Table_Port port = new Table_Port();
-							port.setPort_type(Table_Port.TYPE_PARENT);
-
-							/*if(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM))==null)
-							{
-								return;
-							}*/
+							TablePort port = new TablePort();
+							port.setPort_type(TablePort.TYPE_PARENT);
 							port.setPort_name(portName);
-							port.setPort_index(index);
-							System.out.println(portName);
+							port.setPort_index(portIndex);
 							port.setNew_port_name(txf.getText());
 							port.setTable_id(ManagePortDialog.this.table_id);
 							tableService.updateTablePortName(port);
 
 							portName =port.getPort_name();
-							index = port.getNew_port_index();
+							portIndex = port.getNew_port_index();
 
 
 						} catch (SQLException e1) 
@@ -361,7 +341,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 								tblPortList.clearSelection();
 								JOptionPane.showMessageDialog(ManagePortDialog.this, "해당 인덱스에 동일한 항구명이 존재합니다."+e1.getErrorCode());
 								try {
-									updatePortTable();
+									tblPortList.updatePort();
 								} catch (SQLException e2) {
 									// TODO Auto-generated catch block
 									e2.printStackTrace();
@@ -379,13 +359,13 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 						finally
 						{
 							try {
-								updatePortTable();
+								tblPortList.updatePort();
 								int ind=0;
 								for(int i=0;i<tblPortList.getRowCount();i++)
 								{
 									try{
 										int vindex = Integer.parseInt(String.valueOf(tblPortList.getValueAt(i, 0)));
-										if(vindex==index&&tblPortList.getValueAt(i, 1).equals(portName))
+										if(vindex==portIndex&&tblPortList.getValueAt(i, 1).equals(portName))
 										{
 											ind=i;
 										}
@@ -409,15 +389,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 			}
 
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+		});
 
-			}
-
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}});
 		txfUpdatePortName.addFocusListener(new FocusListener(){
 
 			public void focusGained(FocusEvent arg0) 
@@ -426,11 +399,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				if(row==-1)
 					return;
 
-				selectedindex = row;
-				txfUpdatePortName.setText(String.valueOf(tblPortList.getValueAt(row, PORT_NAME_COLUM)));
-				txfIndex.setText(String.valueOf(tblPortList.getValueAt(row, PORT_INDEX_COLUM)));
-				portName =String.valueOf(tblPortList.getValueAt(selectedindex, PORT_NAME_COLUM));
-				index = Integer.parseInt(String.valueOf(tblPortList.getValueAt(selectedindex, PORT_INDEX_COLUM)));
+				showSelectedTable();
 
 			}
 
@@ -441,6 +410,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}});
 
 		pnLeftNorth.add(txfIndex);
+		
 		pnLeftNorth.add(txfUpdatePortName);
 
 		pnLeftOption = new JPanel();
@@ -516,11 +486,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		JPanel pnRight = new JPanel();
 		pnRight.setLayout(new BorderLayout());
-		//JPanel pnRightNorth = new JPanel();
-		//pnRightNorth.setLayout(new FlowLayout(FlowLayout.LEFT));
-		/*JLabel lblPortName = new JLabel("대표 항구명 : ");
-		lblPortName.setFont(defaultfont);*/
-
 
 		txflblIndex = new JTextField(2);
 		txflblIndex.setEditable(false);
@@ -528,14 +493,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		txflblPortName = new JTextField(10);
 		txflblPortName.setEditable(false);
 		txflblPortName.setBorder(BorderFactory.createEmptyBorder());
-
-
-
-		/*pnRightNorth.add(lblPortName);
-		pnRightNorth.add(txflblPortName);
-		pnRightNorth.add(lblInfo);
-		pnRightNorth.add(txflblIndex);*/
-
 
 		pnRightOption = new JPanel();
 		pnRightOption.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -551,47 +508,22 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		pnMain.add(pnPortMain);
 		try {
 
-			updatePortTable();
+			tblPortList.updatePort();
 		} catch (SQLException e) {
-			 JOptionPane.showMessageDialog(this, e.getMessage());
+			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
 
 		return pnMain;
 	}
 
-	private void updatePortTable() throws SQLException {
-		List<Table_Port> portli=tableService.getParentPortList(this.table_id);
-		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("순서");
-		model.addColumn("항구명");
+	private void showSelectedTable()
+	{
+		portName =String.valueOf(tblPortList.getValueAt(tblPortList.selectedindex, PORT_NAME_COLUM));
+		portIndex = Integer.parseInt(String.valueOf(tblPortList.getValueAt(tblPortList.selectedindex, PORT_INDEX_COLUM)));				
+		txfUpdatePortName.setText(portName);
+		txfIndex.setText(String.valueOf(portIndex));
 
-
-
-		if(portli.size()<10)
-		{
-			model.setRowCount(portli.size()+10);
-		}else
-		{
-			model.setRowCount(portli.size()+5);
-		}
-
-		for(int i=0;i<portli.size();i++)
-		{
-			Table_Port port = portli.get(i);
-			model.setValueAt(port.getPort_name(), i, PORT_NAME_COLUM);
-			model.setValueAt(port.getPort_index(), i, PORT_INDEX_COLUM);
-
-		}
-
-		tblPortList.setModel(model);
-		TableColumnModel colModel=tblPortList.getColumnModel();
-		TableColumn col=colModel.getColumn(PORT_INDEX_COLUM);
-		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-		renderer.setHorizontalAlignment(SwingConstants.CENTER);
-		col.setMaxWidth(50);
-		col.setCellRenderer(renderer);
-
-		tblPortList.changeSelection(selectedportindex, selectedcolIndex, false, false);
+		tblPortList.changeSelection(tblPortList.selectedindex, PORT_INDEX_COLUM, false, false);
 	}
 
 	private Component buildInfo() {
@@ -623,15 +555,20 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		JButton butDel = new JButton("삭제");
 
 		butDel.addActionListener(this);
+		JButton butSave = new JButton("저장");
+		butSave.setActionCommand("저장");
+		//butSave.setMnemonic(KeyEvent.VK_S);
 
-		JButton butCancel = new JButton("적용 및 닫기(S)");
-		butCancel.setActionCommand("적용 및 닫기");
+
+		JButton butCancel = new JButton("닫기");
+		butCancel.setActionCommand("닫기");
 		butCancel.setMnemonic(KeyEvent.VK_S);
 		butCancel.addActionListener(this);
 
 		pnRight.add(butArrange);
 		pnRight.add(butDel);
 		pnRight.add(butCancel);
+		pnRight.add(butSave);
 
 		pnMain.add(pnLeft,BorderLayout.WEST);
 		pnMain.add(pnRight,BorderLayout.EAST);
@@ -696,10 +633,10 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				String port_name=(String) tblPortList.getValueAt(i, PORT_NAME_COLUM);
 
 
-				Table_Port port = new Table_Port();
+				TablePort port = new TablePort();
 
 				port.setTable_id(table_id);
-				port.setPort_type(Table_Port.TYPE_PARENT);
+				port.setPort_type(TablePort.TYPE_PARENT);
 
 
 				Object value= tblPortList.getValueAt(i, PORT_NAME_COLUM);
@@ -711,7 +648,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 					port.setPort_index(Integer.parseInt(value.toString()));
 				}
 				try {
-					Table_Port pp=(Table_Port) tableService.getTablePort(port);
+					TablePort pp=(TablePort) tableService.getTablePort(port);
 					port.setParent_port(port_name);
 					port.setPort_name(port_name);
 					if(pp==null)
@@ -745,13 +682,13 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			this.setVisible(false);
 			dispose();
 		}
-		else if(command.equals("적용 및 닫기"))
+		else if(command.equals("저장"))
 		{
 
 			try {
 				int count = tableService.getPortCount(table_id);
 				ShippersTable op =tableService.getTableById(table_id);
-				
+
 				ShippersTable table = new ShippersTable();
 				table.setTable_id(table_id);
 				table.setPort_col(count);
@@ -759,7 +696,35 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				tableService.updateTable(table);
 				base.setPortCount(count);
 			} catch (SQLException e1) {
-				
+
+				JOptionPane.showMessageDialog(this, e1.getMessage());
+				e1.printStackTrace();
+			}
+		}
+		else if(command.equals("닫기"))
+		{
+			this.OPTION = ManagePortDialog.CANCEL_OPTION;
+			this.setVisible(false);
+			dispose();
+			base.searchADVTable();
+
+		}
+
+		else if(command.equals("적용 및 닫기"))
+		{
+
+			try {
+				int count = tableService.getPortCount(table_id);
+				ShippersTable op =tableService.getTableById(table_id);
+
+				ShippersTable table = new ShippersTable();
+				table.setTable_id(table_id);
+				table.setPort_col(count);
+				table.setGubun(op.getGubun());
+				tableService.updateTable(table);
+				base.setPortCount(count);
+			} catch (SQLException e1) {
+
 				JOptionPane.showMessageDialog(this, e1.getMessage());
 				e1.printStackTrace();
 			}
@@ -772,28 +737,31 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		}else if(command.equals("삭제"))
 		{
-			delAction();
+			tblPortList.deleteAction();
 		}
 		else if(command.equals("검색"))
 		{
 			if(currentTable==null)
 				return;
 			int row=currentTable.getSelectedRow();
-			if(row!=-1)
+
+			if(row==-1)
+				return;
+
+
+			PortSearchDialog dialog = new PortSearchDialog(this);
+			dialog.setRow(row);
+			dialog.createAndUpdateUI();
+			if(dialog.portName!=null)
 			{
-				PortSearchDialog dialog = new PortSearchDialog(this);
-				dialog.setRow(row);
-				dialog.createAndUpdateUI();
-				if(dialog.portName!=null)
-				{
-					currentTable.setValueAt(dialog.portName, row, PORT_NAME_COLUM);
-				}
+				currentTable.setValueAt(dialog.portName, row, PORT_NAME_COLUM);
 			}
+
 		}
 		else if(command.equals("정렬"))
 		{
 			try {
-				updatePortTable();
+				tblPortList.updatePort();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -802,47 +770,9 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		{
 			try 
 			{
-				int max=tableService.getMaxPortIndex(ManagePortDialog.this.table_id);
 				String port_name = txfPortName.getText();
-				if(port_name.length()<=0||port_name==null||port_name.equals(""))
-				{
-					JOptionPane.showMessageDialog(null, "항구명을 입력하세요");
-					return;
-				}
-				PortInfo info =baseService.getPortInfoByPortName(port_name);
-				if(info==null)
-				{
-					Code code_info = new Code();
-					code_info.setCode_name(port_name);
-					baseService = new BaseServiceImpl();
-					Code templi=	baseService.getCodeInfo(code_info);
-					if(templi==null)
-					{
-						JOptionPane.showMessageDialog(ManagePortDialog.this, "("+port_name+") 존재하지 않는 항구입니다.");
-						return;	
-					}
 
-				}
-				Table_Port port = new Table_Port();
-				port.setPort_type(Table_Port.TYPE_PARENT);
-				port.setPort_name(port_name);
-				port.setParent_port(port_name);
-				port.setTable_id(ManagePortDialog.this.table_id);
-
-				port.setPort_index(max+1);
-				tableService.insertPortList(port);
-
-				updatePortTable();
-
-				txfPortName.setText("");
-				int count=tableService.getPortCount(table_id);
-				ShippersTable op =tableService.getTableById(table_id);
-				ShippersTable table = new ShippersTable();
-				table.setGubun(op.getGubun());
-				table.setTable_id(table_id);
-				table.setPort_col(count);		
-				tableService.updateTable(table);
-				base.setPortCount(count);
+				tblPortList.insertPort(port_name);
 
 			}
 			catch (SQLException e1) {
@@ -856,66 +786,18 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}
 		}
 	}
-	private void delAction() {
-		int row=currentTable.getSelectedRow();
-		{
-			String port_name= (String) currentTable.getValueAt(row, PORT_NAME_COLUM);
-			if(port_name==null)
-				return;
-			Table_Port port = new Table_Port();
-			port.setPort_name(port_name);
-			port.setTable_id(table_id);
 
-			if(currentTable.getName().equals(Table_Port.TYPE_PARENT))
-			{
-				port.setPort_type(Table_Port.TYPE_PARENT);
 
-				Object temp_port_index = currentTable.getValueAt(row, PORT_INDEX_COLUM);
-				if(temp_port_index instanceof Integer)
-				{
-					port.setPort_index((Integer) temp_port_index);
-				}else if(temp_port_index instanceof String)
-				{
-					port.setPort_index(Integer.valueOf( (String)temp_port_index));
-				} 
 
-				if(cbxD.isSelected())
-				{						
-					port.setPort_name(null);
-				}
-
-			}
-			else
-			{
-				port.setPort_type(Table_Port.TYPE_CHAILD);
-				port.setPort_index( Integer.parseInt(txflblIndex.getText()));
-			}
-			try {
-				tableService.deleteTablePort(port);
-
-				updatePortTable();
-
-				tblPortList.changeSelection(row==0?0:row-1, PORT_NAME_COLUM, false, false);
-				int count=tableService.getPortCount(table_id);
-				ShippersTable op =tableService.getTableById(table_id);
-				ShippersTable table = new ShippersTable();
-				table.setTable_id(table_id);
-				table.setPort_col(count);		
-				table.setGubun(op.getGubun());
-				tableService.updateTable(table);
-				base.setPortCount(count);
-
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
-
+	/**
+	 * @param e
+	 */
 	private void autoWritePort(KeyEvent e) {
 		final JTable table = (JTable) e.getSource();
 		int col =table.getSelectedColumn();
 		int row = table.getSelectedRow();
-		System.out.println("autor write");
+		logger.debug("auto write");
+
 		switch (col) {
 		case PORT_INDEX_COLUM:
 			System.out.println("index colum");
@@ -971,7 +853,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			if(!isExPort())
 			{
 				try {
-					updatePortTable();
+					tblPortList.updatePort();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -998,13 +880,13 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		try 
 		{
-			Table_Port port = new Table_Port();
-			port.setPort_type(Table_Port.TYPE_PARENT);
+			TablePort port = new TablePort();
+			port.setPort_type(TablePort.TYPE_PARENT);
 			port.setPort_name(String.valueOf(port_name));
-			port.setPort_index(selectedportindex);
+			port.setPort_index(tblPortList.selectedportindex);
 			port.setNew_port_index(Integer.valueOf(val.toString()));
 			port.setTable_id(this.table_id);
-			System.out.println("upste:"+Integer.valueOf(val.toString())+","+selectedportindex+","+port.getPort_name());
+			System.out.println("upste:"+Integer.valueOf(val.toString())+","+tblPortList.selectedportindex+","+port.getPort_name());
 			tableService.updateTablePortIndex2(port);
 		} catch (SQLException e1) 
 		{
@@ -1014,7 +896,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				tblPortList.clearSelection();
 				JOptionPane.showMessageDialog(this, "해당 인덱스에 동일한 항구명이 존재합니다."+e1.getErrorCode());
 				try {
-					this.updatePortTable();
+					tblPortList.updatePort();
 				} catch (SQLException e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
@@ -1031,7 +913,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		finally
 		{
 			try {
-				updatePortTable();
+				tblPortList.updatePort();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -1057,13 +939,11 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			int r=0;
 			for(int i=1;i<max;i++)
 			{
-				Table_Port port = new Table_Port();
+				TablePort port = new TablePort();
 				port.setPort_index(i);
 				port.setTable_id(table_id);
-				port.setPort_type(Table_Port.TYPE_PARENT);
+				port.setPort_type(TablePort.TYPE_PARENT);
 				List table_Port=tableService.getTablePortList(port);
-
-
 
 				if(table_Port.size()==0)
 				{
@@ -1071,8 +951,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 					break;
 				}
 			}
-			Table_Port port = new Table_Port();
-			port.setPort_type(Table_Port.TYPE_PARENT);
+			TablePort port = new TablePort();
+			port.setPort_type(TablePort.TYPE_PARENT);
 			port.setPort_name(port_name);
 			port.setParent_port(port_name);
 			port.setTable_id(this.table_id);
@@ -1094,7 +974,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 					port.setPort_index(Integer.valueOf(obj.toString()));
 					tableService.updateTablePort(port);
 				}
-				this.updatePortTable();
+				tblPortList.updatePort();
 			}catch(SQLException se)
 			{
 				if(se.getErrorCode()!=2627)
@@ -1126,46 +1006,94 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			{
 				return;
 			}
-			selectedindex = table.getSelectedRow();
+			tblPortList.selectedindex = table.getSelectedRow();
 			selectedcolIndex = table.getSelectedColumn();
 
 			try{
-				Object indexVal =tblPortList.getValueAt(selectedindex, PORT_INDEX_COLUM);
+				Object indexVal =tblPortList.getValueAt(tblPortList.selectedindex, PORT_INDEX_COLUM);
 				if(indexVal==null)
 					return;
 				if(indexVal instanceof Integer)
 				{
-					selectedportindex=(Integer)indexVal; 
+					tblPortList.selectedportindex=(Integer)indexVal; 
 				}else
 				{
-					selectedportindex=Integer.valueOf(String.valueOf(indexVal));
+					tblPortList.selectedportindex=Integer.valueOf(String.valueOf(indexVal));
 				}
 
 			}catch (Exception ee) {
-				selectedportindex=0;
+				tblPortList.selectedportindex=0;
 				ee.printStackTrace();
 			}
 			if(e.getKeyCode()==KeyEvent.VK_DELETE)
 			{		
-				delAction();
+				tblPortList.deleteAction();
 				return;
 
 			}
 			if(selectedcolIndex==PORT_NAME_COLUM&&e.getKeyCode()==KeyEvent.VK_ENTER)
 			{
 				autoWritePort(e);
-				/*try {
 
-					//updatePortTable();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}*/
 			}
-
-
-
 		}	
+	}
+	class PortDropHandler extends TransferHandler
+	{
+		public boolean canImport(TransferSupport support) { 
+
+			if (!support.isDrop()) { 
+
+				return true; 
+
+			} 
+
+			return support.isDataFlavorSupported(DataFlavor.stringFlavor); 
+
+		} 
+
+		public boolean importData(TransferSupport support) { 
+
+			if (!canImport(support)) { 
+
+				return false; 
+
+			} 
+
+			Transferable transferable = support.getTransferable(); 
+
+			String line; 
+
+			try { 
+
+				line = (String) transferable.getTransferData(DataFlavor.stringFlavor); 
+
+			} catch (Exception e) { 
+
+				return false; 
+
+			} 
+
+			JList.DropLocation dl = (JList.DropLocation) support.getDropLocation(); 
+
+			int index = dl.getIndex(); 
+
+			String[] data = line.split(","); 
+
+			for (String item: data) { 
+
+				//			if (!item.isEmpty()) 
+
+				//					model2.add(index++, item.trim()); 
+
+			} 
+
+			return true; 
+
+		}
+
+
+
 	}
 	class MyMouseAdapter extends MouseAdapter
 	{
@@ -1190,7 +1118,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 						port_index=Integer.parseInt(String.valueOf(val.toString()));
 					}
 
-					selectedindex=port_index;
+					tblPortList.selectedindex=port_index;
 
 					if(t.getValueAt(row, PORT_INDEX_COLUM)!=null)
 					{
@@ -1210,6 +1138,177 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 						txflblPortName.setText("");
 					}
 				}
+			}
+		}
+	}
+	class PortListTable extends JTable
+	{
+		private int selectedportindex;
+		private int selectedindex;		
+		private String table_id;
+
+		public PortListTable(String table_id) {
+
+			this.table_id = table_id;
+			
+			this.setDragEnabled(true);
+			this.setTransferHandler(new PortDropHandler());
+			this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+			this.setDropMode(DropMode.ON_OR_INSERT);
+
+			setName(TablePort.TYPE_PARENT);
+
+			addMouseListener(new MyMouseAdapter());
+
+			addKeyListener(new MyKeyAdapter());
+
+		}
+		/**
+		 * @throws SQLException
+		 */
+		private void updatePort() throws SQLException {
+
+			List<TablePort> portli=tableService.getParentPortList(this.table_id);
+			
+			DefaultTableModel model = new DefaultTableModel();
+			
+			model.addColumn("순서");
+			
+			model.addColumn("항구명");
+
+			if(portli.size()<10)
+			{
+				model.setRowCount(portli.size()+10);
+			}else
+			{
+				model.setRowCount(portli.size()+5);
+			}
+
+			for(int i=0;i<portli.size();i++)
+			{
+				TablePort port = portli.get(i);
+				model.setValueAt(port.getPort_name(), i, PORT_NAME_COLUM);
+				model.setValueAt(port.getPort_index(), i, PORT_INDEX_COLUM);
+
+			}
+
+			setModel(model);
+			TableColumnModel colModel=tblPortList.getColumnModel();
+			TableColumn col=colModel.getColumn(PORT_INDEX_COLUM);
+			DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+			renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			col.setMaxWidth(50);
+			col.setCellRenderer(renderer);
+
+			changeSelection(selectedportindex, selectedcolIndex, false, false);
+		}
+
+		private void insertPort(String port_name) throws SQLException
+		{
+			int max=tableService.getMaxPortIndex(this.table_id);
+			if(port_name.length()<=0||port_name==null||port_name.equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "항구명을 입력하세요");
+				return;
+			}
+			PortInfo info =baseService.getPortInfoByPortName(port_name);
+			if(info==null)
+			{
+				Code code_info = new Code();
+				code_info.setCode_name(port_name);
+				baseService = new BaseServiceImpl();
+				Code templi=	baseService.getCodeInfo(code_info);
+				if(templi==null)
+				{
+					JOptionPane.showMessageDialog(ManagePortDialog.this, "("+port_name+") 존재하지 않는 항구입니다.");
+					return;	
+				}
+			}
+			TablePort port = new TablePort();
+			port.setPort_type(TablePort.TYPE_PARENT);
+			port.setPort_name(port_name);
+			port.setParent_port(port_name);
+			port.setTable_id(ManagePortDialog.this.table_id);
+
+			port.setPort_index(max+1);
+
+			tableService.insertPortList(port);
+
+			tblPortList.updatePort();
+
+			txfPortName.setText("");
+			int count=tableService.getPortCount(table_id);
+			ShippersTable op =tableService.getTableById(table_id);
+			ShippersTable table = new ShippersTable();
+			table.setGubun(op.getGubun());
+			table.setTable_id(table_id);
+			table.setPort_col(count);		
+			tableService.updateTable(table);
+			base.setPortCount(count);
+		}
+
+		/**
+		 * 삭제
+		 */
+		private void deleteAction() {
+			int row=getSelectedRow();
+			if(row<-1)
+				return;
+
+
+			String port_name= (String) getValueAt(row, PORT_NAME_COLUM);
+			if(port_name==null)
+				return;
+			TablePort port = new TablePort();
+			port.setPort_name(port_name);
+			port.setTable_id(table_id);
+
+			if(getName().equals(TablePort.TYPE_PARENT))
+			{
+				port.setPort_type(TablePort.TYPE_PARENT);
+
+				Object temp_port_index = getValueAt(row, PORT_INDEX_COLUM);
+				if(temp_port_index instanceof Integer)
+				{
+					port.setPort_index((Integer) temp_port_index);
+				}else if(temp_port_index instanceof String)
+				{
+					port.setPort_index(Integer.valueOf( (String)temp_port_index));
+				} 
+
+				if(cbxD.isSelected())
+				{						
+					port.setPort_name(null);
+				}
+
+			}
+			else
+			{
+				port.setPort_type(TablePort.TYPE_CHAILD);
+				port.setPort_index( Integer.parseInt(txflblIndex.getText()));
+			}
+			try {
+				tableService.deleteTablePort(port);
+
+				updatePort();
+
+				changeSelection(row==0?0:row-1, PORT_NAME_COLUM, false, false);
+
+				int count=tableService.getPortCount(table_id);
+				ShippersTable op =tableService.getTableById(table_id);
+				ShippersTable table = new ShippersTable();
+				table.setTable_id(table_id);
+				table.setPort_col(count);		
+				table.setGubun(op.getGubun());
+				tableService.updateTable(table);
+				base.setPortCount(count);
+
+
+				logger.debug("delete port:"+table_id+","+port_name);
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(ManagePortDialog.this, "error:"+e1.getMessage());
 			}
 		}
 	}

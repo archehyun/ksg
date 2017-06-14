@@ -38,7 +38,7 @@ import com.ksg.dao.impl.ADVService;
 import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.view.comp.KSGTableModel;
 
 public class SearchADVViewCommand implements KSGCommand {
@@ -120,19 +120,19 @@ public class SearchADVViewCommand implements KSGCommand {
 
 			for(int i=1;i<max+1;i++)
 			{
-				Table_Port searchport = new Table_Port();
+				TablePort searchport = new TablePort();
 				searchport.setTable_id(table_id);
 				searchport.setPort_index(i);
 				List portLi= tableService.getTablePortList(searchport);
 				if(portLi.size()>1)
 				{
-					Table_Port po=(Table_Port) portLi.get(0);
+					TablePort po=(TablePort) portLi.get(0);
 					datamodel.addColumn(po.getPort_index()+"("+portLi.size()+")"+"\n"+po.getPort_name());
 					
 					
 				}else if(portLi.size()==1)
 				{
-					Table_Port po=(Table_Port) portLi.get(0);
+					TablePort po=(TablePort) portLi.get(0);
 					datamodel.addColumn(po.getPort_index()+"\n"+po.getPort_name());
 				}
 				

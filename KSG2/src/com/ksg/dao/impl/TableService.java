@@ -15,7 +15,7 @@ import java.util.List;
 
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
 public interface TableService {
 	/**
@@ -118,34 +118,35 @@ public interface TableService {
 	public List getTableListByPage(ShippersTable table)throws SQLException;
 	public List getTableCompanyListByPage(int parseInt) throws SQLException;
 	public List getSubPortList(String tableId);
-	public List<Table_Port> getParentPortList(String tableId) throws SQLException;
-	public void insertPortList(Table_Port tablePort)throws SQLException;
-	public List<Table_Port> getTablePortList(Table_Port tablePort) throws SQLException;
-	public void deleteTablePort(Table_Port tablePort) throws SQLException;
-	public Table_Port getTablePort(Table_Port port) throws SQLException;
-	public void updateTablePort(Table_Port port)throws SQLException;
-	public Table_Port getTablePortByIndex(Table_Port port)throws SQLException;
+	public List<TablePort> getParentPortList(String tableId) throws SQLException;
+	public void insertPortList(TablePort tablePort)throws SQLException;
+	public List<TablePort> getTablePortList(TablePort tablePort) throws SQLException;
+	public void deleteTablePort(TablePort tablePort) throws SQLException;
+	public TablePort getTablePort(TablePort port) throws SQLException;
+	public void updateTablePort(TablePort port)throws SQLException;
+	public TablePort getTablePortByIndex(TablePort port)throws SQLException;
 	public List selectTableInfoList(ShippersTable stable)throws SQLException;
 	public int getMaxPortIndex(String table_id)throws SQLException;
-	public void updateTablePortIndex(Table_Port port)throws SQLException;
+	public void updateTablePortIndex(TablePort port)throws SQLException;
 	public boolean isPageHave(int parseInt, String text)throws SQLException;
 	public int getTableCount(String date)throws SQLException;
 	public List getTableProperty()throws SQLException;
 	public List getTableProperty(String company_abbr, int page)throws SQLException;
 	public void insertTableProperty(Table_Property p)throws SQLException;
 	public void updateTableProperty(Table_Property property)throws SQLException;
-	public void updateTablePortIndex2(Table_Port port)throws SQLException;
+	public void updateTablePortIndex2(TablePort port)throws SQLException;
 	public List<ShippersTable> getTableListByDate(ShippersTable data)throws SQLException;
 	public List getScheduleTableListByDate(ShippersTable searchOption)throws SQLException;
 	public void updateTablePortCount(String table_id,int portcount)throws SQLException;
 	public void updateTableVesselCount(String table_id,int vesselcount)throws SQLException;
 	public List getTableList(ShippersTable table)throws SQLException;
 	public int updateTableDateAll(ShippersTable table) throws SQLException;
+	public int updateTableDateByTableIDs(List table, String updateDate) throws SQLException;
 	public Table_Property getTableProperty(String table_id)throws SQLException;
 	public List getTableListByAgent(ShippersTable table)throws SQLException;
 	public String getTableAgentByPage(int page)throws SQLException;
 	public int getPortCount(String table_id)throws SQLException;
-	public int updateTablePortName(Table_Port port) throws SQLException;
+	public int updateTablePortName(TablePort port) throws SQLException;
 	/** 테이블 업데이트 날짜 목록 조회
 	 * @return
 	 * @throws SQLException

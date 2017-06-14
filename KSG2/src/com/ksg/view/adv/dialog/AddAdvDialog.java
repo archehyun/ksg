@@ -46,6 +46,7 @@ import com.ksg.dao.impl.ADVService;
 import com.ksg.dao.impl.ADVServiceImpl;
 import com.ksg.domain.Company;
 import com.ksg.model.KSGModelManager;
+import com.ksg.view.adv.ADVListPanel;
 import com.ksg.view.adv.ADVManageUI;
 import com.ksg.view.util.KSGPropertis;
 import com.ksg.view.util.ViewUtil;
@@ -68,7 +69,7 @@ public class AddAdvDialog extends JDialog implements ActionListener{
 	private CardLayout cardLayout = new CardLayout();
 	private JPanel pnMain;
 	private JTextField lblXLSFile;
-	ADVManageUI manageUI;
+	ADVListPanel manageUI;
 	KSGModelManager manager = KSGModelManager.getInstance();
 	ADVService service = new ADVServiceImpl();
 	private JPanel pnStepZero;
@@ -79,7 +80,7 @@ public class AddAdvDialog extends JDialog implements ActionListener{
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	KSGPropertis viewPropertis= KSGPropertis.getIntance();
 	String dataLocation;
-	public AddAdvDialog(Container con, boolean modal,ADVManageUI manageUI) 
+	public AddAdvDialog(Container con, boolean modal,ADVListPanel manageUI) 
 	{
 		
 		this.sequenceCount=0;
@@ -141,8 +142,8 @@ public class AddAdvDialog extends JDialog implements ActionListener{
 
 				manageUI.updateTableListPN();
 				manageUI.butNext.setEnabled(true);
-				manageUI.updateTableInfo();
-				manageUI._txfSearchedTableCount.setText(String.valueOf(manager.vesselCount));
+				//manageUI.updateTableInfo();
+				//manageUI._txfSearchedTableCount.setText(String.valueOf(manager.vesselCount));
 			} catch (Exception e1) {
 
 				JOptionPane.showMessageDialog(null,"광고정보생성에 실패했습니다.");
@@ -342,7 +343,7 @@ public class AddAdvDialog extends JDialog implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				JComboBox box =(JComboBox) e.getSource();
 				String command=e.getActionCommand();
-				manageUI._txfCompany.setText(box.getSelectedItem().toString());
+				//manageUI..setText(box.getSelectedItem().toString());
 
 			}});
 

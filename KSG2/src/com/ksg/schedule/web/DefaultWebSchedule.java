@@ -32,7 +32,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.model.KSGModelManager;
 import com.ksg.schedule.build.DefaultScheduleBuild;
@@ -73,7 +73,7 @@ public class DefaultWebSchedule extends DefaultScheduleBuild implements LongTask
 	
 	protected HashMap<String, Vector<ScheduleData>> areaKeyMap;	
 	
-	protected Vector<Table_Port> portDataArray;
+	protected Vector<TablePort> portDataArray;
 	
 	private ADVData advData;
 	
@@ -359,18 +359,18 @@ public class DefaultWebSchedule extends DefaultScheduleBuild implements LongTask
 	 * @return
 	 * @throws SQLException
 	 */
-	public Vector<Table_Port> getPortList(ShippersTable table) throws SQLException 
+	public Vector<TablePort> getPortList(ShippersTable table) throws SQLException 
 	{
-		Vector<Table_Port> portDataArray  = new Vector<Table_Port>();
-		Table_Port tablePort = new Table_Port();
+		Vector<TablePort> portDataArray  = new Vector<TablePort>();
+		TablePort tablePort = new TablePort();
 		tablePort.setTable_id(table.getTable_id());
-		tablePort.setPort_type(Table_Port.TYPE_PARENT);
+		tablePort.setPort_type(TablePort.TYPE_PARENT);
 
-		List<Table_Port> li=tableService.getTablePortList(tablePort);
+		List<TablePort> li=tableService.getTablePortList(tablePort);
 
 		for(int i=0;i<li.size();i++)
 		{
-			Table_Port port = li.get(i);
+			TablePort port = li.get(i);
 
 			portDataArray.add(port);
 		}
@@ -674,8 +674,8 @@ public class DefaultWebSchedule extends DefaultScheduleBuild implements LongTask
 				for(int outToPortIndex=0;outToPortIndex<outPort.length;outToPortIndex++)
 				{
 
-					Table_Port fromPort = this.getTablePort(portDataArray, ports[outPortIndex]);
-					Table_Port toPort = this.getTablePort(portDataArray, outPort[outToPortIndex]);
+					TablePort fromPort = this.getTablePort(portDataArray, ports[outPortIndex]);
+					TablePort toPort = this.getTablePort(portDataArray, outPort[outToPortIndex]);
 
 
 					String fromPortArray[]	= fromPort.getPortArray();
@@ -692,7 +692,7 @@ public class DefaultWebSchedule extends DefaultScheduleBuild implements LongTask
 								// 기항지 순회
 								for(int inlnadIndex=0;inlnadIndex<inlnadPortIndex.length;inlnadIndex++)
 								{
-									Table_Port inlnadPorts = this.getTablePort(portDataArray, inlnadPortIndex[inlnadIndex]);
+									TablePort inlnadPorts = this.getTablePort(portDataArray, inlnadPortIndex[inlnadIndex]);
 									String inlnadPortArray[]	= inlnadPorts.getPortArray();
 
 									for(int inlnadPortNum=0;inlnadPortNum<inlnadPortArray.length;inlnadPortNum++)
@@ -1099,12 +1099,12 @@ public class DefaultWebSchedule extends DefaultScheduleBuild implements LongTask
 		logger.info(areaName+"지역 파일 출력 종료");
 	}
 
-	private Table_Port getTablePort(Vector<Table_Port> array,int index)
+	private TablePort getTablePort(Vector<TablePort> array,int index)
 	{
-		Table_Port port1 = new Table_Port();
+		TablePort port1 = new TablePort();
 		for(int i=0;i<array.size();i++)
 		{
-			Table_Port port=(Table_Port) array.get(i);
+			TablePort port=(TablePort) array.get(i);
 			if(port.getPort_index()==index)
 				port1.addSubPort(port);
 		}
@@ -1263,9 +1263,9 @@ public class DefaultWebSchedule extends DefaultScheduleBuild implements LongTask
 			{
 				int outToPortIndex = portList[j];
 
-				Table_Port _outport = this.getTablePort(portDataArray, outPortIndex);
+				TablePort _outport = this.getTablePort(portDataArray, outPortIndex);
 
-				Table_Port _outtoport = this.getTablePort(portDataArray, outToPortIndex);
+				TablePort _outtoport = this.getTablePort(portDataArray, outToPortIndex);
 
 				String subFromPortArray[]=_outport.getPortArray();
 
@@ -1444,8 +1444,8 @@ public class DefaultWebSchedule extends DefaultScheduleBuild implements LongTask
 			for(int toPortCount=0;toPortCount<toPort.length;toPortCount++)
 			{
 				int outToPortIndex = toPort[toPortCount];
-				Table_Port _outport = this.getTablePort(portDataArray, outPortIndex);
-				Table_Port _outtoport = this.getTablePort(portDataArray, outToPortIndex);
+				TablePort _outport = this.getTablePort(portDataArray, outPortIndex);
+				TablePort _outtoport = this.getTablePort(portDataArray, outToPortIndex);
 
 
 				PortInfo searchOutOldPort = this.getPortInfo(_outport.getPort_name());

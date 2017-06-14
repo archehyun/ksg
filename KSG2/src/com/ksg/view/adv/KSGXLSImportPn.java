@@ -25,6 +25,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -77,9 +78,9 @@ import com.ksg.xls.xml.KSGXMLManager;
 
 /**
  * @author 박창현
- *
+ * 엑셀에서 가져오 테이블에 대한 정보 표시
  */
-public class KSGXLSImportPn extends JSplitPane implements KSGObserver, ActionListener{
+public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListener{
 
 	class MYKeyApater extends KeyAdapter
 	{
@@ -159,8 +160,15 @@ public class KSGXLSImportPn extends JSplitPane implements KSGObserver, ActionLis
 
 	private int tableIndex;
 
+	private JSplitPane pnMain;
+
+	private JPanel pnCenter;
+
+	private JScrollPane jScrollPane;
+
 	public KSGXLSImportPn() 
 	{
+		
 		isUnderPort = (String)propertis.getValues(KSGPropertis.PROPERTIES_UNDERPORT).toString();
 		DAOManager manager = DAOManager.getInstance();
 		advservice = manager.createADVService();
@@ -459,7 +467,7 @@ public class KSGXLSImportPn extends JSplitPane implements KSGObserver, ActionLis
 		JSplitPane tpPortAndVessel = new JSplitPane();
 		JPanel pnPort = new JPanel();
 		JPanel pnVessel = new JPanel();
-		JPanel pnCenter = new JPanel(new BorderLayout());
+		pnCenter = new JPanel(new BorderLayout());
 
 		JPanel pnCenterControl = buildControlPn();
 
@@ -497,7 +505,8 @@ public class KSGXLSImportPn extends JSplitPane implements KSGObserver, ActionLis
 
 		JPanel pnData = new JPanel(new BorderLayout());
 		JTabbedPane tapPN = new JTabbedPane();
-		pnData.add(new JScrollPane(tblADV),BorderLayout.CENTER);
+		jScrollPane = new JScrollPane(tblADV);
+		pnData.add(jScrollPane,BorderLayout.CENTER);
 
 		JPanel pnDataNorth = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		pnDataNorth.setPreferredSize(new Dimension(0,35));
@@ -550,10 +559,14 @@ public class KSGXLSImportPn extends JSplitPane implements KSGObserver, ActionLis
 
 		tblADV.setName("adv");
 		pnLeft.setPreferredSize(new Dimension(300,200));
-
 		pnLeft.setMinimumSize(new Dimension(300,200));
-		this.setLeftComponent(pnLeft);
-		this.setRightComponent(pnCenter);
+
+		
+		pnMain = new JSplitPane();
+		pnMain.setLeftComponent(pnLeft);
+		pnMain.setRightComponent(pnCenter);
+		this.setLayout(new BorderLayout());
+		this.add(pnMain);
 	}
 
 
@@ -755,6 +768,16 @@ public class KSGXLSImportPn extends JSplitPane implements KSGObserver, ActionLis
 	}
 	public void updateVesseFulllName(int row, String vesselName) {
 		tblADV.updateVesseFulllName(row, vesselName);
+		
+	}
+	
+	public void addMouseWheelListener(MouseWheelListener listener)	
+	{
+		super.addMouseWheelListener(listener);
+		pnCenter.addMouseWheelListener(listener);
+		tblADV.addMouseWheelListener(listener);
+		jScrollPane.addMouseWheelListener(listener);
+		
 		
 	}
 	

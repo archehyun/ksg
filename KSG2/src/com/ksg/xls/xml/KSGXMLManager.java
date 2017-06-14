@@ -26,14 +26,14 @@ import com.ksg.dao.DAOManager;
 import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.view.comp.ColorData;
 
 public class KSGXMLManager {
 	
 	private TableService tableService;
 	Logger logger = Logger.getLogger(this.getClass());
-	private List<Table_Port> portLi;
+	private List<TablePort> portLi;
 	public KSGXMLManager()
 	{
 	tableService = DAOManager.getInstance().createTableService();	
@@ -63,6 +63,7 @@ public class KSGXMLManager {
 	}
 	public DefaultTableModel createXLSTableModel(String data) throws JDOMException, IOException
 	{
+		logger.debug("");
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
 		SAXBuilder builder = new SAXBuilder();
 		Document document = builder.build(new ByteArrayInputStream	(data.getBytes()));

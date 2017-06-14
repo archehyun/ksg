@@ -206,9 +206,20 @@
 		 </isNotNull>
 		where table_id=#table_id#
 	</update>
+
+	<update id="updateTableDateByTableIDs" parameterClass="com.ksg.domain.ADVData">
+		update TB_TABLE_INFO set
+		 <isNull property="date_isusse"> 
+		 date_isusse = NULL
+		 </isNull>
+		 <isNotNull property="date_isusse">
+		 date_isusse=#date_isusse#
+		 </isNotNull>
+		where table_id=#table_id#
+	</update>
 	
 	
-		<update id="updateTableDateAll" parameterClass="com.ksg.domain.ShippersTable">
+	<update id="updateTableDateAll" parameterClass="com.ksg.domain.ShippersTable">
 		update TB_TABLE_INFO set
 		 <isNull property="date_isusse"> 
 		 date_isusse = NULL
@@ -219,7 +230,6 @@
 		 <isNotNull property="table_id" prepend="where">
 		 table_id=#table_id#
 		 </isNotNull>
-		
 	</update>
 	
 	
@@ -373,14 +383,14 @@
 	group by page
 	</select>
 	<select id="getTableCompanyListByPage" resultClass="com.ksg.domain.ShippersTable">
-	select	
-	company_abbr	
-	from TB_TABLE_INFO 
-	
-	<isNotEmpty prepend="where" property="page">
-	TB_TABLE_INFO.page =#page#
-	</isNotEmpty>
-	group by company_abbr
+		select	
+		company_abbr	
+		from TB_TABLE_INFO 
+		
+		<isNotEmpty prepend="where" property="page">
+		TB_TABLE_INFO.page =#page#
+		</isNotEmpty>
+		group by company_abbr
 	</select>
 	
 	<select id="selectLastTableIndex" resultClass="int">
@@ -395,16 +405,17 @@
 	select	page, company_abbr from TB_TABLE_INFO group by page, company_abbr
 	</select>
 	<select id="selectTableListByPage" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
-	select * from TB_TABLE_INFO where page=#page# 
-	 <isNotNull prepend="and" property="date_isusse">
-		 date_isusse=#date_isusse#
-	</isNotNull>
-	 order by table_index
+		select * from TB_TABLE_INFO where page=#page# 
+		 <isNotNull prepend="and" property="date_isusse">
+			 date_isusse=#date_isusse#
+		</isNotNull>
+		 order by table_index
 	</select>
 	
 	<select id="selectAllTableList" resultClass="com.ksg.domain.ShippersTable">
-	select * from TB_TABLE_INFO
+		select * from TB_TABLE_INFO
 	</select>
+	
 	<select id="selectTableList" resultClass="com.ksg.domain.ShippersTable">
 	select * from TB_TABLE_INFO
 	
@@ -436,24 +447,24 @@
 	</select>
 	
 	<select id="selectTableInfoByIndex" resultClass="com.ksg.domain.ShippersTable">
-	select	*  from TB_TABLE_INFO where company_abbr=#company_abbr#
-	and table_index = #table_index#
-	and page=#page#
-	 </select>
-	 <select id="getParentPortList" resultClass="com.ksg.domain.Table_Port">
-		select * from TB_TABLE_PORTLIST where port_type='P' and table_id=#table_id# order by port_index
-	 </select>
-	 <insert id="insertPortList" parameterClass="com.ksg.domain.Table_Port">
-	 insert TB_TABLE_PORTLIST (table_id,port_name, port_index, parent_port,port_type)
-	  values(
-	  #table_id#,
-	  #port_name#,
-	  #port_index#,
-	  #parent_port#,
-	  #port_type#
-	  )
+		select	*  from TB_TABLE_INFO where company_abbr=#company_abbr#
+		and table_index = #table_index#
+		and page=#page#
+		 </select>
+		 <select id="getParentPortList" resultClass="com.ksg.domain.TablePort">
+			select * from TB_TABLE_PORTLIST where port_type='P' and table_id=#table_id# order by port_index
+		 </select>
+		 <insert id="insertPortList" parameterClass="com.ksg.domain.TablePort">
+		 insert TB_TABLE_PORTLIST (table_id,port_name, port_index, parent_port,port_type)
+		  values(
+		  #table_id#,
+		  #port_name#,
+		  #port_index#,
+		  #parent_port#,
+		  #port_type#
+		  )
 	 </insert>
-	  <select id="getTablePortList" resultClass="com.ksg.domain.Table_Port">
+	  <select id="getTablePortList" resultClass="com.ksg.domain.TablePort">
 		select * from TB_TABLE_PORTLIST where table_id=#table_id#
 	
 	 	<isNotEmpty prepend="and" property="port_name">
@@ -475,7 +486,7 @@
 	 
 	 
 	 
-	 <delete id="deleteTablePort" parameterClass="com.ksg.domain.Table_Port">
+	 <delete id="deleteTablePort" parameterClass="com.ksg.domain.TablePort">
 		delete from TB_TABLE_PORTLIST where table_id=#table_id#
 		<isNotEmpty prepend="and" property="parent_port">
 		parent_port = #parent_port#
@@ -492,7 +503,7 @@
 	</delete>
 	
 	
-	 <select id="	getTablePortByIndex" resultClass="com.ksg.domain.Table_Port">
+	 <select id="	getTablePortByIndex" resultClass="com.ksg.domain.TablePort">
 	select * from TB_TABLE_PORTLIST where table_id=#table_id# and port_index=#port_index#
 	 </select>
 	 <update id="updateTablePort">
@@ -656,23 +667,23 @@
 		gubun= #gubun#
 	</isNotEmpty>
 	 
-	 <isGreaterThan prepend="AND" property="page" compareValue="0">
+	<isGreaterThan prepend="AND" property="page" compareValue="0">
 		page= #page#
 		</isGreaterThan>
 	 </sql>
-	  <select id="getTableListByDate" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
-	 <include refid="TableListByDate"/>
-	 </select>
-	  <select id="getScheduleTableListByDate" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
-	 <include refid="TableListByDate"/> and gubun  NOT IN ('NNN')
-	 </select>
+	<select id="getTableListByDate" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
+	 	<include refid="TableListByDate"/>
+	</select>
+	<select id="getScheduleTableListByDate" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
+	 	<include refid="TableListByDate"/> and gubun  NOT IN ('NNN')
+	</select>
 	 
-	 <select id="selectTableByAgent" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
+	<select id="selectTableByAgent" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
 	 	 select * from TB_TABLE_INFO where agent=#agent# order by page, table_index
-	 </select>
-	 <select id="selectTableAgentByPage" resultClass="string" parameterClass="com.ksg.domain.ShippersTable">
+	</select>
+	<select id="selectTableAgentByPage" resultClass="string" parameterClass="com.ksg.domain.ShippersTable">
 	 	 select agent from TB_TABLE_INFO where page=#page# group by agent
-	 </select>
+	</select>
 	<select id="selectTablePortCount" resultClass="int" parameterClass="string">
 		select COUNT(*)  from (select port_index from TB_TABLE_PORTLIST where table_id=#table_id# group by port_index) as t
 	</select>

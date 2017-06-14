@@ -191,4 +191,10 @@ public class PnCodeInboundPortOrder extends PnBase implements ActionListener{
 		return null;
 	}
 
+	@Override
+	public void initTable() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -35,7 +35,7 @@ import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
-import com.ksg.view.comp.EvenOddRenderer;
+import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.view.comp.KSGTableModel;
 
 public class SearchBaseInfoCommand implements KSGCommand {
@@ -307,8 +307,8 @@ public class SearchBaseInfoCommand implements KSGCommand {
 		_tblTable.setColumnSelectionAllowed(false);
 		TableColumnModel colmodel = _tblTable.getColumnModel();
 		TableColumn areacol;
-		DefaultTableCellRenderer cell_left_renderer = new EvenOddRenderer();
-		DefaultTableCellRenderer cell_center_renderer = new EvenOddRenderer();
+		DefaultTableCellRenderer cell_left_renderer = new KSGTableCellRenderer();
+		DefaultTableCellRenderer cell_center_renderer = new KSGTableCellRenderer();
 		cell_center_renderer.setHorizontalAlignment(JLabel.CENTER);
 		MyTableHeaderRenderer head_renderer =new MyTableHeaderRenderer();
 		
@@ -332,7 +332,7 @@ public class SearchBaseInfoCommand implements KSGCommand {
 			{
 				TableColumn namecol = colmodel.getColumn(i);
 
-				cell_left_renderer = new EvenOddRenderer();
+				cell_left_renderer = new KSGTableCellRenderer();
 				namecol.setHeaderRenderer(head_renderer);
 				if(i==2||i==0)
 				{

@@ -31,7 +31,7 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.domain.Company;
 import com.ksg.view.KSGViewParameter;
 import com.ksg.view.base.PnBase;
-import com.ksg.view.comp.EvenOddRenderer;
+import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.view.comp.KSGTableModel;
 
 
@@ -58,8 +58,6 @@ public class PnCompanyAbbr extends PnBase implements ActionListener{
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
 		_tblTable = new JTable();
-
-		//tblTable.addMouseListener(new TableSelectListner());
 		_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		_tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
 		pnMain.add(new JScrollPane(_tblTable));
@@ -179,23 +177,23 @@ public class PnCompanyAbbr extends PnBase implements ActionListener{
 			List li =baseService.getSearchedCompanyList(query);
 
 			searchTotalSize=li.size();
+			
 			totalSize = baseService.getCompanyCount();
+			
 			createTable(li);
+			
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(PnCompanyAbbr.this, e.getMessage());
 		}
 	}
+	
+	
 	private void createTable(List li)
 	{
-		model = new KSGTableModel();
-
-		for(int i=0;i<columName.length;i++)
-		{
-			model.addColumn(columName[i]);
-		}
-
+		initTable();
+		
 		Iterator iter = li.iterator();
 
 		while(iter.hasNext())
@@ -210,20 +208,8 @@ public class PnCompanyAbbr extends PnBase implements ActionListener{
 
 		_tblTable.setModel(model);
 
-		_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		TableColumnModel colmodel = _tblTable.getColumnModel();
-
-		for(int i=0;i<colmodel.getColumnCount();i++)
-		{
-			TableColumn namecol = colmodel.getColumn(i);
-
-			DefaultTableCellRenderer renderer = new EvenOddRenderer();
-			if(i==1)
-			{
-				renderer.setHorizontalAlignment(SwingConstants.CENTER);
-			}
-			namecol.setCellRenderer(renderer);	
-		}
+		
+		
 		lblTotal.setText(searchTotalSize+"/"+totalSize);
 	}
 
@@ -238,6 +224,31 @@ public class PnCompanyAbbr extends PnBase implements ActionListener{
 	public String getOrderBy(TableColumnModel columnModel) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void initTable() {
+		model = new KSGTableModel();
+
+		for(int i=0;i<columName.length;i++)
+		{
+			model.addColumn(columName[i]);
+		}
+		
+		TableColumnModel colmodel = _tblTable.getColumnModel();
+
+		for(int i=0;i<colmodel.getColumnCount();i++)
+		{
+			TableColumn namecol = colmodel.getColumn(i);
+
+			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
+			if(i==1)
+			{
+				renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			}
+			namecol.setCellRenderer(renderer);	
+		}
+		
 	}
 
 }

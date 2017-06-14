@@ -24,6 +24,7 @@ import com.ksg.dao.DAOManager;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
 import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.search.AdvertiseTable;
 import com.ksg.view.search.KSGADVTablePanel;
 import com.ksg.view.util.ViewUtil;
 
@@ -42,18 +43,16 @@ public class AddVesselDialog extends KSGDialog {
 		baseService = daoManager.createBaseService();
 
 	}
-	KSGADVTablePanel main;
+	AdvertiseTable advTable;
 	private DefaultTableModel  vesselModel;
 	private int col;
 	private int row;
-	private JTable table;
 	private JTextField txfMMSI;
 	private JCheckBox cbxMMSICheck;
 
-	public AddVesselDialog(KSGADVTablePanel main, JTable table, int row,
+	public AddVesselDialog(AdvertiseTable advTable, int row,
 			int col, String value, DefaultTableModel vesselModel) {
-	this.main = main;
-	this.table=table;
+	this.advTable = advTable;
 	this.row = row;
 	this.col = col;
 	this.vesselModel= vesselModel;
@@ -199,15 +198,15 @@ public class AddVesselDialog extends KSGDialog {
 				try {
 					baseService.insertVessel(vessel);
 					
-					if(main!=null)
+					if(advTable!=null)
 					{
 						vesselModel.setRowCount(vesselModel.getRowCount()+1);
 						vesselModel.setValueAt(txf.getText(), row, 0);
 						vesselModel.setValueAt(txf.getText(), row, 1);
 					}
 					
-					if(main!=null)
-					main.setValue(table, vessel.getVessel_abbr().toUpperCase(), row, 0);
+					if(advTable!=null)
+						advTable.setValue( vessel.getVessel_abbr().toUpperCase(), row, 0);
 					JOptionPane.showMessageDialog(null, "선박명: "+vessel.getVessel_name()+"이(가) 추가 되었습니다.");
 					AddVesselDialog.this.setVisible(false);
 					AddVesselDialog.this.dispose();

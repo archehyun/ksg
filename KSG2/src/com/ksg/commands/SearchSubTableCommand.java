@@ -34,7 +34,7 @@ import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ShippersTable;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.comp.ColorData;
-import com.ksg.view.comp.EvenOddRenderer;
+import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.view.comp.KSGTableModel;
 
 public class SearchSubTableCommand implements KSGCommand {
@@ -42,14 +42,14 @@ public class SearchSubTableCommand implements KSGCommand {
 	protected Logger 		logger = Logger.getLogger(this.getClass());
 	private List searchedList;
 	private JTable _tblSubTotalTable;
-	private String[] colums1s;
+	public String[] columNames ={"페이지","인덱스","입력일자","테이블 ID","항구 수","선박 수","선사명","제목","구분",
+			"TS 항구","InPorts","InToPorts","OutPorts","OutToPorts","Agent"};
 	private TableService _tableService;
 	public SearchSubTableCommand( JTable table,List searchedList) {
 		this.searchedList=searchedList;
 		_tblSubTotalTable=table;
 		_tableService = DAOManager.getInstance().createTableService();
 
-		colums1s= KSGModelManager.getInstance().colums1;
 	}
 
 	public int execute() {
@@ -63,9 +63,9 @@ public class SearchSubTableCommand implements KSGCommand {
 
 			model.setColumnCount(0);
 
-			for(int i=0;i<colums1s.length;i++)
+			for(int i=0;i<columNames.length;i++)
 			{
-				model.addColumn(colums1s[i]);
+				model.addColumn(columNames[i]);
 			}
 
 			Iterator iter = searchedList.iterator();
@@ -108,7 +108,7 @@ public class SearchSubTableCommand implements KSGCommand {
 
 				TableColumn namecol = colmodel.getColumn(i);
 
-				DefaultTableCellRenderer renderer = new EvenOddRenderer();
+				DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
 				if(i==0||i==1||i==2||i==4||i==5)
 					renderer.setHorizontalAlignment(SwingConstants.CENTER);
 

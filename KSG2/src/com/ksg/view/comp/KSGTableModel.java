@@ -10,6 +10,10 @@
  *******************************************************************************/
 package com.ksg.view.comp;
 
+import java.awt.Component;
+import java.awt.Font;
+
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -35,11 +39,15 @@ public class KSGTableModel extends DefaultTableModel{
 		this.isEdit=isEdit;
 	}
 	
-	
 	public KSGTableModel(String[] columNames, int rowCount) {
 		super(columNames,rowCount);
 	}
 	public boolean isCellEditable(int row, int column) {
 		return isEdit;
 	}
+	public void clear()
+	{
+		this.setRowCount(0);
+	}
+	
 }

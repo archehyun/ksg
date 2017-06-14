@@ -91,8 +91,11 @@ public class KSGSearchTable extends KSGTable{
 		}
 
 		manager.searchedData=li;
-		tableCount=li.size();		
+		
+		tableCount=li.size();	
+		
 		model = new KSGTableModel();
+		
 		logger.debug("init table model:"+li.size());
 		return li;
 	}
@@ -167,7 +170,7 @@ public class KSGSearchTable extends KSGTable{
 			{
 				TableColumn namecol = colmodel.getColumn(i);
 
-				DefaultTableCellRenderer renderer = new EvenOddRenderer();
+				DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
 				if(i==0||i==1||i==4||i==5||i==2||i==8)
 				renderer.setHorizontalAlignment(SwingConstants.CENTER);
 				namecol.setCellRenderer(renderer);

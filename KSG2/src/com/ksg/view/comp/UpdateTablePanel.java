@@ -61,7 +61,7 @@ import com.ksg.dao.impl.TableService;
 import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.search.SearchUI;
 import com.ksg.view.search.dialog.UpdateTableInOutDialog;
@@ -118,11 +118,11 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 							int in = Integer.parseInt(stringTokenizer.nextToken());
 
 							// 존재하는 항구인지 확인
-							Table_Port port = new Table_Port();
+							TablePort port = new TablePort();
 							port.setTable_id(txfTable_id.getText());
 							port.setPort_index(in);
 							try {
-								Table_Port searchPort=tableService.getTablePort(port);
+								TablePort searchPort=tableService.getTablePort(port);
 
 								PortInfo info=baseService.getPortInfoByPortName(searchPort.getPort_name());
 								if(info==null)
@@ -755,7 +755,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 			txfGubun.setText(shippersTable.getGubun());
 			txfTitle.setText(shippersTable.getTitle());
 
-			Table_Port tablePort = new Table_Port();
+			TablePort tablePort = new TablePort();
 			tablePort.setTable_id(shippersTable.getTable_id());
 			List li=tableService.getTablePortList(tablePort);
 
@@ -848,7 +848,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 					int in = Integer.parseInt(stringTokenizer.nextToken());
 
 					// 존재하는 항구인지 확인
-					Table_Port port = new Table_Port();
+					TablePort port = new TablePort();
 					port.setTable_id(txfTable_id.getText());
 					port.setPort_index(in);
 
@@ -882,11 +882,11 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 				{
 
 					// 존재하는 항구인지 확인
-					Table_Port port = new Table_Port();
+					TablePort port = new TablePort();
 					port.setTable_id(txfTable_id.getText());
 					port.setPort_index(i);
 					try {
-						Table_Port searchPort=tableService.getTablePort(port);
+						TablePort searchPort=tableService.getTablePort(port);
 						System.out.println(searchPort);
 						try{
 
@@ -968,11 +968,11 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 					int in = Integer.parseInt(stringTokenizer.nextToken());
 
 					// 존재하는 항구인지 확인
-					Table_Port port = new Table_Port();
+					TablePort port = new TablePort();
 					port.setTable_id(txfTable_id.getText());
 					port.setPort_index(in);
 					try {
-						Table_Port searchPort=tableService.getTablePort(port);
+						TablePort searchPort=tableService.getTablePort(port);
 
 
 						if(searchPort==null)

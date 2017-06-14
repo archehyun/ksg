@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +27,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -74,7 +76,7 @@ public class BaseInfoUI extends JPanel{
 	private PnCompany pnCompany; // 선사 정보 관리
 	private PnCode pnCode;*/
 	
-	private HashMap<String, TableListener> panelList;// 패널 저장 객첵
+	private HashMap<String, TableListener> panelList;// 패널 저장 객체
 	
 	/**
 	 * 
@@ -107,6 +109,25 @@ public class BaseInfoUI extends JPanel{
 		this.setName("BaseInfoUI");
 		cardLayout.show(pnMain, STRING_AREA_INFO);
 	}
+	
+	 public static void expandAll(JTree tree, TreePath parent, boolean expand) {
+		    // Traverse children
+		    TreeNode node = (TreeNode) parent.getLastPathComponent();
+		    if (node.getChildCount() >= 0) {
+		      for (Enumeration e = node.children(); e.hasMoreElements();) {
+		        TreeNode n = (TreeNode) e.nextElement();
+		        TreePath path = parent.pathByAddingChild(n);
+		        expandAll(tree, path, expand);
+		      }
+		    }
+		    // Expansion or collapse must be done bottom-up
+		    if (expand) {
+		      tree.expandPath(parent);
+		    } else {
+		      tree.collapsePath(parent);
+		    }
+		  }
+
 	private Component buildLeftMenu() {
 		JTree tree = createTreeMenu();
 
@@ -248,8 +269,16 @@ public class BaseInfoUI extends JPanel{
 		tree.putClientProperty("JTree.lineStyle", "Angled");
 		TreeCellRenderer renderer = new IconCellRenderer();
 		tree.setCellRenderer(renderer);
-		tree.expandRow(2);
+		expandAll(tree, true);
+		
+		tree.setRootVisible(false);
 	}
+	 public static void expandAll(JTree tree, boolean expand) {
+		    TreeNode root = (TreeNode) tree.getModel().getRoot();
+		    // Traverse tree from root
+		    expandAll(tree, new TreePath(root), expand);
+		  }
+
 	class IconCellRenderer 
 	extends    JLabel 
 	implements TreeCellRenderer

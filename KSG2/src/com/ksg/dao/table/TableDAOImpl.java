@@ -19,7 +19,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.dao.SqlMapManager;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
 public class TableDAOImpl implements TableDAO{
 	SqlMapClient sqlMap;
@@ -161,7 +161,7 @@ public class TableDAOImpl implements TableDAO{
 	}
 
 
-	public void insertPortList(Table_Port tablePort) throws SQLException {
+	public void insertPortList(TablePort tablePort) throws SQLException {
 		sqlMap.insert("Table.insertPortList",tablePort);
 
 	}
@@ -171,29 +171,29 @@ public class TableDAOImpl implements TableDAO{
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.selectTableListByPage",table);
 	}
-	public List getTablePortList(Table_Port tablePort) throws SQLException {
+	public List getTablePortList(TablePort tablePort) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.getTablePortList",tablePort);
 	}
 
 
-	public void deleteTablePort(Table_Port tablePort) throws SQLException {
+	public void deleteTablePort(TablePort tablePort) throws SQLException {
 		// TODO Auto-generated method stub
 		sqlMap.delete("Table.deleteTablePort",tablePort);
 	}
 
 
-	public Table_Port getTablePort(Table_Port tablePort) throws SQLException {
-		return (Table_Port) sqlMap.queryForObject("Table.getTablePortList",tablePort);
+	public TablePort getTablePort(TablePort tablePort) throws SQLException {
+		return (TablePort) sqlMap.queryForObject("Table.getTablePortList",tablePort);
 	}
 
 
-	public Table_Port getTablePortByIndex(Table_Port port) throws SQLException {
-		return (Table_Port) sqlMap.queryForObject("Table.getTablePortByIndex",port);
+	public TablePort getTablePortByIndex(TablePort port) throws SQLException {
+		return (TablePort) sqlMap.queryForObject("Table.getTablePortByIndex",port);
 	}
 
 
-	public void updateTablePort(Table_Port port) throws SQLException {
+	public void updateTablePort(TablePort port) throws SQLException {
 		sqlMap.update("Table.updateTablePort",port);
 	}
 
@@ -220,7 +220,7 @@ public class TableDAOImpl implements TableDAO{
 	}
 
 
-	public void updateTablePortIndex(Table_Port port) throws SQLException {
+	public void updateTablePortIndex(TablePort port) throws SQLException {
 		sqlMap.update("Table.updateTablePortIndex",port);
 		
 	}
@@ -280,7 +280,7 @@ public class TableDAOImpl implements TableDAO{
 	}
 
 
-	public void updateTablePortIndex2(Table_Port port) throws SQLException {
+	public void updateTablePortIndex2(TablePort port) throws SQLException {
 		sqlMap.update("Table.updateTablePortIndex2",port);
 		
 	}
@@ -345,7 +345,7 @@ public class TableDAOImpl implements TableDAO{
 	}
 
 
-	public int updateTablePortName(Table_Port port) throws SQLException {
+	public int updateTablePortName(TablePort port) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlMap.update("Table.updateTablePortName",port);
 	}

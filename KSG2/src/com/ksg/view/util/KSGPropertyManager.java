@@ -2,6 +2,8 @@ package com.ksg.view.util;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.dao.SqlMapManager;
@@ -9,16 +11,22 @@ import com.ksg.domain.Table_Property;
 
 public class KSGPropertyManager {
 
-
+	List<Table_Property> propertyList;
 	private static KSGPropertyManager manager;
 
 	private KSGPropertyManager()
 	{
 		try {
 			sqlMap = SqlMapManager.getSqlMapInstance();
+			this.propertyList=this.getKSGTableProperty();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		
 	}
 	public static KSGPropertyManager getInstance() 
 	{
@@ -27,9 +35,26 @@ public class KSGPropertyManager {
 		return manager;
 	}
 	public Table_Property getKSGTableProperty(String table_id) throws SQLException{ 
-		return (Table_Property) sqlMap.queryForObject("TABLEProperty.selectTABLEProperty",table_id);
+		/*Table_Property param = new Table_Property();
+		param.setTable_id(table_id);*/
+		
+		//return (Table_Property) sqlMap.queryForObject("TABLEProperty.selectTABLEProperty",param);
+		Iterator<Table_Property> iter =propertyList.iterator();
+		
+		while(iter.hasNext())
+		{
+			Table_Property item = iter.next();
+			if(item.getTable_id().equals(table_id))
+				return item;
+		}
+		return null;
 	}
+	public List getKSGTableProperty() throws SQLException{ 
+		return (List) sqlMap.queryForList("TABLEProperty.selectTABLEProperty");
+	}
+	
 	SqlMapClient sqlMap;
+	
 	public void update(Table_Property property) throws SQLException
 	{
 		sqlMap.update("TABLEProperty.updateTableProperty",property);

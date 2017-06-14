@@ -310,7 +310,6 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 					}
 					
 					op.setGubun(gubun);
-
 					ScheduleManager.getInstance().init();
 					switch (getScheduleType()) {
 					case NOMAL:

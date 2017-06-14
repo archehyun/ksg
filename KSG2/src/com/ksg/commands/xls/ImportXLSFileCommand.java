@@ -50,6 +50,8 @@ public class ImportXLSFileCommand implements KSGCommand {
 		table.setCompany_abbr(company);
 		table.setPage(page);
 		this.sheetName =(String) sheetName;
+		ProcessDialog dialog= new ProcessDialog();
+		dialog.createAndUpdateUI();	
 	}
 	public ImportXLSFileCommand(Vector sheetNameList, String path, String company, int page) {
 
@@ -100,10 +102,6 @@ public class ImportXLSFileCommand implements KSGCommand {
 		logger.debug("start");
 		try {
 
-			ProcessDialog dialog= new ProcessDialog();
-			dialog.createAndUpdateUI();		
-
-
 
 			if(sheetName==null)
 			{
@@ -114,16 +112,19 @@ public class ImportXLSFileCommand implements KSGCommand {
 			}
 
 			manager.memento =xlsmanager.createXLSTableInfoMemento();
+			
 			manager.memento.setSearchType(this.searchType);
+			
 			manager.memento.setSelectedInput(this.selectedInput);
+			
 			manager.memento.setPageList(tableInfoList);
-
-
+			
 			manager.setXLSTableInfoList(xlsmanager.getXLSTableInfoList());
+			
 			manager.tableCount = xlsmanager.getSearchedTableCount();
+			
 			logger.debug("tableCount:"+manager.tableCount);
 
-			logger.debug("end");
 			return RESULT_SUCCESS;
 		} catch (ADVTableNotMatchException e) {
 			manager.vesselCount =0;
@@ -141,7 +142,5 @@ public class ImportXLSFileCommand implements KSGCommand {
 
 
 	}
-	/*public XLSTableInfoMemento getMemento() {
-		return memento;
-	}*/
+
 }

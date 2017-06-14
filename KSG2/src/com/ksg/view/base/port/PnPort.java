@@ -39,9 +39,8 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.ksg.domain.PortInfo;
-import com.ksg.view.KSGViewParameter;
 import com.ksg.view.base.PnBase;
-import com.ksg.view.comp.EvenOddRenderer;
+import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.comp.KSGTableModel;
 
@@ -69,6 +68,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 
 	private String orderby;
+
 	public PnPort() {
 		super();
 		// 칼럼 정보 초기화
@@ -78,6 +78,8 @@ public class PnPort extends PnBase implements ActionListener{
 			currentColumnNameList.add(columName[i]);
 		}
 		this.add(buildCenter());
+		
+		this.initTable();
 	}
 	/**
 	 * @return
@@ -197,14 +199,17 @@ public class PnPort extends PnBase implements ActionListener{
 	private JPanel buildCenter()
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
-		_tblTable = new JTable();
-
-		_tblTable.addMouseListener(new TableSelectListner());
-		_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		_tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
-		pnMain.add(new JScrollPane(_tblTable));
+		
+		JScrollPane jScrollPane =createTablePanel();
+		
+		tblTable.addMouseListener(new TableSelectListner());
+		
+		pnMain.add(jScrollPane);
+		
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
+		
 		pnMain.add(buildButton(),BorderLayout.SOUTH);
+		
 		return pnMain;
 
 	}
@@ -213,16 +218,10 @@ public class PnPort extends PnBase implements ActionListener{
 
 		logger.info("query:"+query);
 
-		model = new KSGTableModel();
-
-		for(int i=0;i<currentColumnNameList.size();i++)
-		{
-			model.addColumn(currentColumnNameList.get(i));
-
-		}
+		
 
 		try {
-
+			model.clear();
 			PortInfo searchOP = new PortInfo();
 			searchOP.setSearchKeyword(query);
 			searchOP.setOrderby(orderby);
@@ -250,34 +249,7 @@ public class PnPort extends PnBase implements ActionListener{
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(PnPort.this, e.getMessage());
 		}
-
-		RowSorter<TableModel> sorter= new TableRowSorter<TableModel>(model);
-		_tblTable.setRowSorter(sorter);
-		_tblTable.setModel(model);
-
-		_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-		TableColumnModel colmodel = _tblTable.getColumnModel();
-
-		for(int i=0;i<colmodel.getColumnCount();i++)
-		{
-			TableColumn namecol = colmodel.getColumn(i);
-
-			DefaultTableCellRenderer renderer = new EvenOddRenderer();
-			if(i==3)
-			{
-				renderer.setHorizontalAlignment(SwingConstants.CENTER);
-			}
-			else
-			{
-				renderer.setHorizontalAlignment(SwingConstants.LEFT);
-			}
-			namecol.setCellRenderer(renderer);	
-		}
-		colmodel.getColumn(0).setPreferredWidth(300);
-		colmodel.getColumn(1).setPreferredWidth(300);
-		colmodel.getColumn(2).setPreferredWidth(300);
-		colmodel.getColumn(3).setPreferredWidth(60);
+		
 		lblTotal.setText(searchTotalSize+" / "+totalSize);
 	}
 	private void searchData()
@@ -340,27 +312,9 @@ public class PnPort extends PnBase implements ActionListener{
 
 	@Override
 	public void updateTable() {
-		searchData();
 
 	}
-	private void createTable(List li) {
-		model = new KSGTableModel();
 
-		for(int i=0;i<currentColumnNameList.size();i++)
-		{
-			model.addColumn(currentColumnNameList.get(i));
-		}
-
-		Iterator iter = li.iterator();
-		while(iter.hasNext())
-		{
-			PortInfo portInfo = (PortInfo) iter.next();
-			model.addRow( getRowData(portInfo));
-		}	
-
-		_tblTable.setModel(model);
-
-	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -379,10 +333,10 @@ public class PnPort extends PnBase implements ActionListener{
 		}
 		else if(command.equals("약어 등록"))
 		{
-			int row=_tblTable.getSelectedRow();
+			int row=tblTable.getSelectedRow();
 			if(row<0)
 				return;
-			String port_name=(String) _tblTable.getValueAt(row, 0);
+			String port_name=(String) tblTable.getValueAt(row, 0);
 			
 			KSGDialog dialog = new InsertPortAbbrInfoDialog(port_name);
 			dialog.createAndUpdateUI();
@@ -393,11 +347,11 @@ public class PnPort extends PnBase implements ActionListener{
 		}
 		else if(command.equals("삭제"))
 		{
-			int row=_tblTable.getSelectedRow();
+			int row=tblTable.getSelectedRow();
 			if(row<0)
 				return;
 
-			String data = (String) _tblTable.getValueAt(row, 0);
+			String data = (String) tblTable.getValueAt(row, 0);
 			int result=JOptionPane.showConfirmDialog(null, data+"를 삭제 하시겠습니까?", "항구 정보 삭제", JOptionPane.YES_NO_OPTION);
 			if(result==JOptionPane.OK_OPTION)
 			{						
@@ -425,7 +379,7 @@ public class PnPort extends PnBase implements ActionListener{
 				JTable es = (JTable) e.getSource();
 				int row=es.getSelectedRow();
 				{
-					String Portdata=(String) _tblTable.getValueAt(row, 0);
+					String Portdata=(String) tblTable.getValueAt(row, 0);
 					dialog = new UpdatePortInfoDialog(Portdata);
 					dialog.createAndUpdateUI();
 					if(dialog.result==KSGDialog.SUCCESS)
@@ -433,7 +387,6 @@ public class PnPort extends PnBase implements ActionListener{
 						searchData();
 					}
 				}
-
 			}
 		}
 
@@ -447,13 +400,13 @@ public class PnPort extends PnBase implements ActionListener{
 		 */
 		currentColumnNameList.clear();// 현재 칼럼 순서 초기화
 		StringBuffer buffer = new StringBuffer();
-		int col=_tblTable.getColumnModel().getColumnCount();
+		int col=tblTable.getColumnModel().getColumnCount();
 		
 
 		ArrayList<String> orderbyList = new ArrayList<String>();
 		for(int i=0;i<col;i++)
 		{
-			String headerValue =(String) _tblTable.getColumnModel().getColumn(i).getHeaderValue();
+			String headerValue =(String) tblTable.getColumnModel().getColumn(i).getHeaderValue();
 			currentColumnNameList.add(headerValue);//현재 칼럼 순서 생성
 			String row=arrangeMap.get(headerValue);
 			orderbyList.add(row);
@@ -491,7 +444,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 			if(fromIndex!=toIndex)
 			{
-				orderby =getOrderBy(_tblTable.getColumnModel());
+				orderby =getOrderBy(tblTable.getColumnModel());
 			}
 		}
 
@@ -502,6 +455,48 @@ public class PnPort extends PnBase implements ActionListener{
 
 		public void columnSelectionChanged(ListSelectionEvent e) {
 		}
+	}
+	@Override
+	public void initTable() {
+		
+		model = new KSGTableModel();		
+		
+		RowSorter<TableModel> sorter= new TableRowSorter<TableModel>(model);
+		
+		tblTable.setRowSorter(sorter);
+		
+		tblTable.setModel(model);
+
+		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+		for(int i=0;i<currentColumnNameList.size();i++)
+		{
+			model.addColumn(currentColumnNameList.get(i));
+
+		}
+		
+		TableColumnModel colmodel = tblTable.getColumnModel();
+
+		for(int i=0;i<colmodel.getColumnCount();i++)
+		{
+			TableColumn namecol = colmodel.getColumn(i);
+
+			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
+			if(i==3)
+			{
+				renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			}
+			else
+			{
+				renderer.setHorizontalAlignment(SwingConstants.LEFT);
+			}
+			namecol.setCellRenderer(renderer);	
+		}
+		colmodel.getColumn(0).setPreferredWidth(300);
+		colmodel.getColumn(1).setPreferredWidth(300);
+		colmodel.getColumn(2).setPreferredWidth(300);
+		colmodel.getColumn(3).setPreferredWidth(60);
+		tblTable.setModel(model);
 	}
 
 }

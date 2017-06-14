@@ -24,7 +24,7 @@ import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.schedule.dialog.ScheduleBuildMessageDialog;
@@ -138,11 +138,11 @@ public abstract class CreateScheduelCommand implements KSGCommand, LongTask{
 		}
 		return false;
 	}
-	protected List getTablePortList(Table_Port tablePort) throws SQLException
+	protected List getTablePortList(TablePort tablePort) throws SQLException
 	{
 		return tableService.getTablePortList(tablePort);
 	}
-	protected Table_Port getTablePort(Table_Port tablePort) throws SQLException
+	protected TablePort getTablePort(TablePort tablePort) throws SQLException
 	{
 		return tableService.getTablePort(tablePort);
 	}

@@ -233,14 +233,6 @@ public class XLSSearchOptionPn extends JPanel implements ActionListener{
 	private JPanel buildFileListPn() {
 		JPanel pnMain = new JPanel();
 		pnMain.setBorder(BorderFactory.createTitledBorder("파일 선택"));
-		/*pnMain.setLayout(new FlowLayout(FlowLayout.LEADING));
-
-		JLabel lblFileName = new JLabel("파일 명 : ");
-		lblFileName.setIcon(new ImageIcon("images/xlslogo.png"));
-		pnMain.add(lblFileName);*/
-
-
-
 
 		JButton butFile = new JButton("추가(A)");
 		JButton butDel = new JButton("삭제(D)");
@@ -276,11 +268,9 @@ public class XLSSearchOptionPn extends JPanel implements ActionListener{
 		JPanel pnFile = new JPanel();
 		pnFile.setLayout(new BorderLayout());
 		fileLi = new JList();
-		//fileLi.setComponentPopupMenu(createXLSListPopup());
 
 		fileLi.setModel(new DefaultListModel());
 		JScrollPane scrollPane = new JScrollPane(fileLi);
-//		scrollPane.setPreferredSize(new Dimension(150,50));
 		pnFile.add(scrollPane);
 
 		pnFile.add(pnButList,BorderLayout.EAST);

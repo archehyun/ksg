@@ -2,7 +2,7 @@ package com.ksg.domain;
 
 import java.util.Vector;
 
-public class Table_Port {
+public class TablePort {
 	public static final String TYPE_CHAILD="C";
 	public static final String TYPE_PARENT="P";
 	String parent_port;
@@ -13,10 +13,10 @@ public class Table_Port {
 	String port_type;
 	Vector subPort;
 	String table_id;
-	public Table_Port() {
+	public TablePort() {
 		subPort = new Vector();
 	}
-	public void addSubPort(Table_Port sup) {
+	public void addSubPort(TablePort sup) {
 		subPort.add(sup);
 
 	}
@@ -47,7 +47,7 @@ public class Table_Port {
 			String p[] = new String[subPort.size()];
 			for(int i=0;i<subPort.size();i++)
 			{
-				Table_Port pp=(Table_Port) subPort.get(i);
+				TablePort pp=(TablePort) subPort.get(i);
 				if(!pp.getPort_name().equals(null))
 				p[i]=pp.getPort_name();	
 			}

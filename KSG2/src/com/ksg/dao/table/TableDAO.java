@@ -17,7 +17,7 @@ import java.util.Map;
 
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
 @SuppressWarnings("unchecked")
 public interface TableDAO {
@@ -174,7 +174,7 @@ public interface TableDAO {
 	 * @param tablePort
 	 * @throws SQLException
 	 */
-	public void insertPortList(Table_Port tablePort)throws SQLException;
+	public void insertPortList(TablePort tablePort)throws SQLException;
 	
 	/**
 	 * @param table
@@ -188,33 +188,33 @@ public interface TableDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List getTablePortList(Table_Port tablePort) throws SQLException;
+	public List getTablePortList(TablePort tablePort) throws SQLException;
 	
 	/**
 	 * @param tablePort
 	 * @return
 	 * @throws SQLException
 	 */
-	public Table_Port getTablePort(Table_Port tablePort) throws SQLException;
+	public TablePort getTablePort(TablePort tablePort) throws SQLException;
 	
 	/**
 	 * @param tablePort
 	 * @throws SQLException
 	 */
-	public void deleteTablePort(Table_Port tablePort) throws SQLException;
+	public void deleteTablePort(TablePort tablePort) throws SQLException;
 	
 	/**
 	 * @param port
 	 * @return
 	 * @throws SQLException
 	 */
-	public Table_Port getTablePortByIndex(Table_Port port)throws SQLException;
+	public TablePort getTablePortByIndex(TablePort port)throws SQLException;
 	
 	/**
 	 * @param port
 	 * @throws SQLException
 	 */
-	public void updateTablePort(Table_Port port) throws SQLException;
+	public void updateTablePort(TablePort port) throws SQLException;
 	
 	/**
 	 * @param date
@@ -232,7 +232,7 @@ public interface TableDAO {
 
 	public int selectMaxPortIndex(String table_id)throws SQLException;
 
-	public void updateTablePortIndex(Table_Port port)throws SQLException;
+	public void updateTablePortIndex(TablePort port)throws SQLException;
 
 	public int updateTableDate(String table_id, String date)throws SQLException;
 
@@ -250,7 +250,7 @@ public interface TableDAO {
 
 	public void updateTableProperty(Table_Property property)throws SQLException;
 
-	public void updateTablePortIndex2(Table_Port port)throws SQLException;
+	public void updateTablePortIndex2(TablePort port)throws SQLException;
 
 
 	public List getScheduleTableListByDate(ShippersTable data)throws SQLException;
@@ -264,7 +264,7 @@ public interface TableDAO {
 	public List getTableListByAgent(ShippersTable table)throws SQLException;
 	public String getTableAgentByPage(int psge)throws SQLException;
 	public int getPortCount(String tableId)throws SQLException;
-	public int updateTablePortName(Table_Port port)throws SQLException;
+	public int updateTablePortName(TablePort port)throws SQLException;
 	
 	public List getTableDateList()throws SQLException;
 	

@@ -34,11 +34,10 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.ksg.domain.Vessel;
-import com.ksg.view.KSGViewParameter;
 import com.ksg.view.base.PnBase;
 import com.ksg.view.base.vessel.dialog.InsertVesselAbbrInfoDialog;
 import com.ksg.view.base.vessel.dialog.UpdateVesselAbbrInfoDialog;
-import com.ksg.view.comp.EvenOddRenderer;
+import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.comp.KSGTableModel;
 
@@ -60,21 +59,21 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 	public PnVesselAbbr() {
 
 		super();
-
-
 		this.add(buildCenter());
+		initTable();
 
 	}
 
 	private JPanel buildCenter()
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
-		_tblTable = new JTable();
-
-		_tblTable.addMouseListener(new TableSelectListner());
-		_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		_tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
-		pnMain.add(new JScrollPane(_tblTable));
+		
+		JScrollPane jScrollPane =createTablePanel();
+		
+		tblTable.addMouseListener(new TableSelectListner());
+		
+		pnMain.add(jScrollPane);
+		pnMain.add(jScrollPane);
 		pnMain.add(buildButton(),BorderLayout.SOUTH);
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 		return pnMain;
@@ -159,13 +158,13 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 		}
 		else if(command.equals("신규"))
 		{
-			if(_tblTable.getSelectedRow()==-1)
+			if(tblTable.getSelectedRow()==-1)
 			{
 				JOptionPane.showMessageDialog(PnVesselAbbr.this, "선박명을 선택하십시요");
 			}
 			else
 			{
-				String VesselName=(String) _tblTable.getValueAt(_tblTable.getSelectedRow(), 0);
+				String VesselName=(String) tblTable.getValueAt(tblTable.getSelectedRow(), 0);
 				KSGDialog dialog = new InsertVesselAbbrInfoDialog(VesselName);
 				dialog.createAndUpdateUI();
 				if(dialog.result==KSGDialog.SUCCESS)
@@ -176,13 +175,13 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 		}
 		else if(command.equals("삭제"))
 		{
-			int row=_tblTable.getSelectedRow();
+			int row=tblTable.getSelectedRow();
 			if(row<0)
 				return;
 
-			String data= (String) _tblTable.getValueAt(row, 1);
-			String vessel_name = (String) _tblTable.getValueAt(row, 0);
-			String vessel_abbr = (String) _tblTable.getValueAt(row, 1);
+			String data= (String) tblTable.getValueAt(row, 1);
+			String vessel_name = (String) tblTable.getValueAt(row, 0);
+			String vessel_abbr = (String) tblTable.getValueAt(row, 1);
 			Vessel op = new Vessel();
 			op.setVessel_name(vessel_name);
 			op.setVessel_abbr(vessel_abbr);
@@ -209,12 +208,6 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 	}
 	private void createTable(List li)
 	{
-		model = new KSGTableModel();
-
-		for(int i=0;i<columName.length;i++)
-		{
-			model.addColumn(columName[i]);
-		}
 
 		Iterator iter = li.iterator();
 
@@ -225,30 +218,13 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 					vesselInfo.getVessel_abbr()
 			});
 		}	
-		RowSorter<TableModel> sorter= new TableRowSorter<TableModel>(model);
-		_tblTable.setRowSorter(sorter);
-		_tblTable.setModel(model);
 
-		_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		TableColumnModel colmodel = _tblTable.getColumnModel();
-
-		for(int i=0;i<colmodel.getColumnCount();i++)
-		{
-			TableColumn namecol = colmodel.getColumn(i);
-
-			DefaultTableCellRenderer renderer = new EvenOddRenderer();
-			//if(i==1)
-			{
-				renderer.setHorizontalAlignment(SwingConstants.LEFT);
-			}
-			namecol.setCellRenderer(renderer);	
-		}
-		colmodel.getColumn(0).setPreferredWidth(400);
-		colmodel.getColumn(1).setPreferredWidth(400);
 		lblTotal.setText(searchTotalSize+"/"+totalSize);
 	}
 
 	private void searchData() {
+		
+		model.clear();
 
 		try {
 			if(cbxField.getSelectedIndex()>0)
@@ -282,13 +258,12 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(PnVesselAbbr.this, e.getMessage());
 		}
-
 	}
 
 	@Override
 	public void updateTable() {
 
-		searchData();	
+		//searchData();	
 	}
 
 	class TableSelectListner extends MouseAdapter
@@ -302,8 +277,8 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 				int row=es.getSelectedRow();
 				{
 
-					String VesselName2=(String) _tblTable.getValueAt(row, 0);
-					String VesselAbbr=(String) _tblTable.getValueAt(row, 1);
+					String VesselName2=(String) tblTable.getValueAt(row, 0);
+					String VesselAbbr=(String) tblTable.getValueAt(row, 1);
 					Vessel vessel2 = new Vessel();
 					vessel2.setVessel_name(VesselName2);
 					vessel2.setVessel_abbr(VesselAbbr);
@@ -325,6 +300,36 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 	public String getOrderBy(TableColumnModel columnModel) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void initTable() {
+		model = new KSGTableModel();
+
+		for(int i=0;i<columName.length;i++)
+		{
+			model.addColumn(columName[i]);
+		}
+
+		RowSorter<TableModel> sorter= new TableRowSorter<TableModel>(model);
+		tblTable.setRowSorter(sorter);
+		tblTable.setModel(model);
+
+		TableColumnModel colmodel = tblTable.getColumnModel();
+
+		for(int i=0;i<colmodel.getColumnCount();i++)
+		{
+			TableColumn namecol = colmodel.getColumn(i);
+
+			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
+			//if(i==1)
+			{
+				renderer.setHorizontalAlignment(SwingConstants.LEFT);
+			}
+			namecol.setCellRenderer(renderer);	
+		}
+		colmodel.getColumn(0).setPreferredWidth(400);
+		colmodel.getColumn(1).setPreferredWidth(300);
 	}
 
 }

@@ -1,10 +1,13 @@
 package com.ksg.view.base;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -13,7 +16,9 @@ import org.apache.log4j.Logger;
 
 import com.ksg.dao.DAOImplManager;
 import com.ksg.dao.impl.BaseDAOManager;
+import com.ksg.view.KSGViewParameter;
 import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGTableModel;
 
 public abstract class PnBase extends JPanel implements TableListener{
 	/**
@@ -25,9 +30,9 @@ public abstract class PnBase extends JPanel implements TableListener{
 	
 	protected Logger logger = Logger.getLogger(getClass());
 	
-	protected DefaultTableModel model;
+	protected KSGTableModel model;
 	
-	protected JTable	_tblTable;
+	protected JTable	tblTable;
 	
 	protected int searchTotalSize;
 	
@@ -46,8 +51,7 @@ public abstract class PnBase extends JPanel implements TableListener{
 		arrangeMap = new HashMap<String, String>();
 		
 		// 칼럼 순서 정보를 저장하기 위한 클래스 생성
-		currentColumnNameList = new ArrayList<String>();
-		
+		currentColumnNameList = new ArrayList<String>();		
 		
 		this.setLayout(new BorderLayout());
 		
@@ -55,11 +59,32 @@ public abstract class PnBase extends JPanel implements TableListener{
 		
 		add(KSGDialog.createMargin(),BorderLayout.WEST);
 	}
+	
+	public JScrollPane createTablePanel()
+	{
+		tblTable = new JTable();
+		
+		JScrollPane jScrollPane = new JScrollPane(tblTable);
+		
+		jScrollPane.getViewport().setBackground(Color.white);
+		
+		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+		tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
+		
+		tblTable.setGridColor(Color.lightGray);	
+	
+		
+		return jScrollPane;
+	}
 	protected String query;
 	
 	public abstract void updateTable(String query);
 	
-	public abstract String getOrderBy(TableColumnModel columnModel);	
+	public abstract String getOrderBy(TableColumnModel columnModel);
+	
+	public abstract void initTable();
+	
 	
 
 }

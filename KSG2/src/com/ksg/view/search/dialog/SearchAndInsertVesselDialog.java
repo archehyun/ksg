@@ -21,7 +21,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
@@ -32,11 +31,15 @@ import com.ksg.dao.DAOManager;
 import com.ksg.domain.Vessel;
 import com.ksg.view.adv.comp.VesselInfo;
 import com.ksg.view.adv.dialog.AddVesselDialog;
-import com.ksg.view.adv.dialog.SearchVesselDialog;
 import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.search.AdvertiseTable;
 import com.ksg.view.search.KSGADVTablePanel;
 import com.ksg.view.util.ViewUtil;
 
+/**
+ * @author archehyun
+ *
+ */
 public class SearchAndInsertVesselDialog extends KSGDialog{
 	/**
 	 * 
@@ -56,25 +59,23 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 	private JButton pnAddVesselAbbr;
 	private JDialog addDialog;
 
-	private JTable table;
 	private int row,col;
 	private String value;
 	private DefaultTableModel vesselModel;
-	private KSGADVTablePanel main;
+	private AdvertiseTable advTable;
 	public SearchAndInsertVesselDialog(String vesselName) {
 		super();
 		this.vesselName=vesselName;
 		baseService = DAOManager.getInstance().createBaseService();
 	}
-	public SearchAndInsertVesselDialog(KSGADVTablePanel ksgadvTablePanel,
-			JTable table, int selectedVesselrow, int col, String value,
+	public SearchAndInsertVesselDialog(AdvertiseTable advTable,
+			int selectedVesselrow, int col, String value,
 			DefaultTableModel vesselModel) {
-		this.table = table;
 		this.row =selectedVesselrow;
 		this.col = col;
 		this.value=value;
 		this.vesselModel = vesselModel;
-		this.main = ksgadvTablePanel;
+		this.advTable = advTable;
 		this.vesselName= value;
 		baseService = DAOManager.getInstance().createBaseService();
 		
@@ -209,9 +210,6 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 
 			}});
 
-
-
-
 		JPanel pnRightControl = new JPanel();
 		pnRightControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		pnRightControl.add(butCancel);
@@ -289,7 +287,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				}
 
 				baseService.insertVessel(vessel);
-				main.setValue(table, vessel.getVessel_abbr().toUpperCase(), row, 0);
+				advTable.setValue( vessel.getVessel_abbr().toUpperCase(), row, 0);
 				JOptionPane.showMessageDialog(null, vessel_abbr+" 추가했습니다.");
 				txfSearch.setText("");
 			} catch (SQLException e1) 
@@ -307,7 +305,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 	}
 	private void addVesselAction(final String te)
 	{
-		AddVesselDialog addVesselDialog = new AddVesselDialog(main,table,row,col,vesselName,vesselModel);
+		AddVesselDialog addVesselDialog = new AddVesselDialog(advTable,row,col,vesselName,vesselModel);
 		addVesselDialog.createAndUpdateUI();
 	}
 	private void addVesselAction2(final String te) {

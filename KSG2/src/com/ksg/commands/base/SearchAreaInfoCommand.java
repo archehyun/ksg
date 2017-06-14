@@ -15,7 +15,7 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.commands.BaseCommand;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.AreaInfo;
-import com.ksg.view.comp.EvenOddRenderer;
+import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.view.comp.KSGTableModel;
 
 public class SearchAreaInfoCommand extends BaseCommand{
@@ -62,7 +62,7 @@ public class SearchAreaInfoCommand extends BaseCommand{
 		{
 			TableColumn namecol = colmodel.getColumn(i);
 
-			DefaultTableCellRenderer renderer = new EvenOddRenderer();
+			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
 			if(i==1)
 			{
 				renderer.setHorizontalAlignment(SwingConstants.CENTER);

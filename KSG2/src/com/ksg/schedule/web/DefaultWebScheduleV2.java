@@ -30,7 +30,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.build.DefaultScheduleBuild;
 import com.ksg.schedule.build.PortNullException;
@@ -107,11 +107,11 @@ public class DefaultWebScheduleV2 extends DefaultScheduleBuild implements LongTa
 	// 지역별 저장을 위한 객첵
 	private HashMap<String, Vector<ScheduleData>> areaKeyMap;
 
-	private Vector<Table_Port> portDataArray;
+	private Vector<TablePort> portDataArray;
 
-	private Table_Port fromPortTableInfo;
+	private TablePort fromPortTableInfo;
 
-	private Table_Port toTablePortInfo;
+	private TablePort toTablePortInfo;
 
 	private String errorfileName;
 
@@ -212,14 +212,14 @@ public class DefaultWebScheduleV2 extends DefaultScheduleBuild implements LongTa
 	 * @param index
 	 * @return
 	 */
-	private Table_Port getTablePort(Vector<Table_Port> array,int index)
+	private TablePort getTablePort(Vector<TablePort> array,int index)
 	{
-		Table_Port port1 = null;
+		TablePort port1 = null;
 
 		for(int i=0;i<array.size();i++)
 		{
 
-			Table_Port port=(Table_Port) array.get(i);
+			TablePort port=(TablePort) array.get(i);
 			if(port.getPort_index()==index)
 				port1= port;
 		}
@@ -321,7 +321,7 @@ public class DefaultWebScheduleV2 extends DefaultScheduleBuild implements LongTa
 	 * @param portName
 	 * @return
 	 */
-	private int isExitPort(Vector<Table_Port> array, int indexs[], String portName)
+	private int isExitPort(Vector<TablePort> array, int indexs[], String portName)
 	{
 		try{
 			for(int i=0;i<indexs.length;i++)
@@ -329,7 +329,7 @@ public class DefaultWebScheduleV2 extends DefaultScheduleBuild implements LongTa
 				int portIndex =indexs[i];
 
 
-				Table_Port port=this.getTablePort(array, portIndex);
+				TablePort port=this.getTablePort(array, portIndex);
 				PortInfo searchOutOldPort = this.getPortInfo(port.getPort_name());
 
 				if(searchOutOldPort==null)
@@ -693,7 +693,7 @@ public class DefaultWebScheduleV2 extends DefaultScheduleBuild implements LongTa
 				{
 					int inlandIndexA=inlandIndexList[inlnadIndex];
 					//기항지 항구 설정
-					Table_Port inlandTablePortInfo = this.getTablePort(portDataArray, inlandIndexA);
+					TablePort inlandTablePortInfo = this.getTablePort(portDataArray, inlandIndexA);
 
 
 					if(inlandTablePortInfo== null)
@@ -1176,18 +1176,18 @@ public class DefaultWebScheduleV2 extends DefaultScheduleBuild implements LongTa
 	 * @return
 	 * @throws SQLException
 	 */
-	public Vector<Table_Port> getPortList(ShippersTable table) throws SQLException 
+	public Vector<TablePort> getPortList(ShippersTable table) throws SQLException 
 	{
-		Vector<Table_Port> portDataArray  = new Vector<Table_Port>();
-		Table_Port tablePort = new Table_Port();
+		Vector<TablePort> portDataArray  = new Vector<TablePort>();
+		TablePort tablePort = new TablePort();
 		tablePort.setTable_id(table.getTable_id());
-		tablePort.setPort_type(Table_Port.TYPE_PARENT);
+		tablePort.setPort_type(TablePort.TYPE_PARENT);
 
-		List<Table_Port> li=tableService.getTablePortList(tablePort);
+		List<TablePort> li=tableService.getTablePortList(tablePort);
 
 		for(int i=0;i<li.size();i++)
 		{
-			Table_Port port = li.get(i);
+			TablePort port = li.get(i);
 
 			portDataArray.add(port);
 		}

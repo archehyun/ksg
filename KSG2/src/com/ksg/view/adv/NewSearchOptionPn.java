@@ -161,20 +161,11 @@ public class NewSearchOptionPn extends JPanel{
 
 		JButton butImportFile = new JButton("\n불러오기(V)",new ImageIcon("images/importxls.gif"));
 		butImportFile.setMnemonic(KeyEvent.VK_V);
-	//	butImportFile.setFont(defaultFont);
 
 		butImportFile.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				//initInfo();
-				/*if(selectedInput.equals("File"))
-				{
-					actionImportADVInfo();
 
-				}else
-				{
-					importADVTextInfoAction();
-				}*/
 			}});
 		JButton butSheetSelect = new JButton("Sheet 선택");
 		butSheetSelect.setFont(KSGModelManager.getInstance().defaultFont);
@@ -209,9 +200,6 @@ public class NewSearchOptionPn extends JPanel{
 		pnType.add(pnImportBut);
 		
 
-	/*	Box pnControl= new Box(BoxLayout.Y_AXIS);
-		pnControl.add(pnType);
-		*/
 		
 		JPanel pnSelectInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnSelectInfo.add(buildFileListPn());
@@ -235,18 +223,13 @@ public class NewSearchOptionPn extends JPanel{
 		pnSubControlInfo1.setLayout(new FlowLayout(FlowLayout.LEADING));
 
 		JLabel lblFileName = new JLabel("파일 명 : ");
-//		lblFileName.setFont(defaultFont);
 		lblFileName.setIcon(new ImageIcon("images/xlslogo.png"));
 		pnSubControlInfo1.add(lblFileName);
-//		this._txfXLSFile.setVisible(false);	
-
-//		pnSubControlInfo1.add(this._txfXLSFile);
 
 
 
 		JButton butFile = new JButton("추가(A)");
 		butFile.setMnemonic(KeyEvent.VK_A);
-//		butFile.setFont(defaultFont);
 		butFile.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
@@ -270,7 +253,6 @@ public class NewSearchOptionPn extends JPanel{
 				fileDelAction(fileLi,_tblSheetNameList2);
 
 			}});
-//		butDel.setFont(defaultFont);
 		pnButList.add(butDel);
 		JButton butUp = new JButton("위로");
 		butUp.addActionListener(new ActionListener(){
@@ -281,7 +263,6 @@ public class NewSearchOptionPn extends JPanel{
 			}
 
 		});
-//		butUp.setFont(defaultFont);
 		pnButList.add(butUp);
 
 		JButton butDown = new JButton("아래로");

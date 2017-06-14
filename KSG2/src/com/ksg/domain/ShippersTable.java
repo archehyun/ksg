@@ -38,7 +38,7 @@ public class ShippersTable {
 	private int d_time=-1;
 
 	private String date_isusse;
-	private String gubun=""; // 구분
+	private String gubun; // 구분
 	 
 	HashMap<Object, Object> hachData;
 	private String in_port; // inbound 출발항 인덱스 문자
@@ -49,10 +49,10 @@ public class ShippersTable {
 	private String out_port; // outbound 출발항 인덱스 문자
 	private String out_to_port; // outbound 도착항 인덱스 문자
 	private int page=-1;
-	private int port_col=-1;
+	private int port_col=-1;  //항구수
 	private String quark_format;
-	private int r_port_col;
-	protected String table_id;
+	private int r_port_col; //??
+	protected String table_id;// 테이블 아이디
 	private int table_index=-1;
 	private int tableCount;
 	private String title="";
@@ -296,7 +296,7 @@ public class ShippersTable {
 
 	public String toString()
 	{
-		return "[table_id:"+table_id+",page:"+page+",date:"+date_isusse+"]";
+		return "[table_id:"+table_id+",page:"+page+",date:"+date_isusse+","+this.getGubun()+"]";
 	}
 	
 

@@ -31,7 +31,7 @@ import com.ksg.dao.impl.TableServiceImpl;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.dialog.PortSearchDialog;
@@ -132,7 +132,7 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 			List li=tableService.getParentPortList(table_id);
 			for(int i=0;i<li.size();i++)
 			{
-				Table_Port po = (Table_Port) li.get(i);
+				TablePort po = (TablePort) li.get(i);
 				portModel.addElement(po.getPort_name());
 			}
 		} catch (SQLException e3) {
@@ -234,9 +234,9 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 						for(int i=0;i<portModel.getSize();i++)
 						{
 							String port_name=(String) portModel.get(i);
-							Table_Port port = new Table_Port();
+							TablePort port = new TablePort();
 							port.setParent_port(port_name);
-							port.setPort_type(Table_Port.TYPE_PARENT);
+							port.setPort_type(TablePort.TYPE_PARENT);
 							port.setPort_name(port_name);
 							port.setPort_index(i+1);
 							port.setTable_id(table_id);
@@ -361,10 +361,10 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 			if(index!=-1)
 			{
 				DefaultListModel model=(DefaultListModel) portLi.getModel();
-				Table_Port tablePort = new Table_Port();
+				TablePort tablePort = new TablePort();
 				tablePort.setTable_id(table_id);
 				tablePort.setPort_name(String.valueOf(model.remove(index)));
-				tablePort.setPort_type(Table_Port.TYPE_PARENT);
+				tablePort.setPort_type(TablePort.TYPE_PARENT);
 				try {
 					tableService.deleteTablePort(tablePort);
 				} catch (SQLException e) {

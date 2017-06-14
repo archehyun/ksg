@@ -1,7 +1,6 @@
 package com.ksg.xls;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -20,7 +19,6 @@ import com.ksg.xls.model.TableLocation;
 
 public class XLSSearchPortInfoManager {
 
-	private BaseService baseService;
 	public String bothKeyWord[];
 	private boolean hasVoy=true;
 	private boolean isUnderPort=false;
@@ -31,11 +29,13 @@ public class XLSSearchPortInfoManager {
 	KSGPropertyManager propertyManager =KSGPropertyManager.getInstance();
 	public Element rootElement;
 	public int rows;
-	String table_id;
+	private String table_id;
 	int tableType;
 	public String vesselKeyWord[];
 	private int VOY_PARAMETER=1;
 	XLSStringUtil xlsUitl;
+	
+	KeyWordManager keyWordManager = KeyWordManager.getInstance();
 
 	/**
 	 * @param table_id
@@ -45,29 +45,12 @@ public class XLSSearchPortInfoManager {
 		
 		logger.debug("start");
 		xlsUitl = new XLSStringUtil();
-		baseService = DAOManager.getInstance().createBaseService();
 		this.table_id=table_id  ;
 		initProperty();
-		try {
-			List vesselKeyList=baseService.getKeywordList("VESSEL");
-			List voyageKeyList=baseService.getKeywordList("VOYAGE");
-			List bothKeyList=baseService.getKeywordList("BOTH");
-			vesselKeyWord = new String[vesselKeyList.size()];
-			bothKeyWord = new String[bothKeyList.size()];
-
-			for(int i=0;i<vesselKeyList.size();i++)
-			{
-				vesselKeyWord[i]= vesselKeyList.get(i).toString();
-			}
-			for(int i=0;i<bothKeyList.size();i++)
-			{
-				bothKeyWord[i]= bothKeyList.get(i).toString();
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		logger.debug("end");
+		
+		vesselKeyWord = keyWordManager.getVesselKeyWord();
+		bothKeyWord = keyWordManager.getBothKeyWord();
+		
 	}
 
 	/**
@@ -78,7 +61,6 @@ public class XLSSearchPortInfoManager {
 	 */
 	private void addXMLPort(int num, int cells, HSSFCell cell_info, String type) {
 		try{
-			logger.debug("add port");
 			if(cell_info==null)
 				return;
 			if(this.getPortName(cell_info,true,num).length()==0)
@@ -608,7 +590,7 @@ public class XLSSearchPortInfoManager {
 			Element portinfo = new Element("port1");
 			portinfo.setAttribute("field",portName);
 			rootElement.addContent(portinfo);
-			logger.debug("add port field:"+portName);
+			//logger.debug("add port field:"+portName);
 		}catch(Exception e)
 		{
 			e.printStackTrace();

@@ -43,9 +43,6 @@ public class ScheduleManager {
 	private ScheduleManager() {
 		scheduleBuilds = new ArrayList<ScheduleBuild>();
 		baseService = new BaseServiceImpl();
-		init();
-		
-			
 	}
 	public void init()
 	{

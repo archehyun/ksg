@@ -12,6 +12,7 @@ package com.ksg.view.comp;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -21,13 +22,25 @@ import javax.swing.table.JTableHeader;
 import org.jdom.Element;
 
 
-public class EvenOddRenderer extends DefaultTableCellRenderer {
+public class KSGTableCellRenderer extends DefaultTableCellRenderer {
 	/**
 	 * 
 	 */
 	private boolean is=true;
-	private static final long serialVersionUID = 1L;
 	
+	private static final long serialVersionUID = 1L;
+	Font defaultFont;
+	
+	public KSGTableCellRenderer() {
+		
+		Font systemFont = this.getFont();
+		defaultFont = new Font(systemFont.getName(), systemFont.getStyle(), 11);
+	}
+	
+	
+	
+	
+
 	public boolean isCellEditable(int row, int column)
 	{
 		return (column ==0);
@@ -49,25 +62,30 @@ public class EvenOddRenderer extends DefaultTableCellRenderer {
 				table, value, isSelected, hasFocus, row, column);
 		((JLabel) renderer).setOpaque(true);
 		Color foreground, background;
-		
-		 if (table != null) {
-		      JTableHeader header = table.getTableHeader();
-		      if (header != null) {
-		        setForeground(Color.BLUE);
-		        setBackground(header.getBackground());
-		        setFont(header.getFont());
-		        
-		      }
-		    }
 
-		
-		
+		if (table != null) {
+			JTableHeader header = table.getTableHeader();
+			if (header != null) {
+				setForeground(Color.BLUE);
+				setBackground(header.getBackground());
+				setFont(header.getFont());
+
+			}
+		}
+
+
+
 		if(isSelected)
 		{
-			foreground = Color.black;
-			background=Color.YELLOW;
+			foreground = Color.WHITE;
+			background=new Color(51,153,255);
 		}
 		else
+		{
+			foreground = Color.black;
+			background=Color.WHITE;	
+		}
+		/*else
 		{
 			if(row %2==0)
 			{
@@ -80,34 +98,34 @@ public class EvenOddRenderer extends DefaultTableCellRenderer {
 				foreground = Color.black;
 			}
 		}
-		
-		
+		 */
+
 		if(value instanceof ColorData)
 		{
 			ColorData v = (ColorData) value;
 			renderer.setForeground(v.m_color);
-			
+
 		}else if(value instanceof Element)
 		{	
 			renderer.setForeground(foreground);
 			Element v = (Element) value;
 
-				((JLabel) renderer).setText(v.getAttributeValue("date"));
+			((JLabel) renderer).setText(v.getAttributeValue("date"));
 			((JLabel) renderer).setToolTipText(v.getAttributeValue("date2"));
-			
-				
+
+
 		}else
 		{
 			renderer.setForeground(foreground);
 		}
 		renderer.setBackground(background);
-	
 
-		
+		this.setFont(defaultFont);
+
 
 		return renderer;
 	}
-	
-	
+
+
 }
 

@@ -107,7 +107,7 @@ public class KSGXMLTable extends KSGTable
 				if(i!=0)
 				{
 					namecol.setHeaderRenderer(renderer);
-					namecol.setCellRenderer(new EvenOddRenderer());
+					namecol.setCellRenderer(new KSGTableCellRenderer());
 					namecol.setMinWidth(100);
 				}else
 				{

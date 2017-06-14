@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 
 import com.ksg.dao.DAOManager;
 import com.ksg.domain.PortInfo;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.dialog.PortSearchDialog;
@@ -78,7 +78,7 @@ public class AddPortDialog extends KSGDialog {
 
 			public void actionPerformed(ActionEvent e) {
 				JComboBox box=(JComboBox) e.getSource();
-				Table_Port tablePort = new Table_Port();
+				TablePort tablePort = new TablePort();
 				tablePort.setTable_id(table_id);
 				tablePort.setParent_port((String) box.getSelectedItem());
 				tablePort.setPort_type("C");
@@ -91,7 +91,7 @@ public class AddPortDialog extends KSGDialog {
 					Iterator iter = li.iterator();
 					while(iter.hasNext())
 					{
-						Table_Port port=(Table_Port) iter.next();
+						TablePort port=(TablePort) iter.next();
 						portModel.addRow(new Object[]{table_id,port.getPort_name(),port.getPort_index()});
 					}
 
@@ -216,12 +216,12 @@ public class AddPortDialog extends KSGDialog {
 					JOptionPane.showMessageDialog(null, "항구명을 추가하십시요");
 				}else
 				{
-					Table_Port info =  new Table_Port();
+					TablePort info =  new TablePort();
 					info.setTable_id(lblTableID.getText());
 					info.setPort_name(txfPortName.getText());
 					info.setPort_index((cbxPort.getSelectedIndex()+1));
 					info.setParent_port((String) cbxPort.getSelectedItem());
-					info.setPort_type(Table_Port.TYPE_CHAILD);
+					info.setPort_type(TablePort.TYPE_CHAILD);
 					try {
 						tableService.insertPortList(info);
 						updateTable();
@@ -253,7 +253,7 @@ public class AddPortDialog extends KSGDialog {
 				{
 					String port_name=(String) tblPortList.getValueAt(row, 1);
 					String table_id=(String) tblPortList.getValueAt(row, 0);
-					Table_Port tablePort = new Table_Port();
+					TablePort tablePort = new TablePort();
 					tablePort.setTable_id(table_id);
 					tablePort.setPort_name(port_name);
 
@@ -308,7 +308,7 @@ public class AddPortDialog extends KSGDialog {
 	private void updateTable() {
 		try 
 		{
-			Table_Port tablePort = new Table_Port();
+			TablePort tablePort = new TablePort();
 			tablePort.setTable_id(lblTableID.getText());
 			tablePort.setParent_port((String) cbxPort.getSelectedItem());
 			tablePort.setPort_type("C");
@@ -317,10 +317,10 @@ public class AddPortDialog extends KSGDialog {
 			if(portModel==null)
 				return;
 			portModel.setRowCount(0);
-			Iterator<Table_Port> iter = li.iterator();
+			Iterator<TablePort> iter = li.iterator();
 			while(iter.hasNext())
 			{
-				Table_Port port=(Table_Port) iter.next();
+				TablePort port=(TablePort) iter.next();
 				portModel.addRow(new Object[]{table_id,port.getPort_name(),port.getPort_index()});
 			}
 

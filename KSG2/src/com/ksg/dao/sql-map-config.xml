@@ -15,7 +15,7 @@
   "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
 
 <sqlMapConfig>
-	<properties resource="db1.properties"/>
+	<properties resource="db.properties"/>
 	<settings enhancementEnabled="true" useStatementNamespaces="true" />	
 	 <transactionManager type="JDBC">
 		<dataSource type="SIMPLE">

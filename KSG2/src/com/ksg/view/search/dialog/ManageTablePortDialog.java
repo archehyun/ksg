@@ -19,7 +19,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.dao.DAOManager;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.util.ViewUtil;
 
@@ -93,7 +93,7 @@ public class ManageTablePortDialog extends KSGDialog implements ActionListener
 
 	private void updatePortTable() throws SQLException 
 	{
-		List<Table_Port> portli=tableService.getParentPortList(this.table_id);
+		List<TablePort> portli=tableService.getParentPortList(this.table_id);
 		DefaultTableModel model = new DefaultTableModel();
 		model.addColumn("순서");
 		model.addColumn("항구명");
@@ -109,7 +109,7 @@ public class ManageTablePortDialog extends KSGDialog implements ActionListener
 
 		for(int i=0;i<portli.size();i++)
 		{
-			Table_Port port = portli.get(i);
+			TablePort port = portli.get(i);
 			model.setValueAt(port.getPort_index(), i, 0);
 			model.setValueAt(port.getPort_name(), i, 1);
 			model.setValueAt("일반", i, 2);

@@ -10,6 +10,7 @@ import com.ksg.dao.DAOManager;
 import com.ksg.dao.impl.ADVService;
 import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ADVData;
+import com.ksg.model.KSGModelManager;
 
 public class InsertADVCommand implements KSGCommand{
 	private ADVService 		service;
@@ -33,8 +34,9 @@ public class InsertADVCommand implements KSGCommand{
 			ADVData d=service.insertADVData(data);
 			logger.debug("execute:"+data.getTable_id()+","+d);
 			_tableService.updateTableDate(data);
+			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "광고 정보를 저장 했습니다.");
 		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e.getMessage());
 			e.printStackTrace();
 		}
 		return 0;

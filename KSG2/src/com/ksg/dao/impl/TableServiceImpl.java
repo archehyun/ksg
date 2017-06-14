@@ -11,14 +11,14 @@
 package com.ksg.dao.impl;
 
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import com.ksg.dao.table.TableDAO;
 import com.ksg.dao.table.TableDAOImpl;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
 @SuppressWarnings("unchecked")
 public class TableServiceImpl implements TableService{
@@ -195,29 +195,29 @@ public class TableServiceImpl implements TableService{
 		return null;
 	}
 
-	public void insertPortList(Table_Port tablePort) throws SQLException {
+	public void insertPortList(TablePort tablePort) throws SQLException {
 		tableDAO.insertPortList(tablePort);
 	}
 
-	public List getTablePortList(Table_Port tablePort) throws SQLException {
+	public List getTablePortList(TablePort tablePort) throws SQLException {
 		return tableDAO.getTablePortList(tablePort);
 	}
 
-	public void deleteTablePort(Table_Port tablePort) throws SQLException {
+	public void deleteTablePort(TablePort tablePort) throws SQLException {
 		// TODO Auto-generated method stub
 		tableDAO.deleteTablePort(tablePort);
 	}
 
-	public Table_Port getTablePort(Table_Port port) throws SQLException {
+	public TablePort getTablePort(TablePort port) throws SQLException {
 		// TODO Auto-generated method stub
 		return tableDAO.getTablePort(port);
 	}
 
-	public void updateTablePort(Table_Port port) throws SQLException {
+	public void updateTablePort(TablePort port) throws SQLException {
 		tableDAO.updateTablePort(port);
 	}
 
-	public Table_Port getTablePortByIndex(Table_Port port) throws SQLException {
+	public TablePort getTablePortByIndex(TablePort port) throws SQLException {
 		return tableDAO.getTablePortByIndex(port);
 	}
 
@@ -243,7 +243,7 @@ public class TableServiceImpl implements TableService{
 		return tableDAO.selectMaxPortIndex(table_id);
 	}
 
-	public void updateTablePortIndex(Table_Port port) throws SQLException {
+	public void updateTablePortIndex(TablePort port) throws SQLException {
 		tableDAO.updateTablePortIndex(port);
 		
 	}
@@ -284,14 +284,10 @@ public class TableServiceImpl implements TableService{
 		
 	}
 
-	public void updateTablePortIndex2(Table_Port port) throws SQLException {
+	public void updateTablePortIndex2(TablePort port) throws SQLException {
 		tableDAO.updateTablePortIndex2(port);
 	}
 
-	/*public List getScheduleTableListByDate(String date) throws SQLException {
-		// TODO Auto-generated method stub
-		return tableDAO.getScheduleTableListByDate(date);
-	}*/
 	public List getScheduleTableListByDate(ShippersTable data) throws SQLException {
 		// TODO Auto-generated method stub
 		return tableDAO.getScheduleTableListByDate(data);
@@ -337,7 +333,7 @@ public class TableServiceImpl implements TableService{
 		return tableDAO.getPortCount(tableId);
 	}
 
-	public int updateTablePortName(Table_Port port) throws SQLException {
+	public int updateTablePortName(TablePort port) throws SQLException {
 		
 		return tableDAO.updateTablePortName(port);
 	}
@@ -357,6 +353,19 @@ public class TableServiceImpl implements TableService{
 	public List selectSystemDataList(String table_name) throws SQLException
 	{
 		return tableDAO.selectSystemDataList(table_name);
+	}
+
+	@Override
+	public int updateTableDateByTableIDs(List table,String updateDate) throws SQLException {
+		
+		Iterator<ShippersTable> iter = table.iterator();
+		while(iter.hasNext())
+		{
+			ShippersTable item = iter.next();
+			item.setDate_isusse(updateDate);
+		}
+		
+		return 0;
 	}
 	
 }

@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.dao.SqlMapManager;
 import com.ksg.domain.AreaInfo;
@@ -27,6 +29,8 @@ import com.ksg.domain.Vessel;
 @SuppressWarnings("unchecked")
 public class BaseDAOImpl implements BaseDAO
 {
+	
+	protected Logger logger = Logger.getLogger(this.getClass());
 	private SqlMapClient sqlMap;
 
 	public BaseDAOImpl() {
@@ -163,6 +167,7 @@ public class BaseDAOImpl implements BaseDAO
 	
 
 	public Code getCodeInfo(Code code_info) throws SQLException {
+		
 		return (Code) sqlMap.queryForObject("Base.selectCodeField",code_info);
 	}
 
@@ -238,6 +243,8 @@ public class BaseDAOImpl implements BaseDAO
 	}
 
 	public List getPortInfoList() throws SQLException {
+		
+		logger.debug("search port");
 		return sqlMap.queryForList("BASE_PORT.selectPortInfoList");
 	}
 

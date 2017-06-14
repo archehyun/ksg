@@ -36,15 +36,19 @@ public class XLSTableInfo extends TableLocation{
 	 * @return xls import 결과 
 	 */
 	private String datePattern ="\\w+.?\\(\\w+\\)";
+	
 	private XLSStringUtil xlsUitl;
 
 	private KSGModelManager manager = KSGModelManager.getInstance();
+	
 	private Element portarray;
 
 	private XLSSearchPortInfoManager portInfoManager;
 
 	private KSGPropertis propertis = KSGPropertis.getIntance();
+	
 	private Table_Property property;
+	
 	private KSGPropertyManager propertyManager =KSGPropertyManager.getInstance();
 
 	private Element rootElement;
@@ -224,7 +228,6 @@ public class XLSTableInfo extends TableLocation{
 
 		XMLOutputter outputter = new XMLOutputter(format);
 
-
 		String strXml=outputter.outputString(document);
 
 		logger.debug("<=====end>");
@@ -359,7 +362,7 @@ public class XLSTableInfo extends TableLocation{
 		catch (ParseException e) 
 		{	
 			// 날짜 오류시
-			logger.error(e.getMessage());
+			//logger.error(e.getMessage());
 			date= e.getMessage();
 			portinfo.setAttribute("date",date);
 
@@ -367,15 +370,15 @@ public class XLSTableInfo extends TableLocation{
 
 		}catch(NoSuchElementException e)
 		{
-			logger.error(e.getMessage());
-			System.err.println("date pasing error (noSuchElement):"+date);
+			//logger.error(e.getMessage());
+			//System.err.println("date pasing error (noSuchElement):"+date);
 			portinfo.setAttribute("date",date);
 			portinfo.setAttribute("date2",date);
 		}
 		catch(NumberFormatException e)
 		{
-			logger.error(e.getMessage());
-			System.err.println("date pasing error (NumberFormat):"+date);
+			//logger.error(e.getMessage());
+			//System.err.println("date pasing error (NumberFormat):"+date);
 			portinfo.setAttribute("date",date);
 			portinfo.setAttribute("date2",date);
 		}

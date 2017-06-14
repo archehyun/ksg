@@ -33,8 +33,14 @@
 	 	SELECT * FROM TB_TABLE_PROPERTY
 	</sql>
 	
-	<select id="selectTABLEProperty" resultClass="com.ksg.domain.Table_Property">
-		<include refid="TABLEPropertySQL"/> where table_id=#table_id#
+	<select id="selectTABLEProperty" resultClass="com.ksg.domain.Table_Property" parameterClass="com.ksg.domain.Table_Property">
+		<include refid="TABLEPropertySQL"/>
+		<dynamic prepend="where">
+		  	<isNotEmpty prepend="and" property="table_id">
+			table_id = #table_id#
+			</isNotEmpty>
+		</dynamic>
+		 
 	</select>
 	<insert id="insertTableProperty" parameterClass="com.ksg.domain.Table_Property">
 	insert TB_TABLE_PROPERTY(under_port,voyage,vesselvoydivider, vesselvoycount,table_id,company_abbr,page,table_type,port_type)

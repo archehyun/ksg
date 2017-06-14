@@ -15,7 +15,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.build.PortIndexNotMatchException;
 import com.ksg.schedule.build.ScheduleManager;
@@ -120,12 +120,12 @@ public class CreateInlandScheduleCommand extends CreateScheduelCommand{
 	 * @param index
 	 * @return
 	 */
-	private Table_Port getPort(Vector array,int index)
+	private TablePort getPort(Vector array,int index)
 	{
-		Table_Port port1 = new Table_Port();
+		TablePort port1 = new TablePort();
 		for(int i=0;i<array.size();i++)
 		{
-			Table_Port port=(Table_Port) array.get(i);
+			TablePort port=(TablePort) array.get(i);
 			// 포트 인덱스가 같으면
 			if(port.getPort_index()==index)
 				port1.addSubPort(port);
@@ -162,8 +162,8 @@ public class CreateInlandScheduleCommand extends CreateScheduelCommand{
 				for(int outToPortIndex=0;outToPortIndex<outPort.length;outToPortIndex++)
 				{
 
-					Table_Port fromPort = this.getPort(portDataArray, ports[outPortIndex]);
-					Table_Port toPort = this.getPort(portDataArray, outPort[outToPortIndex]);
+					TablePort fromPort = this.getPort(portDataArray, ports[outPortIndex]);
+					TablePort toPort = this.getPort(portDataArray, outPort[outToPortIndex]);
 
 
 					String fromPortArray[]	= fromPort.getPortArray();
@@ -180,7 +180,7 @@ public class CreateInlandScheduleCommand extends CreateScheduelCommand{
 								// 기항지 순회
 								for(int inlnadIndex=0;inlnadIndex<inlnadPortIndex.length;inlnadIndex++)
 								{
-									Table_Port inlnadPorts = this.getPort(portDataArray, inlnadPortIndex[inlnadIndex]);
+									TablePort inlnadPorts = this.getPort(portDataArray, inlnadPortIndex[inlnadIndex]);
 									String inlnadPortArray[]	= inlnadPorts.getPortArray();
 
 									for(int inlnadPortNum=0;inlnadPortNum<inlnadPortArray.length;inlnadPortNum++)
@@ -325,15 +325,15 @@ public class CreateInlandScheduleCommand extends CreateScheduelCommand{
 		portDataArray  = new Vector();
 		try {
 
-			Table_Port tablePort = new Table_Port();
+			TablePort tablePort = new TablePort();
 			tablePort.setTable_id(table.getTable_id());
-			tablePort.setPort_type(Table_Port.TYPE_PARENT);
+			tablePort.setPort_type(TablePort.TYPE_PARENT);
 
 			List li=getTablePortList(tablePort);
 
 			for(int i=0;i<li.size();i++)
 			{
-				portDataArray.add((Table_Port) li.get(i));
+				portDataArray.add((TablePort) li.get(i));
 			}
 
 		} catch (SQLException e1) {

@@ -29,7 +29,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.model.KSGModelManager;
 import com.ksg.quark.XTGManager;
@@ -227,12 +227,12 @@ public class CreateNormalSchdeduleCommand extends CreateScheduelCommand
 	 * @throws ParseException
 	 */
 
-	private Table_Port getPort(Vector arry,int index)
+	private TablePort getPort(Vector arry,int index)
 	{
-		Table_Port port1 = new Table_Port();
+		TablePort port1 = new TablePort();
 		for(int i=0;i<arry.size();i++)
 		{
-			Table_Port port=(Table_Port) arry.get(i);
+			TablePort port=(TablePort) arry.get(i);
 			if(port.getPort_index()==index)
 				port1.addSubPort(port);
 		}
@@ -248,15 +248,15 @@ public class CreateNormalSchdeduleCommand extends CreateScheduelCommand
 		portDataArray  = new Vector();
 		try {
 
-			Table_Port tablePort = new Table_Port();
+			TablePort tablePort = new TablePort();
 			tablePort.setTable_id(table.getTable_id());
-			tablePort.setPort_type(Table_Port.TYPE_PARENT);
+			tablePort.setPort_type(TablePort.TYPE_PARENT);
 
 			List li=getTablePortList(tablePort);
 
 			for(int i=0;i<li.size();i++)
 			{
-				Table_Port port = (Table_Port) li.get(i);
+				TablePort port = (TablePort) li.get(i);
 
 				portDataArray.add(port);
 			}
@@ -328,11 +328,11 @@ public class CreateNormalSchdeduleCommand extends CreateScheduelCommand
 			{
 				String vsl[][] = adv.getFullVesselArray(true);
 				scheduledata.setTs_vessel(vsl[vslIndex][0]);
-				Table_Port tablePort = new Table_Port();
+				TablePort tablePort = new TablePort();
 				// TS È®ÀÎ
 				//tablePort.setPort_index(table.getDirection());
 				tablePort.setTable_id(table.getTable_id());
-				Table_Port info = getTablePort(tablePort);
+				TablePort info = getTablePort(tablePort);
 				scheduledata.setTs(info.getPort_name());
 
 
@@ -628,8 +628,8 @@ public class CreateNormalSchdeduleCommand extends CreateScheduelCommand
 				{
 					int outToPortIndex = outPort[toPortCount];
 
-					Table_Port _outport = this.getPort(portDataArray, outPortIndex);
-					Table_Port _outtoport = this.getPort(portDataArray, outToPortIndex);
+					TablePort _outport = this.getPort(portDataArray, outPortIndex);
+					TablePort _outtoport = this.getPort(portDataArray, outToPortIndex);
 
 					String fromPortArray[]=_outport.getPortArray();					
 					String toPortArray[]=_outtoport.getPortArray();

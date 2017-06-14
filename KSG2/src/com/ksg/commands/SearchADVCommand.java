@@ -52,11 +52,11 @@ import com.ksg.dao.impl.ADVService;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.KSGViewParameter;
-import com.ksg.view.comp.EvenOddRenderer;
+import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.view.search.KSGADVTablePanel;
 import com.ksg.xls.xml.KSGXMLManager;
 
@@ -161,19 +161,19 @@ public class SearchADVCommand implements KSGCommand {
 			logger.debug("max port index("+max+")");
 			for(int i=1;i<max+1;i++)
 			{
-				Table_Port searchport = new Table_Port();
+				TablePort searchport = new TablePort();
 				searchport.setTable_id(table_id);
 				searchport.setPort_index(i);
 				List portLi= tableService.getTablePortList(searchport);
 				if(portLi.size()>1)
 				{
-					Table_Port po=(Table_Port) portLi.get(0);
+					TablePort po=(TablePort) portLi.get(0);
 					defaultTableModel.addColumn(po.getPort_index()+"("+portLi.size()+")"+"\n"+po.getPort_name());
 
 
 				}else if(portLi.size()==1)
 				{
-					Table_Port po=(Table_Port) portLi.get(0);
+					TablePort po=(TablePort) portLi.get(0);
 					defaultTableModel.addColumn(po.getPort_index()+"\n"+po.getPort_name());
 				}
 				// 광고 박스에 번호 표기
@@ -185,7 +185,7 @@ public class SearchADVCommand implements KSGCommand {
 			vesselmodel.addColumn("선박 명 약어");
 
 			vesselmodel = manager.createDBVesselNameModel(vesselmodel ,KSGModelManager.getInstance().selectedADVData);
-			_base.setVesseleModel(vesselmodel);
+			//_base.setVesseleModel(vesselmodel);
 
 			if(defaultTableModel.getRowCount()<15)
 				defaultTableModel.setRowCount(15);
@@ -204,11 +204,11 @@ public class SearchADVCommand implements KSGCommand {
 				{
 					if(e.getColumn()==0)
 					{
-						_base.autoVesselWrite3(_tblADVTable, e.getFirstRow());
+						_base.autoVesselWrite( e.getFirstRow());
 					}
 					if(shiptable.getGubun()!=null&&shiptable.getGubun().equals("TS")&&e.getColumn()==2)
 					{
-						_base.autoVesselWrite3(_tblADVTable, e.getFirstRow(),2);
+						_base.autoVesselWrite( e.getFirstRow(),2);
 					}					
 					//					_base.saveAction();//
 					//_base.searchADVTable();
@@ -297,7 +297,7 @@ public class SearchADVCommand implements KSGCommand {
 
 			if(i>1&&i<colmodel.getColumnCount()-1) 	// 기본 셀 렌더러 지정
 			{
-				EvenOddRenderer renderer2 = new EvenOddRenderer();
+				KSGTableCellRenderer renderer2 = new KSGTableCellRenderer();
 				renderer2.setHorizontalAlignment(SwingConstants.CENTER);				
 				namecol.setCellRenderer(renderer2);	
 				namecol.setCellEditor(new MyTableCellEditor());
@@ -375,9 +375,7 @@ public class SearchADVCommand implements KSGCommand {
 
 	}
 
-	class ADVButtonCellRenderer 
-	extends AbstractCellEditor
-	implements TableCellEditor, TableCellRenderer
+	class ADVButtonCellRenderer	extends AbstractCellEditor	implements TableCellEditor, TableCellRenderer
 	{
 		/**
 		 * 

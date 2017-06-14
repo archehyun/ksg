@@ -158,5 +158,10 @@ public class PnCodeInboundPort extends PnBase implements ActionListener{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public void initTable() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

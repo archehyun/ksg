@@ -31,7 +31,7 @@ import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.TableService;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.adv.dialog.AddPortDialog;
@@ -123,8 +123,21 @@ public class PortTableComp extends JTable implements ActionListener
 		private String port_name;
 		private int type;
 		private Object value="";
+		List codeList;
 		public PortColorInfo(Object value) {
 			this.value = value;
+			/*try {
+				codeList=_baseService.getCodeInfoList(new Code());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			
+		}
+		
+		private Code searchCode()
+		{
+			return null;
 		}
 		public PortColorInfo() {}
 		public String getArea_code() {
@@ -543,7 +556,7 @@ public class PortTableComp extends JTable implements ActionListener
 					//신규 항구
 					for(int i=0;i<portLi.size();i++)
 					{
-						Table_Port orderPort = (Table_Port) portLi.get(i);
+						TablePort orderPort = (TablePort) portLi.get(i);
 
 						if(checkNewPort.getPort_name().equals(orderPort.getPort_name())&&checkNewPort.getIndex()==newPort_index.getIndex())
 						{

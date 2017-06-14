@@ -29,17 +29,15 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.domain.AreaInfo;
-import com.ksg.view.KSGViewParameter;
 import com.ksg.view.base.PnBase;
 import com.ksg.view.base.dialog.InsertAreaInfodialog;
 import com.ksg.view.base.dialog.UpdateAreaInfodialog;
-import com.ksg.view.comp.EvenOddRenderer;
 import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.view.comp.KSGTableModel;
 
 
@@ -49,37 +47,35 @@ public class PnArea extends PnBase implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private JComboBox cbxField;
-	
+
 	private JTextField txfSearch;
-	
+
 	private JLabel lblTable,lblTotal;
-	
+
 	private String columName[] = {"코드","지역명","지역코드"};
-	
+
+
 	public PnArea() {
 		super();		
-		this.add(buildCenter());		
+		this.add(buildCenter());
+		this.initTable();
+		searchData(null);
 	}
 
 	private JPanel buildCenter()
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
-		
-		_tblTable = new JTable();
 
-		_tblTable.addMouseListener(new TableSelectListner());
-		
-		_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		
-		_tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
-		
+		JScrollPane jScrollPane =createTablePanel();
 
-		
-		pnMain.add(new JScrollPane(_tblTable));
+		tblTable.addMouseListener(new TableSelectListner());
+
+		pnMain.add(jScrollPane);
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 		pnMain.add(buildButton(),BorderLayout.SOUTH);
+		
 		return pnMain;
 
 	}
@@ -91,7 +87,7 @@ public class PnArea extends PnBase implements ActionListener{
 		lblTable.setSize(200, 25);
 		lblTable.setFont(new Font("돋움",0,16));
 		lblTable.setIcon(new ImageIcon("images/db_table.png"));
-		
+
 		JLabel lbl = new JLabel("필드명 : ");
 		cbxField = new JComboBox();
 		txfSearch = new JTextField(15);
@@ -99,7 +95,7 @@ public class PnArea extends PnBase implements ActionListener{
 		JButton butUpSearch = new JButton("검색");
 
 		cbxField.setPreferredSize(new Dimension(150,23));
-		
+
 		lbl.setVisible(false);	
 		cbxField.setVisible(false);
 		txfSearch.setVisible(false);
@@ -143,12 +139,12 @@ public class PnArea extends PnBase implements ActionListener{
 		JPanel pnButtom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JPanel pnButtomRight = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton butDel = new JButton("삭제");
-		
+
 		JButton butNew = new JButton("신규");
 		pnButtomRight.setBorder(BorderFactory.createEtchedBorder());		
 		butDel.addActionListener(this);
 		butNew.addActionListener(this);
-		
+
 		pnButtomRight.add(butNew);
 		pnButtomRight.add(butDel);
 		pnButtom.add(pnButtomRight);
@@ -163,11 +159,11 @@ public class PnArea extends PnBase implements ActionListener{
 		}
 		else if(command.equals("삭제"))
 		{
-			int row=_tblTable.getSelectedRow();
+			int row=tblTable.getSelectedRow();
 			if(row<0)
 				return;
 
-			String data = (String) _tblTable.getValueAt(row, 1);
+			String data = (String) tblTable.getValueAt(row, 1);
 			int result=JOptionPane.showConfirmDialog(null, data+"를 삭제 하시겠습니까?", "지역 정보 삭제", JOptionPane.YES_NO_OPTION);
 			if(result==JOptionPane.OK_OPTION)
 			{						
@@ -182,8 +178,8 @@ public class PnArea extends PnBase implements ActionListener{
 					e1.printStackTrace();
 				}
 			}
-			
-			
+
+
 		}
 		else if(command.equals("신규"))
 		{
@@ -198,23 +194,17 @@ public class PnArea extends PnBase implements ActionListener{
 	}
 	public void updateTable(String query)
 	{
-		
 		searchData(query);
-
 	}
 
 	private void searchData(String query) {
-		
-		DefaultTableModel model = new KSGTableModel();
-		
-		for(int i=0;i<columName.length;i++)
-		{
-			model.addColumn(columName[i]);
-		}
-		
+
+		model.clear();
+
+
 		try {
 			List li =baseService.getSearchedAreaList(query);
-			
+
 			Iterator iter = li.iterator();
 			searchTotalSize=li.size();
 			totalSize = baseService.getAreaCount();
@@ -222,38 +212,12 @@ public class PnArea extends PnBase implements ActionListener{
 			{
 				AreaInfo areaInfo = (AreaInfo) iter.next();
 				model.addRow(new Object[]{	areaInfo.getArea_book_code(),
-											areaInfo.getArea_name(),
-											areaInfo.getArea_code()});
-		
-		
-		_tblTable.setModel(model);
-		_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		TableColumnModel colmodel = _tblTable.getColumnModel();
-		TableColumn areacol;
-
-		for(int i=0;i<colmodel.getColumnCount();i++)
-		{
-			TableColumn namecol = colmodel.getColumn(i);
-
-			DefaultTableCellRenderer renderer = new EvenOddRenderer();
-			if(i==1)
-			{
-				renderer.setHorizontalAlignment(SwingConstants.LEFT);
+						areaInfo.getArea_name(),
+						areaInfo.getArea_code()});
 			}
-			else
-			{
-				renderer.setHorizontalAlignment(SwingConstants.CENTER);
-			}
-			namecol.setCellRenderer(renderer);	
-		}
-		areacol = colmodel.getColumn(1);
-		areacol.setPreferredWidth(400);
-		areacol = colmodel.getColumn(2);
-		areacol.setPreferredWidth(100);
-		_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		lblTotal.setText(searchTotalSize+"/"+totalSize);
-	}
-			
+			lblTotal.setText(searchTotalSize+"/"+totalSize);
+			tblTable.setModel(model);
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -269,9 +233,9 @@ public class PnArea extends PnBase implements ActionListener{
 				JTable es = (JTable) e.getSource();
 				int row=es.getSelectedRow();
 				{
-					int areaBookCode=(Integer) _tblTable.getValueAt(row, 0);
-					String area_name=(String) _tblTable.getValueAt(row, 1);
-					String area_code=(String) _tblTable.getValueAt(row, 2);
+					int areaBookCode=(Integer) tblTable.getValueAt(row, 0);
+					String area_name=(String) tblTable.getValueAt(row, 1);
+					String area_code=(String) tblTable.getValueAt(row, 2);
 
 					AreaInfo info = new AreaInfo();
 					info.setArea_name(area_name);
@@ -283,67 +247,100 @@ public class PnArea extends PnBase implements ActionListener{
 					{
 						searchData(null);
 					}
-				}
-				
+				}				
 			}
 		}
-
 	}
 
 	@Override
 	public void updateTable() {
-		searchData(null);
 		
 	}
 	class MyTableModelListener implements TableModelListener {
-		  JTable table;
+		JTable table;
 
-		  MyTableModelListener(JTable table) {
-		    this.table = table;
-		  }
-
-		  public void tableChanged(TableModelEvent e) {
-		    int firstRow = e.getFirstRow();
-		    int lastRow = e.getLastRow();
-		    int index = e.getColumn();
-
-		    
-		    switch (e.getType()) {
-		    case TableModelEvent.INSERT:
-		      for (int i = firstRow; i <= lastRow; i++) {
-		        System.out.println(i);
-		      }
-		      break;
-		    case TableModelEvent.UPDATE:
-		      if (firstRow == TableModelEvent.HEADER_ROW) {
-		        if (index == TableModelEvent.ALL_COLUMNS) {
-		          System.out.println("A column was added");
-		        } else {
-		          System.out.println(index + "in header changed");
-		        }
-		      } else {
-		        for (int i = firstRow; i <= lastRow; i++) {
-		          if (index == TableModelEvent.ALL_COLUMNS) {
-		            System.out.println("All columns have changed");
-		          } else {
-		            System.out.println(index);
-		          }
-		        }
-		      }
-		      break;
-		    case TableModelEvent.DELETE:
-		      for (int i = firstRow; i <= lastRow; i++) {
-		        System.out.println(i);
-		      }
-		      break;
-		    }
-		  }
+		MyTableModelListener(JTable table) {
+			this.table = table;
 		}
+
+		public void tableChanged(TableModelEvent e) {
+			int firstRow = e.getFirstRow();
+			int lastRow = e.getLastRow();
+			int index = e.getColumn();
+
+
+			switch (e.getType()) {
+			case TableModelEvent.INSERT:
+				for (int i = firstRow; i <= lastRow; i++) {
+					System.out.println(i);
+				}
+				break;
+			case TableModelEvent.UPDATE:
+				if (firstRow == TableModelEvent.HEADER_ROW) {
+					if (index == TableModelEvent.ALL_COLUMNS) {
+						System.out.println("A column was added");
+					} else {
+						System.out.println(index + "in header changed");
+					}
+				} else {
+					for (int i = firstRow; i <= lastRow; i++) {
+						if (index == TableModelEvent.ALL_COLUMNS) {
+							System.out.println("All columns have changed");
+						} else {
+							System.out.println(index);
+						}
+					}
+				}
+				break;
+			case TableModelEvent.DELETE:
+				for (int i = firstRow; i <= lastRow; i++) {
+					System.out.println(i);
+				}
+				break;
+			}
+		}
+	}
 
 	@Override
 	public String getOrderBy(TableColumnModel columnModel) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void initTable() {
+		model = new KSGTableModel();
+
+		for(int i=0;i<columName.length;i++)
+		{
+			model.addColumn(columName[i]);
+		}
+		
+		tblTable.setModel(model);
+		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		TableColumnModel colmodel = tblTable.getColumnModel();
+		TableColumn areacol;
+
+		for(int i=0;i<colmodel.getColumnCount();i++)
+		{
+			TableColumn namecol = colmodel.getColumn(i);
+
+			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
+			if(i==1)
+			{
+				renderer.setHorizontalAlignment(SwingConstants.LEFT);
+			}
+			else
+			{
+				renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			}
+			namecol.setCellRenderer(renderer);	
+		}
+		areacol = colmodel.getColumn(1);
+		areacol.setPreferredWidth(400);
+		areacol = colmodel.getColumn(2);
+		areacol.setPreferredWidth(100);
+		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	}
 
 

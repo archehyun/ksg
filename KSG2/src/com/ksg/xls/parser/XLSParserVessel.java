@@ -37,6 +37,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.util.KSGPropertis;
 import com.ksg.xls.ADVTableNotMatchException;
+import com.ksg.xls.KeyWordManager;
 import com.ksg.xls.XLSManager;
 import com.ksg.xls.XLSTableInfo;
 import com.ksg.xls.model.SheetInfo;
@@ -63,13 +64,14 @@ public class XLSParserVessel implements XLSManager{
 	FormulaEvaluator evaluator;
 	String isUnderPort="";
 	boolean hasVoy=true;
-//	private Boolean isDoubleKey;
+	//	private Boolean isDoubleKey;
 	//private String upDown;
+	KeyWordManager keyWordManager = KeyWordManager.getInstance();
 	BaseService baseService;
 	DAOManager manager;
 	public XLSParserVessel()
 	{	
-		try {
+
 		manager = DAOManager.getInstance();
 		baseService =manager.createBaseService();
 		service = manager.createADVService();
@@ -79,38 +81,22 @@ public class XLSParserVessel implements XLSManager{
 		hasVoy = Boolean.parseBoolean(propertis.getValues(KSGPropertis.PROPERTIES_VOY).toString());
 		this.emptyCheck=Boolean.parseBoolean((String)propertis.getValues("emptyCheck"));
 
-		
-			List vesselKeyList=baseService.getKeywordList("VESSEL");
-			List voyageKeyList=baseService.getKeywordList("VOYAGE");
-			List bothKeyList=baseService.getKeywordList("BOTH");
 
-			vesselKeyWord = new String[vesselKeyList.size()];
-			bothKeyWord = new String[bothKeyList.size()];
 
-			for(int i=0;i<vesselKeyList.size();i++)
-			{
-				vesselKeyWord[i]= vesselKeyList.get(i).toString();
-			}
-			for(int i=0;i<bothKeyList.size();i++)
-			{
-				bothKeyWord[i]= bothKeyList.get(i).toString();
-			}
+		vesselKeyWord = keyWordManager.getVesselKeyWord();
+		bothKeyWord = keyWordManager.getBothKeyWord();
 
-		}
-		catch (SQLException e) 
-		{			
-			e.printStackTrace();
-		}
+
 
 		String doubleKey=(String) propertis.getValues(KSGPropertis.PROPERTIES_DOUBLEKEY);
-	
+
 
 	}
-	
+
 
 	private Vector xlsTableInfoList;
 	public Vector extractData(Sheet sheet,Vector<TableLocation> tableLocation)
-	throws ADVTableNotMatchException 
+			throws ADVTableNotMatchException 
 	{
 		logger.info("<===="+xlsFile+": data extract start ====>");
 		xlsTableInfoList = new Vector();
@@ -126,9 +112,9 @@ public class XLSParserVessel implements XLSManager{
 			XLSTableInfo info = new XLSTableInfo(tableInfo, location);
 			info.setTableInfo(tableInfo);
 			info.setTable_id(tableInfo.getTable_id());
-//			datas2.add(info.getTableStringInfo());
+			//			datas2.add(info.getTableStringInfo());
 			xlsTableInfoList.add(info);
-			KSGModelManager.getInstance().processBar.setValues(i);
+			//KSGModelManager.getInstance().processBar.setValues(i);
 		}
 		long end= System.currentTimeMillis();
 		logger.debug("search data time:"+(end-start));
@@ -180,7 +166,7 @@ public class XLSParserVessel implements XLSManager{
 
 
 	public void readFile(String xlsFile,ShippersTable table)
-	throws FileNotFoundException, ADVTableNotMatchException{
+			throws FileNotFoundException, ADVTableNotMatchException{
 
 		try {
 			// 파일을 불러옴
@@ -189,8 +175,8 @@ public class XLSParserVessel implements XLSManager{
 			this.company=table.getCompany_abbr();
 			this.xlsFile=xlsFile;
 			this.page = table.getPage();
-			
-			
+
+
 			POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(xlsFile));
 			Workbook wb = (Workbook) new HSSFWorkbook(fs);
 			sheet = wb.getSheetAt(0);
@@ -204,7 +190,7 @@ public class XLSParserVessel implements XLSManager{
 	}
 
 	public void readFile(String sheetName, String xlsFile, ShippersTable table)
-	throws FileNotFoundException, ADVTableNotMatchException {
+			throws FileNotFoundException, ADVTableNotMatchException {
 
 		try {
 			// 파일을 불러옴
@@ -230,7 +216,7 @@ public class XLSParserVessel implements XLSManager{
 	}
 
 	public Vector<TableLocation> readFile(Vector sheetNameList, String xlsFile, ShippersTable table)
-	throws ADVTableNotMatchException, IOException {
+			throws ADVTableNotMatchException, IOException {
 
 		Vector sheetList = new Vector();
 		// 파일을 불러옴
@@ -260,7 +246,7 @@ public class XLSParserVessel implements XLSManager{
 		return tableLocationList;
 	}
 	public Vector<TableLocation> readFile(Vector sheetNameList)
-	throws ADVTableNotMatchException, IOException {
+			throws ADVTableNotMatchException, IOException {
 
 		Vector sheetList = new Vector();
 		// 파일을 불러옴
@@ -286,11 +272,11 @@ public class XLSParserVessel implements XLSManager{
 
 		return tableLocationList;
 	}
-	
+
 
 	public Vector<TableLocation> readFile(Vector pageList, Vector sheetNameList, String xlsFile,
 			ShippersTable table) throws FileNotFoundException,
-			ADVTableNotMatchException, IOException {
+	ADVTableNotMatchException, IOException {
 		// 파일을 불러옴
 		logger.info("read XLS file=>"+xlsFile+",company=>"+table.getCompany_abbr()+" start");
 		tableLocationList = new Vector();
@@ -342,7 +328,7 @@ public class XLSParserVessel implements XLSManager{
 					String temp=this.getColumString(cell);
 					if(temp.length()==0)
 						continue;
-					
+
 					boolean vesselflag = false;
 					boolean bothflag = false;
 
@@ -369,14 +355,14 @@ public class XLSParserVessel implements XLSManager{
 					for(int z=0;z<bothKeyWord.length;z++)
 					{
 						if(temp.trim().equals(bothKeyWord[z].trim()))
-							
+
 							bothflag=true;
 					}
 
 					if(bothflag)// 키워드가 발견되면
 					{
 						logger.info("table key(both) found at row:"+i+", col:"+j);
-						
+
 
 						TableLocation location = new TableLocation(sheet);// 위치정보를 저장할 클래스 생성
 						location.row=i;
@@ -391,10 +377,10 @@ public class XLSParserVessel implements XLSManager{
 		}
 		long endtime= System.currentTimeMillis();
 		logger.debug("searching time:"+(endtime-starttime));	
-		
+
 		long starttime2= System.currentTimeMillis();
-		
-		
+
+
 		//if(isDoubleKey)
 		{
 			Vector removeLocationList = new Vector();

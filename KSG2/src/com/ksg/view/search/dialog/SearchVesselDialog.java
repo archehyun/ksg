@@ -15,12 +15,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import com.ksg.domain.Vessel;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.util.ViewUtil;
 
+/**
+ * 
+ * 선박명 검색 화면
+ * @author archehyun
+ *
+ */
 @SuppressWarnings("unchecked")
 public class SearchVesselDialog extends KSGDialog{
 	/**
@@ -31,7 +38,9 @@ public class SearchVesselDialog extends KSGDialog{
 	public String resultAbbr=null;
 
 	private List vesselli;
-	private JTable vesselTable;
+	
+	private JTable vesselTable;// 검색된 선박 목룍 표시
+	
 	private JButton butOk;
 	public SearchVesselDialog(List vesselli) 
 	{
@@ -44,6 +53,8 @@ public class SearchVesselDialog extends KSGDialog{
 		JPanel pnMain= new JPanel();
 		this.getContentPane().add(pnMain); 
 		vesselTable = new JTable();
+		// 단일 선택
+		vesselTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		vesselTable.addMouseListener(new MouseAdapter() {
 			
 			public void mouseClicked(MouseEvent e) {
@@ -65,6 +76,12 @@ public class SearchVesselDialog extends KSGDialog{
 				if(e.getKeyCode()==KeyEvent.VK_TAB)
 				{					
 					butOk.requestFocus();
+				}
+				if(e.getKeyCode()==KeyEvent.VK_ENTER)
+				{					
+					setResult(table);
+					close();
+					
 				}
 			}
 

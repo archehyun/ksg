@@ -40,10 +40,9 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.ksg.domain.Company;
-import com.ksg.view.KSGViewParameter;
 import com.ksg.view.base.PnBase;
-import com.ksg.view.comp.EvenOddRenderer;
 import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.view.comp.KSGTableModel;
 
 
@@ -87,8 +86,10 @@ public class PnCompany extends PnBase implements ActionListener{
 		}
 
 
-
+		
+		
 		this.add(buildCenter());
+		this.initTable();
 
 	}
 	public String getOrderBy(TableColumnModel columnModel)	
@@ -99,12 +100,12 @@ public class PnCompany extends PnBase implements ActionListener{
 		 */
 		currentColumnNameList.clear();// 현재 칼럼 순서 초기화
 		StringBuffer buffer = new StringBuffer();
-		int col=_tblTable.getColumnModel().getColumnCount();
+		int col=tblTable.getColumnModel().getColumnCount();
 		ArrayList<String> orderbyList = new ArrayList<String>();
 		for(int i=0;i<col;i++)
 		{
 
-			String headerValue =(String) _tblTable.getColumnModel().getColumn(i).getHeaderValue();
+			String headerValue =(String) tblTable.getColumnModel().getColumn(i).getHeaderValue();
 			currentColumnNameList.add(headerValue);//현재 칼럼 순서 생성
 			String row=arrangeMap.get(headerValue);
 
@@ -131,12 +132,16 @@ public class PnCompany extends PnBase implements ActionListener{
 	private JPanel buildCenter()
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
-		_tblTable = new JTable();
-		_tblTable.getColumnModel().addColumnModelListener(new MyTableColumnModelListener(_tblTable));
-		_tblTable.addMouseListener(new TableSelectListner());
-		_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		_tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
-		pnMain.add(new JScrollPane(_tblTable));
+		
+		JScrollPane jScrollPane =createTablePanel();
+		
+		tblTable.addMouseListener(new TableSelectListner());
+		
+		tblTable.getColumnModel().addColumnModelListener(new MyTableColumnModelListener(tblTable));
+		tblTable.addMouseListener(new TableSelectListner());
+		
+		jScrollPane.getViewport().setBackground(Color.white);
+		pnMain.add(jScrollPane);
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 		pnMain.add(buildButton(),BorderLayout.SOUTH);
 		return pnMain;
@@ -225,8 +230,6 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		Object rows[] =new Object[currentColumnNameList.size()];
 
-
-
 		for(int columnIndex=0;columnIndex<currentColumnNameList.size();columnIndex++)
 		{
 
@@ -263,13 +266,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		logger.info("order by:"+orderby);
 		try {
-			model = new KSGTableModel();
-
-			for(int i=0;i<currentColumnNameList.size();i++)
-			{
-				model.addColumn(currentColumnNameList.get(i));
-			}
-
+			initTable();
 			Company searchOP = new Company();
 			
 			searchOP.setSearchKeyword(query);
@@ -293,24 +290,10 @@ public class PnCompany extends PnBase implements ActionListener{
 			RowSorter<TableModel> sorter
 			= new TableRowSorter<TableModel>(model);
 
-			_tblTable.setRowSorter(sorter);
+			tblTable.setRowSorter(sorter);
 
-			_tblTable.setModel(model);
+			tblTable.setModel(model);
 
-			_tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-			TableColumnModel colmodel = _tblTable.getColumnModel();
-
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new EvenOddRenderer();
-				//if(i==1)
-				{
-					renderer.setHorizontalAlignment(SwingConstants.LEFT);
-				}
-				namecol.setCellRenderer(renderer);	
-			}
 			
 			lblTotal.setText(searchTotalSize+" / "+totalSize);
 
@@ -333,11 +316,11 @@ public class PnCompany extends PnBase implements ActionListener{
 		}
 		else if(command.equals("삭제"))
 		{
-			int row=_tblTable.getSelectedRow();
+			int row=tblTable.getSelectedRow();
 			if(row<0)
 				return;
 
-			String data= (String) _tblTable.getValueAt(row, 1);
+			String data= (String) tblTable.getValueAt(row, 1);
 			int result=JOptionPane.showConfirmDialog(this,data+"를 삭제 하시겠습니까?", "선사 정보 삭제", JOptionPane.YES_NO_OPTION);
 			if(result==JOptionPane.OK_OPTION)
 			{	
@@ -412,7 +395,7 @@ public class PnCompany extends PnBase implements ActionListener{
 				JTable es = (JTable) e.getSource();
 				int row=es.getSelectedRow();
 				{
-					String data=(String) _tblTable.getValueAt(row, 1);
+					String data=(String) tblTable.getValueAt(row, 1);
 
 					dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.UPDATE,data);
 					dialog .createAndUpdateUI();
@@ -426,7 +409,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	@Override
 	public void updateTable() {
-		searchData();
+		//searchData();
 	}
 
 	class MyTableColumnModelListener implements TableColumnModelListener {
@@ -449,7 +432,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 			if(fromIndex!=toIndex)
 			{
-				orderby =getOrderBy(_tblTable.getColumnModel());
+				orderby =getOrderBy(tblTable.getColumnModel());
 			}
 		}
 
@@ -460,6 +443,35 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		public void columnSelectionChanged(ListSelectionEvent e) {
 		}
+	}
+
+	@Override
+	public void initTable() {
+		
+		
+		model = new KSGTableModel();
+
+		for(int i=0;i<currentColumnNameList.size();i++)
+		{
+			model.addColumn(currentColumnNameList.get(i));
+		}
+		
+		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		
+		TableColumnModel colmodel = tblTable.getColumnModel();
+
+		for(int i=0;i<colmodel.getColumnCount();i++)
+		{
+			TableColumn namecol = colmodel.getColumn(i);
+
+			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
+			//if(i==1)
+			{
+				renderer.setHorizontalAlignment(SwingConstants.LEFT);
+			}
+			namecol.setCellRenderer(renderer);	
+		}
+		tblTable.setModel(model);
 	}
 
 

@@ -30,7 +30,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.domain.Table_Port;
+import com.ksg.domain.TablePort;
 import com.ksg.model.KSGModelManager;
 import com.ksg.quark.XTGManager;
 import com.ksg.schedule.build.PortIndexNotMatchException;
@@ -509,15 +509,15 @@ public class WebScheduleTask extends SimpleTask{
 	{
 		try {
 			portDataArray  = new Vector();
-			Table_Port tablePort = new Table_Port();
+			TablePort tablePort = new TablePort();
 			tablePort.setTable_id(table.getTable_id());
-			tablePort.setPort_type(Table_Port.TYPE_PARENT);
+			tablePort.setPort_type(TablePort.TYPE_PARENT);
 
 			List li=tableService.getTablePortList(tablePort);
 
 			for(int i=0;i<li.size();i++)
 			{
-				Table_Port port = (Table_Port) li.get(i);
+				TablePort port = (TablePort) li.get(i);
 
 				portDataArray.add(port);
 			}
@@ -690,13 +690,13 @@ public class WebScheduleTask extends SimpleTask{
 				String vsl[][] = adv.getFullVesselArray(true);
 				scheduledata.setTs_vessel(vsl[vslIndex][0]);
 				scheduledata.setTs_voyage_num(vsl[vslIndex][1]);
-				Table_Port tablePort = new Table_Port();
+				TablePort tablePort = new TablePort();
 				
 				// 확인 필요
 				//tablePort.setPort_index(table.getDirection());
 				tablePort.setTable_id(table.getTable_id());
-				Table_Port info;
-				info = (Table_Port) tableService.getTablePort(tablePort);
+				TablePort info;
+				info = (TablePort) tableService.getTablePort(tablePort);
 				scheduledata.setTs(info.getPort_name());
 
 				String date[][]=null;
@@ -784,12 +784,12 @@ public class WebScheduleTask extends SimpleTask{
 
 
 	}
-	private Table_Port getPort(Vector array,int index)
+	private TablePort getPort(Vector array,int index)
 	{
-		Table_Port port1 = new Table_Port();
+		TablePort port1 = new TablePort();
 		for(int i=0;i<array.size();i++)
 		{
-			Table_Port port=(Table_Port) array.get(i);
+			TablePort port=(TablePort) array.get(i);
 			if(port.getPort_index()==index)
 				port1.addSubPort(port);
 		}
@@ -815,8 +815,8 @@ public class WebScheduleTask extends SimpleTask{
 			for(int j=i+1;j<portList.length;j++)
 			{
 				int ToPortIndex = portList[j];
-				Table_Port _outport = this.getPort(portDataArray, FromPortIndex);
-				Table_Port _outtoport = this.getPort(portDataArray, ToPortIndex);
+				TablePort _outport = this.getPort(portDataArray, FromPortIndex);
+				TablePort _outtoport = this.getPort(portDataArray, ToPortIndex);
 				String outportarray[]=_outport.getPortArray();
 				String outtoportarray[]=_outtoport.getPortArray();
 				for(int z =0;z<outportarray.length;z++)
