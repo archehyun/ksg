@@ -406,8 +406,10 @@ public class XLSParserVoy implements XLSManager{
 						
 
 						TableLocation location = new TableLocation(sheet);// 위치정보를 저장할 클래스 생성
-						location.row=i;
-						location.col=j-1;
+						
+						location.setRow(i);
+						location.setCol(j-1);
+						
 						location.setTableType(TableLocation.VOYAGE);
 						location.setKeyWordCell(cell);
 
@@ -428,18 +430,18 @@ public class XLSParserVoy implements XLSManager{
 				{
 
 					TableLocation t2=tableLocationList.get(jj);
-					if(t1.col==t2.col&&t1.row==t2.row)
+					if(t1.getCol()==t2.getCol()&&t1.getRow()==t2.getRow())
 						continue;
-					if(t1.col==t2.col&&Math.abs(t1.row-t2.row)<3)
+					if(t1.getCol()==t2.getCol()&&Math.abs(t1.getRow()-t2.getRow())<3)
 					{
 
-						if(t1.row>t2.row)
+						if(t1.getRow()>t2.getRow())
 						{
-							int tOneIndex = t1.sheet.getWorkbook().getSheetIndex(t1.sheet);
-							int tTwoIndex = t2.sheet.getWorkbook().getSheetIndex(t2.sheet);
+							int tOneIndex = t1.getSheet().getWorkbook().getSheetIndex(t1.getSheet());
+							int tTwoIndex = t2.getSheet().getWorkbook().getSheetIndex(t2.getSheet());
 
 
-							if(t1.sheet.getWorkbook().getSheetName(tOneIndex).equals(t2.sheet.getWorkbook().getSheetName(tTwoIndex)))
+							if(t1.getSheet().getWorkbook().getSheetName(tOneIndex).equals(t2.getSheet().getWorkbook().getSheetName(tTwoIndex)))
 							{
 								logger.debug("remove "+t2);
 								removeLocationList.add(t2);
@@ -447,9 +449,9 @@ public class XLSParserVoy implements XLSManager{
 
 						}else
 						{
-							int tOneIndex = t1.sheet.getWorkbook().getSheetIndex(t1.sheet);
-							int tTwoIndex = t2.sheet.getWorkbook().getSheetIndex(t2.sheet);
-							if(t1.sheet.getWorkbook().getSheetName(tOneIndex).equals(t2.sheet.getWorkbook().getSheetName(tTwoIndex)))
+							int tOneIndex = t1.getSheet().getWorkbook().getSheetIndex(t1.getSheet());
+							int tTwoIndex = t2.getSheet().getWorkbook().getSheetIndex(t2.getSheet());
+							if(t1.getSheet().getWorkbook().getSheetName(tOneIndex).equals(t2.getSheet().getWorkbook().getSheetName(tTwoIndex)))
 							{
 								removeLocationList.add(t1);
 								logger.debug("remove "+t1);

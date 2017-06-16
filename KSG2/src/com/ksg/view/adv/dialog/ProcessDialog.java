@@ -24,26 +24,40 @@ public class ProcessDialog extends KSGDialog implements ActionListener{
 	private JProgressBar progressBar;
 	public ProcessDialog() {
 
-		KSGModelManager.getInstance().processBar = ProcessDialog.this;
-		progressBar = new JProgressBar();
-		JPanel pnMain = new JPanel(new BorderLayout());
-		progressBar.setStringPainted(true);
-		Border border = BorderFactory.createTitledBorder("Reading...");
-		progressBar.setBorder(border);
-		pnMain.add(progressBar,BorderLayout.CENTER);
-		getContentPane().add(pnMain, BorderLayout.CENTER);
-		setSize(400, 100);
-		ViewUtil.center(ProcessDialog.this);
-		KSGModelManager.getInstance().isWorkMoniter=true;
-		Timer timer  = new Timer(1, this);
-		timer.start();
-		this.setVisible(true);
-		logger.debug("process start");
 
 
 	}
 	public void createAndUpdateUI() {
 
+		KSGModelManager.getInstance().processBar = ProcessDialog.this;
+		
+		progressBar = new JProgressBar();
+		
+		JPanel pnMain = new JPanel(new BorderLayout());
+		
+		progressBar.setStringPainted(true);
+		
+		Border border = BorderFactory.createTitledBorder("Reading...");
+		
+		progressBar.setBorder(border);
+		
+		pnMain.add(progressBar,BorderLayout.CENTER);
+		
+		getContentPane().add(pnMain, BorderLayout.CENTER);
+		
+		setSize(400, 100);
+		
+		ViewUtil.center(ProcessDialog.this);
+		
+		KSGModelManager.getInstance().isWorkMoniter=true;
+		
+		progressBar.setIndeterminate(true);
+		
+		this.setTitle("광고정보 추출");
+		Timer timer  = new Timer(1000, this);
+		timer.start();
+		this.setVisible(true);	
+		logger.info("process start");
 
 	}
 
@@ -55,6 +69,8 @@ public class ProcessDialog extends KSGDialog implements ActionListener{
 	public void setValues(int i)
 	{
 		progressBar.setValue(i);
+		progressBar.updateUI();
+		
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -65,13 +81,17 @@ public class ProcessDialog extends KSGDialog implements ActionListener{
 	class Update implements Runnable {
 		public void run() {
 			
-			logger.debug("update progross");
-
-			/*pbar.setProgress(counter);
-	      pbar.setNote("Operation is " + counter + "% complete");
-	      counter += 2;*/
+			progressBar.setString(	KSGModelManager.getInstance().workProcessText);
+			
+			ProcessDialog.this.repaint();
+		
 		}
+	}
+	public void setMAX(int tableCount) {
+		this.progressBar.setMaximum(tableCount);
+		
 	}
 
 
 }
+

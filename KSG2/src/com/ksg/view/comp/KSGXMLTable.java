@@ -152,7 +152,6 @@ public class KSGXMLTable extends KSGTable
 	public String getXMLModel()
 	{
 		
-		
 		Element tempRoot = (Element) rootE.clone();
 	
 		Document document = new Document(tempRoot);

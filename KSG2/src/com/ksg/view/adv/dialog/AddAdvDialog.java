@@ -141,7 +141,7 @@ public class AddAdvDialog extends JDialog implements ActionListener{
 				manager.execute("error");
 
 				manageUI.updateTableListPN();
-				manageUI.butNext.setEnabled(true);
+			//	manageUI.butNext.setEnabled(true);
 				//manageUI.updateTableInfo();
 				//manageUI._txfSearchedTableCount.setText(String.valueOf(manager.vesselCount));
 			} catch (Exception e1) {

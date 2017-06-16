@@ -73,8 +73,6 @@ public class KSGTableCellRenderer extends DefaultTableCellRenderer {
 			}
 		}
 
-
-
 		if(isSelected)
 		{
 			foreground = Color.WHITE;
@@ -85,20 +83,7 @@ public class KSGTableCellRenderer extends DefaultTableCellRenderer {
 			foreground = Color.black;
 			background=Color.WHITE;	
 		}
-		/*else
-		{
-			if(row %2==0)
-			{
-				foreground = Color.black;
-				background=Color.WHITE;	
-			}
-			else
-			{
-				background= new Color(225,235,255);		
-				foreground = Color.black;
-			}
-		}
-		 */
+		
 
 		if(value instanceof ColorData)
 		{

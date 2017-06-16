@@ -80,7 +80,7 @@ import com.ksg.xls.xml.KSGXMLManager;
  * @author 박창현
  * 엑셀에서 가져오 테이블에 대한 정보 표시
  */
-public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListener{
+public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionListener{
 
 	class MYKeyApater extends KeyAdapter
 	{
@@ -91,10 +91,11 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 				int vesselcount = Integer.parseInt(txfVesselCount.getText());
 
 				try {
-					tableService.updateTablePortCount(KSGXLSImportPn.this.getTable_id(),portcount);
-					tableService.updateTableVesselCount(KSGXLSImportPn.this.getTable_id(),vesselcount);
+					tableService.updateTablePortCount(KSGXLSImportPanel.this.getTable_id(),portcount);
+					
+					tableService.updateTableVesselCount(KSGXLSImportPanel.this.getTable_id(),vesselcount);
 
-					KSGModelManager.getInstance().execute(KSGXLSImportPn.this.getName());
+					KSGModelManager.getInstance().execute(KSGXLSImportPanel.this.getName());
 
 
 				} catch (SQLException e1) {
@@ -112,7 +113,6 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 
 	private ADVService advservice;
 
-
 	private CardLayout cardLayout;
 
 	private JComboBox cbxCount,cbxDivider;
@@ -120,7 +120,6 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 	private ActionListener cbxUnderPortAction,voyageActioon,keyAction,dividerAction,countAction;
 
 	private JCheckBox cbxVesselVoyage,cbxVoyage,cbxUnderPort;
-
 
 	private String data,isUnderPort,TEXT="text",TABLE="table";
 
@@ -156,7 +155,7 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 
 	private JMenuItem vesselAddItem;
 
-	private XLSTableInfo xlstableinfo;
+	private XLSTableInfo xlstableinfo; // 엑셀 정보
 
 	private int tableIndex;
 
@@ -166,14 +165,13 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 
 	private JScrollPane jScrollPane;
 
-	public KSGXLSImportPn() 
-	{
-		
+	public KSGXLSImportPanel() 
+	{		
 		isUnderPort = (String)propertis.getValues(KSGPropertis.PROPERTIES_UNDERPORT).toString();
 		DAOManager manager = DAOManager.getInstance();
 		advservice = manager.createADVService();
 		tableService = manager.createTableService();
-		logger.debug("패널 초기화");
+		
 		createAndUpdatePN();
 
 	}
@@ -272,7 +270,7 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 		butInfo.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				TableInfoDialog dialog = new TableInfoDialog(KSGXLSImportPn.this);
+				TableInfoDialog dialog = new TableInfoDialog(KSGXLSImportPanel.this);
 				dialog.createAndUpdateUI();
 			}});
 
@@ -426,7 +424,7 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 		butApply.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				KSGXLSImportPn.this.update(KSGModelManager.getInstance());
+				KSGXLSImportPanel.this.update(KSGModelManager.getInstance());
 			}}
 		);
 		pncontrl.add(butApply);
@@ -435,10 +433,11 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 		return pnPortVesselCount;
 	}
 	private void createAndUpdatePN() {
-		tblADV = new KSGXMLTable();
 		
+		tblADV = new KSGXMLTable();	
 
 		tblADV .setComponentPopupMenu(createPopup());
+		
 		tblADV.addMouseListener(new MouseAdapter(){
 
 
@@ -616,7 +615,7 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 
 			public void actionPerformed(ActionEvent e) 
 			{
-				TableInfoDialog dialog = new TableInfoDialog(KSGXLSImportPn.this);
+				TableInfoDialog dialog = new TableInfoDialog(KSGXLSImportPanel.this);
 				dialog.createAndUpdateUI();
 			}});
 		popupMenu.add(boxMenuItem);
@@ -673,9 +672,7 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 	}
 	public String getTableXMLInfo()
 	{
-		
 		return tblADV.getXMLModel();
-//		return xlstableinfo.getTableXMLInfo();
 	}
 	
 	public XLSTableInfo getXlstableinfo() {
@@ -688,7 +685,9 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 	}
 
 	public void update(KSGModelManager manager) {
-		logger.debug("start:"+this.getTableIndex());
+		
+		logger.info("start:"+this.getTableIndex());
+		
 		if(manager.selectedInput.equals("File"))
 		{
 			Vector advDataList =manager.getTempXLSTableInfoList();
@@ -701,22 +700,24 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 			xlstableinfo = (XLSTableInfo)advDataList.get(this.getTableIndex());
 			
 			data = xlstableinfo.getTableXMLInfo();
-			logger.debug("data;"+data);
 			
 		}
 
 		if(data==null)
 		{
 			throw new RuntimeException(this.getTableIndex()+"'s table data is null");
-		}
+		}		
 		
-		logger.debug("update: "+this.getTable_id());
 		tableInfo = xlstableinfo.getTableInfo();
+		
 		lblTableID.setText(tableInfo.getTable_id());
 
 		lblPortCount.setText(String.valueOf(tableInfo.getPort_col()));
+		
 		lblVesselCount.setText(String.valueOf(tableInfo.getVsl_row()));
+		
 		txfPortCount.setText(String.valueOf(tableInfo.getPort_col()));
+		
 		txfVesselCount.setText(String.valueOf(tableInfo.getVsl_row()));
 
 		tblADV.setRootElement(xlstableinfo.getRootElement());
@@ -725,15 +726,16 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 
 
 		litVessel.setModel(xlstableinfo.getVesselElement());
+		
 		if(litVessel.getVesselSize()!=tableInfo.getVsl_row())
 		{
 			lblVesselCount.setText(lblVesselCount.getText()+"(확인 필요)");
-		}
-			
+		}			
 		
 		tblPort.setModel(xlstableinfo.getPortElement());
 
 		this.table_id = xlstableinfo.getTable_id();
+		
 		try {
 			tableProperty= KSGPropertyManager.getInstance().getKSGTableProperty(table_id);
 		} catch (SQLException e) {
@@ -757,12 +759,9 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 			}
 			tableProperty=property;
 		}
-		logger.debug("end");
+		logger.info("end");
 	}
-	public String getAdjustXMLInfo()
-	{
-		return "";
-	}
+
 	public void updateVesselName(int row, String vesselName) {
 		tblADV.updateVesselName(row, vesselName);
 	}
@@ -776,8 +775,7 @@ public class KSGXLSImportPn extends JPanel implements KSGObserver, ActionListene
 		super.addMouseWheelListener(listener);
 		pnCenter.addMouseWheelListener(listener);
 		tblADV.addMouseWheelListener(listener);
-		jScrollPane.addMouseWheelListener(listener);
-		
+		jScrollPane.addMouseWheelListener(listener);	
 		
 	}
 	

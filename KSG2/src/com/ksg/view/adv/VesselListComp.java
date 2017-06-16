@@ -81,10 +81,10 @@ public class VesselListComp extends JList{
 
 	private BaseService baseService;
 	//	private JTextArea txaADV;
-	KSGXLSImportPn base;
+	KSGXLSImportPanel base;
 	protected Logger logger = Logger.getLogger(getClass());
 	private int vesselSize;
-	public VesselListComp(KSGXLSImportPn base) {
+	public VesselListComp(KSGXLSImportPanel base) {
 
 		this.base = base;
 		//		this.txaADV=txaADV;

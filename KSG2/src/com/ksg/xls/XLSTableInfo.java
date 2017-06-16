@@ -28,13 +28,17 @@ import com.ksg.view.util.KSGPropertis;
 import com.ksg.view.util.KSGPropertyManager;
 import com.ksg.xls.model.TableLocation;
 
+/**
+ * 엑셀 정보가지고는 정보 클래스
+ * @author archehyun
+ *
+ */
 public class XLSTableInfo extends TableLocation{
 
 	public static final int VESSEL_LOCATION=0;
+	
 	public static final int VOYAGE_LOCATION=1;
-	/**
-	 * @return xls import 결과 
-	 */
+
 	private String datePattern ="\\w+.?\\(\\w+\\)";
 	
 	private XLSStringUtil xlsUitl;
@@ -43,7 +47,7 @@ public class XLSTableInfo extends TableLocation{
 	
 	private Element portarray;
 
-	private XLSSearchPortInfoManager portInfoManager;
+	private XLSSearchPortInfoUtil portInfoManager;
 
 	private KSGPropertis propertis = KSGPropertis.getIntance();
 	
@@ -55,20 +59,28 @@ public class XLSTableInfo extends TableLocation{
 
 	private Element schedule_row;
 	
-	private TableService _tableService;
+	private TableService tableService;
 
 	private ShippersTable tableInfo;
 
 	private TableLocation xlsLocation;
+	
 	public XLSTableInfo( ShippersTable tableInfo,TableLocation location) {
+		
 		this.tableInfo=tableInfo;
+		
 		this.xlsLocation=location;
 
 		this.setTableType(xlsLocation.getTableType());
-		_tableService =  DAOManager.getInstance().createTableService();
+		
+		this.tableService =  DAOManager.getInstance().createTableService();
+		
 		this.setTable_id(tableInfo.getTable_id());
-		portInfoManager = new XLSSearchPortInfoManager(tableInfo.getTable_id());
-		xlsUitl = new XLSStringUtil();
+		
+		this.portInfoManager = new XLSSearchPortInfoUtil(tableInfo.getTable_id());
+		
+		this.xlsUitl = new XLSStringUtil();
+		
 		initProperty();
 
 
@@ -85,13 +97,13 @@ public class XLSTableInfo extends TableLocation{
 	}
 
 	public Element getPortElement() {
-		// TODO Auto-generated method stub
+		
 		return portarray;
 	}
 
 	public String getSheetName()
 	{
-		Sheet sheet = xlsLocation.sheet;
+		Sheet sheet = xlsLocation.getSheet();
 		return sheet.getWorkbook().getSheetName(sheet.getWorkbook().getSheetIndex(sheet));
 	}
 
@@ -109,12 +121,12 @@ public class XLSTableInfo extends TableLocation{
 		int portCount=tableInfo.getPort_col()+tableInfo.getOthercell();
 		int vesselCount = tableInfo.getVsl_row()+1;
 		// 선박 cell 검색
-		Vector<TableLocation> rowList = searchRow(xlsLocation.sheet, xlsLocation, vesselCount);
-		logger.info("vesselCount:"+vesselCount+",searched row count:"+rowList.size());
+		Vector<TableLocation> rowList = searchRow(xlsLocation.getSheet(), xlsLocation, vesselCount);
+		logger.debug("vesselCount:"+vesselCount+",searched row count:"+rowList.size());
 
 		// 항구 cell 검색
 
-		logger.info("portCount:"+portCount+",searched cell count:"+rowList.size());
+		logger.debug("portCount:"+portCount+",searched cell count:"+rowList.size());
 		int rows=0;
 
 		// 포트 정보 수집
@@ -141,7 +153,7 @@ public class XLSTableInfo extends TableLocation{
 		{
 			TableLocation loc=(TableLocation) rowList.get(rows);
 
-			HSSFRow tempRow= (HSSFRow) loc.sheet.getRow(loc.row);
+			HSSFRow tempRow= (HSSFRow) loc.getSheet().getRow(loc.getRow());
 			if(tempRow==null)
 				continue;
 			schedule_row = new Element("vessel");
@@ -150,7 +162,7 @@ public class XLSTableInfo extends TableLocation{
 			{
 				TableLocation cellLocation = (TableLocation) cellList.get(cells);
 
-				HSSFCell cell2 =tempRow.getCell(cellLocation.col);
+				HSSFCell cell2 =tempRow.getCell(cellLocation.getCol());
 				if(cell2==null)
 					continue;
 				if(this.getTableType()==TableLocation.BOTH)
@@ -402,12 +414,12 @@ public class XLSTableInfo extends TableLocation{
 		int portCount=tableInfo.getPort_col()+tableInfo.getOthercell();
 		int vesselCount = tableInfo.getVsl_row()+1;
 		// 선박 cell 검색
-		Vector<TableLocation> rowList = searchRow(xlsLocation.sheet, xlsLocation, vesselCount);
-		logger.info("vesselCount:"+vesselCount+",searched row count:"+rowList.size());
+		Vector<TableLocation> rowList = searchRow(xlsLocation.getSheet(), xlsLocation, vesselCount);
+		logger.debug("vesselCount:"+vesselCount+",searched row count:"+rowList.size());
 
 		// 항구 cell 검색
 
-		logger.info("portCount:"+portCount+",searched cell count:"+rowList.size());
+		logger.debug("portCount:"+portCount+",searched cell count:"+rowList.size());
 		int rows=0;
 
 		// 포트 정보 수집
@@ -433,14 +445,14 @@ public class XLSTableInfo extends TableLocation{
 		{
 			TableLocation loc=(TableLocation) rowList.get(rows);
 
-			HSSFRow tempRow= (HSSFRow) loc.sheet.getRow(loc.row);
+			HSSFRow tempRow= (HSSFRow) loc.getSheet().getRow(loc.getRow());
 			schedule_row = new Element("vessel");
 			rootElement.addContent(schedule_row);
 			for(int cells =0;cells<cellList.size();cells++)
 			{
 				TableLocation cellLocation = (TableLocation) cellList.get(cells);
 
-				HSSFCell cell2 =tempRow.getCell(cellLocation.col);
+				HSSFCell cell2 =tempRow.getCell(cellLocation.getCol());
 				if(this.getTableType()==TableLocation.BOTH)
 				{
 					if(cells==VESSEL_LOCATION)
@@ -534,7 +546,7 @@ public class XLSTableInfo extends TableLocation{
 				p.setCompany_abbr(this.getTableInfo().getCompany_abbr());
 				p.setPort_type(0);
 
-				_tableService.insertTableProperty(p);
+				tableService.insertTableProperty(p);
 
 			}else
 			{
@@ -545,7 +557,7 @@ public class XLSTableInfo extends TableLocation{
 				this.setVesselvoycount(property.getVesselvoycount());
 				logger.debug("init table type:"+property.getTable_type());
 			}
-			tableInfo=_tableService.getTableById(table_id);
+			tableInfo=tableService.getTableById(table_id);
 
 
 
@@ -568,7 +580,7 @@ public class XLSTableInfo extends TableLocation{
 			int vesselCount) {
 		logger.debug("start");
 		Vector<TableLocation> data  = new Vector<TableLocation>();
-		int rowTempIndex=location.row;
+		int rowTempIndex=location.getRow();
 		int vCount=0;
 		int emptyCount=0;
 		while(vCount!=vesselCount)
@@ -580,7 +592,7 @@ public class XLSTableInfo extends TableLocation{
 			HSSFRow ro= (HSSFRow) sheet.getRow(rowTempIndex);
 			if(ro!=null&&!ro.getZeroHeight())
 			{
-				HSSFCell firstcell=ro.getCell(location.col);
+				HSSFCell firstcell=ro.getCell(location.getCol());
 
 				if(firstcell==null||firstcell.getCellType()==HSSFCell.CELL_TYPE_BLANK)
 				{	
@@ -588,9 +600,11 @@ public class XLSTableInfo extends TableLocation{
 				{
 					// 공백이 아니면 리스트에 추가
 					TableLocation cc = new TableLocation();
-					cc.row=rowTempIndex;
-					cc.col=location.col;
-					cc.sheet=sheet;
+					
+					cc.setRow(rowTempIndex);
+					cc.setCol(location.getCol());					
+					cc.setSheet(sheet);
+					
 					data.add(cc);
 					vCount++;
 				}

@@ -132,9 +132,9 @@ public class PortTableComp extends JTable implements ActionListener
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
-			
+
 		}
-		
+
 		private Code searchCode()
 		{
 			return null;
@@ -177,7 +177,7 @@ public class PortTableComp extends JTable implements ActionListener
 	private TableService _tableService;
 	private AddPortDialog addPortDialog;
 
-	private KSGXLSImportPn base;
+	private KSGXLSImportPanel base;
 	private String colums[]={"Index","Name","Area Code"};
 	protected Logger 		logger = Logger.getLogger(this.getClass());
 	private JMenuItem menuPortAdd;
@@ -190,7 +190,7 @@ public class PortTableComp extends JTable implements ActionListener
 
 	private String selectedPort;
 
-	public PortTableComp(JTextArea txaADV,KSGXLSImportPn base) {
+	public PortTableComp(JTextArea txaADV,KSGXLSImportPanel base) {
 		DAOManager manager = DAOManager.getInstance();
 		_tableService= manager.createTableService();
 		_baseService  = manager.createBaseService();
@@ -304,96 +304,168 @@ public class PortTableComp extends JTable implements ActionListener
 
 				try
 				{
-				//수정 필요
-				table_port_name = port_name;
-				table_area_code =_baseService.hasCodeByField(port_name)?"예외":"-";
+					//수정 필요
+					table_port_name = port_name;
+					table_area_code =_baseService.hasCodeByField(port_name)?"예외":"-";
 				}
 				catch(Exception e)
+				{
+					System.err.println("error port:"+port_name);
+					e.printStackTrace();
+				}
+			}
+		}
+		PortColorInfo item = new PortColorInfo(table_port_name);
+		item.setArea_code(table_area_code);
+		item.setPort_name(table_port_name);
+
+		item.setIndex(index);
+
+
+		return item;
+	}
+
+	private JPopupMenu createPortPopup() 
+	{
+		JPopupMenu menu = new JPopupMenu();
+
+		menuPortSearch = new JMenuItem("항구 검색");
+		menuPortSearch.setActionCommand("항구 검색");
+		menuPortSearch.addActionListener(this);
+
+		menuPortAdd = new JMenuItem("항구 추가");
+		menuPortAdd.addActionListener(this);
+
+		menuPortExceptionAdd = new JMenuItem("예외 항구명 추가");
+		menuPortExceptionAdd.setActionCommand("예외 항구명 추가");
+		menuPortExceptionAdd.addActionListener(this);
+
+		menuPortExceptionDel = new JMenuItem("예외 항구명 제외");
+		menuPortExceptionDel.setActionCommand("예외 항구명 제외");
+		menuPortExceptionDel.addActionListener(this);
+
+
+		menu.add(menuPortSearch);
+		menu.add(menuPortExceptionAdd);
+		menu.add(menuPortExceptionDel);
+
+		return menu;
+	}
+	public Vector getPortList() {
+		Vector<PortColorInfo> port = new Vector<PortColorInfo>();
+		for(int i=0;i<portTableModel.getRowCount();i++)
+		{
+			Object selectedIndex = portTableModel.getValueAt(i, 0);
+			Object selectedPort = portTableModel.getValueAt(i, 1);
+			Object selectedCode = portTableModel.getValueAt(i, 2);
+
+
+			PortColorInfo errorInfo = new PortColorInfo();
+			if(selectedPort instanceof PortColorInfo)
 			{
 
-				System.err.println("error port:"+port_name);
-				e.printStackTrace();
-				}
+				errorInfo.setPort_name( ((PortColorInfo)selectedPort).getPort_name());
+			}else{
+
+				errorInfo.setPort_name( selectedPort.toString());
 			}
-			}
-			PortColorInfo item = new PortColorInfo(table_port_name);
-			item.setArea_code(table_area_code);
-			item.setPort_name(table_port_name);
 
-			item.setIndex(index);
-			
-			
-			return item;
-		}
-
-		private JPopupMenu createPortPopup() 
-		{
-			JPopupMenu menu = new JPopupMenu();
-
-			menuPortSearch = new JMenuItem("항구 검색");
-			menuPortSearch.setActionCommand("항구 검색");
-			menuPortSearch.addActionListener(this);
-
-			menuPortAdd = new JMenuItem("항구 추가");
-			menuPortAdd.addActionListener(this);
-
-			menuPortExceptionAdd = new JMenuItem("예외 항구명 추가");
-			menuPortExceptionAdd.setActionCommand("예외 항구명 추가");
-			menuPortExceptionAdd.addActionListener(this);
-
-			menuPortExceptionDel = new JMenuItem("예외 항구명 제외");
-			menuPortExceptionDel.setActionCommand("예외 항구명 제외");
-			menuPortExceptionDel.addActionListener(this);
-
-
-			menu.add(menuPortSearch);
-			menu.add(menuPortExceptionAdd);
-			menu.add(menuPortExceptionDel);
-
-			return menu;
-		}
-		public Vector getPortList() {
-			Vector<PortColorInfo> port = new Vector<PortColorInfo>();
-			for(int i=0;i<portTableModel.getRowCount();i++)
+			if(selectedIndex instanceof PortColorInfo)
 			{
-				Object selectedIndex = portTableModel.getValueAt(i, 0);
-				Object selectedPort = portTableModel.getValueAt(i, 1);
-				Object selectedCode = portTableModel.getValueAt(i, 2);
-
-
-				PortColorInfo errorInfo = new PortColorInfo();
-				if(selectedPort instanceof PortColorInfo)
-				{
-
-					errorInfo.setPort_name( ((PortColorInfo)selectedPort).getPort_name());
-				}else{
-
-					errorInfo.setPort_name( selectedPort.toString());
-				}
-
-				if(selectedIndex instanceof PortColorInfo)
-				{
-					errorInfo.setIndex(((PortColorInfo)selectedIndex).getIndex());
-				}else
-				{
-					errorInfo.setIndex(Integer.valueOf(selectedIndex.toString()));
-				}
-
-				if(selectedCode instanceof PortColorInfo)
-				{
-					errorInfo.setArea_code(((PortColorInfo)selectedCode).getArea_code());
-				}else
-				{
-					errorInfo.setArea_code(String.valueOf(portTableModel.getValueAt(i, 2)));
-				}
-
-				port.add(errorInfo);
+				errorInfo.setIndex(((PortColorInfo)selectedIndex).getIndex());
+			}else
+			{
+				errorInfo.setIndex(Integer.valueOf(selectedIndex.toString()));
 			}
-			return port;
+
+			if(selectedCode instanceof PortColorInfo)
+			{
+				errorInfo.setArea_code(((PortColorInfo)selectedCode).getArea_code());
+			}else
+			{
+				errorInfo.setArea_code(String.valueOf(portTableModel.getValueAt(i, 2)));
+			}
+
+			port.add(errorInfo);
 		}
-		public void setModel(Element port_array)
+		return port;
+	}
+	public void setModel(Element port_array)
+	{
+		portTableModel = new DefaultTableModel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public boolean isCellEditable(int nRow, int nCol) {
+				return false;
+			}
+		};
+		this.port_array = port_array;
+
+		for(int i=0;i<colums.length;i++)
 		{
-			portTableModel = new DefaultTableModel(){
+			portTableModel.addColumn(colums[i]);
+		}		
+		// 추가 내용
+
+		Vector<PortColorInfo> itemList = new Vector<PortColorInfo>();
+		List port_list=port_array.getChildren("port1");
+		try {
+			for(int i=0;i< port_list.size();i++)
+			{
+				Element port_info = (Element) port_list.get(i);
+
+				boolean multi =Boolean.valueOf(port_info.getAttributeValue("multi"));
+				int index = Integer.parseInt(port_info.getAttributeValue("index"));
+				String port_name =port_info.getAttributeValue("field");
+				if(multi)
+				{
+					List sub_port_list = port_info.getChildren("sub_port");
+					for(int j=0;j< sub_port_list.size();j++)
+					{
+						Element sub_port = (Element) sub_port_list.get(j);
+
+						String sub_port_name = sub_port.getAttributeValue("port_name");
+
+						itemList.add(createTablePortItem(index, sub_port_name));
+					}
+
+				}else
+				{
+					itemList.add(createTablePortItem(index, port_name));
+				}
+			}
+			updateTableColumn(itemList);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("error");
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+	}
+
+
+
+	/**
+	 * 
+	 * 테이블 에 색 표시
+	 * @param itemList
+	 */
+	private void updateTableColumn(Vector<PortColorInfo> itemList) {
+
+		try {
+
+			//기존 항구 정보
+			List portLi= _tableService.getParentPortList(base.getTable_id());
+			portTableModel = new	DefaultTableModel(){
 				/**
 				 * 
 				 */
@@ -403,230 +475,157 @@ public class PortTableComp extends JTable implements ActionListener
 					return false;
 				}
 			};
-			this.port_array = port_array;
 
 			for(int i=0;i<colums.length;i++)
 			{
-				portTableModel.addColumn(colums[i]);
-			}		
-			// 추가 내용
-
-			Vector<PortColorInfo> itemList = new Vector<PortColorInfo>();
-			List port_list=port_array.getChildren("port1");
-			try {
-				for(int i=0;i< port_list.size();i++)
-				{
-					Element port_info = (Element) port_list.get(i);
-
-					boolean multi =Boolean.valueOf(port_info.getAttributeValue("multi"));
-					int index = Integer.parseInt(port_info.getAttributeValue("index"));
-					String port_name =port_info.getAttributeValue("field");
-					if(multi)
-					{
-						List sub_port_list = port_info.getChildren("sub_port");
-						for(int j=0;j< sub_port_list.size();j++)
-						{
-							Element sub_port = (Element) sub_port_list.get(j);
-
-							String sub_port_name = sub_port.getAttributeValue("port_name");
-
-							itemList.add(createTablePortItem(index, sub_port_name));
-						}
-
-					}else
-					{
-						itemList.add(createTablePortItem(index, port_name));
-					}
-				}
-				updateTableColumn(itemList);
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println("error");
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				portTableModel.addColumn(colums[i]);				
 			}
 
+			int rowcount=portLi.size()>=itemList.size()?portLi.size():itemList.size();
+
+			portTableModel.setRowCount(rowcount);
 
 
-		}
-
-
-
-		/**
-		 * 
-		 * 테이블 에 색 표시
-		 * @param itemList
-		 */
-		private void updateTableColumn(Vector<PortColorInfo> itemList) {
-
-			try {
-
-				//기존 항구 정보
-				List portLi= _tableService.getParentPortList(base.getTable_id());
-				portTableModel = new	DefaultTableModel(){
-					/**
-					 * 
-					 */
-					private static final long serialVersionUID = 1L;
-
-					public boolean isCellEditable(int nRow, int nCol) {
-						return false;
-					}
-				};
-
-				for(int i=0;i<colums.length;i++)
+			/**
+			 * 사이즈가 다른 경우
+			 */
+			for(int row=0;row<rowcount;row++)
+			{
+				if(row<itemList.size())
 				{
-					portTableModel.addColumn(colums[i]);				
+					PortColorInfo item = itemList.get(row);
+
+					PortColorInfo item_index = new PortColorInfo(item.getIndex());
+					item_index.setType(PortColorInfo.TYPE_NOMAL);
+					item_index.setIndex(item.getIndex());
+
+					PortColorInfo item_port = new PortColorInfo(item.getPort_name());
+					item_port.setType(PortColorInfo.TYPE_NOMAL);
+					item_port.setPort_name(item.getPort_name());
+
+					PortColorInfo item_code = new PortColorInfo(item.getArea_code());
+					item_code.setArea_code(item.getArea_code());
+
+
+					Code op = new Code();
+
+					op.setCode_type("port_check");
+					op.setCode_field(item.getPort_name());
+
+					item_code.setType(_baseService.getCodeInfo(op)==null?PortColorInfo.TYPE_NOMAL:PortColorInfo.TYPE_BLUE);
+					item_code.setArea_code(item.getArea_code());
+
+
+					portTableModel.setValueAt(item_index, row, 0);
+					portTableModel.setValueAt(item_port, row, 1);
+					portTableModel.setValueAt(item_code, row, 2);
 				}
-
-				int rowcount=portLi.size()>=itemList.size()?portLi.size():itemList.size();
-
-				portTableModel.setRowCount(rowcount);
-
-
-				/**
-				 * 사이즈가 다른 경우
-				 */
-				for(int row=0;row<rowcount;row++)
+				else
 				{
-					if(row<itemList.size())
-					{
-						PortColorInfo item = itemList.get(row);
+					PortColorInfo item_index = new PortColorInfo(row+1);
+					item_index.setIndex(row+1);
+					item_index.setType(PortColorInfo.TYPE_RED);
 
-						PortColorInfo item_index = new PortColorInfo(item.getIndex());
-						item_index.setType(PortColorInfo.TYPE_NOMAL);
-						item_index.setIndex(item.getIndex());
-
-						PortColorInfo item_port = new PortColorInfo(item.getPort_name());
-						item_port.setType(PortColorInfo.TYPE_NOMAL);
-						item_port.setPort_name(item.getPort_name());
-
-						PortColorInfo item_code = new PortColorInfo(item.getArea_code());
-						item_code.setArea_code(item.getArea_code());
+					PortColorInfo item_port = new PortColorInfo("");
+					item_port.setPort_name("");
+					item_port.setType(PortColorInfo.TYPE_RED);
 
 
-						Code op = new Code();
-
-						op.setCode_type("port_check");
-						op.setCode_field(item.getPort_name());
-
-						item_code.setType(_baseService.getCodeInfo(op)==null?PortColorInfo.TYPE_NOMAL:PortColorInfo.TYPE_BLUE);
-						item_code.setArea_code(item.getArea_code());
-
-
-						portTableModel.setValueAt(item_index, row, 0);
-						portTableModel.setValueAt(item_port, row, 1);
-						portTableModel.setValueAt(item_code, row, 2);
-					}
-					else
-					{
-						PortColorInfo item_index = new PortColorInfo(row+1);
-						item_index.setIndex(row+1);
-						item_index.setType(PortColorInfo.TYPE_RED);
-
-						PortColorInfo item_port = new PortColorInfo("");
-						item_port.setPort_name("");
-						item_port.setType(PortColorInfo.TYPE_RED);
-
-
-						PortColorInfo item_code = new PortColorInfo("");
-						item_port.setType(PortColorInfo.TYPE_NOMAL);
-						portTableModel.setValueAt(item_index, row, 0);
-						portTableModel.setValueAt(item_port, row, 1);
-						portTableModel.setValueAt(item_code, row, 2);
-					}
+					PortColorInfo item_code = new PortColorInfo("");
+					item_port.setType(PortColorInfo.TYPE_NOMAL);
+					portTableModel.setValueAt(item_index, row, 0);
+					portTableModel.setValueAt(item_port, row, 1);
+					portTableModel.setValueAt(item_code, row, 2);
 				}
-
-				/**
-				 * 기존 내용과 비교
-				 * 
-				 * 1. 신규 항구
-				 */
-				for(int row=0;row<portTableModel.getRowCount();row++)
-				{
-					PortColorInfo newPort_index=(PortColorInfo) portTableModel.getValueAt(row, 0);
-					PortColorInfo newPort=(PortColorInfo) portTableModel.getValueAt(row, 1);
-
-
-					boolean isNewPort=true;
-					PortColorInfo checkNewPort = createTablePortItem(newPort_index.getIndex(), newPort.getPort_name());
-					//신규 항구
-					for(int i=0;i<portLi.size();i++)
-					{
-						TablePort orderPort = (TablePort) portLi.get(i);
-
-						if(checkNewPort.getPort_name().equals(orderPort.getPort_name())&&checkNewPort.getIndex()==newPort_index.getIndex())
-						{
-							isNewPort = false;
-						}
-					}
-
-					if(isNewPort)
-					{
-						PortColorInfo item_index = new PortColorInfo(newPort_index.getIndex());
-						item_index.setIndex(newPort_index.getIndex());
-						item_index.setType(PortColorInfo.TYPE_RED);
-
-						PortColorInfo item_port = new PortColorInfo(newPort.getPort_name());					
-						item_port.setPort_name(newPort.getPort_name());
-						item_port.setType(PortColorInfo.TYPE_RED);
-
-						portTableModel.setValueAt(item_index, row, 0);
-						portTableModel.setValueAt(item_port, row, 1);
-					}
-				}
-
-				this.setModel(portTableModel);
-
-				TableColumnModel colmodel = this.getColumnModel();
-
-				for(int i=0;i<colmodel.getColumnCount();i++)
-				{
-					TableColumn namecol = colmodel.getColumn(i);
-					if(i==0)
-						namecol.setMaxWidth(25);
-					if(i==2)
-						namecol.setMaxWidth(35);
-
-					DefaultTableCellRenderer renderer = new ColoredTableCellRenderer();
-					namecol.setCellRenderer(renderer);
-
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 
+			/**
+			 * 기존 내용과 비교
+			 * 
+			 * 1. 신규 항구
+			 */
+			for(int row=0;row<portTableModel.getRowCount();row++)
+			{
+				PortColorInfo newPort_index=(PortColorInfo) portTableModel.getValueAt(row, 0);
+				PortColorInfo newPort=(PortColorInfo) portTableModel.getValueAt(row, 1);
+
+
+				boolean isNewPort=true;
+				PortColorInfo checkNewPort = createTablePortItem(newPort_index.getIndex(), newPort.getPort_name());
+				//신규 항구
+				for(int i=0;i<portLi.size();i++)
+				{
+					TablePort orderPort = (TablePort) portLi.get(i);
+
+					if(checkNewPort.getPort_name().equals(orderPort.getPort_name())&&checkNewPort.getIndex()==newPort_index.getIndex())
+					{
+						isNewPort = false;
+					}
+				}
+
+				if(isNewPort)
+				{
+					PortColorInfo item_index = new PortColorInfo(newPort_index.getIndex());
+					item_index.setIndex(newPort_index.getIndex());
+					item_index.setType(PortColorInfo.TYPE_RED);
+
+					PortColorInfo item_port = new PortColorInfo(newPort.getPort_name());					
+					item_port.setPort_name(newPort.getPort_name());
+					item_port.setType(PortColorInfo.TYPE_RED);
+
+					portTableModel.setValueAt(item_index, row, 0);
+					portTableModel.setValueAt(item_port, row, 1);
+				}
+			}
+
+			this.setModel(portTableModel);
+
+			TableColumnModel colmodel = this.getColumnModel();
+
+			for(int i=0;i<colmodel.getColumnCount();i++)
+			{
+				TableColumn namecol = colmodel.getColumn(i);
+				if(i==0)
+					namecol.setMaxWidth(25);
+				if(i==2)
+					namecol.setMaxWidth(35);
+
+				DefaultTableCellRenderer renderer = new ColoredTableCellRenderer();
+				namecol.setCellRenderer(renderer);
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		/*private void updateTableColumn() {
+	}
+
+	/*private void updateTableColumn() {
 		try {
 			List portLi= _tableService.getParentPortList(base.getTable_id());
 
 
 
-		 *//** 1. 항구가 있는지 검색
-		 * 		1.1 있는 항구명 => 2로 이동 
-		 * 		1.2 없는 항구명 => 노란색
-		 * 
-		 *  2. 위치가 같은 지 검색
-		 *  	2.1 같은 위치 => 검정색
-		 *  	2.2 다른 위치 => 파란색
-		 *  
-		 *  3. 저장시 정책
-		 *  	3.1 해당 포트 삭제
-		 *  	3.2 해당 포트 업데이트
-		 *//*
+	 *//** 1. 항구가 있는지 검색
+	 * 		1.1 있는 항구명 => 2로 이동 
+	 * 		1.2 없는 항구명 => 노란색
+	 * 
+	 *  2. 위치가 같은 지 검색
+	 *  	2.1 같은 위치 => 검정색
+	 *  	2.2 다른 위치 => 파란색
+	 *  
+	 *  3. 저장시 정책
+	 *  	3.1 해당 포트 삭제
+	 *  	3.2 해당 포트 업데이트
+	 *//*
 
-		  *//** 수정
-		  * 
-		  * 1. 지난 주 항구수 보다 이번 주 항구수가 줄어든 경우
-		  * 
-		  * 
-		  *//*
+	  *//** 수정
+	  * 
+	  * 1. 지난 주 항구수 보다 이번 주 항구수가 줄어든 경우
+	  * 
+	  * 
+	  *//*
 			for(int i=0;i<portTableModel.getRowCount();i++)
 			{
 				PortColorInfo port = (PortColorInfo) portTableModel.getValueAt(i, 1);
@@ -696,4 +695,4 @@ public class PortTableComp extends JTable implements ActionListener
 
 		}
 	}*/
-	}
+}

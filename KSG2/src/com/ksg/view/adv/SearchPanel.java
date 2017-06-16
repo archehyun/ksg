@@ -82,6 +82,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 	private JList 			companyLi;
 	private JButton 		butAdjust,butCompanyAdd,butPre,butNext;
 	private JList 			pageLi;
+	public JList getPageLi() {
+		return pageLi;
+	}
+
 	private TableService 	tableService;
 	private Vector<ShippersTable> tableInfoList;
 	private JPanel 			pnTableList,pnLeftMenu;
@@ -90,8 +94,8 @@ public class SearchPanel extends JPanel implements ActionListener{
 	public JTextField		_txfXLSFile,_txfSearchedTableCount,_txfCompany,_txfDate;
 	private KSGModelManager manager = KSGModelManager.getInstance();
 	private static int _tableViewCount = 10;
-	private Vector<KSGXLSImportPn> importTableList;
-	private static final String SEARCH_TYPE_COMPANY = "선사";
+	private Vector<KSGXLSImportPanel> importTableList;
+	public static final String SEARCH_TYPE_COMPANY = "선사";
 	
 	private JTextField  	_txfCPage,_txfPage,_txfPCompany,_txfPort;
 	
@@ -129,19 +133,35 @@ public class SearchPanel extends JPanel implements ActionListener{
 	private JList fileLi;
 	
 	private String 			searchType=SEARCH_TYPE_COMPANY;
+	
+	public String getSearchType() {
+		return searchType;
+	}
+
 	ADVListPanel advListPanel;
+	
 	private DAOManager daoManager = DAOManager.getInstance();
+	
 	private String selectedPage;
+	
 	public SearchPanel(ADVListPanel advListPanel) {
+		
 		tableService = daoManager.createTableService();
-		this.advListPanel = advListPanel; 
+		
+		this.advListPanel = advListPanel;
+		
+		advListPanel.setSearchPanel(this);
 		
 		initComp();
+		
 		_tblSheetNameList = new JTable();
 		
 		comp = new KSGCompboBox("vessel",KSGCompboBox.TYPE1);
+		
 		txfTableCount = new JTextField(2);
+		
 		JComboBox box = new JComboBox();
+		
 		for(int i=1;i<10;i++)
 		{
 			box.addItem(i);
@@ -716,7 +736,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 					public void actionPerformed(ActionEvent arg0) {
 
 						SearchPanel.this.advListPanel.initInfo();
-						importTableList = new Vector<KSGXLSImportPn>();
+						importTableList = new Vector<KSGXLSImportPanel>();
 						if(searchType.equals(SEARCH_TYPE_COMPANY))
 						{
 							tableInfoList = new Vector<ShippersTable>();
@@ -750,13 +770,13 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 						for(int i=0;i<manager.tableCount;i++)
 						{
-							KSGXLSImportPn table = new KSGXLSImportPn();
+							KSGXLSImportPanel table = new KSGXLSImportPanel();
 							table.setName("adv");	
 							table.setTableIndex(i);
 
 							table.addMouseListener(new MouseAdapter(){
 								public void mouseClicked(MouseEvent e) {
-									KSGXLSImportPn ta =(KSGXLSImportPn) e.getSource();
+									KSGXLSImportPanel ta =(KSGXLSImportPanel) e.getSource();
 									int index=ta.getTableIndex();
 									logger.debug("selected table: "+index	);
 									manager.selectTableIndex=index;
@@ -1416,10 +1436,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 			e.printStackTrace();
 		}
 	}
-	private void searchXLS()
+	public void searchXLS()
 	{
 		try{
-		logger.debug("불러오기");
+		logger.info("불러오기");
 		
 		DefaultListModel model = (DefaultListModel) pageLi.getModel();
 		Vector<PageInfo> pageInfoList = new Vector<PageInfo>();

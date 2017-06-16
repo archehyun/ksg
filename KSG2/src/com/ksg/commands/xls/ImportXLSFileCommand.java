@@ -41,34 +41,38 @@ public class ImportXLSFileCommand implements KSGCommand {
 	private int keyType=0;
 	public static final int VESSEL=0;
 	public static final int VOYAGE=1;
+	
+	
+	private ImportXLSFileCommand(String path, String company, int page)
+	{
+		this.selectXLSFilePath = path;
+		this.table =new ShippersTable();
+		table.setCompany_abbr(company);
+		table.setPage(page);
+		
+		
+	}
 
 	public ImportXLSFileCommand(Object sheetName, String path, String company, int page) {
-
-		this.selectXLSFilePath = path;
-
-		this.table =new ShippersTable();
-		table.setCompany_abbr(company);
-		table.setPage(page);
+		
+		this(path, company, page);
+		
 		this.sheetName =(String) sheetName;
-		ProcessDialog dialog= new ProcessDialog();
-		dialog.createAndUpdateUI();	
+
 	}
 	public ImportXLSFileCommand(Vector sheetNameList, String path, String company, int page) {
-
-		this.selectXLSFilePath = path;
-		this.table =new ShippersTable();
-		table.setCompany_abbr(company);
-		table.setPage(page);
+		
+		this(path, company, page);
+		
 		this.sheetNameList= sheetNameList;
 	}
 	public ImportXLSFileCommand(Vector tableInfoList,Vector sheetNameList, String path, String company, int page) {
+		
+		this(path,company, page);
 
-		this.selectXLSFilePath = path;
-
-		this.table =new ShippersTable();
-		table.setCompany_abbr(company);
-		table.setPage(page);
+		
 		this.sheetNameList= sheetNameList;
+		
 		this.tableInfoList= tableInfoList;
 	}
 	public ImportXLSFileCommand(Object sheetName, String path, String company, int page,int other) {
@@ -79,12 +83,10 @@ public class ImportXLSFileCommand implements KSGCommand {
 	public ImportXLSFileCommand(Vector<ShippersTable> tableInfoList,
 			Vector sheetNameList, String selectXLSFilePath, String company,
 			int page, String searchType, String selectedInput) {
-		this.selectXLSFilePath = selectXLSFilePath;
-
-		this.table =new ShippersTable();
-		table.setCompany_abbr(company);
-		table.setPage(page);
-		this.sheetNameList= sheetNameList;
+		
+		
+		this(sheetNameList,selectXLSFilePath, company, page);
+		
 		this.tableInfoList= tableInfoList;
 		this.searchType=searchType;
 		this.selectedInput=selectedInput;
@@ -99,9 +101,9 @@ public class ImportXLSFileCommand implements KSGCommand {
 	public int execute() {
 
 
-		logger.debug("start");
+		
 		try {
-
+			logger.info("start");
 
 			if(sheetName==null)
 			{
@@ -123,7 +125,7 @@ public class ImportXLSFileCommand implements KSGCommand {
 			
 			manager.tableCount = xlsmanager.getSearchedTableCount();
 			
-			logger.debug("tableCount:"+manager.tableCount);
+			logger.info("tableCount:"+manager.tableCount);
 
 			return RESULT_SUCCESS;
 		} catch (ADVTableNotMatchException e) {

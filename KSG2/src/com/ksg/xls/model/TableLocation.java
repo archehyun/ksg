@@ -18,13 +18,21 @@ import org.apache.poi.ss.usermodel.Sheet;
 import com.ksg.domain.ShippersTable;
 
 public class TableLocation extends ShippersTable{
+	
 	protected Logger logger = Logger.getLogger(this.getClass());
+	
 	public static final int VESSEL=1;
+	
 	public static final int VOYAGE=2;
+	
 	public static final int BOTH=3;
+	
 	protected int vesselvoycount;
+	
 	protected String vesselvoydivider;
+	
 	protected int tableType;
+	
 	public int getTableType() {
 		return tableType;
 	}
@@ -37,13 +45,42 @@ public class TableLocation extends ShippersTable{
 	public TableLocation(Sheet sheet) {
 		this.sheet=sheet;
 	}
-	public Sheet sheet;
-	public int col;
-	public int row;
+	
+	private Sheet sheet;  // 쉬트 정보
+	
+	public Sheet getSheet() {
+		return sheet;
+	}
+
+	public void setSheet(Sheet sheet) {
+		this.sheet = sheet;
+	}
+
+	private int col;
+	
+	private int row;
+	
+	public int getCol() {
+		return col;
+	}
+	public void setCol(int col) {
+		this.col = col;
+	}
+	public int getRow() {
+		return row;
+	}
+	public void setRow(int row) {
+		this.row = row;
+	}
+
 	public int table_index;
+	
 	protected boolean hasVoy=true;
+	
 	private HSSFCell keyWordCell;
+	
 	private HSSFCell titleCell;
+	
 	private boolean isUnderPort=false;
 	
 	public void setKeyWordCell(HSSFCell keyWordCell) {

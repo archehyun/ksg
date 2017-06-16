@@ -178,7 +178,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 
 	private DAOManager daoManager = DAOManager.getInstance();
 	private JList 			fileLi,fileLi2;
-	private Vector<KSGXLSImportPn> importTableList = new Vector<KSGXLSImportPn>();
+	private Vector<KSGXLSImportPanel> importTableList = new Vector<KSGXLSImportPanel>();
 	private boolean 		isPageSearch=true;
 	private boolean 		isSamePageSelect=true;
 	private JLabel 			lblCompany2,lblPage2,lblSelectedCompanyName,lblSelectedPage;
@@ -1390,10 +1390,15 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 
 
 		pnMain.add(pnRight,BorderLayout.EAST);
+		
 		pnMain.add(pnLeft,BorderLayout.WEST);
+		
 		pnMain.add(buildCenter(),BorderLayout.CENTER);
+		
 		this.add(pnTitleMain,BorderLayout.NORTH);
+		
 		this.add(buildLeftMenu(),BorderLayout.WEST);
+		
 		this.add(pnMain,BorderLayout.CENTER);
 	}
 
@@ -1552,7 +1557,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 
 		for(int i=0;i<importTableList.size();i++)
 		{
-			KSGXLSImportPn xlsPn = importTableList.get(i);
+			KSGXLSImportPanel xlsPn = importTableList.get(i);
 			Vector portList=xlsPn.getPortList();
 			for(int j=0;j<portList.size();j++)
 			{
@@ -1577,7 +1582,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 
 		for(int i=0;i<importTableList.size();i++)
 		{	
-			KSGXLSImportPn xlsPn = importTableList.get(i);
+			KSGXLSImportPanel xlsPn = importTableList.get(i);
 			Vector portList=xlsPn.getPortList();
 			savePortList(xlsPn, portList);
 			String insertData = new String();
@@ -1609,7 +1614,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 	}
 	
 
-	private void savePortList(KSGXLSImportPn xlsPn, Vector portList) {
+	private void savePortList(KSGXLSImportPanel xlsPn, Vector portList) {
 		try {
 			TablePort delPort = new TablePort();
 			delPort.setTable_id(xlsPn.getTable_id());
@@ -1782,7 +1787,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 		// 인덱스를 조회 하여 지정 하는 부분 필요
 		for(int i=0;i<importTableList.size();i++)
 		{
-			KSGXLSImportPn table=importTableList.get(i);
+			KSGXLSImportPanel table=importTableList.get(i);
 			JScrollPane scrollPane = new JScrollPane(table);
 			TitledBorder createTitledBorder = BorderFactory.createTitledBorder(table.getTitle());
 			createTitledBorder.setTitleFont(new Font("돋음",0,12));

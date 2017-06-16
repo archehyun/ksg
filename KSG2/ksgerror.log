@@ -1,9 +1,11 @@
 INFO - PROGRAM START
 INFO - DB Connected..
 INFO - login...
-INFO - search Table init
+INFO - init searchUI start
+INFO - init table
+INFO - init searchUI end
 INFO - nomal테이블 생성
 INFO - console테이블 생성
 INFO - inland테이블 생성
-INFO - init table model
-INFO - init table model
+INFO - update by tree:3
+INFO - searched Page size:5

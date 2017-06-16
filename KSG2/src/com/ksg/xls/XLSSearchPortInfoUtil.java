@@ -10,45 +10,64 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.jdom.Element;
 
-import com.ksg.dao.DAOManager;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Table_Property;
 import com.ksg.view.util.KSGPropertis;
 import com.ksg.view.util.KSGPropertyManager;
 import com.ksg.xls.model.TableLocation;
 
-public class XLSSearchPortInfoManager {
+/**
+ * 엑셀 파일에서 항구명 검색
+ * @author archehyun
+ *
+ */
+public class XLSSearchPortInfoUtil {
 
 	public String bothKeyWord[];
+	
 	private boolean hasVoy=true;
+	
 	private boolean isUnderPort=false;
 
 	private boolean isETA_ETD=false;
-	private Logger logger = Logger.getLogger(this.getClass());
+	
+	private Logger logger = Logger.getLogger(this.getClass());	
+	
 	private KSGPropertis propertis = KSGPropertis.getIntance();
+	
 	KSGPropertyManager propertyManager =KSGPropertyManager.getInstance();
+	
 	public Element rootElement;
+	
 	public int rows;
+	
 	private String table_id;
-	int tableType;
+	
+	private int tableType;
+	
 	public String vesselKeyWord[];
+	
 	private int VOY_PARAMETER=1;
-	XLSStringUtil xlsUitl;
+	
+	private XLSStringUtil xlsUitl;
 	
 	KeyWordManager keyWordManager = KeyWordManager.getInstance();
 
 	/**
 	 * @param table_id
 	 */
-	public XLSSearchPortInfoManager(String table_id) 
+	public XLSSearchPortInfoUtil(String table_id) 
 	{
 		
 		logger.debug("start");
+		
 		xlsUitl = new XLSStringUtil();
-		this.table_id=table_id  ;
+		
+		this.table_id=table_id;
+		
 		initProperty();
 		
 		vesselKeyWord = keyWordManager.getVesselKeyWord();
+		
 		bothKeyWord = keyWordManager.getBothKeyWord();
 		
 	}
@@ -172,7 +191,7 @@ public class XLSSearchPortInfoManager {
 	 */
 	private HSSFCell getUnderCell(TableLocation location,
 			TableLocation cellLocation) {
-		HSSFRow underRow=(HSSFRow) location.sheet.getRow(cellLocation.row+1);
+		HSSFRow underRow=(HSSFRow) location.getSheet().getRow(cellLocation.getRow()+1);
 
 		/**
 		 * 이중 항구 처리시 
@@ -183,12 +202,12 @@ public class XLSSearchPortInfoManager {
 		 * 
 		 */
 
-		HSSFCell keywordunderCell=underRow.getCell(location.col);
+		HSSFCell keywordunderCell=underRow.getCell(location.getCol());
 		if(keywordunderCell!=null&&keywordunderCell.getCellType()!=HSSFCell.CELL_TYPE_BLANK){
 			return null;
 		}
 
-		HSSFCell undercell =underRow.getCell(cellLocation.col);
+		HSSFCell undercell =underRow.getCell(cellLocation.getCol());
 
 
 		return undercell;
@@ -206,17 +225,19 @@ public class XLSSearchPortInfoManager {
 		this.initProperty();
 		rootElement = new Element("port_array");
 		Vector<TableLocation> cellList;
-		int num=searchPortRanageNumber(location.sheet, location);
+		
+		Sheet sheet = location.getSheet();
+		int num=searchPortRanageNumber(sheet, location);
 		if(isUnderPort)
 		{
-			cellList = searchDownPortCell(location.sheet,location, portCount,0);
+			cellList = searchDownPortCell(sheet,location, portCount,0);
 
 			for(int cells =0;cells<cellList.size();cells++)
 			{
 				TableLocation cellLocation = (TableLocation) cellList.get(cells);
 
-				HSSFRow fRow=(HSSFRow) location.sheet.getRow(cellLocation.row);
-				HSSFCell cell_info =fRow.getCell(cellLocation.col);
+				HSSFRow fRow=(HSSFRow) sheet.getRow(cellLocation.getRow());
+				HSSFCell cell_info =fRow.getCell(cellLocation.getCol());
 
 				switch (location.getTableType()) 
 				{
@@ -237,13 +258,13 @@ public class XLSSearchPortInfoManager {
 				case TableLocation.BOTH:
 					if(cells>XLSTableInfo.VESSEL_LOCATION)
 					{
-						logger.debug("cell location "+cellLocation.row+","+cellLocation.col);
-						String name1=xlsUitl.getStringData(fRow.getCell(cellLocation.col), true);
+						logger.debug("cell location "+cellLocation.getRow()+","+cellLocation.getCol());
+						String name1=xlsUitl.getStringData(fRow.getCell(cellLocation.getCol()), true);
 						if(isETA_ETD&&name1.contains("ETA"))
 						{
-							HSSFRow ffRow=(HSSFRow) location.sheet.getRow(cellLocation.row-1);
+							HSSFRow ffRow=(HSSFRow) sheet.getRow(cellLocation.getRow()-1);
 
-							String name=xlsUitl.getStringData(ffRow.getCell(cellLocation.col), true);
+							String name=xlsUitl.getStringData(ffRow.getCell(cellLocation.getCol()), true);
 							name+=" ETA";
 							addXMLPort(num, cells-1, name,"BOTH");
 							cells++;
@@ -258,13 +279,13 @@ public class XLSSearchPortInfoManager {
 
 		}else
 		{
-			cellList = searchNomalPortCell(location.sheet,location, portCount,0);
+			cellList = searchNomalPortCell(sheet,location, portCount,0);
 			boolean flag=false;
 			for(int cells =0;cells<cellList.size();cells++)
 			{
 				TableLocation cellLocation = (TableLocation) cellList.get(cells);
-				HSSFRow fRow= (HSSFRow) location.sheet.getRow(cellLocation.row);
-				HSSFCell cell_info =fRow.getCell(cellLocation.col);
+				HSSFRow fRow= (HSSFRow) sheet.getRow(cellLocation.getRow());
+				HSSFCell cell_info =fRow.getCell(cellLocation.getCol());
 
 
 				switch (location.getTableType()) {
@@ -308,7 +329,7 @@ public class XLSSearchPortInfoManager {
 					break;
 				case TableLocation.BOTH:
 
-					logger.debug("cell location "+cellLocation.row+","+cellLocation.col);
+					logger.debug("cell location "+cellLocation.getRow()+","+cellLocation.getCol());
 					if(KSGPropertis.DOUBLE_LINE)
 					{
 						HSSFCell undercell = getUnderCell(location,cellLocation);
@@ -384,10 +405,10 @@ public class XLSSearchPortInfoManager {
 
 		this.initProperty();
 		int pCount=0;
-		int cellTempIndex = location.col;// 첫번째
+		int cellTempIndex = location.getCol();// 첫번째
 		HSSFRow ro=null;
 
-		ro= (HSSFRow) sheet.getRow(location.row+i);
+		ro= (HSSFRow) sheet.getRow(location.getRow()+i);
 
 		Vector<TableLocation> data = new Vector<TableLocation>();
 		logger.debug("<port loacation"+location+",portCount:"+portCount+", search start>");
@@ -418,8 +439,9 @@ public class XLSSearchPortInfoManager {
 				// 공백이 아니면 리스트에 추가
 
 				TableLocation cc = new TableLocation();
-				cc.col=cellTempIndex;
-				cc.row=location.row;
+				cc.setCol(cellTempIndex);
+				cc.setRow(location.getRow());
+				
 
 				//logger.debug("port location add "+"["+cc.row+","+cc.col+"]");
 
@@ -444,8 +466,8 @@ public class XLSSearchPortInfoManager {
 			TableLocation voyKey  = new TableLocation();
 
 			voyKey.setHasVoy(false);
-			voyKey.col=vesselKey.col+1;
-			voyKey.row=vesselKey.row;
+			voyKey.setCol(vesselKey.getCol()+1);
+			voyKey.setRow(vesselKey.getRow());			
 			Vector<TableLocation> temp = new Vector<TableLocation>();
 			
 			temp.add(vesselKey);
@@ -455,7 +477,7 @@ public class XLSSearchPortInfoManager {
 			for(int i=1;i<data.size();i++)
 			{
 				TableLocation t=data.get(i);
-				t.col+=1;
+				t.setCol(t.getCol()+1);				
 				temp.add(t);
 			}
 			
@@ -489,14 +511,14 @@ public class XLSSearchPortInfoManager {
 		logger.debug("start");
 		HSSFRow rowUp=null;
 		Vector<TableLocation> data = new Vector<TableLocation>();
-		rowUp= (HSSFRow) sheet.getRow(location.row);
+		rowUp= (HSSFRow) sheet.getRow(location.getRow());
 		HSSFRow rowDown=null;
-		rowDown= (HSSFRow) sheet.getRow(location.row+1);
+		rowDown= (HSSFRow) sheet.getRow(location.getRow()+1);
 		logger.debug("<port loacation"+location+" search start>");
 
 
 		int pCount=0;
-		int cellTempIndex = location.col;// 첫번째
+		int cellTempIndex = location.getCol();// 첫번째
 
 		if(hasVoy)
 		{
@@ -530,8 +552,9 @@ public class XLSSearchPortInfoManager {
 					// 아래 항구 사용
 
 					TableLocation cc = new TableLocation();
-					cc.col=cellTempIndex;
-					cc.row = rowDown.getRowNum();
+					
+					cc.setCol(cellTempIndex);
+					cc.setRow(rowDown.getRowNum());					
 					data.add(cc);
 					pCount++;
 
@@ -544,8 +567,10 @@ public class XLSSearchPortInfoManager {
 				{
 					//위 항구 사용		
 					TableLocation cc = new TableLocation();
-					cc.col=cellTempIndex;
-					cc.row=rowUp.getRowNum();
+					
+					cc.setCol(cellTempIndex);
+					cc.setRow(rowDown.getRowNum());	
+					
 					data.add(cc);
 					pCount++;
 
@@ -562,8 +587,9 @@ public class XLSSearchPortInfoManager {
 					if(!xlsUitl.getPortName(firstcell,false).equals("-"))
 					{
 						TableLocation cc = new TableLocation();
-						cc.col=cellTempIndex;
-						cc.row=rowDown.getRowNum();
+						cc.setCol(cellTempIndex);
+						cc.setRow(rowDown.getRowNum());	
+						
 						data.add(cc);
 						pCount++;
 					}
@@ -602,41 +628,43 @@ public class XLSSearchPortInfoManager {
 		logger.debug("start");
 		rootElement = new Element("port_array");
 		Vector<TableLocation> cellList;
-		int num=searchPortRanageNumber(location.sheet, location);
+		
+		Sheet sheet = location.getSheet();
+		
+		int num=searchPortRanageNumber(sheet, location);
+		
 		if(isUnderPort)
 		{
-			cellList = searchDownPortCell(location.sheet,location, portCount,0);
+			cellList = searchDownPortCell(sheet,location, portCount,0);
 
 			for(int cells =0;cells<cellList.size();cells++)
 			{
 				TableLocation cellLocation = (TableLocation) cellList.get(cells);
 
-				HSSFRow fRow=(HSSFRow) location.sheet.getRow(cellLocation.row);
-				HSSFCell cell_info =fRow.getCell(cellLocation.col);
-
+				HSSFRow fRow=(HSSFRow)sheet.getRow(cellLocation.getRow());
+				HSSFCell cell_info =fRow.getCell(cellLocation.getCol());
+				logger.debug("cell location "+cellLocation.getRow()+","+cellLocation.getCol()+","+xlsUitl.getPortName(cell_info,true));
 				switch (location.getTableType()) {
+				
 				case TableLocation.VESSEL:
 					if(cells!=XLSTableInfo.VOYAGE_LOCATION) //voy
 					{
-						logger.debug("cell location "+cellLocation.row+","+cellLocation.col+","+xlsUitl.getPortName(cell_info,true));
 						addPortFieldElement(xlsUitl.getPortName(cell_info,true));
 					}
 					break;
 				case TableLocation.VOYAGE:
 					if(cells!=XLSTableInfo.VESSEL_LOCATION) //voy
 					{
-						logger.debug("cell location "+cellLocation.row+","+cellLocation.col+","+xlsUitl.getPortName(cell_info,true));
 						addPortFieldElement(xlsUitl.getPortName(cell_info,true));
 					}
 					break;
 				case TableLocation.BOTH:
 					if(cells>XLSTableInfo.VESSEL_LOCATION)
 					{
-						logger.debug("cell location "+cellLocation.row+","+cellLocation.col+","+xlsUitl.getPortName(cell_info,true));
 
 						if(isETA_ETD)
 						{
-							HSSFCell ETDcell=fRow.getCell(cellLocation.col+1);
+							HSSFCell ETDcell=fRow.getCell(cellLocation.getCol()+1);
 							String etdDate =xlsUitl.getStringData(ETDcell,true);
 
 							if(xlsUitl.getPortName(cell_info,true).equals("-")&&etdDate.equals("-"))							
@@ -659,14 +687,14 @@ public class XLSSearchPortInfoManager {
 
 		}else // 하위 항구가 아닐때
 		{
-			cellList = searchNomalPortCell(location.sheet,location, portCount,0);
+			cellList = searchNomalPortCell(sheet,location, portCount,0);
 			
 			boolean flag=false;
 			for(int cells =0;cells<cellList.size();cells++)
 			{
 				TableLocation cellLocation = (TableLocation) cellList.get(cells);
-				HSSFRow fRow= (HSSFRow) location.sheet.getRow(cellLocation.row);
-				HSSFCell cell_info =fRow.getCell(cellLocation.col);
+				HSSFRow fRow= (HSSFRow) sheet.getRow(cellLocation.getRow());
+				HSSFCell cell_info =fRow.getCell(cellLocation.getCol());
 
 				switch (location.getTableType()) {
 				case TableLocation.VESSEL:
@@ -721,7 +749,7 @@ public class XLSSearchPortInfoManager {
 				case TableLocation.BOTH:
 					if(cells!=XLSTableInfo.VESSEL_LOCATION)
 					{
-						logger.debug("cell location "+cellLocation.row+","+cellLocation.col);
+						logger.debug("cell location "+cellLocation.getRow()+","+cellLocation.getCol());
 						if(KSGPropertis.DOUBLE_LINE)
 						{
 							HSSFCell undercell = getUnderCell(location,cellLocation);
@@ -765,7 +793,7 @@ public class XLSSearchPortInfoManager {
 	 * @return
 	 */
 	private int searchPortRanageNumber(Sheet sheet, TableLocation location) {
-		logger.debug("start:"+location.row);
+		logger.debug("start:"+location.getRow());
 		boolean isPortRange = true;
 		int portLoaction;
 
@@ -777,10 +805,10 @@ public class XLSSearchPortInfoManager {
 				break;
 			}
 
-			HSSFRow row=(HSSFRow) sheet.getRow(location.row+portLoaction);
+			HSSFRow row=(HSSFRow) sheet.getRow(location.getRow()+portLoaction);
 			if(row==null)
 				continue;
-			String temp=xlsUitl.getColumString(row.getCell(location.col));
+			String temp=xlsUitl.getColumString(row.getCell(location.getCol()));
 
 			if(temp.length()==0)
 				continue;

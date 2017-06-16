@@ -167,7 +167,7 @@ public class KSGModelManager
 	public void setXLSTableInfoList(Vector tableInfoList) {
 		XLSTableInfoList = tableInfoList;
 		if(XLSTableInfoList==null)
-			return;
+			return;	
 		
 		tempXLSTableInfoList = new Vector();
 		for(int i=0;i<XLSTableInfoList.size();i++)
