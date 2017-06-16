@@ -253,7 +253,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 			AddTableInfoDialog addTableInfoDialog = new AddTableInfoDialog(this,manager.selectedCompany);
 			addTableInfoDialog.createAndUpdateUI();
 		}
-		else if(command.equals("위치조정"))
+		/*else if(command.equals("위치조정"))
 		{
 
 			if(adjestADVListDialog==null)
@@ -266,7 +266,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 				adjestADVListDialog .setShipper(_txfCompany.getText());
 			}
 			adjestADVListDialog.setVisible(true);
-		}
+		}*/
 	}
 
 	/**

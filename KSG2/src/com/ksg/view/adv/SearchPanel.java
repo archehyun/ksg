@@ -78,22 +78,34 @@ import com.ksg.xls.model.SheetInfo;
 public class SearchPanel extends JPanel implements ActionListener{
 	
 	private boolean 		isPageSearch=true;
+	
 	private boolean 		isSamePageSelect=true;
+	
 	private JList 			companyLi;
+	
 	private JButton 		butAdjust,butCompanyAdd,butPre,butNext;
+	
 	private JList 			pageLi;
 	public JList getPageLi() {
 		return pageLi;
 	}
 
 	private TableService 	tableService;
+	
 	private Vector<ShippersTable> tableInfoList;
+	
 	private JPanel 			pnTableList,pnLeftMenu;
+	
 	private String			selectedInput="File";
+	
 	private int 			resultOK,currentPage,resultCancel,startTableIndex,totalTableCount;
-	public JTextField		_txfXLSFile,_txfSearchedTableCount,_txfCompany,_txfDate;
+	
+	public JTextField		_txfXLSFile,_txfSearchedTableCount,txfCompany,_txfDate;
+	
 	private KSGModelManager manager = KSGModelManager.getInstance();
+	
 	private static int _tableViewCount = 10;
+	
 	private Vector<KSGXLSImportPanel> importTableList;
 	public static final String SEARCH_TYPE_COMPANY = "선사";
 	
@@ -104,6 +116,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 	
 	private String selectedCompany;
 	
+	public String getSelectedCompany() {
+		return selectedCompany;
+	}
+
 	protected Logger 		logger = Logger.getLogger(this.getClass());
 	/**
 	 * 
@@ -241,8 +257,11 @@ public class SearchPanel extends JPanel implements ActionListener{
 		pnSearchType.add(cbxSearchType);
 
 		pnSubSearch = new JPanel();
+		
 		selectLay2 = new CardLayout();
+		
 		pnSubSearch.setLayout(selectLay2);
+		
 		pnSubSearch.add( buildCompanyInfoByCompany(),SEARCH_TYPE_COMPANY);
 		pnSubSearch.add(buildCompanyInfoByPage(),SEARCH_TYPE_PAGE);
 
@@ -373,6 +392,24 @@ public class SearchPanel extends JPanel implements ActionListener{
 		
 		add(tabbedPane,BorderLayout.CENTER);
 	}
+	
+	private JPanel buildCompanySearch()
+	{
+		JPanel pnMain = new JPanel();
+		
+		JLabel lblCompany = new JLabel("선사명 : ");
+		
+		pnMain.add(lblCompany);
+		
+		return pnMain;
+	}
+	private JPanel buildPageSearch()
+	{
+		return null;
+	}
+	
+	
+	
 	
 
 	/**
@@ -749,7 +786,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 								if(info.isSelected())
 								{
 									ShippersTable table = new ShippersTable();
-									table.setCompany_abbr(_txfCompany.getText());
+									table.setCompany_abbr(txfCompany.getText());
 									table.setPage((Integer)info.chekInfo);
 									tableInfoList.add(table);
 								}
@@ -1057,7 +1094,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 					for(int j=0;j<c.size();j++)
 					{
-						List li=tableService.getTableProperty(_txfCompany.getText(),(Integer)c.get(j));
+						List li=tableService.getTableProperty(txfCompany.getText(),(Integer)c.get(j));
 
 						logger.debug("property :"+li.size());
 						for(int i=0;i<li.size();i++)
@@ -1101,7 +1138,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		lblCompany.setIcon(new ImageIcon("images/table.png"));
 		pnSubControl1.add(lblCompany);		
 
-		pnSubControl1.add(_txfCompany);
+		pnSubControl1.add(txfCompany);
 
 		pnCompanyInfo.add(pnSubControl1);
 		pnCompanyInfo.add(pnSubPage);
@@ -1254,8 +1291,8 @@ public class SearchPanel extends JPanel implements ActionListener{
 		_txfPort.setEditable(false);
 		//_txfVessel = new JTextField(2);
 		//_txfVessel.setEditable(false);
-		_txfCompany = new JTextField(20);
-		_txfCompany.setEditable(false);
+		txfCompany = new JTextField(20);
+		txfCompany.setEditable(false);
 		_txfPage = new JTextField(5);
 		_txfPage.setEditable(false);
 		_txfPage.setVisible(false);
@@ -1279,7 +1316,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 			manager.selectedCompany=null;
 
 			manager.selectedPage=-1;
-			_txfCompany.setText("");
+			txfCompany.setText("");
 			_txfPage.setText("");
 
 		//	lblSelectedCompanyName.setText("");
@@ -1298,7 +1335,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 			manager.selectedCompany=null;
 
 			manager.selectedPage=-1;
-			_txfCompany.setText("");
+			txfCompany.setText("");
 			_txfPage.setText("");
 			_txfCPage.setText("");
 			_txfPCompany.setText("");
@@ -1320,7 +1357,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 			page=st.nextToken();
 			company = st.nextToken();
 
-			_txfCompany.setText(company);
+			txfCompany.setText(company);
 			
 			this.selectedCompany =company;
 			this.selectedPage = page;

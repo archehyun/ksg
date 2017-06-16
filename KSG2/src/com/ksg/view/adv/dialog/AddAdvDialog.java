@@ -97,7 +97,7 @@ public class AddAdvDialog extends JDialog implements ActionListener{
 		this.setSize(500,180);
 		this.setLocation(((int)screensize.getWidth())/3, ((int)screensize.getHeight())/3);
 		ViewUtil.center(this, false);
-		this.lblXLSFile=manageUI._txfXLSFile;
+		this.lblXLSFile=manageUI.txfXLSFile;
 		this.setTitle("외부데이터 불러오기");
 		this.setVisible(true);
 	}
@@ -364,12 +364,12 @@ public class AddAdvDialog extends JDialog implements ActionListener{
 				if(bo.isSelected())
 				{
 					field2.setText(dateFormat.format(new Date()));
-					manageUI._txfDate.setText(dateFormat.format(new Date()));
+					manageUI.txfDate.setText(dateFormat.format(new Date()));
 
 				}else
 				{
 					field2.setText("");
-					manageUI._txfDate.setText("");
+					manageUI.txfDate.setText("");
 				}
 			}});
 		pnDate.add(box);

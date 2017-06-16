@@ -21,7 +21,9 @@ public class ProcessDialog extends KSGDialog implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private JProgressBar progressBar;
+	
 	public ProcessDialog() {
 
 
@@ -51,7 +53,7 @@ public class ProcessDialog extends KSGDialog implements ActionListener{
 		
 		KSGModelManager.getInstance().isWorkMoniter=true;
 		
-		progressBar.setIndeterminate(true);
+		//progressBar.setIndeterminate(true);
 		
 		this.setTitle("광고정보 추출");
 		Timer timer  = new Timer(1000, this);

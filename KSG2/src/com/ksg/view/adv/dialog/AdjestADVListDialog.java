@@ -22,7 +22,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 
 import com.ksg.dao.DAOManager;
 import com.ksg.dao.impl.BaseService;
@@ -30,6 +29,7 @@ import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
 import com.ksg.domain.ShippersTable;
 import com.ksg.model.KSGModelManager;
+import com.ksg.view.adv.ADVListPanel;
 import com.ksg.view.adv.ADVManageUI;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.util.ViewUtil;
@@ -72,9 +72,9 @@ public class AdjestADVListDialog extends KSGDialog{
 	private Vector<ShippersTable> tableInfoList;
 	private JTable tblAdv;
 	private KSGModelManager 		manager = KSGModelManager.getInstance();
-	ADVManageUI base;
+	ADVListPanel base;
 	public String shipper;
-	public AdjestADVListDialog(ADVManageUI base,Vector<ShippersTable> tableInfoList) {
+	public AdjestADVListDialog(ADVListPanel base,Vector<ShippersTable> tableInfoList) {
 		this.base=base;
 		this.tableInfoList=tableInfoList;
 
