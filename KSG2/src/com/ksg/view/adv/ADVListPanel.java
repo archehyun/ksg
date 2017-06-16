@@ -685,7 +685,9 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			command2.execute();
 
 			//_txfSearchedTableCount.setText(String.valueOf(manager.tableCount));
+			
 			logger.info("end:resultOK:"+manager.tableCount);
+			
 			return resultOK;
 		}catch(Exception e)
 		{
@@ -949,17 +951,15 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		for(int i=0;i<importTableList.size();i++)
 		{	
 			KSGXLSImportPanel xlsPn = importTableList.get(i);
+			
 			Vector portList=xlsPn.getPortList();
+			
 			savePortList(xlsPn, portList);
+			
 			String insertData = new String();
 
-
-			// 수정 필요
-
 			insertData =xlsPn.getTableXMLInfo();
-
-			logger.debug("table info : \n"+insertData);
-
+			
 			ShippersTable tableinfo=(ShippersTable) li.get(i);
 
 			ADVData data = new ADVData();
