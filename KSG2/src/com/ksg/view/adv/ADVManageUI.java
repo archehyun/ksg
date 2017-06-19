@@ -253,20 +253,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 			AddTableInfoDialog addTableInfoDialog = new AddTableInfoDialog(this,manager.selectedCompany);
 			addTableInfoDialog.createAndUpdateUI();
 		}
-		/*else if(command.equals("위치조정"))
-		{
 
-			if(adjestADVListDialog==null)
-			{
-				this.adjestADVListDialog = new AdjestADVListDialog(this, tableInfoList);
-				adjestADVListDialog .setShipper(_txfCompany.getText());
-				adjestADVListDialog.createAndUpdateUI();
-			}else
-			{
-				adjestADVListDialog .setShipper(_txfCompany.getText());
-			}
-			adjestADVListDialog.setVisible(true);
-		}*/
 	}
 
 	/**
@@ -275,7 +262,6 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 	private Component buildCenter() {
 
 		
-		ADVListPanel advListPanel = new ADVListPanel();
 		pnTab = new JTabbedPane();
 		pnTab.addChangeListener(new ChangeListener(){
 
@@ -295,11 +281,11 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 		initComp();
 		//pnTab.addTab("입력정보", buildSearchOptioinPN());
 		
-		searchPanel = new SearchPanel(advListPanel);
+		searchPanel = new SearchPanel();
 		pnTab.addTab("입력정보", searchPanel);
 
 		//pnTab.addTab("결과", buildHistoryCenter());
-		pnTab.addTab("결과", advListPanel);
+		//pnTab.addTab("결과", advListPanel);
 		return pnTab;
 	}
 
@@ -527,12 +513,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 			return pnLeftMenu;
 	}
 
-	/*private Component buildProgress() {
-		JPanel pnMain = new JPanel();
-		pnMain.setPreferredSize(new Dimension(0,15));
-		pnMain.add(new JLabel("엑셀 정보를 가져오는 중..."));
-		return pnMain;
-	}*/
+
 
 	/*private JPanel buildSearchOptioinPN() {
 		_tblSheetNameList = new JTable();
