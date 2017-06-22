@@ -110,11 +110,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	private Vector<ShippersTable> tableInfoList;
 
-	private JPanel 			pnTableList,pnLeftMenu;
+	private JPanel 			pnLeftMenu;
 
 	private String			selectedInput="File";
 
-	private int 			resultOK,currentPage,resultCancel,startTableIndex,totalTableCount;
 
 	public JTextField		_txfXLSFile,_txfSearchedTableCount,txfCompany,_txfDate;
 
@@ -169,7 +168,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	private JComboBox cbxSelectedInput;
 	
-	private KSGTable2 _tblError;
+	private KSGTable2 tblError;
 	
 	private JTable tblPropertyTable;
 	
@@ -223,7 +222,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 				JComboBox b =(JComboBox) e.getSource();
 				_tableViewCount=(Integer)b.getSelectedItem();
 
-				currentPage=0;
 				//updateTableListPN();
 				butNext.setEnabled(false);
 				butPre.setEnabled(false);
@@ -281,7 +279,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 			public void itemStateChanged(ItemEvent e) {
 				selectLay2.show(pnSubSearch, e.getItem().toString());
 				searchType= e.getItem().toString();
-
 			}
 		});
 		JLabel lblSearch= new JLabel("검색 형식 : ");
@@ -374,7 +371,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 				manager.selectedInput=selectedInput ;
 			}
 		});
-		JLabel  lblInputType = new JLabel("입력 형식 : ");
+		
+		
+		
+		JLabel  lblInputType = new JLabel("입력 형식: ");
 		pnSelectType.add(lblInputType);
 		pnSelectType.add(cbxSelectedInput);
 
@@ -382,11 +382,13 @@ public class SearchPanel extends JPanel implements ActionListener{
 		pnControl.add(pnSelectType);
 		pnControl.add(pnInputType);
 
-		_tblError = new KSGTable2(KSGTable2.TABLE_TYPE_ERROR);		
-		_tblError.setName("error");
-		manager.addObservers(_tblError);
+		tblError = new KSGTable2(KSGTable2.TABLE_TYPE_ERROR);
+		
+		tblError.setName("error");
+		
+		manager.addObservers(tblError);
 
-		_tblError.setComponentPopupMenu(createErrorPopupMenu());
+		tblError.setComponentPopupMenu(createErrorPopupMenu());
 
 
 		JTabbedPane tabbedPane = new JTabbedPane();
@@ -446,7 +448,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		add(tabbedPane,BorderLayout.CENTER);
 	}
-
+	
 
 	/**
 	 * @return
@@ -495,7 +497,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 			public void actionPerformed(ActionEvent e) {
 				fileUPAction(fileLi);
-
 			}
 
 		});
@@ -539,7 +540,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 	private JComponent buildSearchOption()
 	{
 
-		JPanel pnMain= new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel pnMain= new JPanel(new BorderLayout());
 		
 		// 검색 형식 : 페이지, 선사
 		JPanel pnSearchType = new JPanel(new FlowLayout(FlowLayout.LEFT));		
@@ -626,15 +627,19 @@ public class SearchPanel extends JPanel implements ActionListener{
 				dialog.createAndUpdateUI();
 
 			}});
+		
+		JPanel pnMainCenter = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 		pnImportBut.add(butSheetSelect);
 		pnImportBut.add(butImportFile);
-
-		pnMain.add(pnSearchType);
-		pnMain.add(pnSelectType);
-		pnMain.add(pnInputType);
-		pnMain.add(pnKeyType);
-		pnMain.add(pnImportBut);
+		
+		pnMainCenter.add(pnSearchType);
+		pnMainCenter.add(pnSelectType);
+		pnMainCenter.add(pnInputType);
+		pnMainCenter.add(pnKeyType);
+		
+		pnMain.add(pnMainCenter);
+		pnMain.add(pnImportBut,BorderLayout.EAST);
 
 
 
@@ -1367,7 +1372,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		//pnSubPage.add(spPageList);
 		pnSubPage.add(pnPageInfo,BorderLayout.WEST);
-		pnSubPage.add(pageContorl,BorderLayout.EAST);
+		//pnSubPage.add(pageContorl,BorderLayout.EAST);
 
 		JPanel pnSubControl1= new JPanel();
 		pnSubControl1.setLayout(new FlowLayout(FlowLayout.LEADING));

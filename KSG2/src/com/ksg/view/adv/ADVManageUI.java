@@ -102,11 +102,11 @@ import com.ksg.view.util.KSGPropertis;
 public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 {	
 	
-	private static final int _LEFT_SIZE = 250;
+	//private static final int _LEFT_SIZE = 250;
 
 	private static int _tableViewCount = 10;
 
-	private static final int ADV_IMPORT_PANEL_ROW_SIZE = 250;
+	//private static final int ADV_IMPORT_PANEL_ROW_SIZE = 250;
 	
 	private static final String SEARCH_TYPE_COMPANY = "¼±»ç";
 	
@@ -120,9 +120,9 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 	
 	private JTable			_tblSheetNameList;
 	
-	private JTable			_tblSheetNameList2;
+	//private JTable			_tblSheetNameList2;
 	
-	private JTable 			_tblTable;
+	//private JTable 			_tblTable;
 	
 	private JTree			_treeMenu;
 	
@@ -139,20 +139,24 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 	
 	public JButton			butNext;
 	
-	private JRadioButton 	butVesselOpt,butVoyageOpt;
+	//private JRadioButton 	butVesselOpt,butVoyageOpt;
 	
-	private JComboBox 		cbxSearchType,cbxSelectedInput;
-	private KSGCommand 		command;
-	private KSGCompboBox 	comp;
+	//private JComboBox 		cbxSearchType,cbxSelectedInput;
+	
+	//private KSGCommand 		command;
+	
+	//private KSGCompboBox 	comp;
+	
 	private JList 			companyLi;
+	
 	private Vector 			companyList;
 
 	private DAOManager daoManager = DAOManager.getInstance();
 	private JList 			fileLi,fileLi2;
 	private Vector<KSGXLSImportPanel> importTableList = new Vector<KSGXLSImportPanel>();
 	private boolean 		isPageSearch=true;
-	private boolean 		isSamePageSelect=true;
-	private JLabel 			lblCompany2,lblPage2,lblSelectedCompanyName,lblSelectedPage;
+	//private boolean 		isSamePageSelect=true;
+	//private JLabel 			lblCompany2,lblPage2,lblSelectedCompanyName,lblSelectedPage;
 
 	protected Logger 		logger = Logger.getLogger(this.getClass());
 	private KSGModelManager manager = KSGModelManager.getInstance();
@@ -168,19 +172,20 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 
 	private String 			searchType=SEARCH_TYPE_COMPANY;
 	private String			selectedInput="File";
-	private CardLayout 		selectLay,selectLay2;
+	//private CardLayout 		selectLay,selectLay2;
 	//private String 			selectXLSFilePath;
 
-	private Vector<ShippersTable> tableInfoList;
+	//private Vector<ShippersTable> tableInfoList;
 	private TablePort tablePort;
 
 	private TableService 	tableService;
 	
 	// test
 
-	private JTable 			tblPropertyTable,tblSelectedCompany;
+	//private JTable 			tblPropertyTable, tblSelectedCompany;
 
-	SearchPanel searchPanel;
+	private SearchPanel searchPanel;
+	
 	public ADVManageUI() {
 
 		Properties properties = new Properties();
@@ -1104,8 +1109,11 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 		pnTitle.add(lblTitle);
 
 		pnTitleMain.add(pnTitle);
+		
 		JPanel pnTitleBouttom = new JPanel();
+		
 		pnTitleBouttom.setPreferredSize(new Dimension(0,15));
+		
 		pnTitleMain.add(pnTitleBouttom,BorderLayout.SOUTH);
 
 
@@ -1116,8 +1124,11 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 
 
 		JPanel pnLeft = new JPanel();
+		
 		pnLeft.setPreferredSize(new Dimension(15,0));
+		
 		JPanel pnRight = new JPanel();
+		
 		pnRight.setPreferredSize(new Dimension(15,0));
 
 
@@ -1129,7 +1140,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 		
 		this.add(pnTitleMain,BorderLayout.NORTH);
 		
-		this.add(buildLeftMenu(),BorderLayout.WEST);
+		//this.add(buildLeftMenu(),BorderLayout.WEST);
 		
 		this.add(pnMain,BorderLayout.CENTER);
 	}
@@ -1385,6 +1396,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 	}
 	public void update(KSGModelManager manager) 
 	{
+		
 	}
 
 
