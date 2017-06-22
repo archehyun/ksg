@@ -86,7 +86,6 @@ import com.ksg.view.comp.KSGTree;
 import com.ksg.view.comp.KSGTree1;
 import com.ksg.view.comp.KSGTreeDefault;
 import com.ksg.view.comp.PageInfo;
-import com.ksg.view.search.dialog.AddTableInfoDialog;
 import com.ksg.view.util.KSGPropertis;
 import com.ksg.view.util.ViewUtil;
 import com.ksg.xls.model.SheetInfo;
@@ -99,9 +98,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	private JList 			companyLi;
 
-	private JButton 		butAdjust,butCompanyAdd,butPre,butNext;
-
 	private JList 			pageLi;
+	
+	private JButton 		butAdjust,butCompanyAdd,butPre,butNext;
+	
 	public JList getPageLi() {
 		return pageLi;
 	}
@@ -144,24 +144,39 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 
 	private KSGPropertis 	propertis = KSGPropertis.getIntance();
+	
 	private String 			selectXLSFilePath;// 선택된 엑셀 파일 경로
+	
 	private JTable _tblSheetNameList;// 선택된 엑셀 파일의 쉬트 이름 목록
+	
 	private KSGCompboBox comp;
+	
 	private JTextField txfTableCount;
+	
 	private JComboBox cbxSearchType;
+	
 	private JPanel pnSubSearch;
+	
 	private CardLayout selectLay2;
+	
 	private JPanel pnSubSelect;
+	
 	private CardLayout selectLay;
+	
 	private ButtonGroup bgKeyword;
 
 	private JRadioButton butVesselOpt, butVoyageOpt;
 
 	private JComboBox cbxSelectedInput;
+	
 	private KSGTable2 _tblError;
+	
 	private JTable tblPropertyTable;
+	
 	private JPanel pnTableInfo;
+	
 	private JTable _tblTable;
+	
 	private JList fileLi;
 
 	private String 			searchType=SEARCH_TYPE_COMPANY;

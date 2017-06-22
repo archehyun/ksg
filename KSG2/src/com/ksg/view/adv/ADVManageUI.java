@@ -17,28 +17,22 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
@@ -46,8 +40,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
@@ -61,19 +53,13 @@ import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -81,32 +67,19 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.commands.ImportTextCommand;
 import com.ksg.commands.InsertADVCommand;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.SearchPortCommand;
-import com.ksg.commands.SearchSheetNameCommand;
-import com.ksg.commands.xls.ImportXLSFileCommand;
-import com.ksg.commands.xls.ImportXLSFileCommandByXML;
-import com.ksg.commands.xls.ImportXLSFileNewCommand;
 import com.ksg.dao.DAOManager;
 import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
-import com.ksg.domain.Table_Property;
 import com.ksg.model.KSGModelManager;
 import com.ksg.model.KSGObserver;
-import com.ksg.view.KSGMainFrame;
-import com.ksg.view.KSGViewParameter;
 import com.ksg.view.adv.PortTableComp.PortColorInfo;
-import com.ksg.view.adv.comp.EditTableModel;
-import com.ksg.view.adv.comp.PageCellRenderer;
 import com.ksg.view.adv.comp.SheetModel;
-import com.ksg.view.adv.comp.SimpleFileFilter;
-import com.ksg.view.adv.dialog.AddAdvDialog;
 import com.ksg.view.adv.dialog.AdjestADVListDialog;
-import com.ksg.view.adv.dialog.SheetSelectDialog;
 import com.ksg.view.adv.dialog.ViewXLSFileDialog;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.FileInfo;
@@ -120,8 +93,6 @@ import com.ksg.view.comp.PageInfo;
 import com.ksg.view.search.dialog.AddTableInfoDialog;
 import com.ksg.view.util.KSGDateUtil;
 import com.ksg.view.util.KSGPropertis;
-import com.ksg.view.util.ViewUtil;
-import com.ksg.xls.model.SheetInfo;
 
 /**
  * @author 박창현
@@ -289,16 +260,6 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 		return pnTab;
 	}
 
-/*	private Component buildSearchOptioinPN2() 
-	{
-		XLSSearchOptionPn optionPn = new XLSSearchOptionPn();
-		return optionPn;
-	}*/
-/*	private Component buildSearchOptioinPN3() 
-	{
-		NewSearchOptionPn optionPn = new NewSearchOptionPn();
-		return optionPn;
-	}*/
 
 
 	private JPanel buildHistoryCenter()
@@ -515,216 +476,6 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 
 
 
-	/*private JPanel buildSearchOptioinPN() {
-		_tblSheetNameList = new JTable();
-		JPanel pnMain = new JPanel();
-		comp = new KSGCompboBox("vessel",KSGCompboBox.TYPE1);
-		txfTableCount = new JTextField(2);
-		JComboBox box = new JComboBox();
-		for(int i=1;i<10;i++)
-		{
-			box.addItem(i);
-		}
-		box.setSelectedIndex(0);
-		box.addActionListener(new ActionListener(){
-
-
-			public void actionPerformed(ActionEvent e) {
-				JComboBox b =(JComboBox) e.getSource();
-				_tableViewCount=(Integer)b.getSelectedItem();
-
-				currentPage=0;
-				updateTableListPN();
-				butNext.setEnabled(false);
-				butPre.setEnabled(false);
-
-				updateUI();
-
-			}});
-
-		comp.setPreferredSize(new Dimension(100,25));
-		pnMain.setLayout(new BorderLayout());
-		Box pnControl= new Box(BoxLayout.Y_AXIS);
-
-		JLabel lblPage = new JLabel("페이지 : ");
-
-		JPanel pnSubControl2 = new JPanel();
-		pnSubControl2.setLayout(new FlowLayout(FlowLayout.LEADING));
-		txfTableCount.setText(_tableViewCount+"");
-
-		JPanel pnSubFileSelect = buildFileSelectPn();
-		JPanel pnSubTextSelect = buildTextSelectPn();
-
-
-		JButton butImportFile = new JButton("\n불러오기(V)",new ImageIcon("images/importxls.gif"));
-		butImportFile.setMnemonic(KeyEvent.VK_V);
-
-		butImportFile.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-				initInfo();
-				if(selectedInput.equals("File"))
-				{
-					actionImportADVInfo();
-
-				}else
-				{
-					importADVTextInfoAction();
-				}
-			}});
-		butImportFile.setPreferredSize(new Dimension(150,45));
-		JPanel pnSearchType = new JPanel();
-		pnSearchType.setLayout(new FlowLayout(FlowLayout.LEFT));
-		cbxSearchType = new JComboBox();
-		cbxSearchType.addItem(SEARCH_TYPE_COMPANY);
-		cbxSearchType.addItem(SEARCH_TYPE_PAGE);
-		cbxSearchType.addItemListener(new ItemListener() {
-
-			public void itemStateChanged(ItemEvent e) {
-				selectLay2.show(pnSubSearch, e.getItem().toString());
-				searchType= e.getItem().toString();
-
-			}
-		});
-		JLabel lblSearch= new JLabel();
-		lblSearch.setText("검색 형식 : ");
-		pnSearchType.add(lblSearch);
-		pnSearchType.add(cbxSearchType);
-
-		pnSubSearch = new JPanel();
-		selectLay2 = new CardLayout();
-		pnSubSearch.setLayout(selectLay2);
-		pnSubSearch.add( buildCompanyInfoByCompany(),SEARCH_TYPE_COMPANY);
-		pnSubSearch.add(buildCompanyInfoByPage(),SEARCH_TYPE_PAGE);
-
-		pnControl.add(pnSearchType);
-		pnControl.add(pnSubSearch);
-
-		JPanel pnType = new JPanel();
-		pnType.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		pnSubSelect = new JPanel();
-		selectLay = new CardLayout();
-		pnSubSelect.setLayout(selectLay);
-		pnSubSelect.add(pnSubFileSelect,"File");
-		pnSubSelect.add(pnSubTextSelect,"Text");
-
-		pnType.add(pnSubSelect);
-
-		JPanel pnImportBut = new JPanel();
-		pnImportBut.setLayout(new GridLayout(0,1));
-
-		pnImportBut.add(butImportFile);
-		JButton butSheetSelect = new JButton("Sheet 선택");		
-		
-		butSheetSelect.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-
-				SheetSelectDialog dialog = new SheetSelectDialog(_tblSheetNameList);
-				dialog.createAndUpdateUI();
-
-			}});
-		pnImportBut.add(butSheetSelect);
-		JPanel pnKeyType = new JPanel(new GridLayout(0,1));
-
-
-		bgKeyword = new ButtonGroup();
-		butVesselOpt = new JRadioButton("Vessel",true);
-		butVoyageOpt = new JRadioButton("Voyage");
-		bgKeyword.add(butVesselOpt);
-		bgKeyword.add(butVoyageOpt);
-		pnKeyType.add(new JLabel("Key word 형식"));
-		pnKeyType.add(butVesselOpt);
-		pnKeyType.add(butVoyageOpt);
-
-		pnType.add(pnKeyType);
-		pnType.add(pnImportBut);
-
-
-		JPanel pnSelectType = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		cbxSelectedInput = new JComboBox();
-		cbxSelectedInput.addItem("File");
-		cbxSelectedInput.addItem("Text");
-		cbxSelectedInput.addItemListener(new ItemListener() {
-
-			public void itemStateChanged(ItemEvent e) {
-				selectLay.show(pnSubSelect, e.getItem().toString());
-				selectedInput = e.getItem().toString();
-
-				manager.selectedInput=selectedInput ;
-			}
-		});
-		JLabel  lbl = new JLabel("입력 형식 : ");
-
-		pnSelectType.add(lbl);
-		pnSelectType.add(cbxSelectedInput);
-		pnControl.add(pnSelectType);
-		pnControl.add(pnType);
-
-		_tblError = new KSGTable2(KSGTable2.TABLE_TYPE_ERROR);		
-		_tblError.setName("error");
-		manager.addObservers(_tblError);
-
-		_tblError.setComponentPopupMenu(createErrorPopupMenu());
-
-
-		JTabbedPane tabbedPane = new JTabbedPane();
-
-		JPanel pnPropety = new JPanel();
-		pnPropety.setLayout(new BorderLayout());
-		tblPropertyTable = new JTable();
-
-		pnPropety.add(new JScrollPane(tblPropertyTable));
-
-		pnTableInfo =new JPanel();
-		_tblTable = new JTable();
-
-		_tblTable.addKeyListener(new KeyAdapter(){
-			public void keyReleased(KeyEvent e) {
-
-				ShippersTable table = new ShippersTable();
-				int row=_tblTable.getSelectedRow();
-
-				int col= _tblTable.getSelectedColumn();
-
-				if(row==-1)
-					return;
-
-				table.setTable_id((String) _tblTable.getValueAt(row, 0));
-
-			}
-		});
-		_tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
-		_tblTable.addMouseListener(new MouseAdapter(){
-			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount()>=1)
-				{
-					JTable table = (JTable) e.getSource();
-					
-					int row=table.getSelectedRow();
-					
-					String company_abbr=(String) table.getValueAt(row, 0);
-					
-					logger.debug("selected Company:"+company_abbr);
-				}
-			}
-		});
-
-		pnTableInfo.setLayout(new BorderLayout());
-		
-		pnTableInfo.add(new JScrollPane(_tblTable),BorderLayout.CENTER);
-
-
-		tabbedPane.addTab("테이블 정보",pnTableInfo);
-		
-		tabbedPane.addTab("History", pnPropety);
-
-		pnMain.add(pnControl,BorderLayout.NORTH);
-		
-		pnMain.add(tabbedPane,BorderLayout.CENTER);
-		return pnMain;
-	}*/
 
 
 	/**
