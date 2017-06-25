@@ -312,7 +312,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 	@Override
 	public void updateTable() {
-
+		searchData();
 	}
 
 	@Override

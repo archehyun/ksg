@@ -535,6 +535,8 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 
 				logger.info("adv execute:"+importTableList.size());
 				
+				
+				
 				progressBar.setMaximum(importTableList.size());
 				
 				dialog.setMAX(importTableList.size());
@@ -571,6 +573,8 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 					ADVListPanel.this.updateUI();
 				}
 				
+				
+				progressBar.setVisible(false);
 				dialog.close();
 				
 				logger.info("end");
@@ -584,6 +588,8 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			logger.debug("<=====start=====>");
 
 			manager.isWorkMoniter=true;
+			
+			progressBar.setVisible(true);
 			
 			manager.workProcessText="XLS 정보를 가져오는 중...";
 
@@ -947,7 +953,8 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		
 		
 		progressBar = new JProgressBar();
-		progressBar.setStringPainted(true);
+		progressBar.setStringPainted(true);		
+		progressBar.setVisible(false);
 		
 		JButton jButton = new JButton("설정 저장");
 		

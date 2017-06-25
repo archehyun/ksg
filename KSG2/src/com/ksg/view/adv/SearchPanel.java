@@ -194,13 +194,13 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	public SearchPanel() {
 
+		initComp();
+		
 		tableService = daoManager.createTableService();
 
 		advListPanel = new ADVListPanel();
 
 		advListPanel.setSearchPanel(this);
-
-		initComp();
 
 		_tblSheetNameList = new JTable();
 
@@ -244,11 +244,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		txfTableCount.setText(_tableViewCount+"");
 
-		JPanel pnSubFileSelect = buildFileSelectPn();
-
-		JPanel pnSubTextSelect = buildTextSelectPn();
-
-		//JButton butImportFile = new JButton("\n불러오기(V)",new ImageIcon("images/importxls.gif"));
 		JButton butImportFile = new JButton("\n불러오기(V)");
 
 		butImportFile.setMnemonic(KeyEvent.VK_V);
@@ -268,52 +263,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 					//importADVTextInfoAction();
 				}
 			}});
-		//butImportFile.setPreferredSize(new Dimension(150,45));
-		JPanel pnSearchType = new JPanel();
-		pnSearchType.setLayout(new FlowLayout(FlowLayout.LEFT));
-		cbxSearchType = new JComboBox();
-		cbxSearchType.addItem(SEARCH_TYPE_COMPANY);
-		cbxSearchType.addItem(SEARCH_TYPE_PAGE);
-		cbxSearchType.addItemListener(new ItemListener() {
+		
+	/*	JPanel pnImportBut = new JPanel( new FlowLayout(FlowLayout.LEFT	));
 
-			public void itemStateChanged(ItemEvent e) {
-				selectLay2.show(pnSubSearch, e.getItem().toString());
-				searchType= e.getItem().toString();
-			}
-		});
-		JLabel lblSearch= new JLabel("검색 형식 : ");
-		lblSearch.setText("검색 형식 : ");
-		pnSearchType.add(lblSearch);
-		pnSearchType.add(cbxSearchType);
-
-		pnSubSearch = new JPanel();		
-		selectLay2 = new CardLayout();		
-		pnSubSearch.setLayout(selectLay2); 
-
-		pnSubSearch.add( buildCompanyInfoByCompany(),SEARCH_TYPE_COMPANY);
-		pnSubSearch.add(buildCompanyInfoByPage(),SEARCH_TYPE_PAGE);
-
-		pnControl.add(pnSearchType);
-		pnControl.add(pnSubSearch);
-
-		JPanel pnInputType = new JPanel();
-		pnInputType.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		pnSubSelect = new JPanel();
-
-		selectLay = new CardLayout();
-
-		pnSubSelect.setLayout(selectLay);
-
-		pnSubSelect.add(pnSubFileSelect,"File");
-
-		pnSubSelect.add(pnSubTextSelect,"Text");
-
-		pnInputType.add(pnSubSelect);
-
-		JPanel pnImportBut = new JPanel( new FlowLayout(FlowLayout.LEFT	));
-
-		//pnImportBut.setLayout(new GridLayout(1,0));
 
 		pnImportBut.add(butImportFile);
 
@@ -328,59 +280,12 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 			}});
 
-		pnImportBut.add(butSheetSelect);
-
-		JPanel pnKeyType = new JPanel(new GridLayout(0,1));
-
-		bgKeyword = new ButtonGroup();
-
-		butVesselOpt = new JRadioButton("Vessel",true);
-
-		butVoyageOpt = new JRadioButton("Voyage");
-
-		bgKeyword.add(butVesselOpt);
-
-		bgKeyword.add(butVoyageOpt);
-
-		cbxKeyWordType = new JComboBox();
-		cbxKeyWordType.addItem("Vessel");
-		cbxKeyWordType.addItem("Voyage");
-
-		pnKeyType.add(new JLabel("Key word 형식"));
-
-		//pnKeyType.add(butVesselOpt);
-
-		pnKeyType.add(cbxKeyWordType);
-
-		pnInputType.add(pnKeyType);
-
-		pnInputType.add(pnImportBut);
+		pnImportBut.add(butSheetSelect);*/
 
 
-		JPanel pnSelectType = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
-		cbxSelectedInput = new JComboBox();
-		cbxSelectedInput.addItem("File");
-		cbxSelectedInput.addItem("Text");
-		cbxSelectedInput.addItemListener(new ItemListener() {
-
-			public void itemStateChanged(ItemEvent e) {
-				selectLay.show(pnSubSelect, e.getItem().toString());
-				selectedInput = e.getItem().toString();
-
-				manager.selectedInput=selectedInput ;
-			}
-		});
-		
-		
-		
-		JLabel  lblInputType = new JLabel("입력 형식: ");
-		pnSelectType.add(lblInputType);
-		pnSelectType.add(cbxSelectedInput);
 
 
-		pnControl.add(pnSelectType);
-		pnControl.add(pnInputType);
+
 
 		tblError = new KSGTable2(KSGTable2.TABLE_TYPE_ERROR);
 		
@@ -440,9 +345,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		tabbedPane.addTab("결과", advListPanel);
 
-		tabbedPane.addTab("테이블 정보",pnTableInfo);
+		//tabbedPane.addTab("테이블 정보",pnTableInfo);
 
-		tabbedPane.addTab("History", pnPropety);
+		//tabbedPane.addTab("History", pnPropety);
 
 		add(buildSearchOption(),BorderLayout.NORTH);
 
@@ -454,15 +359,13 @@ public class SearchPanel extends JPanel implements ActionListener{
 	 * @return
 	 */
 	private JPanel buildFileListPn() {
-		JPanel pnSubControlInfo1 = new JPanel();
-		pnSubControlInfo1.setLayout(new FlowLayout(FlowLayout.LEADING));
-
-		JLabel lblFileName = new JLabel("파일 명 : ");
-		//lblFileName.setIcon(new ImageIcon("images/xlslogo.png"));
-		pnSubControlInfo1.add(lblFileName);
+		JPanel pnMain = new JPanel(new BorderLayout());
+		//pnMain.setLayout(new FlowLayout(FlowLayout.LEADING));
+		JLabel lblFileName = new JLabel("파일 명: ");
+		
 		this._txfXLSFile.setVisible(false);	
 
-		pnSubControlInfo1.add(this._txfXLSFile);
+		//pnMain.add(this._txfXLSFile);
 
 
 
@@ -519,85 +422,112 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		fileLi.setModel(new DefaultListModel());
 		JScrollPane scrollPane = new JScrollPane(fileLi);
-		scrollPane.setPreferredSize(new Dimension(150,50));
+		
+		scrollPane.setPreferredSize(new Dimension(200,45));
+		
+		
+	//	pnMain.add(lblFileName,BorderLayout.NORTH);
+		
 		pnFile.add(scrollPane);
-
 		pnFile.add(pnButList,BorderLayout.SOUTH);
 
-		pnSubControlInfo1.add(pnFile);
-		return pnSubControlInfo1;
+		pnMain.add(pnFile);
+		pnMain.setBorder(BorderFactory.createTitledBorder("파일 목록"));
+		return pnMain;
 	}
 
 	private JPanel buildFileSelectPn() {
-		JPanel pnSubControlInfo= new JPanel();
-		pnSubControlInfo.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JPanel pnSubFileList = buildFileListPn();		
-		pnSubControlInfo.add(pnSubFileList);
-		return pnSubControlInfo;
+		JPanel pnMain = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		pnSubSelect = new JPanel();		
+		selectLay = new CardLayout();		
+		pnSubSelect.setLayout(selectLay);		
+		pnSubSelect.add(buildFileListPn(),"File");		
+		pnSubSelect.add(buildTextSelectPn(),"Text");
+		pnMain.add(pnSubSelect);		
+		
+		return pnMain;
 	}
 
+	private JPanel buildKeyType()	
+	{
+		JPanel pnKeyTypeMain = new JPanel(new BorderLayout());
+		
+		pnKeyTypeMain.setAlignmentY(JPanel.TOP_ALIGNMENT);
+		JPanel pnKeyType = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	
+		JLabel lblKeyWord = new JLabel("키워드 형식: ");
+		lblKeyWord.setHorizontalAlignment(JLabel.RIGHT);
+		lblKeyWord.setPreferredSize(new Dimension(75, 20));
+		
+		
+	//	JPanel pnSelectType = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel  lblInputType = new JLabel("입력 형식: ");
+		lblInputType.setPreferredSize(new Dimension(75, 15));
+		lblInputType.setHorizontalAlignment(JLabel.RIGHT);
+		
 
+		JPanel pnInputType = new JPanel();
+		pnInputType.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		pnKeyType.add(lblKeyWord);
+		pnKeyType.add(cbxKeyWordType);
+		pnKeyType.add(lblInputType);		
+		pnKeyType.add(cbxSelectedInput);
+		
+		
+		
+		
+		pnKeyTypeMain.add(pnKeyType,BorderLayout.WEST);
+//		pnKeyTypeMain.add(pnInputType);
+		return pnKeyTypeMain;
+	}
 	private JComponent buildSearchOption()
 	{
-
 		JPanel pnMain= new JPanel(new BorderLayout());
 		
 		// 검색 형식 : 페이지, 선사
-		JPanel pnSearchType = new JPanel(new FlowLayout(FlowLayout.LEFT));		
-		cbxSearchType = new JComboBox();
-		cbxSearchType.addItem(SEARCH_TYPE_COMPANY);
-		cbxSearchType.addItem(SEARCH_TYPE_PAGE);
-		cbxSearchType.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				selectLay2.show(pnSubSearch, e.getItem().toString());
-				searchType= e.getItem().toString();
-			}
-		});
+		JPanel pnSearchType = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		
 		pnSubSearch = new JPanel();		
 		selectLay2 = new CardLayout();		
 		pnSubSearch.setLayout(selectLay2);
 		pnSubSearch.add( buildCompanyInfoByCompany(),SEARCH_TYPE_COMPANY);
-		pnSubSearch.add(buildCompanyInfoByPage(),SEARCH_TYPE_PAGE);		
-		JLabel lblSearch= new JLabel("검색 형식 : ");		
+		//pnSubSearch.add(buildCompanyInfoByPage(),SEARCH_TYPE_PAGE);	
+		
+		JLabel lblSearch= new JLabel("검색 형식: ");		
+		
+		lblSearch.setPreferredSize(new Dimension(75, 20));
+		lblSearch.setHorizontalAlignment(JLabel.RIGHT);
+		
 		pnSearchType.add(lblSearch);
 		pnSearchType.add(cbxSearchType);
 		pnSearchType.add(pnSubSearch);
 		
+		GridLayout gridLayout = new GridLayout(0,1);
+		
+		JPanel pnSearchTypeMain = new JPanel(gridLayout);
+		
+	//	pnSearchType.setBorder(BorderFactory.createEtchedBorder());
+		pnSearchTypeMain.add(pnSearchType);
+		pnSearchTypeMain.add(buildKeyType());
 		
 
 		//입력 형식 : 파일, 텍스트		
-		JPanel pnSelectType = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel  lblInputType = new JLabel("입력 형식 : ");
-		pnSelectType.add(lblInputType);
-		pnSelectType.add(cbxSelectedInput);
 
-
-		JPanel pnInputType = new JPanel();
-		pnInputType.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnSubSelect = new JPanel();		
-		selectLay = new CardLayout();		
-		pnSubSelect.setLayout(selectLay);		
-		pnSubSelect.add(buildFileSelectPn(),"File");		
-		pnSubSelect.add(buildTextSelectPn(),"Text");
-		pnInputType.add(pnSubSelect);
 
 
 		// 조회 형식 : Vessel, Voyage
-		JPanel pnKeyType = new JPanel(new GridLayout(0,1));
+	
 		/*bgKeyword = new ButtonGroup();		
 		butVesselOpt = new JRadioButton("Vessel",true);		
 		butVoyageOpt = new JRadioButton("Voyage");		
 		bgKeyword.add(butVesselOpt);		
 		bgKeyword.add(butVoyageOpt);		*/
-		cbxKeyWordType = new JComboBox();
-		cbxKeyWordType.addItem("Vessel");
-		cbxKeyWordType.addItem("Voyage");		
-		pnKeyType.add(new JLabel("Key word 형식"));		
-		//pnKeyType.add(butVesselOpt);		
-		pnKeyType.add(cbxKeyWordType);
 
 
-		JPanel pnImportBut = new JPanel( new FlowLayout(FlowLayout.LEFT	));
+
+		JPanel pnImportBut = new JPanel( new FlowLayout(FlowLayout.RIGHT	));
 		JButton butImportFile = new JButton("\n불러오기(V)");
 		butImportFile.setMnemonic(KeyEvent.VK_V);
 		butImportFile.addActionListener(new ActionListener(){
@@ -627,19 +557,20 @@ public class SearchPanel extends JPanel implements ActionListener{
 				dialog.createAndUpdateUI();
 
 			}});
+		JPanel pnSeachs =  new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnSeachs.add(pnSearchTypeMain);
+		pnSeachs.add(buildFileSelectPn(),BorderLayout.EAST);
 		
-		JPanel pnMainCenter = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		
 
 		pnImportBut.add(butSheetSelect);
 		pnImportBut.add(butImportFile);
 		
-		pnMainCenter.add(pnSearchType);
-		pnMainCenter.add(pnSelectType);
-		pnMainCenter.add(pnInputType);
-		pnMainCenter.add(pnKeyType);
+		pnMain.add(pnSeachs);	
 		
-		pnMain.add(pnMainCenter);
 		pnMain.add(pnImportBut,BorderLayout.EAST);
+		
 
 
 
@@ -901,7 +832,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		JPanel  pnMain = new JPanel();
 		pnMain.setLayout(new FlowLayout(FlowLayout.LEFT));
 		TitledBorder fileInfoBorder = BorderFactory.createTitledBorder("Text 입력");
-		pnMain.setBorder(fileInfoBorder);
+		//pnMain.setBorder(fileInfoBorder);
 		JLabel lbl = new JLabel("파일 형식 : ");
 		JButton butView = new JButton("입력창 표시");
 		butView.addActionListener(new ActionListener() {
@@ -1124,21 +1055,22 @@ public class SearchPanel extends JPanel implements ActionListener{
 				ViewXLSFileDialog dialog = new ViewXLSFileDialog(info);
 				dialog.createAndUpdateUI();
 
-
-
 			}});
 
 		menu.add(viewMenu);
 		return menu;
 	}
+
+	
+	
 	private Component buildCompanyInfoByCompany()
 	{
-		JPanel pnCompanyInfo = new JPanel();
-		pnCompanyInfo.setLayout( new FlowLayout(FlowLayout.LEFT));
-		JPanel pnSubPage = new JPanel(); 
+		JPanel pnMain = new JPanel();
+		pnMain.setLayout( new FlowLayout(FlowLayout.LEFT));
+		//JPanel pnSubPage = new JPanel(); 
 		TitledBorder pageBoder = BorderFactory.createTitledBorder("페이지 선택(2)");
-		pnSubPage.setBorder(pageBoder);
-		pnSubPage.setLayout(new BorderLayout());
+		//pnSubPage.setBorder(pageBoder);
+		//pnSubPage.setLayout(new BorderLayout());
 
 
 		JLabel lblSelectedpage = new JLabel("");
@@ -1162,81 +1094,12 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		pnPageInfo.add(_txfPage);
 
-		pageLi = new JList();
-		
-		DefaultListModel defaultListModel = new DefaultListModel();
-		pageLi.setModel(defaultListModel);
-		PageCellRenderer pageCellRenderer = new PageCellRenderer();
-		pageLi.setCellRenderer(pageCellRenderer);
-		pageLi.addMouseListener(new MouseAdapter() {
-
-			public void mouseClicked(MouseEvent e) {
-				JList li3=(JList) e.getSource();
-				JCheckBox box=(JCheckBox) li3.getSelectedValue();
-				if(box==null)
-					return;
-				logger.debug(box.getModel().isSelected());
-				if(box.getModel().isSelected())
-				{
-					box.getModel().setSelected(false);
-				}else
-				{
-					box.getModel()	.setSelected(true);
-				}
-				DefaultListModel m = (DefaultListModel) pageLi.getModel();
-				Vector c=new Vector();
-				for(int i=0;i<m.getSize();i++)
-				{
-
-					PageInfo info=(PageInfo) m.get(i);
-					if(info.isSelected())
-					{						
-						c.add((Integer)info.chekInfo);
-					}
-				}
-				try {
-					DefaultTableModel model = new DefaultTableModel();
-
-					String[]colName = {"선사명","페이지","하위항구","Voyage추가여부","구분자","구분자 위치"};
-
-					for(int i=0;i<colName.length;i++)
-						model.addColumn(colName[i]);
-
-					for(int j=0;j<c.size();j++)
-					{
-						List li=tableService.getTableProperty(txfCompany.getText(),(Integer)c.get(j));
-
-						logger.debug("property :"+li.size());
-						for(int i=0;i<li.size();i++)
-						{
-							Table_Property p=(Table_Property) li.get(i);
-
-							model.addRow(new Object[]{p.getCompany_abbr(),
-									p.getPage(),
-									p.getUnder_port(),
-									(p.getVoyage()==1)?"추가":"-",
-											p.getVesselvoydivider(),
-											p.getVesselvoycount()
-							});
-
-						}
-						tblPropertyTable.setModel(model);
-						updateTableInfo2((DefaultListModel) pageLi.getModel());
-					}
-
-				} catch (SQLException ee) 
-				{
-					ee.printStackTrace();
-				}
-
-				pageLi.updateUI();
-			}
-		});
+	
 		//JScrollPane spPageList = new JScrollPane(pageLi);
 		//spPageList.setPreferredSize(new Dimension(100,75));
 
 		//pnSubPage.add(spPageList);
-		pnSubPage.add(pnPageInfo,BorderLayout.WEST);
+		
 		JButton butPageControl = new JButton("검색");
 		butPageControl.addActionListener(new ActionListener() {
 			
@@ -1245,7 +1108,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 				
 				JButton but = (JButton) e.getSource();
 				
-				
 				PageListDialog dialog = new PageListDialog();
 				dialog.setLocation(but.getLocationOnScreen());
 				dialog.createAndUpdateUI();
@@ -1253,22 +1115,20 @@ public class SearchPanel extends JPanel implements ActionListener{
 			}
 		});
 		
-		pnSubPage.add(butPageControl,BorderLayout.EAST);
+	//	pnSubPage.add(pnPageInfo,BorderLayout.WEST);
+	//	pnSubPage.add(butPageControl,BorderLayout.EAST);
 
-		JPanel pnSubControl1= new JPanel();
-
-		pnSubControl1.setLayout(new FlowLayout(FlowLayout.LEADING));
 
 		//TitledBorder companyBoder = BorderFactory.createTitledBorder("선사 선택(1)");
 		//pnSubControl1.setBorder(companyBoder);
-		JLabel lblCompany = new JLabel("선사명 : ");
+		JLabel lblCompany = new JLabel("선사명: ");
+		lblCompany.setPreferredSize(new Dimension(75, 20));
+		lblCompany.setHorizontalAlignment(JLabel.RIGHT);
 		//lblCompany.setIcon(new ImageIcon("images/table.png"));
-		pnSubControl1.add(lblCompany);		
 
-		pnSubControl1.add(txfCompany);
 
-		JButton jButton = new JButton("검색");
-		jButton.addActionListener(new ActionListener() {
+		JButton butSearch = new JButton("검색");
+		butSearch.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1277,20 +1137,23 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 			}
 		});
-		pnSubControl1.add(jButton);
+		
+		
+		pnMain.add(lblCompany);
+		pnMain.add(txfCompany);		
+		pnMain.add(butSearch);
+		pnMain.add(pnPageInfo);		
+		pnMain.add(butPageControl);
 
-		pnCompanyInfo.add(pnSubControl1);
-		pnCompanyInfo.add(pnSubPage);
-
-		return pnCompanyInfo;
+		return pnMain;
 	}
 
 	private Component buildCompanyInfoByPage() {
-		JPanel pnCompanyInfo = new JPanel();
-		pnCompanyInfo.setLayout( new FlowLayout(FlowLayout.LEFT));
+		JPanel pnMain = new JPanel();
+		pnMain.setLayout( new FlowLayout(FlowLayout.LEFT));
 		JPanel pnSubPage = new JPanel(); 
 		TitledBorder pageBoder = BorderFactory.createTitledBorder("선사 선택");
-		pnSubPage.setBorder(pageBoder);
+		//pnSubPage.setBorder(pageBoder);
 		pnSubPage.setLayout(new BorderLayout());
 		JLabel lblSelectedpage = new JLabel("선사명 : ");
 
@@ -1383,10 +1246,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		pnSubControl1.add(_txfCPage);
 
-		pnCompanyInfo.add(pnSubControl1);
-		pnCompanyInfo.add(pnSubPage);
+		pnMain.add(pnSubControl1);
+		pnMain.add(pnSubPage);
 
-		return pnCompanyInfo;
+		return pnMain;
 	}
 	public void updateTableInfo2(DefaultListModel listModel) 
 	{
@@ -1443,6 +1306,107 @@ public class SearchPanel extends JPanel implements ActionListener{
 		txfPCompany.setEditable(false);
 		_txfSearchedTableCount = new JTextField(2);
 		_txfSearchedTableCount.setEditable(false);
+		
+		cbxSelectedInput = new JComboBox();
+		cbxSelectedInput.addItem("File");
+		cbxSelectedInput.addItem("Text");
+		cbxSelectedInput.addItemListener(new ItemListener() {
+
+			public void itemStateChanged(ItemEvent e) {
+				selectLay.show(pnSubSelect, e.getItem().toString());
+				selectedInput = e.getItem().toString();
+
+				manager.selectedInput=selectedInput ;
+			}
+		});
+		cbxKeyWordType = new JComboBox();
+		cbxKeyWordType.setPreferredSize(new Dimension(125, 20));
+		cbxKeyWordType.addItem("Vessel");
+		cbxKeyWordType.addItem("Voyage");
+		
+		cbxSearchType = new JComboBox();
+		cbxSearchType.setPreferredSize(new Dimension(125, 20));
+		cbxSearchType.addItem(SEARCH_TYPE_COMPANY);
+		cbxSearchType.addItem(SEARCH_TYPE_PAGE);
+		cbxSearchType.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				selectLay2.show(pnSubSearch, e.getItem().toString());
+				searchType= e.getItem().toString();
+			}
+		});
+		
+	pageLi = new JList();
+		
+		DefaultListModel defaultListModel = new DefaultListModel();
+		pageLi.setModel(defaultListModel);
+		PageCellRenderer pageCellRenderer = new PageCellRenderer();
+		pageLi.setCellRenderer(pageCellRenderer);
+		pageLi.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				JList li3=(JList) e.getSource();
+				JCheckBox box=(JCheckBox) li3.getSelectedValue();
+				if(box==null)
+					return;
+				logger.debug(box.getModel().isSelected());
+				if(box.getModel().isSelected())
+				{
+					box.getModel().setSelected(false);
+				}else
+				{
+					box.getModel()	.setSelected(true);
+				}
+				DefaultListModel m = (DefaultListModel) pageLi.getModel();
+				Vector c=new Vector();
+				for(int i=0;i<m.getSize();i++)
+				{
+
+					PageInfo info=(PageInfo) m.get(i);
+					if(info.isSelected())
+					{						
+						c.add((Integer)info.chekInfo);
+					}
+				}
+				try {
+					DefaultTableModel model = new DefaultTableModel();
+
+					String[]colName = {"선사명","페이지","하위항구","Voyage추가여부","구분자","구분자 위치"};
+
+					for(int i=0;i<colName.length;i++)
+						model.addColumn(colName[i]);
+
+					for(int j=0;j<c.size();j++)
+					{
+						List li=tableService.getTableProperty(txfCompany.getText(),(Integer)c.get(j));
+
+						logger.debug("property :"+li.size());
+						for(int i=0;i<li.size();i++)
+						{
+							Table_Property p=(Table_Property) li.get(i);
+
+							model.addRow(new Object[]{p.getCompany_abbr(),
+									p.getPage(),
+									p.getUnder_port(),
+									(p.getVoyage()==1)?"추가":"-",
+											p.getVesselvoydivider(),
+											p.getVesselvoycount()
+							});
+
+						}
+						tblPropertyTable.setModel(model);
+						updateTableInfo2((DefaultListModel) pageLi.getModel());
+					}
+
+				} catch (SQLException ee) 
+				{
+					ee.printStackTrace();
+				}
+
+				pageLi.updateUI();
+			}
+		});
+		
+		
 	}
 	public	void updateViewByTree(TreePath path) {
 
@@ -1630,8 +1594,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 				pageInfoList.add((PageInfo) model.get(i));	
 			}
 
-
-
 			this.advListPanel.actionImportADVInfo(selectedCompany, 
 					selectedPage,
 					getSelectedSheetList(_tblSheetNameList), 
@@ -1651,16 +1613,23 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	}
 
+	/**
+	 * 선사 정보
+	 * @author archehyun
+	 *
+	 */
 	class SearchCompanyAndPageDialog extends KSGDialog
 	{
 
-		String selectedParam;
+		private String selectedParam;// 검색된 정보
 		private JTextField _txfSearchByCompany;
 		private KSGTreeDefault tree1;
 		private JTree _treeMenu;
 
 		@Override
 		public void createAndUpdateUI() {
+			
+			this.setTitle("검색");
 			pnLeftMenu = new JPanel();
 			JPanel pnSearch =  new JPanel();
 			pnSearch.setLayout(new BorderLayout());
@@ -1820,7 +1789,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 				this.getContentPane().add(pnMain);
 				this.getContentPane().add(KSGDialog.createMargin(10, 0),BorderLayout.WEST);
+				
 				this.setSize(400,400);
+				this.setLocationRelativeTo(SearchPanel.this);
 
 				this.setVisible(true);
 
@@ -1885,6 +1856,20 @@ public class SearchPanel extends JPanel implements ActionListener{
 		}
 
 	}
+	
+	class InputSelectDialog extends KSGDialog
+	{
+		public InputSelectDialog() {
+			
+		}
+
+		@Override
+		public void createAndUpdateUI() {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
 	class PageListDialog extends KSGDialog implements ActionListener
 	{
 		@Override

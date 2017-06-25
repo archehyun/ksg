@@ -287,7 +287,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		String command = e.getActionCommand();
 		if(command.equals(STRING_SEARCH))
 		{
-			searchAction();
+			searchData();
 		}
 		else if(command.equals(STRING_DELETE))
 		{
@@ -389,7 +389,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		dialog.createAndUpdateUI();
 		if(dialog.result==KSGDialog.SUCCESS)
 		{
-			searchAction();
+			searchData();
 		}
 	}
 	private void deleteAllAction()
@@ -425,7 +425,7 @@ public class PnVessel extends PnBase implements ActionListener {
 				int count=baseService.deleteVessel(data);
 				if(count>0)
 				{
-					searchAction();
+					searchData();
 					JOptionPane.showMessageDialog(this, "삭제되었습니다.");
 				}
 
@@ -440,7 +440,7 @@ public class PnVessel extends PnBase implements ActionListener {
 	/**
 	 * 
 	 */
-	private void searchAction() {
+	private void searchData() {
 		String field=(String) cbxField.getSelectedItem();
 		String query=null;
 
@@ -512,6 +512,8 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	@Override
 	public void updateTable() {
+		
+		searchData();
 		/*try {	
 			List li =baseService.getSearchedVesselList(new Vessel());
 			searchTotalSize=li.size();
@@ -543,7 +545,7 @@ public class PnVessel extends PnBase implements ActionListener {
 						dialog .createAndUpdateUI();
 						if(dialog.result==KSGDialog.SUCCESS)
 						{
-							searchAction();
+							searchData();
 						}
 
 					} catch (SQLException e1) {

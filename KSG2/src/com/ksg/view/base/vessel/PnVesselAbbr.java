@@ -263,7 +263,7 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 	@Override
 	public void updateTable() {
 
-		//searchData();	
+		searchData();	
 	}
 
 	class TableSelectListner extends MouseAdapter

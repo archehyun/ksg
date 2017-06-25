@@ -67,9 +67,7 @@ public class PnArea extends PnBase implements ActionListener{
 	private JPanel buildCenter()
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
-
 		JScrollPane jScrollPane =createTablePanel();
-
 		tblTable.addMouseListener(new TableSelectListner());
 
 		pnMain.add(jScrollPane);
@@ -201,7 +199,6 @@ public class PnArea extends PnBase implements ActionListener{
 
 		model.clear();
 
-
 		try {
 			List li =baseService.getSearchedAreaList(query);
 
@@ -254,6 +251,8 @@ public class PnArea extends PnBase implements ActionListener{
 
 	@Override
 	public void updateTable() {
+		
+		this.searchData(null);
 		
 	}
 	class MyTableModelListener implements TableModelListener {

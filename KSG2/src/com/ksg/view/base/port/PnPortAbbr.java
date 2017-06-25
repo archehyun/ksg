@@ -217,7 +217,7 @@ public class PnPortAbbr extends PnBase implements ActionListener{
 
 	@Override
 	public void updateTable() {
-
+		searchData();
 	}
 
 	@Override

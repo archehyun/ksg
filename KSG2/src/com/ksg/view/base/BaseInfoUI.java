@@ -198,7 +198,7 @@ public class BaseInfoUI extends JPanel{
 		{			
 			panelList.get(baseName).updateTable();
 			
-			cardLayout.show(pnMain, baseName);	
+			cardLayout.show(pnMain, baseName);
 		}
 		
 	}
