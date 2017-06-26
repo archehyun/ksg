@@ -73,6 +73,10 @@ import com.ksg.view.search.dialog.SearchVesselDialog;
 import com.ksg.view.util.KSGDateUtil;
 import com.ksg.xls.xml.KSGXMLManager;
 
+/**광고 정보 수동 입력 테이블
+ * @author archehyun
+ *
+ */
 public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwner{
 	/**
 	 * 
@@ -82,31 +86,31 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 	protected Logger 			logger = Logger.getLogger(getClass());
 
 	private SelectionListener listener;
-	
+
 	private int prevKeyCode;
-	
-	ShippersTable shippersTableInfo; // 테이블 정보
+
+	private ShippersTable shippersTableInfo; // 테이블 정보
 
 	private DefaultTableModel vesselModel;  // 선박 정보
 
 	public void setVesselModel(DefaultTableModel vesselModel) {
 		this.vesselModel = vesselModel;
 	}
-	
+
 	private ADVData selectedADVData; // 광고정보
-	
+
 	private int selectedrow=0,selectedcol=0;
-	
+
 	private int ADV_ROW_H;
 
 	private int max;
 
 	private TableService tableService;
 
-	protected BaseService _baseService;
-	
-	private ADVService _advservice;
-	
+	protected BaseService baseService;
+
+	private ADVService advservice;
+
 	private DAOManager daomanager;
 
 	/**선박 정보 할당
@@ -137,9 +141,9 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		setName("advTable");
 
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		
+
 		setCellSelectionEnabled(true);
-		
+
 		listener = new SelectionListener(this);
 
 		getSelectionModel().addListSelectionListener(listener);
@@ -147,20 +151,19 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		ADV_ROW_H=KSGModelManager.ADV_ROW_H; 
 
 		setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
-		
+
 		daomanager = DAOManager.getInstance();
-		
-		_advservice = daomanager.createADVService();
-		
-		_baseService = daomanager.createBaseService();
-		
+
+		advservice = daomanager.createADVService();
+
+		baseService = daomanager.createBaseService();
+
 		tableService = daomanager.createTableService();
 	}
-	
-	
+
+
 	public void delete()
 	{
-		
 		logger.info("삭제");
 		DefaultTableModel model=(DefaultTableModel) getModel();
 		int row = model.getRowCount();
@@ -172,13 +175,13 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		}
 		setModel(model);
 		updateUI();
-		
+
 	}
-			
+
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+
 		if(e.getKeyCode()==KeyEvent.VK_C)
 		{
 			if(prevKeyCode == KeyEvent.VK_CONTROL)
@@ -192,32 +195,33 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			if(prevKeyCode == KeyEvent.VK_CONTROL)
 			{
 				// 붙여넣을 테이블에 선택된 시작 셀 위치
-				
+
 				int selectedRow=this.getSelectedRow();
 				int selectedColum = this.getSelectedColumn();
-				
+
 				String copyValue=this.getClipboardContents();
-				
+
 				String rowField[]=copyValue.split("\n");
-				
+
 				// 선택 지점부터 복사된 값 길이 까지
 				for(int tableRowIndex=selectedRow,rowFieldCount=0;tableRowIndex<selectedRow+rowField.length;tableRowIndex++, rowFieldCount++)
 				{
 					// 붙여넣을 영역이 전체 row 보다 크면 중지
 					if(tableRowIndex>=this.getRowCount())
 						break;
-					
+
 					String columField[] = rowField[rowFieldCount].split("\t");
 					for(int tableColumIndex=selectedColum,columFieldCount=0;tableColumIndex<selectedColum+columField.length;tableColumIndex++,columFieldCount++)
 					{
 						// 붙여넣을 영역이 전체 col 보다 크면 데이터 추출 안하고 다음 row 이동
 						if(tableColumIndex>=this.getColumnCount())
 							continue;
-						
+
 						this.setValueAt(columField[columFieldCount], tableRowIndex, tableColumIndex);
-						
+
 					}
 				}
+				this.updateUI();
 
 			}
 		}
@@ -273,7 +277,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 	// 클립보드에 문자열을 붙여넣고 이 클래스가 클립보드 내용의 소유권자가 되도록 하는 메소드다.
 	public void setClipboardContents( String aString ){
-		
+
 		System.out.println("set\n"+aString);
 		// 지정한 문자열(aString)을 전송할 수 있도록 Transferable을 구현해야한다. 
 		StringSelection stringSelection = new StringSelection( aString );
@@ -315,7 +319,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -369,43 +373,38 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		}
 
 
-			Document document = new Document(rootElement);
-			Format format = Format.getPrettyFormat();
+		Document document = new Document(rootElement);
+		Format format = Format.getPrettyFormat();
 
-			format.setEncoding("EUC-KR");
-			format.setIndent("\n");
-			format.setIndent("\t");
+		format.setEncoding("EUC-KR");
+		format.setIndent("\n");
+		format.setIndent("\t");
 
-			XMLOutputter outputter = new XMLOutputter(format);
+		XMLOutputter outputter = new XMLOutputter(format);
 
-			String data=outputter.outputString(document);
-			logger.debug("adv data:\n"+data);
-			ADVData dd=null;
+		String data=outputter.outputString(document);
+		logger.debug("adv data:\n"+data);
+		ADVData dd=null;
 
-			if(KSGModelManager.getInstance().selectedADVData!=null)
-			{
-				dd =KSGModelManager.getInstance().selectedADVData;	
-				dd.setData(data);
-			}else
-			{
-				dd =new ADVData();
-				dd.setTable_id(this.shippersTableInfo.getTable_id());
-				dd.setCompany_abbr(this.shippersTableInfo.getCompany_abbr());
-				logger.debug("company_abbr:"+this.shippersTableInfo.getCompany_abbr());
-				dd.setData(data);
-			}
+		if(KSGModelManager.getInstance().selectedADVData!=null)
+		{
+			dd =KSGModelManager.getInstance().selectedADVData;	
+			dd.setData(data);
+		}else
+		{
+			dd =new ADVData();
+			dd.setTable_id(this.shippersTableInfo.getTable_id());
+			dd.setCompany_abbr(this.shippersTableInfo.getCompany_abbr());
+			logger.debug("company_abbr:"+this.shippersTableInfo.getCompany_abbr());
+			dd.setData(data);
+		}
 
-			dd.setDate_isusse(KSGDateUtil.toDate2(inputDate));
-			logger.debug("input date : "+KSGDateUtil.toDate2(inputDate)+",company_abbr:"+dd.getCompany_abbr());
-			KSGCommand insert = new InsertADVCommand(dd);
-			insert.execute();
-	
-		/*try {
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		dd.setDate_isusse(KSGDateUtil.toDate2(inputDate));
+		logger.debug("input date : "+KSGDateUtil.toDate2(inputDate)+",company_abbr:"+dd.getCompany_abbr());
+		KSGCommand insert = new InsertADVCommand(dd);
+		insert.execute();
+
+
 	}
 	public String getStringValue(Object value)
 	{
@@ -469,7 +468,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			Vessel  op = new Vessel();
 			op.setVessel_name(String.valueOf(value));
 
-			List li=_baseService.getVesselAbbrInfoByPatten(String.valueOf(value)+"%");
+			List li=baseService.getVesselAbbrInfoByPatten(String.valueOf(value)+"%");
 			if(li.size()==1)
 			{
 				Vessel vessel = (Vessel) li.get(0);
@@ -541,15 +540,15 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			defaultTableModel.addColumn("VOYAGE");
 		}
 	}
-	
+
 	public void updateTableView()
 	{
 		renderingColumModel2(this.getColumnModel());
 		updateUI();
 	}
-	
+
 	private void renderingColumModel2(TableColumnModel colmodel) {
-		
+
 		logger.info("rendering");
 		for(int i=0;i<colmodel.getColumnCount();i++)
 		{
@@ -558,7 +557,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			if(i==0||i==1)
 			{
 				VesselRenderer renderer = new VesselRenderer();
-				
+
 				namecol.setCellRenderer(renderer);	
 
 				namecol.setCellEditor(new VesselCellEditor( new JTextField()));
@@ -588,8 +587,8 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			{
 				namecol.setCellEditor(new ADVButtonCellRenderer());
 				namecol.setCellRenderer(new ADVButtonCellRenderer());
-				
-				
+
+
 			}
 
 
@@ -603,17 +602,17 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		KSGXMLManager manager = new KSGXMLManager();
 		DefaultTableModel defaultTableModel = new DefaultTableModel();
 		DefaultTableModel vesselmodel = new DefaultTableModel();
-		
-		
+
+
 		setRowHeight(ADV_ROW_H);
 		setGridColor(Color.lightGray);
 		initColumn(defaultTableModel);
 
 		try 
 		{
-			selectedADVData =_advservice.getADVData(shippersTableInfo.getTable_id());
+			selectedADVData =advservice.getADVData(shippersTableInfo.getTable_id());
 			KSGModelManager.getInstance().selectedADVData= selectedADVData;
-			
+
 			if(KSGModelManager.getInstance().selectedADVData==null)
 			{
 				logger.error("선택된 광고정보 없음");
@@ -629,7 +628,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			}
 
 			logger.debug("max port index("+max+")");
-			
+
 			for(int i=1;i<max+1;i++)
 			{
 				TablePort searchport = new TablePort();
@@ -656,7 +655,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			vesselmodel.addColumn("선박 명 약어");
 
 			vesselmodel = manager.createDBVesselNameModel(vesselmodel ,KSGModelManager.getInstance().selectedADVData);
-			
+
 			setVesselModel(vesselmodel);
 
 			if(defaultTableModel.getRowCount()<15)
@@ -666,13 +665,13 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 				defaultTableModel.setRowCount(defaultTableModel.getRowCount()+2);
 
 			defaultTableModel.addColumn("수정");
-			
+
 			this.setVesselModel(vesselmodel);
 
 			setModel(defaultTableModel);
-			
+
 			renderingColumModel2(getColumnModel());
-			
+
 			defaultTableModel.addTableModelListener(new TableModelListener(){
 				public void tableChanged(TableModelEvent e) 
 				{
@@ -742,7 +741,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 				text = new JLabel((String) value, JLabel.CENTER);
 				LookAndFeel.installColorsAndFont((JComponent) text,
 						"TableHeader.background", "TableHeader.foreground",
-				"TableHeader.font");
+						"TableHeader.font");
 			}
 			panel.add(text, BorderLayout.CENTER);
 
@@ -934,8 +933,6 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 					"TableHeader.foreground", "TableHeader.font");
 
 
-
-
 			if(value!=null)
 			{
 				editor.setText(String.valueOf(value));
@@ -1027,7 +1024,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			Component renderer=super.getTableCellRendererComponent(
 					table, value, isSelected, hasFocus, row, column);
 			((JLabel) renderer).setOpaque(true);
-			
+
 			Color foreground, background;
 
 			if (table != null) {
@@ -1042,32 +1039,12 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 			if(isSelected)
 			{
-				
 				foreground = Color.white;
-				background=new Color(51,153,255);
-/*				if(row==table.getSelectedRow()&&column==table.getSelectedColumn())
-				{
-				foreground = Color.white;
-				background=new Color(51,153,255);
-				}*/
-
-/*				else
-				{
-					if(row %2==0)
-					{
-						foreground = Color.black;
-						background=Color.WHITE;	
-					}
-					else
-					{
-						background= new Color(225,235,255);		
-						foreground = Color.black;
-					}
-				}*/
+				background=new Color(51,153,255);				
 			}
 			else
 			{
-				
+
 				foreground = Color.black;
 				background=Color.WHITE;	
 
@@ -1075,18 +1052,18 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 			try {
 				// 오류 발생시 글자색 변경
-				
+
 				if(value!=null)
 				{	
 					String vessel_abbr =String.valueOf(table.getValueAt(row,0));
-					
+
 					//선박약어 기준
-					Vessel result=_baseService.getVesselAbbrInfo(vessel_abbr);
-					
+					Vessel result=baseService.getVesselAbbrInfo(vessel_abbr);
+
 					if(result==null)
 						foreground = Color.RED;
 				}
-				
+
 				renderer.setBackground(background);
 				renderer.setForeground(foreground);
 
@@ -1100,12 +1077,18 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 
 	}
+	
+	/**
+	 * @author archehyun
+	 *
+	 */
 	class SelectionListener implements ListSelectionListener {
-		JTable table;
-		int selectedRows[];
-		int selectedColums[];
+		private JTable table;
 
-
+		private int selectedRows[];
+		
+		private int selectedColums[];
+		
 
 		public SelectionListener(JTable table) {
 			this.table = table;
@@ -1113,11 +1096,10 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		public String getSelectedValue()
 		{
 			StringBuffer buffer = new StringBuffer();
-			for(int i=0;i<selectedRows.length;i++)
+			/*for(int i=0;i<selectedRows.length;i++)
 			{
 				for(int j=0;j<selectedColums.length;j++)
 				{
-
 					buffer.append(table.getValueAt(selectedRows[i], selectedColums[j]));
 					if(j<selectedColums.length)
 						buffer.append("\t");
@@ -1126,13 +1108,11 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 				if(i<selectedRows.length)
 					buffer.append("\n");
 
-			}
+			}*/
 			return buffer.toString();
 		}
 		public void valueChanged(ListSelectionEvent e) {
-			if(!e.getValueIsAdjusting()) {
-
-				//DefaultListSelectionModel model = (DefaultListSelectionModel) e.getSource();
+			if(!e.getValueIsAdjusting()) {			
 
 				selectedRows=table.getSelectedRows();
 				selectedColums=table.getSelectedColumns();

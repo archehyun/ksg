@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.ksg.dao.table.TableDAO;
 import com.ksg.dao.table.TableDAOImpl;
 import com.ksg.domain.ADVData;
@@ -22,6 +24,9 @@ import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
 @SuppressWarnings("unchecked")
 public class TableServiceImpl implements TableService{
+	
+	protected Logger 			logger = Logger.getLogger(getClass());
+	
 	private TableDAO tableDAO;
 	public TableServiceImpl() {
 		tableDAO = new TableDAOImpl();
@@ -357,15 +362,18 @@ public class TableServiceImpl implements TableService{
 
 	@Override
 	public int updateTableDateByTableIDs(List table,String updateDate) throws SQLException {
-		
+		logger.info("update by "+updateDate);
 		Iterator<ShippersTable> iter = table.iterator();
+		int count=0;
 		while(iter.hasNext())
 		{
 			ShippersTable item = iter.next();
 			item.setDate_isusse(updateDate);
+			tableDAO.updateTableDateByTableIDs(item);
+			count++;
 		}
 		
-		return 0;
+		return count;
 	}
 	
 }

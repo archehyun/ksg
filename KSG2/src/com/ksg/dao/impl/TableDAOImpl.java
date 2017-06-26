@@ -372,6 +372,10 @@ public class TableDAOImpl implements TableDAO{
 		
 		return li;
 	}
+	public int updateTableDateByTableIDs(ShippersTable table) throws SQLException {
+		
+		return sqlMap.update("Table.updateTableDateByTableIDs", table);
+	}
 
 
 }

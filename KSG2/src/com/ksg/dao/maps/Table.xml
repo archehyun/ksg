@@ -207,7 +207,7 @@
 		where table_id=#table_id#
 	</update>
 
-	<update id="updateTableDateByTableIDs" parameterClass="com.ksg.domain.ADVData">
+	<update id="updateTableDateByTableIDs" parameterClass="com.ksg.domain.ShippersTable">
 		update TB_TABLE_INFO set
 		 <isNull property="date_isusse"> 
 		 date_isusse = NULL

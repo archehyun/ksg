@@ -263,7 +263,9 @@ public class SearchUI extends KSGPanel implements ActionListener
 						shippersTable.setPage(Integer.parseInt(txfSearchInput.getText()));
 						tblSearchTable.setSearchParam(shippersTable);
 						tblSearchTable.retrive();
-						updateSubTable(null, Integer.parseInt(txfSearchInput.getText()));
+						_searchedList = tblSearchTable.getSearchedList();
+						logger.info(_searchedList.size());
+						//updateSubTable(null, Integer.parseInt(txfSearchInput.getText()));
 					} catch (SQLException e1) {
 						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e1.getMessage());
 						e1.printStackTrace();
@@ -361,7 +363,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 		else if(command.equals("날짜일괄수정"))
 		{
-			updateAllDateDialog = new UpdateDateDialog();		
+			updateAllDateDialog = new UpdateDateDialog(_searchedList);		
 		}
 	}
 
@@ -1810,6 +1812,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 			
 			tblSearchTable.setSearchParam(searchParam);
 			tblSearchTable.retrive();
+
 			
 			_currentTable= tblSearchTable;
 			
@@ -1925,7 +1928,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 					//_tableService.updateTableDateAll(table);
 					
-					_tableService.updateTableDateByTableIDs(searchedList,KSGDateUtil.toDate3(date).toString());
+					_tableService.updateTableDateByTableIDs(tblSearchTable.getSearchedList(),KSGDateUtil.toDate3(date).toString());
 					
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "날짜를 수정했습니다.");
 
@@ -1936,6 +1939,11 @@ public class SearchUI extends KSGPanel implements ActionListener
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
 				} catch (ParseException e2) {
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e2.getMessage());
+				}
+				catch(Exception e3)
+				{
+					e3.printStackTrace();
+					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e3.getMessage());
 				}
 			}
 		}

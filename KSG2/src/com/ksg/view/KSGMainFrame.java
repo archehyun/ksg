@@ -195,7 +195,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 				KSGMainFrame.this.setDefaultLookAndFeelDecorated(true);
 				
-				KSGMainFrame.this.setMinimumSize(new Dimension(1200,800));
+				KSGMainFrame.this.setMinimumSize(new Dimension(1300,800));
 				
 				menuBar.setVisible(true);
 

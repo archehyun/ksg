@@ -272,5 +272,7 @@ public interface TableDAO {
 	public List selectTableColumnList(String table) throws SQLException;
 	public List selectSystemDataList(String table_name) throws SQLException;
 	
+	public int updateTableDateByTableIDs(ShippersTable table) throws SQLException;
+	
 
 }

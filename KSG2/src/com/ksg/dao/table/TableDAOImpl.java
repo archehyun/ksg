@@ -377,4 +377,11 @@ public class TableDAOImpl implements TableDAO{
 	}
 
 
+	@Override
+	public int updateTableDateByTableIDs(ShippersTable table) throws SQLException {
+		
+		return sqlMap.update("Table.updateTableDateByTableIDs", table);
+	}
+
+
 }

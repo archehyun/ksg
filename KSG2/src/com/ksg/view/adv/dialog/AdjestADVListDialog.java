@@ -81,6 +81,7 @@ public class AdjestADVListDialog extends KSGDialog{
 		logger.debug(this.tableInfoList);
 		tableService = DAOManager.getInstance().createTableService();
 	}
+
 	JTable tblTable;
 	private Vector advDataList;
 	public void createAndUpdateUI() {
