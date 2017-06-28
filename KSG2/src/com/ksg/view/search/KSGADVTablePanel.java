@@ -308,7 +308,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 	public void update(KSGModelManager manager){}
 
-	public void searchADVTable() {
+	public void retrive() {
 		_tblADVTable.retrive();
 	}
 

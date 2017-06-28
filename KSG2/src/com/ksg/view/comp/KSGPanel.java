@@ -28,11 +28,16 @@ public abstract class KSGPanel extends JPanel implements KSGObserver {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	protected KSGModelManager 	manager = KSGModelManager.getInstance();
+	
 	protected Logger 			logger = Logger.getLogger(getClass());
 	protected ADVService	 		_advService;
+	
 	protected TableService 		_tableService;  // 테이블 서비스 객체
+	
 	protected BaseService _baseSearvice;
+	
 	public abstract void createAndUpdateUI();
 	public Component createMargin()
 	{

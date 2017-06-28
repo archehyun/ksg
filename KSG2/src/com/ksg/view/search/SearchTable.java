@@ -28,6 +28,10 @@ import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.view.comp.KSGTableModel;
 
 public class SearchTable extends JTable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected Logger 			logger = Logger.getLogger(getClass());
 	private TableService _tableService;
 	private Font defaultFont = new Font("µ¸À½",0,9);

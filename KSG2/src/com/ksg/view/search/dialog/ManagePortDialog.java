@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
@@ -204,7 +205,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 							String message1 = "해당 인덱스에 동일한 항구명이 존재합니다.";
 							JOptionPane.showMessageDialog(ManagePortDialog.this, message1+e1.getErrorCode());
 							try {
-								tblPortList.updatePort();
+								tblPortList.retrive();
 							} catch (SQLException e2) {
 								// TODO Auto-generated catch block
 								e2.printStackTrace();
@@ -222,7 +223,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 					finally
 					{
 						try {
-							tblPortList.updatePort();
+							tblPortList.retrive();
 							int ind=0;
 							for(int i=0;i<tblPortList.getRowCount();i++)
 							{
@@ -341,7 +342,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 								tblPortList.clearSelection();
 								JOptionPane.showMessageDialog(ManagePortDialog.this, "해당 인덱스에 동일한 항구명이 존재합니다."+e1.getErrorCode());
 								try {
-									tblPortList.updatePort();
+									tblPortList.retrive();
 								} catch (SQLException e2) {
 									// TODO Auto-generated catch block
 									e2.printStackTrace();
@@ -359,7 +360,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 						finally
 						{
 							try {
-								tblPortList.updatePort();
+								tblPortList.retrive();
 								int ind=0;
 								for(int i=0;i<tblPortList.getRowCount();i++)
 								{
@@ -508,7 +509,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		pnMain.add(pnPortMain);
 		try {
 
-			tblPortList.updatePort();
+			tblPortList.retrive();
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
@@ -519,8 +520,11 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	private void showSelectedTable()
 	{
 		portName =String.valueOf(tblPortList.getValueAt(tblPortList.selectedindex, PORT_NAME_COLUM));
-		portIndex = Integer.parseInt(String.valueOf(tblPortList.getValueAt(tblPortList.selectedindex, PORT_INDEX_COLUM)));				
+		
+		portIndex = Integer.parseInt(String.valueOf(tblPortList.getValueAt(tblPortList.selectedindex, PORT_INDEX_COLUM)));	
+		
 		txfUpdatePortName.setText(portName);
+		
 		txfIndex.setText(String.valueOf(portIndex));
 
 		tblPortList.changeSelection(tblPortList.selectedindex, PORT_INDEX_COLUM, false, false);
@@ -737,7 +741,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		}else if(command.equals("삭제"))
 		{
-			tblPortList.deleteAction();
+			tblPortList.delete();
 		}
 		else if(command.equals("검색"))
 		{
@@ -761,7 +765,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		else if(command.equals("정렬"))
 		{
 			try {
-				tblPortList.updatePort();
+				tblPortList.retrive();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -850,10 +854,10 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		}else 
 		{
 
-			if(!isExPort())
+			if(!isExitPort())
 			{
 				try {
-					tblPortList.updatePort();
+					tblPortList.retrive();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -896,7 +900,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				tblPortList.clearSelection();
 				JOptionPane.showMessageDialog(this, "해당 인덱스에 동일한 항구명이 존재합니다."+e1.getErrorCode());
 				try {
-					tblPortList.updatePort();
+					tblPortList.retrive();
 				} catch (SQLException e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
@@ -913,14 +917,14 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		finally
 		{
 			try {
-				tblPortList.updatePort();
+				tblPortList.retrive();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
 	}	
-	private boolean isExPort() {
+	private boolean isExitPort() {
 		Code code_info = new Code();
 		code_info.setCode_type("port_exception");
 
@@ -974,7 +978,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 					port.setPort_index(Integer.valueOf(obj.toString()));
 					tableService.updateTablePort(port);
 				}
-				tblPortList.updatePort();
+				tblPortList.retrive();
 			}catch(SQLException se)
 			{
 				if(se.getErrorCode()!=2627)
@@ -1027,7 +1031,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}
 			if(e.getKeyCode()==KeyEvent.VK_DELETE)
 			{		
-				tblPortList.deleteAction();
+				tblPortList.delete();
 				return;
 
 			}
@@ -1038,6 +1042,10 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}
 		}	
 	}
+	/**
+	 * @author archehyun
+	 *
+	 */
 	class PortDropHandler extends TransferHandler
 	{
 		public boolean canImport(TransferSupport support) { 
@@ -1095,6 +1103,10 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 
 	}
+	/**
+	 * @author archehyun
+	 *
+	 */
 	class MyMouseAdapter extends MouseAdapter
 	{
 		public void mouseClicked(MouseEvent e) {
@@ -1141,18 +1153,65 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}
 		}
 	}
+	
+	class PortListList extends JList
+	{
+		private TablePort tablePorts[];
+		private String table_id;
+		public PortListList(String table_id) {
+			this.table_id = table_id;
+			this.setCellRenderer(new PortListRenderer());
+
+		}
+		public void retrive() throws SQLException
+		{
+			List<TablePort> portli=tableService.getParentPortList(this.table_id);
+			
+			//tablePorts = portli
+		}
+		
+	}
+
+	class PortListRenderer extends JLabel implements ListCellRenderer {
+		  private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+
+		  public PortListRenderer() {
+		    setOpaque(true);
+		    setIconTextGap(12);
+		  }
+
+		  public Component getListCellRendererComponent(JList list, Object value,
+		      int index, boolean isSelected, boolean cellHasFocus) {
+		    TablePort entry = (TablePort) value;
+		    setText(entry.getPort_name());
+		    
+		    if (isSelected) {
+		      setBackground(HIGHLIGHT_COLOR);
+		      setForeground(Color.white);
+		    } else {
+		      setBackground(Color.white);
+		      setForeground(Color.black);
+		    }
+		    return this;
+		  }
+		}
+
 	class PortListTable extends JTable
 	{
 		private int selectedportindex;
 		private int selectedindex;		
 		private String table_id;
+		
+		
 
 		public PortListTable(String table_id) {
 
 			this.table_id = table_id;
 			
 			this.setDragEnabled(true);
+			
 			this.setTransferHandler(new PortDropHandler());
+			
 			this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 			this.setDropMode(DropMode.ON_OR_INSERT);
@@ -1167,7 +1226,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		/**
 		 * @throws SQLException
 		 */
-		private void updatePort() throws SQLException {
+		private void retrive() throws SQLException {
 
 			List<TablePort> portli=tableService.getParentPortList(this.table_id);
 			
@@ -1194,11 +1253,17 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}
 
 			setModel(model);
+			
 			TableColumnModel colModel=tblPortList.getColumnModel();
+			
 			TableColumn col=colModel.getColumn(PORT_INDEX_COLUM);
+			
 			DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+			
 			renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			
 			col.setMaxWidth(50);
+			
 			col.setCellRenderer(renderer);
 
 			changeSelection(selectedportindex, selectedcolIndex, false, false);
@@ -1235,7 +1300,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 			tableService.insertPortList(port);
 
-			tblPortList.updatePort();
+			tblPortList.retrive();
 
 			txfPortName.setText("");
 			int count=tableService.getPortCount(table_id);
@@ -1251,7 +1316,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		/**
 		 * 삭제
 		 */
-		private void deleteAction() {
+		private void delete() {
+			
 			int row=getSelectedRow();
 			if(row<-1)
 				return;
@@ -1291,7 +1357,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			try {
 				tableService.deleteTablePort(port);
 
-				updatePort();
+				retrive();
 
 				changeSelection(row==0?0:row-1, PORT_NAME_COLUM, false, false);
 
@@ -1306,6 +1372,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 
 				logger.debug("delete port:"+table_id+","+port_name);
+				
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(ManagePortDialog.this, "error:"+e1.getMessage());

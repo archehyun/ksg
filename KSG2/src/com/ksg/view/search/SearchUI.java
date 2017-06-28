@@ -163,8 +163,6 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 	private JPopupMenu 			_popupMenu;	
 
-	private ADVData				_selectedADVData;
-	
 	private SearchTable tblSearchTable;
 
 	private JTable				_currentTable;
@@ -172,9 +170,9 @@ public class SearchUI extends KSGPanel implements ActionListener
 	private JTree				_treeMenu;
 
 	private JTextField 			_txfInboundIn,_txfInboundOut,_txfOutboundIn,_txfOutboundOut,txfSearchInput;
-	
+
 	private JTextField 			txfPageSearchInput;
-	
+
 	private JTextField 			txfPageIndexSearchInput;
 
 	private AddTableInfoDialog addTableInfoDialog;
@@ -258,14 +256,13 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 				public void actionPerformed(ActionEvent e) {
 					try {
-						
+
 						ShippersTable shippersTable = new ShippersTable();						
 						shippersTable.setPage(Integer.parseInt(txfSearchInput.getText()));
 						tblSearchTable.setSearchParam(shippersTable);
 						tblSearchTable.retrive();
 						_searchedList = tblSearchTable.getSearchedList();
 						logger.info(_searchedList.size());
-						//updateSubTable(null, Integer.parseInt(txfSearchInput.getText()));
 					} catch (SQLException e1) {
 						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e1.getMessage());
 						e1.printStackTrace();
@@ -376,13 +373,13 @@ public class SearchUI extends KSGPanel implements ActionListener
 		logger.info("seleted page:"+searchParam);
 
 		_pnADVInfo.setVisible(false);		
-/*
+		/*
 		//_searchedList= _tableService.getTableList(_searchParam);
-		
+
 		_tblSubTotalTable.setSearchParam(searchParam);
-		
+
 		_tblSubTotalTable.retrive();
-		
+
 		_currentTable=_tblSubTotalTable;*/
 
 		//searchSubTable();
@@ -482,13 +479,13 @@ public class SearchUI extends KSGPanel implements ActionListener
 			}
 		});
 
-		
+
 		tblSearchTable.setComponentPopupMenu(createPopupMenu());
 		tblSearchTable.setName("SearchTable");
 		tblSearchTable.addMouseListener( new UpdateMouseAdapter());
 		JScrollPane jScrollPane = new JScrollPane(tblSearchTable);
 		jScrollPane.getViewport().setBackground(Color.white);
-		
+
 		_pnTable.add(jScrollPane,tblSearchTable.getName());
 
 		advTablePanel = new KSGADVTablePanel(this);
@@ -497,7 +494,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 		_pnTable.add(advTablePanel,advTablePanel.getName());
 
 		JPanel pnSlideShow = cteateSlideShowPn();
-		
+
 		JPanel pnSouth = new JPanel(new BorderLayout());
 
 		butEdit = new JToggleButton("편집(E)",new ImageIcon("images/editClose.gif"));
@@ -567,7 +564,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 		_pnShipperInfo.add(createPnSearchInfo(),BorderLayout.NORTH);
 
 		JPanel pnMain = new JPanel();
-		
+
 		pnMain.setLayout( new BorderLayout());
 		pnMain.add(_pnShipperInfo,BorderLayout.CENTER);
 		_pnleftMenu = buildLeftMenu();
@@ -697,11 +694,11 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 
 	public void createAndUpdateUI() {
-		
+
 		logger.info("init searchUI start");
-		
+
 		this.setName("SearchUI");
-		
+
 		this.manager.addObservers(this);
 		_popupMenu = createPopupMenu();
 
@@ -763,46 +760,46 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 		txfPageSearchInput = new JTextField(4);
 		txfPageSearchInput.addKeyListener(new KeyAdapter() {
-			
 
-			
+
+
 			@Override
 			public void keyReleased(KeyEvent e) {
-				
+
 				txfPageSearchInput.setForeground(Color.black);
 				String str = txfPageSearchInput.getText();
 				try{
 					Integer.parseInt(str);
-				
+
 				}catch(NumberFormatException ee)
 				{
 					txfPageSearchInput.setForeground(Color.red);
 				}
-				
+
 			}
 
 		});
 		txfPageIndexSearchInput = new JTextField(4);
-		
-		txfPageIndexSearchInput.addKeyListener(new KeyAdapter() {
-			
 
-			
+		txfPageIndexSearchInput.addKeyListener(new KeyAdapter() {
+
+
+
 			@Override
 			public void keyReleased(KeyEvent e) {
-				
+
 				txfPageIndexSearchInput.setForeground(Color.black);
 				String str = txfPageIndexSearchInput.getText();
 				try{
 					Integer.parseInt(str);
-				
+
 				}catch(NumberFormatException ee)
 				{
 					txfPageIndexSearchInput.setForeground(Color.red);
 				}
-				
+
 			}
-			
+
 
 		});
 
@@ -965,7 +962,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 		pnSearchMainDown.add(txfPageSearchInput);
 		pnSearchMainDown.add(new JLabel("  인덱스: "));
 		pnSearchMainDown.add(txfPageIndexSearchInput);
-		
+
 		pnSearchMainDown.add(new JLabel("  항목: "));
 		pnSearchMainDown.add(cbbOption);
 		pnSearchMainDown.add(txfSearchInput);
@@ -1348,15 +1345,17 @@ public class SearchUI extends KSGPanel implements ActionListener
 	 * @return
 	 */
 	public void searchADVTable() {
+
+		try{			
+			advTablePanel.retrive();
+
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(SearchUI.this, "error : "+e.getMessage());
+		}
+
 		
-		ShippersTable selectedTable = (ShippersTable) _searchedList.get(selectedRow);
-		advTablePanel.setSelectedTable(selectedTable);
-		advTablePanel.searchADVTable();
-		
-		/*SearchADVCommand searchADVCommand = new SearchADVCommand(selectedTable,advTablePanel);
-		searchADVCommand.execute();
-		_selectedADVData = KSGModelManager.getInstance().selectedADVData;*/
-		//return searchADVCommand.result;		
 	}
 	/**
 	 * @param colum
@@ -1380,11 +1379,11 @@ public class SearchUI extends KSGPanel implements ActionListener
 	 */
 	private void selectPage(String selectedCompany) throws SQLException {
 		depth =DEPTH_PAGE; 
-		
+
 		//_currentTable =_tblSubTotalTable;
-		
+
 		initNotify(selectedCompany);
-		
+
 		manager.selectedDate=null;
 
 		updateSubTable();
@@ -1491,20 +1490,20 @@ public class SearchUI extends KSGPanel implements ActionListener
 		final String company_abbr = (String) table.getValueAt(selectedRow, 6);
 
 		logger.info("update ADVTable : "+table_id);
-		
-		
+
+
 		ShippersTable st = new ShippersTable();
 		st.setTable_id(table_id);
-			
-		
-		advTablePanel.setSelectedTable(st);
-		advTablePanel.searchADVTable();
 
-	/*	SearchADVCommand searchADVCommand = new SearchADVCommand(st,advTablePanel);
+
+		advTablePanel.setSelectedTable(st);
+		advTablePanel.retrive();
+
+		/*	SearchADVCommand searchADVCommand = new SearchADVCommand(st,advTablePanel);
 		searchADVCommand.execute();
 		_selectedADVData = KSGModelManager.getInstance().selectedADVData;
-		
-		
+
+
 
 		if(searchADVCommand.result!=SearchADVCommand.RESULT_SUCCESS)// 광고정보가 있다면
 		{
@@ -1585,13 +1584,13 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 
 		ShippersTable shippersTable = new ShippersTable();
-		
+
 		shippersTable.setPage(selectedPage);
-		
+
 		_searchedList = _tableService.getTableListByPage(shippersTable);
-		
+
 		lblCount.setText(String.valueOf(_searchedList.size()));
-		
+
 		searchSubTable();
 	}
 	/**
@@ -1675,7 +1674,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 		default:
 			break;
 		}
-		
+
 		tblSearchTable.setSearchParam(searchParam);
 
 		_currentTable= tblSearchTable;
@@ -1691,15 +1690,15 @@ public class SearchUI extends KSGPanel implements ActionListener
 		int index=cbbOption.getSelectedIndex();
 
 		logger.debug("search param:"+param);
-		
+
 		orderParam = param;
-		
+
 		searchParam = new ShippersTable();
-		
+
 		if(!txfPageSearchInput.getText().equals(""))
 		{
 			String strPage =txfPageSearchInput.getText();
-			
+
 			try{
 				searchParam.setPage(Integer.parseInt(strPage));
 				manager.selectedPage = Integer.parseInt(strPage);
@@ -1715,9 +1714,9 @@ public class SearchUI extends KSGPanel implements ActionListener
 		if(!txfPageIndexSearchInput.getText().equals(""))
 		{
 			String strPageIndex =txfPageIndexSearchInput.getText();
-			
+
 			try{
-				
+
 				searchParam.setTable_index(Integer.parseInt(strPageIndex));
 			}
 			catch(NumberFormatException number_e)
@@ -1741,7 +1740,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 		case 0:// 테이블 아이디
 			searchParam.setTable_id(param);
 			break;
-/*		case 1://테이블 인덱스
+			/*		case 1://테이블 인덱스
 
 			_searchParam.setTable_index(Integer.parseInt(param));
 
@@ -1792,15 +1791,15 @@ public class SearchUI extends KSGPanel implements ActionListener
 			{
 				if(KSGDateUtil.isDashFomatt(date))
 				{
-				try{
-					searchParam.setDate_isusse(KSGDateUtil.toDate3(date).toString());
-				}catch(Exception e)
-				{
-					e.printStackTrace();
-					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error: "+e.getMessage());
-					txfDateSearch.setText("");
-				}
-			
+					try{
+						searchParam.setDate_isusse(KSGDateUtil.toDate3(date).toString());
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error: "+e.getMessage());
+						txfDateSearch.setText("");
+					}
+
 				}else
 				{
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "입력 형식(2000.1.1) 이 틀렸습니다.");
@@ -1809,24 +1808,24 @@ public class SearchUI extends KSGPanel implements ActionListener
 				}
 			}
 
-			
+
 			tblSearchTable.setSearchParam(searchParam);
 			tblSearchTable.retrive();
 
-			
+
 			_currentTable= tblSearchTable;
-			
-			
+
+
 			lblCount.setText(String.valueOf(tblSearchTable.getRowCount()));
-			
+
 			txfDateSearch.setText("");
-			
+
 			txfSearchInput.setText("");
-			
+
 			txfPageSearchInput.setText("");
-			
+
 			txfPageIndexSearchInput.setText("");
-			
+
 			tableLayout.show(_pnTable, tblSearchTable.getName());
 
 		} catch (SQLException e1) {
@@ -1845,28 +1844,28 @@ public class SearchUI extends KSGPanel implements ActionListener
 		private static final long serialVersionUID = 1L;
 		private JLabel lblDate;
 		private JTextField txfImportDate;
-		
+
 		List searchedList;
 		public UpdateDateDialog(List searchedList) {
 			this();
 			this.searchedList = searchedList;
-			
+
 		}
 		public UpdateDateDialog() {
 			setModal(true);
-			
+
 			this.setTitle("날짜정보 수정");
-			
+
 			lblDate = new JLabel(" 입력날짜 : ");
-			
+
 			lblDate.setFont(KSGModelManager.getInstance().defaultFont);
 
 			txfImportDate = new JTextField(8);
-			
+
 			JCheckBox cbxImportDate = new JCheckBox("월요일",false);
-			
+
 			cbxImportDate.setFont(KSGModelManager.getInstance().defaultFont);
-			
+
 			cbxImportDate.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
@@ -1923,13 +1922,13 @@ public class SearchUI extends KSGPanel implements ActionListener
 				try {
 
 					ShippersTable table = new ShippersTable();
-					
+
 					table.setDate_isusse(KSGDateUtil.toDate3(date).toString());
 
 					//_tableService.updateTableDateAll(table);
-					
+
 					_tableService.updateTableDateByTableIDs(tblSearchTable.getSearchedList(),KSGDateUtil.toDate3(date).toString());
-					
+
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "날짜를 수정했습니다.");
 
 

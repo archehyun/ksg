@@ -93,10 +93,6 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 	private DefaultTableModel vesselModel;  // 선박 정보
 
-	public void setVesselModel(DefaultTableModel vesselModel) {
-		this.vesselModel = vesselModel;
-	}
-
 	private ADVData selectedADVData; // 광고정보
 
 	private int selectedrow=0,selectedcol=0;
@@ -160,11 +156,13 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 		tableService = daomanager.createTableService();
 	}
-
+	public void setVesselModel(DefaultTableModel vesselModel) {
+		this.vesselModel = vesselModel;
+	}
 
 	public void delete()
 	{
-		logger.info("삭제");
+		logger.info("delete");
 		DefaultTableModel model=(DefaultTableModel) getModel();
 		int row = model.getRowCount();
 		int col = model.getColumnCount();
@@ -277,8 +275,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 	// 클립보드에 문자열을 붙여넣고 이 클래스가 클립보드 내용의 소유권자가 되도록 하는 메소드다.
 	public void setClipboardContents( String aString ){
-
-		System.out.println("set\n"+aString);
+		
 		// 지정한 문자열(aString)을 전송할 수 있도록 Transferable을 구현해야한다. 
 		StringSelection stringSelection = new StringSelection( aString );
 		// 플랫폼에 의해서 제공되는 클립보드 기능과 상호 작용하는 system Clipboard의 인스턴스 얻게 된다.
@@ -309,7 +306,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			catch (UnsupportedFlavorException ex){
 				// 표준 DataFlavor를 사용하기 때문에 가능성은 매우 희박하지만
 				// 다음과 같이 통상 예외처리해줍니다.
-				System.out.println(ex);
+				logger.error(ex.getMessage());
 				ex.printStackTrace();
 			}
 			catch (IOException ex) {
@@ -1091,12 +1088,14 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		
 
 		public SelectionListener(JTable table) {
+			
 			this.table = table;
+			logger.info("create");
 		}
 		public String getSelectedValue()
 		{
 			StringBuffer buffer = new StringBuffer();
-			/*for(int i=0;i<selectedRows.length;i++)
+			for(int i=0;i<selectedRows.length;i++)
 			{
 				for(int j=0;j<selectedColums.length;j++)
 				{
@@ -1108,7 +1107,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 				if(i<selectedRows.length)
 					buffer.append("\n");
 
-			}*/
+			}
 			return buffer.toString();
 		}
 		public void valueChanged(ListSelectionEvent e) {
@@ -1116,7 +1115,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 				selectedRows=table.getSelectedRows();
 				selectedColums=table.getSelectedColumns();
-				System.out.println("valueChange");
+				logger.debug("valueChange");
 
 			}
 
