@@ -1,5 +1,5 @@
 #no commments
-#Mon Jun 19 16:15:14 GMT+09:00 2017
+#Mon Jun 26 12:08:29 GMT+09:00 2017
 saveLocation=C\:\\Users\\jhbae\\workspace_0421\\schedule
 selectedkeyword=both
 xlskey.both=VESSEL & VOY,VSL/VOY,VESSEL / VOYAGE,VESSEL  VOY   /   PORT,
@@ -7,13 +7,13 @@ xlskey.voyage=voy,VOY,
 hasVoy=false
 vesselvoydivider=/
 dataLocation=C\:\\Users\\archehyun\\Desktop
-emptyCheck=false
 vesselvoycount=0
-errorDividerLoction=300
+emptyCheck=false
 <<<<<<<=ksg.properties.txt
+errorDividerLoction=300
 underPort=\uC801\uC6A9\uC548\uD568
 title=KSG Application
 selected_incode=US-ASCII
-INCODE_LIST=ASCII,US-ASCII,EUC-KR,UTF-8
-doubleKey=false|Up
 xlskey.vessel=Vessel,VESSEL,Vessel Name,VESSEL NAME,VESSEL  NAME,VSL NAME,VSL,
+doubleKey=false|Up
+INCODE_LIST=ASCII,US-ASCII,EUC-KR,UTF-8

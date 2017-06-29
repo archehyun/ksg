@@ -3,11 +3,30 @@ package com.ksg.view.search.dialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Shape;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragSource;
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.DragSourceEvent;
+import java.awt.dnd.DragSourceListener;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -16,6 +35,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -80,6 +101,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	private JTextField txfUpdatePortName;
 	private String portName;
 	private int portIndex;
+	private PortListList portListList;
 	public ManagePortDialog(String table_id,SearchUI base) 
 	{	
 		this.base =base;
@@ -252,6 +274,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		});
 
 		txfUpdatePortName = new JTextField(30);
+
 		txfUpdatePortName.addKeyListener(new KeyAdapter(){
 
 			public void keyPressed(KeyEvent arg0) 
@@ -411,7 +434,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}});
 
 		pnLeftNorth.add(txfIndex);
-		
+
 		pnLeftNorth.add(txfUpdatePortName);
 
 		pnLeftOption = new JPanel();
@@ -482,10 +505,18 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 
 		pnLeft.add(new JScrollPane(tblPortList));
+
+		portListList = new PortListList(table_id);
+
+		pnLeft.add(new JScrollPane(portListList),BorderLayout.EAST);
+
 		pnLeft.add(pnLeftNorth,BorderLayout.NORTH);
+
+
 		pnLeft.add(pnLeftOption,BorderLayout.SOUTH);
 
 		JPanel pnRight = new JPanel();
+
 		pnRight.setLayout(new BorderLayout());
 
 		txflblIndex = new JTextField(2);
@@ -510,6 +541,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		try {
 
 			tblPortList.retrive();
+			portListList.retrive();
+
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
@@ -520,11 +553,11 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	private void showSelectedTable()
 	{
 		portName =String.valueOf(tblPortList.getValueAt(tblPortList.selectedindex, PORT_NAME_COLUM));
-		
+
 		portIndex = Integer.parseInt(String.valueOf(tblPortList.getValueAt(tblPortList.selectedindex, PORT_INDEX_COLUM)));	
-		
+
 		txfUpdatePortName.setText(portName);
-		
+
 		txfIndex.setText(String.valueOf(portIndex));
 
 		tblPortList.changeSelection(tblPortList.selectedindex, PORT_INDEX_COLUM, false, false);
@@ -1153,68 +1186,174 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}
 		}
 	}
-	
-	class PortListList extends JList
+
+	/**
+	 * 항구목록 관리
+	 * 
+	 * @author archehyun
+	 *
+	 */
+	class PortListList extends JList implements DropTargetListener
 	{
 		private TablePort tablePorts[];
+
 		private String table_id;
+		DropTarget dtg;
+
 		public PortListList(String table_id) {
+
 			this.table_id = table_id;
+
 			this.setCellRenderer(new PortListRenderer());
+
+			this.setDropMode(DropMode.ON_OR_INSERT);
+			dtg = new DropTarget(this, this);
+			this.setDropTarget(dtg);
+
+			this.setDragEnabled(true);
 
 		}
 		public void retrive() throws SQLException
 		{
 			List<TablePort> portli=tableService.getParentPortList(this.table_id);
-			
-			//tablePorts = portli
+
+			tablePorts = new TablePort[portli.size()];
+
+			tablePorts = portli.toArray(tablePorts);
+
+			this.setListData(tablePorts);
+
 		}
-		
+		@Override
+		public void dragEnter(DropTargetDragEvent dtde) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void dragExit(DropTargetEvent dte) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void dragOver(DropTargetDragEvent dtde) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void drop(DropTargetDropEvent dtde) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void dropActionChanged(DropTargetDragEvent dtde) {
+			// TODO Auto-generated method stub
+
+		}
+
 	}
 
 	class PortListRenderer extends JLabel implements ListCellRenderer {
-		  private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
+		private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
 
-		  public PortListRenderer() {
-		    setOpaque(true);
-		    setIconTextGap(12);
-		  }
-
-		  public Component getListCellRendererComponent(JList list, Object value,
-		      int index, boolean isSelected, boolean cellHasFocus) {
-		    TablePort entry = (TablePort) value;
-		    setText(entry.getPort_name());
-		    
-		    if (isSelected) {
-		      setBackground(HIGHLIGHT_COLOR);
-		      setForeground(Color.white);
-		    } else {
-		      setBackground(Color.white);
-		      setForeground(Color.black);
-		    }
-		    return this;
-		  }
+		public PortListRenderer() {
+			setOpaque(true);
+			setIconTextGap(12);
 		}
 
-	class PortListTable extends JTable
+		public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
+			TablePort entry = (TablePort) value;
+			setText(entry.getPort_index()+":"+entry.getPort_name());
+
+			if (isSelected) {
+				setBackground(HIGHLIGHT_COLOR);
+				setForeground(Color.white);
+			} else {
+				setBackground(Color.white);
+				setForeground(Color.black);
+			}
+			return this;
+		}
+	}
+	class TablePortTransable  implements Transferable
 	{
+		private TablePort tablePort;
+
+		public TablePort getTablePort() {
+			return tablePort;
+		}
+
+		public void setTablePort(TablePort tablePort) {
+			this.tablePort = tablePort;
+		}
+
+		// This is the custom DataFlavor for Scribble objects
+		public DataFlavor scribbleDataFlavor = new DataFlavor(
+				TablePortTransable.class, "Scribble");
+
+		// This is a list of the flavors we know how to work with
+		public  DataFlavor[] supportedFlavors = { scribbleDataFlavor,
+				DataFlavor.stringFlavor };
+
+		/** Return the data formats or "flavors" we know how to transfer */
+		public DataFlavor[] getTransferDataFlavors() {
+			return (DataFlavor[]) supportedFlavors.clone();
+		}
+
+		/** Check whether we support a given flavor */
+		public boolean isDataFlavorSupported(DataFlavor flavor) {
+			return (flavor.equals(scribbleDataFlavor) || flavor
+					.equals(DataFlavor.stringFlavor));
+		}
+
+		/**
+		 * Return the scribble data in the requested format, or throw an exception
+		 * if we don't support the requested format
+		 */
+		public Object getTransferData(DataFlavor flavor)
+				throws UnsupportedFlavorException {
+			if (flavor.equals(scribbleDataFlavor)) {
+				return this;
+			} else if (flavor.equals(DataFlavor.stringFlavor)) {
+				return toString();
+			} else
+				throw new UnsupportedFlavorException(flavor);
+		}
+
+	}
+	class PortListTable extends JTable implements DropTargetListener,  DragGestureListener, MouseListener, DragSourceListener
+	{
+
+
+		TablePortTransable portTransable;
 		private int selectedportindex;
 		private int selectedindex;		
 		private String table_id;
-		
-		
+		DragSource dragSource; // A central DnD object
+		DropTarget dtg;
+		List<TablePort> portli;
 
 		public PortListTable(String table_id) {
 
+			portTransable = new TablePortTransable();
+			
+			
+			
+
 			this.table_id = table_id;
 			
-			this.setDragEnabled(true);
-			
-			this.setTransferHandler(new PortDropHandler());
-			
+			this.addMouseListener(this);
+
+			dragSource = DragSource.getDefaultDragSource();
+			dragSource.createDefaultDragGestureRecognizer(this, // What component
+					DnDConstants.ACTION_COPY_OR_MOVE, // What drag types?
+					this);// the listener
+
 			this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			
-			this.setDropMode(DropMode.ON_OR_INSERT);
+
+			dtg = new DropTarget(this, this);
+
+			this.setDropTarget(dtg);
 
 			setName(TablePort.TYPE_PARENT);
 
@@ -1228,12 +1367,12 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		 */
 		private void retrive() throws SQLException {
 
-			List<TablePort> portli=tableService.getParentPortList(this.table_id);
-			
+			portli=tableService.getParentPortList(this.table_id);
+
 			DefaultTableModel model = new DefaultTableModel();
-			
+
 			model.addColumn("순서");
-			
+
 			model.addColumn("항구명");
 
 			if(portli.size()<10)
@@ -1249,21 +1388,20 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				TablePort port = portli.get(i);
 				model.setValueAt(port.getPort_name(), i, PORT_NAME_COLUM);
 				model.setValueAt(port.getPort_index(), i, PORT_INDEX_COLUM);
-
 			}
 
 			setModel(model);
-			
+
 			TableColumnModel colModel=tblPortList.getColumnModel();
-			
+
 			TableColumn col=colModel.getColumn(PORT_INDEX_COLUM);
-			
+
 			DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-			
+
 			renderer.setHorizontalAlignment(SwingConstants.CENTER);
-			
+
 			col.setMaxWidth(50);
-			
+
 			col.setCellRenderer(renderer);
 
 			changeSelection(selectedportindex, selectedcolIndex, false, false);
@@ -1317,7 +1455,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		 * 삭제
 		 */
 		private void delete() {
-			
+
 			int row=getSelectedRow();
 			if(row<-1)
 				return;
@@ -1372,11 +1510,141 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 
 				logger.debug("delete port:"+table_id+","+port_name);
-				
+
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(ManagePortDialog.this, "error:"+e1.getMessage());
 			}
+		}
+		@Override
+		public void dragEnter(DropTargetDragEvent dtde) {
+
+			System.out.println("endter");
+		}
+		@Override
+		public void dragExit(DropTargetEvent dte) {
+			System.out.println("exit");
+		}
+		public void dragOver(DropTargetDragEvent dtde) {
+
+			int row=this.rowAtPoint(dtde.getLocation());
+
+			this.changeSelection(row, 0, false, false);
+
+
+		}
+		@Override
+		public void drop(DropTargetDropEvent dtde) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void dropActionChanged(DropTargetDragEvent dtde) {
+
+
+		}
+		@Override
+		public void dragGestureRecognized(DragGestureEvent e) {
+
+
+			MouseEvent inputEvent = (MouseEvent) e.getTriggerEvent();
+			int x = inputEvent.getX();
+			int y = inputEvent.getY();
+
+			Cursor cursor;
+			switch (e.getDragAction()) {
+			case DnDConstants.ACTION_COPY:
+				cursor = DragSource.DefaultCopyDrop;
+				break;
+			case DnDConstants.ACTION_MOVE:
+				cursor = DragSource.DefaultMoveDrop;
+				break;
+			default:
+				return; // We only support move and copys
+			}
+			if (dragSource.isDragImageSupported()) {
+				Image dragImage = this.createImage(100,
+						25);
+				Graphics2D g = (Graphics2D) dragImage.getGraphics();
+				g.setColor(new Color(0, 0, 0, 0)); // transparent background
+				g.fillRect(0, 0, 100, 25);
+				g.setColor(Color.black);				
+				g.drawString(portTransable.getTablePort().getPort_name(), 0, 0);
+				g.translate(-x, -y);
+
+				Point hotspot = new Point(-x, -y);
+				System.out.println("name:"+portTransable.getTablePort().getPort_name());
+
+				// Now start dragging, using the image.
+				e.startDrag(cursor, dragImage, hotspot, portTransable, this);
+
+			}
+			else
+			{
+				System.out.println("name1:"+portTransable.getTablePort().getPort_name());
+				e.startDrag(cursor, portTransable,this);
+			}
+
+
+		}
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void mousePressed(MouseEvent e) {
+
+			int row = this.getSelectedRow();
+			if(row<0||portli.size()<row-1)
+				return;
+
+			TablePort portInfo = portli.get(row);
+			this.portTransable.setTablePort(portInfo);
+
+
+
+
+		}
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void dragDropEnd(DragSourceDropEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void dragEnter(DragSourceDragEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void dragExit(DragSourceEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void dragOver(DragSourceDragEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+		@Override
+		public void dropActionChanged(DragSourceDragEvent arg0) {
+			// TODO Auto-generated method stub
+
 		}
 	}
 
