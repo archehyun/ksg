@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -36,12 +37,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.DropMode;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -90,18 +94,15 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 
 	private SearchUI base;
-	private JCheckBox cbxD;
-	private JPanel pnRightOption;
-	private JPanel pnLeftOption;
-	private JTextField txfIndex;
-	private JTextField txfPortName;
-	private JTextField txflblIndex;
-	private JTextField txflblPortName;
-	public int selectedcolIndex;
-	private JTextField txfUpdatePortName;
+	private JCheckBox cbxDeleteAll;
+	private JPanel pnRightOption, pnLeftOption;
+	
+	private JTextField txfIndex, txfPortName, txflblIndex, txflblPortName, txfUpdatePortName;
+	
+	public int selectedcolIndex, portIndex;
+	
 	private String portName;
-	private int portIndex;
-	private PortListList portListList;
+	
 	public ManagePortDialog(String table_id,SearchUI base) 
 	{	
 		this.base =base;
@@ -138,6 +139,10 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		pnPortMain.setLayout(gridLayout);
 
 		tblPortList = new PortListTable(this.table_id);
+		
+		tblPortList.addMouseListener(new MyMouseAdapter());
+
+		tblPortList.addKeyListener(new MyKeyAdapter());
 
 		currentTable =tblPortList;
 
@@ -506,9 +511,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		pnLeft.add(new JScrollPane(tblPortList));
 
-		portListList = new PortListList(table_id);
-
-		pnLeft.add(new JScrollPane(portListList),BorderLayout.EAST);
+		
 
 		pnLeft.add(pnLeftNorth,BorderLayout.NORTH);
 
@@ -529,8 +532,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		pnRightOption = new JPanel();
 		pnRightOption.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnRightOption.setVisible(false);	
-		cbxD = new JCheckBox("대표 항구 삭제 시 세부 항구 삭제");
-		pnRightOption.add(cbxD);
+		cbxDeleteAll = new JCheckBox("대표 항구 삭제 시 세부 항구 삭제");
+		pnRightOption.add(cbxDeleteAll);
 
 
 		pnRight.add(pnRightOption,BorderLayout.NORTH);
@@ -541,7 +544,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		try {
 
 			tblPortList.retrive();
-			portListList.retrive();
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
@@ -564,12 +566,17 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	}
 
 	private Component buildInfo() {
+		
 		JPanel pnMain = new JPanel();
+		
 		pnMain.setLayout(new GridLayout(0,1));
 
 		pnMain.add(new JLabel(""));
+		
 		pnMain.add(new JLabel("항구정보를 등록합니다"));
+		
 		pnMain.add(new JLabel(""));
+		
 		//pnMain.add(new JLabel("\t- 테이블에 입력 시에는항구명 셀에서  F2키를 눌러 입력 셀이 활성화 된 후에 입력 하십시요."));
 		pnMain.setBackground(Color.white);
 		return pnMain;
@@ -723,15 +730,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		{
 
 			try {
-				int count = tableService.getPortCount(table_id);
-				ShippersTable op =tableService.getTableById(table_id);
-
-				ShippersTable table = new ShippersTable();
-				table.setTable_id(table_id);
-				table.setPort_col(count);
-				table.setGubun(op.getGubun());
-				tableService.updateTable(table);
-				base.setPortCount(count);
+				updateTableInfo();
 			} catch (SQLException e1) {
 
 				JOptionPane.showMessageDialog(this, e1.getMessage());
@@ -751,15 +750,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		{
 
 			try {
-				int count = tableService.getPortCount(table_id);
-				ShippersTable op =tableService.getTableById(table_id);
-
-				ShippersTable table = new ShippersTable();
-				table.setTable_id(table_id);
-				table.setPort_col(count);
-				table.setGubun(op.getGubun());
-				tableService.updateTable(table);
-				base.setPortCount(count);
+				updateTableInfo();
+				
 			} catch (SQLException e1) {
 
 				JOptionPane.showMessageDialog(this, e1.getMessage());
@@ -774,7 +766,20 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		}else if(command.equals("삭제"))
 		{
-			tblPortList.delete();
+			try {
+				tblPortList.delete(cbxDeleteAll.isSelected());
+				
+				updateTableInfo();
+				
+				
+				
+				
+				tblPortList.retrive();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		}
 		else if(command.equals("검색"))
 		{
@@ -810,6 +815,22 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				String port_name = txfPortName.getText();
 
 				tblPortList.insertPort(port_name);
+				
+				
+				int count=tableService.getPortCount(table_id);				
+				ShippersTable op =tableService.getTableById(table_id);				
+				ShippersTable table = new ShippersTable();
+				table.setGubun(op.getGubun());
+				table.setTable_id(table_id);
+				table.setPort_col(count);
+				
+				tableService.updateTable(table);
+				
+				base.setPortCount(count);
+				
+				tblPortList.retrive();
+				
+				txfPortName.setText("");
 
 			}
 			catch (SQLException e1) {
@@ -822,6 +843,16 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				return;
 			}
 		}
+	}
+	private void updateTableInfo() throws SQLException {
+		int count=tableService.getPortCount(table_id);
+		ShippersTable op =tableService.getTableById(table_id);
+		ShippersTable table = new ShippersTable();
+		table.setTable_id(table_id);
+		table.setPort_col(count);		
+		table.setGubun(op.getGubun());
+		tableService.updateTable(table);
+		base.setPortCount(count);
 	}
 
 
@@ -920,10 +951,10 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			TablePort port = new TablePort();
 			port.setPort_type(TablePort.TYPE_PARENT);
 			port.setPort_name(String.valueOf(port_name));
-			port.setPort_index(tblPortList.selectedportindex);
+			port.setPort_index(tblPortList.selectedPortIndex);
 			port.setNew_port_index(Integer.valueOf(val.toString()));
 			port.setTable_id(this.table_id);
-			System.out.println("upste:"+Integer.valueOf(val.toString())+","+tblPortList.selectedportindex+","+port.getPort_name());
+			System.out.println("upste:"+Integer.valueOf(val.toString())+","+tblPortList.selectedPortIndex+","+port.getPort_name());
 			tableService.updateTablePortIndex2(port);
 		} catch (SQLException e1) 
 		{
@@ -1052,19 +1083,24 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 					return;
 				if(indexVal instanceof Integer)
 				{
-					tblPortList.selectedportindex=(Integer)indexVal; 
+					tblPortList.selectedPortIndex=(Integer)indexVal; 
 				}else
 				{
-					tblPortList.selectedportindex=Integer.valueOf(String.valueOf(indexVal));
+					tblPortList.selectedPortIndex=Integer.valueOf(String.valueOf(indexVal));
 				}
 
 			}catch (Exception ee) {
-				tblPortList.selectedportindex=0;
+				tblPortList.selectedPortIndex=0;
 				ee.printStackTrace();
 			}
 			if(e.getKeyCode()==KeyEvent.VK_DELETE)
 			{		
-				tblPortList.delete();
+				try {
+					tblPortList.delete(cbxDeleteAll.isSelected());
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				return;
 
 			}
@@ -1132,9 +1168,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			return true; 
 
 		}
-
-
-
 	}
 	/**
 	 * @author archehyun
@@ -1187,70 +1220,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		}
 	}
 
-	/**
-	 * 항구목록 관리
-	 * 
-	 * @author archehyun
-	 *
-	 */
-	class PortListList extends JList implements DropTargetListener
-	{
-		private TablePort tablePorts[];
 
-		private String table_id;
-		DropTarget dtg;
-
-		public PortListList(String table_id) {
-
-			this.table_id = table_id;
-
-			this.setCellRenderer(new PortListRenderer());
-
-			this.setDropMode(DropMode.ON_OR_INSERT);
-			dtg = new DropTarget(this, this);
-			this.setDropTarget(dtg);
-
-			this.setDragEnabled(true);
-
-		}
-		public void retrive() throws SQLException
-		{
-			List<TablePort> portli=tableService.getParentPortList(this.table_id);
-
-			tablePorts = new TablePort[portli.size()];
-
-			tablePorts = portli.toArray(tablePorts);
-
-			this.setListData(tablePorts);
-
-		}
-		@Override
-		public void dragEnter(DropTargetDragEvent dtde) {
-			// TODO Auto-generated method stub
-
-		}
-		@Override
-		public void dragExit(DropTargetEvent dte) {
-			// TODO Auto-generated method stub
-
-		}
-		@Override
-		public void dragOver(DropTargetDragEvent dtde) {
-			// TODO Auto-generated method stub
-
-		}
-		@Override
-		public void drop(DropTargetDropEvent dtde) {
-			// TODO Auto-generated method stub
-
-		}
-		@Override
-		public void dropActionChanged(DropTargetDragEvent dtde) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
 
 	class PortListRenderer extends JLabel implements ListCellRenderer {
 		private final Color HIGHLIGHT_COLOR = new Color(0, 0, 128);
@@ -1275,8 +1245,19 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			return this;
 		}
 	}
-	class TablePortTransable  implements Transferable
+	
+	static class TablePortTransable  implements Transferable, Shape,Serializable
 	{
+		
+		  double maxX = Double.NEGATIVE_INFINITY; // The bounding box
+
+		  double maxY = Double.NEGATIVE_INFINITY;
+
+		  double minX = Double.POSITIVE_INFINITY;
+
+		  double minY = Double.POSITIVE_INFINITY;
+		  
+		
 		private TablePort tablePort;
 
 		public TablePort getTablePort() {
@@ -1288,7 +1269,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		}
 
 		// This is the custom DataFlavor for Scribble objects
-		public DataFlavor scribbleDataFlavor = new DataFlavor(
+		public static final DataFlavor scribbleDataFlavor = new DataFlavor(
 				TablePortTransable.class, "Scribble");
 
 		// This is a list of the flavors we know how to work with
@@ -1320,31 +1301,130 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				throw new UnsupportedFlavorException(flavor);
 		}
 
+		@Override
+		public boolean contains(Point2D p) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean contains(Rectangle2D r) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean contains(double x, double y) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean contains(double x, double y, double w, double h) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		  /** Return the bounding box of the Shape */
+		  public Rectangle getBounds() {
+		    return new Rectangle((int) (minX - 0.5f), (int) (minY - 0.5f),
+		        (int) (maxX - minX + 0.5f), (int) (maxY - minY + 0.5f));
+		  }
+
+		  /** Return the bounding box of the Shape */
+		  public Rectangle2D getBounds2D() {
+		    return new Rectangle2D.Double(minX, minY, maxX - minX, maxY - minY);
+		  }
+
+
+		@Override
+		public PathIterator getPathIterator(AffineTransform at) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public PathIterator getPathIterator(AffineTransform at, double flatness) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public boolean intersects(Rectangle2D r) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean intersects(double x, double y, double w, double h) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		  public void translate(double x, double y) {
+
+		    minX += x;
+		    maxX += x;
+		    minY += y;
+		    maxY += y;
+		  }
+		  public void moveto(double x, double y) {
+
+			    lineto(x, y);
+			  }
+
+			  /**
+			   * Add the point (x,y) to the end of the current polyline
+			   */
+			  public void lineto(double x, double y) {
+
+
+			    // See if the point enlarges our bounding box
+			    if (x > maxX)
+			      maxX = x;
+			    if (x < minX)
+			      minX = x;
+			    if (y > maxY)
+			      maxY = y;
+			    if (y < minY)
+			      minY = y;
+			  }
+
 	}
+	/**
+	 * @author archehyun
+	 *
+	 *//*
 	class PortListTable extends JTable implements DropTargetListener,  DragGestureListener, MouseListener, DragSourceListener
 	{
-
-
 		TablePortTransable portTransable;
+		
 		private int selectedportindex;
-		private int selectedindex;		
+		
+		private int selectedindex;	
+		
 		private String table_id;
+		
 		DragSource dragSource; // A central DnD object
+		
 		DropTarget dtg;
+		
 		List<TablePort> portli;
 
 		public PortListTable(String table_id) {
 
 			portTransable = new TablePortTransable();
-			
-			
-			
 
 			this.table_id = table_id;
+			
+			addMouseListener(new MyMouseAdapter());
+
+			addKeyListener(new MyKeyAdapter());			
 			
 			this.addMouseListener(this);
 
 			dragSource = DragSource.getDefaultDragSource();
+			
 			dragSource.createDefaultDragGestureRecognizer(this, // What component
 					DnDConstants.ACTION_COPY_OR_MOVE, // What drag types?
 					this);// the listener
@@ -1357,14 +1437,12 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 			setName(TablePort.TYPE_PARENT);
 
-			addMouseListener(new MyMouseAdapter());
-
-			addKeyListener(new MyKeyAdapter());
+			
 
 		}
-		/**
+		*//**
 		 * @throws SQLException
-		 */
+		 *//*
 		private void retrive() throws SQLException {
 
 			portli=tableService.getParentPortList(this.table_id);
@@ -1406,6 +1484,20 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 			changeSelection(selectedportindex, selectedcolIndex, false, false);
 		}
+		
+		private void chagePortIndex(TablePort onePortInfo, TablePort twoPortInfo) throws SQLException
+		{
+			int oneIndex =onePortInfo.getPort_index();
+			int twoIndex =twoPortInfo.getPort_index();
+			
+			onePortInfo.setPort_index(twoIndex);
+			twoPortInfo.setPort_index(oneIndex);
+			tableService.updateTablePort(onePortInfo);
+			tableService.updateTablePort(twoPortInfo);
+
+			tblPortList.retrive();
+		}
+		
 
 		private void insertPort(String port_name) throws SQLException
 		{
@@ -1441,19 +1533,24 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			tblPortList.retrive();
 
 			txfPortName.setText("");
+			
 			int count=tableService.getPortCount(table_id);
+			
 			ShippersTable op =tableService.getTableById(table_id);
+			
 			ShippersTable table = new ShippersTable();
 			table.setGubun(op.getGubun());
 			table.setTable_id(table_id);
-			table.setPort_col(count);		
+			table.setPort_col(count);
+			
 			tableService.updateTable(table);
+			
 			base.setPortCount(count);
 		}
 
-		/**
+		*//**
 		 * 삭제
-		 */
+		 *//*
 		private void delete() {
 
 			int row=getSelectedRow();
@@ -1525,9 +1622,23 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		public void dragExit(DropTargetEvent dte) {
 			System.out.println("exit");
 		}
+		
+		TablePort chagePort;
 		public void dragOver(DropTargetDragEvent dtde) {
 
 			int row=this.rowAtPoint(dtde.getLocation());
+			
+			if(portli.size()>row)
+			{
+				TablePort  portItem=portli.get(row);
+				chagePort = portItem;
+			}
+			else
+			{
+				chagePort = null;
+				return;
+				
+			}
 
 			this.changeSelection(row, 0, false, false);
 
@@ -1535,7 +1646,43 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		}
 		@Override
 		public void drop(DropTargetDropEvent dtde) {
-			// TODO Auto-generated method stub
+		
+			
+		    if (dtde.isDataFlavorSupported(TablePortTransable.scribbleDataFlavor)
+		            || dtde.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+		    	dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+		        } else {
+		        	dtde.rejectDrop();
+		        	
+		          return;
+		        }
+		    
+		    Transferable t = dtde.getTransferable(); // Holds the dropped data
+		    // First, try to get the data directly as a scribble object
+		    TablePortTransable  droppedScribble;
+		    try {
+		    droppedScribble = (TablePortTransable) t
+		          .getTransferData(TablePortTransable.scribbleDataFlavor);
+
+		    
+		    if(chagePort==null)
+		    	return;
+
+		    
+		    chagePortIndex(droppedScribble.getTablePort(), chagePort);
+		    } catch (Exception ex) { // unsupported flavor, IO exception, etc
+		    	ex.printStackTrace();
+		      // If that doesn't work, try to get it as a String and parse it
+		      try {
+		        String s = (String) t.getTransferData(DataFlavor.stringFlavor);
+		      //  droppedScribble = Scribble.parse(s);
+		      } catch (Exception ex2) {
+		    	  System.out.println("error drop");
+		        // If we still couldn't get the data, tell the system we failed
+		    	  dtde.dropComplete(false);
+		        return;
+		      }
+		    }  
 
 		}
 		@Override
@@ -1545,7 +1692,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		}
 		@Override
 		public void dragGestureRecognized(DragGestureEvent e) {
-
 
 			MouseEvent inputEvent = (MouseEvent) e.getTriggerEvent();
 			int x = inputEvent.getX();
@@ -1566,14 +1712,16 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				Image dragImage = this.createImage(100,
 						25);
 				Graphics2D g = (Graphics2D) dragImage.getGraphics();
+				Rectangle scribbleBox = portTransable.getBounds();
 				g.setColor(new Color(0, 0, 0, 0)); // transparent background
-				g.fillRect(0, 0, 100, 25);
+				g.fillRect(0, 0, 200, 25);
 				g.setColor(Color.black);				
-				g.drawString(portTransable.getTablePort().getPort_name(), 0, 0);
-				g.translate(-x, -y);
+				g.drawString(portTransable.getTablePort().getPort_name(), 0, 15);
+				g.translate(-scribbleBox.x, -scribbleBox.y);
+				
+				//g.draw(portTransable);
 
-				Point hotspot = new Point(-x, -y);
-				System.out.println("name:"+portTransable.getTablePort().getPort_name());
+				Point hotspot = new Point(-scribbleBox.x, -scribbleBox.y);
 
 				// Now start dragging, using the image.
 				e.startDrag(cursor, dragImage, hotspot, portTransable, this);
@@ -1581,9 +1729,9 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}
 			else
 			{
-				System.out.println("name1:"+portTransable.getTablePort().getPort_name());
 				e.startDrag(cursor, portTransable,this);
 			}
+			 return;
 
 
 		}
@@ -1610,10 +1758,10 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				return;
 
 			TablePort portInfo = portli.get(row);
+			
 			this.portTransable.setTablePort(portInfo);
-
-
-
+			
+			portTransable.moveto(e.getX(), e.getY());
 
 		}
 		@Override
@@ -1622,9 +1770,19 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		}
 		@Override
-		public void dragDropEnd(DragSourceDropEvent arg0) {
-			// TODO Auto-generated method stub
-
+		public void dragDropEnd(DragSourceDropEvent e) {
+		    if (!e.getDropSuccess())
+		        return;
+		    int action = e.getDropAction();
+		    if (action == DnDConstants.ACTION_MOVE) {
+		      scribbles.remove(beingDragged);
+		      beingDragged = null;
+		      repaint();
+		    	//테이블 정보 업데이트
+		    	System.out.println("테이블 정보 업데이트");
+		    	
+		    	
+		    }
 		}
 		@Override
 		public void dragEnter(DragSourceDragEvent arg0) {
@@ -1646,7 +1804,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			// TODO Auto-generated method stub
 
 		}
-	}
+	}*/
 
 
 }

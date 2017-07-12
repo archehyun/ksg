@@ -761,7 +761,13 @@ public class SearchUI extends KSGPanel implements ActionListener
 		txfPageSearchInput = new JTextField(4);
 		txfPageSearchInput.addKeyListener(new KeyAdapter() {
 
-
+			public void keyTyped(KeyEvent e)
+			{
+				if(e.getKeyChar()==KeyEvent.VK_ENTER)
+				{
+					
+				}
+			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
