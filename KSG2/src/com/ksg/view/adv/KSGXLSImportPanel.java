@@ -65,6 +65,8 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.model.KSGModelManager;
 import com.ksg.model.KSGObserver;
+import com.ksg.view.adv.comp.PortTableComp;
+import com.ksg.view.adv.comp.VesselListComp;
 import com.ksg.view.adv.dialog.SearchVesselDialog;
 import com.ksg.view.adv.dialog.TableInfoDialog;
 import com.ksg.view.comp.KSGTable;
@@ -81,6 +83,8 @@ import com.ksg.xls.xml.KSGXMLManager;
  * 엑셀에서 가져오 테이블에 대한 정보 표시
  */
 public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionListener{
+
+	private static final String ACTION_COMMAND_XML = "XML";
 
 	class MYKeyApater extends KeyAdapter
 	{
@@ -107,7 +111,8 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 			}
 		}
 	}
-
+	
+	private String ACTION_COMMAND_TABLE_INFO_SEARCH = "테이블 정보";
 
 	private static final long serialVersionUID = 1L;
 
@@ -168,8 +173,11 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 	public KSGXLSImportPanel() 
 	{		
 		isUnderPort = (String)propertis.getValues(KSGPropertis.PROPERTIES_UNDERPORT).toString();
+		
 		DAOManager manager = DAOManager.getInstance();
+		
 		advservice = manager.createADVService();
+		
 		tableService = manager.createTableService();
 		
 		createAndUpdatePN();
@@ -181,6 +189,48 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		if(command.equals("적용하기"))
 		{
 			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "반영 되었습니다.");
+		}
+		
+		else if(command.equals(ACTION_COMMAND_TABLE_INFO_SEARCH))
+		{
+			TableInfoDialog dialog = new TableInfoDialog(KSGXLSImportPanel.this);
+			dialog.createAndUpdateUI();
+		}
+		else if(command.equals(ACTION_COMMAND_XML))
+		{
+			JDialog dialog = new JDialog();
+			
+			dialog.setModal(true);
+			
+			JPanel pnMain = new JPanel(new BorderLayout());
+
+			JTextArea area = new JTextArea();
+			
+			pnMain.add(new JScrollPane(area));
+
+			dialog.getContentPane().add(pnMain);
+
+			String data = tblADV.getXMLModel();
+			
+			area.setText(data);
+			
+			try 
+			{
+				KSGXMLManager manager = new KSGXMLManager();
+				DefaultTableModel model = manager.createXLSTableModel(data);
+				JTable table = new JTable();
+
+				table.setModel(model);
+				pnMain.add(new JScrollPane(table),BorderLayout.SOUTH);
+
+			} catch (JDOMException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			dialog.setSize(new Dimension(800,800));
+			ViewUtil.center(dialog);
+			dialog.setVisible(true);
 		}
 	}
 	public Component addForm(String label,Component comp)
@@ -204,6 +254,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		butReload.setEnabled(false);
 
 		JToggleButton butShowText = new JToggleButton("텍스트 보기");
+		butShowText.setVisible(false);
 
 		butShowText.setFont(defaultFont);
 		butShowText.addChangeListener(new ChangeListener(){
@@ -223,42 +274,9 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 			}});
 
 
-		JButton butXML = new JButton("XML");
-		butXML.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) 
-			{
-
-				JDialog dialog = new JDialog();
-				JPanel pnMain = new JPanel(new BorderLayout());
-
-				JTextArea area = new JTextArea();
-				pnMain.add(new JScrollPane(area));
-
-
-				dialog.getContentPane().add(pnMain);
-
-				String data = tblADV.getXMLModel();
-				area.setText(data);
-				try 
-				{
-					KSGXMLManager manager = new KSGXMLManager();
-					DefaultTableModel model = manager.createXLSTableModel(data);
-					JTable table = new JTable();
-
-					table.setModel(model);
-					pnMain.add(new JScrollPane(table),BorderLayout.SOUTH);
-
-				} catch (JDOMException e1) {
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				dialog.setSize(new Dimension(800,800));
-				ViewUtil.center(dialog);
-				dialog.setVisible(true);
-
-			}});
+		JButton butXML = new JButton(ACTION_COMMAND_XML);
+		butXML.setActionCommand(ACTION_COMMAND_XML);
+		butXML.addActionListener(this);
 
 		JPanel pnCenterControlRight = new JPanel();
 		pnCenterControlRight.add(butShowText);
@@ -266,13 +284,10 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		pnCenterControlRight.add(butXML);
 		JPanel pnCenterControlLeft = new JPanel();
 
-		JButton butInfo = new JButton("테이블 정보");
-		butInfo.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-				TableInfoDialog dialog = new TableInfoDialog(KSGXLSImportPanel.this);
-				dialog.createAndUpdateUI();
-			}});
+		
+		JButton butInfo = new JButton(ACTION_COMMAND_TABLE_INFO_SEARCH);
+		butInfo.setActionCommand(ACTION_COMMAND_TABLE_INFO_SEARCH);
+		butInfo.addActionListener(this);
 
 		pnCenterControlLeft.add(butInfo);
 
@@ -405,17 +420,20 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 			}
 		};
 		cbxCount.addActionListener(countAction);
+		
 		cbxCount.setSelectedItem(Integer.parseInt(propertis.getProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_COUNT).toString()));
 
 		cbxDivider.setSelectedItem(propertis.getProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_DIVIDER));
 
 		pnDivider.add(lblDivider);
+		
 		pnDivider.add(cbxDivider);
+		
 		pnDivider.add(lblCount);
+		
 		pnDivider.add(cbxCount);
 
 		bb.add(pnDivider);
-
 
 		pnPortVesselCount.add(bb,BorderLayout.NORTH);
 
@@ -474,8 +492,8 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 		pnPort.add(tblPort,BorderLayout.CENTER);
 
-
 		pnVessel.setLayout(new BorderLayout());
+		
 		pnVessel.add(litVessel,BorderLayout.CENTER);
 
 		// 추후 제거
@@ -762,9 +780,17 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		logger.info("end");
 	}
 
+	/**
+	 * @param row
+	 * @param vesselName
+	 */
 	public void updateVesselName(int row, String vesselName) {
 		tblADV.updateVesselName(row, vesselName);
 	}
+	/**
+	 * @param row
+	 * @param vesselName
+	 */
 	public void updateVesseFulllName(int row, String vesselName) {
 		tblADV.updateVesseFulllName(row, vesselName);
 		

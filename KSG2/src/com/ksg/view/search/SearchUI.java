@@ -81,6 +81,7 @@ import com.ksg.view.comp.KSGTreeDefault;
 import com.ksg.view.comp.UpdateTablePanel;
 import com.ksg.view.search.dialog.AddTableInfoDialog;
 import com.ksg.view.search.dialog.ManagePortDialog;
+import com.ksg.view.util.DateFormattException;
 import com.ksg.view.util.KSGDateUtil;
 import com.ksg.view.util.ViewUtil;
 /**
@@ -90,6 +91,9 @@ import com.ksg.view.util.ViewUtil;
 @SuppressWarnings("unchecked")
 public class SearchUI extends KSGPanel implements ActionListener
 {	
+	private static final String ACTION_SEARCH = "조회";
+
+	private static final String ACTION_UPDATE_DATE = "입력일자 수정";
 	/**
 	 * @author archehyun
 	 * @테이블에서의 마우스 동작
@@ -187,7 +191,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 	private String orderParam;
 
-	private Font defaultFont = new Font("돋음",0,10);
+	private Font defaultFont = new Font("돋음",0,12);
 
 	private JMenuItem delMenu;
 
@@ -229,6 +233,8 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 	private ShippersTable searchParam;
 
+	SearchOptionKeyAdapter keyAdapter;
+
 	DAOManager daoManager = DAOManager.getInstance();
 
 	public SearchUI() 
@@ -237,6 +243,15 @@ public class SearchUI extends KSGPanel implements ActionListener
 		_advService= daoManager.createADVService();
 
 		createAndUpdateUI();
+
+		try{
+			searchParam = new ShippersTable();
+			updateView(searchParam);
+
+		}catch(Exception e)
+		{
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
 	}
 	public void actionPerformed(ActionEvent e) { 
 		String command = e.getActionCommand();
@@ -358,9 +373,18 @@ public class SearchUI extends KSGPanel implements ActionListener
 			delADVAction();
 		}
 
-		else if(command.equals("날짜일괄수정"))
+		else if(command.equals(ACTION_UPDATE_DATE))
 		{
-			updateAllDateDialog = new UpdateDateDialog(_searchedList);		
+			updateAllDateDialog = new UpdateDateDialog(_searchedList);
+			if(updateAllDateDialog.result==1)
+			{
+				try {
+					updateView(searchParam);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -373,16 +397,6 @@ public class SearchUI extends KSGPanel implements ActionListener
 		logger.info("seleted page:"+searchParam);
 
 		_pnADVInfo.setVisible(false);		
-		/*
-		//_searchedList= _tableService.getTableList(_searchParam);
-
-		_tblSubTotalTable.setSearchParam(searchParam);
-
-		_tblSubTotalTable.retrive();
-
-		_currentTable=_tblSubTotalTable;*/
-
-		//searchSubTable();
 
 		tableLayout.show(_pnTable, tblSearchTable.getName());
 	}
@@ -400,6 +414,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 
 		tblSearchTable = new SearchTable();
+//		tblSearchTable.setFont(defaultFont);
 
 		tblSearchTable.addKeyListener(new KeyAdapter() {
 
@@ -414,7 +429,9 @@ public class SearchUI extends KSGPanel implements ActionListener
 					final int page =(Integer)table.getValueAt(row, 0);					
 
 					searchADVTable();
+
 					_pnADVInfo.setVisible(true);
+
 					tableLayout.show(_pnTable, advTablePanel.getName());
 				}
 
@@ -525,7 +542,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 		JPanel pnLeftControl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		JButton butUpdateDate = new JButton("날짜일괄수정");
+		JButton butUpdateDate = new JButton(ACTION_UPDATE_DATE);
 		butUpdateDate.addActionListener(this);
 
 		pnLeftControl.add(butUpdateDate);
@@ -699,17 +716,26 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 		this.setName("SearchUI");
 
+		keyAdapter = new SearchOptionKeyAdapter();
+		
 		this.manager.addObservers(this);
+		
 		_popupMenu = createPopupMenu();
 
 		JPanel pnTitleMain = new JPanel(new BorderLayout());
+		
 		JPanel pnTitle = new JPanel();
+		
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEADING));
+		
 		JLabel label = new JLabel("광고정보 관리");
-		label.setForeground(new Color(61,86,113));
+		
+		label.setForeground(new Color(61,86,113));		
 
 		Font titleFont = new Font("명조",Font.BOLD,18);
+		
 		label.setFont(titleFont);
+		
 		pnTitle.add(label);
 
 
@@ -759,55 +785,10 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 
 		txfPageSearchInput = new JTextField(4);
-		txfPageSearchInput.addKeyListener(new KeyAdapter() {
-
-			public void keyTyped(KeyEvent e)
-			{
-				if(e.getKeyChar()==KeyEvent.VK_ENTER)
-				{
-					
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-
-				txfPageSearchInput.setForeground(Color.black);
-				String str = txfPageSearchInput.getText();
-				try{
-					Integer.parseInt(str);
-
-				}catch(NumberFormatException ee)
-				{
-					txfPageSearchInput.setForeground(Color.red);
-				}
-
-			}
-
-		});
+		txfPageSearchInput.addKeyListener(keyAdapter);
 		txfPageIndexSearchInput = new JTextField(4);
 
-		txfPageIndexSearchInput.addKeyListener(new KeyAdapter() {
-
-
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-
-				txfPageIndexSearchInput.setForeground(Color.black);
-				String str = txfPageIndexSearchInput.getText();
-				try{
-					Integer.parseInt(str);
-
-				}catch(NumberFormatException ee)
-				{
-					txfPageIndexSearchInput.setForeground(Color.red);
-				}
-
-			}
-
-
-		});
+		txfPageIndexSearchInput.addKeyListener(keyAdapter);
 
 		_txfTable_id = new JTextField(14);
 		_txfTable_id.setEditable(false);
@@ -829,62 +810,40 @@ public class SearchUI extends KSGPanel implements ActionListener
 		Box bo = new Box(BoxLayout.Y_AXIS);
 
 
-		JPanel pnMain1 = new JPanel();		
+		JPanel pnMain1 = new JPanel();
+
 		pnMain1.setLayout(new BorderLayout());
 
 		JPanel pnLogo = new JPanel();
+
 		pnLogo.setLayout( new FlowLayout(FlowLayout.LEFT));
 
 		lblCompany.setIcon(new ImageIcon("images/table.png"));
+
 		pnLogo.add(lblCompany);
 
 		JPanel pnSearchMain = new JPanel();
+
 		pnSearchMain.setLayout(new BorderLayout());
+
 		JLabel lblDateSearch = new JLabel("  입력일자: ");
+
 		txfDateSearch = new JTextField(10);
+
 		txfDateSearch.addKeyListener(new KeyAdapter(){
 
 			public void keyReleased(KeyEvent e) 
 			{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
-				{
-					String date=txfDateSearch.getText();
-
-					try {
-
-						if(KSGDateUtil.isDashFomatt(date))
-						{
-							ShippersTable OP = new ShippersTable();
-							OP.setDate_isusse(KSGDateUtil.toDate3(date).toString());
-							_searchedList=_tableService.getTableListByDate(OP);
-
-						}else
-						{
-							JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "입력 형식(2000.1.1) 이 틀렸습니다.");
-							txfDateSearch.setText("");
-							return;
-						}
-
-						_currentTable= tblSearchTable;
-						searchSubTable();
-						lblCount.setText(String.valueOf(_searchedList.size()));
-						tableLayout.show(_pnTable, tblSearchTable.getName());
-						txfDateSearch.setText("");
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					} catch (ParseException e2) {
-						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "입력 형식(2000.1.1) 이 틀렸습니다.");
-						txfDateSearch.setText("");
-						return;
-					}
+				{	
+					searchByOption(txfSearchInput.getText());
 				}
 			}
-
 		});
 		Icon warnIcon = new ImageIcon("images/search.png");
 
 		JButton butDateSearch = new JButton(warnIcon);
-		butDateSearch.setText("조회");
+		butDateSearch.setText(ACTION_SEARCH);
 		butDateSearch.addActionListener(new ActionListener()
 		{
 
@@ -899,7 +858,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 
 		cbbOption = new JComboBox();
-		//cbbOption.addItem("페이지");
+
 		cbbOption.addItem("테이블ID");
 
 		//cbbOption.addItem("인덱스");
@@ -1109,32 +1068,6 @@ public class SearchUI extends KSGPanel implements ActionListener
 	 */
 	private JPanel createSearchPanel() {
 		JPanel pnSearchByCompany = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		/*JLabel lblSearchCompany = new JLabel("테이블 구분");
-
-		cbbGubun = new JComboBox();
-		cbbGubun.addItem("전체");
-		cbbGubun.addItem(ShippersTable.GUBUN_NORMAL);
-		cbbGubun.addItem(ShippersTable.GUBUN_NNN);
-		cbbGubun.addItem(ShippersTable.GUBUN_TS);
-		cbbGubun.addItem(ShippersTable.GUBUN_CONSOLE);
-		cbbGubun.addItem(ShippersTable.GUBUN_INLAND);
-		cbbGubun.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) 
-			{
-
-				try {
-					searchByGubun();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-
-
-		pnSearchByCompany .add(lblSearchCompany);
-		pnSearchByCompany .add(cbbGubun);*/
 
 		return pnSearchByCompany;
 	}
@@ -1306,15 +1239,15 @@ public class SearchUI extends KSGPanel implements ActionListener
 	 * @return
 	 */
 	private ShippersTable getShipperTableBySelectedTable() {
-		int row=_currentTable.getSelectedRow();
+		int row=tblSearchTable.getSelectedRow();
 		try{
 			if(row!=-1)
 			{
 				ShippersTable shippersTable = new ShippersTable();
 
-				shippersTable.setTable_id((String) _currentTable.getValueAt(row, 3));//
-				manager.selectedDate = (String) _currentTable.getValueAt(row, 2);
-				shippersTable.setCompany_abbr((String) _currentTable.getValueAt(row, 6));
+				shippersTable.setTable_id((String) tblSearchTable.getValueAt(row, 3));//
+				manager.selectedDate = (String) tblSearchTable.getValueAt(row, 2);
+				shippersTable.setCompany_abbr((String) tblSearchTable.getValueAt(row, 6));
 
 				return shippersTable;
 			}else
@@ -1360,8 +1293,6 @@ public class SearchUI extends KSGPanel implements ActionListener
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(SearchUI.this, "error : "+e.getMessage());
 		}
-
-		
 	}
 	/**
 	 * @param colum
@@ -1393,10 +1324,13 @@ public class SearchUI extends KSGPanel implements ActionListener
 		manager.selectedDate=null;
 
 		updateSubTable();
+
 		delMenu.setEnabled(true);
+
 		tableLayout.show(_pnTable, tblSearchTable.getName());
 
 		_txfDate.setText("");
+
 		_txfTable_id.setText("");
 	}
 
@@ -1505,49 +1439,6 @@ public class SearchUI extends KSGPanel implements ActionListener
 		advTablePanel.setSelectedTable(st);
 		advTablePanel.retrive();
 
-		/*	SearchADVCommand searchADVCommand = new SearchADVCommand(st,advTablePanel);
-		searchADVCommand.execute();
-		_selectedADVData = KSGModelManager.getInstance().selectedADVData;
-
-
-
-		if(searchADVCommand.result!=SearchADVCommand.RESULT_SUCCESS)// 광고정보가 있다면
-		{
-			logger.info("no adv and insert adv");
-			ADVData data = new ADVData();
-			data.setCompany_abbr(company_abbr);
-			data.setTable_id(table_id);
-			data.setDate_isusse(null);
-			rootElement = new Element("input");
-			rootElement.setAttribute("type","xls");
-			Element tableInfos = new Element("table");
-			tableInfos.setAttribute("id","");
-			rootElement.addContent(tableInfos);
-			Document document = new Document(rootElement);
-			Format format = Format.getPrettyFormat();
-
-			format.setEncoding("EUC-KR");
-			format.setIndent("\n");
-			format.setIndent("\t");
-
-			XMLOutputter outputter = new XMLOutputter(format);
-
-
-			String strXml=outputter.outputString(document);
-
-
-			data.setData(strXml);
-
-			try {
-				data.setDate_isusse(KSGDateUtil.toDate2(KSGDateUtil.getDate()));
-			} catch (ParseException e2) {
-				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e2.getMessage());
-			}
-			KSGCommand  command = new InsertADVCommand(data);
-			command.execute();
-			KSGModelManager.getInstance().selectedADVData=_selectedADVData = data;
-
-		}*/
 		_pnADVInfo.setVisible(true);
 		tableLayout.show(_pnTable, advTablePanel.getName());
 		logger.debug("end");
@@ -1647,17 +1538,8 @@ public class SearchUI extends KSGPanel implements ActionListener
 		searchByOption(orderParam);
 	}
 
-
-
-
-	/**
-	 * 구분에 의한 조회
-	 * @throws SQLException
-	 */
-	private void searchByGubun() throws SQLException
+	private void selectGubun(ShippersTable searchParam, int gubunIndex )
 	{
-		int gubunIndex = cbbGubun.getSelectedIndex();
-		this.searchParam = new ShippersTable();
 		switch (gubunIndex) {
 		case 0:
 			searchParam.setGubun(null);
@@ -1680,6 +1562,21 @@ public class SearchUI extends KSGPanel implements ActionListener
 		default:
 			break;
 		}
+	}
+
+	/**
+	 * 구분에 의한 조회
+	 * @throws SQLException
+	 */
+	private void searchByGubun() throws SQLException
+	{
+
+		logger.info("search:");
+
+		int gubunIndex = cbbGubun.getSelectedIndex();
+		this.searchParam = new ShippersTable();
+
+		selectGubun(searchParam, gubunIndex);
 
 		tblSearchTable.setSearchParam(searchParam);
 
@@ -1693,9 +1590,7 @@ public class SearchUI extends KSGPanel implements ActionListener
 
 	private void searchByOption(String param) 
 	{
-		int index=cbbOption.getSelectedIndex();
-
-		logger.debug("search param:"+param);
+		logger.info("search param:"+param);
 
 		orderParam = param;
 
@@ -1734,6 +1629,64 @@ public class SearchUI extends KSGPanel implements ActionListener
 		}
 
 
+
+
+		try {
+
+			selectOption(param, cbbOption.getSelectedIndex());
+
+			selectGubun(searchParam, cbbGubun.getSelectedIndex());
+
+			String date=txfDateSearch.getText();
+
+			if(!date.equals(""))
+			{
+				String fomattedDate = KSGDateUtil.toDate3(date).toString();
+				searchParam.setDate_isusse(fomattedDate);
+			}
+
+			updateView(searchParam);
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (NoSuchElementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch(DateFormattException e)
+		{
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e.getMessage()+ ": 입력 형식(2000.1.1) 이 틀렸습니다.");
+
+		} finally
+		{
+			txfDateSearch.setText("");
+
+			txfSearchInput.setText("");
+
+			txfPageSearchInput.setText("");
+
+			txfPageIndexSearchInput.setText("");
+		}
+	}
+
+	private void updateView(ShippersTable searchParam) throws SQLException
+	{
+		tblSearchTable.setSearchParam(searchParam);
+
+		tblSearchTable.retrive();
+
+		_currentTable= tblSearchTable;
+
+		lblCount.setText(String.valueOf(tblSearchTable.getRowCount()));
+
+		tableLayout.show(_pnTable, tblSearchTable.getName());	
+	}
+	private void selectOption(String param, int index) {
+
+		if(param== null||param.equals("")) return;
+
 		switch (index) {
 
 		/*	case 0://페이지
@@ -1764,86 +1717,10 @@ public class SearchUI extends KSGPanel implements ActionListener
 		default:
 			break;
 		}
-
-
-		int gubunIndex = cbbGubun.getSelectedIndex();
-		switch (gubunIndex) {
-		case 0:
-			searchParam.setGubun(null);
-			break;
-		case 1:
-			searchParam.setGubun("Normal");
-			break;
-		case 2:
-			searchParam.setGubun("NNN");
-			break;
-		case 3:
-			searchParam.setGubun("TS");
-			break;
-		case 4:
-			searchParam.setGubun("console");
-			break;	
-
-		default:
-			break;
-		}
-
-
-		try {
-
-			String date=txfDateSearch.getText();
-
-			if(!date.equals(""))
-			{
-				if(KSGDateUtil.isDashFomatt(date))
-				{
-					try{
-						searchParam.setDate_isusse(KSGDateUtil.toDate3(date).toString());
-					}catch(Exception e)
-					{
-						e.printStackTrace();
-						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error: "+e.getMessage());
-						txfDateSearch.setText("");
-					}
-
-				}else
-				{
-					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "입력 형식(2000.1.1) 이 틀렸습니다.");
-					txfDateSearch.setText("");
-					return;
-				}
-			}
-
-
-			tblSearchTable.setSearchParam(searchParam);
-			tblSearchTable.retrive();
-
-
-			_currentTable= tblSearchTable;
-
-
-			lblCount.setText(String.valueOf(tblSearchTable.getRowCount()));
-
-			txfDateSearch.setText("");
-
-			txfSearchInput.setText("");
-
-			txfPageSearchInput.setText("");
-
-			txfPageIndexSearchInput.setText("");
-
-			tableLayout.show(_pnTable, tblSearchTable.getName());
-
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NoSuchElementException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
 	}
 	class UpdateDateDialog extends JDialog implements ActionListener
 	{
+		public int result=0;
 		/**
 		 * 
 		 */
@@ -1903,53 +1780,73 @@ public class SearchUI extends KSGPanel implements ActionListener
 			setLocationRelativeTo(SearchUI.this);
 			setVisible(true);
 		}
+		
+		public void close()
+		{
+			setVisible(false);
+			dispose();
+		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
 			if(command.equals("취소"))
-			{
-				setVisible(false);
-				dispose();
+			{				
+				close();
 			}
 			else if(command.equals("확인"))
 			{
-				String date=txfImportDate.getText();   
-
-				if(!KSGDateUtil.isDashFomatt(date))
-				{
-					JOptionPane.showMessageDialog(null, "입력 형식(2000.1.1)이 틀렸습니다. "+date);
-					return;
-				}
-
-				setVisible(false);
-				dispose();
 
 				try {
-
-					ShippersTable table = new ShippersTable();
-
-					table.setDate_isusse(KSGDateUtil.toDate3(date).toString());
-
-					//_tableService.updateTableDateAll(table);
+					String date=txfImportDate.getText();
 
 					_tableService.updateTableDateByTableIDs(tblSearchTable.getSearchedList(),KSGDateUtil.toDate3(date).toString());
-
+					
+					result=1;
+					
+					close();
+					
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "날짜를 수정했습니다.");
+					
 
 
 				} catch (SQLException e1) {
 
 					e1.printStackTrace();
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
-				} catch (ParseException e2) {
-					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e2.getMessage());
+				} catch (DateFormattException e2) {
+					e2.printStackTrace();
+					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "입력 형식(2000.1.1)이 틀렸습니다. "+e2.getMessage());
 				}
 				catch(Exception e3)
 				{
 					e3.printStackTrace();
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e3.getMessage());
 				}
+			}
+		}
+	}
+	class SearchOptionKeyAdapter extends KeyAdapter
+	{
+		public void keyTyped(KeyEvent e)
+		{
+			if(e.getKeyChar()==KeyEvent.VK_ENTER)
+			{
+				searchByOption(txfSearchInput.getText());
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+
+			txfPageSearchInput.setForeground(Color.black);
+			String str = txfPageSearchInput.getText();
+			try{
+				Integer.parseInt(str);
+
+			}catch(NumberFormatException ee)
+			{
+				txfPageSearchInput.setForeground(Color.red);
 			}
 		}
 	}

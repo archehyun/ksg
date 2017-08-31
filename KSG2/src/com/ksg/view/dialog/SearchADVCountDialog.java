@@ -19,6 +19,7 @@ import com.ksg.dao.DAOManager;
 import com.ksg.dao.impl.TableService;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.util.DateFormattException;
 import com.ksg.view.util.KSGDateUtil;
 import com.ksg.view.util.ViewUtil;
 
@@ -74,13 +75,14 @@ public class SearchADVCountDialog extends KSGDialog{
 				try {
 					int result=_tableService.getTableCount(KSGDateUtil.toDate3(date).toString());
 					JOptionPane.showMessageDialog(null, date+" : "+result+"°Ç");
-				} catch (SQLException e1) {
+				} catch (DateFormattException e1) {
 
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} catch (ParseException e2) {
-					JOptionPane.showMessageDialog(null, e2.getMessage());
-				}				
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}			
 			}}
 		);
 		butOk.setFont(KSGModelManager.getInstance().defaultFont);

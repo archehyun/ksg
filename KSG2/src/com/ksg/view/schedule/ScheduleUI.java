@@ -62,6 +62,7 @@ import com.ksg.schedule.build.ScheduleManager;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.ui.ErrorLogManager;
 import com.ksg.view.ui.ScheduleResultDialog;
+import com.ksg.view.util.DateFormattException;
 import com.ksg.view.util.KSGDateUtil;
 import com.ksg.view.util.ViewUtil;
 
@@ -650,7 +651,7 @@ public class ScheduleUI extends JPanel implements ActionListener {
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} catch (ParseException e2) {
+				} catch (DateFormattException e2) {
 					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}

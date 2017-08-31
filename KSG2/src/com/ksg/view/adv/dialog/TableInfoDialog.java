@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import com.ksg.dao.DAOManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.model.KSGModelManager;
@@ -30,6 +31,11 @@ import com.ksg.view.adv.KSGXLSImportPanel;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.util.ViewUtil;
 
+/**
+ * 엑섹 정보 입력시 조회된 테이블에 대한 정보 표시 
+ * @author archehyun
+ *
+ */
 public class TableInfoDialog extends KSGDialog implements ActionListener
 {
 	/**
@@ -64,17 +70,18 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 			
 			this.table_id =base.getTable_id();
 			
-			logger.info("tableinfo : "+table_id);
+			tableService = DAOManager.getInstance().createTableService();
 			
 			shippersTable = tableService.getTableById(table_id);
 			
 			table_Property = tableService.getTableProperty(table_id);
 			
+			logger.info("tableinfo : "+table_id+","+table_Property);
 			
 		}
 		catch (Exception e) 
 		{
-			logger.error(table_Property);
+			e.printStackTrace();
 		}
 	}
 
@@ -135,8 +142,11 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 
 
 		pnTableInfoBack.add(pnInboundIn);
+		
 		pnTableInfoBack.add(pnInboundOut);
+		
 		pnTableInfoBack.add(pnOutboundIn);
+		
 		pnTableInfoBack.add(pnOutboundOut);
 
 
@@ -210,6 +220,7 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 
 
 		pnTableOption.add(pnUnderPort);
+		
 		pnTableOption.add(pnKeyword);
 
 		pnTableOption.add(pnDivider);

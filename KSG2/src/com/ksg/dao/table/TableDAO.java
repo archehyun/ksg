@@ -260,7 +260,7 @@ public interface TableDAO {
 	public void updateTableVesselCount(String table_id,int vesselcount)throws SQLException;
 
 	public List getTableList(ShippersTable table)throws SQLException;
-	public Table_Property getTableProperty(String table_id)throws SQLException;
+	public Table_Property getTableProperty(Table_Property param)throws SQLException;
 	public List getTableListByAgent(ShippersTable table)throws SQLException;
 	public String getTableAgentByPage(int psge)throws SQLException;
 	public int getPortCount(String tableId)throws SQLException;

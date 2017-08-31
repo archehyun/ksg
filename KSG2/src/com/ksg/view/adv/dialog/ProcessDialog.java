@@ -25,15 +25,13 @@ public class ProcessDialog extends KSGDialog implements ActionListener{
 	private JProgressBar progressBar;
 	
 	public ProcessDialog() {
-
+		progressBar = new JProgressBar();
 
 
 	}
 	public void createAndUpdateUI() {
 
-		KSGModelManager.getInstance().processBar = ProcessDialog.this;
-		
-		progressBar = new JProgressBar();
+		KSGModelManager.getInstance().processBar = ProcessDialog.this;	
 		
 		JPanel pnMain = new JPanel(new BorderLayout());
 		
@@ -52,8 +50,6 @@ public class ProcessDialog extends KSGDialog implements ActionListener{
 		ViewUtil.center(ProcessDialog.this);
 		
 		KSGModelManager.getInstance().isWorkMoniter=true;
-		
-		//progressBar.setIndeterminate(true);
 		
 		this.setTitle("광고정보 추출");
 		Timer timer  = new Timer(1000, this);

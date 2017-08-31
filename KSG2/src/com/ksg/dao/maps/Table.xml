@@ -441,6 +441,10 @@
 		<isNotNull prepend="and" property="gubun">
 		gubun = #gubun#
 		</isNotNull>
+		<isNotNull prepend="and" property="date_isusse">
+			 date_isusse=#date_isusse#
+		</isNotNull>
+		
 		
 		</dynamic>
 	order by page, table_index 

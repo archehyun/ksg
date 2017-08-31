@@ -176,25 +176,41 @@ public class KSGDateUtil {
 
 	
 
-	public static java.sql.Date toDate3( Object value ) throws ParseException,NoSuchElementException
+	/**
+	 * @param value
+	 * @return
+	 * @throws ParseException
+	 * @throws NoSuchElementException
+	 */
+	public static java.sql.Date toDate3( Object value ) throws  DateFormattException
 	{
-		if( value == null ) return null;        
-		if( value instanceof java.sql.Date ) return (java.sql.Date)value;
-		if( value instanceof String )
+		
+		try
 		{
-			if( "".equals( (String)value ) ) return null;
+			if(!KSGDateUtil.isDashFomatt((String) value)) throw  new DateFormattException((String) value);
+			if( value == null ) return null;        
+			if( value instanceof java.sql.Date ) return (java.sql.Date)value;
+			if( value instanceof String )
+			{
+				if( "".equals( (String)value ) ) return null;
 
-			StringTokenizer st = new StringTokenizer(value.toString(),".");
-			String year=st.nextToken();
-			String month = st.nextToken();
-			String day = st.nextToken();
-			int monthc = Integer.parseInt(month);
-			int dayc = Integer.parseInt(day);
+				StringTokenizer st = new StringTokenizer(value.toString(),".");
+				String year=st.nextToken();
+				String month = st.nextToken();
+				String day = st.nextToken();
+				int monthc = Integer.parseInt(month);
+				int dayc = Integer.parseInt(day);
 
-			return new java.sql.Date( dateFormat.parse( year+"-"+(monthc>9?monthc:"0"+monthc)+"-"+(dayc>9?dayc:"0"+dayc) ).getTime() );
+				return new java.sql.Date( dateFormat.parse( year+"-"+(monthc>9?monthc:"0"+monthc)+"-"+(dayc>9?dayc:"0"+dayc) ).getTime() );
+			}
+
+			return new java.sql.Date( dateFormat.parse( value.toString() ).getTime() );	
 		}
-
-		return new java.sql.Date( dateFormat.parse( value.toString() ).getTime() );
+		catch(Exception e)
+		{
+			throw new DateFormattException((String) value);
+		}
+		
 	}
 
 	//"yyyy/MM/dd"

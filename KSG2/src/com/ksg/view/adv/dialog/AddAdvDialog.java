@@ -47,11 +47,14 @@ import com.ksg.dao.impl.ADVServiceImpl;
 import com.ksg.domain.Company;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.adv.ADVListPanel;
-import com.ksg.view.adv.ADVManageUI;
 import com.ksg.view.util.KSGPropertis;
 import com.ksg.view.util.ViewUtil;
 import com.ksg.xls.XLSManagerImpl;
 
+/**
+ * @author archehyun
+ *
+ */
 public class AddAdvDialog extends JDialog implements ActionListener{
 	/**
 	 * 

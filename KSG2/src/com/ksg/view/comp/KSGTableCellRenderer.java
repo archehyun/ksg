@@ -80,8 +80,19 @@ public class KSGTableCellRenderer extends DefaultTableCellRenderer {
 		}
 		else
 		{
-			foreground = Color.black;
-			background=Color.WHITE;	
+			/*foreground = Color.black;
+			background=Color.WHITE;*/
+			
+			if(row %2==0)
+			{
+				foreground = Color.black;
+				background=Color.WHITE;	
+			}
+			else
+			{
+				background= new Color(225,235,255);		
+				foreground = Color.black;
+			}
 		}
 		
 

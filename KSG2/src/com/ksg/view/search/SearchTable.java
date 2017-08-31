@@ -1,45 +1,43 @@
 package com.ksg.view.search;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JLabel;
-import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import org.apache.log4j.Logger;
 
 import com.ksg.dao.DAOManager;
-import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ShippersTable;
-import com.ksg.view.KSGViewParameter;
-import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.KSGTable;
 import com.ksg.view.comp.KSGTableModel;
 
-public class SearchTable extends JTable{
+public class SearchTable extends KSGTable
+{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	protected Logger 			logger = Logger.getLogger(getClass());
-	private TableService _tableService;
-	private Font defaultFont = new Font("µ¸À½",0,9);
+
 	private ShippersTable searchParam;
+	
+	Font defaultFont;
+
 	public SearchTable() {
 
-		_tableService = DAOManager.getInstance().createTableService();
-		this.setFont(defaultFont);
+		defaultFont = new Font("µ¸¿ò",0, 40);
+		
+		initStyle();
+
+		tableService = DAOManager.getInstance().createTableService();		
 
 		DefaultTableModel model = new KSGTableModel(){
 
@@ -47,8 +45,6 @@ public class SearchTable extends JTable{
 			{
 				return column==2?true:false;
 			}
-
-
 		};
 
 
@@ -61,20 +57,19 @@ public class SearchTable extends JTable{
 		setModel(model);
 
 		updateColumModel();
+
 		logger.info("init table");
 
 		updateUI();
 
-		this.setGridColor(Color.LIGHT_GRAY);
-
-		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		setPreferredScrollableViewportSize(new Dimension(1020, 400));
-		setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
 
 		setName("SubTotalTable");
+		
+		
+		
+
 	}
-
-
 
 	public ShippersTable getSearchParam() {
 		return searchParam;
@@ -89,7 +84,7 @@ public class SearchTable extends JTable{
 		if(searchParam==null)
 			return;
 
-		searchedList = _tableService.getTableList(searchParam);
+		searchedList = tableService.getTableList(searchParam);
 
 		DefaultTableModel model = new KSGTableModel(){
 
@@ -140,6 +135,7 @@ public class SearchTable extends JTable{
 			updateColumModel();
 
 			logger.info("retirve:"+this.getRowCount()+","+searchParam);
+
 			updateUI();
 	}
 
@@ -151,20 +147,24 @@ public class SearchTable extends JTable{
 
 	private void updateColumModel()
 	{
+		initColumModel();
+
 		TableColumnModel colmodel =getColumnModel();
 
 		for(int i=0;i<colmodel.getColumnCount();i++)
 		{
-
 			TableColumn namecol = colmodel.getColumn(i);
-
-			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
+			DefaultTableCellRenderer renderer=	(DefaultTableCellRenderer) namecol.getCellRenderer();
+			renderer.setFont(defaultFont);
 			if(i==0||i==1||i==2||i==4||i==5)
+			{
+				
 				renderer.setHorizontalAlignment(SwingConstants.CENTER);
-
-			namecol.setCellRenderer(renderer);
-			namecol.setHeaderRenderer(new IconHeaderRenderer());
-
+			}
+			else
+			{
+				renderer.setHorizontalAlignment(SwingConstants.LEFT);
+			}
 		}
 
 		TableColumnModel colmodel_width =getColumnModel();
@@ -186,9 +186,9 @@ public class SearchTable extends JTable{
 		colmodel_width.getColumn(12).setPreferredWidth(100);		// OutPorts
 		colmodel_width.getColumn(13).setPreferredWidth(100);		// OutToPort
 		colmodel_width.getColumn(14).setPreferredWidth(250);		// agent		
-
-
-
+		
+		
+//		this.setFont(new Font(defaultFont.getName(), defaultFont.getStyle(), 8));
 
 	}
 
@@ -196,35 +196,6 @@ public class SearchTable extends JTable{
 			"TS Ç×±¸","InPorts","InToPorts","OutPorts","OutToPorts","Agent"};
 	private List searchedList;
 
-	class IconHeaderRenderer extends DefaultTableCellRenderer {
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-				boolean hasFocus, int row, int column) {
-			if (table != null) {
-				JTableHeader header = table.getTableHeader();
-				if (header != null) {
-					setForeground(new Color(61,86,113));
-
-					setBackground(new Color(214,226,242));
-					Font f = header.getFont();
-					Font font = new Font(f.getFontName(),Font.BOLD,f.getSize());
-
-					setFont(font);
-
-
-				}
-			}
-
-			setText((value == null) ? "" : value.toString());
-
-			setBorder(UIManager.getBorder("TableHeader.cellBorder"));
-
-			setHorizontalAlignment(JLabel.CENTER);
-			this.setPreferredSize(new Dimension(this.getSize().width,30));
-
-
-			return this;
-		}
-	}
-
 
 }
+

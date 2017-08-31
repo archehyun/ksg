@@ -21,13 +21,11 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -36,29 +34,25 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTree;
+import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -76,29 +70,29 @@ import com.ksg.view.KSGViewParameter;
 import com.ksg.view.adv.comp.PageCellRenderer;
 import com.ksg.view.adv.comp.SheetModel;
 import com.ksg.view.adv.comp.SimpleFileFilter;
+import com.ksg.view.adv.dialog.SearchCompanyAndPageDialog;
 import com.ksg.view.adv.dialog.SheetSelectDialog;
 import com.ksg.view.adv.dialog.ViewXLSFileDialog;
 import com.ksg.view.comp.FileInfo;
 import com.ksg.view.comp.KSGCompboBox;
 import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGTable;
 import com.ksg.view.comp.KSGTable2;
-import com.ksg.view.comp.KSGTree;
-import com.ksg.view.comp.KSGTree1;
-import com.ksg.view.comp.KSGTreeDefault;
 import com.ksg.view.comp.PageInfo;
+import com.ksg.view.search.SearchTable;
 import com.ksg.view.util.KSGPropertis;
 import com.ksg.view.util.ViewUtil;
 import com.ksg.xls.model.SheetInfo;
 
 public class SearchPanel extends JPanel implements ActionListener{
 
-	private boolean 		isPageSearch=true;
+	public boolean 		isPageSearch=true;
 
 	private boolean 		isSamePageSelect=true;
 
-	private JList 			companyLi;
+	private JList 			companyLi; // 선사 목록
 
-	private JList 			pageLi;
+	private JList 			pageLi; // 페이지 목록
 
 	private JButton 		butAdjust,butCompanyAdd,butPre,butNext;
 
@@ -109,15 +103,14 @@ public class SearchPanel extends JPanel implements ActionListener{
 	private TableService 	tableService;
 
 	private Vector<ShippersTable> tableInfoList;
-
-	private JPanel 			pnLeftMenu;
+	
+	SearchCompanyAndPageDialog searchCompanyAndPageDialog;
 
 	private String			selectedInput="File";
 
-
 	public JTextField		_txfXLSFile,_txfSearchedTableCount,txfCompany,_txfDate;
 
-	private KSGModelManager manager = KSGModelManager.getInstance();
+	public KSGModelManager manager = KSGModelManager.getInstance();
 
 	private static int _tableViewCount = 10;
 
@@ -128,8 +121,11 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	private static final String SEARCH_TYPE_PAGE = "페이지";
 
-
 	private String selectedCompany;
+	
+	private ShipperTableListTable listTable;
+	
+	private SheetSelectDialog dialog;
 
 	public String getSelectedCompany() {
 		return selectedCompany;
@@ -154,11 +150,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	private JComboBox cbxSearchType;
 
-	private JPanel pnSubSearch;
+	private JPanel pnSubSearch, pnSubSelect, pnTableInfo;
 
 	private CardLayout selectLay2;
-
-	private JPanel pnSubSelect;
 
 	private CardLayout selectLay;
 
@@ -172,8 +166,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	private JTable tblPropertyTable;
 
-	private JPanel pnTableInfo;
-
 	private JTable _tblTable;
 
 	private JList fileLi;
@@ -184,13 +176,17 @@ public class SearchPanel extends JPanel implements ActionListener{
 		return searchType;
 	}
 
-	ADVListPanel advListPanel;
+	private ADVListPanel advListPanel;
 
 	private DAOManager daoManager = DAOManager.getInstance();
 
 	private String selectedPage;
 
 	private JComboBox cbxKeyWordType;
+	
+	private SearchTable searchTable;
+
+	private JTabbedPane mainTab;
 
 	public SearchPanel() {
 
@@ -216,7 +212,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 		}
 		box.setSelectedIndex(0);
 		box.addActionListener(new ActionListener(){
-
 
 			public void actionPerformed(ActionEvent e) {
 				JComboBox b =(JComboBox) e.getSource();
@@ -245,47 +240,12 @@ public class SearchPanel extends JPanel implements ActionListener{
 		txfTableCount.setText(_tableViewCount+"");
 
 		JButton butImportFile = new JButton("\n불러오기(V)");
+		
+		butImportFile.setActionCommand("불러오기");
 
 		butImportFile.setMnemonic(KeyEvent.VK_V);
 
-		butImportFile.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-				SearchPanel.this.advListPanel.initInfo();
-				logger.debug("import xls");
-				if(selectedInput.equals("File"))
-				{
-					searchXLS();
-					//actionImportADVInfo();
-
-				}else
-				{
-					//importADVTextInfoAction();
-				}
-			}});
-
-		/*	JPanel pnImportBut = new JPanel( new FlowLayout(FlowLayout.LEFT	));
-
-
-		pnImportBut.add(butImportFile);
-
-		JButton butSheetSelect = new JButton("Sheet 선택");		
-
-		butSheetSelect.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-
-				SheetSelectDialog dialog = new SheetSelectDialog(_tblSheetNameList);
-				dialog.createAndUpdateUI();
-
-			}});
-
-		pnImportBut.add(butSheetSelect);*/
-
-
-
-
-
+		butImportFile.addActionListener(this);
 
 		tblError = new KSGTable2(KSGTable2.TABLE_TYPE_ERROR);
 
@@ -296,7 +256,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		tblError.setComponentPopupMenu(createErrorPopupMenu());
 
 
-		JTabbedPane tabbedPane = new JTabbedPane();
+		mainTab = new JTabbedPane();
 
 		JPanel pnPropety = new JPanel();
 		pnPropety.setLayout(new BorderLayout());
@@ -305,6 +265,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 		pnPropety.add(new JScrollPane(tblPropertyTable));
 
 		pnTableInfo =new JPanel();
+		
+		listTable = new ShipperTableListTable();
+		
 		_tblTable = new JTable();
 
 		_tblTable.addKeyListener(new KeyAdapter(){
@@ -322,7 +285,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 			}
 		});
+		
 		_tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
+		
 		_tblTable.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount()>=1)
@@ -340,18 +305,34 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		pnTableInfo.setLayout(new BorderLayout());
 
-		pnTableInfo.add(new JScrollPane(_tblTable),BorderLayout.CENTER);
+		JScrollPane jScrollPane = new JScrollPane(listTable);
+		jScrollPane.getViewport().setBackground(Color.white);
+		pnTableInfo.add(jScrollPane,BorderLayout.CENTER);
 
 
-		tabbedPane.addTab("결과", advListPanel);
+		//tabbedPane.addTab("테이블 목록", buildTableInfo());
+		
+		mainTab.addTab("테이블 정보",pnTableInfo);
+		
+		mainTab.addTab("결과", advListPanel);
 
-		//tabbedPane.addTab("테이블 정보",pnTableInfo);
+		
 
 		//tabbedPane.addTab("History", pnPropety);
 
 		add(buildSearchOption(),BorderLayout.NORTH);
 
-		add(tabbedPane,BorderLayout.CENTER);
+		add(mainTab,BorderLayout.CENTER);
+	}
+	
+	private JPanel buildTableInfo()	
+	{
+		JPanel pnMain = new JPanel(new BorderLayout());
+		searchTable = new SearchTable();
+		pnMain.add(new JScrollPane(searchTable));
+		
+		return pnMain;
+		
 	}
 
 
@@ -364,10 +345,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 		JLabel lblFileName = new JLabel("파일 명: ");
 
 		this._txfXLSFile.setVisible(false);	
-
-		//pnMain.add(this._txfXLSFile);
-
-
 
 		JButton butFile = new JButton("추가(A)");
 		butFile.setMnemonic(KeyEvent.VK_A);
@@ -437,11 +414,17 @@ public class SearchPanel extends JPanel implements ActionListener{
 	}
 
 
+	/**
+	 * @return
+	 */
 	private JPanel buildPageList()
 	{
 		return new PageListPanel();
 	}
 
+	/**
+	 * @return
+	 */
 	private JPanel buildFileSelectPn() {
 		JPanel pnMain = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -501,6 +484,11 @@ public class SearchPanel extends JPanel implements ActionListener{
 		//		pnKeyTypeMain.add(pnInputType);
 		return pnKeyTypeMain;
 	}
+	
+
+	/**
+	 * @return
+	 */
 	private JComponent buildSearchOption()
 	{
 		JPanel pnMain= new JPanel(new BorderLayout());
@@ -568,129 +556,26 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		JButton butSheetSelect = new JButton("Sheet 선택");		
 
-		butSheetSelect.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-
-				SheetSelectDialog dialog = new SheetSelectDialog(_tblSheetNameList);
-				dialog.createAndUpdateUI();
-
-			}});
+		butSheetSelect.addActionListener(this);
+		
+		JButton butCancel = new JButton("취소하기");
+		butCancel.setVisible(false);
+		butCancel.addActionListener(this);
+		
 		JPanel pnSeachs =  new JPanel(new FlowLayout(FlowLayout.LEFT));
 		pnSeachs.add(pnSearchTypeMain);
 		pnSeachs.add(buildFileSelectPn(),BorderLayout.EAST);
-
-
-
-
 		pnImportBut.add(butSheetSelect);
 		pnImportBut.add(butImportFile);
+		pnImportBut.add(butCancel);
 
 		pnMain.add(pnSeachs);	
 
 		pnMain.add(pnImportBut,BorderLayout.EAST);
 
-
-
-
 		return pnMain;
 	}
-	/*private JComponent buildHistoryAndLegendPN() {
 
-		JPanel pnMain = new JPanel();
-		pnMain.setLayout(new BorderLayout());
-		JTabbedPane pnLegendAndHistory= new JTabbedPane();
-		JPanel pnLegend = new JPanel();
-
-		Box pnHistory = new Box(BoxLayout.Y_AXIS);
-
-		JPanel pnCompany = new JPanel();
-		pnCompany.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblCompany = new JLabel("선사 : ");
-
-		lblCompany2 = new JLabel();
-		JPanel pnPage = new JPanel();
-		pnPage.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblPage = new JLabel("페이지 : ");
-		lblPage2 = new JLabel("");
-		pnPage.add(lblPage);
-		pnPage.add(lblPage2);
-		pnCompany.add(lblCompany);
-		pnCompany.add(lblCompany2);
-
-		pnHistory.add(pnCompany);
-		pnHistory.add(pnPage);
-
-		pnLegendAndHistory.addTab("입력결과(작업중)", pnHistory);		
-		pnLegendAndHistory.addTab("범례(작업중)", pnLegend);
-
-		JPanel pnControl = new JPanel();
-
-		JButton butReload = new JButton(" 다시 불러오기");
-		butReload.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) 
-			{
-				importTableList = new Vector<KSGXLSImportPn>();
-				command = new ReloadXLSInfoCommand ();
-				command.execute();
-				int result=((ReloadXLSInfoCommand)command).result;
-
-				if(result==1)
-				{
-					for(int i=0;i<manager.tableCount;i++)
-					{
-						KSGXLSImportPn table = new KSGXLSImportPn();
-						table.setName("adv");	
-						table.setTableIndex(i);
-
-						table.addMouseListener(new MouseAdapter(){
-							public void mouseClicked(MouseEvent e) {
-								KSGXLSImportPn ta =(KSGXLSImportPn) e.getSource();
-								int index=ta.getTableIndex();
-								manager.selectTableIndex=index;
-								manager.execute("error");
-							}	
-						});
-						manager.addObservers(table);
-						importTableList.add(table);
-
-
-					}
-					updateTableListPN();
-					updateTableInfo();
-					butAdjust.setEnabled(true);
-					butNext.setEnabled(true);
-					JOptionPane.showMessageDialog(ADVManageUI.this, manager.tableCount+"개의 광고테이블을 불러왔습니다.");
-					manager.isWorkMoniter=false;
-					manager.workProcessText="";
-					manager.execute(KSGMainFrame.NAME);
-
-					adjestADVListDialog = new AdjestADVListDialog(ADVManageUI.this, tableInfoList);
-					adjestADVListDialog.createAndUpdateUI();
-
-					XLSTableInfoMemento memento=manager.memento;
-					cbxSelectedInput.setSelectedItem(memento.getSelectedInput());
-					cbxSearchType.setSelectedItem(memento.getSearchType());
-					lblCompany2.setText(memento.companyList.toString());
-
-					for(int i=0;i<memento.pageList.size();i++)
-					{
-
-					}
-					lblPage2.setText(memento.pageList.toString());
-				}
-			}});
-		pnControl.add(butReload);
-		JButton butDelHistory = new JButton("결과 지우기");
-		pnControl.add(butDelHistory);
-		pnHistory.add(pnControl);
-		pnMain.setPreferredSize(new Dimension(_LEFT_SIZE,100));
-		pnMain.add(pnLegendAndHistory,BorderLayout.CENTER);
-
-		pnMain.setPreferredSize(new Dimension(0,250));
-		return pnMain;
-	}*/
 
 
 	/**
@@ -865,8 +750,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 				JButton butOK = new JButton("확인");
 				butOK.addActionListener(new ActionListener() {
 
-
-
 					public void actionPerformed(ActionEvent arg0) {
 
 						SearchPanel.this.advListPanel.initInfo();
@@ -899,9 +782,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 						inputTextdialog.dispose();
 
 						_txfSearchedTableCount.setText(String.valueOf(manager.tableCount));
-
-
-
+						
 						for(int i=0;i<manager.tableCount;i++)
 						{
 							KSGXLSImportPanel table = new KSGXLSImportPanel();
@@ -966,100 +847,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		return pnMain;
 	}
-	/*	*//**
-	 * @param index
-	 *//*
-
-	public void updateTableInfo()
-	{
-		try {
-			List li = new LinkedList();
-			if(tableInfoList==null)
-				return;
-			for(int i=0;i<tableInfoList.size();i++)
-			{
-				ShippersTable t = (ShippersTable) tableInfoList.get(i);
-				List  tempLI=tableService.getTableListByCompany(_txfCompany.getText(), t.getPage());
-				for(int j=0;j<tempLI.size();j++)
-				{
-					li.add(tempLI.get(j));
-				}
-			}
-
-			String columnames[]={"Tabel ID",SEARCH_TYPE_PAGE,"Title","Table Index","Index","항구 수","선박 수","기타"};
-			DefaultTableModel model = new EditTableModel(columnames,li.size());
-
-			int index=1;
-
-			for(int i=0;i<li.size();i++)
-			{
-				int col=0;
-				ShippersTable table=(ShippersTable) li.get(i);
-				model.setValueAt(table.getTable_id(), i, col++);
-				model.setValueAt(table.getPage(), i, col++);
-				model.setValueAt(table.getTitle(), i, col++);
-				model.setValueAt(table.getTable_index(), i, col++);
-				model.setValueAt(index, i, col++);
-				model.setValueAt(table.getPort_col(), i, col++);
-				model.setValueAt(table.getVsl_row(), i, col++);
-				model.setValueAt(table.getOthercell(), i, col++);
-				index++;
-			}
-			_tblTable.setModel(model);
-			TableColumnModel colmodel_width =_tblTable.getColumnModel();
-
-			colmodel_width.getColumn(2).setPreferredWidth(200);
-
-			model.addTableModelListener(new TableModelListener(){
-
-				public void tableChanged(TableModelEvent e) {
-					if(e.getType()==TableModelEvent.UPDATE)
-					{
-						int row = _tblTable.getSelectedRow();
-						ShippersTable table = new ShippersTable();
-						table.setTable_id((String) _tblTable.getValueAt(row, 0));
-						table.setPage(Integer.parseInt(_tblTable.getValueAt(row, 1).toString()));
-
-						table.setTable_index(Integer.parseInt(_tblTable.getValueAt(row, 3).toString()));
-						table.setPort_col(Integer.parseInt(_tblTable.getValueAt(row, 5).toString()));
-
-						table.setVsl_row(Integer.parseInt(_tblTable.getValueAt(row, 6).toString()));
-
-
-						table.setOthercell(Integer.parseInt(_tblTable.getValueAt(row, 7).toString()));
-						try {
-							tableService.updateTable(table);
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}});
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	/**
-	  * 
-
-	private void initInfo() {
-		manager.data=null;
-		manager.setXLSTableInfoList(null);
-		manager.vesselCount = 0;
-		currentPage=0;
-		advListPanel.updateTableListPN();
-
-		//pnTableList.removeAll();
-
-		manager.execute("vessel");
-		manager.execute("error");
-		_tblTable.setModel(new DefaultTableModel());
-		for(int i=0;i<importTableList.size();i++)
-		{
-			manager.removeObserver(importTableList.get(i));
-		}
-		butAdjust.setEnabled(false);	
-	}*/
+	
 	private JPopupMenu createXLSListPopup() {
 		JPopupMenu menu =  new JPopupMenu();
 		JMenuItem viewMenu = new JMenuItem("보기");
@@ -1079,8 +867,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 		menu.add(viewMenu);
 		return menu;
 	}
-
-
 
 	private Component buildCompanyInfoByCompany()
 	{
@@ -1112,12 +898,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 		_txfPage.setBorder(BorderFactory.createEmptyBorder());
 
 		pnPageInfo.add(_txfPage);
-
-
-		//JScrollPane spPageList = new JScrollPane(pageLi);
-		//spPageList.setPreferredSize(new Dimension(100,75));
-
-		//pnSubPage.add(spPageList);
 
 		JButton butPageControl = new JButton("검색");
 		butPageControl.addActionListener(new ActionListener() {
@@ -1151,8 +931,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SearchCompanyAndPageDialog andPageDialog = new SearchCompanyAndPageDialog();
+				SearchCompanyAndPageDialog andPageDialog = new SearchCompanyAndPageDialog(SearchPanel.this);
 				andPageDialog.createAndUpdateUI();
+				andPageDialog.setLocationRelativeTo(SearchPanel.this);
 
 			}
 		});
@@ -1270,40 +1051,22 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		return pnMain;
 	}
+	
 	public void updateTableInfo2(DefaultListModel listModel) 
 	{
 		try {
+			
+			listTable.setParam(listModel);
+			listTable.retrive();
 
-
-			DefaultTableModel model1 = new DefaultTableModel();
-			String[]colName1 = {"테이블 아이디","페이지","타이틀", "항구수","선박수"};
-			for(int i=0;i<colName1.length;i++)
-				model1.addColumn(colName1[i]);
-			for(int i=0;i<listModel.size();i++)
-			{
-				PageInfo info=(PageInfo) listModel.get(i);
-				if(info.isSelected())
-				{
-					ShippersTable shippersTable  = new ShippersTable();
-					shippersTable.setPage(Integer.parseInt(info.getText()));
-					List inf = tableService.getTableListByPage(shippersTable);
-					for(int j=0;j<inf.size();j++)
-					{
-						ShippersTable p=(ShippersTable) inf.get(j);
-						model1.addRow(new Object[]{p.getTable_id(),
-								p.getPage(),p.getTitle(),p.getPort_col(),p.getVsl_row()});
-					}
-				}
-
-			}
-
-			_tblTable.setModel(model1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
+	
+
 	private void initComp()
 	{
 		_txfXLSFile = new JTextField(20);
@@ -1427,6 +1190,8 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 
 	}
+	
+
 	public	void updateViewByTree(TreePath path) {
 
 		logger.info("update by tree:"+path.getPathCount());
@@ -1440,7 +1205,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 			manager.selectedCompany=null;
 
 			manager.selectedPage=-1;
+			
 			txfCompany.setText("");
+			
 			_txfPage.setText("");
 
 			//	lblSelectedCompanyName.setText("");
@@ -1513,8 +1280,11 @@ public class SearchPanel extends JPanel implements ActionListener{
 						listModel.addElement(info);
 					}
 					pageLi.setModel(listModel);
+					
 					pageLi.setVisibleRowCount(row);
+					
 					updateTableInfo2(listModel);
+					
 					logger.info("searched Page size:"+listModel.size());
 
 				}else
@@ -1560,6 +1330,12 @@ public class SearchPanel extends JPanel implements ActionListener{
 			break;
 		}
 	}
+	
+
+	/**
+	 * @param company_abbr
+	 * @param page
+	 */
 	private void updatePropertyTable(String company_abbr, int page) {
 		try {
 			List li=tableService.getTableProperty(company_abbr,page);
@@ -1596,10 +1372,19 @@ public class SearchPanel extends JPanel implements ActionListener{
 			e.printStackTrace();
 		}
 	}
+	
+	public void cancel()
+	{
+		
+	}
+	
+	/**
+	 * 
+	 */
 	public void searchXLS()
 	{
 		try{
-			logger.info("불러오기");
+			logger.info("엑셀 정보 불러오기");
 
 			if(selectedCompany==null)
 			{
@@ -1607,11 +1392,21 @@ public class SearchPanel extends JPanel implements ActionListener{
 			}
 
 			DefaultListModel model = (DefaultListModel) pageLi.getModel();
+			
 			Vector<PageInfo> pageInfoList = new Vector<PageInfo>();
+			
 			for(int i=0;i<model.getSize();i++)
 			{			
 				pageInfoList.add((PageInfo) model.get(i));	
-			}
+			}				
+			
+			//쉬트 선택
+			
+			dialog = new SheetSelectDialog(_tblSheetNameList);
+			
+			dialog.createAndUpdateUI();
+			
+			mainTab.setSelectedIndex(1);
 
 			this.advListPanel.actionImportADVInfo(selectedCompany, 
 					selectedPage,
@@ -1623,258 +1418,61 @@ public class SearchPanel extends JPanel implements ActionListener{
 		}catch(Exception e)
 		{
 			e.printStackTrace();
+			mainTab.setSelectedIndex(0);
 			JOptionPane.showMessageDialog(SearchPanel.this, "error: "+e.getMessage());
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		String command = e.getActionCommand();
+		if(command.equals("불러오기"))
+		{
+			logger.debug("import xls");
+			this.advListPanel.initInfo();			
+			if(selectedInput.equals("File"))
+			{
+				searchXLS();
+				//actionImportADVInfo();
+
+			}else
+			{
+				//importADVTextInfoAction();
+			}
+		}
+		else if(command.equals("Sheet 선택"))
+		{
+			dialog = new SheetSelectDialog(_tblSheetNameList);
+			dialog.createAndUpdateUI();
+		}
+		else if(command.equals("취소하기"))
+		{
+			//initInfo();
+			//_txfCompany.setText("");
+			//_txfPage.setText("");
+			DefaultListModel model = new DefaultListModel();
+			
+			fileLi.setModel(model);
+			
+			pageLi.setModel(model);
+			
+			advListPanel.initTable();
+			
+			
+			
+			
+			
+			//butAdjust.setEnabled(false);
+		}
+			
 
 	}
 
 	/**
-	 * 선사 정보
 	 * @author archehyun
 	 *
 	 */
-	class SearchCompanyAndPageDialog extends KSGDialog
-	{
-
-		private String selectedParam;// 검색된 정보
-		private JTextField _txfSearchByCompany;
-		private KSGTreeDefault tree1;
-		private JTree _treeMenu;
-
-		@Override
-		public void createAndUpdateUI() {
-
-			this.setTitle("검색");
-			pnLeftMenu = new JPanel();
-			JPanel pnSearch =  new JPanel();
-			pnSearch.setLayout(new BorderLayout());
-
-			_treeMenu = createTreeMenu();		
-			_txfSearchByCompany = new JTextField(8);
-
-
-			JPanel pnSearchByCompany = new JPanel();
-			JLabel lblCompany = new JLabel("선사 검색");
-			lblCompany.setPreferredSize( new Dimension(60,15));
-			pnSearchByCompany .add(lblCompany);
-			pnSearchByCompany .add(_txfSearchByCompany);
-			_txfSearchByCompany.addKeyListener(new KeyAdapter(){
-				public void keyPressed(KeyEvent e) 
-				{
-					if(e.getKeyCode()==KeyEvent.VK_ENTER)
-					{
-						String text=_txfSearchByCompany.getText();
-						if(!isPageSearch)
-
-						{
-							DefaultMutableTreeNode node = KSGTree.searchNodeByCompany(tree1,text);
-							if(node!=null)
-							{
-								TreeNode[] nodes = ((DefaultTreeModel)tree1.getModel()).getPathToRoot(node);
-								TreePath path = new TreePath(nodes);
-								tree1.scrollPathToVisible(path);
-								tree1.setSelectionPath(path);
-							}else
-							{
-								JOptionPane.showMessageDialog(null, "해당선사가 없습니다.");
-								_txfSearchByCompany.setText("");
-							}
-							_txfSearchByCompany.setText("");
-						}else
-						{
-							try{
-								int page= Integer.parseInt(text);
-								DefaultMutableTreeNode node = KSGTree.searchNodeByPage(tree1,page);
-								if(node!=null)
-								{
-									TreeNode[] nodes = ((DefaultTreeModel)tree1.getModel()).getPathToRoot(node);
-									TreePath path = new TreePath(nodes);
-									tree1.scrollPathToVisible(path);
-									tree1.setSelectionPath(path);
-									_txfSearchByCompany.setText("");
-								}else
-								{
-									JOptionPane.showMessageDialog(null, "해당 Page가 없습니다.");
-									_txfSearchByCompany.setText("");
-								}
-							}catch (NumberFormatException ee) {
-								JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, text+" <== 정확한 숫자를 입력하세요");
-								//							ee.printStackTrace();
-								logger.error(ee.getMessage());
-								_txfSearchByCompany.setText("");
-							}
-						}
-
-					}
-				}
-			});
-			JCheckBox box = new JCheckBox(SEARCH_TYPE_PAGE,true);
-			box.addChangeListener(new ChangeListener(){
-
-				public void stateChanged(ChangeEvent e) {
-					JCheckBox box =(JCheckBox) e.getSource();
-					isPageSearch=box.isSelected();
-
-				}});
-
-			pnSearchByCompany.add(box);
-
-			pnSearch.add(pnSearchByCompany);
-
-			pnLeftMenu.setLayout(new BorderLayout());
-
-
-			JPanel pnContorl = new JPanel();
-			ButtonGroup group = new ButtonGroup();
-
-
-			JRadioButton button = new JRadioButton("선사별");
-			JRadioButton button1 = new JRadioButton("페이지별",true);
-			group.add(button);
-			group.add(button1);
-
-			//pnContorl.add(button);
-			//pnContorl.add(button1);
-			JButton butClose = new JButton("닫기");
-			butClose.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					SearchCompanyAndPageDialog.this.setVisible(false);
-					SearchCompanyAndPageDialog.this.dispose();
-
-				}
-			});
-
-			pnContorl.add(butClose);
-			ItemListener itemListener= new ItemListener(){
-
-				public void itemStateChanged(ItemEvent e) {
-					AbstractButton but = (AbstractButton) e.getSource();
-					if(ItemEvent.SELECTED==e.getStateChange())
-					{
-						String te = but.getActionCommand();
-						logger.debug("selected "+te);
-						if(te.equals("선사별"))
-						{
-							tree1.setGroupBy(KSGTree1.GroupByCompany);
-						}
-						else if(te.equals("페이지별"))
-						{
-							tree1.setGroupBy(KSGTree1.GroupByPage);
-						}
-						manager.execute(tree1.getName());
-					}
-				}};
-				button.addItemListener(itemListener);
-				button1.addItemListener(itemListener);
-				pnContorl.add(new JSeparator(JSeparator.HORIZONTAL));
-				JButton butADDTable = new JButton(new ImageIcon("images/plus.gif"));
-				/*
-				butADDTable.setPreferredSize(new Dimension(35,25));
-				butADDTable.setFocusPainted(false);
-				butADDTable.setActionCommand("신규등록");
-				butADDTable.setToolTipText("신규 테이블 등록");
-				butADDTable.addActionListener(this);*/
-
-				/*				pnContorl.add(butADDTable);
-				JButton butDelTable = new JButton(new ImageIcon("images/minus.gif"));
-				butDelTable.setPreferredSize(new Dimension(35,25));
-				butDelTable.setFocusPainted(false);
-				butDelTable.setActionCommand("삭제");
-				butDelTable.addActionListener(this);
-				pnContorl.add(butDelTable);*/
-
-				JPanel pnTitle = new JPanel();
-				pnTitle.setBackground(new Color(88,141,250));
-				pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-				JLabel label = new JLabel("테이블 목록");
-				label.setForeground(Color.white);
-				pnTitle.add(label);
-				pnTitle.setPreferredSize( new Dimension(0,22));
-
-				pnSearch.add(pnSearchByCompany,BorderLayout.NORTH);
-				pnSearch.add(new JScrollPane(_treeMenu),BorderLayout.CENTER);
-				pnSearch.add(pnContorl,BorderLayout.SOUTH);
-
-
-				JPanel pnMain = new JPanel(new BorderLayout());
-
-				pnMain.add(pnSearch,BorderLayout.CENTER);
-
-				this.getContentPane().add(pnMain);
-				this.getContentPane().add(KSGDialog.createMargin(10, 0),BorderLayout.WEST);
-
-				this.setSize(400,400);
-				this.setLocationRelativeTo(SearchPanel.this);
-
-				this.setVisible(true);
-
-
-		}
-		/**
-		 * @return
-		 */
-		private JTree createTreeMenu() 
-		{
-			tree1 = new KSGTreeDefault("tree1");
-			tree1.setComponentPopupMenu(createTreePopuomenu());
-			try {
-
-				tree1.addTreeSelectionListener(new TreeSelectionListener(){
-
-					public void valueChanged(TreeSelectionEvent e) {
-
-						TreePath path=e.getNewLeadSelectionPath();
-						if(path!=null)
-						{
-
-							try{
-								updateViewByTree(path);
-							}catch(Exception e2)
-							{
-								e2.printStackTrace();
-								return;
-							}
-						}
-					}
-				});
-				tree1.update(KSGModelManager.getInstance());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			return tree1;
-		}
-		/**
-		 * @return
-		 */
-		private JPopupMenu createTreePopuomenu() {
-			JPopupMenu menu = new JPopupMenu();
-			JMenu newMenu = new JMenu("새로 만들기");
-			JMenuItem itemCompany = new JMenuItem(SEARCH_TYPE_COMPANY);
-
-			JMenuItem itemTable = new JMenuItem("테이블");
-			itemTable.addActionListener(new ActionListener(){
-
-				public void actionPerformed(ActionEvent e) {
-					/*AddTableInfoDialog addTableInfoDialog = new AddTableInfoDialog(ADVManageUI.this,manager.selectedCompany);
-					addTableInfoDialog.createAndUpdateUI();*/
-				}});
-			JMenuItem xlsMenu = new JMenuItem("파일 불러오기");
-			newMenu.add(itemCompany);
-			newMenu.add(itemTable);
-
-
-			menu.add(newMenu);
-			menu.add(xlsMenu);
-			return menu;
-		}
-
-	}
 	class PageListPanel extends JPanel implements ActionListener
 	{
 		public PageListPanel() {
@@ -1988,5 +1586,112 @@ public class SearchPanel extends JPanel implements ActionListener{
 		}
 
 	}
+	
+	class ShipperTableListTable extends KSGTable
+	{
+		String[] columNames = {"순서","테이블 아이디","페이지","선사명","타이틀", "항구수","선박수"};
+		DefaultListModel listModel;
+		
+		public void setParam(DefaultListModel listModel)
+		{
+			this.listModel = listModel;
+		}
+		public ShipperTableListTable() {
+			
+			initStyle();
+			
+			tableService = DAOManager.getInstance().createTableService();	
+			
+			DefaultTableModel model = new DefaultTableModel();
+
+			model.setColumnCount(0);
+
+			for(int i=0;i<columNames.length;i++)
+			{
+				model.addColumn(columNames[i]);
+			}		
+			
+			
+			setModel(model);
+			
+			updateColumModel();
+		}
+		
+		private void updateColumModel()
+		{
+			initColumModel();
+
+			TableColumnModel colmodel =getColumnModel();
+
+			for(int i=0;i<colmodel.getColumnCount();i++)
+			{
+				TableColumn namecol = colmodel.getColumn(i);
+				DefaultTableCellRenderer renderer=	(DefaultTableCellRenderer) namecol.getCellRenderer();
+				if(i<5)
+				{
+					
+					renderer.setHorizontalAlignment(SwingConstants.CENTER);
+				}
+				else
+				{
+					renderer.setHorizontalAlignment(SwingConstants.RIGHT);
+				}
+			}
+
+			TableColumnModel colmodel_width =getColumnModel();
+
+			colmodel_width.getColumn(0).setPreferredWidth(60); // 순서
+			colmodel_width.getColumn(1).setPreferredWidth(325); // 테이블 아이디		
+			colmodel_width.getColumn(2).setPreferredWidth(60); // 페이지
+			colmodel_width.getColumn(3).setPreferredWidth(325); // 선사명
+			colmodel_width.getColumn(4).setPreferredWidth(525); // 타이틀
+			
+			colmodel_width.getColumn(5).setPreferredWidth(60);
+			colmodel_width.getColumn(5).setResizable(false);
+			colmodel_width.getColumn(6).setPreferredWidth(60);
+			colmodel_width.getColumn(6).setResizable(false);
+
+		}
+		
+
+		@Override
+		public void retrive() throws SQLException {
+			
+			DefaultTableModel model1 = new DefaultTableModel();
+
+			for(int i=0;i<columNames.length;i++)
+			{
+				model1.addColumn(columNames[i]);
+			}
+			int count=0;
+			for(int i=0;i<listModel.size();i++)
+			{
+				PageInfo info=(PageInfo) listModel.get(i);
+				if(info.isSelected())
+				{
+					ShippersTable shippersTable  = new ShippersTable();
+					
+					shippersTable.setPage(Integer.parseInt(info.getText()));
+					
+					List inf = tableService.getTableListByPage(shippersTable);
+					
+					for(int j=0;j<inf.size();j++)
+					{
+						ShippersTable shipper=(ShippersTable) inf.get(j);
+						model1.addRow(new Object[]{++count,shipper.getTable_id(),
+								shipper.getPage(),shipper.getCompany_abbr(),shipper.getTitle(),shipper.getPort_col(),shipper.getVsl_row()});
+					}
+				}
+
+			}
+
+			setModel(model1);
+			
+			updateColumModel();
+			
+		}
+		
+	}
+	
 
 }

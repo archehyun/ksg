@@ -1,4 +1,4 @@
-package com.ksg.view.adv;
+package com.ksg.view.adv.comp;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -24,7 +24,7 @@ import org.jdom.Element;
 import com.ksg.dao.DAOManager;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Vessel;
-import com.ksg.view.adv.comp.VesselInfo;
+import com.ksg.view.adv.KSGXLSImportPanel;
 import com.ksg.view.adv.dialog.SearchVesselDialog;
 
 public class VesselListComp extends JList{

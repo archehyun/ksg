@@ -23,6 +23,7 @@ import com.ksg.schedule.web.DefaultWebSchedule;
 import com.ksg.schedule.web.DefaultWebScheduleV2;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
+import com.ksg.view.util.DateFormattException;
 import com.ksg.view.util.KSGDateUtil;
 
 /**
@@ -150,7 +151,7 @@ public class WebScheduleCreateDialog extends JDialog implements ActionListener{
 			}  catch (NoSuchElementException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (ParseException e1) {
+			} catch (DateFormattException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}

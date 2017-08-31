@@ -70,6 +70,7 @@ import com.ksg.view.preference.PreferenceDialog;
 import com.ksg.view.schedule.ScheduleUI;
 import com.ksg.view.search.SearchUI;
 import com.ksg.view.ui.PrintADVUI;
+import com.ksg.view.util.DateFormattException;
 import com.ksg.view.util.KSGDateUtil;
 import com.ksg.view.util.ViewUtil;
 
@@ -366,7 +367,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 					{
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
-					} catch (ParseException e2) {
+					} catch (DateFormattException e2) {
 						JOptionPane.showMessageDialog(null, "error:"+e2.getMessage());
 						e2.printStackTrace();
 					}

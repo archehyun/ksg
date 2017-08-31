@@ -1,8 +1,9 @@
 package com.ksg.domain;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-public class TablePort {
+public class TablePort implements Serializable {
 	public static final String TYPE_CHAILD="C";
 	public static final String TYPE_PARENT="P";
 	String parent_port;

@@ -223,6 +223,18 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 			}
 		}
+		else if(e.getKeyCode()==KeyEvent.VK_DELETE)
+		{
+			int rows[] = this.getSelectedRows();
+			int cols[] = this.getSelectedColumns();
+			for(int i=0;i<rows.length;i++)
+			{
+				for(int j=0;j<cols.length;j++)
+				{
+					this.setValueAt("", rows[i], cols[j]);
+				}
+			}			
+		}
 		else
 		{
 			prevKeyCode = e.getKeyCode();

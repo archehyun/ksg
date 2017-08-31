@@ -49,7 +49,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.model.KSGModelManager;
 import com.ksg.view.KSGMainFrame;
-import com.ksg.view.adv.PortTableComp.PortColorInfo;
+import com.ksg.view.adv.comp.PortColorInfo;
 import com.ksg.view.adv.comp.SheetModel;
 import com.ksg.view.adv.dialog.AddAdvDialog;
 import com.ksg.view.adv.dialog.AdjestADVListDialog;
@@ -111,7 +111,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	
 	private String selectedCompany;
 	
-	private ProcessDialog dialog;
+	//private ProcessDialog dialog = new ProcessDialog();
 	
 	private SearchPanel searchPanel;
 	
@@ -140,7 +140,9 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		
 		butAdjust.setEnabled(false);
 
-		JButton butReLoad = new JButton("다시 불러오기");
+		butReLoad = new JButton("다시 불러오기");
+		
+		butReLoad.setEnabled(false);
 		
 		butReLoad.addActionListener(this);
 
@@ -162,8 +164,8 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 
 		pnNorth.add(pnNorthRight,BorderLayout.EAST);
 
-
 		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		
 		pane.setBackground(Color.white);
 
 		//TODO 섦정 파일 오류 확인
@@ -174,8 +176,11 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		JPanel pnTableList = createPnTableList();
 
 		pane.setTopComponent(pnTableList);
+		
 		add(pane);
+		
 		add(pnNorth,BorderLayout.NORTH);
+		
 		add(buildSouthPn(),BorderLayout.SOUTH);
 	}
 	/**
@@ -247,8 +252,24 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			}
 			adjestADVListDialog.setVisible(true);
 		}
-
-
+		else if(command.equals(ACTION_COMMAND_CANCEL))
+		{
+			//initInfo();
+			//_txfCompany.setText("");
+			//_txfPage.setText("");
+			DefaultListModel model = new DefaultListModel();
+			fileLi.setModel(model);
+			searchPanel.getPageLi().setModel(model);
+			Object data[][] = new Object[0][];
+			SheetModel mo = new SheetModel(data);
+			_tblSheetNameList.setModel(mo);
+			butAdjust.setEnabled(false);
+		}
+		
+	}
+	public void initTable()
+	{
+		pnTableList.removeAll();
 	}
 
 	
@@ -263,6 +284,8 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			public void run()
 			{
 				logger.info("start");
+				
+				try{
 
 				totalTableCount = manager.tableCount-1;
 
@@ -270,13 +293,11 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 
 				pnTableList.removeAll();
 
-				logger.info("adv execute:"+importTableList.size());
-				
-				
+				logger.info("adv execute:"+importTableList.size());				
 				
 				progressBar.setMaximum(importTableList.size());
 				
-				dialog.setMAX(importTableList.size());
+				//dialog.setMAX(importTableList.size());
 				
 				KSGModelManager.getInstance().workProcessText="광고 정보 추출 중...";
 				
@@ -297,17 +318,18 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 					
 					createTitledBorder.setTitleFont(new Font("돋음",0,12));
 					
+					createTitledBorder.setTitleColor(Color.BLUE);
+					
 					scrollPane.setBorder(createTitledBorder);
 					
 					pnTableList.add(scrollPane);
 					
-					dialog.setValues(i);
+				//	dialog.setValues(i);
 					
 					progressBar.setValue(i);
 					
 					ADVListPanel.this.updateUI();
-				}
-				
+				}			
 				
 				progressBar.setVisible(false);
 				
@@ -315,10 +337,16 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 				
 				butNext.setEnabled(true);
 				
-				dialog.close();
-				JOptionPane.showMessageDialog(ADVListPanel.this, manager.tableCount+"개의 광고테이블을 불러왔습니다.");
+			//	dialog.close();
+				
+				//JOptionPane.showMessageDialog(ADVListPanel.this, manager.tableCount+"개의 광고테이블을 불러왔습니다.");
 				
 				logger.info("end");
+				}catch(Exception e)
+				{
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(ADVListPanel.this, e.getMessage());
+				}
 			}
 		}.start();
 	
@@ -332,33 +360,37 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			
 			progressBar.setVisible(true);
 			
-			manager.workProcessText="XLS 정보를 가져오는 중...";
-
-			dialog = new ProcessDialog();
+			manager.workProcessText="XLS 정보를 가져오는 중...";			
 			
-			dialog.createAndUpdateUI();
+			//dialog.createAndUpdateUI();
 			
 			manager.execute(KSGMainFrame.NAME);
 
 			this.selectedCompany = company;
 			
 			int result=actionImportADVInfoSub(company, page, sheetList,keyType, selectXLSFilePath,pageInfoList);
+			
 			if(result==1)
 			{
-				dialog.setMAX(manager.tableCount);
+				//dialog.setMAX(manager.tableCount);
 				
 				for(int i=0;i<manager.tableCount;i++)
 				{
 					KSGXLSImportPanel table = new KSGXLSImportPanel();
+					
 					table.setPreferredSize(new Dimension(0,ADV_IMPORT_PANEL_ROW_SIZE));
 
 					table.setName("adv");	
+					
 					table.setTableIndex(i);
 
 					table.addMouseListener(myMouseListener);
+					
 					manager.addObservers(table);
+					
 					importTableList.add(table);
-					dialog.setValues(i);
+					
+					//dialog.setValues(i);
 				}
 
 				updateTableListPN();
@@ -366,6 +398,8 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 				manager.isWorkMoniter=false;
 				
 				manager.execute(KSGMainFrame.NAME);
+				
+				butReLoad.setEnabled(true);
 				
 				logger.debug("<=====end=====>");
 			}
@@ -498,6 +532,10 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	private TablePort tablePort;
 	private JScrollPane mainScrollPane;
 
+	private JButton butReLoad;
+
+	private String ACTION_COMMAND_CANCEL="cancel";
+
 	public void initInfo() {
 		manager.data=null;
 		manager.setXLSTableInfoList(null);
@@ -529,6 +567,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		paRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		JButton butADD = new JButton("광고불러오기",new ImageIcon("images/importxls.gif"));
+		
 		butADD.setToolTipText("광고정보추가");
 		butADD.setPreferredSize(new Dimension(100,20));
 		butADD.addActionListener(new ActionListener(){
@@ -620,23 +659,9 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			}});
 
 		JButton butCancel = new JButton(new ImageIcon("images/cancel.gif"));
+		butCancel.setActionCommand(ACTION_COMMAND_CANCEL);
 		butCancel.setPreferredSize(new Dimension(35,25));
-		butCancel.addActionListener(new ActionListener(){
-
-
-			public void actionPerformed(ActionEvent e) {
-				//initInfo();
-				//_txfCompany.setText("");
-				//_txfPage.setText("");
-				DefaultListModel model = new DefaultListModel();
-				fileLi.setModel(model);
-				searchPanel.getPageLi().setModel(model);
-				Object data[][] = new Object[0][];
-				SheetModel mo = new SheetModel(data);
-				_tblSheetNameList.setModel(mo);
-				butAdjust.setEnabled(false);
-
-			}});
+		butCancel.addActionListener(this);
 
 		JLabel lblDate = new JLabel(" 입력날짜 : ");
 

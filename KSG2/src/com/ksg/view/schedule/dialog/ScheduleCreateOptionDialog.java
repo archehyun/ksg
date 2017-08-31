@@ -38,6 +38,7 @@ import com.ksg.model.KSGModelManager;
 import com.ksg.schedule.build.ScheduleManager;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
+import com.ksg.view.util.DateFormattException;
 import com.ksg.view.util.KSGDateUtil;
 
 public class ScheduleCreateOptionDialog extends JDialog implements ActionListener{
@@ -333,7 +334,7 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 					}
 
 				}
-				catch (ParseException e1) {
+				catch (DateFormattException e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
 					return ;

@@ -319,8 +319,11 @@ public class TableServiceImpl implements TableService{
 	}
 
 	public Table_Property getTableProperty(String table_id) throws SQLException {
+		
+		Table_Property param = new Table_Property();
+		param.setTable_id(table_id);
 		// TODO Auto-generated method stub
-		return tableDAO.getTableProperty(table_id);
+		return tableDAO.getTableProperty(param);
 	}
 
 	public List getTableListByAgent(ShippersTable table) throws SQLException {

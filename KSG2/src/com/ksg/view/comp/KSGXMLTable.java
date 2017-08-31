@@ -1,5 +1,6 @@
 package com.ksg.view.comp;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Vector;
 
@@ -169,6 +170,13 @@ public class KSGXMLTable extends KSGTable
 		
 		
 		return strXml;
+	}
+
+
+	@Override
+	public void retrive() throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 
 

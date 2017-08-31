@@ -29,7 +29,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableModel;
 
 import com.ksg.commands.SearchADVCommand;
 import com.ksg.dao.DAOManager;

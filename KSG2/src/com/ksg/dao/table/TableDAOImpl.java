@@ -320,9 +320,9 @@ public class TableDAOImpl implements TableDAO{
 		return sqlMap.update("Table.updateTableDateAll", table);
 	}
 	
-	public Table_Property getTableProperty(String table_id) throws SQLException {
+	public Table_Property getTableProperty(Table_Property param) throws SQLException {
 		// TODO Auto-generated method stub
-		return (Table_Property) sqlMap.queryForObject("TABLEProperty.selectTABLEProperty",table_id);
+		return (Table_Property) sqlMap.queryForObject("TABLEProperty.selectTABLEProperty",param);
 	}
 
 

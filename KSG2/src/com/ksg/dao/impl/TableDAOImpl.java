@@ -22,6 +22,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
+@Deprecated
 public class TableDAOImpl implements TableDAO{
 	SqlMapClient sqlMap;
 	public TableDAOImpl() {
@@ -375,6 +376,13 @@ public class TableDAOImpl implements TableDAO{
 	public int updateTableDateByTableIDs(ShippersTable table) throws SQLException {
 		
 		return sqlMap.update("Table.updateTableDateByTableIDs", table);
+	}
+
+
+	@Override
+	public Table_Property getTableProperty(Table_Property param) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

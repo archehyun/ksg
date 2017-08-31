@@ -226,6 +226,11 @@ public class KSGSearchTable extends KSGTable{
 			return this;
 		}
 	}
+	@Override
+	public void retrive() throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

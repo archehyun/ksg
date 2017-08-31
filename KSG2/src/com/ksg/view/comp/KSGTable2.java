@@ -551,5 +551,10 @@ public class KSGTable2 extends KSGTable implements KeyListener{
 		}
 
 	}
+	@Override
+	public void retrive() throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
