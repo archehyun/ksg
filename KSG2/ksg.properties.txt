@@ -1,5 +1,5 @@
 #no commments
-#Mon Jun 26 12:08:29 GMT+09:00 2017
+#Mon Jul 31 18:41:13 GMT+09:00 2017
 saveLocation=C\:\\Users\\jhbae\\workspace_0421\\schedule
 selectedkeyword=both
 xlskey.both=VESSEL & VOY,VSL/VOY,VESSEL / VOYAGE,VESSEL  VOY   /   PORT,

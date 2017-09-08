@@ -14,19 +14,24 @@ import java.util.HashMap;
 
 import com.ksg.view.util.KSGDateUtil;
 
+/**
+ * 테이블에 대한 상세 정보 정의
+ * @author archehyun
+ *
+ */
 public class ShippersTable {
 	
 	
 	
 	
-	public static final int CONSOLE_CFS=1;
-	public static final int CONSOLE_PAGE=0;
+	public static final int CONSOLE_CFS=1;	
+	public static final int CONSOLE_PAGE=0;	
 	public static final String GUBUN_CONSOLE 	= "Console";
-
 	public static final String GUBUN_INLAND 	= "Inland";
 	public static final String GUBUN_NNN 		= "NNN";
 	public static final String GUBUN_NORMAL 	= "Normal";
 	public static final String GUBUN_TS 		= "TS";
+	
 	private String agent;
 	private String bookPage;// 지면 페이지
 	private int c_time=-1;
@@ -38,8 +43,7 @@ public class ShippersTable {
 	private int d_time=-1;
 
 	private String date_isusse;
-	private String gubun; // 구분
-	 
+	private String gubun; // 구분	 
 	HashMap<Object, Object> hachData;
 	private String in_port; // inbound 출발항 인덱스 문자
 	private String in_to_port; // inbound 도착항 인덱스 문자

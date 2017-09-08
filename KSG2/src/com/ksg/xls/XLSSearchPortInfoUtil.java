@@ -794,7 +794,9 @@ public class XLSSearchPortInfoUtil {
 	 */
 	private int searchPortRanageNumber(Sheet sheet, TableLocation location) {
 		logger.debug("start:"+location.getRow());
+		
 		boolean isPortRange = true;
+		
 		int portLoaction;
 
 		for(portLoaction=1;isPortRange;portLoaction++)

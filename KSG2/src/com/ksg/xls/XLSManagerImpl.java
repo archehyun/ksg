@@ -48,14 +48,19 @@ public class XLSManagerImpl{
 		return managerImpl;
 	}
 	private XLSErrorHandler errorHandler;
+	
 	private Logger logger = Logger.getLogger(this.getClass());
+	
 	private DAOManager manager = DAOManager.getInstance();
+	
 	public int other=0;
 
 	private XLSManager parser;
 
 	public Vector<TableLocation> tableLocation;
+	
 	private TableService tableService;
+	
 	private XLSManagerImpl() {
 		tableService = manager.createTableService();
 

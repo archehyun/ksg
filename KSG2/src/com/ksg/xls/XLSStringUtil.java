@@ -17,8 +17,11 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
  *
  */
 public class XLSStringUtil {
+	
 	private Logger logger = Logger.getLogger(this.getClass());
+	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d");
+	
 	private static FormulaEvaluator evaluator;
 
 	public String getVesselData(HSSFCell cell)
