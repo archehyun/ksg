@@ -24,6 +24,10 @@ public class XLSStringUtil {
 	
 	private static FormulaEvaluator evaluator;
 
+	/**
+	 * @param cell
+	 * @return
+	 */
 	public String getVesselData(HSSFCell cell)
 	{
 		
@@ -84,7 +88,6 @@ public class XLSStringUtil {
 					//voyageResult= formatter.format(cell.getNumericCellValue());
 					//2014.7.17 이후 방식
 					voyageResult= formatter.format(String.valueOf(Double.valueOf(cell.getNumericCellValue())));
-					System.out.println("voy 기타 type 확인:"+voyageResult);
 				}
 				else
 				{
@@ -152,7 +155,9 @@ public class XLSStringUtil {
 				logger.error("error cell:"+cell+","+cell.getCellType()+","+cell.getColumnIndex()+","+cell.getRowIndex());
 
 				e.printStackTrace();
+				
 				voyageResult= String.valueOf(cell.getNumericCellValue());
+				
 			}catch(RuntimeException ee)
 			{
 				logger.error(cell+","+cell.getCellType()+","+cell.getColumnIndex()+","+cell.getRowIndex());
@@ -180,105 +185,7 @@ public class XLSStringUtil {
 		
 		return voyageResult;
 	}
-	/**기존 소스
-	 * 
-	 * @param cell
-	 * @param getformual
-	 * @return
-	 */
-/*	public String getVoyageData2(HSSFCell cell,boolean getformual)
-	{
-		if(cell==null)
-			return "-";
 
-		DataFormatter df = new DataFormatter();
-		evaluator=cell.getSheet().getWorkbook().getCreationHelper().createFormulaEvaluator();
-
-		switch (cell.getCellType()) 
-		{
-		case HSSFCell.CELL_TYPE_NUMERIC:
-
-		{
-			// voyage 스타일 적용시 100 이하인 경우에는 스타일 적용이 안됨
-			// 모든 경우에 적용 가능... 추후에 변경가능성 있음
-			try
-			{
-				String fo =cell.getCellStyle().getDataFormatString();
-				if(fo.equals("General"))
-				{
-					return String.valueOf(new Double(cell.getNumericCellValue()).intValue());
-				}
-
-
-				Format formatter = new DecimalFormat(fo.replace("\"", "\'"));
-				return formatter.format(cell.getNumericCellValue());
-			}catch(Exception e){
-				return String.valueOf(evaluator.evaluateInCell(cell));
-			}
-		}
-
-		case HSSFCell.CELL_TYPE_BOOLEAN:
-			return cell.getBooleanCellValue()+"";
-
-		case HSSFCell.CELL_TYPE_STRING:
-
-			StringTokenizer st = new StringTokenizer(cell.getStringCellValue(),"/");
-			try{
-				if(st.countTokens()==2)
-				{
-					return getDateType(st);// 정상정인 형식 /
-				}else
-				{
-					StringTokenizer st2 = new StringTokenizer(cell.getStringCellValue(),".");
-					if(st2.countTokens()==2)
-					{
-						return getDateType(st2);// 
-					}else
-					{
-						return cell.getRichStringCellValue().toString();
-					}
-				}
-			}catch(Exception e)
-			{
-				return cell.getRichStringCellValue().toString();
-			}
-
-
-		case HSSFCell.CELL_TYPE_FORMULA:
-			//
-			Cell cells =evaluator.evaluateInCell(cell);
-
-			try{
-				if(cells.getCellType()!=HSSFCell.CELL_TYPE_ERROR)
-				{
-					return String.valueOf(evaluator.evaluateInCell(cell));
-//					return df.formatCellValue(cells);
-
-				}else
-				{
-					return "error";
-				}
-
-			}catch(IllegalStateException e)
-			{	
-				logger.error("error cell:"+cell+","+cell.getCellType()+","+cell.getColumnIndex()+","+cell.getRowIndex());
-
-				e.printStackTrace();
-				return String.valueOf(cell.getNumericCellValue());
-			}catch(RuntimeException ee)
-			{
-				logger.error(cell+","+cell.getCellType()+","+cell.getColumnIndex()+","+cell.getRowIndex());
-
-				ee.printStackTrace();
-				return "error";
-			}
-		case HSSFCell.CELL_TYPE_ERROR:
-			return Byte.toString(cell.getErrorCellValue());
-		default:
-			return "-";
-
-		}
-	}	*/
 	public String getStringData(HSSFCell cell,boolean getformual) {
 		if(cell==null)
 			return "-";
@@ -378,7 +285,6 @@ public class XLSStringUtil {
 					{
 						result =value;
 						break;
-
 					}
 				}
 
@@ -406,9 +312,6 @@ public class XLSStringUtil {
 
 		}
 		
-		
-		
-		
 
 		if(result.length()<=0||result.equals(""))
 		{
@@ -422,6 +325,11 @@ public class XLSStringUtil {
 		}
 
 	}
+	/**
+	 * @param st
+	 * @return
+	 * @throws NumberFormatException
+	 */
 	private String getDateType(StringTokenizer st) throws NumberFormatException{
 		int month = Integer.parseInt(st.nextToken().trim());
 
@@ -429,6 +337,10 @@ public class XLSStringUtil {
 
 		return month+"/"+day;
 	}
+	/**
+	 * @param cell
+	 * @return
+	 */
 	public String getColumString(HSSFCell cell)
 	{
 		if(cell==null)
@@ -473,19 +385,7 @@ public class XLSStringUtil {
 		if(result==null)
 			result="-";
 
-		/*if(result.contains("\n"))
-		{
-			StringTokenizer stringTokenizer = new StringTokenizer(result,"\n");
-			String temp="";
-			while(stringTokenizer.hasMoreTokens())
-			{
-				temp+=stringTokenizer.nextToken();
-				if(stringTokenizer.hasMoreTokens())
-					temp +=" ";
-			}
-			result=temp;
-
-		}*/
+		
 		result  = result.replace("\n"," ").trim();
 		return result;
 	}
