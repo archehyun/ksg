@@ -33,13 +33,13 @@ import javax.swing.table.TableColumnModel;
 import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
-import com.ksg.dao.DAOManager;
-import com.ksg.dao.impl.ADVService;
-import com.ksg.dao.impl.TableService;
+import com.ksg.adv.service.ADVService;
+import com.ksg.common.dao.DAOManager;
+import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
-import com.ksg.view.comp.KSGTableModel;
+import com.ksg.shippertable.service.TableService;
 
 public class SearchADVViewCommand implements KSGCommand {
 

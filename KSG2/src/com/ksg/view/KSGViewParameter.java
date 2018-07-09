@@ -15,5 +15,6 @@ public class KSGViewParameter {
 	public static int TABLE_ROW_HEIGHT=40;
 	public static int TABLE_VESSEL_COLUM_WIDTH=150;
 	public static int TABLE_VOYAGE_COLUM_WIDTH=100;
+	public static int TABLE_CELL_SIZE=12;
 
 }

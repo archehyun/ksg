@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ksg.dao.SqlMapManager;
-import com.ksg.dao.table.TableDAO;
+import com.ksg.common.dao.SqlMapManager;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
+import com.ksg.shippertable.service.TableDAO;
 @Deprecated
 public class TableDAOImpl implements TableDAO{
 	SqlMapClient sqlMap;

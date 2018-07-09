@@ -10,6 +10,10 @@
  *******************************************************************************/
 package com.ksg.domain;
 
+/** 항구 정보
+ * @author 박창현
+ *
+ */
 public class PortInfo extends BaseInfo {
 	
 	private String port_name;// 항구명
@@ -21,7 +25,6 @@ public class PortInfo extends BaseInfo {
 	private String base_port_name;
 	private String base_port_abbr;	
 	private String port_code;
-	
 	
 	private int port_book_code;
 	public int getPort_book_code() {

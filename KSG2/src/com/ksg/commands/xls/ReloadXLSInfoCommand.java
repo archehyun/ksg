@@ -1,8 +1,8 @@
 package com.ksg.commands.xls;
 
+import com.ksg.adv.view.comp.XLSTableInfoMemento;
 import com.ksg.commands.KSGCommand;
-import com.ksg.model.KSGModelManager;
-import com.ksg.xls.XLSTableInfoMemento;
+import com.ksg.common.model.KSGModelManager;
 
 public class ReloadXLSInfoCommand implements KSGCommand {
 

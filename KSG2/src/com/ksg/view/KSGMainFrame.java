@@ -47,32 +47,32 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 
+import com.ksg.adv.view.ADVManageUI;
+import com.ksg.base.view.BaseInfoUI;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.BuildXMLInboundCommand;
 import com.ksg.commands.schedule.BuildXMLOutboundCommand;
 import com.ksg.commands.schedule.BuildXMLRouteScheduleCommand;
-import com.ksg.dao.DAOManager;
-import com.ksg.dao.impl.ScheduleService;
-import com.ksg.dao.impl.ScheduleServiceImpl;
-import com.ksg.dao.impl.ScheduleServiceManager;
-import com.ksg.dao.impl.TableService;
+import com.ksg.common.dao.DAOManager;
+import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.model.KSGObserver;
+import com.ksg.common.util.DateFormattException;
+import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.util.ViewUtil;
+import com.ksg.common.view.comp.KSGDialog;
+import com.ksg.common.view.comp.LookAheadTextField;
+import com.ksg.common.view.comp.StringArrayLookAhead;
+import com.ksg.common.view.dialog.SearchADVCountDialog;
+import com.ksg.common.view.dialog.WebScheduleCreateDialog;
 import com.ksg.domain.ShippersTable;
-import com.ksg.model.KSGModelManager;
-import com.ksg.model.KSGObserver;
-import com.ksg.view.adv.ADVManageUI;
-import com.ksg.view.base.BaseInfoUI;
-import com.ksg.view.comp.KSGDialog;
-import com.ksg.view.comp.LookAheadTextField;
-import com.ksg.view.comp.StringArrayLookAhead;
-import com.ksg.view.dialog.SearchADVCountDialog;
-import com.ksg.view.dialog.WebScheduleCreateDialog;
-import com.ksg.view.preference.PreferenceDialog;
-import com.ksg.view.schedule.ScheduleUI;
-import com.ksg.view.search.SearchUI;
-import com.ksg.view.ui.PrintADVUI;
-import com.ksg.view.util.DateFormattException;
-import com.ksg.view.util.KSGDateUtil;
-import com.ksg.view.util.ViewUtil;
+import com.ksg.preference.view.PreferenceDialog;
+import com.ksg.print.view.PrintADVUI;
+import com.ksg.schedule.ScheduleService;
+import com.ksg.schedule.ScheduleServiceImpl;
+import com.ksg.schedule.ScheduleServiceManager;
+import com.ksg.schedule.view.ScheduleMgtUI;
+import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.view.ShipperTableMgtUI;
 
 public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	private static final String SCHEDULE_WORLDWIDE	= "항로별 스케줄 생성";
@@ -171,11 +171,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				pnBaseInfo 	= new BaseInfoUI();
 				
-				pnSearch 	= new SearchUI();
+				pnSearch 	= new ShipperTableMgtUI();
 				
 				pnPrintADV 	= new PrintADVUI();
 				
-				pnSchedule  = new ScheduleUI();
+				pnSchedule  = new ScheduleMgtUI();
 				
 				
 				pnCenter.add(pnSearch,ADV_SEARCH);

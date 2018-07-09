@@ -3,6 +3,10 @@ package com.ksg.domain;
 import java.io.Serializable;
 import java.util.Vector;
 
+/**
+ * @author ¹ÚÃ¢Çö
+ *
+ */
 public class TablePort implements Serializable {
 	public static final String TYPE_CHAILD="C";
 	public static final String TYPE_PARENT="P";

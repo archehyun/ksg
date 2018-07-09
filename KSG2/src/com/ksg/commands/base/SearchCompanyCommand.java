@@ -11,9 +11,9 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.commands.BaseCommand;
+import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Company;
-import com.ksg.view.comp.KSGTableModel;
 
 public class SearchCompanyCommand extends BaseCommand{
 	private int table_type;

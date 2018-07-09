@@ -16,7 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ksg.dao.SqlMapManager;
+import com.ksg.base.service.AreaDAOImpl;
+import com.ksg.base.service.CompanyDAOImpl;
+import com.ksg.base.service.PortDAOImpl;
+import com.ksg.base.service.VesselDAOImpl;
+import com.ksg.common.dao.SqlMapManager;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Code;
 import com.ksg.domain.Company;

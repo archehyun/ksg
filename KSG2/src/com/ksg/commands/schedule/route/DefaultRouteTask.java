@@ -7,11 +7,11 @@ import java.util.List;
 import org.jdom.Element;
 
 import com.ksg.commands.schedule.task.SimpleTask;
-import com.ksg.dao.DAOManager;
+import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.Code;
 import com.ksg.domain.ShippersTable;
-import com.ksg.quark.XTGManager;
-import com.ksg.view.schedule.dialog.ScheduleBuildMessageDialog;
+import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 public abstract class DefaultRouteTask extends SimpleTask{
 	public static final int ORDER_BY_DATE=1;

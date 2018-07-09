@@ -15,10 +15,10 @@ import java.sql.SQLException;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
-import com.ksg.dao.impl.TableService;
-import com.ksg.dao.impl.TableServiceImpl;
+import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ShippersTable;
-import com.ksg.model.KSGModelManager;
+import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.TableServiceImpl;
 
 public class DelTableCommand implements KSGCommand {
 	

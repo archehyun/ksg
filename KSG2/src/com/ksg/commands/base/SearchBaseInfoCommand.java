@@ -28,6 +28,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.commands.KSGCommand;
+import com.ksg.common.view.comp.KSGTableCellRenderer;
+import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.ADVData;
@@ -35,8 +37,6 @@ import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
-import com.ksg.view.comp.KSGTableCellRenderer;
-import com.ksg.view.comp.KSGTableModel;
 
 public class SearchBaseInfoCommand implements KSGCommand {
 

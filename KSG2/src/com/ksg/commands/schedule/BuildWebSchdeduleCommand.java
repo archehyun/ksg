@@ -29,22 +29,22 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
+import com.ksg.adv.service.ADVService;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.task.WebScheduleTask;
-import com.ksg.dao.DAOManager;
-import com.ksg.dao.impl.ADVService;
+import com.ksg.common.dao.DAOManager;
+import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.KSGDateUtil;
 import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.ScheduleService;
-import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
-import com.ksg.model.KSGModelManager;
-import com.ksg.quark.XTGManager;
-import com.ksg.view.schedule.dialog.ScheduleBuildMessageDialog;
-import com.ksg.view.util.KSGDateUtil;
+import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.schedule.ScheduleService;
+import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.shippertable.service.TableService;
 @SuppressWarnings("unchecked")
 public class BuildWebSchdeduleCommand implements KSGCommand 
 {

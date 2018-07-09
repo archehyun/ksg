@@ -17,11 +17,11 @@ import org.jdom.JDOMException;
 import com.ksg.commands.schedule.StringCompare;
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.commands.schedule.task.SimpleTask;
+import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Code;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
-import com.ksg.view.util.KSGDateUtil;
-import com.ksg.view.util.KSGPropertis;
 
 /**
  * 

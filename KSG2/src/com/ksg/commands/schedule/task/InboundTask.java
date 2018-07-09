@@ -26,14 +26,14 @@ import org.jdom.output.XMLOutputter;
 import com.ksg.commands.schedule.ScheduleSortData;
 import com.ksg.commands.schedule.StringCompare;
 import com.ksg.commands.schedule.XML_INFO;
+import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
-import com.ksg.model.KSGModelManager;
-import com.ksg.quark.XTGManager;
-import com.ksg.view.schedule.dialog.ScheduleBuildMessageDialog;
-import com.ksg.view.util.KSGDateUtil;
+import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 public class InboundTask extends SimpleTask{
 	private XTGManager xtgmanager = new XTGManager();

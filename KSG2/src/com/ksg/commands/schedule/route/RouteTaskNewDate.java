@@ -17,13 +17,13 @@ import javax.swing.JOptionPane;
 import org.jdom.JDOMException;
 
 import com.ksg.commands.schedule.StringCompare;
+import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
-import com.ksg.model.KSGModelManager;
-import com.ksg.view.schedule.dialog.ScheduleBuildMessageDialog;
-import com.ksg.view.util.KSGDateUtil;
-import com.ksg.view.util.KSGPropertis;
+import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 /**
  * @author ¹ÚÃ¢Çö

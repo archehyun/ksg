@@ -119,6 +119,8 @@ public interface BaseService {
 	
 	public List getSearchedPort_AbbrList(String searchKeyword) throws SQLException ;
 	
+	public List getSearchedPort_AbbrList(PortInfo searchKeyword) throws SQLException ;
+	
 	public List getSearchedPortList(String searchKeyword) throws SQLException ;
 	
 	public List getSearchedVesselList(String searchKeyword) throws SQLException ;

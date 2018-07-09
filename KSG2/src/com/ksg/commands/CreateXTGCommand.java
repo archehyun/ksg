@@ -23,14 +23,14 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
-import com.ksg.dao.impl.ADVService;
-import com.ksg.dao.impl.ADVServiceImpl;
-import com.ksg.dao.impl.TableService;
-import com.ksg.dao.impl.TableServiceImpl;
+import com.ksg.adv.service.ADVService;
+import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.quark.XTGManager;
-import com.ksg.quark.XTGPage;
+import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.print.logic.quark.XTGPage;
+import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.TableServiceImpl;
 
 public class CreateXTGCommand implements KSGCommand{
 

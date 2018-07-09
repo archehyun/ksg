@@ -22,12 +22,12 @@ import org.apache.log4j.Logger;
 import com.ksg.commands.KSGCommand;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
-import com.ksg.dao.impl.ScheduleService;
-import com.ksg.dao.impl.ScheduleServiceImpl;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
-import com.ksg.quark.XTGManager;
+import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.schedule.ScheduleService;
+import com.ksg.schedule.ScheduleServiceImpl;
 
 public class BuildWebScheduleCommand2 implements KSGCommand {
 	private BaseService baseService;

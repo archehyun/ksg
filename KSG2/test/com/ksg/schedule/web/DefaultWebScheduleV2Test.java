@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import org.junit.Test;
 
 import com.ksg.domain.ShippersTable;
+import com.ksg.schedule.logic.web.DefaultWebScheduleV2;
 
 public class DefaultWebScheduleV2Test {
 	

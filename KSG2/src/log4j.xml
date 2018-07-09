@@ -77,7 +77,7 @@
         <level value="info"/>
     </logger>
      <logger name="java.sql.Connection">
-        <level value="info"/>
+        <level value="info"/>	
     </logger>        
    
 <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
@@ -87,7 +87,7 @@
         </layout>
     </appender>
     <root>
-        <level value="info">
+        <level value="debug">
         
         </level>
         	

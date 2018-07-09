@@ -5,10 +5,10 @@ import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 import com.ksg.commands.KSGCommand;
-import com.ksg.dao.DAOManager;
+import com.ksg.common.dao.DAOManager;
+import com.ksg.common.model.KSGModelManager;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Code;
-import com.ksg.model.KSGModelManager;
 
 public class ADDPortExceptionCommand implements KSGCommand {
 	

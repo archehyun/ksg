@@ -12,7 +12,7 @@ package com.ksg.domain;
 
 import java.util.HashMap;
 
-import com.ksg.view.util.KSGDateUtil;
+import com.ksg.common.util.KSGDateUtil;
 
 /**
  * 테이블에 대한 상세 정보 정의
@@ -20,9 +20,6 @@ import com.ksg.view.util.KSGDateUtil;
  *
  */
 public class ShippersTable {
-	
-	
-	
 	
 	public static final int CONSOLE_CFS=1;	
 	public static final int CONSOLE_PAGE=0;	

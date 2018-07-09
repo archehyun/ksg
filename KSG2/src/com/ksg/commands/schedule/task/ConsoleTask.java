@@ -17,14 +17,14 @@ import javax.swing.JOptionPane;
 
 import org.jdom.JDOMException;
 
-import com.ksg.dao.DAOManager;
+import com.ksg.common.dao.DAOManager;
+import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
-import com.ksg.view.schedule.dialog.ScheduleBuildMessageDialog;
-import com.ksg.view.util.KSGDateUtil;
-import com.ksg.view.util.KSGPropertis;
+import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 /**
  * 2014-11-20 업데이트

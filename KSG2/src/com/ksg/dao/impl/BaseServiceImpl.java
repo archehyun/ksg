@@ -13,8 +13,8 @@ package com.ksg.dao.impl;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.ksg.dao.base.BaseDAO;
-import com.ksg.dao.base.BaseDAOImpl;
+import com.ksg.base.service.BaseDAO;
+import com.ksg.base.service.BaseDAOImpl;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Code;
 import com.ksg.domain.Company;
@@ -503,6 +503,12 @@ public class BaseServiceImpl implements BaseService
 	public List getSearchedCompanyList(Company company) throws SQLException {
 		// TODO Auto-generated method stub
 		return baseDAO.getSearchedCompanyList(company);
+	}
+
+	@Override
+	public List getSearchedPort_AbbrList(PortInfo searchKeyword) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

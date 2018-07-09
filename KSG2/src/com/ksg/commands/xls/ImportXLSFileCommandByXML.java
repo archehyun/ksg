@@ -5,8 +5,8 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
+import com.ksg.adv.logic.xml.KSGXMLManager;
 import com.ksg.commands.KSGCommand;
-import com.ksg.xls.xml.KSGXMLManager;
 
 public class ImportXLSFileCommandByXML implements KSGCommand{
 	

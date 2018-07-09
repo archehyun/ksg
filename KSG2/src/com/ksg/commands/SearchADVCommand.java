@@ -47,18 +47,18 @@ import javax.swing.table.TableColumnModel;
 import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
-import com.ksg.dao.DAOManager;
-import com.ksg.dao.impl.ADVService;
+import com.ksg.adv.logic.xml.KSGXMLManager;
+import com.ksg.adv.service.ADVService;
+import com.ksg.common.dao.DAOManager;
+import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.view.comp.KSGTableCellRenderer;
 import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.model.KSGModelManager;
+import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.view.comp.KSGADVTablePanel;
 import com.ksg.view.KSGViewParameter;
-import com.ksg.view.comp.KSGTableCellRenderer;
-import com.ksg.view.search.KSGADVTablePanel;
-import com.ksg.xls.xml.KSGXMLManager;
 
 public class SearchADVCommand implements KSGCommand {
 
@@ -87,7 +87,7 @@ public class SearchADVCommand implements KSGCommand {
 		tableService = daomanager.createTableService();
 		_advservice = daomanager.createADVService();
 		baseService = daomanager.createBaseService();
-		this._tblADVTable=panel._tblADVTable;
+		this._tblADVTable=panel.tblADVTable;
 //		this._tblVesselTable=panel._tblVesselTable;
 		_base=panel;
 		shiptable=_base.getSelectedTable();

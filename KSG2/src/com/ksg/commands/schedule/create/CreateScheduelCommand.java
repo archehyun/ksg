@@ -12,23 +12,23 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.ksg.adv.service.ADVService;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.LongTask;
 import com.ksg.commands.schedule.ErrorLog;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
-import com.ksg.dao.DAOManager;
-import com.ksg.dao.impl.ADVService;
+import com.ksg.common.dao.DAOManager;
+import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.KSGDateUtil;
 import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.ScheduleService;
-import com.ksg.dao.impl.TableService;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.model.KSGModelManager;
-import com.ksg.view.schedule.dialog.ScheduleBuildMessageDialog;
-import com.ksg.view.util.KSGDateUtil;
+import com.ksg.schedule.ScheduleService;
+import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.shippertable.service.TableService;
 
 public abstract class CreateScheduelCommand implements KSGCommand, LongTask{
 	private TableService 		tableService;
@@ -55,6 +55,7 @@ public abstract class CreateScheduelCommand implements KSGCommand, LongTask{
 	protected ADVData advData;
 	protected Date selectedDate;
 	public CreateScheduelCommand() throws SQLException {
+		
 		tableService 	= DAOManager.getInstance().createTableService();
 		scheduleService = DAOManager.getInstance().createScheduleService();
 		advService		= DAOManager.getInstance().createADVService();
@@ -108,9 +109,13 @@ public abstract class CreateScheduelCommand implements KSGCommand, LongTask{
 	protected List getTableListByOption() throws SQLException
 	{
 		List li =tableService.getScheduleTableListByDate(searchOption);
+		
 		this.total =li.size();
+		
 		lengthOfTask=total;
+		
 		logger.info("스케줄 처리용 테이블 수 : "+total);
+		
 		return li;
 	}
 	protected void setTime(long time) {
@@ -131,6 +136,7 @@ public abstract class CreateScheduelCommand implements KSGCommand, LongTask{
 			return true;
 
 		advData = (ADVData) advService.getADVData(tableData.getTable_id());
+		
 		// 입력된 광고 정보가 없으며 통과
 		if(advData==null||advData.getData()==null)
 		{
@@ -509,6 +515,10 @@ public abstract class CreateScheduelCommand implements KSGCommand, LongTask{
 		log.setDate(content);
 		return log;
 	}
+	/**
+	 * @param table
+	 * @param scheduledata
+	 */
 	protected void checkDate(ShippersTable table, ScheduleData scheduledata) {
 		String[] errorcontent={"0/0/0","TBN","SKIP","OMIT","-"};
 

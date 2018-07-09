@@ -10,8 +10,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.ksg.commands.KSGCommand;
+import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Vessel;
-import com.ksg.model.KSGModelManager;
 
 public class VesselInfoExportCommand extends ExportCommand{
 	
@@ -40,12 +40,11 @@ public class VesselInfoExportCommand extends ExportCommand{
 		// 선박 정보 조회
 		try {
 			
-			
 			vesselList = baseService.selectList(new Vessel());
+			
 			Sheet sheet = wb.createSheet(sheetName);
 			
 			CreationHelper createHelper = wb.getCreationHelper();
-
 
 			Row firstrow = sheet.createRow((short)0);
 			firstrow.createCell(0).setCellValue(

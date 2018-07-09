@@ -13,18 +13,22 @@ package com.ksg.domain;
 import java.text.ParseException;
 import java.util.StringTokenizer;
 
-import com.ksg.view.util.KSGDateUtil;
+import com.ksg.common.util.KSGDateUtil;
 
 
 
+/**
+ * @author 박창현
+ *
+ */
 public class ScheduleData implements Comparable<Object>{
-	private String agent;
-	private String area_code;
-	private String area_name;
-	private String arrivalDate;
-	private String c_time;
-	private String common_shipping;
-	private String company_abbr;
+	private String agent; // 에이전트
+	private String area_code; // 지역 코드
+	private String area_name; // 지역 이름
+	private String arrivalDate; // 도착일자
+	private String c_time; // 
+	private String common_shipping; // 공동배선
+	private String company_abbr; // 선사명 약어
 	private String console_cfs;// 콘솔 CFS 정보
 	private String console_page; // 콘솔 페이지
 	private int console_print_type;
@@ -50,19 +54,26 @@ public class ScheduleData implements Comparable<Object>{
 	private String InOutType;//구분
 	private int n_voyage_num;
 	private int ntop;
-	public int page;
-	private String port;
-	private String table_id;
+	public int page; // 페이지
+	private String port; // 항구명
+	private String table_id; // 테이블 아이디
 	private String TS;
 	private String ts_date;
 	private String ts_port;
 	private String ts_vessel;
 	private String ts_voyage_num;
-	private String vessel;
+	private String vessel; // 선박명
 	private String vessel_type; // 선종
-	private String voyage_num;
+	private String voyage_num; // 항차 번호
 	private String bookPage="";// 지면 페이지
 	private String majorCompany="";// 지면 페이지
+	private String orderby;
+	public String getOrderby() {
+		return orderby;
+	}
+	public void setOrderby(String orderby) {
+		this.orderby = orderby;
+	}
 	public String getBookPage() {
 		return bookPage;
 	}

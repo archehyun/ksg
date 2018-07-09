@@ -1,12 +1,12 @@
 #no commments
-#Mon Jul 31 18:41:13 GMT+09:00 2017
-saveLocation=C\:\\Users\\jhbae\\workspace_0421\\schedule
+#Wed May 09 00:07:45 KST 2018
+saveLocation=C\:\\Users\\\uBC15\uCC3D\uD604\\Documents\\schedule
 selectedkeyword=both
 xlskey.both=VESSEL & VOY,VSL/VOY,VESSEL / VOYAGE,VESSEL  VOY   /   PORT,
 xlskey.voyage=voy,VOY,
 hasVoy=false
 vesselvoydivider=/
-dataLocation=C\:\\Users\\archehyun\\Desktop
+dataLocation=C\:\\Users\\\uBC15\uCC3D\uD604\\Desktop
 vesselvoycount=0
 emptyCheck=false
 <<<<<<<=ksg.properties.txt

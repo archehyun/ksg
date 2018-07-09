@@ -12,8 +12,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.ksg.commands.KSGCommand;
+import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.PortInfo;
-import com.ksg.model.KSGModelManager;
 
 public class PortAbbrInfoExportCommand extends ExportCommand{
 	

@@ -17,11 +17,11 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.dao.impl.TableService;
-import com.ksg.dao.impl.TableServiceImpl;
+import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ADVData;
-import com.ksg.model.KSGModelManager;
-import com.ksg.view.util.KSGPropertis;
+import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.TableServiceImpl;
 
 public class ImportTextCommand implements KSGCommand{
 	String d;

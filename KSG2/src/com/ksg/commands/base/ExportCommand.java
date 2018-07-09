@@ -8,8 +8,8 @@ import javax.swing.JOptionPane;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.ksg.model.KSGModelManager;
-import com.ksg.view.util.KSGPropertis;
+import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.KSGPropertis;
 
 public abstract class ExportCommand extends ImportCommand{
 	protected String fileName;

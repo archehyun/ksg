@@ -5,8 +5,8 @@ import java.text.ParseException;
 
 import org.jdom.Element;
 
+import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
-import com.ksg.view.util.KSGDateUtil;
 
 public class ScheduleSortData extends ScheduleData
 {

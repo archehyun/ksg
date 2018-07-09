@@ -8,14 +8,14 @@ import com.ksg.commands.LongTask;
 import com.ksg.commands.schedule.outbound.OutboundTask;
 import com.ksg.commands.schedule.route.RouteTaskDate;
 import com.ksg.commands.schedule.route.RouteTaskNewVessel;
+import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ShippersTable;
-import com.ksg.model.KSGModelManager;
-import com.ksg.schedule.build.ScheduleBuild;
-import com.ksg.schedule.build.ScheduleManager;
-import com.ksg.schedule.inbound.InboundScheduleBuild;
-import com.ksg.schedule.outbound.OutboundScheduleBuild;
-import com.ksg.schedule.outbound.OutboundScheduleBuildV2;
-import com.ksg.schedule.route.RouteScheduleBuild;
+import com.ksg.schedule.logic.ScheduleJoint;
+import com.ksg.schedule.logic.ScheduleManager;
+import com.ksg.schedule.logic.joint.InboundScheduleJoint;
+import com.ksg.schedule.logic.joint.OutboundScheduleJoint;
+import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
+import com.ksg.schedule.logic.joint.RouteScheduleJoint;
 
 public class SortAllTask implements LongTask {
 
@@ -36,13 +36,13 @@ public class SortAllTask implements LongTask {
 			build.execute();*/
 
 
-				ScheduleManager.getInstance().addBulid(new InboundScheduleBuild());
+				ScheduleManager.getInstance().addBulid(new InboundScheduleJoint());
 
 			}
 			if(isPrintOutbound)
 			{
 				//new OutboundTask();
-				ScheduleManager.getInstance().addBulid(new OutboundScheduleBuildV2());
+				ScheduleManager.getInstance().addBulid(new OutboundScheduleJointV2());
 			}
 			if(isPrintRoute)
 			{
@@ -52,7 +52,7 @@ public class SortAllTask implements LongTask {
 				}
 				else
 				{
-					ScheduleManager.getInstance().addBulid(new RouteScheduleBuild(op, orderBy));
+					ScheduleManager.getInstance().addBulid(new RouteScheduleJoint(op, orderBy));
 					/*ScheduleBuild build=ScheduleManager.getInstance().getRouteSchedule(op,orderBy);
 				build.execute();*/
 				}

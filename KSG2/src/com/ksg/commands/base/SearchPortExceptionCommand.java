@@ -3,7 +3,7 @@ package com.ksg.commands.base;
 import java.sql.SQLException;
 
 import com.ksg.commands.KSGCommand;
-import com.ksg.dao.DAOManager;
+import com.ksg.common.dao.DAOManager;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Code;
 

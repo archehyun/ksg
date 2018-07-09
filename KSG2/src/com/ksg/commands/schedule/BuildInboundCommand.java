@@ -27,15 +27,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import com.ksg.commands.KSGCommand;
+import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.ViewUtil;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
-import com.ksg.dao.impl.ScheduleService;
-import com.ksg.dao.impl.ScheduleServiceImpl;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
-import com.ksg.model.KSGModelManager;
-import com.ksg.quark.XTGManager;
-import com.ksg.view.util.ViewUtil;
+import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.schedule.ScheduleService;
+import com.ksg.schedule.ScheduleServiceImpl;
 
 public class BuildInboundCommand implements KSGCommand {
 	private static final String TAG_SIZE = "<$z7f$>";

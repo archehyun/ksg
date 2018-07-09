@@ -10,9 +10,13 @@
  *******************************************************************************/
 package com.ksg.domain;
 
+/**
+ * @author 박창현
+ *
+ */
 public class QuarkFormat {
-	public int table_id;
-	public String foamt;
+	public int table_id; // 테이블 아이디
+	public String foamt; // 포맷
 	public int getTable_id() {
 		return table_id;
 	}

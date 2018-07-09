@@ -6,9 +6,9 @@ import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import com.ksg.adv.service.AdvDAOImpl;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.LongTask;
-import com.ksg.dao.impl.AdvDAOImpl;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.dao.impl.TableDAOImpl;
 

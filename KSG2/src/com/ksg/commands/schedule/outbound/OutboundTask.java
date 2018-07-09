@@ -22,14 +22,14 @@ import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.StringCompare;
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.commands.schedule.task.SimpleTask;
-import com.ksg.dao.DAOManager;
+import com.ksg.common.dao.DAOManager;
+import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
-import com.ksg.quark.XTGManager;
-import com.ksg.view.schedule.dialog.ScheduleBuildMessageDialog;
-import com.ksg.view.util.KSGDateUtil;
+import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 public class OutboundTask extends SimpleTask{
 

@@ -13,7 +13,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.ksg.commands.KSGCommand;
-import com.ksg.dao.DAOImplManager;
+import com.ksg.common.dao.DAOImplManager;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.domain.PortInfo;
 

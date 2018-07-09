@@ -10,16 +10,16 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
-import com.ksg.dao.impl.ScheduleService;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.build.PortIndexNotMatchException;
-import com.ksg.schedule.build.ScheduleManager;
-import com.ksg.schedule.build.VesselNullException;
+import com.ksg.schedule.ScheduleService;
+import com.ksg.schedule.logic.PortIndexNotMatchException;
+import com.ksg.schedule.logic.ScheduleManager;
+import com.ksg.schedule.logic.VesselNullException;
 
 /**인랜드 스케줄 생성
  * @author archehyun

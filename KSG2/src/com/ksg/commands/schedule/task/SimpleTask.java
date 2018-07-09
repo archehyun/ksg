@@ -10,11 +10,11 @@ import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
 import com.ksg.commands.schedule.XML_INFO;
-import com.ksg.dao.DAOManager;
+import com.ksg.common.dao.DAOManager;
 import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.ScheduleService;
 import com.ksg.domain.Code;
-import com.ksg.view.schedule.dialog.ScheduleBuildMessageDialog;
+import com.ksg.schedule.ScheduleService;
+import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 public abstract class SimpleTask implements ScheduleTask{
 	protected int lengthOfTask;

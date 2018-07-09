@@ -39,12 +39,12 @@ import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ksg.dao.SqlMapManager;
-import com.ksg.dao.impl.MemberService;
-import com.ksg.dao.impl.MemberServiceImpl;
+import com.ksg.common.dao.SqlMapManager;
+import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Member;
-import com.ksg.model.KSGModelManager;
-import com.ksg.view.util.ViewUtil;
+import com.ksg.member.MemberService;
+import com.ksg.member.MemberServiceImpl;
 
 public class KSGLogin extends JDialog {
 	protected Logger logger = Logger.getLogger(getClass());

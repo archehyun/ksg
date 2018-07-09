@@ -19,11 +19,11 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
-import com.ksg.dao.DAOManager;
+import com.ksg.adv.logic.model.SheetInfo;
+import com.ksg.adv.view.comp.XLSManagerImpl;
+import com.ksg.adv.view.comp.XLSStringUtil;
+import com.ksg.common.dao.DAOManager;
 import com.ksg.dao.impl.BaseService;
-import com.ksg.xls.XLSManagerImpl;
-import com.ksg.xls.XLSStringUtil;
-import com.ksg.xls.model.SheetInfo;
 
 public class ViewXLSFileCommand implements KSGCommand {
 	SheetInfo info;
