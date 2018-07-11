@@ -25,6 +25,7 @@ import org.jdom.input.SAXBuilder;
 public class ADVData {
 	public static final String COL_DIVIDER = "\t";
 	protected Logger 		logger = Logger.getLogger(this.getClass());
+	public int test;
 	public String data;
 	public String table_id;
 	public Date date_isusse;
