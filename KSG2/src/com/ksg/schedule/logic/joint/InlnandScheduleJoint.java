@@ -19,7 +19,6 @@ import com.ksg.common.util.KSGPropertis;
 import com.ksg.common.util.SortUtil;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 /**
  * 2014-11-20 업데이트
@@ -80,10 +79,10 @@ public class InlnandScheduleJoint extends DefaultScheduleJoint{
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("M/d"); 
 
 	private String fileName,portFileName;
+	
 	private FileWriter fw;
+	
 	private FileWriter portFw;
-
-
 
 	/**
 	 * 내륙 도시 그룹
@@ -342,20 +341,7 @@ public class InlnandScheduleJoint extends DefaultScheduleJoint{
 			}
 		}
 	}
-/*	public static void main(String[] args) {
 
-		SimpleDateFormat date = new SimpleDateFormat("yyyy/mm/dd");
-		try {
-			Calendar old = Calendar.getInstance();
-			Calendar now = Calendar.getInstance();
-			old.setTime(date.parse("2015/2/9"));
-			now.setTime(date.parse("2015/2/9"));
-			System.out.println(old.before(now));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
 	@Override
 	public int execute() {
 		logger.debug("내륙운송 스케줄 생성 시작:"+option.getDate_issue());

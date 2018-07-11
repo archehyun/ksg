@@ -217,7 +217,7 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 		switch (orderByType) {
 		case RouteScheduleJoint.ORDER_BY_DATE:// 날짜 정렬
 			try {
-				if(KSGDateUtil.daysDiff(PortDateUtil.parse(this.getFirstInScheduleDate()), PortDateUtil.parse(one.getFirstInScheduleDate()))<0)
+				if(KSGDateUtil.daysDiff(PortDateUtil.parse(this.getFirstInScheduleDate()), PortDateUtil.parse(one.getFirstInScheduleDate()))<=0)
 				{
 					result= 1;
 				}else

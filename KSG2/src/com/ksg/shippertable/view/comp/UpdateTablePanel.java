@@ -642,7 +642,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 
 		table.setD_time(Integer.parseInt(txfDtime.getText()));
 		table.setC_time(Integer.parseInt(txfCtime.getText()));
-		
+		table.setCommon_shipping(txaCommon.getText());
 		table.setInland_indexs(txfInland.getText());
 
 

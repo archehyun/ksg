@@ -42,6 +42,7 @@ import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
+import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 /**
@@ -740,7 +741,7 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 
 										// 항차번호 설정										
 										String voyage_num_str 	= vslDatas[vslIndex][1]; // 문자										
-										int voyage_num 			= getNumericVoyage(vslDatas[vslIndex][1]); // 숫자
+										int voyage_num 			= ScheduleBuildUtil.getNumericVoyage(vslDatas[vslIndex][1]); // 숫자
 										
 										
 										// outbound 스케줄:
@@ -771,14 +772,11 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 												continue;
 											}
 										}							
-										
-										
 
 										// 지역 정보 생성
-										PortInfo  portInfo=getPortInfo(toPortStr);										
+										PortInfo  portInfo=getPortInfo(toPortStr);
+										
 										ScheduleData scheduledata = new ScheduleData();
-
-
 										scheduledata.setInOutType(InOutBoundType); 				// in, out 타입
 										scheduledata.setFromPort(fromPortStr); 					// 출발항
 										scheduledata.setDateF(fromDates[0]);					// 출발 ETA

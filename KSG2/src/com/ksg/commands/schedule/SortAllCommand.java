@@ -1,5 +1,7 @@
 package com.ksg.commands.schedule;
 
+import java.io.IOException;
+
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.task.SortAllTask;
 import com.ksg.domain.ShippersTable;
@@ -35,7 +37,13 @@ public class SortAllCommand implements KSGCommand {
 			
 			public Object construct() {
 				
-				return new SortAllTask(op,orderby,isNew,isPrintInbound,isPrintOutbound,isPrintRoute);
+				try {
+					return new SortAllTask(op,orderby,isNew,isPrintInbound,isPrintOutbound,isPrintRoute);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return null;
+				}
 			}
 		};
 		worker.start();

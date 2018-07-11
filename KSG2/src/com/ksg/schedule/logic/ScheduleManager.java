@@ -1,11 +1,14 @@
 package com.ksg.schedule.logic;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
+import com.ksg.common.util.KSGPropertis;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.PortInfo;
@@ -24,23 +27,23 @@ import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
  *
  */
 public class ScheduleManager {
-	
+
 	private static ScheduleManager instance;
-	
+
 	private ArrayList<ScheduleJoint> scheduleBuilds;
-	
+
 	private ScheduleBuildMessageDialog di;
-	
+
 	protected Logger 			logger = Logger.getLogger(getClass());
-	
+
 	protected BaseService baseService;
-	
+
 	protected ArrayList<PortInfo> allPortlist;
-	
+
 	protected ArrayList<PortInfo> allPortAbbrlist;
-	
+
 	protected ArrayList<Vessel> allVessellist;
-	
+
 	private ScheduleManager() {
 		scheduleBuilds = new ArrayList<ScheduleJoint>();
 		baseService = new BaseServiceImpl();
@@ -66,8 +69,9 @@ public class ScheduleManager {
 	 * @설명 아웃바운드 스케줄 생성
 	 * @return
 	 * @throws SQLException 
+	 * @throws IOException 
 	 */
-	public ScheduleJoint getOutboundSchedule() throws SQLException
+	public ScheduleJoint getOutboundSchedule() throws SQLException, IOException
 	{
 		return new OutboundScheduleJointV2();
 	}
@@ -110,7 +114,7 @@ public class ScheduleManager {
 	{
 		return new InboundScheduleJoint();
 	}
-	
+
 	public PortInfo searchPort(String portName) throws SQLException,PortNullException
 	{
 		Iterator<PortInfo> iterator = allPortlist.iterator();
@@ -119,7 +123,7 @@ public class ScheduleManager {
 			PortInfo info = iterator.next();
 			if(info.getPort_name().equals(portName))
 				return info;
-			
+
 		}
 		throw new PortNullException(portName);
 	}
@@ -131,9 +135,9 @@ public class ScheduleManager {
 			PortInfo info = iterator.next();
 			if(info.getPort_abbr().equals(portAbbrName))
 				return info;
-			
+
 		}
-		
+
 		throw new PortNullException(portAbbrName);
 	}
 	/**
@@ -143,7 +147,7 @@ public class ScheduleManager {
 	 * @throws VesselNullException
 	 */
 	public Vessel searchVessel(String vesselName) throws SQLException,VesselNullException {		
-		
+
 		Iterator<Vessel> iterator = allVessellist.iterator();
 		while(iterator.hasNext())
 		{
@@ -152,15 +156,15 @@ public class ScheduleManager {
 			{
 				if(info.getVessel_name().toUpperCase().equals(info.getVessel_abbr().toUpperCase()))
 				{
-				return info;
+					return info;
 				}
 			}
 		}
-		
+
 		throw new VesselNullException("vesselName null:"+vesselName);
 	}
-	
-	
+
+
 	public void startBuild()
 	{
 		Thread thread = new Thread()
@@ -168,15 +172,36 @@ public class ScheduleManager {
 			public void run()
 			{
 				logger.info("스케줄 생성 시작");
-				di = new ScheduleBuildMessageDialog();
-				di.createAndUpdateUI();
-				Iterator<ScheduleJoint>iter = scheduleBuilds.iterator();
-				while(iter.hasNext())
+
+				String fileLocation =KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION);
+
+				File file = new File(fileLocation);
+
+				if(!file.exists())
 				{
-					DefaultScheduleJoint build = (DefaultScheduleJoint) iter.next();
-					di.setTask(build);
-					build.initTag();
-					build.execute();
+					file.mkdirs();
+					logger.info("폴더 생성:"+fileLocation);
+				}
+
+
+				di = new ScheduleBuildMessageDialog();
+				
+				di.createAndUpdateUI();
+				
+				Iterator<ScheduleJoint>iter = scheduleBuilds.iterator();
+				init();
+				try {
+					while(iter.hasNext())
+					{
+						DefaultScheduleJoint build = (DefaultScheduleJoint) iter.next();
+						di.setTask(build);
+						build.initTag();
+						build.execute();
+					}
+				}
+				catch(IOException e)
+				{
+					e.printStackTrace();	
 				}
 				scheduleBuilds.clear();
 				di.end();

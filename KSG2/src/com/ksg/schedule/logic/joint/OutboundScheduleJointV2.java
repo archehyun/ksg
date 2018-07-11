@@ -1,7 +1,7 @@
 package com.ksg.schedule.logic.joint;
 
-import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -22,7 +22,6 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.PortNullException;
-import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.VesselNullException;
 
 /**
@@ -38,8 +37,6 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 	private static final String FILE_NAME = "outbound_new.txt";
 	
 	private static final String ERROR_NAME = "outbound_error.txt";	
-	
-	private ScheduleManager scheduleManager = ScheduleManager.getInstance();
 	
 	private ScheduleData op;
 	
@@ -63,31 +60,29 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 
 	private List<String> outbounSchedulePortList;
 
-	public OutboundScheduleJointV2() throws SQLException {
+	private FileWriter fw;
+
+	private FileWriter errorfw;
+
+	private FileWriter portfw;
+
+	public OutboundScheduleJointV2() throws SQLException, IOException {
 
 		super();
 		
 		logger.info("outbound build");
 		
-		String fileLocation =KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION);
-		
-		File file = new File(fileLocation);
-		
-		if(!file.exists())
-		{
-			file.mkdirs();
-			logger.info("폴더 생성:"+fileLocation);
-		}
-
 		fileName = KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION)+"/"+FILE_NAME;
 		
 		errorFileName = KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION)+"/"+ERROR_NAME;
 		
 		portName = KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION)+"/"+PORT_NAME;
-
-		outbounSchedulePortList = scheduleService.getOutboundPortList();
-
-		lengthOfTask = outbounSchedulePortList.size();
+		
+		fw = new FileWriter(fileName);
+		
+		errorfw = new FileWriter(errorFileName);
+		
+		portfw = new FileWriter(portName);
 
 		printList = new ArrayList<PrintItem>();
 
@@ -114,7 +109,6 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 			TAG_VERSION3="<dps:정규=<Nextstyle:정규><cc:검정><cs:8.000000><clig:0><cbs:-0.000000><phll:0><pli:53.858291><pfli:-53.858292><palp:1.199996><clang:Neutral><ph:0><pmcbh:3><phc:0><pswh:6><phz:0.000000><ptr:19.842498779296875\\,Left\\,.\\,0\\,\\;211.3332977294922\\,Right\\,.\\,0\\,\\;><cf:Helvetica LT Std><pmaws:1.500000><pmiws:1.000000><pmaxl:0.149993><prac:검정><prat:100.000000><prbc:검정><prbt:100.000000><blf:\\<TextFont\\>><bltf:\\<TextStyle\\>>>";		
 
 			TAG_VERSION4="<dps:Body Text=<BasedOn:정규><Nextstyle:Body Text><blf:\\<TextFont\\>><bltf:\\<TextStyle\\>>>";
-
 
 			TAG_VERSION5="<pstyle:Body Text><ptr:19.842498779296875\\,Left\\,.\\,0\\,\\;211.3332977294922\\,Right\\,.\\,0\\,\\;><cs:8.000000><cl:5.479995><cf:Helvetica LT Std><ct:Roman>\r\n";			
 		}
@@ -174,7 +168,6 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 			this.addSchedule(data);
 		}
 		public void addSchedule(ScheduleData data) throws SQLException, VesselNullException {
-			
 			
 			/*
 			 * 항구명이 부산 신항일 경우에는 부산항으로 이름 변경
@@ -291,36 +284,6 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 			return this.toShippingString(data.getDateF(), data.getVessel(), data.getCompany_abbr(), data.getAgent(), data.getDateT());
 		}
 
-		/**@설명 문자로된 항차번호에서 숫자만 추출하는 메소드
-		 * @param voyage_num
-		 * @return
-		 */
-		private int getNumericVoyage(String voyage_num)
-		{
-
-			int result=0;
-
-			String temp="";
-			if(voyage_num==null)
-				return 0;
-			for(int i=0;i<voyage_num.length();i++)
-			{
-				try{
-					temp+=Integer.parseInt(String.valueOf(voyage_num.charAt(i)));
-				}catch(NumberFormatException e)
-				{
-
-				}
-			}
-			try{
-				result=Integer.valueOf(temp);
-			}catch(Exception e)
-			{
-				return 0;
-			}
-
-			return result;
-		}
 
 		/**
 		 * @설명 공동배선 생성여부를 결정
@@ -331,13 +294,13 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 		private boolean isMakeCommonShipping(ScheduleData itemFirst,ScheduleData itemSecond)
 		{
 			if(itemFirst.getCompany_abbr().equals(itemSecond.getCompany_abbr())&& // 선사명이 같고
-					this.getNumericVoyage(itemFirst.getVoyage_num())==this.getNumericVoyage(itemSecond.getVoyage_num())&& //항차명이 같고
+					ScheduleBuildUtil.getNumericVoyage(itemFirst.getVoyage_num())==ScheduleBuildUtil.getNumericVoyage(itemSecond.getVoyage_num())&& //항차명이 같고
 					KSGDateUtil.isThreeDayUnder(itemFirst.getDateF(),itemSecond.getDateF())) //3일 이내
 			{
 				return true;
 			}
 			else if(!itemFirst.getCompany_abbr().equals(itemSecond.getCompany_abbr())&& // 선사명이 다르고
-					this.getNumericVoyage(itemFirst.getVoyage_num())==this.getNumericVoyage(itemSecond.getVoyage_num())&& //항차명이 같고
+					ScheduleBuildUtil.getNumericVoyage(itemFirst.getVoyage_num())==ScheduleBuildUtil.getNumericVoyage(itemSecond.getVoyage_num())&& //항차명이 같고
 					KSGDateUtil.isThreeDayUnder(itemFirst.getDateF(),itemSecond.getDateF())||//3일 이내 이거나
 					KSGDateUtil.isSame(itemFirst.getDateF(),itemSecond.getDateF())// 출발일이 같다면
 					) //3일 이내
@@ -402,7 +365,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 			{
 				ScheduleData data = this.get(i);
 				String vesselName = data.getVessel();
-				int voyageNum = this.getNumericVoyage(data.getVoyage_num());
+				int voyageNum = ScheduleBuildUtil.getNumericVoyage(data.getVoyage_num());
 				
 				if(sulist.containsKey(vesselName+"-"+voyageNum))
 				{
@@ -444,12 +407,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 
 					isGroupedFormerSchedule=false;
 					
-					ScheduleData commonSchedule=null;
-
-					//commonDateT=datas.get(0).getDateT();
-					//commonDateF=datas.get(0).getDateF();
-					
-					logger.info("init commonDateF:"+datas.get(0).getDateF()+" commonDateT:"+commonDateT);
+					ScheduleData commonSchedule=null;					
 	
 					
 					for(int i=0;i<datas.size()-1;i++)
@@ -564,9 +522,6 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 					logger.info("공동배선 적용 끝\n\n");
 				}
 			}
-			
-			
-			
 
 			return list;
 		}
@@ -847,7 +802,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 		return false;
 	}
 	@Override
-	public int execute() {
+	public int execute() throws IOException {
 
 		long startTime = System.currentTimeMillis();
 
@@ -865,15 +820,20 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 		
 
 		try{
-			FileWriter fw = new FileWriter(fileName);
-			FileWriter errorfw = new FileWriter(errorFileName);
-			FileWriter portfw = new FileWriter(portName);
+
+			
+			outbounSchedulePortList = scheduleService.getOutboundPortList();
+
+			lengthOfTask = outbounSchedulePortList.size();
 
 			Iterator<String> toPortIter = outbounSchedulePortList.iterator();
 
 			fw.write(buildVersionXTG());
+			
 			int tagIndex=0;// 태그 적용을 위한 인덱스
+			
 			String toPort=null;
+			
 			while(toPortIter.hasNext())
 			{
 				try{
@@ -912,11 +872,6 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 					tagIndex++;
 
 					String[] fromPortArray = arrangeFromPort(toPortgroup.keySet().toArray(new String[toPortgroup.keySet().size()]));
-
-
-					// 출발항 기준으로 정렬
-					//SortUtil.bubbleSort(fromPortArray);
-
 					/*
 					 * 출발항 기준으로 출력 시작
 					 */
@@ -975,10 +930,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 				current++;
 
 			}
-			// 파일 닫기
-			fw.close();
-			errorfw.close();
-			portfw.close();
+
 			logger.info("outbound 스케줄 생성 종료("+(System.currentTimeMillis()-startTime)+")");
 
 			return 0;
@@ -987,6 +939,13 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 		{
 			e.printStackTrace();
 			return 0;
+		}
+		finally
+		{
+			// 파일 닫기
+			fw.close();
+			errorfw.close();
+			portfw.close();
 		}
 	}
 

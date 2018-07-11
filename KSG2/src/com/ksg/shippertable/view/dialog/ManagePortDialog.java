@@ -3,31 +3,14 @@ package com.ksg.shippertable.view.dialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DragGestureEvent;
-import java.awt.dnd.DragGestureListener;
-import java.awt.dnd.DragSource;
-import java.awt.dnd.DragSourceDragEvent;
-import java.awt.dnd.DragSourceDropEvent;
-import java.awt.dnd.DragSourceEvent;
-import java.awt.dnd.DragSourceListener;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -36,7 +19,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
@@ -56,21 +38,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.common.view.dialog.PortSearchDialog;
-import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
-import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
@@ -124,7 +98,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		getContentPane().add(buildInfo(),BorderLayout.NORTH);
 
 		setSize(520,550);
-		this.setMinimumSize(new Dimension(520,550));
+		this.pack();
 		ViewUtil.center(this, false);
 		setVisible(true);
 	}
@@ -599,19 +573,13 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		JButton butDel = new JButton("»èÁ¦");
 
 		butDel.addActionListener(this);
-		JButton butSave = new JButton("ÀúÀå");
+		JButton butSave = new JButton("ÀúÀå ¹× ´Ý±â");
 		butSave.setActionCommand("ÀúÀå");
-		//butSave.setMnemonic(KeyEvent.VK_S);
-
-
-		JButton butCancel = new JButton("´Ý±â");
-		butCancel.setActionCommand("´Ý±â");
-		butCancel.setMnemonic(KeyEvent.VK_S);
-		butCancel.addActionListener(this);
+		butSave.setMnemonic(KeyEvent.VK_S);
+		butSave.addActionListener(this);
 
 		pnRight.add(butArrange);
 		pnRight.add(butDel);
-		pnRight.add(butCancel);
 		pnRight.add(butSave);
 
 		pnMain.add(pnLeft,BorderLayout.WEST);
@@ -731,6 +699,11 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 			try {
 				updateTableInfo();
+				this.OPTION = ManagePortDialog.CANCEL_OPTION;
+				this.setVisible(false);
+				dispose();
+				base.searchADVTable();
+				
 			} catch (SQLException e1) {
 
 				JOptionPane.showMessageDialog(this, e1.getMessage());
@@ -743,7 +716,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			this.setVisible(false);
 			dispose();
 			base.searchADVTable();
-
 		}
 
 		else if(command.equals("Àû¿ë ¹× ´Ý±â"))

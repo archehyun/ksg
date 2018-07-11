@@ -788,7 +788,7 @@ public class OutboundScheduleJoint extends DefaultScheduleJoint{
 						if(company1.equals(company2))
 						{
 							// 같은 Voyage 일때
-							if(this.getNumericVoyage(voyage)==this.getNumericVoyage(voyage2)) 
+							if(ScheduleBuildUtil.getNumericVoyage(voyage)==ScheduleBuildUtil.getNumericVoyage(voyage2)) 
 							{
 								// 동일 스케줄일때는 skip
 								if(dateF1.equals(dateF2)&&dateT1.equals(dateT2)&&!table_id1.equals(table_id2))
@@ -847,7 +847,7 @@ public class OutboundScheduleJoint extends DefaultScheduleJoint{
 						}
 						else // 다른  선사 일때
 						{
-							if(this.getNumericVoyage(voyage)==this.getNumericVoyage(voyage2)) // 같은 Voyage 일때
+							if(ScheduleBuildUtil.getNumericVoyage(voyage)==ScheduleBuildUtil.getNumericVoyage(voyage2)) // 같은 Voyage 일때
 							{
 								// 출발일 차이가 3일 이내
 								MyElement common_sub=(MyElement) oneData.getChild(XML_INFO.XML_TAG_COMMON_SHIPPING);

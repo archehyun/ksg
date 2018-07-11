@@ -22,7 +22,6 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.VesselNullException;
 
 /**
@@ -39,7 +38,7 @@ public class ConsoleScheduleJoint extends DefaultScheduleJoint{
 	 *
 	 */
 
-	ScheduleManager scheduleManager = ScheduleManager.getInstance();
+	
 
 	//
 	protected HashMap<String, String> portMap;
@@ -115,8 +114,7 @@ public class ConsoleScheduleJoint extends DefaultScheduleJoint{
 			logger.debug("closing time parsing:"+time);
 
 			// TBN 확인		
-			String newTime = time.trim();
-			
+			String newTime = time.trim();			
 			
 			
 			for(int i=0;i<tbnList.length;i++)
@@ -538,7 +536,6 @@ public class ConsoleScheduleJoint extends DefaultScheduleJoint{
 			// 출력 프로세스
 
 			// toPort 그룹에서 키 셋(도착항) 조회
-
 
 			// 태그 정보 출력
 			fw.write(TAG_VERSION+"\r\n");

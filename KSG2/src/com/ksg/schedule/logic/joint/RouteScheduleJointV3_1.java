@@ -483,7 +483,7 @@ public class RouteScheduleJointV3_1 extends DefaultScheduleJoint{
 		}
 		private String getVoyageInfo(String vessel) {
 
-			int result=RouteScheduleJointV3_1.this.getNumericVoyage(vessel);
+			int result=ScheduleBuildUtil.getNumericVoyage(vessel);
 
 			if(result!=0)
 			{

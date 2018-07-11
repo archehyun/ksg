@@ -585,7 +585,7 @@ public class RouteScheduleJointV2 extends DefaultScheduleJoint {
 
 	private String getVoyageInfo(Element vessel) {
 
-		int result=this.getNumericVoyage(vessel.getAttributeValue("voyage"));
+		int result=ScheduleBuildUtil.getNumericVoyage(vessel.getAttributeValue("voyage"));
 		if(result!=0)
 		{
 			return " - "+vessel.getAttributeValue("voyage");
@@ -627,7 +627,7 @@ public class RouteScheduleJointV2 extends DefaultScheduleJoint {
 			String vessel =data.getVessel();
 			String voy = data.getVoyage_num();
 
-			return vessel+":"+RouteScheduleJointV2.this.getNumericVoyage(voy);
+			return vessel+":"+ScheduleBuildUtil.getNumericVoyage(voy);
 		}
 		public List getXMLScheduleList() throws ParseException
 		{

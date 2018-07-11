@@ -1,5 +1,6 @@
 package com.ksg.commands.schedule.task;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
@@ -27,7 +28,7 @@ public class SortAllTask implements LongTask {
 	}
 
 
-	public SortAllTask(ShippersTable op,int orderBy,boolean isNew,boolean isPrintInbound, boolean isPrintOutbound, boolean isPrintRoute) {
+	public SortAllTask(ShippersTable op,int orderBy,boolean isNew,boolean isPrintInbound, boolean isPrintOutbound, boolean isPrintRoute) throws IOException {
 		try {
 			if(isPrintInbound)
 			{

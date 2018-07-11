@@ -62,6 +62,7 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 		public void addScheule(ScheduleData data) throws SQLException, ParseException, VesselNullException
 		{
 			String key =data.getArea_name().toLowerCase();
+
 			if(this.containsKey(key))
 			{
 				// 기존 지역 추가
@@ -98,55 +99,56 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 
 	}
 	public static final int ORDER_BY_DATE=1;
-	
+
 	public static final int ORDER_BY_VESSEL=2;
-	
+
 	private String fileName="world_print_new_date2.txt";
-	
+
 	private String errorOutPortfileName="world_print_error_outport.txt";
 
 	private ShippersTable op;
-	
+
 	private int orderByType=1;
-	
+
 	private String WORLD_B="";
-	
+
 	private String WORLD_E="";
-	
+
 	private String WORLD_F="";
-	
+
 	private String WORLD_INPORT="";
-	
+
 	private String WORLD_OUTPORT="";
-	
+
 	private String WORLD_VERSION1="";
-	
+
 	private String WORLD_VERSION2="";
-	
+
 	private String WORLD_VERSION3="";
-	
+
 	private String commonInPortfileName="world_print_common_inport.txt";;
-	
+
 	List<ScheduleData> li;
+
 	private List<String> areaList;
-	
+
 	public RouteScheduleJoint(ShippersTable op) throws SQLException {
 		super();
 		this.op = op;
 	}
 
 	public RouteScheduleJoint(ShippersTable op, int orderBy) throws SQLException {
-		
+
 		this(op);
-		
+
 		this.orderByType =orderBy;
-		
+
 		areaList=scheduleService.getOutboundAreaList();		
-		
+
 		lengthOfTask = areaList.size();
-		
+
 		message = "항로별 생성중...";
-		
+
 		logger.info("정렬기준:"+orderByType);
 	}
 	public void initTag() {
@@ -160,49 +162,34 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 		WORLD_VERSION3="<pstyle:정규><pli:182.500000><pfli:-182.000000><psa:0.566894><ptr:96.37789916992188\\,Left\\,.\\,0\\,\\;201\\,Left\\,.\\,0\\,\\;><chs:0.800003><cl:20.000000><cs:18.000000><cf:Helvetica LT Std>\r\n<cl:><cl:20.099990>\r\n<cs:><ct:Bold><cs:18.000000>";
 		WORLD_E="<ct:><cs:><cf:><ct:Bold><cf:Helvetica LT Std>";
 	}
-	
-	
-	
+
+
+
 	private FileWriter fw,errorOutfw,commonInfw;
-	
-	
+
+
 	public int execute() {
 		logger.info("항로별 스케줄 생성 시작");		
-		
-			
-			//Iterator<ScheduleData> iter = li.iterator();
-			
-			
-			
-			// 스케줄 그룹 생성
-			//GroupSchedule scheduleGroup = new GroupSchedule();
-			
-			
-			message = "항로별 스케줄 그룹화..";
-			
-			logger.info("스케줄 그룹화 시작");
-			
-/*			while(iter.hasNext())
-			{
-				ScheduleData data = iter.next();
-				scheduleGroup.addScheule(data);
-				current++;
-			}
-			
-			
-			*/
-			
-			
-			logger.info("스케줄 그룹화 종료");
-			
-			try{
+
+
+
+		message = "항로별 스케줄 그룹화..";
+
+		logger.info("스케줄 그룹화 시작");
+
+
+
+
+		logger.info("스케줄 그룹화 종료");
+
+		try{
 			fw = new FileWriter(KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION)+"/"+fileName);
-			
+
 			errorOutfw = new FileWriter(KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION)+"/"+errorOutPortfileName);
-			
+
 			commonInfw = new FileWriter(KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION)+"/"+commonInPortfileName);
 
-			
+
 			// 출력 프로세스
 			// toPort 그룹에서 키 셋(도착항) 조회
 
@@ -210,9 +197,9 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 			// 태그 정보 출력
 
 			fw.write(WORLD_VERSION1+"\r\n"+WORLD_VERSION2);
-			
-			
-			
+
+
+
 			Iterator<String> areaIter = areaList.iterator();
 			int i=0;
 			while(areaIter.hasNext())
@@ -227,37 +214,42 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 				while(scheduleIter.hasNext())
 				{
 					ScheduleData data=scheduleIter.next();
+					try {
 					group.addSchedule(data);
+					}catch(VesselNullException e)
+					{
+						logger.error("vessel null "+e.getMessage());
+					}
 				}
-				
+
 				String areaName = (i>0?"\r\n\r\n\r\n\r\n":"")+group.getArea_name()+"\r\n\r\n";
 				i++;
 				fw.write(areaName);
-				
+
 				errorOutfw.write(areaName);
-				
+
 				logger.info("Area: "+areaName+ ", 스케줄 사이즈:"+group.size());
-				
+
 				GroupVessel[] vesselList=group.toSortedArray();
-				
-				
+
+
 				for(int j=0;j<vesselList.length;j++)
 				{	
 					/* 스케줄 제외 구분
 					 * 중국, 일본; 2개 미만
 					 * 러시아 1개미만
 					 * 기타 3개 미만 */
-					
+
 					// 국내항 목록
 					PortScheduleInfo[] inPortList = vesselList[j].getCompressInPortList();
-					
+
 					// 외국항 목목
 					PortScheduleInfo[] outPortList = vesselList[j].getCompressOutPortList();
-					
+
 					PortScheduleInfo lastInPort = inPortList[inPortList.length-1];
-					
+
 					GroupPort temp = new GroupPort();
-					
+
 					for(int newIndex=0;newIndex<outPortList.length;newIndex++)
 					{
 						if(KSGDateUtil.daysDiff(KSGDateUtil.toDate4(outPortList[newIndex].getDate()), KSGDateUtil.toDate4(lastInPort.getDate()))<0)
@@ -265,185 +257,71 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 							temp.add(outPortList[newIndex]);
 						}
 					}
-					
+
 					PortScheduleInfo[] newOutPortList =temp.toPortArray();
-					
+
 					if(checkOutPort(group.getArea_name(),newOutPortList.length))
 					{
 						fw.write(toStringSchedule(vesselList[j],newOutPortList));
-						
+
 						logger.debug(toStringSchedule(vesselList[j],newOutPortList));
 					}
 					else
 					{
 						// 로그 저장
 						logger.error("외국항 항구수 부족 제외:"+vesselList[j].getVessel_name()+","+vesselList[j].getCompany());
-						
+
 						PortScheduleInfo list[]=newOutPortList;
-						
+
 						StringBuffer buffer = new StringBuffer();
-						
+
 						for(int index=0;index<list.length;index++)
 						{
 							buffer.append(list[index].getPort()+" "+PortDateUtil.toPrintDate(list[index].getDate())+(index<list.length-1?" - ":""));
-							
+
 							buffer.append(list[index].getPort()+" "+PortDateUtil.toPrintDate(list[index].getDate())+(index<list.length-1?" - ":""));
-							
+
 						}
 						errorOutfw.write(group.getArea_name()+",\t"+vesselList[j].getVessel_name()+",\t"+vesselList[j].getVoyage_num()+",\t"+vesselList[j].getCompany()+",\t"+buffer.toString()+"\r\n");
 					}
 				}
 				ArrayList<GroupVessel> commonVesselList = group.getCommonVessel();
-				
+
 				commonInfw.write("\r\n\r\nArea:"+group.getArea_name()+", 공동배선스케줄 수: "+commonVesselList.size()+"\r\n\r\n");
-				
+
 				logger.error("area:"+group.getArea_name()+", 공동배선스케줄 수: "+commonVesselList.size());
-				
+
 				for(int commonIndex=0;commonIndex<commonVesselList.size();commonIndex++)
 				{
 					GroupVessel commonVessel = commonVesselList.get(commonIndex);
-					
+
 					PortScheduleInfo list[]=commonVessel.getOutPortList();
-					
+
 					StringBuffer buffer = new StringBuffer();
-					
+
 					for(int index=0;index<list.length;index++)
 					{
 						buffer.append(list[index].getPort()+" "+PortDateUtil.toPrintDate(list[index].getDate())+(index<list.length-1?" - ":""));
 					}
 					commonInfw.write("   "+commonVessel.getVessel_name()+",\t"+commonVessel.getVoyage_num()+",\t"+commonVessel.getCompany()+",\t"+buffer.toString()+"\r\n");
 				}
-				
+
 				current++;
 				fw.write(WORLD_E);
-				
+
 			}
 			// 파일 닫기
 			close();
 			logger.info("항로별 스케줄 생성 종료");
 			return ScheduleJoint.SUCCESS;
-			}catch(Exception e)
-			{
-				
-				JOptionPane.showMessageDialog(null, e.getMessage());
-				e.printStackTrace();
-				return ScheduleJoint.FAILURE;
-				
-			}
-			
-			
-			
-			
-
-	/*		GroupArea[] areaGroups=scheduleGroup.toSortedArray();
-			
-			
-			message = "스케줄 출력..";
-			logger.info("스케줄 출력 시작");
-			lengthOfTask =areaGroups.length;
-			current=0;
-			
-			for(int i=0;i<areaGroups.length;i++)
-			{
-				GroupArea group =areaGroups[i];
-				String areaName = (i>0?"\r\n\r\n\r\n\r\n":"")+group.getArea_name()+"\r\n\r\n";
-
-				fw.write(areaName);
-				
-				errorOutfw.write(areaName);
-				
-				logger.info("Area: "+areaName+ ", 스케줄 사이즈:"+group.size());
-				
-				GroupVessel[] vesselList=group.toSortedArray();
-				
-				
-				for(int j=0;j<vesselList.length;j++)
-				{	
-					 스케줄 제외 구분
-					 * 중국, 일본; 2개 미만
-					 * 러시아 1개미만
-					 * 기타 3개 미만 
-					
-					// 국내항 목록
-					PortScheduleInfo[] inPortList = vesselList[j].getCompressInPortList();
-					
-					// 외국항 목목
-					PortScheduleInfo[] outPortList = vesselList[j].getCompressOutPortList();
-					
-					PortScheduleInfo lastInPort = inPortList[inPortList.length-1];
-					
-					GroupPort temp = new GroupPort();
-					
-					for(int newIndex=0;newIndex<outPortList.length;newIndex++)
-					{
-						if(KSGDateUtil.daysDiff(KSGDateUtil.toDate4(outPortList[newIndex].getDate()), KSGDateUtil.toDate4(lastInPort.getDate()))<0)
-						{
-							temp.add(outPortList[newIndex]);
-						}
-					}
-					
-					PortScheduleInfo[] newOutPortList =temp.toPortArray();
-					
-					if(checkOutPort(group.getArea_name(),newOutPortList.length))
-					{
-						fw.write(toStringSchedule(vesselList[j],newOutPortList));
-						
-						logger.debug(toStringSchedule(vesselList[j],newOutPortList));
-					}
-					else
-					{
-						// 로그 저장
-						logger.error("외국항 항구수 부족 제외:"+vesselList[j].getVessel_name()+","+vesselList[j].getCompany());
-						
-						PortScheduleInfo list[]=newOutPortList;
-						
-						StringBuffer buffer = new StringBuffer();
-						
-						for(int index=0;index<list.length;index++)
-						{
-							buffer.append(list[index].getPort()+" "+PortDateUtil.toPrintDate(list[index].getDate())+(index<list.length-1?" - ":""));
-							
-							buffer.append(list[index].getPort()+" "+PortDateUtil.toPrintDate(list[index].getDate())+(index<list.length-1?" - ":""));
-							
-						}
-						errorOutfw.write(group.getArea_name()+",\t"+vesselList[j].getVessel_name()+",\t"+vesselList[j].getVoyage_num()+",\t"+vesselList[j].getCompany()+",\t"+buffer.toString()+"\r\n");
-					}
-				}
-				ArrayList<GroupVessel> commonVesselList = group.getCommonVessel();
-				
-				commonInfw.write("\r\n\r\nArea:"+group.getArea_name()+", 공동배선스케줄 수: "+commonVesselList.size()+"\r\n\r\n");
-				
-				logger.error("area:"+group.getArea_name()+", 공동배선스케줄 수: "+commonVesselList.size());
-				
-				for(int commonIndex=0;commonIndex<commonVesselList.size();commonIndex++)
-				{
-					GroupVessel commonVessel = commonVesselList.get(commonIndex);
-					
-					PortScheduleInfo list[]=commonVessel.getOutPortList();
-					
-					StringBuffer buffer = new StringBuffer();
-					
-					for(int index=0;index<list.length;index++)
-					{
-						buffer.append(list[index].getPort()+" "+PortDateUtil.toPrintDate(list[index].getDate())+(index<list.length-1?" - ":""));
-					}
-					commonInfw.write("   "+commonVessel.getVessel_name()+",\t"+commonVessel.getVoyage_num()+",\t"+commonVessel.getCompany()+",\t"+buffer.toString()+"\r\n");
-				}
-				
-				current++;
-				fw.write(WORLD_E);
-				
-			}
-			// 파일 닫기
-			close();
-			logger.info("항로별 스케줄 생성 종료");
-			return ScheduleBuild.SUCCESS;
 		}catch(Exception e)
 		{
+
+			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
-			return ScheduleBuild.FAILURE;
-		}*/
-		
+			return ScheduleJoint.FAILURE;
+
+		}
 	}
 	private void close() throws IOException
 	{
@@ -517,14 +395,13 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 		StringBuffer buffer = new StringBuffer();
 		for(int i=0;i<portList.length;i++)
 		{
-			
 			String printDate = PortDateUtil.toPrintDate(portList[i].getDate());
 			buffer.append(portList[i].getPort().equals("PUSAN")?"BUSAN":portList[i].getPort()+" "+printDate+(i<(portList.length-1)?" - ":""));
 		}
 
 		return buffer.toString();
 	}
-	
+
 	/**
 	 * @param inPortLast
 	 * @param portList
@@ -539,10 +416,9 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 			// 인바운드 마지막 날짜보다 크면 스케줄 표시
 			if(KSGDateUtil.daysDiff(KSGDateUtil.toDate4(portList[i].getDate()), KSGDateUtil.toDate4(inPortLast.getDate()))<0)
 			{
-			String printDate = PortDateUtil.toPrintDate(portList[i].getDate());
-			
-			
-			buffer.append(portList[i].getPort().equals("PUSAN")?"BUSAN":portList[i].getPort()+" "+printDate+(i<(portList.length-1)?" - ":""));
+				String printDate = PortDateUtil.toPrintDate(portList[i].getDate());
+
+				buffer.append(portList[i].getPort().equals("PUSAN")?"BUSAN":portList[i].getPort()+" "+printDate+(i<(portList.length-1)?" - ":""));
 			}
 		}
 
@@ -550,11 +426,10 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 	}
 
 
-
 	@Override
 	public void stop() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

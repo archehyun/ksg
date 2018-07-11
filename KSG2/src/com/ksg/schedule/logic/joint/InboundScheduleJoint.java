@@ -31,7 +31,6 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.XTGManager;
 import com.ksg.schedule.logic.PortNullException;
-import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.VesselNullException;
 
 public class InboundScheduleJoint extends DefaultScheduleJoint{
@@ -51,8 +50,6 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 	private HashMap<String, String> portMap;	
 
 	private List portlist;
-
-	ScheduleManager scheduleManager = ScheduleManager.getInstance();
 
 	private PortInfo port_abbr;
 
@@ -148,7 +145,6 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 
 			ScheduleSortData[] data=sortKeySet(v);
 
-
 			for(int i=0;i<data.length;i++)
 			{
 				ScheduleSortData sortItem = data[i];
@@ -165,13 +161,16 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 				String tagCommon="";
 				String company2="";				
 
-
 				if(vesselList.size()>1)
 				{
 					ScheduleSortData[] s = sortVesselList(vesselList);
+					
 					Vector<String> companyList = new Vector<String>();
+					
 					Vector inDateList = new Vector();
+					
 					Vector tagDateList = new Vector();
+					
 					Vector<MySortElement> commonList = new Vector<MySortElement>();
 					for(int j=0;j<s.length;j++)
 					{
@@ -194,9 +193,6 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 
 							String dateT =e.getAttributeValue(XML_INFO.XML_TAG_DATE_T);
 							common +=port+dateT;
-
-
-							//*****							tagCommon +="\t"+getTagedPortCode(e.getAttributeValue(XML_INFO.XML_TAG_PORT))+e.getAttributeValue("dateT");
 							tagCommon +="\t"+getTagedPortCode(e.getAttributeValue(XML_INFO.XML_TAG_PORT))+e.getAttributeValue("dateT");
 
 							MySortElement element = new MySortElement();
@@ -312,7 +308,6 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 					catch (NullPointerException e1) {
 						throw new NullPointerException("vessel name null:"+vessel+", agent:"+sub_agent);
 					}
-
 				}
 
 				datas.setAttribute(XML_INFO.XML_TAG_DATE_F,dateF);
@@ -324,13 +319,8 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 				li.add(datas);
 			}
 
-
 			return li;
 		}
-
-
-
-
 
 		private String getCompanyAndAgent(String company,String agent)
 		{
@@ -370,10 +360,7 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 			for(int i=0;i<array2.length;i++)
 			{
 				companyStringList+=array2[i]+(i<array2.length-1?",":"");
-
 			}
-
-
 
 			return companyStringList;
 
@@ -497,8 +484,6 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 
 			Arrays.sort(data);
 
-
-
 			return data;
 		}
 		/**
@@ -596,7 +581,7 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 					{
 						// voyage 비교 해야 함
 
-						if(getNumericVoyage(addVoyage)==Onedata.getNumericVoayge())
+						if(ScheduleBuildUtil.getNumericVoyage(addVoyage)==Onedata.getNumericVoayge())
 						{
 							logger.info("3일 이내 추가"+OneVessel+","+OnedateF+","+AddDateF);
 							logger.info("3일 이내 추가 Voyage"+addVoyage+","+Onedata.getVoyage());
@@ -613,7 +598,7 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 							logger.info("key 삭제:"+keyItem+","+addVoyage+","+Onedata.getNumericVoayge());
 
 
-							String newKey = createKey(AddVessel,KSGDateUtil.biggerDate(OnedateF, AddDateF));
+							String newKey = createKey(AddVessel,KSGDateUtil.biggerDate(OnedateF, AddDateF), ScheduleBuildUtil.getNumericVoyage(addVoyage));
 
 							voyageVectorMap.put(newKey, voyageVector);
 							return;
@@ -632,11 +617,12 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 		private String createKey(Element data) {
 			String vessel =data.getAttributeValue(XML_INFO.XML_TAG_VESSEL);
 			String dateF = data.getAttributeValue(XML_INFO.XML_TAG_DATE_F);
-			return vessel+":"+dateF;
+			int voyage_n = ScheduleBuildUtil.getNumericVoyage(data.getAttributeValue(XML_INFO.XML_TAG_VOYAGE));
+			return vessel+":"+dateF+":"+voyage_n;
 		}
-		private String createKey(String vessel, String dateF) {
+		private String createKey(String vessel, String dateF,int voyage) {
 
-			return vessel+":"+dateF;
+			return vessel+":"+dateF+":"+voyage;
 		}
 	}
 
@@ -860,7 +846,7 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 
 		public void setVoyage(String voyage) {
 			this.voyage = voyage;
-			voyage_n = getNumericVoyage(voyage);
+			voyage_n = ScheduleBuildUtil.getNumericVoyage(voyage);
 		}
 		public int getNumericVoayge()
 		{

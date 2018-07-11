@@ -18,6 +18,7 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.logic.ScheduleJoint;
+import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 import com.ksg.shippertable.service.TableService;
 
@@ -26,6 +27,8 @@ import com.ksg.shippertable.service.TableService;
  *
  */
 public abstract class DefaultScheduleJoint implements ScheduleJoint{
+	
+	public ScheduleManager scheduleManager = ScheduleManager.getInstance();
 
 	public static final String BUSAN = "BUSAN";
 
@@ -93,31 +96,7 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 
 	}
-	public static int getNumericVoyage(String voyage_num)
-	{
-		int result=0;
 
-		String temp="";
-		if(voyage_num==null)
-			return 0;
-		for(int i=0;i<voyage_num.length();i++)
-		{
-			try{
-				temp+=Integer.parseInt(String.valueOf(voyage_num.charAt(i)));
-			}catch(NumberFormatException e)
-			{
-				//				return 0;
-			}
-		}
-		try{
-			result=Integer.valueOf(temp);
-		}catch(Exception e)
-		{
-			return 0;
-		}
-
-		return result;
-	}
 	@Override
 	public int getLengthOfTask() {
 		// TODO Auto-generated method stub
