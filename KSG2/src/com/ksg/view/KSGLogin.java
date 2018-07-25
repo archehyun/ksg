@@ -70,8 +70,7 @@ public class KSGLogin extends JDialog {
 		try
 		{
 			properties.load(new FileInputStream("ksg.properties.txt"));
-			db_properties.load(new FileInputStream("db1.properties"));			
-
+			db_properties.load(new FileInputStream("db.properties"));			
 
 			url = db_properties.getProperty("mssql.ip");
 			if(url.startsWith("$"))

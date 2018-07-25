@@ -23,6 +23,8 @@ import com.ksg.domain.ScheduleData;
 /**
  * 2014-11-20 업데이트
  * @author 박창현
+ * 정렬 순서 : 국내항-중간기항지
+ * 
  *
  */
 public class InlnandScheduleJoint extends DefaultScheduleJoint{

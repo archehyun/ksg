@@ -389,16 +389,12 @@ public class PortTableComp extends JTable implements ActionListener
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-
 	}
-
 
 
 	/**
 	 * 
-	 * 테이블 에 색 표시
+	 * 테이블에 색 표시
 	 * @param itemList
 	 */
 	private void updateTableColumn(Vector<PortColorInfo> itemList) {
@@ -567,74 +563,5 @@ public class PortTableComp extends JTable implements ActionListener
 	  * 1. 지난 주 항구수 보다 이번 주 항구수가 줄어든 경우
 	  * 
 	  * 
-	  *//*
-			for(int i=0;i<portTableModel.getRowCount();i++)
-			{
-				PortColorInfo port = (PortColorInfo) portTableModel.getValueAt(i, 1);
-
-				boolean flag=false;
-				for(int j=0;j<portLi.size();j++)
-				{
-					try{
-						Table_Port p = (Table_Port) portLi.get(j);
-						if(port.getPort_name().equals(p.getPort_name()))
-						{
-							flag=true;
-
-							// 인덱스가 1부터 시작 됨
-							if((i+1)==p.getPort_index())
-							{
-								port.setType(PortColorInfo.TYPE_NOMAL);
-								Table_Port sp = new Table_Port();
-								sp.setParent_port(port.getPort_name());
-								sp.setPort_type(Table_Port.TYPE_CHAILD);
-								sp.setTable_id(p.getTable_id());
-								List li=_tableService.getTablePortList(sp);
-								if(li.size()>0)
-								{
-									portTableModel.setValueAt(Table_Port.TYPE_CHAILD+":"+li.size(), i, 2);
-								}
-
-								//	logger.error("Port 위치가 동일합니다." );
-							}else
-							{
-								port.setType(PortColorInfo.TYPE_RED);
-								//logger.error("위치가 다릅니다."+port.getPort_name()+","+i+","+p.getPort_index());
-							}
-						}	
-					}catch(Exception  e)
-					{
-						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e.getMessage());
-					}
-				}
-				if(!flag)
-				{
-					port.setType(PortColorInfo.TYPE_2);
-					logger.error("항구 정보("+port.getPort_name()+")가 존재하지 않습니다.");
-				}
-			}
-
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		this.setModel(portTableModel);
-
-		TableColumnModel colmodel = this.getColumnModel();
-
-		for(int i=0;i<colmodel.getColumnCount();i++)
-		{
-			TableColumn namecol = colmodel.getColumn(i);
-			if(i==0)
-				namecol.setMaxWidth(25);
-			if(i==2)
-				namecol.setMaxWidth(35);
-
-			DefaultTableCellRenderer renderer = new ColoredTableCellRenderer();
-			namecol.setCellRenderer(renderer);
-
-		}
-	}*/
+	  */
 }

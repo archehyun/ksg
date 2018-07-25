@@ -9,3 +9,183 @@ INFO - retirve:3028,[table_id:null,page:-1,date:null,null]
 INFO - nomal테이블 생성
 INFO - console테이블 생성
 INFO - inland테이블 생성
+INFO - update by tree:3
+INFO - searched Page size:2
+INFO - start
+INFO - adv execute:0
+INFO - 엑셀 정보 불러오기
+INFO - end
+INFO - <=====start=====>
+INFO - start
+INFO - read XLS file=>C:\Users\박창현\Documents\개발\Project\ksg_2018\123_샘플데이터 보내드립니다!_180710\264 에버그린.xls,company=>Evergreen start
+INFO - <===search table (0 TO 73)start===>
+INFO - table key(vessel) found at row:5, col:0,row h:false
+INFO - table key(vessel) found at row:5, col:5,row h:false
+INFO - table key(vessel) found at row:11, col:0,row h:false
+INFO - table key(vessel) found at row:21, col:0,row h:false
+INFO - table key(vessel) found at row:31, col:0,row h:false
+INFO - <====Searched Table Count :5 ====>
+INFO - <===search table (0 TO 146)start===>
+INFO - table key(vessel) found at row:1, col:1,row h:false
+INFO - table key(vessel) found at row:13, col:1,row h:false
+INFO - table key(vessel) found at row:33, col:1,row h:false
+INFO - table key(vessel) found at row:45, col:1,row h:false
+INFO - <====Searched Table Count :4 ====>
+INFO - <===search table (0 TO 75)start===>
+INFO - table key(vessel) found at row:11, col:1,row h:false
+INFO - table key(vessel) found at row:21, col:1,row h:false
+INFO - table key(vessel) found at row:29, col:1,row h:false
+INFO - table key(vessel) found at row:35, col:1,row h:false
+INFO - table key(vessel) found at row:43, col:1,row h:false
+INFO - table key(vessel) found at row:51, col:1,row h:false
+INFO - table key(vessel) found at row:56, col:1,row h:false
+INFO - <====Searched Table Count :7 ====>
+INFO - <====C:\Users\박창현\Documents\개발\Project\ksg_2018\123_샘플데이터 보내드립니다!_180710\264 에버그린.xls: data extract start ====>
+INFO - tableCount:16
+INFO - end:resultOK:16
+INFO - start
+INFO - adv execute:16
+INFO - start:0
+INFO - end
+INFO - start:1
+INFO - end
+INFO - start:2
+INFO - end
+INFO - start:3
+INFO - end
+INFO - start:4
+INFO - end
+INFO - start:5
+INFO - end
+INFO - start:6
+INFO - end
+INFO - start:7
+INFO - end
+INFO - start:8
+INFO - end
+INFO - start:9
+INFO - end
+INFO - start:10
+INFO - end
+INFO - start:11
+INFO - end
+INFO - start:12
+INFO - end
+INFO - start:13
+INFO - end
+INFO - start:14
+INFO - end
+INFO - start:15
+INFO - end
+INFO - end
+INFO - tableinfo : EVGE5,com.ksg.domain.Table_Property@7480173a
+INFO - start:14
+INFO - end
+INFO - tableinfo : EVGE5,com.ksg.domain.Table_Property@4347b5ba
+INFO - start:14
+INFO - end
+INFO - start:14
+INFO - end
+INFO - start:14
+INFO - end
+INFO - start:14
+INFO - end
+INFO - start
+INFO - adv execute:16
+INFO - start:0
+INFO - 엑셀 정보 불러오기
+INFO - end
+INFO - start:1
+INFO - end
+INFO - start:2
+INFO - end
+INFO - start:3
+INFO - end
+INFO - start:4
+INFO - <=====start=====>
+INFO - start
+INFO - read XLS file=>C:\Users\박창현\Documents\개발\Project\ksg_2018\123_샘플데이터 보내드립니다!_180710\264 에버그린.xls,company=>Evergreen start
+INFO - <===search table (0 TO 73)start===>
+INFO - table key(vessel) found at row:5, col:0,row h:false
+INFO - table key(vessel) found at row:5, col:5,row h:false
+INFO - table key(vessel) found at row:11, col:0,row h:false
+INFO - table key(vessel) found at row:21, col:0,row h:false
+INFO - table key(vessel) found at row:31, col:0,row h:false
+INFO - <====Searched Table Count :5 ====>
+INFO - <===search table (0 TO 146)start===>
+INFO - table key(vessel) found at row:1, col:1,row h:false
+INFO - table key(vessel) found at row:13, col:1,row h:false
+INFO - table key(vessel) found at row:33, col:1,row h:false
+INFO - table key(vessel) found at row:45, col:1,row h:false
+INFO - <====Searched Table Count :4 ====>
+INFO - <===search table (0 TO 75)start===>
+INFO - table key(vessel) found at row:11, col:1,row h:false
+INFO - table key(vessel) found at row:21, col:1,row h:false
+INFO - table key(vessel) found at row:29, col:1,row h:false
+INFO - table key(vessel) found at row:35, col:1,row h:false
+INFO - table key(vessel) found at row:43, col:1,row h:false
+INFO - table key(vessel) found at row:51, col:1,row h:false
+INFO - table key(vessel) found at row:56, col:1,row h:false
+INFO - <====Searched Table Count :7 ====>
+INFO - <====C:\Users\박창현\Documents\개발\Project\ksg_2018\123_샘플데이터 보내드립니다!_180710\264 에버그린.xls: data extract start ====>
+INFO - tableCount:16
+INFO - end:resultOK:16
+INFO - start
+INFO - adv execute:16
+INFO - start:0
+INFO - end
+INFO - start:5
+INFO - end
+INFO - start:1
+INFO - end
+INFO - start:2
+INFO - end
+INFO - start:3
+INFO - end
+INFO - start:6
+INFO - end
+INFO - start:4
+INFO - end
+INFO - start:7
+INFO - end
+INFO - start:8
+INFO - end
+INFO - start:5
+INFO - end
+INFO - start:9
+INFO - end
+INFO - start:6
+INFO - end
+INFO - start:10
+INFO - end
+INFO - start:7
+INFO - end
+INFO - start:11
+INFO - end
+INFO - start:8
+INFO - end
+INFO - start:9
+INFO - end
+INFO - start:12
+INFO - end
+INFO - start:10
+INFO - end
+INFO - start:13
+INFO - end
+INFO - start:14
+INFO - end
+INFO - start:11
+INFO - end
+INFO - start:15
+INFO - end
+INFO - start:12
+INFO - end
+INFO - end
+INFO - end
+INFO - start:13
+INFO - end
+INFO - start:14
+INFO - end
+INFO - start:15
+INFO - end
+INFO - end

@@ -253,7 +253,6 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 		private String toShippingString(String dateF, String vessel, String company, String agent, String dateT)
 		{
 			try {
-
 				String formatedDateF=outputDateFormat.format(inputDateFormat.parse(dateF));
 				String formatedDateT=outputDateFormat.format(inputDateFormat.parse(dateT));
 				String formatedCompany = company.equals(agent)?company:company+"/"+agent;
@@ -265,6 +264,11 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 				 }
 
 		}
+		/**
+		 * @param data
+		 * @param companyList
+		 * @return
+		 */
 		private String toShippingString(ScheduleData data,ArrayList<String> companyList)
 		{
 			String company=null;
@@ -279,6 +283,10 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 
 			return this.toShippingString(data.getDateF(), data.getVessel(), company, data.getAgent(), data.getDateT());
 		}
+		/**
+		 * @param data
+		 * @return
+		 */
 		private String toShippingString(ScheduleData data)
 		{
 			return this.toShippingString(data.getDateF(), data.getVessel(), data.getCompany_abbr(), data.getAgent(), data.getDateT());
@@ -755,7 +763,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 		return tempFromPort;
 	}
 
-	/**
+	/**출발항구 정렬
 	 * @param outboundFromPortList
 	 * @return
 	 */
@@ -821,7 +829,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 
 		try{
 
-			
+			//도착항구명 목록 조회
 			outbounSchedulePortList = scheduleService.getOutboundPortList();
 
 			lengthOfTask = outbounSchedulePortList.size();
@@ -834,6 +842,8 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 			
 			String toPort=null;
 			
+			
+			//도창항구명 기준으로 스케줄 생성
 			while(toPortIter.hasNext())
 			{
 				try{
@@ -848,11 +858,12 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 					op = new ScheduleData();
 					op.setPort(toPort);
 					op.setInOutType("O");
-
+					
+					// 도착항구명 기준으로 스케줄 조회
 					List<ScheduleData> outboundScheduleListByToPort =scheduleService.getScheduleList(op);
-
+					
+					// 도착항구명 기준으로 그룹 생성
 					ToPortGroup toPortgroup = new ToPortGroup(toPort);
-
 					Iterator<ScheduleData> scheduleList = outboundScheduleListByToPort.iterator();
 					while(scheduleList.hasNext())
 					{
@@ -870,8 +881,10 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 					fw.write(buildToPortXTG(tagIndex, toPortgroup.toPort, toPortgroup.getPort_nationality()));
 
 					tagIndex++;
-
+					
+					// 도착항 기준 출발항 목록 정렬
 					String[] fromPortArray = arrangeFromPort(toPortgroup.keySet().toArray(new String[toPortgroup.keySet().size()]));
+					
 					/*
 					 * 출발항 기준으로 출력 시작
 					 */
@@ -913,6 +926,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 
 						// 출발일로 정렬
 						PrintItem pr[]= new PrintItem[printList.size()];
+						
 						pr=printList.toArray(pr);
 
 						Arrays.sort(pr);
@@ -1037,7 +1051,6 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 			
 			if(KSGDateUtil.isSame(table1.dateF, this.dateF))
 			{
-				//System.out.println(this.dateT + "  " + this.dateF);
 				//출발일이 같은 경우 도착일 비교 
 				Date toOne = new Date(table1.dateT);
 				Date toTwo = new Date(this.dateT);
