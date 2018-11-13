@@ -225,7 +225,6 @@ public class XLSFileReader implements IF_XLSManager
 			data.setRow((int) Double.parseDouble(this.getCellData2(celRow)));
 			data.setCol((int) Double.parseDouble(this.getCellData2(celCol)));
 			tableInfo.add(data);
-
 		}
 	}
 	

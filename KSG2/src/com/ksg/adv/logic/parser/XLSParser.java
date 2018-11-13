@@ -13,9 +13,7 @@ package com.ksg.adv.logic.parser;
 import java.util.List;
 import java.util.Vector;
 
-import com.ksg.adv.view.comp.XLSManager;
-
-public abstract class XLSParser implements XLSManager{
+public abstract class XLSParser extends XLSReader{
 	
 	public abstract String getData();
 	

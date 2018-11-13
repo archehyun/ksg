@@ -1,19 +1,19 @@
 #no commments
-#Wed Jul 11 13:59:33 KST 2018
+#Tue Oct 09 23:24:13 KST 2018
 saveLocation=C\:\\Users\\\uBC15\uCC3D\uD604\\Documents\\schedule
 selectedkeyword=both
 xlskey.both=VESSEL & VOY,VSL/VOY,VESSEL / VOYAGE,VESSEL  VOY   /   PORT,
 xlskey.voyage=voy,VOY,
 hasVoy=false
 vesselvoydivider=/
-dataLocation=C\:\\Users\\\uBC15\uCC3D\uD604\\Documents\\\uAC1C\uBC1C\\Project\\ksg_2018\\123_\uC0D8\uD50C\uB370\uC774\uD130 \uBCF4\uB0B4\uB4DC\uB9BD\uB2C8\uB2E4\!_180710
-emptyCheck=false
+dataLocation=C\:\\Users\\\uBC15\uCC3D\uD604\\Desktop\\ksg\\123_\uC0D8\uD50C\uB370\uC774\uD130 \uBCF4\uB0B4\uB4DC\uB9BD\uB2C8\uB2E4\!_180710
 vesselvoycount=0
-errorDividerLoction=300
+emptyCheck=false
 <<<<<<<=ksg.properties.txt
+errorDividerLoction=300
 underPort=\uC801\uC6A9\uC548\uD568
 title=KSG Application
 selected_incode=US-ASCII
-INCODE_LIST=ASCII,US-ASCII,EUC-KR,UTF-8
-doubleKey=false|Up
 xlskey.vessel=Vessel,VESSEL,Vessel Name,VESSEL NAME,VESSEL  NAME,VSL NAME,VSL,
+doubleKey=false|Up
+INCODE_LIST=ASCII,US-ASCII,EUC-KR,UTF-8

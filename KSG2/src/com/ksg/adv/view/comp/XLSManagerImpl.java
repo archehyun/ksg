@@ -27,7 +27,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.ksg.adv.logic.model.TableLocation;
-import com.ksg.adv.logic.parser.XLSParserVessel;
+import com.ksg.adv.logic.parser.XLSReader;
+import com.ksg.adv.logic.parser.XLSReaderVessel;
 import com.ksg.adv.logic.parser.XLSParserVoy;
 import com.ksg.commands.xls.ImportXLSFileCommand;
 import com.ksg.common.dao.DAOManager;
@@ -55,7 +56,7 @@ public class XLSManagerImpl{
 	
 	public int other=0;
 
-	private XLSManager parser;
+	private XLSReader parser;
 
 	public Vector<TableLocation> tableLocation;
 	
@@ -158,7 +159,7 @@ public class XLSManagerImpl{
 
 	public void readFile(Vector tableList, Vector sheetList) throws ADVTableNotMatchException, IOException
 	{
-		parser		 = new XLSParserVessel();
+		parser		 = new XLSReaderVessel();
 		List li = new LinkedList();
 		for(int i=0;i<tableList.size();i++)
 		{
@@ -178,7 +179,7 @@ public class XLSManagerImpl{
 
 			switch (keyType) {
 			case ImportXLSFileCommand.VESSEL:
-				parser		 = new XLSParserVessel();
+				parser		 = new XLSReaderVessel();
 				break;
 			case ImportXLSFileCommand.VOYAGE:
 				parser		 = new XLSParserVoy();	
@@ -225,7 +226,7 @@ public class XLSManagerImpl{
 	public void readInit(ShippersTable table) throws SQLException
 	{
 		logger.debug("start");
-		parser		 = new XLSParserVessel();
+		parser		 = new XLSReaderVessel();
 
 		List li=tableService.getTableListByCompany(table.getCompany_abbr(),table.getPage());
 		if(li.size()==0)

@@ -113,8 +113,6 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 	private static final long serialVersionUID = 1L;
 
-	private ADVService advservice;
-
 	private CardLayout cardLayout;
 
 	private JComboBox cbxCount,cbxDivider;
@@ -173,8 +171,6 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		
 		DAOManager manager = DAOManager.getInstance();
 		
-		advservice = manager.createADVService();
-		
 		tableService = manager.createTableService();
 		
 		createAndUpdatePN();
@@ -183,6 +179,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 	public void actionPerformed(ActionEvent e) {
 
 		String command = e.getActionCommand();
+		
 		if(command.equals("적용하기"))
 		{
 			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "반영 되었습니다.");
@@ -230,6 +227,11 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 			dialog.setVisible(true);
 		}
 	}
+	/**
+	 * @param label
+	 * @param comp
+	 * @return
+	 */
 	public Component addForm(String label,Component comp)
 	{
 		JPanel pnMain = new JPanel();
@@ -241,6 +243,9 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		pnMain.add(comp);
 		return pnMain;
 	}
+	/**
+	 * @return
+	 */
 	public JPanel buildControlPn()
 	{
 		JPanel pnCenterControl = new JPanel(new BorderLayout());

@@ -20,7 +20,6 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -31,72 +30,50 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import com.ksg.adv.logic.model.SheetInfo;
 import com.ksg.adv.logic.model.TableLocation;
-import com.ksg.adv.service.ADVService;
 import com.ksg.adv.view.comp.ADVTableNotMatchException;
-import com.ksg.adv.view.comp.XLSManager;
 import com.ksg.adv.view.comp.XLSTableInfo;
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.KSGPropertis;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ShippersTable;
-import com.ksg.shippertable.service.TableService;
 
 @SuppressWarnings("unchecked")
-public class XLSParserVoy implements XLSManager{
-	private String company;
-	public String data="";
-	private Vector datas = new Vector();
+public class XLSParserVoy extends XLSReader{
+
 	private boolean emptyCheck;
-	private Logger logger = Logger.getLogger(this.getClass());
+	
 	private int other=0;
+	
 	private int page;
+	
 	private List preData;
-	private KSGPropertis propertis = KSGPropertis.getIntance();
-	private ADVService service;
-	private Sheet sheet;
+	
+	
 	public String vesselKeyWord[];
 	public String bothKeyWord[];
 	public String voyageKeyWord[];
-	public Vector<TableLocation> tableLocationList;
-	private TableService tableService;
-	private String xlsFile;
-	FormulaEvaluator evaluator;
+	
 	String isUnderPort="";
+	
 	boolean hasVoy=true;
+	
 	private Boolean isDoubleKey;
+	
 	private String upDown;
-	BaseService baseService;
-	DAOManager manager;
+	
 	public XLSParserVoy()
 	{	
-		manager = DAOManager.getInstance();
-		baseService =manager.createBaseService();
-		service = manager.createADVService();
-		tableService = manager.createTableService();
+		super();
+		
 		propertis.reLoad();
 		isUnderPort = (String)propertis.getValues(KSGPropertis.PROPERTIES_UNDERPORT).toString();
 		hasVoy = Boolean.parseBoolean(propertis.getValues(KSGPropertis.PROPERTIES_VOY).toString());
 		this.emptyCheck=Boolean.parseBoolean((String)propertis.getValues("emptyCheck"));
 
 		try {
-			//List vesselKeyList=baseService.getKeywordList("VESSEL");
-			List voyageKeyList=baseService.getKeywordList("VOYAGE");
-//			List bothKeyList=baseService.getKeywordList("BOTH");
 
-			//vesselKeyWord = new String[vesselKeyList.size()];
-			//bothKeyWord = new String[bothKeyList.size()];
+			List voyageKeyList=baseService.getKeywordList("VOYAGE");
+
 			voyageKeyWord= new String[voyageKeyList.size()];
-			
-			
-/*
-			for(int i=0;i<vesselKeyList.size();i++)
-			{
-				vesselKeyWord[i]= vesselKeyList.get(i).toString();
-			}
-			for(int i=0;i<bothKeyList.size();i++)
-			{
-				bothKeyWord[i]= bothKeyList.get(i).toString();
-			}*/
+
 			for(int i=0;i<voyageKeyList.size();i++)
 			{
 				voyageKeyWord[i]= voyageKeyList.get(i).toString();
@@ -123,6 +100,7 @@ public class XLSParserVoy implements XLSManager{
 	}
 
 	Vector xlsTableInfoList;
+	
 	public Vector extractData(Sheet sheet,Vector<TableLocation> tableLocation)
 	throws ADVTableNotMatchException 
 	{
@@ -147,26 +125,8 @@ public class XLSParserVoy implements XLSManager{
 
 	}
 
-	public String getColumString(HSSFCell cell)
-	{
-		if(cell==null)
-			return "";
 
-		switch (cell.getCellType()) 
-		{
-		case HSSFCell.CELL_TYPE_STRING:
 
-			return cell.getRichStringCellValue().toString();
-		default:
-
-			break;
-		}
-		return "";
-	}
-
-	public String getData() {
-		return data;
-	}
 
 	public Vector getErrorList() {
 		return null;
@@ -184,12 +144,12 @@ public class XLSParserVoy implements XLSManager{
 	}
 
 
-	public Vector getXLSData() {
-		// TODO Auto-generated method stub
-		return datas;
-	}
 
 
+
+	/* (non-Javadoc)
+	 * @see com.ksg.adv.logic.parser.XLSReader#readFile(java.lang.String, com.ksg.domain.ShippersTable)
+	 */
 	public void readFile(String xlsFile,ShippersTable table)
 	throws FileNotFoundException, ADVTableNotMatchException{
 
@@ -212,6 +172,9 @@ public class XLSParserVoy implements XLSManager{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ksg.adv.logic.parser.XLSReader#readFile(java.lang.String, java.lang.String, com.ksg.domain.ShippersTable)
+	 */
 	public void readFile(String sheetName, String xlsFile, ShippersTable table)
 	throws FileNotFoundException, ADVTableNotMatchException {
 
@@ -268,6 +231,10 @@ public class XLSParserVoy implements XLSManager{
 
 		return tableLocationList;
 	}
+	
+	/* (non-Javadoc)
+	 * @see com.ksg.adv.logic.parser.XLSReader#readFile(java.util.Vector)
+	 */
 	public Vector<TableLocation> readFile(Vector sheetNameList)
 	throws ADVTableNotMatchException, IOException {
 
@@ -487,12 +454,5 @@ public class XLSParserVoy implements XLSManager{
 	public void setEmptyCheck(boolean emptyCheck) {
 		this.emptyCheck = emptyCheck;
 	}
-	public void setPreData(List li) {
-		this.preData=li;
 
-	}
-	public Vector getXLSTableInfoList() {
-		// TODO Auto-generated method stub
-		return xlsTableInfoList;
-	}
 }

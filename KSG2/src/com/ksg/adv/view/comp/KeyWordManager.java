@@ -1,5 +1,6 @@
 package com.ksg.adv.view.comp;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.ksg.common.dao.DAOManager;
@@ -9,40 +10,44 @@ public class KeyWordManager {
 
 	private BaseService baseService;
 	private static KeyWordManager instance;
-	private List vesselKeyList;
-	private List voyageKeyList;
-	private List bothKeyList;
-	public List getBothKeyList() {
-		return bothKeyList;
-	}
+	
 	private String vesselKeyWord[];
+	private String voyageKeyWord[];
+	public String bothKeyWord[];
+	
+	public String[] getVoyageKeyWord() {
+		return voyageKeyWord;
+	}
+	
 	public String[] getVesselKeyWord() {
 		return vesselKeyWord;
 	}
-	public String bothKeyWord[];
+
 	
 	public String[] getBothKeyWord() {
 		return bothKeyWord;
+	}
+	
+	private String[] initKeyword(String type) throws SQLException
+	{
+		List keyList = baseService.getKeywordList(type);
+		String[] keyWord = new String[keyList.size()];
+		for(int i=0;i<keyList.size();i++)
+		{
+			keyWord[i]= keyList.get(i).toString();
+		}
+		return keyWord;
 	}
 	private KeyWordManager()
 	{
 		baseService = DAOManager.getInstance().createBaseService();
 		try{
-			vesselKeyList = baseService.getKeywordList("VESSEL");
-			voyageKeyList = baseService.getKeywordList("VOYAGE");
-			bothKeyList = baseService.getKeywordList("BOTH");
-			
-			vesselKeyWord = new String[vesselKeyList.size()];
-			bothKeyWord = new String[bothKeyList.size()];
+		
+			vesselKeyWord 	= initKeyword("VESSEL");
+			voyageKeyWord 	= initKeyword("VOYAGE");
+			bothKeyWord 	= initKeyword("BOTH");
 
-			for(int i=0;i<vesselKeyList.size();i++)
-			{
-				vesselKeyWord[i]= vesselKeyList.get(i).toString();
-			}
-			for(int i=0;i<bothKeyList.size();i++)
-			{
-				bothKeyWord[i]= bothKeyList.get(i).toString();
-			}
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();

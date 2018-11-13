@@ -74,8 +74,6 @@ import com.ksg.adv.view.comp.SearchPanel;
 import com.ksg.adv.view.comp.SheetModel;
 import com.ksg.adv.view.dialog.AdjestADVListDialog;
 import com.ksg.adv.view.dialog.ViewXLSFileDialog;
-import com.ksg.commands.InsertADVCommand;
-import com.ksg.commands.KSGCommand;
 import com.ksg.commands.SearchPortCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -90,7 +88,6 @@ import com.ksg.common.view.comp.KSGTree;
 import com.ksg.common.view.comp.KSGTree1;
 import com.ksg.common.view.comp.KSGTreeDefault;
 import com.ksg.common.view.comp.PageInfo;
-import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.shippertable.service.TableService;
@@ -188,6 +185,7 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 		this.setName("ADVManageUI");
 		
 		tableService = new TableServiceImpl();
+		
 		advService = new ADVServiceImpl();
 		
 		manager.addObservers(this);
@@ -248,7 +246,12 @@ public class ADVManageUI extends JPanel implements ActionListener,KSGObserver
 		
 		initComp();
 		
+		
+		//검색 화면
+		
 		searchPanel = new SearchPanel(this);
+		
+		// 결과 봐면
 		
 		advListPanel = new ADVListPanel();
 		

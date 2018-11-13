@@ -14,7 +14,10 @@
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern"
+        
+         <!--<param name="ConversionPattern"
+                value="%5p-%m%n"/>-->
+             <param name="ConversionPattern"
                 value="%p - %C{1}.%M(%L) | %m%n"/>
         </layout>
     </appender>
@@ -82,12 +85,14 @@
    
 <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
     <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern"
-                value="%5p-%C{1}.%M(%L)-%m%n"/>
+           <!-- <param name="ConversionPattern"
+                value="%5p-%m%n"/>-->   
+              <param name="ConversionPattern"
+                value="%5p-%C{1}.%M(%L)-%m%n"/> 
         </layout>
     </appender>
     <root>
-        <level value="info">
+        <level value="debug">
         
         </level>
         	

@@ -13,141 +13,69 @@ package com.ksg.adv.logic.parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.ksg.adv.logic.model.SheetInfo;
 import com.ksg.adv.logic.model.TableLocation;
-import com.ksg.adv.service.ADVService;
 import com.ksg.adv.view.comp.ADVTableNotMatchException;
 import com.ksg.adv.view.comp.KeyWordManager;
-import com.ksg.adv.view.comp.XLSManager;
-import com.ksg.adv.view.comp.XLSTableInfo;
-import com.ksg.common.dao.DAOManager;
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ShippersTable;
-import com.ksg.shippertable.service.TableService;
 
 @SuppressWarnings("unchecked")
-public class XLSParserVessel implements XLSManager{
-	private String company;
-	public String data="";
-	private Vector datas = new Vector();
-	private boolean emptyCheck;
-	private Logger logger = Logger.getLogger(this.getClass());
-	//private int other=0;
-	private int page;
-	private List preData;
-	private KSGPropertis propertis = KSGPropertis.getIntance();
-	private ADVService service;
-	private Sheet sheet;
-	public String vesselKeyWord[];
-	public String bothKeyWord[];
-	public Vector<TableLocation> tableLocationList;
-	private TableService tableService;
-	private String xlsFile;
-	FormulaEvaluator evaluator;
-	String isUnderPort="";
-	boolean hasVoy=true;
-	//	private Boolean isDoubleKey;
-	//private String upDown;
-	KeyWordManager keyWordManager = KeyWordManager.getInstance();
-	BaseService baseService;
-	DAOManager manager;
-	public XLSParserVessel()
-	{	
+public class XLSReaderVessel extends XLSReader{
 
-		manager = DAOManager.getInstance();
-		baseService =manager.createBaseService();
-		service = manager.createADVService();
-		tableService = manager.createTableService();
+
+	private boolean emptyCheck;
+
+	private int page;
+
+	String isUnderPort="";
+
+	boolean hasVoy=true;
+
+	KeyWordManager keyWordManager = KeyWordManager.getInstance();
+
+
+
+	public XLSReaderVessel()
+	{	
+		super();
+
 		propertis.reLoad();
 		isUnderPort = (String)propertis.getValues(KSGPropertis.PROPERTIES_UNDERPORT).toString();
 		hasVoy = Boolean.parseBoolean(propertis.getValues(KSGPropertis.PROPERTIES_VOY).toString());
 		this.emptyCheck=Boolean.parseBoolean((String)propertis.getValues("emptyCheck"));
-
-
-
 		vesselKeyWord = keyWordManager.getVesselKeyWord();
+		
+		voyKeyWord = keyWordManager.getVoyageKeyWord();
+		
 		bothKeyWord = keyWordManager.getBothKeyWord();
-
-
 
 		String doubleKey=(String) propertis.getValues(KSGPropertis.PROPERTIES_DOUBLEKEY);
 
-
 	}
 
 
-	private Vector xlsTableInfoList;
-	public Vector extractData(Sheet sheet,Vector<TableLocation> tableLocation)
-			throws ADVTableNotMatchException 
-	{
-		logger.info("<===="+xlsFile+": data extract start ====>");
-		xlsTableInfoList = new Vector();
-		Vector datas2 = new Vector();		
-		long start= System.currentTimeMillis();
-		for(int i=0;i<tableLocation.size();i++)
-		{
-			// 기존 테이블 정보
-			ShippersTable tableInfo = (ShippersTable) preData.get(i);
-			// row의 위치 정보
-			TableLocation location =(TableLocation) tableLocation.get(i);// 테이블의 시작 위치
 
-			XLSTableInfo info = new XLSTableInfo(tableInfo, location);
-			info.setTableInfo(tableInfo);
-			info.setTable_id(tableInfo.getTable_id());
-			//			datas2.add(info.getTableStringInfo());
-			xlsTableInfoList.add(info);
-			//KSGModelManager.getInstance().processBar.setValues(i);
-		}
-		long end= System.currentTimeMillis();
-		logger.debug("search data time:"+(end-start));
 
-		return datas2;
 
-	}
 
-	public String getColumString(HSSFCell cell)
-	{
-		if(cell==null)
-			return "";
 
-		switch (cell.getCellType()) 
-		{
-		case HSSFCell.CELL_TYPE_STRING:
 
-			return cell.getRichStringCellValue().toString();
-		default:
-
-			break;
-		}
-		return "";
-	}
-
-	public String getData() {
-		return data;
-	}
-
-	public Vector getErrorList() {
-		return null;
-	}
-
+	/* (non-Javadoc)
+	 * @see com.ksg.adv.logic.parser.XLSReader#getSearchedTableCount()
+	 */
 	public int getSearchedTableCount() {
 
 		if(tableLocationList!=null)
@@ -160,11 +88,10 @@ public class XLSParserVessel implements XLSManager{
 	}
 
 
-	public Vector getXLSData() {
-		return datas;
-	}
 
-
+	/* (non-Javadoc)
+	 * @see com.ksg.adv.logic.parser.XLSReader#readFile(java.lang.String, com.ksg.domain.ShippersTable)
+	 */
 	public void readFile(String xlsFile,ShippersTable table)
 			throws FileNotFoundException, ADVTableNotMatchException{
 
@@ -234,9 +161,9 @@ public class XLSParserVessel implements XLSManager{
 			evaluator= wb.getCreationHelper().createFormulaEvaluator();
 		}
 
-
 		// 테이블 시작 위치 검색
 		tableLocationList=searchTable(sheetList);
+		
 		if(preData.size()<tableLocationList.size())
 		{
 			throw new ADVTableNotMatchException(preData.size(),tableLocationList.size());
@@ -260,29 +187,36 @@ public class XLSParserVessel implements XLSManager{
 			sheetList.add(wb.getSheet(info.sheetName));
 			evaluator= wb.getCreationHelper().createFormulaEvaluator();
 		}
-
-
 		// 테이블 시작 위치 검색
 		tableLocationList=searchTable(sheetList);
 		if(preData.size()<tableLocationList.size())
 		{
 			throw new ADVTableNotMatchException(preData.size(),tableLocationList.size());
 		}
+
 		datas=extractData(sheet,tableLocationList);
 
 		return tableLocationList;
 	}
 
 
+	/* (non-Javadoc)
+	 * @see com.ksg.adv.logic.parser.XLSReader#readFile(java.util.Vector, java.util.Vector, java.lang.String, com.ksg.domain.ShippersTable)
+	 */
 	public Vector<TableLocation> readFile(Vector pageList, Vector sheetNameList, String xlsFile,
 			ShippersTable table) throws FileNotFoundException,
 	ADVTableNotMatchException, IOException {
 		// 파일을 불러옴
 		logger.info("read XLS file=>"+xlsFile+",company=>"+table.getCompany_abbr()+" start");
+
 		tableLocationList = new Vector();
+
 		this.company=table.getCompany_abbr();
+
 		this.xlsFile=xlsFile;
+
 		POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(xlsFile));
+
 		Workbook wb = (Workbook) new HSSFWorkbook(fs);
 
 		evaluator= wb.getCreationHelper().createFormulaEvaluator();
@@ -298,85 +232,83 @@ public class XLSParserVessel implements XLSManager{
 		{
 			throw new ADVTableNotMatchException(preData.size(),tableLocationList.size());
 		}
+
 		datas=extractData(sheet,tableLocationList);
+
 		JOptionPane.showMessageDialog(null, datas);
+
 		return tableLocationList;
 
 	}
 
 	/**
+	 * 쉬트를 전체 검색하여 테이블 키워드 검색
+	 * 키워드
+	 *   1. vessel
+	 *   2. voy
+	 *   3. vessel/voy
 	 * @param sheet
 	 * @return
 	 */
 	private Vector<TableLocation> searchTable(Sheet sheet) {
-		logger.info("<===search table (0 TO "+sheet.getLastRowNum()+")start===>");
+		logger.info("\n<===search table (0 TO "+sheet.getLastRowNum()+")start===>");
+
 		Vector<TableLocation> tableLocationList = new Vector<TableLocation>();
+
 		long starttime=System.currentTimeMillis();
-		for(int i=0;i<sheet.getLastRowNum();i++)
+
+		for(int rowIndex=0;rowIndex<sheet.getLastRowNum();rowIndex++)
 		{
-			HSSFRow row =(HSSFRow) sheet.getRow(i);
+			HSSFRow row =(HSSFRow) sheet.getRow(rowIndex);
 
-			if(row!=null&&!row.getZeroHeight())
+			if(row==null)
+				continue;
+
+			if(row.getZeroHeight())
+				continue;
+
+
+			for(int colIndex=0;colIndex<row.getLastCellNum();colIndex++)
 			{
-				for(int j=0;j<row.getLastCellNum();j++)
+				HSSFCell cell =row.getCell((short) colIndex);
+
+				if(sheet.isColumnHidden(colIndex))
+					continue;
+
+				String cellContent=this.getColumString(cell);
+				
+				if(cellContent.length()==0)
+					continue;
+
+
+				// 키워드(Vessel )이 발견 되는지 확인 함
+				int keywordType=checkKeyword(cellContent);
+				
+				
+				if(keywordType!=TableLocation.NONE)
 				{
-					HSSFCell cell =row.getCell((short) j);
+					TableLocation location = new TableLocation(sheet);// 위치정보를 저장할 클래스 생성
 
-					if(sheet.isColumnHidden(j))
-						continue;
-
-					String temp=this.getColumString(cell);
-					if(temp.length()==0)
-						continue;
-
-					boolean vesselflag = false;
-					boolean bothflag = false;
-
-					// 키워드(Vessel )이 발견 되는지 확인 함
-					for(int z=0;z<vesselKeyWord.length;z++)
-					{
-						if(temp.trim().toLowerCase().equals(vesselKeyWord[z].trim().toLowerCase()))
-							vesselflag=true;
-					}
-					//					if(sheet.isColumnHidden(arg0))
-
-					if(vesselflag)// 키워드가 발견되면
-					{
-						logger.info("table key(vessel) found at row:"+i+", col:"+j+",row h:"+row.getZeroHeight());
-						TableLocation location = new TableLocation(sheet);// 위치정보를 저장할 클래스 생성
-						
-						location.setRow(i);
-						location.setCol(j);
-
+					location.setRow(rowIndex);
+					location.setCol(colIndex);
+					location.setKeyWordCell(cell);
+					tableLocationList.add(location);
+					
+					switch (keywordType) {
+					case TableLocation.VESSEL:
 						location.setTableType(TableLocation.VESSEL);
-						location.setKeyWordCell(cell);
-						tableLocationList.add(location);
-					}
-
-					// 키워드(VESSEL&VOY )이 발견 되는지 확인 함
-					for(int z=0;z<bothKeyWord.length;z++)
-					{
-						if(temp.trim().equals(bothKeyWord[z].trim()))
-
-							bothflag=true;
-					}
-
-					if(bothflag)// 키워드가 발견되면
-					{
-						logger.info("table key(both) found at row:"+i+", col:"+j);
-
-
-						
-						TableLocation location = new TableLocation(sheet);// 위치정보를 저장할 클래스 생성
-						location.setRow(i);
-						location.setCol(j);
-						
+						break;
+					case TableLocation.VOYAGE:
+						location.setTableType(TableLocation.VOYAGE);
+						break;	
+					case TableLocation.BOTH:
 						location.setTableType(TableLocation.BOTH);
-						location.setKeyWordCell(cell);
+						break;	
 
-						tableLocationList.add(location);
+					default:
+						break;
 					}
-				}
+				}				
 			}
 		}
 		long endtime= System.currentTimeMillis();
@@ -397,7 +329,7 @@ public class XLSParserVessel implements XLSManager{
 					TableLocation t2=tableLocationList.get(jj);
 					if(t1.getCol()==t2.getCol()&&t1.getRow()==t2.getRow())
 						continue;
-					
+
 					if(t1.getCol()==t2.getCol()&&Math.abs(t1.getRow()-t2.getRow())<3)
 					{
 
@@ -437,6 +369,30 @@ public class XLSParserVessel implements XLSManager{
 		logger.debug("init time:"+(endtime2-starttime2));
 		logger.info("<====Searched Table Count :"+tableLocationList.size()+" ====>");
 		return tableLocationList;
+	}
+
+
+
+
+	private int checkKeyword(String temp) {
+		int keywordType=TableLocation.NONE;
+		for(int z=0;z<vesselKeyWord.length;z++)
+		{
+			if(temp.trim().toLowerCase().equals(vesselKeyWord[z].trim().toLowerCase()))
+				return TableLocation.VESSEL;
+		}
+/*		for(int z=0;z<voyKeyWord.length;z++)
+		{
+			if(temp.trim().toLowerCase().equals(voyKeyWord[z].trim().toLowerCase()))
+				return TableLocation.VOYAGE;
+		}*/
+		for(int z=0;z<bothKeyWord.length;z++)
+		{
+			if(temp.trim().toLowerCase().equals(bothKeyWord[z].trim().toLowerCase()))
+				return TableLocation.BOTH;
+		}
+		
+		return keywordType;
 	}
 
 

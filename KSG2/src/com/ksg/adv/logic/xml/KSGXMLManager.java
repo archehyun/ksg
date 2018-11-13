@@ -23,25 +23,31 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import com.ksg.common.dao.DAOManager;
-import com.ksg.common.view.comp.ColorData;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.shippertable.service.TableService;
 
 public class KSGXMLManager {
-	
+
 	private TableService tableService;
+
 	Logger logger = Logger.getLogger(this.getClass());
+
 	private List<TablePort> portLi;
+
 	public KSGXMLManager()
 	{
-	tableService = DAOManager.getInstance().createTableService();	
+		tableService = DAOManager.getInstance().createTableService();	
 	}
+	/**
+	 * @param tableInfoList
+	 * @throws SQLException
+	 */
 	public void readFile(Vector tableInfoList) throws SQLException
 	{	
 		logger.debug("start");
-		
+
 		List li = new LinkedList();
 
 		for(int i=0;i<tableInfoList.size();i++)
@@ -61,6 +67,12 @@ public class KSGXMLManager {
 		}
 		logger.debug("end");
 	}
+	/**
+	 * @param data
+	 * @return
+	 * @throws JDOMException
+	 * @throws IOException
+	 */
 	public DefaultTableModel createXLSTableModel(String data) throws JDOMException, IOException
 	{
 		logger.debug("");
@@ -71,7 +83,7 @@ public class KSGXMLManager {
 		Element port_array = root.getChild("port_array");
 
 		List port_list = port_array.getChildren("port1");
-		
+
 		defaultTableModel.addColumn("VESSEL");
 		defaultTableModel.addColumn("VOYAGE");
 
@@ -101,12 +113,21 @@ public class KSGXMLManager {
 				Element input_date=(Element) li.get(j);							
 				rowData.add(input_date.getAttributeValue("date"));
 			}
-			
+
 			defaultTableModel.addRow(rowData);
 		}
-		
+
 		return defaultTableModel;
 	}
+	/**
+	 * @param defaultTableModel
+	 * @param data
+	 * @return
+	 * @throws JDOMException
+	 * @throws IOException
+	 * @throws SQLException
+	 * @throws NullPointerException
+	 */
 	public DefaultTableModel createDBTableModel(DefaultTableModel defaultTableModel,ADVData data) throws JDOMException, IOException, SQLException,NullPointerException
 	{
 		logger.debug("start");
@@ -114,7 +135,7 @@ public class KSGXMLManager {
 		Document document = builder.build(new ByteArrayInputStream(data.getData().getBytes()));
 		Element root = document.getRootElement();
 		List vessel_list=root.getChildren("vessel");
-		
+
 		String table_id=data.getTable_id();
 		ShippersTable shippersTable=tableService.getTableById(table_id);
 		if(defaultTableModel==null)
@@ -132,7 +153,7 @@ public class KSGXMLManager {
 				rowData.add( vessel_info.getAttributeValue("ts_name"));
 				rowData.add( vessel_info.getAttributeValue("ts_voyage"));
 			}
-			
+
 
 			List li=vessel_info.getChildren("input_date");
 
@@ -140,21 +161,30 @@ public class KSGXMLManager {
 			{
 				Element input_date=(Element) li.get(j);
 				try{
-				
-				rowData.add(input_date.getAttributeValue("date").trim());
+
+					rowData.add(input_date.getAttributeValue("date").trim());
 				}catch(Exception e)
 				{
 					throw new RuntimeException();
 				}
 			}
-			
+
 			defaultTableModel.addRow(rowData);
 		}
 		logger.debug("end");
-	
-		
+
+
 		return defaultTableModel;
 	}
+	/**
+	 * @param defaultTableModel
+	 * @param data
+	 * @return
+	 * @throws JDOMException
+	 * @throws IOException
+	 * @throws SQLException
+	 * @throws NullPointerException
+	 */
 	public DefaultTableModel createDBVesselNameModel(DefaultTableModel defaultTableModel,ADVData data) throws JDOMException, IOException, SQLException,NullPointerException
 	{
 		logger.debug("start");
@@ -162,7 +192,7 @@ public class KSGXMLManager {
 		Document document = builder.build(new ByteArrayInputStream(data.getData().getBytes()));
 		Element root = document.getRootElement();
 		List vessel_list=root.getChildren("vessel");
-		
+
 		String table_id=data.getTable_id();
 		ShippersTable shippersTable=tableService.getTableById(table_id);
 		if(defaultTableModel==null)
@@ -175,24 +205,24 @@ public class KSGXMLManager {
 			Vector rowData = new Vector();
 			rowData.add( f_vessel_name);
 			rowData.add(vessel_name);
-			
-			
-			
+
+
+
 			defaultTableModel.addRow(rowData);
 		}
 		logger.debug("end");
-	
-		
+
+
 		return defaultTableModel;
 	}
-	
+
 	public class VesselRenderer extends DefaultTableCellRenderer {
 		/**
 		 * 
 		 */
 		private boolean is=true;
 		private static final long serialVersionUID = 1L;
-		
+
 		public boolean isCellEditable(int row, int column)
 		{
 			return (column ==0);
@@ -214,19 +244,19 @@ public class KSGXMLManager {
 					table, value, isSelected, hasFocus, row, column);
 			((JLabel) renderer).setOpaque(true);
 			Color foreground, background;
-			
-			 if (table != null) {
-			      JTableHeader header = table.getTableHeader();
-			      if (header != null) {
-			        setForeground(Color.BLUE);
-			        setBackground(header.getBackground());
-			        setFont(header.getFont());
-			        
-			      }
-			    }
 
-			
-			
+			if (table != null) {
+				JTableHeader header = table.getTableHeader();
+				if (header != null) {
+					setForeground(Color.BLUE);
+					setBackground(header.getBackground());
+					setFont(header.getFont());
+
+				}
+			}
+
+
+
 			if(isSelected)
 			{
 				foreground = Color.black;
@@ -245,35 +275,15 @@ public class KSGXMLManager {
 					foreground = Color.black;
 				}
 			}
-			
-			
-			/*if(value instanceof ColorData)
-			{
-				ColorData v = (ColorData) value;
-				renderer.setForeground(v.m_color);
-				
-			}else if(value instanceof Element)
-			{	
-				renderer.setForeground(foreground);
-				Element v = (Element) value;
-
-					((JLabel) renderer).setText(v.getAttributeValue("date"));
-				((JLabel) renderer).setToolTipText(v.getAttributeValue("date2"));
-				
-					
-			}else
-			{
-				renderer.setForeground(foreground);
-			}*/
 			renderer.setBackground(background);
-		
 
-			
+
+
 
 			return renderer;
 		}
-		
-		
+
+
 	}
 
 }

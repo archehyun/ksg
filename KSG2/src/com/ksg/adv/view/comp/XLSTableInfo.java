@@ -47,7 +47,7 @@ public class XLSTableInfo extends TableLocation{
 	
 	private Element portarray;
 
-	private XLSSearchPortInfoUtil portInfoManager;
+	private XLSPortManager portInfoManager;
 
 	private KSGPropertis propertis = KSGPropertis.getIntance();
 	
@@ -77,7 +77,7 @@ public class XLSTableInfo extends TableLocation{
 		
 		this.setTable_id(tableInfo.getTable_id());
 		
-		this.portInfoManager = new XLSSearchPortInfoUtil(tableInfo.getTable_id());
+		this.portInfoManager = new XLSPortManager(tableInfo.getTable_id());
 		
 		this.xlsUitl = new XLSStringUtil();
 		
@@ -115,29 +115,44 @@ public class XLSTableInfo extends TableLocation{
 	 */
 	public String getTableXMLInfo()
 	{
-		initProperty();
-
 		logger.debug("<create xml start>");
+		
+		initProperty();
+		
 		int portCount=tableInfo.getPort_col()+tableInfo.getOthercell();
+		
 		int vesselCount = tableInfo.getVsl_row()+1;
 		// 선박 cell 검색
 		Vector<TableLocation> rowList = searchRow(xlsLocation.getSheet(), xlsLocation, vesselCount);
+		
 		logger.debug("vesselCount:"+vesselCount+",searched row count:"+rowList.size());
+		
+		
+		
 
 		// 항구 cell 검색
 
 		logger.debug("portCount:"+portCount+",searched cell count:"+rowList.size());
 		int rows=0;
+		
+		
 
 		// 포트 정보 수집
 
 		Vector<TableLocation> cellList = portInfoManager.searchPortCellInfo(xlsLocation, portCount);
+		
 		logger.debug("row:"+portInfoManager.rows);
+		
 		rows = portInfoManager.rows;
+		
 		rootElement = new Element("input");
+		
 		rootElement.setAttribute("type","xls");
+		
 		Element tableInfos = new Element("table");
+		
 		tableInfos.setAttribute("id",tableInfo.getTitle());
+		
 		rootElement.addContent(tableInfos);
 
 		portarray = portInfoManager.getXMLPortInfo(xlsLocation, portCount);
@@ -145,7 +160,6 @@ public class XLSTableInfo extends TableLocation{
 
 		//  다중 항구 구분
 		adjestMultiPort(portarray.getChildren());
-
 
 		rootElement.addContent(portarray);
 
@@ -231,6 +245,7 @@ public class XLSTableInfo extends TableLocation{
 			}
 			logger.debug("row create end:"+rows);
 		}
+		
 		Document document = new Document(rootElement);
 		Format format = Format.getPrettyFormat();
 
@@ -521,9 +536,16 @@ public class XLSTableInfo extends TableLocation{
 		return rootElement;
 	}
 
+	/**
+	 * @return
+	 */
 	public Object getXLSTitle() {
 		return xlsUitl.getStringData(xlsLocation.getTitleCell(), false);
 	}
+	/**
+	 * @param i
+	 * @return
+	 */
 	public Object getXLSTitle(int i) {
 		return xlsUitl.getStringData(xlsLocation.getTitleCell(i), false);
 	}
@@ -582,21 +604,21 @@ public class XLSTableInfo extends TableLocation{
 		Vector<TableLocation> data  = new Vector<TableLocation>();
 		int rowTempIndex=location.getRow();
 		int vCount=0;
-		int emptyCount=0;
 		while(vCount!=vesselCount)
 		{
 			if(rowTempIndex>sheet.getLastRowNum())
 				break;
-			/*if(emptyCount>2)
-				break;*/
+
 			HSSFRow ro= (HSSFRow) sheet.getRow(rowTempIndex);
+			
 			if(ro!=null&&!ro.getZeroHeight())
 			{
 				HSSFCell firstcell=ro.getCell(location.getCol());
 
 				if(firstcell==null||firstcell.getCellType()==HSSFCell.CELL_TYPE_BLANK)
 				{	
-				}else
+				}
+				else
 				{
 					// 공백이 아니면 리스트에 추가
 					TableLocation cc = new TableLocation();

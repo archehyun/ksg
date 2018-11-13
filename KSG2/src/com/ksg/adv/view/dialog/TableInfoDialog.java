@@ -209,6 +209,8 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		JLabel label = new JLabel("구분자");
 		label.setPreferredSize(new Dimension(100, 20));
 		pnDivider.add(label);
+		
+		label.setVisible(false);
 		pnDivider.add(cbxDivider);
 		pnDivider.add(lblCount);
 		pnDivider.add(cbxCount);
@@ -226,9 +228,12 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		pnTableOption.add(pnDivider);
 
 		JLabel label3 = new JLabel("항구 구분");
+		
+		label3.setVisible(false);
 		pnTableOption.add(label3);
 
 		JPanel pnPortOption = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnPortOption.setVisible(false);
 		bg = new ButtonGroup();
 		Vector butList = new Vector();
 		rbGroups = new JRadioButton[port_type.length];

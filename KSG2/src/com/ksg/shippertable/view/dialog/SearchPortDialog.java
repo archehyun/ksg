@@ -28,6 +28,10 @@ import com.ksg.domain.Code;
 public class SearchPortDialog extends KSGDialog{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String result;
 	private List<String> portli;
 	private JTable tblNomal,tblExternal,tblCurrent;
@@ -47,9 +51,7 @@ public class SearchPortDialog extends KSGDialog{
 			e.printStackTrace();
 		}
 	}
-	/*public SearchPortDialog(List<String> li, String val) {
-		this(li);
-	}*/
+
 	public void createAndUpdateUI()
 	{
 		this.setTitle("항구 선택");

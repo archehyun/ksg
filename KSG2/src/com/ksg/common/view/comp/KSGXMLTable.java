@@ -17,13 +17,18 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import com.ksg.adv.view.comp.XLSTableInfo;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.view.KSGViewParameter;
 
 public class KSGXMLTable extends KSGTable
 {
-	private XLSTableInfo tableInfo;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
+	//private XLSTableInfo tableInfo;
 	
 	
 	private Element rootE;
@@ -37,7 +42,7 @@ public class KSGXMLTable extends KSGTable
 
 	public KSGXMLTable() {
 		super();
-		this.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
+		this.setRowHeight(20);
 		this.setCellSelectionEnabled(false);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	}

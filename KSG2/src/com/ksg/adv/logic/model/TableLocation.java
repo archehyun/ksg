@@ -21,6 +21,8 @@ public class TableLocation extends ShippersTable{
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
+	public static final int NONE=0;
+	
 	public static final int VESSEL=1;
 	
 	public static final int VOYAGE=2;

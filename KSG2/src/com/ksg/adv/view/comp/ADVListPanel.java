@@ -42,12 +42,8 @@ import com.ksg.adv.service.ADVService;
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.adv.view.dialog.AddAdvDialog;
 import com.ksg.adv.view.dialog.AdjestADVListDialog;
-import com.ksg.adv.view.dialog.ProcessDialog;
-import com.ksg.commands.InsertADVCommand;
-import com.ksg.commands.KSGCommand;
 import com.ksg.commands.xls.ImportXLSFileCommand;
 import com.ksg.commands.xls.ImportXLSFileCommandByXML;
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.view.comp.PageInfo;
@@ -58,6 +54,12 @@ import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.TableServiceImpl;
 import com.ksg.view.KSGMainFrame;
 
+/**
+ * 
+ * 광고 정보 표시 화면
+ * @author 박창현
+ *
+ */
 public class ADVListPanel extends JPanel implements ActionListener, MouseWheelListener{
 	
 	private static final int UNIT_INCREMENT = 15;
@@ -159,7 +161,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		pnNorthLeft.add(lblTableCountlbl);
 		
 		pnNorthLeft.add(lblSearchedTableCount);
-
+		
 		pnNorthRight.add(butAdjust);
 
 		pnNorthRight.add(butReLoad);
@@ -237,10 +239,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			if(selectedInput.equals("File"))
 			{
 				this.searchPanel.searchXLS();
-			}else
-			{
-				//importADVTextInfoAction();
-			}	
+			}
 		}
 		else if(command.equals("위치조정"))
 		{
@@ -258,9 +257,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		}
 		else if(command.equals(ACTION_COMMAND_CANCEL))
 		{
-			//initInfo();
-			//_txfCompany.setText("");
-			//_txfPage.setText("");
+
 			DefaultListModel model = new DefaultListModel();
 			fileLi.setModel(model);
 			searchPanel.getPageLi().setModel(model);
@@ -366,8 +363,6 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			
 			manager.workProcessText="XLS 정보를 가져오는 중...";			
 			
-			//dialog.createAndUpdateUI();
-			
 			manager.execute(KSGMainFrame.NAME);
 
 			this.selectedCompany = company;
@@ -376,7 +371,6 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			
 			if(result==1)
 			{
-				//dialog.setMAX(manager.tableCount);
 				
 				for(int i=0;i<manager.tableCount;i++)
 				{
@@ -391,7 +385,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 					table.addMouseListener(myMouseListener);
 					
 					manager.addObservers(table);
-					
+						
 					importTableList.add(table);
 					
 					//dialog.setValues(i);

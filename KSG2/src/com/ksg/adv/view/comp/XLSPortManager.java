@@ -20,7 +20,7 @@ import com.ksg.domain.Table_Property;
  * @author archehyun
  *
  */
-public class XLSSearchPortInfoUtil {
+public class XLSPortManager {
 
 	public String bothKeyWord[];
 	
@@ -55,7 +55,7 @@ public class XLSSearchPortInfoUtil {
 	/**
 	 * @param table_id
 	 */
-	public XLSSearchPortInfoUtil(String table_id) 
+	public XLSPortManager(String table_id) 
 	{
 		
 		logger.debug("start");
@@ -126,7 +126,6 @@ public class XLSSearchPortInfoUtil {
 	 */
 	private String getPortName(HSSFCell cell, boolean b, int portRange) throws NullPointerException
 	{
-		//if()
 		if(cell==null)
 			return "";
 
@@ -137,7 +136,6 @@ public class XLSSearchPortInfoUtil {
 
 		if(isUnderPort)
 		{
-//			return XLSStringUtil.getStringData(cell.getSheet().getRow(row).getCell(col),b).trim();
 			return xlsUitl.getPortName(cell.getSheet().getRow(row).getCell(col),b).trim();
 		}else
 		{
@@ -404,11 +402,12 @@ public class XLSSearchPortInfoUtil {
 			TableLocation location, int portCount, int i) {
 
 		this.initProperty();
+		
 		int pCount=0;
+		
 		int cellTempIndex = location.getCol();// 첫번째
-		HSSFRow ro=null;
-
-		ro= (HSSFRow) sheet.getRow(location.getRow()+i);
+		
+		HSSFRow ro= (HSSFRow) sheet.getRow(location.getRow()+i);
 
 		Vector<TableLocation> data = new Vector<TableLocation>();
 		logger.debug("<port loacation"+location+",portCount:"+portCount+", search start>");
@@ -459,6 +458,9 @@ public class XLSSearchPortInfoUtil {
 		return data;
 	}
 
+	/**
+	 * @param data
+	 */
 	private void checkVoy(Vector<TableLocation> data) {
 		if(hasVoy)
 		{
@@ -597,8 +599,10 @@ public class XLSSearchPortInfoUtil {
 			}
 			cellTempIndex++;
 		}
+		
 		// voyage 생략되어 있을시에
 		checkVoy(data);
+		
 		logger.debug("end:"+data);
 		return data;
 	}
@@ -622,6 +626,11 @@ public class XLSSearchPortInfoUtil {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * @param location
+	 * @param portCount
+	 * @return
+	 */
 	public Vector<TableLocation> searchPortCellInfo(TableLocation location,int portCount)
 	{
 		this.initProperty();
@@ -786,7 +795,7 @@ public class XLSSearchPortInfoUtil {
 
 	/**
 	 * 
-	 * 항구 범위 검색
+	 * 엑셀 파일 테이블 상 항구 범위 검색
 	 * @date 2010.8.19
 	 * @param sheet
 	 * @param location
@@ -801,6 +810,7 @@ public class XLSSearchPortInfoUtil {
 
 		for(portLoaction=1;isPortRange;portLoaction++)
 		{
+			// 5로 설정한 이유는
 			if(portLoaction>5)
 			{
 				portLoaction=2;
@@ -838,14 +848,6 @@ public class XLSSearchPortInfoUtil {
 		logger.debug("end:"+portLoaction);
 		return portLoaction;
 	}
-
-	/**
-	 * @param sheet
-	 * @param location
-	 * @param portCount
-	 * @param i
-	 * @return
-	 */
 
 
 }
