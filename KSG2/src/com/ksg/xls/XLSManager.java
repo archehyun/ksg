@@ -8,6 +8,10 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
+
+/*
+*분석
+*/
 package com.ksg.xls;
 
 import java.io.FileNotFoundException;
