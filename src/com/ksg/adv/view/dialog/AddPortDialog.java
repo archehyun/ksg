@@ -28,8 +28,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.log4j.Logger;
-
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.comp.KSGDialog;
@@ -37,21 +35,36 @@ import com.ksg.common.view.dialog.PortSearchDialog;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
 
-/**항구정보 추가
- * @author archehyun
+/**
+ * ========================================
+ * 항구정보 추가
+ * @작성일자 2021-02-24
+ * @version 1.0
+ * @author 박창현
+ * =========================================
  *
  */
+@SuppressWarnings("serial")
 public class AddPortDialog extends KSGDialog {
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	String port_name;
+	
 	private Vector portList;
+	
 	String table_id;
+	
 	private DefaultTableModel portModel;
+	
 	private JTextField txfPortName;
+	
 	private JLabel lblTableID;
+	
 	private JComboBox cbxPort;
+	
 	private JTable tblPortList;
+	
 	private JLabel lblInfo;
+	
 	public AddPortDialog(String table_id,String portName,Vector portList) {
 		this.port_name=portName;
 		this.portList=portList;
