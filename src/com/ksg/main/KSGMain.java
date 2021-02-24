@@ -11,11 +11,14 @@
 package com.ksg.main;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.ServerSocket;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -30,6 +33,19 @@ public class KSGMain
 
 	public KSGMain() 
 	{
+		
+		process(8000);
+		
+	}
+
+
+	private ServerSocket serverSocket;
+
+	KSGMainFrame frame;
+
+
+
+	public void start() {
 		try{
 			logger.info("PROGRAM START");
 			logger.info("DB Connected..");
@@ -78,14 +94,32 @@ public class KSGMain
 		}
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) 
-	{
-		KSGMain main= new KSGMain();
-
+	public static void main(String[] args) {
+		new KSGMain().start();
 
 	}
+
+	public void process(int port) {
+		try {
+			serverSocket = new ServerSocket(port);
+			} catch (IOException e)
+		{
+			//port가 이미 점유되어 있는 경우 Exception 발생 }
+			close();
+			JOptionPane.showMessageDialog(null, "동일 프로그램이 실행중입니다.");
+			System.exit(1);
+
+		}
+	}
+
+	public void close() {
+		try {
+			if (serverSocket != null && !serverSocket.isClosed()) {
+				serverSocket.close();
+			}
+		} catch (IOException e) {
+		}
+	}
+	
 
 }

@@ -109,6 +109,8 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 		baseService  = new BaseServiceImpl();
 
 		dtg = new DropTarget(this, this);
+		
+		this.setRowHeight(25);
 
 		setName(TablePort.TYPE_PARENT);
 
