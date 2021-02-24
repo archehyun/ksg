@@ -48,4 +48,11 @@
 	<sqlMap resource="com/ksg/common/dao/maps/Schedule.xml" />
 	<sqlMap resource="com/ksg/common/dao/maps/TABLEProperty.xml" />
 	
+	
+	<!-- new mapper -->
+	
+	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_base_area.xml" />
+	
+	
+	
 </sqlMapConfig>

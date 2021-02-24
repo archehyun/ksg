@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -32,19 +33,32 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import com.ksg.base.dao.AreaDAO;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertAreaInfodialog;
 import com.ksg.base.view.dialog.UpdateAreaInfodialog;
+import com.ksg.common.comp.KSGTable;
+import com.ksg.common.comp.KSGTableColumn;
 import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.common.view.comp.KSGTableCellRenderer;
 import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.AreaInfo;
 
 
-/**지역 정보관리 화면
- * @author 박창현
- *
- */
+
+/**
+
+  * @FileName : PnArea.java
+
+  * @Date : 2021. 2. 25. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 지역 정보관리 화면
+
+  */
 public class PnArea extends PnBase implements ActionListener{
 
 	/**
@@ -57,24 +71,55 @@ public class PnArea extends PnBase implements ActionListener{
 	private JTextField txfSearch;
 
 	private JLabel lblTable,lblTotal;
+	
+	KSGTable tableH;
 
 	private String columName[] = {"코드","지역명","지역코드"};
+	
+	AreaDAO areaDAO = new AreaDAO();
 
 
 	public PnArea(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);		
-		this.add(buildCenter());
-		this.initTable();
-		searchData(null);
+		this.add(buildCenter());		
+		searchData();		
 	}
 
 	private JPanel buildCenter()
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
+		
+		
 		JScrollPane jScrollPane =createTablePanel();
 		tblTable.addMouseListener(new TableSelectListner());
+		
+		tableH = new KSGTable();
+		
+		pnMain.add(new JScrollPane(tableH));
+		
+		//pnMain.add(jScrollPane);
+		
+		KSGTableColumn columns[] = new KSGTableColumn[3];
 
-		pnMain.add(jScrollPane);
+		columns[0] = new KSGTableColumn();
+		columns[0].columnField = "area_code";
+		columns[0].columnName = "지역코드";
+		columns[0].size = 75;
+
+		columns[1] = new KSGTableColumn();
+		columns[1].columnField = "area_name";
+		columns[1].columnName = "지역명";
+		columns[1].size = 300;
+
+		columns[2] = new KSGTableColumn();
+		columns[2].columnField = "area_book_code";
+		columns[2].columnName = "북코드";
+		columns[2].size = 75;
+
+		tableH.setColumnName(columns);
+		tableH.init();
+		tableH.getParent().setBackground(Color.white);
+		
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 		pnMain.add(buildButton(),BorderLayout.SOUTH);
 		
@@ -161,7 +206,7 @@ public class PnArea extends PnBase implements ActionListener{
 		}
 		else if(command.equals("삭제"))
 		{
-			int row=tblTable.getSelectedRow();
+			/*int row=tblTable.getSelectedRow();
 			if(row<0)
 				return;
 
@@ -179,6 +224,28 @@ public class PnArea extends PnBase implements ActionListener{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+			}*/
+			
+			int row =tableH.getSelectedRow();
+			if(row<0)
+				return;
+			String data = (String) tableH.getValueAt(row, 1);
+			int result=JOptionPane.showConfirmDialog(null, data+"를 삭제 하시겠습니까?", "지역 정보 삭제", JOptionPane.YES_NO_OPTION);
+			if(result==JOptionPane.OK_OPTION)
+			{						
+				try {
+					HashMap<String, Object> param = new HashMap<String, Object>();
+					
+					param.put("area_name", data);
+					int count=areaDAO.deleteArea(param);
+					if(count>0)
+					{
+						searchData();
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 
 
@@ -189,7 +256,7 @@ public class PnArea extends PnBase implements ActionListener{
 			dialog.createAndUpdateUI();
 			if(dialog.result==KSGDialog.SUCCESS)
 			{
-				searchData(null);
+				searchData();
 			}
 		}
 
@@ -197,6 +264,18 @@ public class PnArea extends PnBase implements ActionListener{
 	public void updateTable(String query)
 	{
 		searchData(query);
+	}
+	
+	private void searchData()
+	{
+		try {
+			List li = areaDAO.selectAreaList(null);
+			tableH.setResultData(li);
+
+		} catch (SQLException ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
+		}	
 	}
 
 	private void searchData(String query) {
@@ -256,7 +335,7 @@ public class PnArea extends PnBase implements ActionListener{
 	@Override
 	public void updateTable() {
 		
-		this.searchData(null);
+		searchData();
 		
 	}
 	class MyTableModelListener implements TableModelListener {
