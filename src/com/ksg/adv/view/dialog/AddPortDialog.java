@@ -65,6 +65,11 @@ public class AddPortDialog extends KSGDialog {
 	
 	private JLabel lblInfo;
 	
+	/**
+	 * @param table_id
+	 * @param portName
+	 * @param portList
+	 */
 	public AddPortDialog(String table_id,String portName,Vector portList) {
 		this.port_name=portName;
 		this.portList=portList;
