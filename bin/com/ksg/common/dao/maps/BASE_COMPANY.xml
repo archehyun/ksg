@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BASE_COMPANY">
+
+	
+	
+<!-- *** COMPANY *** -->
+
+	<select id="selectCompanyInfo" parameterClass="string" resultClass="com.ksg.domain.Company">
+		select * from TB_COMPANY where company_abbr=#company_abbr#
+	</select>
+	
+	<sql id="selectSQL">select * from TB_COMPANY</sql>
+	
+	<select id="selectCompanyList" resultClass="com.ksg.domain.Company">		
+		<include refid="selectSQL"/>
+	</select>
+
+	
+	<insert id="insertCompany" parameterClass="com.ksg.domain.Company">
+		insert into TB_COMPANY(company_name,agent_name,company_abbr, agent_abbr,contents)
+		values(#company_name#,#agent_name#,#company_abbr#, #agent_abbr#,#contents#);
+	</insert>
+	
+	<update id="updateCompany" parameterClass="com.ksg.domain.Company">
+		update TB_COMPANY set agent_name=#agent_name#,company_abbr=#company_abbr#,agent_abbr=#agent_abbr#,company_name=#company_name#,contents=#contents#
+		where (company_abbr=#base_company_abbr#)
+	</update>
+	<delete id="deleteCompany" parameterClass="string">
+		delete from TB_COMPANY where company_abbr=#company_abbr#
+	</delete>
+	<select id="selectArrangedCompanyList" resultClass="com.ksg.domain.Company">
+	select * from TB_COMPANY
+	<isNotEmpty prepend="order by">	
+	$orderBy$
+	</isNotEmpty>
+	</select>
+	<select id="selectSearchedCompanyList" resultClass="com.ksg.domain.Company">
+		<include refid="selectSQL"/>
+		<isNotEmpty prepend="where">
+		$searchKeyword$
+		</isNotEmpty>
+	</select>
+	<select id="selectSearchedCompanyListOrderby" resultClass="com.ksg.domain.Company" parameterClass="com.ksg.domain.Company">
+		<include refid="selectSQL"/>
+				
+		<isNotEmpty prepend="where" property="searchKeyword">
+		$searchKeyword$
+		</isNotEmpty>
+		<isNotNull prepend=" order by " property="orderby">
+		$orderby$
+		</isNotNull>
+		
+	</select>	
+	<select id="selectCompanyCount" resultClass="int">
+	select count(*) from TB_COMPANY	
+	</select>
+	
+				
+</sqlMap>

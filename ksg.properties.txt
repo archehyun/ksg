@@ -1,0 +1,19 @@
+#no commments
+#Sun Aug 09 21:08:51 KST 2020
+saveLocation=C\:\\Users\\\uBC15\uCC3D\uD604\\Documents\\schedule
+selectedkeyword=both
+xlskey.both=VESSEL & VOY,VSL/VOY,VESSEL / VOYAGE,VESSEL  VOY   /   PORT,
+xlskey.voyage=voy,VOY,
+hasVoy=false
+vesselvoydivider=/
+dataLocation=C\:\\Users\\\uBC15\uCC3D\uD604\\Desktop
+emptyCheck=false
+vesselvoycount=0
+errorDividerLoction=300
+<<<<<<<=ksg.properties.txt
+underPort=\uC801\uC6A9\uC548\uD568
+title=KSG Application
+selected_incode=US-ASCII
+INCODE_LIST=ASCII,US-ASCII,EUC-KR,UTF-8
+doubleKey=false|Up
+xlskey.vessel=Vessel,VESSEL,Vessel Name,VESSEL NAME,VESSEL  NAME,VSL NAME,VSL,
