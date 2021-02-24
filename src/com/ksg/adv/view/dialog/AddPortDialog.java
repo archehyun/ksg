@@ -57,7 +57,7 @@ public class AddPortDialog extends KSGDialog {
 	
 	private JTextField txfPortName;
 	
-	private JLabel lblTableID;
+	private JLabel lblTableID; // Å×ÀÌ÷ם ID
 	
 	private JComboBox cbxPort;
 	
