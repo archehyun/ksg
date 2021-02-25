@@ -90,14 +90,11 @@ public class PnArea extends PnBase implements ActionListener{
 		JPanel pnMain = new JPanel(new BorderLayout());
 		
 		
-		JScrollPane jScrollPane =createTablePanel();
-		tblTable.addMouseListener(new TableSelectListner());
+		//tblTable.addMouseListener(new TableSelectListner());
 		
 		tableH = new KSGTable();
 		
 		pnMain.add(new JScrollPane(tableH));
-		
-		//pnMain.add(jScrollPane);
 		
 		KSGTableColumn columns[] = new KSGTableColumn[3];
 
@@ -271,7 +268,7 @@ public class PnArea extends PnBase implements ActionListener{
 		try {
 			List li = areaDAO.selectAreaList(null);
 			tableH.setResultData(li);
-
+			lblTotal.setText(li.size()+" ");
 		} catch (SQLException ee) {
 			// TODO Auto-generated catch block
 			ee.printStackTrace();
