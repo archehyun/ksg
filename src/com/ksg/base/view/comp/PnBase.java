@@ -45,7 +45,7 @@ public abstract class PnBase extends KSGPanel implements TableListener{
 	
 	DAOImplManager daoImplManager = DAOImplManager.getInstance();
 	
-	private BaseInfoUI baseInfoUI;	
+	protected BaseInfoUI baseInfoUI;	
 	
 	public BaseInfoUI getBaseInfoUI() {
 		return baseInfoUI;
@@ -72,7 +72,6 @@ public abstract class PnBase extends KSGPanel implements TableListener{
 	
 	public JScrollPane createTablePanel()
 	{
-		
 		tblTable = new JTable();
 		
 		JScrollPane jScrollPane = new JScrollPane(tblTable);

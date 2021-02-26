@@ -52,6 +52,8 @@
 	<!-- new mapper -->
 	
 	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_base_area.xml" />
+	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_base_port.xml" />
+	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_base_company.xml" />
 	
 	
 	

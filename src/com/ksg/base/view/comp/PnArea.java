@@ -114,7 +114,7 @@ public class PnArea extends PnBase implements ActionListener{
 		columns[2].size = 75;
 
 		tableH.setColumnName(columns);
-		tableH.init();
+		tableH.initComp();
 		tableH.getParent().setBackground(Color.white);
 		
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
@@ -244,8 +244,6 @@ public class PnArea extends PnBase implements ActionListener{
 					e1.printStackTrace();
 				}
 			}
-
-
 		}
 		else if(command.equals("½Å±Ô"))
 		{

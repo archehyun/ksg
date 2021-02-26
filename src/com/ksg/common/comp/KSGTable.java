@@ -48,16 +48,21 @@ public class KSGTable extends JTable{
 
 		// 정렬 기능 추가
 		setRowSorter(new TableRowSorter<TableModel>(model));
-
+		
+		
+		
+		
+		
 
 	}
+	
 
 
 	public void setColumnName(KSGTableColumn columnNames[]) {
 		this.model.setColumns(columnNames);
 	}
 
-	public void init() {
+	public void initComp() {
 		super.setModel(model);
 
 		TableColumnModel colmodel = getColumnModel();
@@ -135,8 +140,11 @@ public class KSGTable extends JTable{
 
 		@Override
 		public String getColumnName(int index) {
+			
+			KSGTableColumn column = columnNames.get(index);
+			
 
-			return columnNames.get(index).columnName;
+			return column.columnName;
 		}
 
 		public void setColumns(KSGTableColumn columns[]) {
@@ -187,7 +195,6 @@ public class KSGTable extends JTable{
 		public Object getValueAt(int rowIndex, int columnIndex) {
 
 			try {
-
 				HashMap<String, Object> item = (HashMap<String, Object>) data.get(rowIndex);
 
 				return item.get(columnNames.get(columnIndex).columnField);

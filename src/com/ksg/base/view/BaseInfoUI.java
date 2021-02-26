@@ -366,6 +366,17 @@ public class BaseInfoUI extends KSGPanel{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void transactionCall(HashMap<String, Object> param)
+	{
+		System.out.println("callTest");
+		
+	}
+	
+	public void selectPortlist(HashMap<String, Object> param)
+	{
+		
+	}
 
 	
 
