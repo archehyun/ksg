@@ -27,6 +27,10 @@ import javax.swing.table.TableRowSorter;
   * @변경이력 :
 
   * @프로그램 설명 : 사용자 정의 JTable
+  * 
+  * 기본
+  * 1. row 사이즈 : 30
+  * 2. 컬럼 리사이즈 : Off
 
   */
 @SuppressWarnings("serial")
@@ -43,16 +47,12 @@ public class KSGTable extends JTable{
 
 
 		model = new TableModel();
-
+		
+		// 컬럼 리사이징 오프
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		// 정렬 기능 추가
 		setRowSorter(new TableRowSorter<TableModel>(model));
-		
-		
-		
-		
-		
 
 	}
 	
@@ -78,7 +78,6 @@ public class KSGTable extends JTable{
 
 			renderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-			//namecol.setHeaderRenderer(new IconHeaderRenderer());
 			namecol.setPreferredWidth(col.size);
 
 		}
@@ -92,9 +91,15 @@ public class KSGTable extends JTable{
 
 	}
 
+	/**
+	 * 결과 저장
+	 * @param resultData
+	 */
+	@SuppressWarnings("rawtypes")
 	public void setResultData(List resultData) {
 
 		this.model.setData(resultData);
+		// 결과 저장후 화면 갱신
 		this.updateUI();
 	}
 
@@ -102,10 +107,26 @@ public class KSGTable extends JTable{
 		return model.getValueAt(rowIndex);
 	}
 
+	/**
+	 * 데이터 초기화
+	 */
 	public void clearReslult() {
 		model.clearResult();
 	}
 
+	/**
+	
+	  * @FileName : KSGTable.java
+	
+	  * @Date : 2021. 2. 26. 
+	
+	  * @작성자 : 박창현
+	
+	  * @변경이력 :
+	
+	  * @프로그램 설명 : 사용자 정의 테이블 모델
+	
+	  */
 	class TableModel extends AbstractTableModel {
 
 
@@ -152,6 +173,9 @@ public class KSGTable extends JTable{
 			columnNames = Arrays.asList(columns);
 		}
 
+		/**
+		 * 데이터 초기화
+		 */
 		public void clearResult() {
 
 			if (data != null) {
@@ -162,7 +186,6 @@ public class KSGTable extends JTable{
 
 		@Override
 		public int getRowCount() {
-			// TODO Auto-generated method stub
 			if (data == null)
 				return 0;
 
@@ -171,7 +194,6 @@ public class KSGTable extends JTable{
 
 		@Override
 		public int getColumnCount() {
-			// TODO Auto-generated method stub
 
 			if (columnNames == null)
 				return 0;
@@ -219,6 +241,21 @@ public class KSGTable extends JTable{
 
 	}
 
+	/**
+	
+	  * @FileName : KSGTable.java
+	
+	  * @Date : 2021. 2. 26. 
+	
+	  * @작성자 : 박창현
+	
+	  * @변경이력 :
+	
+	  * @프로그램 설명 : 테이블 셀 렌더러
+	  * 
+	  * 홀수 반복 색 표시
+	
+	  */
 	class KSGTableCellRenderer extends DefaultTableCellRenderer {
 
 		/**
