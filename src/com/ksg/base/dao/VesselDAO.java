@@ -1,6 +1,7 @@
 package com.ksg.base.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,5 +33,10 @@ public class VesselDAO extends AbstractDAO{
 		return selectList("vessel.selectVesselList", commandMap);
 
 	}
+	
+	public int deleteVessel(HashMap<String, Object> param) throws SQLException {
+		return (Integer) delete("vessel.deleteVessel", param);
+	}
+
 
 }
