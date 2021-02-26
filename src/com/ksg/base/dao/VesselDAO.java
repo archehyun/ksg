@@ -6,6 +6,19 @@ import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
 
+/**
+
+  * @FileName : VesselDAO.java
+
+  * @Date : 2021. 2. 26. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class VesselDAO extends AbstractDAO{
 	/**
 	 * 
