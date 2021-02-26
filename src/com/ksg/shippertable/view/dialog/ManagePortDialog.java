@@ -141,9 +141,9 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			setModal(true);
 
 			getContentPane().add(buildCenter());
-			getContentPane().add(createLine(),BorderLayout.WEST);
-			getContentPane().add(createLine(),BorderLayout.EAST);
+			
 			getContentPane().add(buildControl(),BorderLayout.SOUTH);
+			
 			getContentPane().add(buildInfo(),BorderLayout.NORTH);
 
 			this.pack();
@@ -289,7 +289,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			public void keyPressed(KeyEvent arg0) 
 			{
 				JTextField txf = (JTextField) arg0.getSource();
-				//oldPortName= txf.getText();
 			}
 
 		});
@@ -313,24 +312,29 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		 * 버튼으로 항구의 위아래 순서를 변경하는 기능
 		 */
 		JPanel pnLeftNorthControl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		
 		JButton butUpdate = new JButton(ACTION_COMMAND_UPDATE);
+		
 		butUpdate.addActionListener(portIndexController);
+		
 		JButton butUp=new JButton(ACTION_COMMAND_UP);
+		
 		butUp.addActionListener(portIndexController);
+		
 		JButton butDown=new JButton(ACTION_COMMAND_DOWN);
+		
 		butDown.addActionListener(portIndexController);
-
-		butUp.setPreferredSize(new Dimension(75, 25));
-		butDown.setPreferredSize(new Dimension(75, 25));
 		
 		pnLeftNorthControl.add(new JLabel("순서 변경"));
-		pnLeftNorthControl.add(butUp);
-		pnLeftNorthControl.add(butDown);
 		
+		pnLeftNorthControl.add(butUp);
+		
+		pnLeftNorthControl.add(butDown);		
 		
 		JPanel pnMainCenter = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		FlowLayout out=(FlowLayout) pnMainCenter.getLayout();
+		
 		out.setHgap(5);
 		
 		pnMainCenter.add(txfIndex);
@@ -349,8 +353,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	 * @throws SQLException 
 	 */
 	private Component buildCenter() {
-		JPanel pnMain = new JPanel();
-		pnMain.setLayout(new BorderLayout());
+		JPanel pnMain = new JPanel(new BorderLayout());
+		pnMain.setBorder(BorderFactory.createEmptyBorder(10 , 10 , 10 , 10));
 
 		JPanel pnPortMain = new JPanel();
 		GridLayout gridLayout = new GridLayout(1,0);

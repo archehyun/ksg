@@ -80,7 +80,7 @@
         <level value="info"/>
     </logger>
      <logger name="java.sql.Connection">
-        <level value="info"/>	
+        <level value="debug"/>	
     </logger>        
     
     
@@ -88,8 +88,8 @@
         <level value="error"/>	
     </logger>
     
-     <logger name="com.ksg.adv">
-        <level value="info"/>	
+     <logger name="com.ksg.base">
+        <level value="debug"/>	
     </logger> 
     <logger name="com.ksg.shippertable">
         <level value="info"/>	

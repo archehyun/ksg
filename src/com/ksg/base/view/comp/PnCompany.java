@@ -42,9 +42,12 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.ksg.base.service.CompanyService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertCompanyInfoDialog;
 import com.ksg.base.view.dialog.UpdateCompanyInfoDialog;
+import com.ksg.common.comp.KSGTableColumn;
+import com.ksg.common.comp.KSGTablePanel;
 import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.common.view.comp.KSGTable;
 import com.ksg.common.view.comp.KSGTableCellRenderer;
@@ -52,6 +55,19 @@ import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.Company;
 
 
+/**
+
+ * @FileName : PnCompany.java
+
+ * @Date : 2021. 2. 26. 
+
+ * @작성자 : 박창현
+
+ * @변경이력 :
+
+ * @프로그램 설명 :
+
+ */
 public class PnCompany extends PnBase implements ActionListener{
 
 	/**
@@ -68,13 +84,17 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private JLabel lblTable,lblTotal;
 
-	CompanyTable tblCompanyTable;	
+	CompanyTable tblCompanyTable;
+
+	KSGTablePanel tableH;
 
 	private String[] fieldName = {"company_name","company_abbr","agent_name", "agent_abbr","contents"};
 
 	private String query;
 
 	private String orderby;
+	
+	CompanyService companyService = new CompanyService();
 
 	public PnCompany(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);		
@@ -90,11 +110,11 @@ public class PnCompany extends PnBase implements ActionListener{
 		 * 2. 조회결과를 위한 현재 칼럼 목록 순서를 저장함
 		 */
 		tblCompanyTable.currentColumnNameList.clear();// 현재 칼럼 순서 초기화
-		
+
 		StringBuffer buffer = new StringBuffer();
-		
+
 		int col=tblCompanyTable.getColumnModel().getColumnCount();
-		
+
 		ArrayList<String> orderbyList = new ArrayList<String>();
 		for(int i=0;i<col;i++)
 		{
@@ -124,7 +144,9 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private JPanel buildCenter()
 	{
-		JPanel pnMain = new JPanel(new BorderLayout());
+		JPanel pnMain = new JPanel(new BorderLayout());		
+
+		tableH = new KSGTablePanel("선사목록");
 
 		tblCompanyTable = new CompanyTable();
 
@@ -138,7 +160,33 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		jScrollPane.getViewport().setBackground(Color.white);
 
-		pnMain.add(jScrollPane);
+		pnMain.add(tableH);
+
+		KSGTableColumn columns[] = new KSGTableColumn[4];
+
+		columns[0] = new KSGTableColumn();
+		columns[0].columnField = "company_name";
+		columns[0].columnName = "선사명";
+		columns[0].size = 300;
+
+		columns[1] = new KSGTableColumn();
+		columns[1].columnField = "company_abbr";
+		columns[1].columnName = "선사약어";
+		columns[1].size = 300;
+
+		columns[2] = new KSGTableColumn();
+		columns[2].columnField = "agent_name";
+		columns[2].columnName = "에이전트명";
+		columns[2].size = 300;
+
+		columns[3] = new KSGTableColumn();
+		columns[3].columnField = "agent_abbr";
+		columns[3].columnName = "에이전트 약어";
+		columns[3].size = 300;
+
+		tableH.setColumnName(columns);
+		tableH.initComp();
+
 
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 
@@ -172,7 +220,7 @@ public class PnCompany extends PnBase implements ActionListener{
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
-					searchData();
+					searchTableData();
 				}
 
 			}
@@ -256,14 +304,77 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	}
 
+	private void searchTableData()
+	{
+		
+		logger.debug("start");
+		HashMap<String, Object> param = new HashMap<String, Object>();
+
+
+		String field = (String) cbxField.getSelectedItem();
+
+
+		
+		if(!"".equals(txfSearch.getText()))
+		{
+			if(field.equals("선사명"))
+			{
+				query="company_name";
+			}else if(field.equals("선사명 약어"))
+			{
+				query="company_abbr";
+			}
+			else if(field.equals("에이전트"))
+			{
+				query="agent_name";
+			}
+			else if(field.equals("에이전트 약어"))
+			{
+				query="agent_abbr";
+			}
+
+			//query+=" like '"+txfSearch.getText()+"%'";
+			
+			param.put(query, txfSearch.getText());
+		}
+		
+		
+		try {
+			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectCompanyList(param);
+
+			tableH.setResultData(result);
+
+			List master = (List) result.get("master");
+
+			if(master.size()==0)
+			{
+				/*lblArea.setText("");
+				lblAreaCode.setText("");
+				lblPationality.setText("");
+				lblPortName.setText("");
+				tableD.clearReslult();*/
+			}
+			else
+			{
+				tableH.changeSelection(0,0,false,false);
+			}
+
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		String command = e.getActionCommand();
-		
+
 		if(command.equals("검색"))
 		{
-			searchData();
+			searchTableData();
 		}
 		else if(command.equals("삭제"))
 		{
@@ -309,7 +420,7 @@ public class PnCompany extends PnBase implements ActionListener{
 	private void searchData() {
 		String field=(String) cbxField.getSelectedItem();
 
-	/*	if(cbxField.getSelectedIndex()==0)
+		/*	if(cbxField.getSelectedIndex()==0)
 		{
 
 			txfSearch.setText("");
@@ -350,10 +461,10 @@ public class PnCompany extends PnBase implements ActionListener{
 			{
 				JTable es = (JTable) e.getSource();
 				int row=es.getSelectedRow();
-				
+
 				if(row<0)
 					return;
-				
+
 				String data=(String) tblCompanyTable.getValueAt(row, 1);
 
 				dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.UPDATE,data);
@@ -408,7 +519,7 @@ public class PnCompany extends PnBase implements ActionListener{
 	public void initTable() {
 
 
-		
+
 	}
 	class CompanyTable extends KSGTable
 	{
@@ -426,9 +537,9 @@ public class PnCompany extends PnBase implements ActionListener{
 		private ArrayList<String> currentColumnNameList;
 
 		String query;
-		
+
 		String orderby;
-		
+
 		public CompanyTable() {
 			super();
 
@@ -499,7 +610,7 @@ public class PnCompany extends PnBase implements ActionListener{
 		private void columInit()
 		{
 			TableColumnModel colmodel = getColumnModel();
-			
+
 			for(int i=0;i<colmodel.getColumnCount();i++)
 			{
 				TableColumn namecol = colmodel.getColumn(i);
@@ -547,7 +658,7 @@ public class PnCompany extends PnBase implements ActionListener{
 			setModel(model);
 
 			columInit();
-			
+
 			updateUI();
 
 		}

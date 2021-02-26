@@ -47,11 +47,12 @@ import com.ksg.domain.TablePort;
 @SuppressWarnings("serial")
 public class AddPortDialog extends KSGDialog {
 	
-	String port_name;
+	private String port_name;
 	
+	@SuppressWarnings("rawtypes")
 	private Vector portList;
 	
-	String table_id;
+	private String table_id;
 	
 	private DefaultTableModel portModel;
 	
@@ -59,6 +60,7 @@ public class AddPortDialog extends KSGDialog {
 	
 	private JLabel lblTableID; // Å×ÀÌºí ID
 	
+	@SuppressWarnings("rawtypes")
 	private JComboBox cbxPort;
 	
 	private JTable tblPortList;
@@ -110,7 +112,6 @@ public class AddPortDialog extends KSGDialog {
 						TablePort port=(TablePort) iter.next();
 						portModel.addRow(new Object[]{table_id,port.getPort_name(),port.getPort_index()});
 					}
-
 
 				} catch (SQLException e1) {
 					JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
