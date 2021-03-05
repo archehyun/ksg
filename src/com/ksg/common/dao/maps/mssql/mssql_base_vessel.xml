@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="vessel">
+
+
+<!-- *** Port *** -->
+	
+
+<!-- select -->
+
+	<select id="selectVesselList" resultClass="java.util.HashMap">
+	
+	select * from (
+		select vessel_abbr
+		,vessel_name
+		,vessel_use
+		,vessel_type
+		,vessel_mmsi		
+		 from TB_VESSEL
+		<dynamic prepend="where">
+			<isNotNull property="vessel_abbr" prepend="and">
+						vessel_abbr like '%$vessel_abbr$%'
+			</isNotNull>
+			<isNotNull property="vessel_name" prepend="and">
+						vessel_name like '%$vessel_name$%'
+			</isNotNull>
+			<isNotNull property="vessel_type" prepend="and">
+						vessel_type like '%$vessel_type$%'
+			</isNotNull>
+			<isNotEmpty property="vessel_mmsi" prepend="and">
+						vessel_mmsi like '%$vessel_mmsi$%'
+			</isNotEmpty>
+			<isGreaterThan prepend="and" property="vessel_use" compareValue="-1">
+			vessel_use=#vessel_use#
+			</isGreaterThan>
+		</dynamic>
+		) A
+	</select>
+	
+		<select id="selectVesselAbbrList" resultClass="java.util.HashMap">
+		select * from TB_VESSEL_ABBR
+		<dynamic prepend="where">
+		    <isNotNull property="port_abbr" prepend="and">
+		        port_abbr=#port_abbr#
+		    </isNotNull>
+		    <isNotNull property="port_name" prepend="and">
+		        port_name=#port_name#
+		    </isNotNull>
+ 
+		</dynamic>
+	</select>	
+
+<!-- insert -->
+
+	<insert id="insertVessel" parameterClass="java.util.HashMap">
+		insert into TB_PORT(
+			port_area
+			port_name,
+			port_abbr,
+			area_code,
+			
+		
+		)values
+		(
+			#port_area#
+			#port_name#,
+			#port_abbr#,
+			#area_code#,
+		);
+	</insert>
+	
+	<insert id="insertVesselAbbr" parameterClass="java.util.HashMap">
+		insert into TB_PORT(
+			port_area
+			port_name,
+			port_abbr,
+			area_code,
+			
+		
+		)values
+		(
+			#port_area#
+			#port_name#,
+			#port_abbr#,
+			#area_code#,
+		);
+	</insert>
+	
+<!-- update -->
+	
+	<update id="updateVesel" parameterClass="java.util.HashMap">
+		update TB_PORT 
+			set 
+				area_code=#area_code#, 
+				area_book_code=#area_book_code#, area_name=#area_name#
+			where 
+			(
+				area_name=#base_area_name#
+			)
+	</update>
+
+<!-- delete -->
+
+	<delete id="deleteVessel" parameterClass="java.util.HashMap">
+		delete from TB_PORT where port_name=#port_name#
+	</delete>
+	
+	<delete id="deleteVesselAbbr" parameterClass="java.util.HashMap">
+		delete from TB_PORT_ABBR where port_abbr=#port_abbr#
+	</delete>
+	
+	
+<!-- count -->
+
+	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
+		select count(*) from TB_VESSEL	
+	</select>
+
+<!-- ********************************************* -->	
+
+
+				
+</sqlMap>

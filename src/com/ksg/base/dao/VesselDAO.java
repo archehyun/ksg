@@ -34,9 +34,31 @@ public class VesselDAO extends AbstractDAO{
 
 	}
 	
+	public List<Map<String, Object>> selectVesselAbbrList(HashMap<String, Object> commandMap) throws SQLException{
+		return selectList("vessel.selectVesselAbbrList", commandMap);
+		
+	}
+	
 	public int deleteVessel(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete("vessel.deleteVessel", param);
 	}
+	
+	public int deleteVesselAbbr(HashMap<String, Object> param) throws SQLException {
+		return (Integer) delete("vessel.deleteVesselAbbr", param);
+	}
+	
+	public int insertVessel(HashMap<String, Object> param) throws SQLException{
+		return (Integer) insert("vessel.insertVessel", param);
+	}
+	
+	public int insertVesselAbbr(HashMap<String, Object> param) throws SQLException{
+		return (Integer) insert("vessel.insertVesselAbbr", param);
+	}
+	
+	public int selectVesselCount(Map<String, Object> commandMap) throws SQLException{
+		return  (Integer) selectOne("vessel.selectCount", commandMap);
+	}
+
 
 
 }

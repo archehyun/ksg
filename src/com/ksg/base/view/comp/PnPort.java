@@ -330,17 +330,12 @@ public class PnPort extends PnBase implements ActionListener{
 					}
 					
 				}
-				
-				
-				
 			}
 		});
 		
 		
 		
 		KSGPanel pnMainCenter = new KSGPanel(new BorderLayout(5,5));
-		
-		//pnMain.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 		
 		pnMainCenter.add(tableH);
 		
@@ -370,7 +365,6 @@ public class PnPort extends PnBase implements ActionListener{
 		
 		tableH.setColumnName(columns);
 		tableH.initComp();
-		//tableH.getParent().setBackground(Color.white);
 		
 		tableH.addMouseListener(new TableSelectListner());
 		
@@ -445,9 +439,6 @@ public class PnPort extends PnBase implements ActionListener{
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
 
 
 	@Override

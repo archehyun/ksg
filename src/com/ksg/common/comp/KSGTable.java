@@ -135,7 +135,6 @@ public class KSGTable extends JTable{
 
 		private List<KSGTableColumn> columnNames;
 
-		//private KSGTableColumn columnNames[];
 
 		public TableModel() {
 			columnNames = new LinkedList<KSGTableColumn>();
