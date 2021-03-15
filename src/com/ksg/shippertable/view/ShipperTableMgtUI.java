@@ -80,8 +80,8 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.comp.CurvedBorder;
 import com.ksg.common.view.comp.KSGPanel;
 import com.ksg.common.view.comp.KSGTableSelectListner;
-import com.ksg.common.view.comp.KSGTreeImpl;
 import com.ksg.common.view.comp.KSGTreeDefault;
+import com.ksg.common.view.comp.KSGTreeImpl;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
@@ -1489,6 +1489,12 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		{
 			ManagePortDialog dialog = new ManagePortDialog(selectedshippersTable.getTable_id(),this);
 			dialog.createAndUpdateUI();
+			
+			
+			
+			
+			
+			
 		}
 	}
 	/**

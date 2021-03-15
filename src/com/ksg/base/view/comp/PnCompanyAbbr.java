@@ -281,4 +281,10 @@ public class PnCompanyAbbr extends PnBase implements ActionListener{
 		
 	}
 
+	@Override
+	public void fnSearch() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

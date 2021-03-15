@@ -73,7 +73,6 @@ public class PnPort extends PnBase implements ActionListener{
 	private JComboBox cbxPortArea,cbxAreaCode,cbxField;
 
 	private JTextField txfSearch;
-
 	
 	PortDAO portDAO = new PortDAO();
 	
@@ -382,63 +381,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 		
 	}
-	private void searhTableData()
-	{
-		HashMap<String, Object> param = new HashMap<String, Object>();
-		
-		if(cbxAreaCode.getSelectedIndex()>0)
-		{
-			param.put("area_code", cbxAreaCode.getSelectedItem());
-		}
-		
-		if(cbxPortArea.getSelectedIndex()>0)
-		{
-			param.put("port_area", cbxPortArea.getSelectedItem());
-		}
-		String field = (String) cbxField.getSelectedItem();
-		
-		
-		String searchParam = txfSearch.getText();
-		
-		if(!"".equals(searchParam))
-		{
-			if(field.equals("항구명"))
-			{
-				param.put("port_name", searchParam);
-				
-			}else if(field.equals("나라"))
-			{
-				param.put("port_nationality", searchParam);
-			}	
-		}		
-		
-		try {
-			HashMap<String, Object> result = (HashMap<String, Object>) portService.selectPortList(param);
-			
-			tableH.setResultData(result);
-			
-			List master = (List) result.get("master");
-
-			if(master.size()==0)
-			{
-				lblArea.setText("");
-				lblAreaCode.setText("");
-				lblPationality.setText("");
-				lblPortName.setText("");
-				tableD.clearReslult();
-			}
-			else
-			{
-				tableH.changeSelection(0,0,false,false);
-			}
-			
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 
 
 	@Override
@@ -450,7 +393,8 @@ public class PnPort extends PnBase implements ActionListener{
 		String command = e.getActionCommand();
 		if(command.equals("검색"))
 		{
-			searhTableData();
+			this.fnSearch();
+			
 			
 		}
 		else if(command.equals("신규"))
@@ -459,7 +403,7 @@ public class PnPort extends PnBase implements ActionListener{
 			dialog.createAndUpdateUI();
 			if(dialog.result==KSGDialog.SUCCESS)
 			{
-				searhTableData();
+				this.fnSearch();
 			}
 		}
 		else if(command.equals("약어 등록"))
@@ -504,7 +448,7 @@ public class PnPort extends PnBase implements ActionListener{
 					
 					if(count>0)
 					{						
-						searhTableData();
+						this.fnSearch();
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -595,7 +539,7 @@ public class PnPort extends PnBase implements ActionListener{
 				dialog.createAndUpdateUI();
 				if(dialog.result==KSGDialog.SUCCESS)
 				{
-					searhTableData();
+					fnSearch();
 				}
 			}
 		}
@@ -611,6 +555,62 @@ public class PnPort extends PnBase implements ActionListener{
 	public String getOrderBy(TableColumnModel columnModel) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public void fnSearch() {
+		HashMap<String, Object> param = new HashMap<String, Object>();
+		
+		if(cbxAreaCode.getSelectedIndex()>0)
+		{
+			param.put("area_code", cbxAreaCode.getSelectedItem());
+		}
+		
+		if(cbxPortArea.getSelectedIndex()>0)
+		{
+			param.put("port_area", cbxPortArea.getSelectedItem());
+		}
+		String field = (String) cbxField.getSelectedItem();
+		
+		
+		String searchParam = txfSearch.getText();
+		
+		if(!"".equals(searchParam))
+		{
+			if(field.equals("항구명"))
+			{
+				param.put("port_name", searchParam);
+				
+			}else if(field.equals("나라"))
+			{
+				param.put("port_nationality", searchParam);
+			}	
+		}		
+		
+		try {
+			HashMap<String, Object> result = (HashMap<String, Object>) portService.selectPortList(param);
+			
+			tableH.setResultData(result);
+			
+			List master = (List) result.get("master");
+
+			if(master.size()==0)
+			{
+				lblArea.setText("");
+				lblAreaCode.setText("");
+				lblPationality.setText("");
+				lblPortName.setText("");
+				tableD.clearReslult();
+			}
+			else
+			{
+				tableH.changeSelection(0,0,false,false);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	

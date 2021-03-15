@@ -3,7 +3,6 @@ package com.ksg.shippertable.view.dialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
@@ -110,11 +109,15 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 	PortIndexController portIndexController;
 
-	private JTextField 	txfIndex, 	// 항구 인덱스 표시
-	txfPortName,//항구명을 추가하기 위한 텍스트 필드
-	txflblIndex,
-	txflblPortName,
-	txfUpdatePortName;
+	private JTextField 	txfIndex; 	// 항구 인덱스 표시
+	
+	private JTextField 	txfPortName;//항구명을 추가하기 위한 텍스트 필드
+	
+	private JTextField 	txflblIndex;
+	
+	private JTextField 	txflblPortName;
+	
+	private JTextField 	txfUpdatePortName;
 	/**
 	 * @param table_id 테이블 아이디
 	 * @param baseUI
@@ -147,12 +150,15 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			getContentPane().add(buildInfo(),BorderLayout.NORTH);
 
 			this.pack();
+			
 			this.setResizable(false);
 
 			ViewUtil.center(this, false);
+			
 			tblPortList.retrive();
 
 		} catch (SQLException e) {
+			
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
 
@@ -170,7 +176,9 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		JPanel pnMain = new JPanel(new BorderLayout());
 
 		txfIndex = new JTextField(3);
+		
 		txfIndex.setEditable(false);
+		
 		txfIndex.addFocusListener(new FocusListener(){
 
 			public void focusGained(FocusEvent arg0) 
@@ -646,10 +654,15 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				
 				
 				tblPortList.save();
+				
 				updateTableInfo();
+				
 				this.OPTION = ManagePortDialog.CANCEL_OPTION;
+				
 				this.setVisible(false);
+				
 				dispose();
+				
 				base.searchADVTable();
 
 			}
@@ -769,12 +782,14 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				return;
 
 			String command = e.getActionCommand();
+			
 			if(command.equals(ACTION_COMMAND_UP))
 			{	
 				if(selectedRow==0)
 					return;
 
-				tblPortList.movePort(selectedRow,selectedRow-1);				
+				tblPortList.movePort(selectedRow,selectedRow-1);
+				
 				tblPortList.changeSelection(selectedRow-1, 0, false, false);
 
 			}
@@ -787,6 +802,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				tblPortList.movePort(selectedRow,selectedRow+1);
 
 				tblPortList.changeSelection(selectedRow+1, 0, false, false);
+				
 			}else if(command.equals(ACTION_COMMAND_UPDATE))
 			{
 				TablePort selectedPort = tblPortList.getSelectedPort();				
@@ -1085,7 +1101,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				buffer =new StringBuffer();
 				tblPortList.setEdit(true);
 			}
-
 		}
 		public void keyReleased(KeyEvent e) 
 		{

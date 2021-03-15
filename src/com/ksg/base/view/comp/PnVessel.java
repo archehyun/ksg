@@ -114,8 +114,6 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	private JComboBox cbxUse;// 사용 유무 선택
 
-	VesselTable vesselTable;
-
 	KSGTablePanel tableH;
 
 	private VesselService vesselService = new VesselService();
@@ -133,16 +131,12 @@ public class PnVessel extends PnBase implements ActionListener {
 		super(baseInfoUI);
 
 		this.add(buildCenter());
-
-		//this.initTable();
-
 	}
 
 	private JPanel buildCenter()
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
 
-		//JScrollPane jScrollPane =createTablePanel();		
 
 		tableH = new KSGTablePanel("선박목록");
 
@@ -168,10 +162,24 @@ public class PnVessel extends PnBase implements ActionListener {
 		columns[3].columnName = STRING_VESSEL_COMPANY;
 		columns[3].size = 200;
 
-		columns[4] = new KSGTableColumn();
+		columns[4] = new KSGTableColumn()
+		{
+			public Object getValue(Object obj)
+			{
+				if((Short)obj==0)
+				{
+					return "Y";
+				}
+				else {
+					return "N";
+					
+				}				
+			}
+		};
 		columns[4].columnField = "vessel_use";
 		columns[4].columnName = "사용유무";
-		columns[4].size = 200;		
+		columns[4].size = 200;
+		
 
 		columns[5] = new KSGTableColumn();
 		columns[5].columnField = "input_date";
@@ -339,25 +347,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		return pnButtom;
 	}
 
-	private void createTable(List li)
-	{
-		model.clear();
-		Iterator iter = li.iterator();
-
-		while(iter.hasNext())
-		{
-			Vessel vesselInfo = (Vessel) iter.next();
-			model.addRow(new Object[]{	vesselInfo.getVessel_name(),
-					vesselInfo.getVessel_mmsi(),
-					vesselInfo.getVessel_type(),
-					vesselInfo.getVessel_company(),
-					vesselInfo.getVessel_use()==1?"사용안함":"",
-							vesselInfo.getInput_date()==null?vesselInfo.getInput_date():format.format(vesselInfo.getInput_date())					
-			});
-		}
-
-		lblTotal.setText(searchTotalSize+"/"+totalSize);
-	}
+	
 
 	@Override
 	public void updateTable(String query) {
@@ -522,7 +512,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		}
 	}
 
-	private void fnSearch()
+	public void fnSearch()
 	{
 		HashMap<String, Object> param = new HashMap<String, Object>();		
 
@@ -593,12 +583,6 @@ public class PnVessel extends PnBase implements ActionListener {
 			option.setVessel_use(0);
 		}
 
-		/*if(cbxUse.getSelectedIndex()!=0)
-		{
-
-
-
-		}*/
 		if(cbxVesselType.getSelectedIndex()!=0)
 		{
 			option.setVessel_type((String)cbxVesselType.getSelectedItem());
@@ -637,13 +621,17 @@ public class PnVessel extends PnBase implements ActionListener {
 		try {
 			List li =baseDaoService.getSearchedVesselList(option);
 			searchTotalSize=li.size();
-			totalSize = baseDaoService.getVesselCount();
-			//createTable(li);
+			totalSize = baseDaoService.getVesselCount();			
 		} catch (SQLException ee) {
 
 			ee.printStackTrace();
 			JOptionPane.showMessageDialog(PnVessel.this, ee.getMessage());
 		}
+	}
+	
+	public void fnCallBack()
+	{
+		
 	}
 
 	private JPanel createVesselDetail()
@@ -680,10 +668,13 @@ public class PnVessel extends PnBase implements ActionListener {
 		tableD.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 		KSGTableColumn dcolumns = new KSGTableColumn();
+		
 		dcolumns.columnField = "vessel_abbr";
+		
 		dcolumns.columnName = "선박명 약어";
 
 		tableD.addColumn(dcolumns);
+		
 		tableD.initComp();
 
 		pnSubMain.add(pnPortInfo,BorderLayout.NORTH);
@@ -807,86 +798,4 @@ public class PnVessel extends PnBase implements ActionListener {
 		colmodel.getColumn(4).setPreferredWidth(80);
 		colmodel.getColumn(5).setPreferredWidth(100);
 	}
-
-	class VesselTable extends BaseTable
-	{
-		private String[] fieldName={"port_name","port_nationality","port_area","area_code"};
-		private String[] columName = {STRING_VESSEL_NAME, STRING_VESSEL_MMSI,STRING_VESSEL_TYPE, STRING_VESSEL_COMPANY,"사용 유무", STRING_INPUTDATE};
-		Vessel searchOP;
-		public VesselTable() {
-			super();
-			// 칼럼 정보 초기화
-			for(int i=0;i<columName.length;i++)
-			{
-				//arrangeMap.put(columName[i], fieldName[i]);
-				this.currentColumnNameList.add(columName[i]);
-			}
-			this.setModel(modelInit());
-
-			this.columInit();
-		}
-		private void columInit() {
-
-			TableColumnModel colmodel = getColumnModel();
-
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
-				if(i==0||i==3)
-				{
-					renderer.setHorizontalAlignment(SwingConstants.LEFT);
-				}
-				else
-				{
-					renderer.setHorizontalAlignment(SwingConstants.CENTER);	
-				}
-				namecol.setCellRenderer(renderer);	
-			}
-
-			colmodel.getColumn(0).setPreferredWidth(400);
-			colmodel.getColumn(1).setPreferredWidth(80);
-			colmodel.getColumn(2).setPreferredWidth(80);
-			colmodel.getColumn(3).setPreferredWidth(200);
-			colmodel.getColumn(4).setPreferredWidth(80);
-			colmodel.getColumn(5).setPreferredWidth(100);
-
-		}
-		@Override
-		public void retrive() throws SQLException {
-			modelInit();
-			List li =baseService.getSearchedVesselList(searchOP);
-			Iterator iter = li.iterator();
-
-			while(iter.hasNext())
-			{
-				Vessel vesselInfo = (Vessel) iter.next();
-				model.addRow(new Object[]{	vesselInfo.getVessel_name(),
-						vesselInfo.getVessel_mmsi(),
-						vesselInfo.getVessel_type(),
-						vesselInfo.getVessel_company(),
-						vesselInfo.getVessel_use()==1?"사용안함":"",
-								vesselInfo.getInput_date()==null?vesselInfo.getInput_date():format.format(vesselInfo.getInput_date())					
-				});
-			}
-			RowSorter<TableModel> sorter
-			= new TableRowSorter<TableModel>(model);
-
-			setRowSorter(sorter);
-
-			setModel(model);
-
-			this.columInit();
-
-			updateUI();
-		}
-		public void setOption(Vessel param)
-		{
-			this.searchOP = param;
-		}
-
-	}
-
-
 }

@@ -39,6 +39,7 @@ import com.ksg.common.view.comp.KSGPanel;
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.shippertable.view.dialog.ManagePortDialog;
+import com.ksg.shippertable.view.dialog.ManageTablePortPop;
 import com.ksg.shippertable.view.dialog.ManageVesselDialog;
 import com.ksg.view.KSGViewParameter;
 
@@ -91,7 +92,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		if(command.equals("亲备 包府"))
 		{
-			KSGDialog dialog = new ManagePortDialog(KSGModelManager.getInstance().selectedTable_id,base);
+			/*KSGDialog dialog = new ManagePortDialog(KSGModelManager.getInstance().selectedTable_id,base);
 			dialog.createAndUpdateUI();
 			int result = dialog.OPTION;
 			if(result == ManagePortDialog.UPDATE_OPTION)
@@ -99,12 +100,23 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 				SearchADVCommand advCommand = new SearchADVCommand(this);
 				advCommand.execute();
 				this.updateUI();
+			}*/
+
+
+			ManageTablePortPop pop = new ManageTablePortPop(KSGModelManager.getInstance().selectedTable_id);
+
+			pop.showPop();
+
+			if(pop.RESLULT==ManageTablePortPop.OK)
+			{
+				base.searchADVTable();
 			}
+
 		}
 		if(command.equals("急冠 包府"))
 		{
 			vesseldialog = new ManageVesselDialog(selectedTable.getTable_id(),base,tblADVTable.getVesselModel());
-			
+
 			vesseldialog.createAndUpdateUI();
 		}
 		else if(command.equals("傈眉 昏力"))
@@ -238,7 +250,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 		this.add(pnCenter,BorderLayout.CENTER);
 		this.add(pnADVControl,BorderLayout.SOUTH);
 	}
-	
+
 	public ShippersTable getSelectedTable() {
 		return selectedTable;
 	}
@@ -289,11 +301,11 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 	public void keyTyped(KeyEvent e) {}
 
 	public void setSelectedTable(ShippersTable selectedTable) {
-		
+
 		this.selectedTable =selectedTable;
-		
+
 		tblADVTable.setShippersTableInfo(selectedTable);
-		
+
 
 	}
 

@@ -420,6 +420,12 @@ public class PnArea extends PnBase implements ActionListener{
 		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	}
 
+	@Override
+	public void fnSearch() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

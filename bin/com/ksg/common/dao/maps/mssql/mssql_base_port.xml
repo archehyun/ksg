@@ -33,7 +33,7 @@
 		        port_abbr=#port_abbr#
 		    </isNotNull>
 		    <isNotNull property="port_name" prepend="and">
-		        port_name=#port_name#
+		        port_name like '%$port_name$%'
 		    </isNotNull>
  
 		</dynamic>

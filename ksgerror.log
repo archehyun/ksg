@@ -32,3 +32,53 @@ DEBUG - {conn-100036} Connection
 DEBUG - {conn-100036} Preparing Statement:   select page, company_abbr from TB_TABLE_INFO group by page, company_abbr  
 DEBUG - {conn-100039} Connection
 DEBUG - {conn-100039} Preparing Statement:   select page, company_abbr from TB_TABLE_INFO group by page, company_abbr  
+DEBUG - {conn-100042} Connection
+DEBUG - {conn-100042} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100045} Connection
+DEBUG - {conn-100045} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100048} Connection
+DEBUG - {conn-100048} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
+DEBUG - {conn-100051} Connection
+DEBUG - {conn-100051} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100054} Connection
+DEBUG - {conn-100054} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100057} Connection
+DEBUG - {conn-100057} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
+INFO - start
+INFO - update ADVTable : A1
+INFO - 광고정보 조회
+DEBUG - {conn-100060} Connection
+DEBUG - {conn-100060} Preparing Statement:    select * from TB_ADV_INFO where table_id= ?  
+DEBUG - {conn-100063} Connection
+DEBUG - {conn-100063} Preparing Statement:    select max(port_index) from TB_TABLE_PORTLIST where table_id=? and port_type='P'   
+DEBUG - {conn-100066} Connection
+DEBUG - {conn-100066} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100069} Connection
+DEBUG - {conn-100069} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100072} Connection
+DEBUG - {conn-100072} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100075} Connection
+DEBUG - {conn-100075} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100078} Connection
+DEBUG - {conn-100078} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100081} Connection
+DEBUG - {conn-100081} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100084} Connection
+DEBUG - {conn-100084} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100087} Connection
+DEBUG - {conn-100087} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+INFO - rendering
+DEBUG - {conn-100090} Connection
+DEBUG - {conn-100090} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100093} Connection
+DEBUG - {conn-100093} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100096} Connection
+DEBUG - {conn-100096} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100099} Connection
+DEBUG - {conn-100099} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100102} Connection
+DEBUG - {conn-100102} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100105} Connection
+DEBUG - {conn-100105} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100108} Connection
+DEBUG - {conn-100108} Preparing Statement:    select * from TB_TABLE_PORTLIST      where           port_type = ?            and       table_id = ?               order by port_index  

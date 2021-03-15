@@ -353,4 +353,10 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 		colmodel.getColumn(1).setPreferredWidth(300);
 	}
 
+	@Override
+	public void fnSearch() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

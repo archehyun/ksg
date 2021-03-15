@@ -220,7 +220,7 @@ public class PnCompany extends PnBase implements ActionListener{
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
-					searchTableData();
+					fnSearch();
 				}
 
 			}
@@ -304,7 +304,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	}
 
-	private void searchTableData()
+	/*private void searchTableData()
 	{
 		
 		logger.debug("start");
@@ -348,11 +348,11 @@ public class PnCompany extends PnBase implements ActionListener{
 
 			if(master.size()==0)
 			{
-				/*lblArea.setText("");
+				lblArea.setText("");
 				lblAreaCode.setText("");
 				lblPationality.setText("");
 				lblPortName.setText("");
-				tableD.clearReslult();*/
+				tableD.clearReslult();
 			}
 			else
 			{
@@ -365,7 +365,7 @@ public class PnCompany extends PnBase implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -374,7 +374,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		if(command.equals("검색"))
 		{
-			searchTableData();
+			fnSearch();
 		}
 		else if(command.equals("삭제"))
 		{
@@ -671,6 +671,68 @@ public class PnCompany extends PnBase implements ActionListener{
 			return model.getRowCount();
 		}
 
+	}
+
+	@Override
+	public void fnSearch() {
+
+		logger.debug("start");
+		HashMap<String, Object> param = new HashMap<String, Object>();
+
+
+		String field = (String) cbxField.getSelectedItem();
+
+
+		
+		if(!"".equals(txfSearch.getText()))
+		{
+			if(field.equals("선사명"))
+			{
+				query="company_name";
+			}else if(field.equals("선사명 약어"))
+			{
+				query="company_abbr";
+			}
+			else if(field.equals("에이전트"))
+			{
+				query="agent_name";
+			}
+			else if(field.equals("에이전트 약어"))
+			{
+				query="agent_abbr";
+			}
+
+			//query+=" like '"+txfSearch.getText()+"%'";
+			
+			param.put(query, txfSearch.getText());
+		}
+		
+		
+		try {
+			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectCompanyList(param);
+
+			tableH.setResultData(result);
+
+			List master = (List) result.get("master");
+
+			if(master.size()==0)
+			{
+				/*lblArea.setText("");
+				lblAreaCode.setText("");
+				lblPationality.setText("");
+				lblPortName.setText("");
+				tableD.clearReslult();*/
+			}
+			else
+			{
+				tableH.changeSelection(0,0,false,false);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 

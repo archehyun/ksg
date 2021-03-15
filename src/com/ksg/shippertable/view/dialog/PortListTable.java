@@ -315,6 +315,7 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 		portTableModel.getPortli().add(port);
 
 		updateUI();
+		
 		logger.info("end insert port:"+portName);
 	}
 
@@ -710,6 +711,7 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 	public void movePort(int start, int end) {
 
 		TablePort startPort=portTableModel.getPort(start);
+		
 		TablePort endPort=portTableModel.getPort(end);
 
 		int startIndex = startPort.getPort_index();

@@ -3,6 +3,7 @@ package com.ksg.common.comp;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +45,11 @@ public class KSGTablePanel extends KSGPanel{
 		this.title = title;
 		this.add(createTitle(), BorderLayout.NORTH);
 		
+	}
+	
+	public void setAutoResizeMode(int mode)
+	{
+		table.setAutoResizeMode(mode);
 	}
 	
 	 public ListSelectionModel getSelectionModel() {
@@ -97,8 +103,16 @@ public class KSGTablePanel extends KSGPanel{
 
 	@Override
 	public synchronized void addMouseListener(MouseListener l) {
+		
+		super.addMouseListener(l);
 
 		table.addMouseListener(l);
+	}
+	
+	public synchronized void addKeyListener(KeyListener l)
+	{
+		super.addKeyListener(l);
+		table.addKeyListener(l);
 	}
 
 	public void addColumn(KSGTableColumn ksgTableColumn) {
@@ -123,13 +137,20 @@ public class KSGTablePanel extends KSGPanel{
 		table.setResultData(master);
 
 		total = (Integer) resultMap.get("total");
-
+		
+		
+		if(lblTotalCount!=null)
 		lblTotalCount.setText(String.valueOf(master.size())+"/"+total);
 	}
 
 	public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
 		table.changeSelection(rowIndex, columnIndex, toggle, extend);
 		
+	}
+	
+	public void  clearResult()
+	{
+		table.clearReslult();
 	}
 
 }

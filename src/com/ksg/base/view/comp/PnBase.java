@@ -95,6 +95,8 @@ public abstract class PnBase extends KSGPanel implements TableListener{
 	
 	public abstract void initTable();
 	
+	public abstract void fnSearch();
+	
 	@Override
 	public  void createAndUpdateUI() {};
 	@Override
