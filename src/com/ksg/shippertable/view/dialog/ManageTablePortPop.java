@@ -43,6 +43,7 @@ import com.ksg.shippertable.service.impl.ShipperTableService;
  * @변경이력 :
 
  * @프로그램 설명 : 항구정보관리
+ * 1. 항구 정보를 추가, 삭제 한다.
 
  */
 @SuppressWarnings("serial")
@@ -149,6 +150,9 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 
 	}
 
+	/**
+	 *  팝업을 표시한다.
+	 */
 	public void showPop()
 	{
 		this.pack();
@@ -192,6 +196,9 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 		return pnMain;
 	}
 	
+	/** 버튼 목록 표시 패널 생성
+	 * @return
+	 */
 	private JPanel createCenterEast()
 	{
 		JPanel pnMain = new JPanel();
@@ -274,73 +281,6 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 		return pnMain;
 	}
 
-	/*private JPanel createCenterSouth()
-	{
-		JPanel pnMain = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		txfPortName = new JTextField(10);		
-		
-		ImageIcon img = new ImageIcon("images/search1.png");
-		
-		//추출된 Image의 크기를 조절하여 새로운 Image객체 생성
-		Image changedImg = img.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
-
-		//새로운 Image로 ImageIcon객체를 생성
-
-		ImageIcon Icon = new ImageIcon(changedImg);
-
-		lblSearch = new JLabel(Icon);
-
-		txfPortName.addKeyListener(new PortNameKeyAdapter());
-		
-		txfPortName.setEditable(false);		
-
-		lblSearch.setBorder(BorderFactory.createLineBorder(Color.gray));
-
-		lblSearch.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				lblSearch.setBorder(BorderFactory.createLineBorder(Color.gray));
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				lblSearch.setBorder(BorderFactory.createLoweredBevelBorder());
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				lblSearch.setBorder(BorderFactory.createLineBorder(Color.gray));
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				lblSearch.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				SearchPortDialog searchPortDialog = new SearchPortDialog(ManageTablePortPop.this,master);
-				searchPortDialog.createAndUpdateUI();
-
-				if(searchPortDialog.result!=null)
-				{
-					txfPortName.setText(searchPortDialog.result);
-
-				}else
-				{
-					txfPortName.setText("");
-				}
-
-			}
-		});		
-
-
-		return pnMain;
-	}*/
 	private JPanel createTitle()
 	{
 		JPanel pnMain = new JPanel();
@@ -488,7 +428,7 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 			
 		}
 		
-		private int maxPortIndex()
+		/*private int maxPortIndex()
 		{	
 			
 			int max=0;
@@ -501,7 +441,7 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 					
 			}
 			return max;
-		}
+		}*/
 		
 		
 
@@ -640,6 +580,7 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 		}
 
 	}
+	
 	class PortSelectionEventHandler implements MouseListener{
 
 		@Override
