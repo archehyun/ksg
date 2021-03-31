@@ -39,6 +39,19 @@
 		</dynamic>
 	</select>
 	
+	<select id="selectPort" resultClass="java.util.HashMap">
+	select * from TB_PORT
+	where port_name = #port_name#
+	
+	</select>
+	
+	<select id="selectPortAbbr" resultClass="java.util.HashMap">
+	select A.port_abbr, B.port_name, B.area_code,B.port_area, B.port_nationality from TB_PORT_ABBR A, TB_PORT B
+	WHERE A.port_name=B.port_name 
+	AND A.port_abbr=#port_abbr#
+	
+	</select>
+	
 		<select id="selectPortAbbrList" resultClass="java.util.HashMap">
 		select * from TB_PORT_ABBR
 		<dynamic prepend="where">

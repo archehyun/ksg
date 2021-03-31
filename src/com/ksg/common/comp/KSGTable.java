@@ -45,6 +45,8 @@ public class KSGTable extends JTable{
 	private static final long serialVersionUID = 1L;
 
 	private TableModel model;
+	
+	DefaultTableCellRenderer renderer;
 
 	public KSGTable() {
 
@@ -56,11 +58,25 @@ public class KSGTable extends JTable{
 
 		// 정렬 기능 추가
 		setRowSorter(new TableRowSorter<TableModel>(model));
+		
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 	}
 
-
+	private DefaultTableCellRenderer getCellRenderer()
+	{
+		
+		if(renderer== null)
+		{
+			renderer = new KSGTableCellRenderer();
+		}
+		
+		return renderer;
+	}
+	public void setCellRenderer(DefaultTableCellRenderer renderer)
+	{
+		this.renderer = renderer;
+	}
 
 	public void setColumnName(KSGTableColumn columnNames[]) {
 		this.model.setColumns(columnNames);
@@ -75,9 +91,8 @@ public class KSGTable extends JTable{
 		for (int i = 0; i < colmodel.getColumnCount(); i++) {
 			TableColumn namecol = colmodel.getColumn(i);
 
-			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
-
-			namecol.setCellRenderer(renderer);
+			namecol.setCellRenderer(getCellRenderer());
+			
 			KSGTableColumn col = model.getColumn(i);
 
 			renderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -86,18 +101,27 @@ public class KSGTable extends JTable{
 			{
 				namecol.setMaxWidth(col.size);
 			}
-			
+
 			if(col.minSize!=0)
 			{
 				namecol.setMinWidth(col.minSize);
 			}
-			
+
 			if(col.size!=0)
 			{
 				namecol.setPreferredWidth(col.size);
 			}
 		}
 		this.setRowHeight(30);
+		
+		
+
+		DefaultTableCellRenderer renderer =  
+				(DefaultTableCellRenderer)this.getTableHeader().getDefaultRenderer();
+		renderer.setHorizontalAlignment(SwingConstants.CENTER);
+		this.getTableHeader().setDefaultRenderer(renderer);
+
+
 
 	}
 

@@ -15,6 +15,8 @@ import java.awt.event.MouseWheelListener;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -54,6 +56,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.ShipperTableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.KSGMainFrame;
 
@@ -88,6 +91,8 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	private TableService 	tableService;
 	
 	private ADVService advService;
+	
+	ShipperTableService shipperTableService;
 	
 	private Vector 			pageList;
 	
@@ -138,6 +143,8 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		tableService = new TableServiceImpl();
 		
 		advService = new ADVServiceImpl();
+		
+		shipperTableService = new ShipperTableService();
 		
 		setLayout(new BorderLayout());
 
@@ -766,17 +773,19 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		{
 			KSGXLSImportPanel xlsPn = importTableList.get(i);
 			
-			Vector portList=xlsPn.getPortList();
+			List portList=xlsPn.getPortList();
 			
 			for(int j=0;j<portList.size();j++)
 			{
-				PortTableInfo port=(PortTableInfo) portList.get(j);
+				HashMap<String, Object> item = (HashMap<String, Object>) portList.get(j);
+				String area_code = (String) item.get("area_code");
+				//PortTableInfo port=(PortTableInfo) portList.get(j);
 
-				if(port.getArea_code()==null)
+				if(area_code==null)
 					continue;
-				if(port.getArea_code().equals("-"))
+				if(area_code.equals("-"))
 				{
-					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, (xlsPn.getTableIndex()+1)+ "번 테이블의 ("+port.getPort_name()+") 항구 정보가 없음");
+					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, (xlsPn.getTableIndex()+1)+ "번 테이블의 ("+item.get("port_name")+") 항구 정보가 없음");
 					return;
 				}
 			}
@@ -793,7 +802,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		{	
 			KSGXLSImportPanel xlsPn = importTableList.get(i);
 			
-			Vector portList=xlsPn.getPortList();
+			List portList=xlsPn.getPortList();
 			
 			savePortList(xlsPn, portList);
 			
@@ -830,17 +839,27 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	 * @param xlsPn
 	 * @param portList
 	 */
-	private void savePortList(KSGXLSImportPanel xlsPn, Vector portList) {
+	private void savePortList(KSGXLSImportPanel xlsPn, List<HashMap<String, Object>> portList) {
 		try {
 			TablePort delPort = new TablePort();
 			delPort.setTable_id(xlsPn.getTable_id());
 			tableService.deleteTablePort(delPort);
-
-			for(int j=0;j<portList.size();j++)
-			{
-				PortTableInfo port=(PortTableInfo) portList.get(j);
+			
+			HashMap<String, Object> commandMap = new HashMap<String, Object>();
+			
+			commandMap.put("table_id", xlsPn.getTable_id());
+			commandMap.put("master", portList);
+			
+			System.out.println("tableid:"+xlsPn.getTable_id());
+			shipperTableService.saveShipperPort(commandMap);
+			
+			
+			/*for(int j=0;j<portList.size();j++)
+			{	
+				HashMap<String, Object> pram = portList.get(j);
 				if(port.getArea_code()==null)
 					continue;
+				
 				tablePort = new TablePort();
 				tablePort.setTable_id(xlsPn.getTable_id());
 				tablePort.setPort_type("P");
@@ -848,7 +867,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 				tablePort.setPort_name(port.getPort_name());
 				tablePort.setParent_port(port.getPort_name());
 				tableService.insertPortList(tablePort);
-			}
+			}*/
 		}catch(SQLException e)
 		{
 
@@ -885,7 +904,6 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		{
 			mainScrollPane.getVerticalScrollBar().setValue(currentValue-unitIncrement);
 		}
-
 	}
 
 

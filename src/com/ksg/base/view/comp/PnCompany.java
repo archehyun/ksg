@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -68,7 +70,7 @@ import com.ksg.domain.Company;
  * @프로그램 설명 :
 
  */
-public class PnCompany extends PnBase implements ActionListener{
+public class PnCompany extends PnBase implements ActionListener, ComponentListener{
 
 	/**
 	 * 
@@ -98,7 +100,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	public PnCompany(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);		
-
+		this.addComponentListener(this);
 		this.add(buildCenter());
 
 
@@ -304,68 +306,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	}
 
-	/*private void searchTableData()
-	{
-		
-		logger.debug("start");
-		HashMap<String, Object> param = new HashMap<String, Object>();
-
-
-		String field = (String) cbxField.getSelectedItem();
-
-
-		
-		if(!"".equals(txfSearch.getText()))
-		{
-			if(field.equals("선사명"))
-			{
-				query="company_name";
-			}else if(field.equals("선사명 약어"))
-			{
-				query="company_abbr";
-			}
-			else if(field.equals("에이전트"))
-			{
-				query="agent_name";
-			}
-			else if(field.equals("에이전트 약어"))
-			{
-				query="agent_abbr";
-			}
-
-			//query+=" like '"+txfSearch.getText()+"%'";
-			
-			param.put(query, txfSearch.getText());
-		}
-		
-		
-		try {
-			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectCompanyList(param);
-
-			tableH.setResultData(result);
-
-			List master = (List) result.get("master");
-
-			if(master.size()==0)
-			{
-				lblArea.setText("");
-				lblAreaCode.setText("");
-				lblPationality.setText("");
-				lblPortName.setText("");
-				tableD.clearReslult();
-			}
-			else
-			{
-				tableH.changeSelection(0,0,false,false);
-			}
-
-
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -732,6 +673,26 @@ public class PnCompany extends PnBase implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void componentShown(ComponentEvent e) {
+		fnSearch();
+		
+	}
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 

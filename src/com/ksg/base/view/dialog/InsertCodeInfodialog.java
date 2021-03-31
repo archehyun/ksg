@@ -149,8 +149,6 @@ public class InsertCodeInfodialog extends BaseInfoDialog implements ActionListen
 		JLabel label = new JLabel(title+" 코드 추가");
 		label.setFont(new Font("돋음",0,16));
 		pnTitle.add(label);
-
-
 		JPanel pnInfo = new JPanel();
 		pnInfo.setLayout( new FlowLayout(FlowLayout.LEFT));
 		pnInfo.add(lblInfo);

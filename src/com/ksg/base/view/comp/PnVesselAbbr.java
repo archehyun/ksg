@@ -159,8 +159,8 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 		butDel.addActionListener(this);
 		butNew.addActionListener(this);
 		
-		pnButtomRight.add(butNew);
-		pnButtomRight.add(butDel);
+		//pnButtomRight.add(butNew);
+		//pnButtomRight.add(butDel);
 		pnButtom.add(pnButtomRight);
 		return pnButtom;
 	}

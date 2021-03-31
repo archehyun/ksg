@@ -17,7 +17,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -28,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.ksg.base.service.VesselService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.comp.KSGDialog;
@@ -37,7 +41,7 @@ import com.ksg.domain.Vessel;
  * @author 박창현
  *
  */
-public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListener{
+public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListener, ComponentListener{
 	/**
 	 * 
 	 */
@@ -46,7 +50,9 @@ public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 	BaseInfoUI baseInfoUI;
 	private String vessel_name;
 	private String vessel_abbr="";
-
+	HashMap<String, Object> info;
+	
+	VesselService vesselService;
 
 	public InsertVesselAbbrInfoDialog(String vessel_name) {
 		super();
@@ -54,14 +60,20 @@ public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 		this.title="선박명 약어 추가";
 	}
 
+	public InsertVesselAbbrInfoDialog(HashMap<String, Object> info) {
+		super();
+		this.info = info;
+		this.title="선박명 약어 추가";
+		vesselService = new VesselService();
+	}
+
 	public void createAndUpdateUI() {
 
 
 		this.setModal(true);
-
+		this.addComponentListener(this);
 		this.setTitle(title);
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
-
 
 		JPanel pnCode = new JPanel();
 		pnCode.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -69,7 +81,7 @@ public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 		lblVesselAbbr.setPreferredSize(new Dimension(80,25));
 		pnCode.add(lblVesselAbbr);	
 		pnCode.add(txfVesselAbbr);
-		this.txfVesselAbbr.setText(vessel_abbr);
+		
 
 		JPanel pnS = new JPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
@@ -90,7 +102,7 @@ public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 		JPanel pnTitle = new JPanel();
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnTitle.setBackground(Color.white);
-		JLabel label = new JLabel("선박명: "+vessel_name);
+		JLabel label = new JLabel("선박명: "+info.get("vessel_name"));
 		label.setFont(new Font("area",Font.BOLD,16));
 		pnTitle.add(label);
 
@@ -123,35 +135,23 @@ public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 				JOptionPane.showMessageDialog(this, "선박명 약어를 입력 하십시요");
 				return;
 			}
-
+			
+			
+			info.put("vessel_abbr", txfVesselAbbr.getText());
 
 			try {
-				Vessel vessel_abbr = new Vessel();
-				vessel_abbr.setVessel_name(vessel_name);
-
-				Vessel vessel_info = baseService.getVesselInfo(vessel_abbr);
-
-				if(vessel_info!=null)
-				{
-					vessel_info.setVessel_abbr(txfVesselAbbr.getText());
-					if(vessel_info.getVessel_mmsi()==null)
-					{
-						vessel_info.setVessel_mmsi("");
-					}
-					baseService.insertVessel(vessel_info);
-					JOptionPane.showMessageDialog(this, "추가 했습니다.");
-					this.setVisible(false);
-					this.dispose();
-					result = KSGDialog.SUCCESS;
-
-				}else
-
-				{
-					JOptionPane.showMessageDialog(this, vessel_info.getVessel_name()+" 기존 선박이 존재하지 않습니다.");
-
-				}
-
-			} catch (SQLException e1) {
+				vesselService.insertVessel(info);
+				
+				result = KSGDialog.SUCCESS;
+				this.setVisible(false);
+				this.dispose();
+			}
+			catch (NullPointerException e1)
+			{
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(this, e1.getMessage());
+			}
+			catch (SQLException e1) {
 				if(e1.getErrorCode()==2627)
 				{
 					JOptionPane.showMessageDialog(this, "선박명이 존재합니다.");
@@ -192,6 +192,28 @@ public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 		}
 
 
+	}
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

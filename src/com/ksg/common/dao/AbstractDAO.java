@@ -39,6 +39,7 @@ public abstract class AbstractDAO {
 
 
 	public Object insert(String queryId, Object params) throws SQLException {
+		
 		return sqlMap.insert(queryId, params);
 	}
 

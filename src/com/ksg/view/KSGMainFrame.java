@@ -250,17 +250,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		JPanel pnButtom = buildButtom();
 		
 		
-		// iconURL is null when not found
-		//ImageIcon icon = new ImageIcon("images/img_logo.png");
-		//this.setIconImage(icon.getImage());
-		
-		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		
-		Image img = toolkit.getImage("images/img_logo2.png");
+		Image img = toolkit.getImage("images/img_logo.png");
 		
 		this.setIconImage(img);		
-		
 
 		this.setJMenuBar(crateMenuBar());
 

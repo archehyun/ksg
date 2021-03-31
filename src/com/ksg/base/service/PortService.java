@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ksg.base.dao.PortDAO;
+import com.ksg.domain.PortInfo;
 
 public class PortService {
 	
@@ -29,6 +30,19 @@ public class PortService {
 	public int deletePortAbbr(HashMap<String, Object> param) throws SQLException {
 		// TODO Auto-generated method stub
 		return portDAO.deletePortAbbr(param);
+	}
+
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> selectPort(HashMap<String, Object> param) throws SQLException {
+		
+		HashMap<String,Object> resultMap=(HashMap<String, Object>) portDAO.selectPort( param);
+		
+		if(resultMap==null)
+		{
+			resultMap = (HashMap<String, Object>) portDAO.selectPortAbbr(param);
+		}		
+		
+		return resultMap;
 	}
 	
 	

@@ -27,12 +27,11 @@ public class CodeService {
 		codeDAO = new CodeDAO();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Map<String, Object> selectCodeHList(Map<String, Object> commandMap) throws SQLException {
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", codeDAO.selectCodeCount(commandMap));
+		resultMap.put("total", codeDAO.selectCodeHCount(commandMap));
 		
 		resultMap.put("master", codeDAO.selectCodeHList(commandMap));
 		
@@ -40,7 +39,6 @@ public class CodeService {
 
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Map<String, Object> selectCodeDList(Map<String, Object> commandMap) throws SQLException {
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
@@ -51,6 +49,35 @@ public class CodeService {
 		
 		return resultMap;
 
+	}
+	public Object selectCodeD(Map<String, Object> commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return codeDAO.selectCodeD(commandMap);
+	}
+
+	public Object insertCodeH(HashMap<String, Object> param) throws SQLException{
+		return codeDAO.insertCodeH(param);
+		
+	}
+
+	public Object updateCodeH(HashMap<String, Object> param) throws SQLException{
+		return codeDAO.updateCodeH(param);
+		
+	}
+
+	public Object deleteCodeH(HashMap<String, Object> param)throws SQLException {
+		return codeDAO.deleteCodeH(param);
+		
+	}
+
+	public Object insertCodeD(HashMap<String, Object> param) throws SQLException {
+		return codeDAO.insertCodeD(param);
+		
+	}
+
+	public Object deleteCodeD(HashMap<String, Object> param) throws SQLException {
+		return codeDAO.deleteCodeD(param);
+		
 	}
 
 }

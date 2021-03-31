@@ -75,13 +75,16 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 
 	ShipperTableService shipperTableService;
 
-	private static final String ACTION_SAVE="저장";
+	public static final String ACTION_SAVE="저장";
 
-	private static final String ACTION_DELETE="삭제";
+	public static final String ACTION_DELETE="삭제";
 	
-	private static final String ACTION_CANCEL="취소";
+	public static final String ACTION_CANCEL="취소";
 
-	public final String ACTION_INSERT="추가"; 
+	public static final String ACTION_INSERT="추가"; 
+	
+	public static final String ACTION_UPDATE="수정";
+	
 
 	KSGTablePanel tableH;
 
@@ -98,6 +101,7 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 	private JLabel lblSearch;
 	
 	private JButton butCancel;
+
 
 
 	public ManageTablePortPop(String tableId) {
@@ -205,15 +209,20 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 		butUp = new JButton("▲");		
 		butDown = new JButton("▼");		
 		butInsert = new JButton("추가");
-		butDelete = new JButton("삭제");		
+		butDelete = new JButton("삭제");	
+		butUpdate = new JButton("수정");	
+		
 		
 		butUp.setActionCommand(ACTION_UP);		
 		butDown.setActionCommand(ACTION_DOWN);
 		
-		butInsert.addActionListener(this);
-		butDelete.addActionListener(this);
+		
 		butUp.addActionListener(indexChangeAction);		
 		butDown.addActionListener(indexChangeAction);
+		
+		butInsert.addActionListener(this);
+		butDelete.addActionListener(this);
+		butUpdate.addActionListener(this);
 		
 		GroupLayout layout = new GroupLayout (pnMain);
 		pnMain.setLayout (layout);
@@ -227,6 +236,7 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 	                    .addComponent(butDown, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
 	                    .addComponent(butInsert, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)	                    
 	                    .addComponent(butDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+	                    .addComponent(butUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
 	                    )	                
 	                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 	                
@@ -245,6 +255,8 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 		                        .addComponent(butInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
 		                        .addGap(10, 10, 10)
 		                        .addComponent(butDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+		                        .addGap(10, 10, 10)
+		                        .addComponent(butUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
 		                        
 		                     )		                    
 		                    
@@ -263,19 +275,10 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 		
 		txfSelectedPortName = new JTextField(10);
 		
-		butUpdate = new JButton("수정");
+		
 		
 		txfIndex.setEnabled(false);
-
-		butUpdate.addActionListener(this);		
-		
-		pnMain.add(new JLabel("순서"));		
-
-		pnMain.add(txfIndex);
-		
-		pnMain.add(txfSelectedPortName);
-		
-		pnMain.add(butUpdate);	
+			
 		
 
 		return pnMain;
@@ -326,8 +329,6 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 			this.setVisible(false);
 			
 			this.dispose();
-			
-
 		}
 
 		else if(command.equals(ACTION_INSERT))
@@ -367,9 +368,6 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 			master.add(newPort);
 
 			tableH.setResultData(master);
-			
-			txfPortName.setText("");
-
 		}
 		else if(command.equals(ACTION_DELETE))
 		{			
@@ -395,6 +393,28 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 		{
 			this.setVisible(false);
 			this.dispose();
+		}		
+		else if(command.equals(ACTION_UPDATE))
+		{
+			int row=tableH.getSelectedRow();
+			
+			if(row<0)
+				return;
+			
+			SearchPortDialog searchPortDialog = new SearchPortDialog(ManageTablePortPop.this,master);
+			searchPortDialog.createAndUpdateUI();
+
+			
+			String port_name = searchPortDialog.result;
+			
+			if(port_name==null||"".equals(port_name))
+				return;	
+			
+			HashMap<String, Object> portInfos =(HashMap<String, Object>)master.get(row);
+			portInfos.put("port_name", port_name);
+			tableH.setResultData(master);
+			
+			
 		}
 
 	}

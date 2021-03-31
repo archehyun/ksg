@@ -489,7 +489,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 
 
 			}});
-		JButton butSave = new JButton("±¤°íÁ¤º¸ÀúÀå",new ImageIcon("images/save.gif"));
+		/*JButton butSave = new JButton("±¤°íÁ¤º¸ÀúÀå",new ImageIcon("images/save.gif"));
 
 		butSave.setToolTipText("±¤°íÁ¤º¸ÀúÀå");
 		butSave.setActionCommand("±¤°íÁ¤º¸ÀúÀå");
@@ -570,7 +570,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 				}
 
 			}});
-
+*/
 		JButton butCancel = new JButton(new ImageIcon("images/cancel.gif"));
 		butCancel.setPreferredSize(new Dimension(35,25));
 		butCancel.addActionListener(new ActionListener(){
@@ -607,7 +607,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 		paRight.add(lblDate);
 		paRight.add(txfImportDate);
 		paRight.add(cbxImportDate);
-		paRight.add(butSave);
+		//paRight.add(butSave);
 		paRight.add(butCancel);
 
 		JPanel pnLeft =new JPanel();
@@ -941,7 +941,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 	}
 	*/
 
-	private void savePortList(KSGXLSImportPanel xlsPn, Vector portList) {
+	/*private void savePortList(KSGXLSImportPanel xlsPn, Vector portList) {
 		try {
 			TablePort delPort = new TablePort();
 			delPort.setTable_id(xlsPn.getTable_id());
@@ -972,7 +972,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 				e.printStackTrace();
 			}
 		}
-	}
+	}*/
 
 	public void setTabIndex(int i) {
 		pnTab.getModel().setSelectedIndex(i);

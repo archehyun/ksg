@@ -72,10 +72,13 @@ public class ShipperTableService {
 			deleteShipperPortList(commandMap);	
 
 			List<HashMap<String, Object>> master  = (List) commandMap.get("master");
+			
+			String table_id = (String) commandMap.get("table_id");
 
 			for(int i=0;i<master.size();i++)
 			{
 				HashMap<String, Object> port = master.get(i);
+				port.put("table_id", table_id);
 
 				insertShipperPort(port);
 

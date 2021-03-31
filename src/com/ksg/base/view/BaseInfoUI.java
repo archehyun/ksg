@@ -33,9 +33,6 @@ import javax.swing.tree.TreePath;
 import com.ibatis.sqlmap.client.SqlMapException;
 import com.ksg.base.view.comp.PnArea;
 import com.ksg.base.view.comp.PnBase;
-import com.ksg.base.view.comp.PnCodeConType;
-import com.ksg.base.view.comp.PnCodeInboundPort;
-import com.ksg.base.view.comp.PnCodeInboundPortOrder;
 import com.ksg.base.view.comp.PnCommonCode;
 import com.ksg.base.view.comp.PnCompany;
 import com.ksg.base.view.comp.PnPort;
@@ -214,9 +211,9 @@ public class BaseInfoUI extends KSGPanel{
 	
 		
 		addBasePanel(pnMain,new PnCommonCode(this),STRING_COMMONCODE_INFO);
-		addBasePanel(pnMain,new PnCodeInboundPortOrder(this),CODE_TYPE_INBOUND_PORT_ORDER);
-		addBasePanel(pnMain,new PnCodeInboundPort(this),CODE_TYPE_INBOUND_PORT);
-		addBasePanel(pnMain,new PnCodeConType(this),CODE_TYPE_CON_TYPE);
+		//addBasePanel(pnMain,new PnCodeInboundPortOrder(this),CODE_TYPE_INBOUND_PORT_ORDER);
+		//addBasePanel(pnMain,new PnCodeInboundPort(this),CODE_TYPE_INBOUND_PORT);
+		//addBasePanel(pnMain,new PnCodeConType(this),CODE_TYPE_CON_TYPE);
 		
 		addBasePanel(pnMain,new PnArea(this),		STRING_AREA_INFO);
 		addBasePanel(pnMain,new PnVessel(this),		STRING_VESSEL_INFO);
@@ -256,9 +253,9 @@ public class BaseInfoUI extends KSGPanel{
 		DefaultMutableTreeNode codeInboundPortOrder = new DefaultMutableTreeNode(CODE_TYPE_INBOUND_PORT_ORDER);
 		
 		code.add(commonCode);
-		code.add(codeConType);
+		/*code.add(codeConType);
 		code.add(codeInboundPort);
-		code.add(codeInboundPortOrder);
+		code.add(codeInboundPortOrder);*/
 		
 
 		while(iter1.hasNext())

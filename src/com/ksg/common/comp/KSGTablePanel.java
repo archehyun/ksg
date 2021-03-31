@@ -3,11 +3,13 @@ package com.ksg.common.comp;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -16,6 +18,12 @@ import javax.swing.ListSelectionModel;
 @SuppressWarnings("serial")
 public class KSGTablePanel extends KSGPanel{
 	
+	
+	public static final String INSERT="insert";
+	public static final String DELETE="delete";
+	public static final String UPDATE="update";
+	
+	
 	private int total;
 
 	private KSGTable table;
@@ -23,6 +31,20 @@ public class KSGTablePanel extends KSGPanel{
 	private String title;
 
 	private JLabel lblTotalCount;
+	
+	private boolean showControl=false;
+
+	private JButton butInsert;
+
+	private JButton butDelete;
+
+	private JButton butUpdate;
+	private KSGPanel pnControl;
+
+	public void setShowControl(boolean showControl) {
+		this.showControl = showControl;
+		pnControl.setVisible(showControl);
+	}
 
 	public void setTitle(String title) {
 		this.title = title;
@@ -30,6 +52,7 @@ public class KSGTablePanel extends KSGPanel{
 
 	public KSGTablePanel() {
 		super();
+		
 		this.setLayout(new BorderLayout(5,5));
 
 		table = new KSGTable();
@@ -62,19 +85,41 @@ public class KSGTablePanel extends KSGPanel{
 	}
 
 	public JComponent createTitle() {
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
 		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
+		pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		
 		BoldLabel lblTitle = new BoldLabel(title + " 총");
+		
+		butInsert = new JButton("추가");
+		butDelete = new JButton("삭제");
+		butUpdate = new JButton("수정");
+		
+		butInsert.setActionCommand(INSERT);
+		butDelete.setActionCommand(DELETE);
+		butUpdate.setActionCommand(UPDATE);
 		
 		lblTotalCount = new JLabel("0");
 		lblTotalCount.setForeground(Color.red);
 		
 		
+		pnControl.add(butInsert);
+		pnControl.add(butUpdate);
+		pnControl.add(butDelete);
+		
 		pnTitle.add(lblTitle);
 		pnTitle.add(lblTotalCount);
 		pnTitle.add(new JLabel("건"));
+		
+		
+		pnMain.add(pnTitle,BorderLayout.LINE_START);
+		pnMain.add(pnControl,BorderLayout.LINE_END);
+		pnControl.setVisible(showControl);
 
-		return pnTitle;
+		return pnMain;
 	}
 
 	public void setColumnName(KSGTableColumn columnNames[]) {
@@ -113,6 +158,13 @@ public class KSGTablePanel extends KSGPanel{
 	{
 		super.addKeyListener(l);
 		table.addKeyListener(l);
+	}
+	
+	public void addContorlListener(ActionListener l)
+	{
+		butDelete.addActionListener(l);
+		butInsert.addActionListener(l);
+		butUpdate.addActionListener(l);
 	}
 
 	public void addColumn(KSGTableColumn ksgTableColumn) {

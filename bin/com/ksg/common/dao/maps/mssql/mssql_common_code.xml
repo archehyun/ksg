@@ -34,6 +34,15 @@
 	
 	</select>
 	
+	
+	<select id="selectCodeD" resultClass="java.util.HashMap">
+		select * from TB_CODE_INFO
+		
+		where
+		code_field=#code_field#
+		
+	</select>
+	
 	<select id="selectCodeDList" resultClass="java.util.HashMap">
 		select * from TB_CODE_INFO
 		<dynamic prepend="where">
@@ -51,61 +60,56 @@
 
 <!-- insert -->
 
-	<insert id="insertCode" parameterClass="java.util.HashMap">
-		insert into TB_PORT(
-			port_area
-			port_name,
-			port_abbr,
-			area_code,
-			
-		
+	<insert id="insertCodeH" parameterClass="java.util.HashMap">
+		insert into TB_CODE_H(
+			CD_ID,
+			CD_NM,
+			CD_ENG
 		)values
 		(
-			#port_area#
-			#port_name#,
-			#port_abbr#,
-			#area_code#,
+			#CD_ID#,
+			#CD_NM#,
+			#CD_ENG#
 		);
 	</insert>
 	
-	<insert id="insertVesselAbbr" parameterClass="java.util.HashMap">
-		insert into TB_PORT(
-			port_area
-			port_name,
-			port_abbr,
-			area_code,
-			
+	<insert id="insertCodeD" parameterClass="java.util.HashMap">
+		insert into TB_CODE_INFO(
+			code_field,
+			code_name,
+			code_type,
+			code_name_kor
 		
 		)values
 		(
-			#port_area#
-			#port_name#,
-			#port_abbr#,
-			#area_code#,
+			#code_field#,
+			#code_name#,
+			#code_type#,
+			#code_name_kor#
 		);
 	</insert>
 	
 <!-- update -->
 	
-	<update id="updateVesel" parameterClass="java.util.HashMap">
-		update TB_PORT 
+	<update id="updateCodeH" parameterClass="java.util.HashMap">
+		update TB_CODE_H 
 			set 
-				area_code=#area_code#, 
-				area_book_code=#area_book_code#, area_name=#area_name#
+				CD_NM=#CD_NM#
+				
 			where 
 			(
-				area_name=#base_area_name#
+				CD_ID=#CD_ID#
 			)
 	</update>
 
 <!-- delete -->
 
-	<delete id="deleteCode" parameterClass="java.util.HashMap">
-		delete from TB_PORT where port_name=#port_name#
+	<delete id="deleteCodeH" parameterClass="java.util.HashMap">
+		delete from TB_CODE_H where CD_ID=#CD_ID#
 	</delete>
 	
-	<delete id="deleteVesselAbbr" parameterClass="java.util.HashMap">
-		delete from TB_PORT_ABBR where port_abbr=#port_abbr#
+	<delete id="deleteCodeD" parameterClass="java.util.HashMap">
+		delete from TB_CODE_INFO where code_field=#code_field# and code_name=#code_name#
 	</delete>
 	
 	
@@ -113,6 +117,9 @@
 
 	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
 		select count(*) from TB_CODE_INFO	
+	</select>
+	<select id="selectCountH" resultClass="int" parameterClass="java.util.HashMap">
+		select count(*) from TB_CODE_H	
 	</select>
 
 <!-- ********************************************* -->	

@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -61,7 +63,7 @@ import com.ksg.common.view.comp.KSGDialog;
   * @프로그램 설명 :항구 정보 관리 화면
 
   */
-public class PnPort extends PnBase implements ActionListener{
+public class PnPort extends PnBase implements ActionListener, ComponentListener{
 
 	/**
 	 * 
@@ -94,6 +96,8 @@ public class PnPort extends PnBase implements ActionListener{
 	public PnPort(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
 		this.setBackground(Color.white);
+		
+		this.addComponentListener(this);
 		this.add(buildCenter());
 
 	}
@@ -610,6 +614,26 @@ public class PnPort extends PnBase implements ActionListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void componentShown(ComponentEvent e) {
+		fnSearch();
+		
+	}
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 

@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -36,6 +38,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -48,7 +52,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import com.ksg.adv.view.comp.SimpleFileFilter;
 import com.ksg.base.service.VesselService;
 import com.ksg.base.view.BaseInfoUI;
+import com.ksg.base.view.comp.PnCommonCode.SelectionListner;
+import com.ksg.base.view.dialog.InsertVesselAbbrInfoDialog;
 import com.ksg.base.view.dialog.InsertVesselInfoDialog;
+import com.ksg.base.view.dialog.UpdateVesselInfoDialog;
 import com.ksg.base.view.dialog.VesselImportDialog;
 import com.ksg.commands.base.VesselInfoExportCommand;
 import com.ksg.common.comp.BoldLabel;
@@ -78,7 +85,7 @@ import com.ksg.domain.Vessel;
  * @프로그램 설명 : 선박 관리 화면
 
  */
-public class PnVessel extends PnBase implements ActionListener {
+public class PnVessel extends PnBase implements ActionListener, ComponentListener {
 
 	private static final String STRING_ALL_DELETE 		= "전체 선박 데이터 삭제";
 	private static final String STRING_VESSEL_TYPE 		= "선박타입";
@@ -115,6 +122,8 @@ public class PnVessel extends PnBase implements ActionListener {
 	private JComboBox cbxUse;// 사용 유무 선택
 
 	KSGTablePanel tableH;
+	
+	SelectionListner selectionListner = new SelectionListner();
 
 	private VesselService vesselService = new VesselService();
 
@@ -129,14 +138,13 @@ public class PnVessel extends PnBase implements ActionListener {
 	public PnVessel(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
-
+		this.addComponentListener(this);
 		this.add(buildCenter());
 	}
 
 	private JPanel buildCenter()
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
-
 
 		tableH = new KSGTablePanel("선박목록");
 
@@ -145,7 +153,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		columns[0] = new KSGTableColumn();
 		columns[0].columnField = "vessel_name";
 		columns[0].columnName = STRING_VESSEL_NAME;
-		columns[0].size = 400;
+		columns[0].size = 200;
 
 		columns[1] = new KSGTableColumn();
 		columns[1].columnField = "vessel_mmsi";
@@ -178,7 +186,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		};
 		columns[4].columnField = "vessel_use";
 		columns[4].columnName = "사용유무";
-		columns[4].size = 200;
+		columns[4].size = 70;
 		
 
 		columns[5] = new KSGTableColumn();
@@ -191,6 +199,8 @@ public class PnVessel extends PnBase implements ActionListener {
 		tableH.initComp();
 
 		tableH.addMouseListener(new TableSelectListner());
+		
+		tableH.getSelectionModel().addListSelectionListener(selectionListner);
 
 		KSGPanel pnMainCenter = new KSGPanel(new BorderLayout(5,5));
 
@@ -328,18 +338,24 @@ public class PnVessel extends PnBase implements ActionListener {
 		JButton butDel = new JButton(STRING_DELETE);
 
 		JButton butNew = new JButton(STRING_INSERT);
+		JButton butNewAbbr = new JButton("약어등록");
 		JButton butExport = new JButton(STRING_EXPORT);
 		JButton butImport = new JButton(STRING_IMPORT);
+		JButton butDelNewAbbr = new JButton("약어삭제");
 		JButton butVesselDel = new JButton(STRING_ALL_DELETE);
 		pnButtomRight.setBorder(BorderFactory.createEtchedBorder());		
 		butDel.addActionListener(this);
 		butNew.addActionListener(this);
+		butDelNewAbbr.addActionListener(this);
+		butNewAbbr.addActionListener(this);
 		butExport.addActionListener(this);
 		butImport.addActionListener(this);
 		butVesselDel.addActionListener(this);
 
 		pnButtomRight.add(butNew);
+		pnButtomRight.add(butNewAbbr);
 		pnButtomRight.add(butDel);
+		pnButtomRight.add(butDelNewAbbr);
 		pnButtomRight.add(butExport);
 		pnButtomRight.add(butImport);
 		pnButtomRight.add(butVesselDel);
@@ -361,7 +377,6 @@ public class PnVessel extends PnBase implements ActionListener {
 		String command = e.getActionCommand();
 		if(command.equals(STRING_SEARCH))
 		{
-			//			searchData();
 			fnSearch();
 		}
 		else if(command.equals(STRING_DELETE))
@@ -371,6 +386,38 @@ public class PnVessel extends PnBase implements ActionListener {
 		else if(command.equals(STRING_INSERT))
 		{
 			insertAction();
+		}
+		else if(command.equals("약어삭제"))
+		{
+			int row = tableD.getSelectedRow();
+			if(row<0)
+				return;
+			HashMap<String, Object> item=(HashMap<String, Object>) tableD.getValueAt(row);
+			
+			try {
+			vesselService.deleteVesselAbbr(item);
+			
+			fnSearchDetail((String)item.get("vessel_name"));
+			
+			}catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+				
+			}
+		}
+		else if(command.equals("약어등록"))
+		{
+			int row=tableH.getSelectedRow();
+			
+			if(row<0)
+				return;
+			
+			HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(tableH.getSelectedRow());
+			KSGDialog dialog = new InsertVesselAbbrInfoDialog(item);
+			dialog.createAndUpdateUI();
+			fnSearchDetail((String)item.get("vessel_name"));
+			
 		}
 		else if(command.equals(STRING_EXPORT))
 		{
@@ -488,25 +535,32 @@ public class PnVessel extends PnBase implements ActionListener {
 	 * 
 	 */
 	private void deleteVesselAction() {
-		int row=tblTable.getSelectedRow();
+		int row=tableH.getSelectedRow();
 		if(row<0)
 			return;
 
-		String data= (String) tblTable.getValueAt(row, 0);
-		int result=JOptionPane.showConfirmDialog(this,data+"를 삭제 하시겠습니까?", "선박 정보 삭제", JOptionPane.YES_NO_OPTION);
+		
+		HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(row);
+		
+		String vessel_name = (String) item.get("vessel_name");
+		int result=JOptionPane.showConfirmDialog(this,vessel_name+"를 삭제 하시겠습니까?", "선박 정보 삭제", JOptionPane.YES_NO_OPTION);
 		if(result==JOptionPane.OK_OPTION)
 		{	
 			try {
-				int count=baseDaoService.deleteVessel(data);
-				if(count>0)
-				{
-					searchData();
-					JOptionPane.showMessageDialog(this, "삭제되었습니다.");
-				}
+				
+				vesselService.deleteVessel(item);
+				
+				JOptionPane.showMessageDialog(this, "삭제되었습니다.");
+				
+				fnSearch();
+				
+				tableD.clearReslult();
+				
 
 			} catch (SQLException e1) {
 
 				e1.printStackTrace();
+				
 				JOptionPane.showConfirmDialog(this, e1.getMessage());
 			}
 		}
@@ -724,27 +778,15 @@ public class PnVessel extends PnBase implements ActionListener {
 		public void mouseClicked(MouseEvent e) 
 		{			
 
-			if(e.getClickCount()>=0)
+			if(e.getClickCount()>1)
 			{
-				JTable es = (JTable) e.getSource();
-				int row=es.getSelectedRow();
-				{
-					String vessel_name=(String) tableH.getValueAt(row, 0);
-					String vessel_mmsi=(String) tableH.getValueAt(row, 1);
-					String vessel_type=(String) tableH.getValueAt(row, 2);
-					String vessel_company=(String) tableH.getValueAt(row, 3);
-					String vessel_use=String.valueOf(tableH.getValueAt(row, 4));
-					String input_date=(String) tableH.getValueAt(row, 5);
-
-
-
-					lblVesselName.setText(String.valueOf(tableH.getValueAt(row, 0)));
-					lblVesselCompany.setText(vessel_company);
-					lblVesselType.setText(vessel_type);
-					lblVesselMMSI.setText(vessel_mmsi);
-					lblVesselUse.setText(vessel_use);
-					lblInputDate.setText(input_date);
-				}
+				int row=tableH.getSelectedRow();
+				if(row<0)
+					return;
+				HashMap<String, Object> item = (HashMap<String, Object>) tableH.getValueAt(row);
+				UpdateVesselInfoDialog dialog = new UpdateVesselInfoDialog(item);
+				dialog.createAndUpdateUI();
+				
 			}
 		}
 	}
@@ -797,5 +839,78 @@ public class PnVessel extends PnBase implements ActionListener {
 		colmodel.getColumn(3).setPreferredWidth(200);
 		colmodel.getColumn(4).setPreferredWidth(80);
 		colmodel.getColumn(5).setPreferredWidth(100);
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		fnSearch();
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	class SelectionListner implements ListSelectionListener
+	{
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			
+			if(!e.getValueIsAdjusting())
+			{
+				
+				int row=tableH.getSelectedRow();
+				if(row<0)
+					return;
+				
+				String vessel_name=(String) tableH.getValueAt(row, 0);
+				String vessel_mmsi=(String) tableH.getValueAt(row, 1);
+				String vessel_type=(String) tableH.getValueAt(row, 2);
+				String vessel_company=(String) tableH.getValueAt(row, 3);
+				String vessel_use=String.valueOf(tableH.getValueAt(row, 4));
+				String input_date=(String) tableH.getValueAt(row, 5);
+
+				lblVesselName.setText(vessel_name);
+				lblVesselCompany.setText(vessel_company);
+				lblVesselType.setText(vessel_type);
+				lblVesselMMSI.setText(vessel_mmsi);
+				lblVesselUse.setText(vessel_use);
+				lblInputDate.setText(input_date);
+				
+				fnSearchDetail(vessel_name);
+				
+			}
+		}
+	}
+	public void fnSearchDetail(String vessel_name)
+	{
+
+		try {
+			HashMap<String, Object> commandMap = new HashMap<String, Object>();
+			
+			commandMap.put("vessel_name", vessel_name);
+			
+			HashMap<String, Object> resultMap =  (HashMap<String, Object>) vesselService.selectVesselAbbrList(commandMap);
+			
+			List result = (List) resultMap.get("master");
+			
+			tableD.setResultData(result);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 }

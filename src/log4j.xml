@@ -12,6 +12,16 @@
 
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+           <!-- <param name="ConversionPattern"
+                value="%5p-%m%n"/>-->   
+              <param name="ConversionPattern"
+                value="%5p-%C{1}.%M(%L)-%m%n"/> 
+        </layout>
+    </appender>
+
     <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
         
@@ -80,7 +90,7 @@
         <level value="info"/>
     </logger>
      <logger name="java.sql.Connection">
-        <level value="debug"/>	
+        <level value="DEBUG"/>	
     </logger>        
     
     
@@ -89,23 +99,16 @@
     </logger>
     
      <logger name="com.ksg.base">
-        <level value="debug"/>	
+        <level value="info"/>	
     </logger> 
     <logger name="com.ksg.shippertable">
         <level value="info"/>	
     </logger>    
-	<logger name="com.ksg.common">
-        <level value="error"/>	
+	<logger name="com.ksg.adv.view">
+        <level value="debug"/>	
     </logger>    
    
-<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
-    <layout class="org.apache.log4j.PatternLayout">
-           <!-- <param name="ConversionPattern"
-                value="%5p-%m%n"/>-->   
-              <param name="ConversionPattern"
-                value="%5p-%C{1}.%M(%L)-%m%n"/> 
-        </layout>
-    </appender>
+
     <root>
         <level value="ERROR">
         
