@@ -40,4 +40,15 @@ public class CompanyDAO extends AbstractDAO{
 		return  (Integer) selectOne("company.selectCount", commandMap);
 	}
 
+	public int updateCompany(HashMap<String, Object> param) throws SQLException{
+		
+		return (Integer) update("company.updateCompany", param);
+		
+	}
+
+	public Object insertCompany(HashMap<String, Object> param) throws SQLException{
+		// TODO Auto-generated method stub
+		return insert("company.insertCompany",param);
+	}
+
 }

@@ -17,7 +17,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -28,6 +30,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.ksg.base.service.AreaService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.view.comp.KSGDialog;
@@ -39,48 +42,44 @@ import com.ksg.domain.AreaInfo;
  * @author 박창현
  *
  */
-public class UpdateAreaInfodialog extends KSGDialog implements ActionListener {
-	private Font defaultFont = new Font("돋음",0,10);
+@SuppressWarnings("serial")
+public class UpdateAreaInfodialog extends KSGDialog implements ActionListener{
+	
+	
+//	Area
 	private JLabel lblInfo;
-
+	HashMap<String, Object> param;
 	private JTextField txfAreaName;
 	private JTextField txfAreaCode;
 	private JTextField txfAreaBookCode;
+	
 	BaseInfoUI baseInfoUI;
+	
 	String title;
+	
 	AreaInfo selectedInfo;
-
-	/**
-	 * @deprecated
-	 * @param baseInfoUI
-	 */
-	public UpdateAreaInfodialog(BaseInfoUI baseInfoUI) {
-		super();
-		this.baseInfoUI=baseInfoUI;
-		title = "지역 정보 추가";
-		
-	}
-
-	/**
-	 * @deprecated
-	 * @param infoUI
-	 * @param info
-	 */
-	public UpdateAreaInfodialog(BaseInfoUI infoUI, AreaInfo info) {
-		this(infoUI);
-		title = "지역 정보 수정";
-		selectedInfo= info;
-	}
-
-	public UpdateAreaInfodialog(AreaInfo info) {
+	private JButton butOK;
+	private JButton butCancel;
+	AreaService areaService = new AreaService();
+	private JLabel lblTitleInfo;
+	public UpdateAreaInfodialog(int type) {
 		super();
 		title = "지역 정보 관리";
-		selectedInfo= info;
+		this.type = type;
+
 	}
+
+	public UpdateAreaInfodialog(int type,HashMap<String, Object> param) {
+		this(type);
+		this.param = param;
+	}
+
 
 	public void createAndUpdateUI() {
 		this.setModal(true);
 		this.setTitle(title);
+
+		this.addComponentListener(this);
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		txfAreaName = new JTextField(21);
 		txfAreaCode = new JTextField(5);
@@ -98,13 +97,11 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener {
 		lblAreaCode.setPreferredSize(new Dimension(80,25));
 		pnCode.add(lblAreaCode);	
 		pnCode.add(txfAreaCode);
-		
+
 		JLabel lblAreaBookCode = new JLabel("지역 책 코드");
 		lblAreaBookCode.setPreferredSize(new Dimension(100,25));
 		pnCode.add(lblAreaBookCode);
 		pnCode.add(txfAreaBookCode);
-		
-
 
 		JPanel pnS = new JPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
@@ -114,10 +111,10 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener {
 
 		JPanel pnControl =  new JPanel();
 		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butOK = new JButton("확인");
+		butOK = new JButton("저장");
+		butCancel = new JButton("취소");
 		
 		butOK.addActionListener(this);
-		JButton butCancel = new JButton("취소");
 		butCancel.addActionListener(this);
 
 		pnControl.add(butOK);
@@ -126,9 +123,9 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener {
 		JPanel pnTitle = new JPanel();
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnTitle.setBackground(Color.white);
-		JLabel label = new JLabel("지역 정보 수정");
-		label.setFont(new Font("돋음",0,16));
-		pnTitle.add(label);
+		lblTitleInfo = new JLabel("지역정보 수정");
+		lblTitleInfo.setFont(new Font("돋음",0,16));
+		pnTitle.add(lblTitleInfo);
 
 
 		JPanel pnInfo = new JPanel();
@@ -145,12 +142,6 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener {
 		left.setPreferredSize(new Dimension(15,0));
 		JPanel right = new JPanel();
 		right.setPreferredSize(new Dimension(15,0));
-		if(selectedInfo!=null)
-		{
-			txfAreaCode.setText(selectedInfo.getArea_code());
-			txfAreaName.setText(selectedInfo.getArea_name());
-			txfAreaBookCode.setText(String.valueOf(selectedInfo.getArea_book_code()));
-		}
 
 		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
 		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
@@ -160,15 +151,16 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener {
 		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);		
 		this.setResizable(false);
 		this.setVisible(true);
-		
-		
-			
+
+
+
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		if(command.equals("확인"))
+		if(command.equals("수정"))
 		{
+			
 			if(txfAreaName.getText().length()<=0)
 			{
 				JOptionPane.showMessageDialog(this, "지역명을 적으세요");
@@ -179,28 +171,39 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "코드번호을 적으세요");
 				return;
 			}
+			
+			if(txfAreaBookCode.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(this, "코드번호을 적으세요");
+				return;
+			}
 			try{
-				int codeNum =Integer.parseInt(txfAreaCode.getText());
 				
 				
-				AreaInfo insert = new AreaInfo();
-				insert.setArea_name(txfAreaName.getText());
-				insert.setArea_code(txfAreaCode.getText());
-				insert.setArea_book_code(Integer.parseInt(txfAreaBookCode.getText()));
+				HashMap<String, Object> param = new HashMap<String, Object>();
 				
-				insert.setBase_area_name(selectedInfo.getArea_name());
-				baseService.updateAreaInfo(insert);
+				param.put("area_name", txfAreaName.getText());
+				
+				param.put("area_code", txfAreaCode.getText());
+				
+				param.put("area_book_code", Integer.parseInt(txfAreaBookCode.getText()));
+				
+				param.put("base_area_name", this.param.get("area_name"));
+				
+				areaService.updateArea(param);
+				
 				result=KSGDialog.SUCCESS;
-				JOptionPane.showMessageDialog(this, "수정 했습니다.");
-				close();
-				//baseInfoUI.updateTable();
 				
+				JOptionPane.showMessageDialog(this, "수정 했습니다.");
+				
+				close();
+
 			}catch (NumberFormatException nume) {
 				JOptionPane.showMessageDialog(this, "숫자 형식이 잘못 되었습니다.");
 				nume.printStackTrace();
 			}catch(SQLException sqle)
 			{
-				if(sqle.getErrorCode()==2627)//mssql 중복키 오류코드
+				/*if(sqle.getErrorCode()==2627)//mssql 중복키 오류코드
 				{
 					int option=JOptionPane.showConfirmDialog(this, "코드가 존재합니다. 업데이트 하시겠습니까?", "코드 존재", JOptionPane.YES_NO_OPTION);
 					if(option==JOptionPane.YES_OPTION)
@@ -222,9 +225,51 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener {
 				}else
 				{
 					JOptionPane.showMessageDialog(this,sqle.getErrorCode()+","+ sqle.getMessage());	
-				}
+				}*/
 			}
 
+		}
+		else if(command.equals("추가"))
+		{
+			if(txfAreaName.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(this, "지역명을 적으세요");
+				return;
+			}
+			if(txfAreaCode.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(this, "코드번호을 적으세요");
+				return;
+			}
+			
+			if(txfAreaBookCode.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(this, "코드번호을 적으세요");
+				return;
+			}
+			
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			
+			param.put("area_name", txfAreaName.getText());
+			
+			param.put("area_code", txfAreaCode.getText());
+			
+			param.put("area_book_code", Integer.parseInt(txfAreaBookCode.getText()));
+			
+			try {
+				areaService.insertArea(param);
+				result=KSGDialog.SUCCESS;
+				JOptionPane.showMessageDialog(this, "수정 했습니다.");
+				close();
+			} catch (Exception e1) {
+				
+				e1.printStackTrace();
+				
+				JOptionPane.showMessageDialog(this, e1.getMessage());
+				result=KSGDialog.FAILE;
+				close();
+			}
+			
 		}
 		else
 		{
@@ -232,5 +277,35 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener {
 			close();
 		}
 	}
+
+
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+		if(param!=null)
+		{
+			txfAreaCode.setText((String) param.get("area_code"));
+			txfAreaName.setText((String) param.get("area_name"));
+			txfAreaBookCode.setText(String.valueOf(param.get("area_book_code")));
+		}
+		
+		switch (type) {
+		case UPDATE:
+
+			lblTitleInfo.setText("지역정보 수정");
+			butOK.setActionCommand("수정");
+
+			break;
+		case INSERT:
+
+			lblTitleInfo.setText("지역정보 추가");
+			butOK.setActionCommand("추가");
+
+			break;
+
+		}
+
+	}	
 
 }

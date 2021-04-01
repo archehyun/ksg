@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.ksg.base.dao.PortDAO;
 import com.ksg.domain.PortInfo;
+import com.sun.org.apache.bcel.internal.generic.DALOAD;
 
 public class PortService {
 	
@@ -43,6 +44,21 @@ public class PortService {
 		}		
 		
 		return resultMap;
+	}
+
+	public int updatePort(HashMap<String, Object> param) throws SQLException {
+		return portDAO.updatePort(param);
+		
+	}
+
+	public void insertPort(HashMap<String, Object> param) throws SQLException {
+		portDAO.isnertPort(param);
+		
+	}
+
+	public int deletePort(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return portDAO.deletePort(param);
 	}
 	
 	

@@ -3,6 +3,7 @@ package com.ksg.shippertable.view.dialog;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,17 +36,26 @@ import com.ksg.common.comp.KSGTableColumn;
 import com.ksg.common.comp.KSGTablePanel;
 import com.ksg.common.view.comp.KSGDialog;
 
+
 /**
- * 
- * 항구 조회 다이어그램
- * @author 박창현
- *
- */
+
+  * @FileName : SearchPortDialog.java
+
+  * @Date : 2021. 3. 31. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 항구 조회
+
+  */
 @SuppressWarnings("serial")
 public class SearchPortDialog extends KSGDialog implements ActionListener, ComponentListener{
 
-	public String result;	
-
+	public String result;
+	
+	public boolean isSamePort=false;
 
 	Component main;
 
@@ -60,17 +71,28 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 
 	SelectEventHandler selectEventHandler = new SelectEventHandler();
 
+	private JCheckBox cbxSamePort;
+	
+	private boolean isSamePortView;
+
 	public SearchPortDialog(ManagePortDialog main, List<String> portli) {
 		this(main);
 
 	}
 
+	public SearchPortDialog(JDialog main,List<HashMap<String,Object>> portli2, boolean samePort) {
+
+		this(main);
+		this.isSamePortView = samePort;
+	}
+	
 	public SearchPortDialog(JDialog main,List<HashMap<String,Object>> portli2) {
 
-		this(main);			
-
-
+		this(main);
+		this.isSamePortView = true;
 	}
+	
+	
 
 	public SearchPortDialog(JDialog main) {
 		super(main);
@@ -142,34 +164,19 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 		return pnMain;
 	}
 
-
-
 	private JPanel createCenter()
 	{
 		JPanel pnMain = new JPanel(new BorderLayout(5,5));
 		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
-		JPanel pnContorl = new JPanel();
-
-		JButton butOk = new JButton("확인");
-
-		JButton butCancel = new JButton("취소");
-
-		butOk.addActionListener(this);
-
-		butCancel.addActionListener(this);
-
-		pnContorl.add(butOk);
-
-		pnContorl.add(butCancel);
+		JPanel pnContorl = createControl();
 
 		JTabbedPane pane = new JTabbedPane();
 
 		pane.addTab("일반", createNomalPort());
 
 		pane.addTab("예외", createExcpetionPort());
-
 
 		pane.addChangeListener(new ChangeListener(){
 
@@ -179,10 +186,16 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 				int index=tp.getSelectedIndex();
 				switch (index) {
 				case 0:
-					tblCurrent = nTable;
+					tblCurrent = nTable; // 일반항구
+					
+					if(isSamePortView)
+					cbxSamePort.setVisible(true);
+					
 					break;
 				case 1:
-					tblCurrent = eTable;
+					
+					tblCurrent = eTable; // 예외항구					
+					cbxSamePort.setSelected(false);
 					break;
 
 				default:
@@ -190,11 +203,45 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 				}
 
 			}});
+		
+		
 
 		pnMain.add(pane);
 
 		pnMain.add(pnContorl,BorderLayout.SOUTH);
 
+		return pnMain;
+	}
+
+	private JPanel createControl() {
+		
+		JPanel pnMain = new JPanel(new BorderLayout());
+		
+		JPanel pnLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		JPanel pnRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+		JButton butOk = new JButton("확인");
+
+		JButton butCancel = new JButton("취소");
+		
+		cbxSamePort = new JCheckBox("동일항구",false);
+
+		butOk.addActionListener(this);
+
+		butCancel.addActionListener(this);
+
+		pnRight.add(butOk);
+
+		pnRight.add(butCancel);
+		
+		
+		pnLeft.add(cbxSamePort);
+		
+		pnMain.add(pnLeft,BorderLayout.LINE_START);
+		pnMain.add(pnRight,BorderLayout.LINE_END);
+		
+		
 		return pnMain;
 	}
 
@@ -204,9 +251,8 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 
 		JTextField txfInput = new JTextField();
 		
-		
-		
 		txfInput.addKeyListener(new PortNameKeyAdapter(type, table));
+		
 		pnMain.add(new JLabel("검색:"),BorderLayout.WEST);
 		pnMain.add(txfInput);
 
@@ -243,10 +289,7 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 			{
 				try {
 					
-					
 					HashMap<String, Object> param = new HashMap<String, Object>();
-
-					
 					
 					if(type.equals("code_type"))
 					{
@@ -266,7 +309,6 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 
 						this.table.setResultData(result);	
 					}
-
 
 
 				} catch (SQLException e1) {
@@ -291,6 +333,7 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 				return;
 			}
 			result= String.valueOf(tblCurrent.getValueAt(ro, 0));
+			
 			close();
 		}
 		public void mouseClicked(MouseEvent e) {
@@ -316,7 +359,6 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 		public void keyReleased(KeyEvent e) {
 			
 		}
-
 	}
 
 
@@ -331,6 +373,9 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 				JOptionPane.showMessageDialog(null, "선택된 항구명이 없습니다.");
 				return;
 			}
+			
+			isSamePort = cbxSamePort.isSelected();
+			
 			result= String.valueOf(tblCurrent.getValueAt(ro, 0));
 			close();
 		}
@@ -338,7 +383,6 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 		{
 			close();
 		}
-
 	}
 
 	@Override
@@ -353,9 +397,12 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 		tblCurrent = nTable;
 
 		try {
+			
+			cbxSamePort.setVisible(isSamePortView);
 			HashMap<String, Object> commandMap = new HashMap<String, Object>();
 
 			commandMap.put("code_type", "port_exception");
+			
 			HashMap<String, Object> resultMap=(HashMap<String, Object>) codeService.selectCodeDList(commandMap);
 
 			eTable.setResultData(resultMap);		
@@ -366,8 +413,6 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 
 			this.nTable.setResultData(result);
 
-
-
 		}catch(Exception ee)
 		{
 			ee.printStackTrace();
@@ -377,5 +422,6 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 
 	@Override
 	public void componentHidden(ComponentEvent e) {}
+
 
 }

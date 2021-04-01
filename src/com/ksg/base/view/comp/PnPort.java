@@ -9,7 +9,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -40,7 +39,6 @@ import com.ksg.base.dao.PortDAO;
 import com.ksg.base.service.PortService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertPortAbbrInfoDialog;
-import com.ksg.base.view.dialog.InsertPortInfoDialog;
 import com.ksg.base.view.dialog.UpdatePortInfoDialog;
 import com.ksg.common.comp.BoldLabel;
 import com.ksg.common.comp.KSGPanel;
@@ -63,7 +61,7 @@ import com.ksg.common.view.comp.KSGDialog;
   * @프로그램 설명 :항구 정보 관리 화면
 
   */
-public class PnPort extends PnBase implements ActionListener, ComponentListener{
+public class PnPort extends PnBase implements ActionListener{
 
 	/**
 	 * 
@@ -403,7 +401,7 @@ public class PnPort extends PnBase implements ActionListener, ComponentListener{
 		}
 		else if(command.equals("신규"))
 		{
-			KSGDialog dialog = new InsertPortInfoDialog(getBaseInfoUI());
+			KSGDialog dialog = new UpdatePortInfoDialog(UpdatePortInfoDialog.INSERT);
 			dialog.createAndUpdateUI();
 			if(dialog.result==KSGDialog.SUCCESS)
 			{
@@ -434,11 +432,11 @@ public class PnPort extends PnBase implements ActionListener, ComponentListener{
 		}
 		else if(command.equals("삭제"))
 		{
-			int row=tableD.getSelectedRow();
+			int row=tableH.getSelectedRow();
 			if(row<0)
 				return;
 
-			String data = (String) tableD.getValueAt(row, 0);
+			String data = (String) tableH.getValueAt(row, 0);
 			int result=JOptionPane.showConfirmDialog(null, data+"를 삭제 하시겠습니까?", "항구 정보 삭제", JOptionPane.YES_NO_OPTION);
 			if(result==JOptionPane.OK_OPTION)
 			{						
@@ -448,7 +446,7 @@ public class PnPort extends PnBase implements ActionListener, ComponentListener{
 					
 					param.put("port_name", data);
 					
-					int count=portDAO.deletePort(param);
+					int count=portService.deletePort(param);
 					
 					if(count>0)
 					{						
@@ -503,44 +501,50 @@ public class PnPort extends PnBase implements ActionListener, ComponentListener{
 		String areaCode;
 		public void mouseClicked(MouseEvent e) 
 		{	
+			
+			
+			JTable es = (JTable) e.getSource();
+			
+			int row=es.getSelectedRow();
+			if(row<0)
+				return;
+			
 			if(e.getClickCount()>0)
 			{
-				JTable es = (JTable) e.getSource();
-				int row=es.getSelectedRow();
-				if(row<0)
-					return;
-				portName=(String) tableH.getValueAt(row, 0);
 				
-				pationality = (String) tableH.getValueAt(row, 1);
+				HashMap<String, Object> param = (HashMap<String, Object>) tableH.getValueAt(row);
 				
-				area = (String) tableH.getValueAt(row, 2);
+				lblPortName.setText((String) param.get("port_name"));
 				
-				areaCode = (String) tableH.getValueAt(row, 3);
+				lblPationality.setText((String) param.get("port_nationality"));
 				
-				lblPortName.setText(portName);
-				lblPationality.setText(pationality);
-				lblArea.setText(area);
-				lblAreaCode.setText(areaCode);
+				lblArea.setText((String) param.get("port_area"));
+				
+				lblAreaCode.setText((String) param.get("area_code"));
 				
 				HashMap<String, Object> commandMap = new HashMap<String, Object>();
 				
-				commandMap.put("port_name", portName);
+				commandMap.put("port_name", param.get("port_name"));
 				
 				try {
 					List li=portDAO.selectPortAbbrList(commandMap);
 					tableD.setResultData(li);
+					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				
 			}
 			
-			else if(e.getClickCount()>=2)
-			{	
-				dialog = new UpdatePortInfoDialog(portName);
+			
+			if(e.getClickCount()>1)
+			{				
+				HashMap<String, Object> param = (HashMap<String, Object>) tableH.getValueAt(row);
+				
+				dialog = new UpdatePortInfoDialog(UpdatePortInfoDialog.UPDATE,param);
+				
 				dialog.createAndUpdateUI();
+				
 				if(dialog.result==KSGDialog.SUCCESS)
 				{
 					fnSearch();
@@ -616,24 +620,10 @@ public class PnPort extends PnBase implements ActionListener, ComponentListener{
 		}
 		
 	}
-	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+
 	@Override
 	public void componentShown(ComponentEvent e) {
 		fnSearch();
-		
-	}
-	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 

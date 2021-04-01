@@ -69,31 +69,34 @@
 
 	<insert id="insertPort" parameterClass="java.util.HashMap">
 		insert into TB_PORT(
-			port_area
+			port_area,
 			port_name,
-			port_abbr,
-			area_code,
+			port_nationality,
+			area_code
 			
 		
 		)values
 		(
-			#port_area#
+			#port_area#,
 			#port_name#,
-			#port_abbr#,
-			#area_code#,
+			#port_nationality#,
+			#area_code#
 		);
 	</insert>
 	
 <!-- update -->
 	
-	<update id="updatePORT" parameterClass="java.util.HashMap">
+	<update id="updatePort" parameterClass="java.util.HashMap">
 		update TB_PORT 
 			set 
-				area_code=#area_code#, 
-				area_book_code=#area_book_code#, area_name=#area_name#
+				port_area=#port_area#,
+				port_name=#port_name#,
+				port_nationality=#port_nationality#,
+				area_code=#area_code#
+				
 			where 
 			(
-				area_name=#base_area_name#
+				port_name=#base_port_name#
 			)
 	</update>
 

@@ -2,6 +2,8 @@ package com.ksg.base.view.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,7 +27,7 @@ import com.ksg.view.KSGViewParameter;
  * @author ¹ÚÃ¢Çö
  *
  */
-public abstract class PnBase extends KSGPanel implements TableListener{
+public abstract class PnBase extends KSGPanel implements TableListener, ComponentListener{
 	/**
 	 * 
 	 */
@@ -102,7 +104,29 @@ public abstract class PnBase extends KSGPanel implements TableListener{
 	@Override
 	public void update(KSGModelManager manager) {}
 
-	
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

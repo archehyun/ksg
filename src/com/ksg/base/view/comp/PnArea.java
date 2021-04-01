@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -34,6 +36,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.base.dao.AreaDAO;
+import com.ksg.base.service.AreaService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertAreaInfodialog;
 import com.ksg.base.view.dialog.UpdateAreaInfodialog;
@@ -76,6 +79,8 @@ public class PnArea extends PnBase implements ActionListener{
 
 	private String columName[] = {"코드","지역명","지역코드"};
 	
+	AreaService areaService = new AreaService();
+	
 	AreaDAO areaDAO = new AreaDAO();
 
 
@@ -89,10 +94,8 @@ public class PnArea extends PnBase implements ActionListener{
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
 		
-		
-		//tblTable.addMouseListener(new TableSelectListner());
-		
 		tableH = new KSGTable();
+		tableH.addMouseListener(new TableSelectListner());
 		
 		pnMain.add(new JScrollPane(tableH));
 		
@@ -199,29 +202,11 @@ public class PnArea extends PnBase implements ActionListener{
 		String command =e.getActionCommand();
 		if(command.equals("검색"))
 		{
-			searchData(null);
+			fnSearch();
 		}
 		else if(command.equals("삭제"))
 		{
-			/*int row=tblTable.getSelectedRow();
-			if(row<0)
-				return;
-
-			String data = (String) tblTable.getValueAt(row, 1);
-			int result=JOptionPane.showConfirmDialog(null, data+"를 삭제 하시겠습니까?", "지역 정보 삭제", JOptionPane.YES_NO_OPTION);
-			if(result==JOptionPane.OK_OPTION)
-			{						
-				try {
-					int count=baseDaoService.deleteArea(data);
-					if(count>0)
-					{
-						searchData(null);
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}*/
+			
 			
 			int row =tableH.getSelectedRow();
 			if(row<0)
@@ -237,7 +222,7 @@ public class PnArea extends PnBase implements ActionListener{
 					int count=areaDAO.deleteArea(param);
 					if(count>0)
 					{
-						searchData();
+						fnSearch();
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
@@ -247,11 +232,11 @@ public class PnArea extends PnBase implements ActionListener{
 		}
 		else if(command.equals("신규"))
 		{
-			KSGDialog dialog = new InsertAreaInfodialog(getBaseInfoUI());
+			KSGDialog dialog = new UpdateAreaInfodialog(UpdateAreaInfodialog.INSERT);
 			dialog.createAndUpdateUI();
 			if(dialog.result==KSGDialog.SUCCESS)
 			{
-				searchData();
+				fnSearch();
 			}
 		}
 
@@ -303,26 +288,21 @@ public class PnArea extends PnBase implements ActionListener{
 		KSGDialog dialog;
 		public void mouseClicked(MouseEvent e) 
 		{
-			if(e.getClickCount()>=2)
+			if(e.getClickCount()>1)
 			{
 				JTable es = (JTable) e.getSource();
+				
 				int row=es.getSelectedRow();
+				
+				HashMap<String , Object> param = (HashMap<String, Object>) tableH.getValueAt(row);
+				dialog = new UpdateAreaInfodialog(UpdateAreaInfodialog.UPDATE,param);
+				dialog.createAndUpdateUI();
+				
+				int result = dialog.result;
+				if(result== KSGDialog.SUCCESS)
 				{
-					int areaBookCode=(Integer) tblTable.getValueAt(row, 0);
-					String area_name=(String) tblTable.getValueAt(row, 1);
-					String area_code=(String) tblTable.getValueAt(row, 2);
-
-					AreaInfo info = new AreaInfo();
-					info.setArea_name(area_name);
-					info.setArea_code(area_code);
-					info.setArea_book_code(areaBookCode);
-					dialog = new UpdateAreaInfodialog(info);
-					dialog.createAndUpdateUI();;
-					if(dialog.result==KSGDialog.SUCCESS)
-					{
-						searchData(null);
-					}
-				}				
+					fnSearch();	
+				}
 			}
 		}
 	}
@@ -422,7 +402,20 @@ public class PnArea extends PnBase implements ActionListener{
 
 	@Override
 	public void fnSearch() {
-		// TODO Auto-generated method stub
+		try {
+			List li = areaService.selectAreaList(null);
+			tableH.setResultData(li);
+			lblTotal.setText(li.size()+" ");
+		} catch (SQLException ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
+		}	
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		fnSearch();
 		
 	}
 

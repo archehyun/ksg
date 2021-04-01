@@ -17,20 +17,20 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -40,7 +40,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.ksg.common.dao.DAOImplManager;
+import com.ksg.base.service.PortService;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.dao.impl.BaseDAOManager;
@@ -60,7 +60,7 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	HashMap<String, Object> param;
 
 	private JTextField txfPort_name;
 
@@ -69,24 +69,34 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 	private JTextField txfPort_area;
 
 	private JTextField txfArea_code;
-
-	private PortInfo selectedPort;
-	
-	private JList listPortAbbr;
 	
 	protected BaseDAOManager baseServices;
+	private JButton butOK;
+	private JButton butCancel;
+	private JLabel lblTitleInfo;
+	
+	PortService portService;
 
-	public UpdatePortInfoDialog(String port_name) {
+	public UpdatePortInfoDialog(int type)
+	{
 		super();
-		if(port_name==null)
-			return;
-		
-		baseServices=DAOImplManager.getInstance().createBaseDAOImpl();
-		
-		initComp(port_name);
+		portService = new PortService();
+		this.type = type;
+	}
+	
+	public UpdatePortInfoDialog(int type, HashMap<String, Object> param) {
+		this(type);
+		this.param = param;
 		
 	}
 	public void createAndUpdateUI() {
+		
+		this.addComponentListener(this);
+		txfPort_name = new JTextField(20);
+		txfPort_nationailty = new JTextField(20);
+		txfPort_area = new JTextField(20);
+		txfArea_code = new JTextField(5);
+		
 		
 		this.setModal(true);
 		this.setTitle("항구 정보 관리");
@@ -150,8 +160,8 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 
 
 					public void actionPerformed(ActionEvent e) {
-						txfPort_area.setText(selectedPort.getPort_area());
-						txfArea_code.setText(selectedPort.getArea_code());
+						txfPort_area.setText((String) param.get("port_area"));
+						txfArea_code.setText((String) param.get("area_code"));
 						dialog.setVisible(false);
 						dialog.dispose();
 
@@ -255,8 +265,8 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 
 		JPanel pnControl =  new JPanel();
 		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butOK = new JButton("확인");
-		JButton butCancel = new JButton("취소");
+		butOK = new JButton("저장");
+		butCancel = new JButton("취소");
 		butOK.addActionListener(this);
 		butCancel.addActionListener(this);
 		pnControl.add(butOK);
@@ -265,23 +275,16 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 		JPanel pnTitle = new JPanel();
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnTitle.setBackground(Color.white);
-		JLabel label = new JLabel("항구 정보 수정");
-		label.setFont(new Font("area",Font.BOLD,16));
-		pnTitle.add(label);
-		
-		JPanel pnPortAbbr = new JPanel(new BorderLayout());
+		lblTitleInfo = new JLabel("항구 정보 수정");
+		lblTitleInfo.setFont(new Font("area",Font.BOLD,16));
+		pnTitle.add(lblTitleInfo);
 		
 		
-		JLabel lblPortAbbr = new JLabel("항구 약어");
-		lblPortAbbr.setPreferredSize(new Dimension(110,25));
-		pnPortAbbr.add(lblPortAbbr,BorderLayout.WEST);
-		pnPortAbbr.add(new JScrollPane(listPortAbbr));		
-
 		pnCenter.add(pnPort_name);
 		pnCenter.add(pnPort_nationailty);
 		pnCenter.add(pnArea_code);
 		pnCenter.add(pnPort_area);
-		pnCenter.add(pnPortAbbr);
+		
 
 		pnCenter.add(pnS);
 		pnCenter.add(pnControl);
@@ -301,50 +304,13 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 		this.setVisible(true);
 	
 	}
-	private void initComp(String port_name) {
-		txfPort_name = new JTextField(20);
-		txfPort_nationailty = new JTextField(20);
-		txfPort_area = new JTextField(20);
-		txfArea_code = new JTextField(5);
-		listPortAbbr = new JList();
+	
 		
-		if(port_name==null)
-			return;
-		
-		try {
-			PortInfo option = new PortInfo();
-			option.setPort_name(port_name);
-			List li=baseService.getSearchedPort_AbbrList("port_name='"+port_name+"'");
-			
-			Iterator iter = li.iterator();
-			DefaultListModel model = new DefaultListModel();
-			
-			while(iter.hasNext())
-			{
-				PortInfo portInfo = (PortInfo) iter.next();
-				model.addElement(portInfo.getPort_abbr());
-			}
-			
-			listPortAbbr.setModel(model);
-			
-			selectedPort = baseService.getPortInfo(port_name);
-			if(selectedPort!=null){
-			txfArea_code.setText(selectedPort.getArea_code());
-			txfPort_area.setText(selectedPort.getPort_area());
-			txfPort_name.setText(selectedPort.getPort_name());
-			txfPort_nationailty.setText(selectedPort.getPort_nationality());
-			
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+	
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		if(command.equals("확인"))
+		if(command.equals("수정"))
 		{
 			baseService = new BaseServiceImpl();
 			if(txfPort_name.getText().length()<=0)
@@ -364,17 +330,21 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 			}
 			
 			
-			PortInfo info = new PortInfo();
+			HashMap<String, Object> param = new HashMap<String, Object>();
 			
-			info.setArea_code(txfArea_code.getText());
-			info.setPort_name(txfPort_name.getText());
-			info.setPort_nationality(txfPort_nationailty.getText());
-			info.setPort_area(txfPort_area.getText());
-			info.setBase_port_name(selectedPort.getPort_name());
+			
+			param.put("area_code", txfArea_code.getText());
+			
+			param.put("port_name", txfPort_name.getText());
+			
+			param.put("port_nationality", txfPort_nationailty.getText());
+			
+			param.put("port_area", txfPort_area.getText());
+			
+			param.put("base_port_name", this.param.get("port_name"));
 
 			try {
-
-				baseService.updatePortInfo(info);
+				portService.updatePort(param);
 				this.setVisible(false);
 				this.dispose();
 				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "항구를 수정했습니다.");
@@ -382,35 +352,112 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 			} catch (SQLException e1) {
 				
 				
-				JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
-				e1.printStackTrace();
-				/*if(e1.getErrorCode()==2627)
+				if(e1.getErrorCode()==2627)
 				{
-					try 
-					{
-						_baseService.updatePortInfo(info);
-						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "항구정보를 수정 했습니다.");
-					} catch (SQLException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
+					JOptionPane.showMessageDialog(this, "항구명이 존재합니다.");
+					
 					
 				}else
 				{
 					JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
 					e1.printStackTrace();
-				}*/
+				}
 			}
 		
-		}else if(command.equals("취소"))
+		}
+		else if(command.equals("추가"))
 		{
 			
+			if(txfPort_name.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(this, "항구명이 없습니다.");
+				return;
+			}
+			if(txfPort_nationailty.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(this, "국가명이 없습니다.");
+				return;
+			}
+			if(txfArea_code.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(this, "코드번호를 선택하세요");
+				return;
+			}
 			
+			try {
+				HashMap<String, Object> param = new HashMap<String, Object>();
+				
+				
+				param.put("area_code", txfArea_code.getText());
+				
+				param.put("port_name", txfPort_name.getText());
+				
+				param.put("port_nationality", txfPort_nationailty.getText());
+				
+				param.put("port_area", txfPort_area.getText());
+				
+				portService.insertPort(param);
+				
+				this.setVisible(false);
+				
+				this.dispose();
+				
+				this.result=KSGDialog.SUCCESS;
+				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "항구를 추가했습니다.");
+				
+			} catch (SQLException e1) {
+				
+				if(e1.getErrorCode()==2627)
+				{
+					JOptionPane.showMessageDialog(this, "항구명이 존재합니다.");
+					
+					
+				}else
+				{
+					JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
+					e1.printStackTrace();
+				}
+			}
+			
+			
+			
+		}
+		else if(command.equals("취소"))
+		{
 			this.setVisible(false);
 			this.dispose();
 		}
 
 	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+		if(param!=null)
+		{	
+			txfArea_code.setText((String) param.get("area_code"));
+			txfPort_area.setText((String) param.get("port_area"));
+			txfPort_name.setText((String) param.get("port_name"));
+			txfPort_nationailty.setText((String) param.get("port_nationality"));
+		}
+		
+		switch (type) {
+		case UPDATE:
+
+			lblTitleInfo.setText("항구정보 수정");
+			butOK.setActionCommand("수정");
+
+			break;
+		case INSERT:
+
+			lblTitleInfo.setText("지역정보 추가");
+			butOK.setActionCommand("추가");
+
+			break;
+
+		}
+
+	}	
 
 
 
