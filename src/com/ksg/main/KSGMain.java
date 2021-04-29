@@ -24,17 +24,20 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Logger;
 
+import com.ksg.common.util.PropertiManager;
 import com.ksg.view.KSGLogin;
 import com.ksg.view.KSGMainFrame;
 
 public class KSGMain 
 {
 	protected Logger logger = Logger.getLogger(getClass());
+	
+	PropertiManager manager = PropertiManager.getInstance();
 
 	public KSGMain() 
 	{
-		
-		process(8000);
+		System.out.println(manager.getProperties());
+		//process(8000);
 		
 	}
 
@@ -47,11 +50,13 @@ public class KSGMain
 
 	public void start() {
 		try{
+			System.out.println("start");
 			logger.info("PROGRAM START");
 			logger.info("DB Connected..");
 
 			if(new File("ksg.jar").isFile())
 			{
+				
 				logger.debug("load jar file");
 				JarFile file = new JarFile("ksg.jar");
 				JarEntry en = file.getJarEntry("db.properties");

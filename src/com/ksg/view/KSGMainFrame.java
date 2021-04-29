@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,10 +76,20 @@ import com.ksg.schedule.view.ScheduleMgtUI;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 
+
 /**
- * @author 박창현
- *
- */
+
+  * @FileName : KSGMainFrame.java
+
+  * @Date : 2021. 4. 17. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	private static final String SCHEDULE_WORLDWIDE	= "항로별 스케줄 생성";
 	private static final String SCHEDULE_INBOUND	= "Inbound 스케줄 생성";
@@ -185,7 +194,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				pnPrintADV 	= new PrintADVUI();
 				
 				pnSchedule  = new ScheduleMgtUI();
-				
 				
 				pnCenter.add(pnSearch,ADV_SEARCH);
 				

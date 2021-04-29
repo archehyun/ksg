@@ -90,7 +90,7 @@
         <level value="info"/>
     </logger>
      <logger name="java.sql.Connection">
-        <level value="DEBUG"/>	
+        <level value="INFO"/>	
     </logger>        
     
     
