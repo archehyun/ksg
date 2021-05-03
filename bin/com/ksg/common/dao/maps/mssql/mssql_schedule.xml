@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="schedule">
+
+
+<!-- *** Port *** -->
+	
+
+<!-- select -->
+
+	<select id="selectScheduleList" resultClass="java.util.HashMap">
+		select * from TB_SCHEDULE_INFO
+		<dynamic prepend="where">
+		    	<isNotNull property="table_id" prepend="and">
+					table_id=#table_id#
+				</isNotNull>
+				<isNotNull property="company_abbr" prepend="and">
+					company_abbr=#company_abbr#
+				</isNotNull>
+				<isNotNull property="agent" prepend="and">
+					agent=#agent#
+				</isNotNull>								
+				<isNotNull property="date_issue" prepend="and">
+					date_issue=#date_issue#
+				</isNotNull>
+				<isNotNull property="inOutType" prepend="and">
+					inOutType=#inOutType#
+				</isNotNull>
+				<isNotNull property="vessel" prepend="and">
+					vessel=#vessel#
+				</isNotNull>
+				<isNotNull property="voyage_num" prepend="and">
+					voyage_num=#voyage_num#
+				</isNotNull>
+				<isNotNull property="area_name" prepend="and">
+					area_name=#area_name#
+				</isNotNull>
+				<isNotNull property="gubun" prepend="and">
+					gubun=#gubun#
+				</isNotNull>
+				<isNotNull property="fromPort" prepend="and">
+					fromPort=#fromPort#
+				</isNotNull>
+				<isNotNull property="port" prepend="and">
+					port=#port#
+				</isNotNull>
+  
+		</dynamic>
+	</select>
+	
+		
+
+<!-- insert -->
+
+	
+<!-- update -->
+	
+	
+
+<!-- delete -->
+
+	
+	
+	
+<!-- count -->
+
+	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
+		select count(*) from TB_SCHEDULE_INFO	
+	</select>
+
+<!-- ********************************************* -->	
+
+
+				
+</sqlMap>
