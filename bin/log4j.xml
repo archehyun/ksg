@@ -90,12 +90,12 @@
         <level value="info"/>
     </logger>
      <logger name="java.sql.Connection">
-        <level value="INFO"/>	
+        <level value="DEBUG"/>	
     </logger>        
     
     
     <logger name="com.ksg.schedule">
-        <level value="error"/>	
+        <level value="info"/>	
     </logger>
     
      <logger name="com.ksg.base">

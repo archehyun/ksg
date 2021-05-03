@@ -72,6 +72,19 @@ import com.ksg.view.ui.ErrorLogManager;
  * @author 박창현
  *
  */
+/**
+
+  * @FileName : ScheduleMgtUI.java
+
+  * @Date : 2021. 4. 29. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 
@@ -726,19 +739,6 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 		return pnMain;
 	}
-	/**
-	 * @param da
-	 * @return
-	 *//*
-	private String getDate(String da)
-	{
-		if(da.length()!=8)
-			JOptionPane.showMessageDialog(null, "입력자리수가 다릅니다.");
-		String year=da.substring(0,4);
-		String month=da.substring(4,6);
-		String day=da.substring(6,8);
-		return year+"-"+month+"-"+day;
-	}*/
 
 
 	ScheduleManager scheduleManager = ScheduleManager.getInstance();
@@ -794,6 +794,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 					else if(gubun.equals(ShippersTable.GUBUN_INLAND))
 					{
 						op.setDate_issue(selectedDate);
+						
 						new SortInlandCommnad(op).execute();
 					}
 					
@@ -862,6 +863,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 					//
 				
 					updateScheduleDateList();
+					
 					updateTableDateList();
 					
 				} catch (ParseException e) {

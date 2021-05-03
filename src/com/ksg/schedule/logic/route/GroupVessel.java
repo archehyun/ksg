@@ -158,6 +158,8 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 			companyStringList+=array2[i]+(i<array2.length-1?",":"");
 
 		}
+		
+		
 		return companyStringList;
 
 	}
@@ -177,8 +179,15 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 				new_company.add(companyList.get(i));
 			}
 		}
-
-		return major_company+","+arrangedCompanyList(new_company);
+		
+		if(new_company.size()>0)
+		{
+			
+			return major_company+","+arrangedCompanyList(new_company);
+		}else
+		{
+			return major_company;
+		}
 	}
 	public String getCompany()
 	{

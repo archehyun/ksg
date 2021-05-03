@@ -38,6 +38,19 @@ import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
+/**
+
+  * @FileName : RouteScheduleJointV2.java
+
+  * @Date : 2021. 4. 29. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class RouteScheduleJointV2 extends DefaultScheduleJoint {
 	final int FORWARD =0;
 	final int BACK =1;

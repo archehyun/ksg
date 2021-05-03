@@ -46,7 +46,6 @@ import javax.swing.table.TableRowSorter;
 
 import com.ksg.base.service.CompanyService;
 import com.ksg.base.view.BaseInfoUI;
-import com.ksg.base.view.dialog.InsertCompanyInfoDialog;
 import com.ksg.base.view.dialog.UpdateCompanyInfoDialog;
 import com.ksg.common.comp.KSGTableColumn;
 import com.ksg.common.comp.KSGTablePanel;

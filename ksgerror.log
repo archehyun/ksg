@@ -18,7 +18,10 @@ INFO - create
 INFO - init searchUI end
 DEBUG - {conn-100021} Connection
 DEBUG - {conn-100021} Preparing Statement:   select * from TB_TABLE_INFO                                        order by page, table_index   
-INFO - retirve:3126,[table_id:null,page:-1,date:null,null]
+INFO - retirve:3133,[table_id:null,page:-1,date:null,null]
+INFO - nomal테이블 생성
+INFO - console테이블 생성
+INFO - inland테이블 생성
 DEBUG - {conn-100024} Connection
 DEBUG - {conn-100024} Preparing Statement:    select date_isusse  from TB_TABLE_INFO group by date_isusse order by date_isusse desc  
 DEBUG - {conn-100027} Connection
@@ -31,38 +34,40 @@ DEBUG - {conn-100036} Connection
 DEBUG - {conn-100036} Preparing Statement:   select page, company_abbr from TB_TABLE_INFO group by page, company_abbr  
 DEBUG - {conn-100039} Connection
 DEBUG - {conn-100039} Preparing Statement:   select page, company_abbr from TB_TABLE_INFO group by page, company_abbr  
+INFO - search param:230
 DEBUG - {conn-100042} Connection
-DEBUG - {conn-100042} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100042} Preparing Statement:   select * from TB_TABLE_INFO     where         page = ?                                order by page, table_index   
+INFO - retirve:9,[table_id:null,page:230,date:null,null]
 DEBUG - {conn-100045} Connection
 DEBUG - {conn-100045} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
 DEBUG - {conn-100048} Connection
-DEBUG - {conn-100048} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
-INFO - start
-INFO - update ADVTable : A1
-INFO - 광고정보 조회
+DEBUG - {conn-100048} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
 DEBUG - {conn-100051} Connection
-DEBUG - {conn-100051} Preparing Statement:    select * from TB_ADV_INFO where table_id= ?  
+DEBUG - {conn-100051} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
 DEBUG - {conn-100054} Connection
-DEBUG - {conn-100054} Preparing Statement:    select max(port_index) from TB_TABLE_PORTLIST where table_id=? and port_type='P'   
+DEBUG - {conn-100054} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
 DEBUG - {conn-100057} Connection
-DEBUG - {conn-100057} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100057} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
 DEBUG - {conn-100060} Connection
-DEBUG - {conn-100060} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100060} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
+INFO - start
+INFO - update ADVTable : SHSE2
+INFO - 광고정보 조회
 DEBUG - {conn-100063} Connection
-DEBUG - {conn-100063} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100063} Preparing Statement:    select * from TB_ADV_INFO where table_id= ?  
 DEBUG - {conn-100066} Connection
-DEBUG - {conn-100066} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100066} Preparing Statement:    select max(port_index) from TB_TABLE_PORTLIST where table_id=? and port_type='P'   
 DEBUG - {conn-100069} Connection
-DEBUG - {conn-100069} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100069} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
 DEBUG - {conn-100072} Connection
-DEBUG - {conn-100072} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
-INFO - rendering
+DEBUG - {conn-100072} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
 DEBUG - {conn-100075} Connection
-DEBUG - {conn-100075} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100075} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
 DEBUG - {conn-100078} Connection
-DEBUG - {conn-100078} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100078} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
 DEBUG - {conn-100081} Connection
-DEBUG - {conn-100081} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100081} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+INFO - rendering
 DEBUG - {conn-100084} Connection
 DEBUG - {conn-100084} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
 DEBUG - {conn-100087} Connection
@@ -70,12 +75,582 @@ DEBUG - {conn-100087} Preparing Statement:    select vessel_abbr from TB_VESSEL 
 DEBUG - {conn-100090} Connection
 DEBUG - {conn-100090} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
 DEBUG - {conn-100093} Connection
-DEBUG - {conn-100093} Preparing Statement:    select * from TB_TABLE_PORTLIST      where           port_type = ?            and       table_id = ?               order by port_index  
+DEBUG - {conn-100093} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
 DEBUG - {conn-100096} Connection
-DEBUG - {conn-100096} Preparing Statement:    select count(*) from TB_CODE_INFO   
+DEBUG - {conn-100096} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
 DEBUG - {conn-100099} Connection
-DEBUG - {conn-100099} Preparing Statement:    select * from TB_CODE_INFO   where                         code_type=?                            
+DEBUG - {conn-100099} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
 DEBUG - {conn-100102} Connection
-DEBUG - {conn-100102} Preparing Statement:    select count(*) from TB_PORT   
+DEBUG - {conn-100102} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
 DEBUG - {conn-100105} Connection
-DEBUG - {conn-100105} Preparing Statement:    select * from TB_PORT                                      
+DEBUG - {conn-100105} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100108} Connection
+DEBUG - {conn-100108} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100111} Connection
+DEBUG - {conn-100111} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100114} Connection
+DEBUG - {conn-100114} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100117} Connection
+DEBUG - {conn-100117} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100120} Connection
+DEBUG - {conn-100120} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100123} Connection
+DEBUG - {conn-100123} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100126} Connection
+DEBUG - {conn-100126} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100129} Connection
+DEBUG - {conn-100129} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100132} Connection
+DEBUG - {conn-100132} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100135} Connection
+DEBUG - {conn-100135} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100138} Connection
+DEBUG - {conn-100138} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100141} Connection
+DEBUG - {conn-100141} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100144} Connection
+DEBUG - {conn-100144} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100147} Connection
+DEBUG - {conn-100147} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100150} Connection
+DEBUG - {conn-100150} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100153} Connection
+DEBUG - {conn-100153} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100156} Connection
+DEBUG - {conn-100156} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100159} Connection
+DEBUG - {conn-100159} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100162} Connection
+DEBUG - {conn-100162} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100165} Connection
+DEBUG - {conn-100165} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100168} Connection
+DEBUG - {conn-100168} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100171} Connection
+DEBUG - {conn-100171} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100174} Connection
+DEBUG - {conn-100174} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100177} Connection
+DEBUG - {conn-100177} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100180} Connection
+DEBUG - {conn-100180} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100183} Connection
+DEBUG - {conn-100183} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100186} Connection
+DEBUG - {conn-100186} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100189} Connection
+DEBUG - {conn-100189} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100192} Connection
+DEBUG - {conn-100192} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100195} Connection
+DEBUG - {conn-100195} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100198} Connection
+DEBUG - {conn-100198} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100201} Connection
+DEBUG - {conn-100201} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100204} Connection
+DEBUG - {conn-100204} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100207} Connection
+DEBUG - {conn-100207} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100210} Connection
+DEBUG - {conn-100210} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100213} Connection
+DEBUG - {conn-100213} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100216} Connection
+DEBUG - {conn-100216} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100219} Connection
+DEBUG - {conn-100219} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100222} Connection
+DEBUG - {conn-100222} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100225} Connection
+DEBUG - {conn-100225} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100228} Connection
+DEBUG - {conn-100228} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100231} Connection
+DEBUG - {conn-100231} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100234} Connection
+DEBUG - {conn-100234} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100237} Connection
+DEBUG - {conn-100237} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100240} Connection
+DEBUG - {conn-100240} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100243} Connection
+DEBUG - {conn-100243} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100246} Connection
+DEBUG - {conn-100246} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100249} Connection
+DEBUG - {conn-100249} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100252} Connection
+DEBUG - {conn-100252} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100255} Connection
+DEBUG - {conn-100255} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100258} Connection
+DEBUG - {conn-100258} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100261} Connection
+DEBUG - {conn-100261} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100264} Connection
+DEBUG - {conn-100264} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100267} Connection
+DEBUG - {conn-100267} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100270} Connection
+DEBUG - {conn-100270} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100273} Connection
+DEBUG - {conn-100273} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100276} Connection
+DEBUG - {conn-100276} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100279} Connection
+DEBUG - {conn-100279} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100282} Connection
+DEBUG - {conn-100282} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100285} Connection
+DEBUG - {conn-100285} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100288} Connection
+DEBUG - {conn-100288} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100291} Connection
+DEBUG - {conn-100291} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100294} Connection
+DEBUG - {conn-100294} Preparing Statement:       select * from TB_AREA                  
+INFO - order by:null
+DEBUG - {conn-100297} Connection
+DEBUG - {conn-100297} Preparing Statement:    select * from TB_COMPANY        where   company_name like '%'           
+INFO - search : 327
+DEBUG - {conn-100300} Connection
+DEBUG - {conn-100300} Preparing Statement:   select count(*) from TB_COMPANY   
+DEBUG - {conn-100303} Connection
+DEBUG - {conn-100303} Preparing Statement:    select count(*) from TB_COMPANY   
+DEBUG - {conn-100306} Connection
+DEBUG - {conn-100306} Preparing Statement:    select * from TB_COMPANY                                       
+DEBUG - {conn-100309} Connection
+DEBUG - {conn-100309} Preparing Statement:    select count(*) from TB_PORT   
+DEBUG - {conn-100312} Connection
+DEBUG - {conn-100312} Preparing Statement:    select * from TB_PORT                                      
+DEBUG - {conn-100315} Connection
+DEBUG - {conn-100315} Preparing Statement:    select * from TB_PORT_ABBR   where                         port_name=?              
+DEBUG - {conn-100318} Connection
+DEBUG - {conn-100318} Preparing Statement:   select * from TB_PORT_ABBR  where   port_name like '%'    
+DEBUG - {conn-100321} Connection
+DEBUG - {conn-100321} Preparing Statement:   select count(*) from TB_PORT_ABBR   
+DEBUG - {conn-100324} Connection
+DEBUG - {conn-100324} Preparing Statement:   select * from TB_VESSEL  where vessel_name=vessel_abbr                 and   vessel_name like '%%'     order by vessel_name;  
+DEBUG - {conn-100327} Connection
+DEBUG - {conn-100327} Preparing Statement:   select count(*) from TB_VESSEL where vessel_name=vessel_abbr  
+DEBUG - {conn-100330} Connection
+DEBUG - {conn-100330} Preparing Statement:    select count(*) from TB_VESSEL   
+DEBUG - {conn-100333} Connection
+DEBUG - {conn-100333} Preparing Statement:     select * from (   select vessel_abbr   ,vessel_name   ,vessel_use   ,vessel_type   ,vessel_mmsi   ,vessel_company   ,CONVERT(VARCHAR, input_date, 23) AS input_date      from TB_VESSEL    where vessel_name=vessel_abbr   and                        vessel_use=?          ) A  
+DEBUG - {conn-100336} Connection
+DEBUG - {conn-100336} Preparing Statement:    select * from TB_VESSEL      where vessel_name =?   and vessel_name!=vessel_abbr     
+DEBUG - {conn-100339} Connection
+DEBUG - {conn-100339} Preparing Statement:   select * from TB_VESSEL  where   vessel_name like '%%'    
+DEBUG - {conn-100342} Connection
+DEBUG - {conn-100342} Preparing Statement:   select count(*) from TB_VESSEL  
+DEBUG - {conn-100345} Connection
+DEBUG - {conn-100345} Preparing Statement:   select * from TB_VESSEL  where vessel_name=vessel_abbr                 and   vessel_name like '%%'     order by vessel_name;  
+DEBUG - {conn-100348} Connection
+DEBUG - {conn-100348} Preparing Statement:   select count(*) from TB_VESSEL where vessel_name=vessel_abbr  
+DEBUG - {conn-100351} Connection
+DEBUG - {conn-100351} Preparing Statement:    select count(*) from TB_VESSEL   
+DEBUG - {conn-100354} Connection
+DEBUG - {conn-100354} Preparing Statement:     select * from (   select vessel_abbr   ,vessel_name   ,vessel_use   ,vessel_type   ,vessel_mmsi   ,vessel_company   ,CONVERT(VARCHAR, input_date, 23) AS input_date      from TB_VESSEL    where vessel_name=vessel_abbr   and                        vessel_use=?          ) A  
+DEBUG - {conn-100357} Connection
+DEBUG - {conn-100357} Preparing Statement:    select * from TB_VESSEL      where vessel_name =?   and vessel_name!=vessel_abbr     
+DEBUG - {conn-100360} Connection
+DEBUG - {conn-100360} Preparing Statement:   select * from TB_PORT_ABBR  where   port_name like '%'    
+DEBUG - {conn-100363} Connection
+DEBUG - {conn-100363} Preparing Statement:   select count(*) from TB_PORT_ABBR   
+INFO - order by:null
+DEBUG - {conn-100366} Connection
+DEBUG - {conn-100366} Preparing Statement:    select * from TB_COMPANY        where   company_name like '%'           
+INFO - search : 327
+DEBUG - {conn-100369} Connection
+DEBUG - {conn-100369} Preparing Statement:   select count(*) from TB_COMPANY   
+DEBUG - {conn-100372} Connection
+DEBUG - {conn-100372} Preparing Statement:    select count(*) from TB_COMPANY   
+DEBUG - {conn-100375} Connection
+DEBUG - {conn-100375} Preparing Statement:    select * from TB_COMPANY                                       
+DEBUG - {conn-100378} Connection
+DEBUG - {conn-100378} Preparing Statement:    select count(*) from TB_CODE_H   
+DEBUG - {conn-100381} Connection
+DEBUG - {conn-100381} Preparing Statement:       select CD_ID, CD_NM, CD_ENG from TB_CODE_H              
+DEBUG - {conn-100384} Connection
+DEBUG - {conn-100384} Preparing Statement:    select count(*) from TB_CODE_INFO   
+DEBUG - {conn-100387} Connection
+DEBUG - {conn-100387} Preparing Statement:    select * from TB_CODE_INFO   where                         code_type=?                            
+DEBUG - {conn-100390} Connection
+DEBUG - {conn-100390} Preparing Statement:       select * from TB_AREA                  
+INFO - order by:null
+DEBUG - {conn-100393} Connection
+DEBUG - {conn-100393} Preparing Statement:    select * from TB_COMPANY        where   company_name like '%'           
+INFO - search : 327
+DEBUG - {conn-100396} Connection
+DEBUG - {conn-100396} Preparing Statement:   select count(*) from TB_COMPANY   
+DEBUG - {conn-100399} Connection
+DEBUG - {conn-100399} Preparing Statement:    select count(*) from TB_COMPANY   
+DEBUG - {conn-100402} Connection
+DEBUG - {conn-100402} Preparing Statement:    select * from TB_COMPANY                                       
+DEBUG - {conn-100405} Connection
+DEBUG - {conn-100405} Preparing Statement:    select count(*) from TB_PORT   
+DEBUG - {conn-100408} Connection
+DEBUG - {conn-100408} Preparing Statement:    select * from TB_PORT                                      
+DEBUG - {conn-100411} Connection
+DEBUG - {conn-100411} Preparing Statement:    select * from TB_PORT_ABBR   where                         port_name=?              
+DEBUG - {conn-100414} Connection
+DEBUG - {conn-100414} Preparing Statement:    select * from TB_PORT_ABBR   where                         port_name=?              
+DEBUG - {conn-100417} Connection
+DEBUG - {conn-100417} Preparing Statement:   select * from TB_PORT_ABBR  where   port_name like '%'    
+DEBUG - {conn-100420} Connection
+DEBUG - {conn-100420} Preparing Statement:   select count(*) from TB_PORT_ABBR   
+DEBUG - {conn-100423} Connection
+DEBUG - {conn-100423} Preparing Statement:   select * from TB_VESSEL  where vessel_name=vessel_abbr                 and   vessel_name like '%%'     order by vessel_name;  
+DEBUG - {conn-100426} Connection
+DEBUG - {conn-100426} Preparing Statement:   select count(*) from TB_VESSEL where vessel_name=vessel_abbr  
+DEBUG - {conn-100429} Connection
+DEBUG - {conn-100429} Preparing Statement:    select count(*) from TB_VESSEL   
+DEBUG - {conn-100432} Connection
+DEBUG - {conn-100432} Preparing Statement:     select * from (   select vessel_abbr   ,vessel_name   ,vessel_use   ,vessel_type   ,vessel_mmsi   ,vessel_company   ,CONVERT(VARCHAR, input_date, 23) AS input_date      from TB_VESSEL    where vessel_name=vessel_abbr   and                        vessel_use=?          ) A  
+DEBUG - {conn-100435} Connection
+DEBUG - {conn-100435} Preparing Statement:    select * from TB_VESSEL      where vessel_name =?   and vessel_name!=vessel_abbr     
+DEBUG - {conn-100438} Connection
+DEBUG - {conn-100438} Preparing Statement:   select * from TB_VESSEL  where   vessel_name like '%%'    
+DEBUG - {conn-100441} Connection
+DEBUG - {conn-100441} Preparing Statement:   select count(*) from TB_VESSEL  
+DEBUG - {conn-100444} Connection
+DEBUG - {conn-100444} Preparing Statement:       select * from TB_AREA                  
+DEBUG - {conn-100447} Connection
+DEBUG - {conn-100447} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100450} Connection
+DEBUG - {conn-100450} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100453} Connection
+DEBUG - {conn-100453} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100456} Connection
+DEBUG - {conn-100456} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100459} Connection
+DEBUG - {conn-100459} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100462} Connection
+DEBUG - {conn-100462} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100465} Connection
+DEBUG - {conn-100465} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100468} Connection
+DEBUG - {conn-100468} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100471} Connection
+DEBUG - {conn-100471} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100474} Connection
+DEBUG - {conn-100474} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100477} Connection
+DEBUG - {conn-100477} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100480} Connection
+DEBUG - {conn-100480} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100483} Connection
+DEBUG - {conn-100483} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100486} Connection
+DEBUG - {conn-100486} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100489} Connection
+DEBUG - {conn-100489} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100492} Connection
+DEBUG - {conn-100492} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100495} Connection
+DEBUG - {conn-100495} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100498} Connection
+DEBUG - {conn-100498} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100501} Connection
+DEBUG - {conn-100501} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100504} Connection
+DEBUG - {conn-100504} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100507} Connection
+DEBUG - {conn-100507} Preparing Statement:    select count(*) from TB_CODE_H   
+DEBUG - {conn-100510} Connection
+DEBUG - {conn-100510} Preparing Statement:       select CD_ID, CD_NM, CD_ENG from TB_CODE_H              
+DEBUG - {conn-100513} Connection
+DEBUG - {conn-100513} Preparing Statement:    select count(*) from TB_CODE_INFO   
+DEBUG - {conn-100516} Connection
+DEBUG - {conn-100516} Preparing Statement:    select * from TB_CODE_INFO   where                         code_type=?                            
+DEBUG - {conn-100519} Connection
+DEBUG - {conn-100519} Preparing Statement:    select count(*) from TB_CODE_INFO   
+DEBUG - {conn-100522} Connection
+DEBUG - {conn-100522} Preparing Statement:    select * from TB_CODE_INFO   where                         code_type=?                            
+DEBUG - {conn-100525} Connection
+DEBUG - {conn-100525} Preparing Statement:    select count(*) from TB_CODE_INFO   
+DEBUG - {conn-100528} Connection
+DEBUG - {conn-100528} Preparing Statement:    select * from TB_CODE_INFO   where                         code_type=?                            
+DEBUG - {conn-100531} Connection
+DEBUG - {conn-100531} Preparing Statement:    select count(*) from TB_CODE_INFO   
+DEBUG - {conn-100534} Connection
+DEBUG - {conn-100534} Preparing Statement:    select * from TB_CODE_INFO   where                         code_type=?                            
+DEBUG - {conn-100537} Connection
+DEBUG - {conn-100537} Preparing Statement:    select count(*) from TB_CODE_INFO   
+DEBUG - {conn-100540} Connection
+DEBUG - {conn-100540} Preparing Statement:    select * from TB_CODE_INFO   where                         code_type=?                            
+DEBUG - {conn-100543} Connection
+DEBUG - {conn-100543} Preparing Statement:    select count(*) from TB_CODE_INFO   
+DEBUG - {conn-100546} Connection
+DEBUG - {conn-100546} Preparing Statement:    select * from TB_CODE_INFO   where                         code_type=?                            
+DEBUG - {conn-100549} Connection
+DEBUG - {conn-100549} Preparing Statement:       select * from TB_AREA                  
+INFO - order by:null
+DEBUG - {conn-100552} Connection
+DEBUG - {conn-100552} Preparing Statement:    select * from TB_COMPANY        where   company_name like '%'           
+INFO - search : 327
+DEBUG - {conn-100555} Connection
+DEBUG - {conn-100555} Preparing Statement:   select count(*) from TB_COMPANY   
+DEBUG - {conn-100558} Connection
+DEBUG - {conn-100558} Preparing Statement:    select count(*) from TB_COMPANY   
+DEBUG - {conn-100561} Connection
+DEBUG - {conn-100561} Preparing Statement:    select * from TB_COMPANY                                       
+DEBUG - {conn-100564} Connection
+DEBUG - {conn-100564} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100567} Connection
+DEBUG - {conn-100567} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100570} Connection
+DEBUG - {conn-100570} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100573} Connection
+DEBUG - {conn-100573} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100576} Connection
+DEBUG - {conn-100576} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100579} Connection
+DEBUG - {conn-100579} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100582} Connection
+DEBUG - {conn-100582} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100585} Connection
+DEBUG - {conn-100585} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100588} Connection
+DEBUG - {conn-100588} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100591} Connection
+DEBUG - {conn-100591} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100594} Connection
+DEBUG - {conn-100594} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100597} Connection
+DEBUG - {conn-100597} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100600} Connection
+DEBUG - {conn-100600} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100603} Connection
+DEBUG - {conn-100603} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100606} Connection
+DEBUG - {conn-100606} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100609} Connection
+DEBUG - {conn-100609} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100612} Connection
+DEBUG - {conn-100612} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100615} Connection
+DEBUG - {conn-100615} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100618} Connection
+DEBUG - {conn-100618} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100621} Connection
+DEBUG - {conn-100621} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100624} Connection
+DEBUG - {conn-100624} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100627} Connection
+DEBUG - {conn-100627} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100630} Connection
+DEBUG - {conn-100630} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100633} Connection
+DEBUG - {conn-100633} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100636} Connection
+DEBUG - {conn-100636} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100639} Connection
+DEBUG - {conn-100639} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100642} Connection
+DEBUG - {conn-100642} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100645} Connection
+DEBUG - {conn-100645} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100648} Connection
+DEBUG - {conn-100648} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100651} Connection
+DEBUG - {conn-100651} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+INFO - seleted page:[table_id:null,page:230,date:null,null]
+DEBUG - {conn-100654} Connection
+DEBUG - {conn-100654} Preparing Statement:   select * from TB_TABLE_INFO     where         page = ?                                order by page, table_index   
+INFO - retirve:9,[table_id:null,page:230,date:null,null]
+DEBUG - {conn-100657} Connection
+DEBUG - {conn-100657} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100660} Connection
+DEBUG - {conn-100660} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100663} Connection
+DEBUG - {conn-100663} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
+DEBUG - {conn-100666} Connection
+DEBUG - {conn-100666} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100669} Connection
+DEBUG - {conn-100669} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100672} Connection
+DEBUG - {conn-100672} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
+DEBUG - {conn-100675} Connection
+DEBUG - {conn-100675} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100678} Connection
+DEBUG - {conn-100678} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100681} Connection
+DEBUG - {conn-100681} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
+DEBUG - {conn-100684} Connection
+DEBUG - {conn-100684} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100687} Connection
+DEBUG - {conn-100687} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100690} Connection
+DEBUG - {conn-100690} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
+INFO - start
+INFO - update ADVTable : SHSE3
+INFO - 광고정보 조회
+DEBUG - {conn-100693} Connection
+DEBUG - {conn-100693} Preparing Statement:    select * from TB_ADV_INFO where table_id= ?  
+DEBUG - {conn-100696} Connection
+DEBUG - {conn-100696} Preparing Statement:    select max(port_index) from TB_TABLE_PORTLIST where table_id=? and port_type='P'   
+DEBUG - {conn-100699} Connection
+DEBUG - {conn-100699} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100702} Connection
+DEBUG - {conn-100702} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100705} Connection
+DEBUG - {conn-100705} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100708} Connection
+DEBUG - {conn-100708} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100711} Connection
+DEBUG - {conn-100711} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100714} Connection
+DEBUG - {conn-100714} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100717} Connection
+DEBUG - {conn-100717} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100720} Connection
+DEBUG - {conn-100720} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100723} Connection
+DEBUG - {conn-100723} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+INFO - rendering
+DEBUG - {conn-100726} Connection
+DEBUG - {conn-100726} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100729} Connection
+DEBUG - {conn-100729} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100732} Connection
+DEBUG - {conn-100732} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100735} Connection
+DEBUG - {conn-100735} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100738} Connection
+DEBUG - {conn-100738} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100741} Connection
+DEBUG - {conn-100741} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100744} Connection
+DEBUG - {conn-100744} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100747} Connection
+DEBUG - {conn-100747} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100750} Connection
+DEBUG - {conn-100750} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100753} Connection
+DEBUG - {conn-100753} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100756} Connection
+DEBUG - {conn-100756} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100759} Connection
+DEBUG - {conn-100759} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100762} Connection
+DEBUG - {conn-100762} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100765} Connection
+DEBUG - {conn-100765} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100768} Connection
+DEBUG - {conn-100768} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100771} Connection
+DEBUG - {conn-100771} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100774} Connection
+DEBUG - {conn-100774} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100777} Connection
+DEBUG - {conn-100777} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100780} Connection
+DEBUG - {conn-100780} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100783} Connection
+DEBUG - {conn-100783} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100786} Connection
+DEBUG - {conn-100786} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100789} Connection
+DEBUG - {conn-100789} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100792} Connection
+DEBUG - {conn-100792} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100795} Connection
+DEBUG - {conn-100795} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100798} Connection
+DEBUG - {conn-100798} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100801} Connection
+DEBUG - {conn-100801} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100804} Connection
+DEBUG - {conn-100804} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100807} Connection
+DEBUG - {conn-100807} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100810} Connection
+DEBUG - {conn-100810} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100813} Connection
+DEBUG - {conn-100813} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+INFO - seleted page:[table_id:null,page:230,date:null,null]
+DEBUG - {conn-100816} Connection
+DEBUG - {conn-100816} Preparing Statement:   select * from TB_TABLE_INFO     where         page = ?                                order by page, table_index   
+INFO - retirve:9,[table_id:null,page:230,date:null,null]
+DEBUG - {conn-100819} Connection
+DEBUG - {conn-100819} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100822} Connection
+DEBUG - {conn-100822} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100825} Connection
+DEBUG - {conn-100825} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
+DEBUG - {conn-100828} Connection
+DEBUG - {conn-100828} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100831} Connection
+DEBUG - {conn-100831} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100834} Connection
+DEBUG - {conn-100834} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?                   order by port_index   
+INFO - start
+INFO - update ADVTable : SHSE2-1
+INFO - 광고정보 조회
+DEBUG - {conn-100837} Connection
+DEBUG - {conn-100837} Preparing Statement:    select * from TB_ADV_INFO where table_id= ?  
+DEBUG - {conn-100840} Connection
+DEBUG - {conn-100840} Preparing Statement:    select max(port_index) from TB_TABLE_PORTLIST where table_id=? and port_type='P'   
+DEBUG - {conn-100843} Connection
+DEBUG - {conn-100843} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100846} Connection
+DEBUG - {conn-100846} Preparing Statement:    select * from TB_TABLE_PORTLIST where table_id=?              AND   port_index = ?        order by port_index   
+DEBUG - {conn-100849} Connection
+DEBUG - {conn-100849} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+DEBUG - {conn-100852} Connection
+DEBUG - {conn-100852} Preparing Statement:      select * from TB_TABLE_INFO  where table_id=?  
+INFO - rendering
+DEBUG - {conn-100855} Connection
+DEBUG - {conn-100855} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100858} Connection
+DEBUG - {conn-100858} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100861} Connection
+DEBUG - {conn-100861} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100864} Connection
+DEBUG - {conn-100864} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100867} Connection
+DEBUG - {conn-100867} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100870} Connection
+DEBUG - {conn-100870} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100873} Connection
+DEBUG - {conn-100873} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100876} Connection
+DEBUG - {conn-100876} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100879} Connection
+DEBUG - {conn-100879} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100882} Connection
+DEBUG - {conn-100882} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100885} Connection
+DEBUG - {conn-100885} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100888} Connection
+DEBUG - {conn-100888} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100891} Connection
+DEBUG - {conn-100891} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100894} Connection
+DEBUG - {conn-100894} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100897} Connection
+DEBUG - {conn-100897} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100900} Connection
+DEBUG - {conn-100900} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100903} Connection
+DEBUG - {conn-100903} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100906} Connection
+DEBUG - {conn-100906} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100909} Connection
+DEBUG - {conn-100909} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100912} Connection
+DEBUG - {conn-100912} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100915} Connection
+DEBUG - {conn-100915} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100918} Connection
+DEBUG - {conn-100918} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100921} Connection
+DEBUG - {conn-100921} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+DEBUG - {conn-100924} Connection
+DEBUG - {conn-100924} Preparing Statement:    select vessel_abbr from TB_VESSEL where vessel_abbr=? group by vessel_abbr  
+INFO - seleted page:[table_id:null,page:230,date:null,null]
+DEBUG - {conn-100927} Connection
+DEBUG - {conn-100927} Preparing Statement:   select * from TB_TABLE_INFO     where         page = ?                                order by page, table_index   
+INFO - retirve:9,[table_id:null,page:230,date:null,null]
