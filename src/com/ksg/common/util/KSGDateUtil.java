@@ -419,13 +419,17 @@ public class KSGDateUtil {
 		return date.matches(datePattern);
 	}
 	public static boolean isThreeDayUnder(String onedate, String twodate) {
+		
+		return isDayUnder(3, onedate, twodate);
+	}
+	
+	public static boolean isDayUnder(int day,String onedate, String twodate) {
 
 		try {
-			return KSGDateUtil.daysDiffABS(KSGDateUtil.toDate4(onedate), KSGDateUtil.toDate4(twodate))<=3;
+			return KSGDateUtil.daysDiffABS(KSGDateUtil.toDate4(onedate), KSGDateUtil.toDate4(twodate))<=day;
 		} catch (ParseException e) {
 			throw new RuntimeException(e.getMessage()+"oneDate:"+onedate+", twoDate:"+twodate);
 		}
-
 	}
 	public static boolean isSame(String onedate, String twodate) {
 
@@ -438,7 +442,7 @@ public class KSGDateUtil {
 	/**
 	 * 
 	 * 
-	 * 날짜 비교
+	 * 날짜 비교후 큰 날짜 반환
 	 * yyyy/mm/dd
 	 * @param onedate
 	 * @param twodate

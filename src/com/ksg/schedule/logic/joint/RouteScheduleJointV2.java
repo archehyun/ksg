@@ -51,27 +51,21 @@ import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
   * @프로그램 설명 :
 
   */
-public class RouteScheduleJointV2 extends DefaultScheduleJoint {
+public class RouteScheduleJointV2 extends RouteAbstractScheduleJoint {
+	
 	final int FORWARD =0;
+	
 	final int BACK =1;
 
 	XTGManager xtgmanager = new XTGManager();
+	
 	private static final String WORLD_SOURCE_XML = "world_source.xml";
 
 	DAOManager manager =DAOManager.getInstance();
 
 	ScheduleBuildMessageDialog di;
-	private String WORLD_F;
-	private String WORLD_B;
-	private String WORLD_E;
-	private String WORLD_VERSION1;
-	private String WORLD_VERSION2;
-	private String WORLD_VERSION3;
 
 	private int UP_SIZE,DOWN_SIZE;
-
-	ShippersTable op;
-	private String WORLD_INPORT;
 
 	public RouteScheduleJointV2(ShippersTable op) throws SQLException {
 		super();
@@ -137,7 +131,6 @@ public class RouteScheduleJointV2 extends DefaultScheduleJoint {
 			Code LSIZE=baseService.getCodeInfo(code_info);
 			DOWN_SIZE=Integer.parseInt(LSIZE.getCode_field());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		logger.debug("end");
@@ -219,6 +212,9 @@ public class RouteScheduleJointV2 extends DefaultScheduleJoint {
 
 	HashMap<String, MiniSchedule> map;
 
+	/**
+	 * @param data
+	 */
 	private void addInSchedule(MiniSchedule data)
 	{
 		if(map.containsKey(data.port))
@@ -239,6 +235,9 @@ public class RouteScheduleJointV2 extends DefaultScheduleJoint {
 			map.put(data.port, data);
 		}
 	}
+	/**
+	 * @param data
+	 */
 	private void addOutSchedule(MiniSchedule data)
 	{	
 
@@ -260,6 +259,10 @@ public class RouteScheduleJointV2 extends DefaultScheduleJoint {
 			map.put(data.port, data);
 		}
 	}
+	/**
+	 * @param inList
+	 * @return
+	 */
 	private MiniSchedule[] arrangeInPort(Vector inList) {
 		map = new HashMap<String, MiniSchedule>();
 		for(int i=0;i<inList.size();i++)
@@ -341,13 +344,22 @@ public class RouteScheduleJointV2 extends DefaultScheduleJoint {
 			}
 		}
 	}
+	/**
+	 * @param intArray
+	 * @param one
+	 * @param two
+	 */
 	protected void swapE(Element[] intArray, int one, int two) {
 		Element temp = intArray[one];
 		intArray[one] = intArray[two];
 		intArray[two] = temp;
 	}
-	private String INCODE_KEY;
-	private String WORLD_OUTPORT;
+
+	/**
+	 * @param document
+	 * @throws ParseException
+	 * @throws IOException
+	 */
 	private void printXTG(Document document) throws ParseException, IOException {
 
 		StringBuffer version = new StringBuffer();
@@ -824,32 +836,7 @@ public class RouteScheduleJointV2 extends DefaultScheduleJoint {
 		}
 
 	}
-/*	public int getNumericVoyage(String voyage_num)
-	{
 
-		int result=0;
-
-		String temp="";
-		if(voyage_num==null)
-			return 0;
-		for(int i=0;i<voyage_num.length();i++)
-		{
-			try{
-				temp+=Integer.parseInt(String.valueOf(voyage_num.charAt(i)));
-			}catch(NumberFormatException e)
-			{
-				//				return 0;
-			}
-		}
-		try{
-			result=Integer.valueOf(temp);
-		}catch(Exception e)
-		{
-			return 0;
-		}
-
-		return result;
-	}*/
 	public boolean isBigger(String fdate, String tdate) {
 
 		try {
@@ -1079,11 +1066,9 @@ public class RouteScheduleJointV2 extends DefaultScheduleJoint {
 				{
 					area.addContent(li[i]);
 				}
-
-
-				//current++;
-
+				
 				notifyMessage("area name:"+portInfo.getArea_name());
+				
 				logger.debug("end");
 			}
 			createXMLFile(document);

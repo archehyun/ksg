@@ -54,7 +54,7 @@ import com.ksg.schedule.logic.route.PortScheduleInfo;
 	    GroupInOutPort
 
   */
-public class RouteScheduleJoint extends DefaultScheduleJoint{
+public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 
 	private static final String OUTBOUND = "O";
 	
@@ -113,6 +113,7 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 		}
 
 	}
+	
 	public static final int ORDER_BY_DATE=1;
 
 	public static final int ORDER_BY_VESSEL=2;
@@ -121,29 +122,9 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 
 	private String errorOutPortfileName="world_print_error_outport.txt";
 
-	private ShippersTable op;
-
 	private int orderByType=1;
 
-	private String WORLD_B="";
-
-	private String WORLD_E="";
-
-	private String WORLD_F="";
-
-	private String WORLD_INPORT="";
-
-	private String WORLD_OUTPORT="";
-
-	private String WORLD_VERSION1="";
-
-	private String WORLD_VERSION2="";
-
-	private String WORLD_VERSION3="";
-
 	private String commonInPortfileName="world_print_common_inport.txt";;
-
-	List<ScheduleData> li;
 
 	private List<String> areaList;
 
@@ -166,6 +147,7 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 
 		logger.info("정렬기준:"+orderByType);
 	}
+	
 	public void initTag() {
 
 		WORLD_F="<cc:><ct:><cs:><cf:><cc:60.100.0.0.><ct:30><cs:7.500000><cf:Yoon가변 윤고딕100\\_TT>▲<ct:><cf:><ct:Bold><cf:Helvetica LT Std>";
@@ -178,10 +160,7 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 		WORLD_E="<ct:><cs:><cf:><ct:Bold><cf:Helvetica LT Std>";
 	}
 
-
-
 	private FileWriter fw,errorOutfw,commonInfw;
-
 
 	public int execute() {
 		logger.info("항로별 스케줄 생성 시작");		
@@ -221,7 +200,6 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 				Iterator<ScheduleData> scheduleIter =outboundScheduleListByArea.iterator();
 				while(scheduleIter.hasNext())
 				{
-
 					try {
 						ScheduleData data=scheduleIter.next();
 						
@@ -289,8 +267,7 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 					}
 					else
 					{
-						// 로그 저장
-						//logger.error("외국항 항구수 부족 제외:"+vesselList[j].getVessel_name()+","+vesselList[j].getCompany()+", "+vesselList[j].getVoyageInfo());
+						// 로그 저장				
 
 						PortScheduleInfo list[]=newOutPortList;
 						
@@ -302,11 +279,9 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 							buffer.append(list[index].getPort()+" "+PortDateUtil.toPrintDate(list[index].getDate())+(index<list.length-1?" - ":""));
 
 							buffer.append(list[index].getPort()+" "+PortDateUtil.toPrintDate(list[index].getDate())+(index<list.length-1?" - ":""));
-
 						}
 						
 						errorOutfw.write("E1:"+group.getArea_name()+",\t"+vesselList[j].getVessel_name()+",\t"+vesselList[j].getVoyage_num()+",\t"+vesselList[j].getCompany()+",\t"+buffer.toString()+" ,1\r\n");
-						
 						
 					}
 				}
@@ -334,6 +309,7 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 				}
 
 				current++;
+				
 				fw.write(WORLD_E);
 
 			}
@@ -343,7 +319,6 @@ public class RouteScheduleJoint extends DefaultScheduleJoint{
 			return ScheduleJoint.SUCCESS;
 		}catch(Exception e)
 		{
-
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 			return ScheduleJoint.FAILURE;
