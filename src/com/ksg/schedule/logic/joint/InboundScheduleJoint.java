@@ -342,6 +342,7 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 				datas.setAttribute(XML_INFO.XML_TAG_TAG_COMMON,tagCommon);
 				
 				datas.setAttribute(XML_INFO.XML_TAG_VOYAGE,vesselList.getVoyage());
+				
 				li.add(datas);
 			}
 
@@ -423,8 +424,21 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 					new_company.add(companyList.get(i));
 				}
 			}
-
-			return major_company+","+arrangeCompany(new_company);
+			
+			/*
+			 * 일자 : 20210603
+			 * 수정내용 '대표선사,' 표시 수정
+			 * 
+			 */
+			if(new_company.size()>0)
+			{
+				return major_company+","+arrangeCompany(new_company);	
+			}
+			else
+			{
+				return major_company;
+			}
+			
 		}		
 
 
