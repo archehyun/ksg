@@ -1,5 +1,9 @@
 package com.ksg.schedule.joint;
 
+/**
+ * @author ¹ÚÃ¢Çö
+ *
+ */
 public class ConsoleJoint extends KSGScheduleJoint{
 
 	@Override
