@@ -172,7 +172,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	 */
 	private Component buildCenterNorthControl()
 	{
-		
 		JPanel pnMain = new JPanel(new BorderLayout());
 
 		txfIndex = new JTextField(3);

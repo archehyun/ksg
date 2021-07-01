@@ -17,8 +17,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
-import javafx.scene.control.TableSelectionModel;
-
 /**
 
  * @FileName : KSGTable.java

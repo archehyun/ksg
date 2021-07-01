@@ -1,6 +1,5 @@
 package com.ksg.schedule.logic.joint;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -958,7 +957,6 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 		this.lengthOfTask=schedule_list.size();
 
 		current=0;
-
 
 		/*
 		 * 결과 생성

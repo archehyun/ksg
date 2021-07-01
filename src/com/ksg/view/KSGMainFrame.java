@@ -447,7 +447,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 		BiggerMenu AdvMenu = new BiggerMenu("광고정보관리");
 
-
 		this.addMenuItem(AdvMenu, ADV_SEARCH, KeyEvent.VK_X,advActionListener);
 		this.addMenuItem(AdvMenu, ADV_INPUT, KeyEvent.VK_X,advActionListener);
 		this.addMenuItem(AdvMenu, ADV_PRINT, KeyEvent.VK_X,advActionListener);
@@ -526,7 +525,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		addMenuItem(schduleMenu, "일괄작업(전송용New)",scheduleActionListener);
 
 		schduleMenu.addSeparator();
-
 
 		BiggerMenu optionMenu = new BiggerMenu("옵션",KeyEvent.VK_O);
 
