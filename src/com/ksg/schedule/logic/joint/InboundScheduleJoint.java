@@ -24,6 +24,7 @@ import org.jdom.output.XMLOutputter;
 import com.ksg.commands.schedule.ScheduleSortData;
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
@@ -55,12 +56,12 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 
 	private Element schedule_row;
 
-	private String 	BOLD_TAG_F,
-	BOLD_TAG_B,
-	TAG_VERSION0,	
-	TAG_VERSION2,
-	TAG_VERSION3,
-	TAG_VERSION6;
+	private String 	BOLD_TAG_F;
+	private String 	BOLD_TAG_B;
+	private String 	TAG_VERSION0;	
+	private String 	TAG_VERSION2;
+	private String 	TAG_VERSION3;
+	private String 	TAG_VERSION6;
 
 	private HashMap<String, String> portMap;	
 
@@ -342,6 +343,7 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 				datas.setAttribute(XML_INFO.XML_TAG_TAG_COMMON,tagCommon);
 				
 				datas.setAttribute(XML_INFO.XML_TAG_VOYAGE,vesselList.getVoyage());
+				
 				li.add(datas);
 			}
 
@@ -423,8 +425,21 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 					new_company.add(companyList.get(i));
 				}
 			}
-
-			return major_company+","+arrangeCompany(new_company);
+			
+			/*
+			 * 일자 : 20210603
+			 * 수정내용 '대표선사,' 표시 수정
+			 * 
+			 */
+			if(new_company.size()>0)
+			{
+				return major_company+","+arrangeCompany(new_company);	
+			}
+			else
+			{
+				return major_company;
+			}
+			
 		}		
 
 
@@ -907,11 +922,9 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 		format.setIndent("\t");
 
 
-		XMLOutputter outputter = new XMLOutputter(format);
-
-
-//		inbound_source_filename = "inbound_source.xml";
-		FileWriter writer = new FileWriter(inbound_source_filename);
+		XMLOutputter outputter = new XMLOutputter(format);		
+		
+		FileWriter writer = new FileWriter(KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION)+"/"+inbound_source_filename);
 		outputter.output(document, writer);
 		writer.close();
 
@@ -944,7 +957,6 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 		this.lengthOfTask=schedule_list.size();
 
 		current=0;
-
 
 		/*
 		 * 결과 생성

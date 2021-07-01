@@ -57,7 +57,8 @@
 		update TB_AREA 
 			set 
 				area_code=#area_code#, 
-				area_book_code=#area_book_code#, area_name=#area_name#
+				area_book_code=#area_book_code#, 
+				area_name=#area_name#
 			where 
 			(
 				area_name=#base_area_name#

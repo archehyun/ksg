@@ -33,9 +33,7 @@ import javax.swing.tree.TreePath;
 import com.ibatis.sqlmap.client.SqlMapException;
 import com.ksg.base.view.comp.PnArea;
 import com.ksg.base.view.comp.PnBase;
-import com.ksg.base.view.comp.PnCodeConType;
-import com.ksg.base.view.comp.PnCodeInboundPort;
-import com.ksg.base.view.comp.PnCodeInboundPortOrder;
+import com.ksg.base.view.comp.PnCommonCode;
 import com.ksg.base.view.comp.PnCompany;
 import com.ksg.base.view.comp.PnPort;
 import com.ksg.base.view.comp.PnPortAbbr;
@@ -62,6 +60,7 @@ public class BaseInfoUI extends KSGPanel{
 	public static final String STRING_PORT_INFO 	= "항구";
 	public static final String STRING_COMPANY_INFO 	= "선사";
 	public static final String STRING_VESSEL_INFO 	= "선박";
+	public static final String STRING_COMMONCODE_INFO 	= "공통코드";
 	public static final String CODE_TYPE_INBOUND_PORT = "국내 항구 코드";
 	public static final String CODE_TYPE_INBOUND_PORT_ORDER = "Inbound 항구 출발 순서";
 	public static final String CODE_TYPE_CON_TYPE = "컨테이너 타입";
@@ -210,9 +209,11 @@ public class BaseInfoUI extends KSGPanel{
 		pnMain.setLayout(cardLayout);
 
 	
-		addBasePanel(pnMain,new PnCodeInboundPortOrder(this),CODE_TYPE_INBOUND_PORT_ORDER);
-		addBasePanel(pnMain,new PnCodeInboundPort(this),CODE_TYPE_INBOUND_PORT);
-		addBasePanel(pnMain,new PnCodeConType(this),CODE_TYPE_CON_TYPE);
+		
+		addBasePanel(pnMain,new PnCommonCode(this),STRING_COMMONCODE_INFO);
+		//addBasePanel(pnMain,new PnCodeInboundPortOrder(this),CODE_TYPE_INBOUND_PORT_ORDER);
+		//addBasePanel(pnMain,new PnCodeInboundPort(this),CODE_TYPE_INBOUND_PORT);
+		//addBasePanel(pnMain,new PnCodeConType(this),CODE_TYPE_CON_TYPE);
 		
 		addBasePanel(pnMain,new PnArea(this),		STRING_AREA_INFO);
 		addBasePanel(pnMain,new PnVessel(this),		STRING_VESSEL_INFO);
@@ -246,14 +247,15 @@ public class BaseInfoUI extends KSGPanel{
 
 		Iterator<Code> iter1 =limenu.iterator();
 		
+		DefaultMutableTreeNode commonCode = new DefaultMutableTreeNode(STRING_COMMONCODE_INFO);
 		DefaultMutableTreeNode codeConType = new DefaultMutableTreeNode(CODE_TYPE_CON_TYPE);
 		DefaultMutableTreeNode codeInboundPort = new DefaultMutableTreeNode(CODE_TYPE_INBOUND_PORT);
 		DefaultMutableTreeNode codeInboundPortOrder = new DefaultMutableTreeNode(CODE_TYPE_INBOUND_PORT_ORDER);
 		
-		code.add(codeConType);
+		code.add(commonCode);
+		/*code.add(codeConType);
 		code.add(codeInboundPort);
-		code.add(codeInboundPortOrder);
-		
+		code.add(codeInboundPortOrder);*/
 		
 
 		while(iter1.hasNext())
@@ -366,18 +368,5 @@ public class BaseInfoUI extends KSGPanel{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void transactionCall(HashMap<String, Object> param)
-	{
-		System.out.println("callTest");
-		
-	}
-	
-	public void selectPortlist(HashMap<String, Object> param)
-	{
-		
-	}
-
-	
 
 }

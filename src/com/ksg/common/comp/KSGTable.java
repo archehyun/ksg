@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -18,45 +19,62 @@ import javax.swing.table.TableRowSorter;
 
 /**
 
-  * @FileName : KSGTable.java
+ * @FileName : KSGTable.java
 
-  * @Date : 2021. 2. 24. 
+ * @Date : 2021. 2. 24. 
 
-  * @작성자 : 박창현
+ * @작성자 : 박창현
 
-  * @변경이력 :
+ * @변경이력 :
 
-  * @프로그램 설명 : 사용자 정의 JTable
-  * 
-  * 기본
-  * 1. row 사이즈 : 30
-  * 2. 컬럼 리사이즈 : Off
+ * @프로그램 설명 : 사용자 정의 JTable
+ * 
+ * 기본
+ * 1. row 사이즈 : 30
+ * 2. 컬럼 리사이즈 : Off
 
-  */
+ */
 @SuppressWarnings("serial")
 public class KSGTable extends JTable{
-	
+
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private TableModel model;
+	
+	DefaultTableCellRenderer renderer;
 
 	public KSGTable() {
 
 
 		model = new TableModel();
-		
+
 		// 컬럼 리사이징 오프
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		// 정렬 기능 추가
 		setRowSorter(new TableRowSorter<TableModel>(model));
+		
+		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 	}
-	
 
+	private DefaultTableCellRenderer getCellRenderer()
+	{
+		
+		if(renderer== null)
+		{
+			renderer = new KSGTableCellRenderer();
+		}
+		
+		return renderer;
+	}
+	public void setCellRenderer(DefaultTableCellRenderer renderer)
+	{
+		this.renderer = renderer;
+	}
 
 	public void setColumnName(KSGTableColumn columnNames[]) {
 		this.model.setColumns(columnNames);
@@ -71,17 +89,37 @@ public class KSGTable extends JTable{
 		for (int i = 0; i < colmodel.getColumnCount(); i++) {
 			TableColumn namecol = colmodel.getColumn(i);
 
-			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
-
-			namecol.setCellRenderer(renderer);
+			namecol.setCellRenderer(getCellRenderer());
+			
 			KSGTableColumn col = model.getColumn(i);
 
 			renderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-			namecol.setPreferredWidth(col.size);
+			if(col.maxSize!=0)
+			{
+				namecol.setMaxWidth(col.size);
+			}
 
+			if(col.minSize!=0)
+			{
+				namecol.setMinWidth(col.minSize);
+			}
+
+			if(col.size!=0)
+			{
+				namecol.setPreferredWidth(col.size);
+			}
 		}
 		this.setRowHeight(30);
+		
+		
+
+		DefaultTableCellRenderer renderer =  
+				(DefaultTableCellRenderer)this.getTableHeader().getDefaultRenderer();
+		renderer.setHorizontalAlignment(SwingConstants.CENTER);
+		this.getTableHeader().setDefaultRenderer(renderer);
+
+
 
 	}
 
@@ -99,6 +137,8 @@ public class KSGTable extends JTable{
 	public void setResultData(List resultData) {
 
 		this.model.setData(resultData);
+
+		model.fireTableDataChanged();
 		// 결과 저장후 화면 갱신
 		this.updateUI();
 	}
@@ -115,18 +155,18 @@ public class KSGTable extends JTable{
 	}
 
 	/**
-	
-	  * @FileName : KSGTable.java
-	
-	  * @Date : 2021. 2. 26. 
-	
-	  * @작성자 : 박창현
-	
-	  * @변경이력 :
-	
-	  * @프로그램 설명 : 사용자 정의 테이블 모델
-	
-	  */
+
+	 * @FileName : KSGTable.java
+
+	 * @Date : 2021. 2. 26. 
+
+	 * @작성자 : 박창현
+
+	 * @변경이력 :
+
+	 * @프로그램 설명 : 사용자 정의 테이블 모델
+
+	 */
 	class TableModel extends AbstractTableModel {
 
 
@@ -135,7 +175,6 @@ public class KSGTable extends JTable{
 
 		private List<KSGTableColumn> columnNames;
 
-		//private KSGTableColumn columnNames[];
 
 		public TableModel() {
 			columnNames = new LinkedList<KSGTableColumn>();
@@ -161,9 +200,9 @@ public class KSGTable extends JTable{
 
 		@Override
 		public String getColumnName(int index) {
-			
+
 			KSGTableColumn column = columnNames.get(index);
-			
+
 
 			return column.columnName;
 		}
@@ -219,7 +258,11 @@ public class KSGTable extends JTable{
 			try {
 				HashMap<String, Object> item = (HashMap<String, Object>) data.get(rowIndex);
 
-				return item.get(columnNames.get(columnIndex).columnField);
+				KSGTableColumn colum =columnNames.get(columnIndex);
+
+				Object obj = item.get(colum.columnField);
+
+				return colum.getValue(obj);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
@@ -242,20 +285,20 @@ public class KSGTable extends JTable{
 	}
 
 	/**
-	
-	  * @FileName : KSGTable.java
-	
-	  * @Date : 2021. 2. 26. 
-	
-	  * @작성자 : 박창현
-	
-	  * @변경이력 :
-	
-	  * @프로그램 설명 : 테이블 셀 렌더러
-	  * 
-	  * 홀수 반복 색 표시
-	
-	  */
+
+	 * @FileName : KSGTable.java
+
+	 * @Date : 2021. 2. 26. 
+
+	 * @작성자 : 박창현
+
+	 * @변경이력 :
+
+	 * @프로그램 설명 : 테이블 셀 렌더러
+	 * 
+	 * 홀수 반복 색 표시
+
+	 */
 	class KSGTableCellRenderer extends DefaultTableCellRenderer {
 
 		/**

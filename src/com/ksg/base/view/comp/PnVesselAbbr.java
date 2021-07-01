@@ -159,8 +159,8 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 		butDel.addActionListener(this);
 		butNew.addActionListener(this);
 		
-		pnButtomRight.add(butNew);
-		pnButtomRight.add(butDel);
+		//pnButtomRight.add(butNew);
+		//pnButtomRight.add(butDel);
 		pnButtom.add(pnButtomRight);
 		return pnButtom;
 	}
@@ -351,6 +351,12 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 		}
 		colmodel.getColumn(0).setPreferredWidth(400);
 		colmodel.getColumn(1).setPreferredWidth(300);
+	}
+
+	@Override
+	public void fnSearch() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

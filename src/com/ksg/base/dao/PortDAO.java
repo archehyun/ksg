@@ -17,6 +17,15 @@ public class PortDAO extends AbstractDAO{
 		return selectList("port.selectPortList", commandMap);
 
 	}
+	
+	public Object selectPort(HashMap<String, Object> param) throws SQLException
+	{
+		return selectOne("port.selectPort", param);
+	}
+	public Object selectPortAbbr(HashMap<String, Object> param) throws SQLException
+	{
+		return selectOne("port.selectPortAbbr", param);
+	}
 
 	public int deletePort(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete("port.deletePort", param);
@@ -33,6 +42,15 @@ public class PortDAO extends AbstractDAO{
 
 	public int deletePortAbbr(HashMap<String, Object> param) throws SQLException{
 		return (Integer) delete("port.deletePortAbbr", param);
+	}
+
+	public int updatePort(HashMap<String, Object> param) throws SQLException{
+		// TODO Auto-generated method stub
+		return (Integer) update("port.updatePort",param);
+	}
+
+	public void isnertPort(HashMap<String, Object> param) throws SQLException{
+		insert("port.insertPort",param);
 	}
 
 }

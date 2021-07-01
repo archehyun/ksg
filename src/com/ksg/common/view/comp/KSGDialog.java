@@ -14,6 +14,8 @@ import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -32,11 +34,10 @@ import com.ksg.shippertable.service.TableService;
  * @author ¹ÚÃ¢Çö
  *
  */
-public abstract class KSGDialog extends JDialog{
+public abstract class KSGDialog extends JDialog implements ComponentListener{
 	/**
 	 * 
 	 */
-	
 	protected String title;
 	
 	private static final long serialVersionUID = 1L;
@@ -58,6 +59,11 @@ public abstract class KSGDialog extends JDialog{
 	protected TableService tableService;
 	
 	protected ShippersTable selectedTable;
+	
+	public static final int UPDATE=1;
+	public static final int INSERT=0;
+	
+	protected int type;
 	
 	protected Font defaultFont = new Font("µ¸À½",0,10);
 	
@@ -100,6 +106,18 @@ public abstract class KSGDialog extends JDialog{
 		pn.setPreferredSize(new Dimension(15,0));
 		return pn;
 	}
+	
+	@Override
+	public void componentResized(ComponentEvent e) {}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {}
+
+	@Override
+	public void componentShown(ComponentEvent e) {}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {}
 	
 
 }

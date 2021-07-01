@@ -17,7 +17,9 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -30,99 +32,132 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.ksg.common.dao.DAOManager;
+import com.ksg.base.service.CompanyService;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.view.comp.KSGDialog;
-import com.ksg.dao.impl.BaseService;
-import com.ksg.domain.Company;
 
-public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener  {
+public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private BaseService baseService;
+	private CompanyService companyService;
 	private JTextField txfCompany_name; // 선사명
 	private JTextField txfCompany_abbr; // 선사 약어
 	private JTextField txfAgent_name;// 에이전트명
 	private JTextField txfAgent_abbr;// 에이전트 약어
 	private JTextArea txaContents;// 비고
-
-	public static final int UPDATE=1;
-	public static final int INSERT=0;
+	
 	private int type;
+	
 	private JLabel lblTitle;
 
 	private String titleInfo;
-	private String base_company_abbr;
-
-	private Company companyInfo;
 
 
-	public UpdateCompanyInfoDialog(int type, String company_abbr)
+	private HashMap<String, Object> company;
+
+
+	public UpdateCompanyInfoDialog(int type)
 	{
 		super();
-		try {
-			baseService = DAOManager.getInstance().createBaseService();
 
-			switch (type) {
-			case UPDATE:
-				title = "선사 정보 관리";
-				titleInfo="선사 정보 수정";
-				break;
-			case INSERT:
-				title = "Company 정보 추가";
-				titleInfo="Add a Company Field";
-				break;
+		companyService = new CompanyService();
 
-			default:
-				break;
-			}
-			base_company_abbr=company_abbr;
+		this.type = type;
+		title = "선사 정보 관리";
+		switch (type) {
+		case UPDATE:
 
-			companyInfo= baseService.getCompanyInfo(company_abbr);
+			titleInfo="선사 정보 수정";
+			break;
+		case INSERT:
 
-		}catch (Exception e) {
-			e.printStackTrace();
+			titleInfo="선사 정보 추가";
+			break;
+
+		default:
+			break;
 		}
+
 	}
 
-	public int result=0;
+	
+
+	public UpdateCompanyInfoDialog(int type, HashMap<String, Object> company)
+	{
+		this(type);
+		this.company = company;
+	}
+
+	private JButton butOK;
+	private JButton butCancel;
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		if(command.equals("확인"))
+		if(command.equals("수정"))
 		{
-			Company info = new Company();
-			info.setCompany_name(txfCompany_name.getText());
-			info.setCompany_abbr(txfCompany_abbr.getText());
-			info.setAgent_name(txfAgent_name.getText());
-			info.setAgent_abbr(txfAgent_abbr.getText());
-			info.setBase_company_abbr(base_company_abbr);
-			info.setContents(txaContents.getText());
+			HashMap<String, Object> param = new HashMap<String, Object>();
+
+			param.put("company_name", txfCompany_name.getText());
+			param.put("company_abbr", txfCompany_abbr.getText());
+			param.put("agent_name", txfAgent_name.getText());
+			param.put("agent_abbr", txfAgent_abbr.getText());
+			param.put("contents", txaContents.getText());
+			param.put("base_company_abbr", txfCompany_abbr.getText());
+
 
 			try {
+				int obj=companyService.updateComapny(param);
 
-				baseService.updateCompany(info);
-				JOptionPane.showMessageDialog(null,"수정 했습니다.");
-				this.setVisible(false);
-				this.dispose();	
+				if(obj>0)
+				{	
+					result = SUCCESS;
 
-				result=1;
-			} catch (SQLException e1) {
-				if(e1.getErrorCode()==2627)
-				{					
-
-				}else
-				{
-					JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null,"수정 했습니다.");
+					this.setVisible(false);
+					this.dispose();
 				}
-			}			
+
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
 		}else if(command.equals("취소"))
 		{
+			result = FAILE;
+
 			this.setVisible(false);
 			this.dispose();
+
+		}
+		else if(command.equals("추가"))
+		{
+			HashMap<String, Object> param = new HashMap<String, Object>();
+
+			param.put("company_name", txfCompany_name.getText());
+			param.put("company_abbr", txfCompany_abbr.getText());
+			param.put("agent_name", txfAgent_name.getText());
+			param.put("agent_abbr", txfAgent_abbr.getText());
+			param.put("contents", txaContents.getText());
+			param.put("base_company_abbr", txfCompany_abbr.getText());
+
+
+			try {
+				companyService.insertComapny(param);
+
+
+				result = SUCCESS;
+
+				JOptionPane.showMessageDialog(null,"추가했습니다.");
+
+				this.setVisible(false);
+				this.dispose();
+
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
 		}
 
@@ -130,7 +165,7 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 
 	public void createAndUpdateUI() {
 		this.setModal(true);
-
+		this.addComponentListener(this);
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		txfCompany_name = new JTextField(20);
 		txfCompany_abbr = new JTextField(20);
@@ -148,9 +183,10 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 
 		JPanel pnControl =  new JPanel();
 		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butOK = new JButton("확인");
 
-		JButton butCancel = new JButton("취소");
+		butOK = new JButton("저장");
+
+		butCancel = new JButton("취소");
 		butOK.addActionListener(this);
 		butCancel.addActionListener(this);
 		pnControl.add(butOK);
@@ -176,24 +212,6 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 		JPanel right = new JPanel();
 		right.setPreferredSize(new Dimension(15,0));
 
-		this.setTitle(title);
-		this.lblTitle.setText(titleInfo);
-		this.txfCompany_abbr.setText(companyInfo.getCompany_abbr());
-		this.txfCompany_name.setText(companyInfo.getCompany_name());
-		this.txfAgent_abbr.setText(companyInfo.getAgent_abbr());
-		this.txfAgent_name.setText(companyInfo.getAgent_name());
-		this.txaContents.setText(companyInfo.getContents());
-		switch (type) {
-		case UPDATE:
-
-			butOK.setText("수정");
-			butOK.setActionCommand("확인");
-			break;
-		case INSERT:
-
-			break;
-
-		}
 
 
 		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
@@ -215,4 +233,38 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 		pnCompany_abbr.add(comp);
 		return pnCompany_abbr;
 	}
+
+	
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+		this.setTitle(title);
+		this.lblTitle.setText(titleInfo);
+
+		if(company!=null)
+		{
+			this.txfCompany_abbr.setText((String) company.get("company_abbr"));
+			this.txfCompany_name.setText((String) company.get("company_name"));
+			this.txfAgent_abbr.setText((String) company.get("agent_abbr"));
+			this.txfAgent_name.setText((String) company.get("agent_name"));
+			this.txaContents.setText((String) company.get("contents"));
+		}
+		switch (type) {
+		case UPDATE:
+
+			butOK.setActionCommand("수정");
+
+			break;
+		case INSERT:
+
+			butOK.setActionCommand("추가");
+
+			break;
+
+		}
+
+	}
+
+	
 }

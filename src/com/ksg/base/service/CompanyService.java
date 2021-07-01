@@ -27,4 +27,20 @@ public class CompanyService {
 
 	}
 
+	public int updateComapny(HashMap<String, Object> param) throws SQLException{
+		return companyDAO.updateCompany(param);
+		
+	}
+
+	public int deleteCompany(HashMap<String, Object> param) throws SQLException{
+		// TODO Auto-generated method stub
+		return companyDAO.deleteCompany(param);
+	}
+
+	public void insertComapny(HashMap<String, Object> param) throws SQLException{
+		// TODO Auto-generated method stub
+		
+		companyDAO.insertCompany(param);
+	}
+
 }

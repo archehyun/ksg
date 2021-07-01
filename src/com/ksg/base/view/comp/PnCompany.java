@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -44,7 +46,6 @@ import javax.swing.table.TableRowSorter;
 
 import com.ksg.base.service.CompanyService;
 import com.ksg.base.view.BaseInfoUI;
-import com.ksg.base.view.dialog.InsertCompanyInfoDialog;
 import com.ksg.base.view.dialog.UpdateCompanyInfoDialog;
 import com.ksg.common.comp.KSGTableColumn;
 import com.ksg.common.comp.KSGTablePanel;
@@ -65,10 +66,10 @@ import com.ksg.domain.Company;
 
  * @변경이력 :
 
- * @프로그램 설명 :
+ * @프로그램 설명 : 선사 정보 관리
 
  */
-public class PnCompany extends PnBase implements ActionListener{
+public class PnCompany extends PnBase implements ActionListener, ComponentListener{
 
 	/**
 	 * 
@@ -96,9 +97,11 @@ public class PnCompany extends PnBase implements ActionListener{
 	
 	CompanyService companyService = new CompanyService();
 
+	private List<HashMap<String, Object>> master;
+
 	public PnCompany(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);		
-
+		this.addComponentListener(this);
 		this.add(buildCenter());
 
 
@@ -154,7 +157,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		tblCompanyTable.getColumnModel().addColumnModelListener(new MyTableColumnModelListener(tblCompanyTable));
 
-		tblCompanyTable.addMouseListener(new TableSelectListner());
+		tableH.addMouseListener(new TableSelectListner());
 
 		JScrollPane jScrollPane = new JScrollPane(tblCompanyTable);
 
@@ -162,7 +165,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		pnMain.add(tableH);
 
-		KSGTableColumn columns[] = new KSGTableColumn[4];
+		KSGTableColumn columns[] = new KSGTableColumn[5];
 
 		columns[0] = new KSGTableColumn();
 		columns[0].columnField = "company_name";
@@ -183,6 +186,11 @@ public class PnCompany extends PnBase implements ActionListener{
 		columns[3].columnField = "agent_abbr";
 		columns[3].columnName = "에이전트 약어";
 		columns[3].size = 300;
+		
+		columns[4] = new KSGTableColumn();
+		columns[4].columnField = "contents";
+		columns[4].columnName = "비고";
+		columns[4].size = 300;
 
 		tableH.setColumnName(columns);
 		tableH.initComp();
@@ -220,13 +228,14 @@ public class PnCompany extends PnBase implements ActionListener{
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
-					searchTableData();
+					fnSearch();
 				}
-
 			}
 		});
 		JLabel label = new JLabel("개 항목");
+		
 		JButton butUpSearch = new JButton("검색");
+		
 		butUpSearch.addActionListener(this);
 
 		cbxField.setPreferredSize(new Dimension(150,23));
@@ -244,9 +253,10 @@ public class PnCompany extends PnBase implements ActionListener{
 		pnSearchAndCount.add(pnCountInfo);
 
 		JPanel pnCount = new JPanel();
+		
 		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		pnCount.add(lblTable);
-
 
 		JPanel pnInfo= new JPanel(new BorderLayout());
 
@@ -304,68 +314,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	}
 
-	private void searchTableData()
-	{
-		
-		logger.debug("start");
-		HashMap<String, Object> param = new HashMap<String, Object>();
-
-
-		String field = (String) cbxField.getSelectedItem();
-
-
-		
-		if(!"".equals(txfSearch.getText()))
-		{
-			if(field.equals("선사명"))
-			{
-				query="company_name";
-			}else if(field.equals("선사명 약어"))
-			{
-				query="company_abbr";
-			}
-			else if(field.equals("에이전트"))
-			{
-				query="agent_name";
-			}
-			else if(field.equals("에이전트 약어"))
-			{
-				query="agent_abbr";
-			}
-
-			//query+=" like '"+txfSearch.getText()+"%'";
-			
-			param.put(query, txfSearch.getText());
-		}
-		
-		
-		try {
-			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectCompanyList(param);
-
-			tableH.setResultData(result);
-
-			List master = (List) result.get("master");
-
-			if(master.size()==0)
-			{
-				/*lblArea.setText("");
-				lblAreaCode.setText("");
-				lblPationality.setText("");
-				lblPortName.setText("");
-				tableD.clearReslult();*/
-			}
-			else
-			{
-				tableH.changeSelection(0,0,false,false);
-			}
-
-
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -374,23 +323,26 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		if(command.equals("검색"))
 		{
-			searchTableData();
+			fnSearch();
 		}
 		else if(command.equals("삭제"))
 		{
-			int row=tblCompanyTable.getSelectedRow();
+			int row=tableH.getSelectedRow();
 			if(row<0)
 				return;
 
-			String data= (String) tblCompanyTable.getValueAt(row, 1);
-			int result=JOptionPane.showConfirmDialog(this,data+"를 삭제 하시겠습니까?", "선사 정보 삭제", JOptionPane.YES_NO_OPTION);
+			HashMap<String, Object> data= (HashMap<String, Object>) tableH.getValueAt(row);
+			
+			int result=JOptionPane.showConfirmDialog(this,data.get("company_name")+"를 삭제 하시겠습니까?", "선사 정보 삭제", JOptionPane.YES_NO_OPTION);
+			
 			if(result==JOptionPane.OK_OPTION)
 			{	
 				try {
-					int count=baseDaoService.deleteCompany(data);
+					int count=companyService.deleteCompany(data);
+					
 					if(count>0)
 					{
-						searchData();
+						fnSearch();
 						JOptionPane.showMessageDialog(this, "삭제되었습니다.");
 					}
 
@@ -403,15 +355,15 @@ public class PnCompany extends PnBase implements ActionListener{
 		}
 		else if(command.equals("신규"))
 		{
-			KSGDialog dialog = new InsertCompanyInfoDialog(getBaseInfoUI());
+			KSGDialog dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.INSERT);
+			
 			dialog.createAndUpdateUI();
+			
 			if(dialog.result==KSGDialog.SUCCESS)
 			{
-				searchData();
+				fnSearch();
 			}
 		}
-
-
 	}
 
 	/**
@@ -455,8 +407,10 @@ public class PnCompany extends PnBase implements ActionListener{
 	class TableSelectListner extends MouseAdapter
 	{
 		KSGDialog dialog;
+		
 		public void mouseClicked(MouseEvent e) 
 		{
+			
 			if(e.getClickCount()>1)
 			{
 				JTable es = (JTable) e.getSource();
@@ -464,12 +418,21 @@ public class PnCompany extends PnBase implements ActionListener{
 
 				if(row<0)
 					return;
+				
+				
+				HashMap<String, Object> port=(HashMap<String, Object>) tableH.getValueAt(row);
 
-				String data=(String) tblCompanyTable.getValueAt(row, 1);
-
-				dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.UPDATE,data);
+				dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.UPDATE,port);
+				
 				dialog .createAndUpdateUI();
-				updateTable(query);
+				
+				int result = dialog.result;
+				
+				if(result==UpdateCompanyInfoDialog.SUCCESS)
+				{
+					fnSearch();
+				}
+				
 
 
 			}
@@ -488,13 +451,9 @@ public class PnCompany extends PnBase implements ActionListener{
 			this.table = table;
 		}
 
-		public void columnAdded(TableColumnModelEvent e) {
+		public void columnAdded(TableColumnModelEvent e) {}
 
-		}
-
-		public void columnRemoved(TableColumnModelEvent e) {
-
-		}
+		public void columnRemoved(TableColumnModelEvent e) {}
 
 		public void columnMoved(TableColumnModelEvent e) {
 			int fromIndex = e.getFromIndex();
@@ -670,7 +629,83 @@ public class PnCompany extends PnBase implements ActionListener{
 		{
 			return model.getRowCount();
 		}
+	}
 
+	@Override
+	public void fnSearch() {
+
+		logger.debug("start");
+		
+		HashMap<String, Object> param = new HashMap<String, Object>();
+
+		String field = (String) cbxField.getSelectedItem();
+		
+		if(!"".equals(txfSearch.getText()))
+		{
+			if(field.equals("선사명"))
+			{
+				query="company_name";
+			}else if(field.equals("선사명 약어"))
+			{
+				query="company_abbr";
+			}
+			else if(field.equals("에이전트"))
+			{
+				query="agent_name";
+			}
+			else if(field.equals("에이전트 약어"))
+			{
+				query="agent_abbr";
+			}
+			param.put(query, txfSearch.getText());
+		}
+		
+		
+		try {
+			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectCompanyList(param);
+
+			tableH.setResultData(result);
+
+			master = (List) result.get("master");
+
+			if(master.size()==0)
+			{
+				/*lblArea.setText("");
+				lblAreaCode.setText("");
+				lblPationality.setText("");
+				lblPortName.setText("");
+				tableD.clearReslult();*/
+			}
+			else
+			{
+				tableH.changeSelection(0,0,false,false);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void componentShown(ComponentEvent e) {
+		fnSearch();
+		
+	}
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -1162,13 +1162,4 @@ public class OutboundScheduleJoint extends DefaultScheduleJoint{
 			return ScheduleBuild.FAILURE;
 		}
 	}
-
-
-
-
-
-
-
-
-
 }

@@ -42,6 +42,8 @@ public class VesselInfoExportCommand extends ExportCommand{
 			
 			vesselList = baseService.selectList(new Vessel());
 			
+			System.out.println("wb:"+wb);
+			
 			Sheet sheet = wb.createSheet(sheetName);
 			
 			CreationHelper createHelper = wb.getCreationHelper();

@@ -18,6 +18,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -74,10 +76,20 @@ import com.ksg.schedule.view.ScheduleMgtUI;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 
+
 /**
- * @author 박창현
- *
- */
+
+  * @FileName : KSGMainFrame.java
+
+  * @Date : 2021. 4. 17. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	private static final String SCHEDULE_WORLDWIDE	= "항로별 스케줄 생성";
 	private static final String SCHEDULE_INBOUND	= "Inbound 스케줄 생성";
@@ -157,7 +169,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		this.setName(NAME);
 	
 		manager = KSGModelManager.getInstance();
+		
 		manager.addObservers(this);
+		
 		tableService = DAOManager.getInstance().createTableService();
 
 		this.login = login;
@@ -180,7 +194,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				pnPrintADV 	= new PrintADVUI();
 				
 				pnSchedule  = new ScheduleMgtUI();
-				
 				
 				pnCenter.add(pnSearch,ADV_SEARCH);
 				
@@ -243,6 +256,13 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		scheduleService= new ScheduleServiceImpl();
 
 		JPanel pnButtom = buildButtom();
+		
+		
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		
+		Image img = toolkit.getImage("images/img_logo.png");
+		
+		this.setIconImage(img);		
 
 		this.setJMenuBar(crateMenuBar());
 
@@ -427,7 +447,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 		BiggerMenu AdvMenu = new BiggerMenu("광고정보관리");
 
-
 		this.addMenuItem(AdvMenu, ADV_SEARCH, KeyEvent.VK_X,advActionListener);
 		this.addMenuItem(AdvMenu, ADV_INPUT, KeyEvent.VK_X,advActionListener);
 		this.addMenuItem(AdvMenu, ADV_PRINT, KeyEvent.VK_X,advActionListener);
@@ -506,7 +525,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		addMenuItem(schduleMenu, "일괄작업(전송용New)",scheduleActionListener);
 
 		schduleMenu.addSeparator();
-
 
 		BiggerMenu optionMenu = new BiggerMenu("옵션",KeyEvent.VK_O);
 

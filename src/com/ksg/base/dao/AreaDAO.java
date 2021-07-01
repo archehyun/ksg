@@ -37,4 +37,14 @@ public class AreaDAO extends AbstractDAO{
 		return (Integer) delete("area.deleteArea", param);
 	}
 
+	public int updateArea(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return (Integer) update("area.updateArea", param);
+	}
+
+	public void insertArea(HashMap<String, Object> param) throws SQLException {
+		insert("area.insertArea",param);
+		
+	}
+
 }

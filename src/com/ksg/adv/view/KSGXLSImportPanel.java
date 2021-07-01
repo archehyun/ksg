@@ -28,6 +28,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Box;
@@ -148,7 +150,9 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 	private KSGXMLTable tblADV;
 
-	private PortTable tblPort;	
+	//private PortTable tblPort;
+	
+	private SearchedPortTable tblPort;
 
 	private JTextArea txaADV;
 
@@ -481,7 +485,8 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		);
 		txaADV = new JTextArea();
 		litVessel =new VesselListComp(this);
-		tblPort = new PortTable(txaADV,this);
+//		tblPort = new PortTable(txaADV, this);
+		tblPort = new SearchedPortTable();
 		tblPort.setToolTipText("기본: 검정색, 신규 항구:노란색, 위치가  다른 항구:빨간색,");
 		JPanel pnLeft = new JPanel();
 		JSplitPane tpPortAndVessel = new JSplitPane();
@@ -493,7 +498,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 		pnPort.setLayout(new BorderLayout());
 
-		pnPort.add(tblPort,BorderLayout.CENTER);
+		pnPort.add(new JScrollPane(tblPort),BorderLayout.CENTER);
 
 		pnVessel.setLayout(new BorderLayout());
 		
@@ -502,15 +507,16 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		// 추후 제거
 		buildInfo();
 
-		JScrollPane scrollPane = new JScrollPane(pnPort);
-		scrollPane.setPreferredSize(new Dimension(160,200));
+		pnPort.setPreferredSize(new Dimension(200,200));
 
-		scrollPane.setMinimumSize(new Dimension(160,200));
+		pnPort.setMinimumSize(new Dimension(200,200));
 		
-		tpPortAndVessel.setLeftComponent(scrollPane);
-		tpPortAndVessel.setRightComponent(new JScrollPane(pnVessel));
+		//tpPortAndVessel.setPreferredSize(new Dimension(500,200));
+		//tpPortAndVessel.setMinimumSize(new Dimension(500,200));
 		
-
+		tpPortAndVessel.setLeftComponent(pnPort);
+		tpPortAndVessel.setRightComponent(new JScrollPane(pnVessel));		
+		
 
 		pnLeft.setLayout(new BorderLayout());
 		pnLeft.add(tpPortAndVessel,BorderLayout.CENTER);
@@ -577,8 +583,8 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		pnCenter.add(pnCard,BorderLayout.CENTER);
 
 		tblADV.setName("adv");
-		pnLeft.setPreferredSize(new Dimension(300,200));
-		pnLeft.setMinimumSize(new Dimension(300,200));
+		pnLeft.setPreferredSize(new Dimension(350,200));
+		pnLeft.setMinimumSize(new Dimension(350,200));
 
 		
 		pnMain = new JSplitPane();
@@ -646,7 +652,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 	public int getIndex() {
 		return index;
 	}
-	public Vector getPortList() {
+	public List<HashMap<String,Object>> getPortList() {
 
 		return tblPort.getPortList();
 	}
@@ -752,7 +758,8 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 			lblVesselCount.setText(lblVesselCount.getText()+"(확인 필요)");
 		}			
 		
-		tblPort.setModel(xlstableinfo.getPortElement());
+		tblPort.setModel(xlstableinfo.getPortElement(), this.getTable_id());
+//		tblPort.setModel(xlstableinfo.getPortElement());
 
 		this.table_id = xlstableinfo.getTable_id();
 		

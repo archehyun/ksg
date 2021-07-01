@@ -23,7 +23,6 @@ public class DelPortExceptionCommand implements KSGCommand {
 		
 		if(result==JOptionPane.OK_OPTION)
 		{
-			
 			Code code_info = new Code();
 			code_info.setCode_type("port_exception");
 			code_info.setCode_field(portName);

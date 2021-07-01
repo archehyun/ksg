@@ -19,7 +19,6 @@ import com.ksg.domain.Vessel;
 import com.ksg.schedule.StringCompare;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 /**
  * @author 박창현
@@ -39,7 +38,7 @@ import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
  *   GroupInOutPort    
  *       
  */
-public class RouteScheduleJointV3_1 extends DefaultScheduleJoint{
+public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 
 
 	/**
@@ -600,21 +599,16 @@ public class RouteScheduleJointV3_1 extends DefaultScheduleJoint{
 	public static final int ORDER_BY_DATE=1;
 	public static final int ORDER_BY_VESSEL=2;
 
-	private ScheduleBuildMessageDialog di;
 	private String fileName;
+	
 	private SimpleDateFormat inputDateType_yyyy_MM_dd = new SimpleDateFormat("yyyy/MM/dd");
+	
 	private SimpleDateFormat outputDateType = new SimpleDateFormat("M/d");
-	private ShippersTable op;
+	
 	private int orderByType=1;
+	
 	private final int OUT_PORT_SIZE = 3;// 최소 외국항 수	
-	private String WORLD_B="";
-	private String WORLD_E="";
-	private String WORLD_F="";
-	private String WORLD_INPORT="";
-	private String WORLD_OUTPORT="";
-	private String WORLD_VERSION1="";	
-	private String WORLD_VERSION2="";
-	private String WORLD_VERSION3="";
+
 	public RouteScheduleJointV3_1(ShippersTable op) throws SQLException {
 
 		super();

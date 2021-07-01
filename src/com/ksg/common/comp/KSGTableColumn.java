@@ -18,7 +18,11 @@ import javax.swing.table.TableColumn;
 @SuppressWarnings("serial")
 public class KSGTableColumn extends TableColumn{
 	
-	public int size = 150;
+	public int size = 0;
+	
+	public int minSize = 0;
+	
+	public int maxSize = 0;
 
 	public String columnName;
 
@@ -39,7 +43,11 @@ public class KSGTableColumn extends TableColumn{
 		this.columnName = columnName;
 		this.size = size;
 	}
-
+	
+	public Object getValue(Object obj)
+	{
+		return obj;
+	}
 
 
 	@Override

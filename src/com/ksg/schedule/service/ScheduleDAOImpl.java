@@ -68,11 +68,8 @@ public class ScheduleDAOImpl implements SchduleDAO {
 		}else
 		{
 			return sqlMap.queryForList("Schedule.selectPort_nameListByOutbound");
-		}
-		
-	}
-	
-	
+		}		
+	}	
 
 	public List getScheduleListByPort(String port) throws SQLException {
 		return sqlMap.queryForList("Schedule.selectScheduleList",port);

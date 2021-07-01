@@ -288,7 +288,6 @@ public class SearchPortCommand implements KSGCommand, ActionListener {
 	
 		public void actionPerformed(ActionEvent e) {
 			JComboBox bo =(JComboBox) e.getSource();
-			System.out.println("select1"+bo.getSelectedItem()+","+flag);
 			
 			if(bo.getSelectedItem()!=null&&flag)
 			{

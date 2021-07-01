@@ -45,38 +45,39 @@
 
 	<insert id="insertCompany" parameterClass="java.util.HashMap">
 		insert into TB_COMPANY(
-			company_name
+			company_name,
 			agent_name,
 			company_abbr,
 			agent_abbr,
-			
+			contents
 		
 		)values
 		(
-			#company_name#
+			#company_name#,
 			#agent_name#,
 			#company_abbr#,
 			#agent_abbr#,
+			#contents#
 		);
 	</insert>
 	
 <!-- update -->
 	
 	<update id="updateCompany" parameterClass="java.util.HashMap">
-		update TB_COMPANY
-			set 
-				area_code=#area_code#, 
-				area_book_code=#area_book_code#, area_name=#area_name#
-			where 
-			(
-				area_name=#base_area_name#
-			)
+		update TB_COMPANY 
+		set 
+			agent_name=#agent_name#,
+			company_abbr=#company_abbr#,
+			agent_abbr=#agent_abbr#,
+			company_name=#company_name#,
+			contents=#contents#
+		where (company_abbr=#base_company_abbr#)
 	</update>
 
 <!-- delete -->
 
 	<delete id="deleteCompany" parameterClass="java.util.HashMap">
-		delete from TB_COMPANY where company_name=#company_name#
+		delete from TB_COMPANY where company_abbr=#company_abbr#
 	</delete>
 	
 	

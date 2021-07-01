@@ -18,6 +18,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -67,7 +68,9 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 
 	private JCheckBox chbUse;
 
-	private Vessel dataInfo;
+//	private Vessel dataInfo;
+	
+	HashMap<String, Object> info;
 	private JCheckBox cbxMMSICheck;
 	/**
 	 * @deprecated
@@ -102,7 +105,7 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 	{
 		super();
 		this.setTitle(UPDATE_TITLE);	
-		this.dataInfo = vessel;
+	//	this.dataInfo = vessel;
 	}
 
 
@@ -115,7 +118,11 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		super();
 		this.baseInfoUI=baseInfoUI;
 		this.setTitle(UPDATE_TITLE);
-		this.dataInfo = vessel;
+		//this.dataInfo = vessel;
+	}
+	public UpdateVesselInfoDialog(HashMap<String, Object> item) {
+		super();
+		this.info = item;
 	}
 	public void createAndUpdateUI() 
 	{
@@ -155,7 +162,7 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		chbUse= new JCheckBox("사용안함");
 		txfMMSI = new JTextField(5);
 
-		Vessel info = new Vessel();
+		/*Vessel info = new Vessel();
 		info.setVessel_name(dataInfo.getVessel_name());
 		try {
 			List li=baseService.getVesselListGroupByName(info);
@@ -170,7 +177,13 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}*/	
+		
+		int use=(Short)info.get("vessel_use");
+		if(use==Vessel.NON_USE)
+		{
+			chbUse.setSelected(true);
+		}
 
 		JPanel pnRequest = new JPanel();
 		pnRequest.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -197,17 +210,19 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 
 				txfMMSI.setEnabled(!cbxMMSICheck.isSelected());				
 
-
+				String mmsi = (String) info.get("vessel_mmsi");
 				if(cbxMMSICheck.isSelected())
 				{
-					if(dataInfo.getVessel_mmsi()!=null)
+					
+					
+					if(mmsi!=null)
 					{	
 						txfMMSI.setText("");						
 					}
 				}
 				else
 				{
-					txfMMSI.setText(dataInfo.getVessel_mmsi().equals("         ")?"":dataInfo.getVessel_mmsi());		
+					txfMMSI.setText(mmsi.equals("         ")?"":mmsi);		
 				}
 			}
 		});
@@ -271,37 +286,19 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnTitle.setBackground(Color.white);
 		LABEL ="선박 명: ";
-		if(dataInfo!=null)
+		/*if(dataInfo!=null)
 		{		
 			LABEL +=dataInfo.getVessel_name();
 			vesselName =dataInfo.getVessel_name();
-		}
-
+		}*/
+		
+		LABEL +=info.get("vessel_name");
+		vesselName = (String) info.get("vessel_name");
 		JLabel label = new JLabel(LABEL);
 		label.setFont(new Font("돋움",0,16));
 		pnTitle.add(label);
 
-		listVesselAbbr = new JList();
-
-
-		try {
-			List li=baseService.getVessel_AbbrList(dataInfo.getVessel_name());
-
-			Iterator iter = li.iterator();
-			DefaultListModel model = new DefaultListModel();
-
-			while(iter.hasNext())
-			{
-				Vessel portInfo = (Vessel) iter.next();
-				model.addElement(portInfo.getVessel_abbr());
-			}
-
-			listVesselAbbr.setModel(model);
-			
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		
 
 
 		JPanel pnVesselAbbrList = new JPanel(new BorderLayout());
@@ -318,7 +315,7 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		pnCenter.add(pnMMSI);
 		pnCenter.add(pnCompany);
 		pnCenter.add(pnUse);
-		pnCenter.add(pnVesselAbbrList);
+		//pnCenter.add(pnVesselAbbrList);
 		pnCenter.add(pnS);
 		pnCenter.add(pnControl);
 
@@ -341,27 +338,31 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 	}
 	private void initView() {
 		
-		logger.info("init vesselInfo:"+dataInfo.getVessel_mmsi());
-		if(dataInfo!=null)
+		
 		{		
+			
+			String vessel_type = (String) info.get("vessel_type");
+			String vessel_company = (String) info.get("vessel_company");
+			String vessel_mmsi = (String) info.get("vessel_mmsi");
+			
 			int count=cbxType.getItemCount();
 			for(int i=0;i<count;i++)
 			{
 				ConType type=(ConType) cbxType.getItemAt(i);
 
-				if(type.getTypeField().equals(dataInfo.getVessel_type()))
+				if(type.getTypeField().equals(vessel_type))
 				{
 					cbxType.setSelectedIndex(i);
 					break;
 				}
 			}
-			txfCompanyName.setText(dataInfo.getVessel_company());
+			txfCompanyName.setText(vessel_company);
 
-			if(dataInfo.getVessel_mmsi()!=null&&!dataInfo.getVessel_mmsi().equals("         "))
+			if(vessel_mmsi!=null&&!vessel_mmsi.equals("         "))
 			{
 				cbxMMSICheck.setSelected(false);
 				txfMMSI.setEnabled(true);
-				txfMMSI.setText(dataInfo.getVessel_mmsi());
+				txfMMSI.setText(vessel_mmsi);
 			}
 			else
 			{

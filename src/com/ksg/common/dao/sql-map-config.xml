@@ -54,6 +54,10 @@
 	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_base_area.xml" />
 	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_base_port.xml" />
 	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_base_company.xml" />
+	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_base_vessel.xml" />
+	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_common_code.xml" />
+	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_shippertable.xml" />
+	<sqlMap resource="com/ksg/common/dao/maps/mssql/mssql_schedule.xml" />
 	
 	
 	

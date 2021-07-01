@@ -217,7 +217,6 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 		this.txfCompany_Abbr 	= new JTextField(15);	// 선사 약어
 		this.txfAgent 			= new JTextField(15);	// 에이전트
 		
-		
 		this.txfPage 			= new JTextField(3);	// 페이지
 		this.txfBookPage 		= new JTextField(3);	// 지면 페이지
 		this.txfIndex			= new JTextField(2);	// 인덱스

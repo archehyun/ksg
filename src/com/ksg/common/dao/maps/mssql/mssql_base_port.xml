@@ -33,10 +33,23 @@
 		        port_abbr=#port_abbr#
 		    </isNotNull>
 		    <isNotNull property="port_name" prepend="and">
-		        port_name=#port_name#
+		        port_name like '%$port_name$%'
 		    </isNotNull>
  
 		</dynamic>
+	</select>
+	
+	<select id="selectPort" resultClass="java.util.HashMap">
+	select * from TB_PORT
+	where port_name = #port_name#
+	
+	</select>
+	
+	<select id="selectPortAbbr" resultClass="java.util.HashMap">
+	select A.port_abbr, B.port_name, B.area_code,B.port_area, B.port_nationality from TB_PORT_ABBR A, TB_PORT B
+	WHERE A.port_name=B.port_name 
+	AND A.port_abbr=#port_abbr#
+	
 	</select>
 	
 		<select id="selectPortAbbrList" resultClass="java.util.HashMap">
@@ -56,31 +69,34 @@
 
 	<insert id="insertPort" parameterClass="java.util.HashMap">
 		insert into TB_PORT(
-			port_area
+			port_area,
 			port_name,
-			port_abbr,
-			area_code,
+			port_nationality,
+			area_code
 			
 		
 		)values
 		(
-			#port_area#
+			#port_area#,
 			#port_name#,
-			#port_abbr#,
-			#area_code#,
+			#port_nationality#,
+			#area_code#
 		);
 	</insert>
 	
 <!-- update -->
 	
-	<update id="updatePORT" parameterClass="java.util.HashMap">
+	<update id="updatePort" parameterClass="java.util.HashMap">
 		update TB_PORT 
 			set 
-				area_code=#area_code#, 
-				area_book_code=#area_book_code#, area_name=#area_name#
+				port_area=#port_area#,
+				port_name=#port_name#,
+				port_nationality=#port_nationality#,
+				area_code=#area_code#
+				
 			where 
 			(
-				area_name=#base_area_name#
+				port_name=#base_port_name#
 			)
 	</update>
 
