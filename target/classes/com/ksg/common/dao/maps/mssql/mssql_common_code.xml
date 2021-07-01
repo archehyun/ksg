@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="code">
+
+
+<!-- *** Port *** -->
+	
+
+<!-- select -->
+
+	<select id="selectCodeHList" resultClass="java.util.HashMap">
+	
+	
+	select CD_ID, CD_NM, CD_ENG from TB_CODE_H
+
+	
+	<dynamic prepend="where">
+		<isNotNull property="CD_NM" prepend="and">
+						CD_NM like '%CD_NM%'
+		</isNotNull>
+	</dynamic>
+	
+	</select>
+	
+	
+	<select id="selectCodeD" resultClass="java.util.HashMap">
+		select * from TB_CODE_INFO
+		
+		where
+		code_field=#code_field#
+		
+	</select>
+	
+	<select id="selectCodeDList" resultClass="java.util.HashMap">
+		select * from TB_CODE_INFO
+		<dynamic prepend="where">
+		    
+		    <isNotNull property="code_type" prepend="and">
+		        code_type=#code_type#
+		    </isNotNull>
+		    
+		    <isNotNull property="code_name" prepend="and">
+		        code_name like '%$code_name$%'
+		    </isNotNull>
+ 
+		</dynamic>
+	</select>	
+
+<!-- insert -->
+
+	<insert id="insertCodeH" parameterClass="java.util.HashMap">
+		insert into TB_CODE_H(
+			CD_ID,
+			CD_NM,
+			CD_ENG
+		)values
+		(
+			#CD_ID#,
+			#CD_NM#,
+			#CD_ENG#
+		);
+	</insert>
+	
+	<insert id="insertCodeD" parameterClass="java.util.HashMap">
+		insert into TB_CODE_INFO(
+			code_field,
+			code_name,
+			code_type,
+			code_name_kor
+		
+		)values
+		(
+			#code_field#,
+			#code_name#,
+			#code_type#,
+			#code_name_kor#
+		);
+	</insert>
+	
+<!-- update -->
+	
+	<update id="updateCodeH" parameterClass="java.util.HashMap">
+		update TB_CODE_H 
+			set 
+				CD_NM=#CD_NM#
+				
+			where 
+			(
+				CD_ID=#CD_ID#
+			)
+	</update>
+
+<!-- delete -->
+
+	<delete id="deleteCodeH" parameterClass="java.util.HashMap">
+		delete from TB_CODE_H where CD_ID=#CD_ID#
+	</delete>
+	
+	<delete id="deleteCodeD" parameterClass="java.util.HashMap">
+		delete from TB_CODE_INFO where code_field=#code_field# and code_name=#code_name#
+	</delete>
+	
+	
+<!-- count -->
+
+	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
+		select count(*) from TB_CODE_INFO	
+	</select>
+	<select id="selectCountH" resultClass="int" parameterClass="java.util.HashMap">
+		select count(*) from TB_CODE_H	
+	</select>
+
+<!-- ********************************************* -->	
+
+
+				
+</sqlMap>
