@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Base">
+
+	<!-- ===========================================  
+		 
+		============================================== 
+
+<parameterMap class= "com.ksg.domain.Shipper" id="id">
+		<parameter property="name"/>
+		<parameter property="id"/>
+		
+	</parameterMap>
+	<parameterMap class= "com.ksg.domain.ShippersTable" id="">
+		<parameter property="shipper_name"/>
+		<parameter property="quark_style"/>
+		
+	</parameterMap>
+	-->
+	 <cacheModel type="LRU" id="CH">
+	 
+	 <property name="size" value="0"/>
+	 </cacheModel>
+	
+	
+	
+	<sql id="TableList">
+		select * from t_info where shipper_name=#name#
+	</sql>	
+	<sql id="CodeList">
+		select * from TB_CODE_INFO where code_type=#type#
+	</sql>
+	
+	
+	<select id="selectCodeList" resultClass="java.util.HashMap">
+		<include refid="CodeList"/>
+	</select>
+	
+	<select id="selectPageList" resultClass="java.util.HashMap">
+		select * from TB_PAGE_INFO
+	</select>
+	<sql id="FieldListSQL" >
+		select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where table_name= #table_name#
+	</sql>
+	<select id="getFieldNameList" resultClass="string">
+		<include refid="FieldListSQL"/>
+	</select>
+	
+	<select id="selectFieldList" resultClass="java.util.HashMap">
+		desc  $type$
+	</select>
+	
+	
+	<select id="selectCodeField" resultClass="string">
+		select code_field from TB_CODE_INFO where code_name=#code_name#
+	</select>
+		
+	<update id="updatePage" parameterClass="java.util.HashMap">
+		update TB_PAGE_INFO set company_abbr=#company_abbr#,table_count=#table_count#
+		where (page=#page#)
+	</update>
+	<insert id="insertPage" parameterClass="java.util.HashMap">
+		insert into TB_PAGE_INFO(page,company_abbr,table_count)
+		values(#page#,#company_abbr#,#table_count#);
+	</insert>
+	<select id="selectCodeType"  resultClass="string">
+	select code_type from tb_code_info group by code_type
+	</select>
+	<select id="selectCodeListByField"  resultClass="com.ksg.domain.Code">
+	select * from tb_code_info where code_type=#code_type#
+	</select>
+	
+	<update id="updateisdata" parameterClass="java.util.HashMap">
+		update tb_isdata set log=#log#,isData=#isData# 
+		where (company_abbr=#company_abbr#)
+	</update>
+	
+	<insert id="insertisdata" parameterClass="java.util.HashMap">
+		insert into tb_isdata(company_abbr,isData,log)
+		values(#company_abbr#,#isData#,#log#);
+	</insert>
+	<select id="selectisdataList" resultClass="java.util.HashMap">
+		select * from tb_isdata
+	</select>
+
+
+	
+
+
+
+<!-- *** AREA *** -->
+	<sql id="AreaList">
+		select * from TB_AREA
+	</sql>
+	
+	<select id="selectAreaList" resultClass="java.util.HashMap">
+		<include refid="AreaList"/>
+	</select>
+	
+	<insert id="insertArea" parameterClass="com.ksg.domain.AreaInfo">
+		insert into TB_AREA(area_code,area_name)values(#area_code#,#area_name#);
+	</insert>
+	
+	<update id="updateArea" parameterClass="com.ksg.domain.AreaInfo">
+		update TB_AREA set area_name=#area_name#
+		where (area_code=#area_code#)
+	</update>
+	<delete id="deleteArea" parameterClass="string">
+	delete from TB_AREA where area_name=#area_name#
+	</delete>
+	
+	<select id="selectSearchedAreaList" resultClass="com.ksg.domain.AreaInfo">
+	select * from TB_AREA
+	<isNotEmpty prepend="where">	
+	$searchKeyword$
+	</isNotEmpty>
+	</select>
+	
+	
+		
+<!-- *** PORT *** -->
+	<sql id="PortList">
+		select * from TB_PORT 
+	</sql>
+
+	<select id="selectPortList" resultClass="java.util.HashMap">
+		<include refid="PortList"/>
+	</select>
+
+	<select id="selectPortInfoList" parameterClass="string" resultClass="com.ksg.domain.PortInfo">
+		select * from TB_PORT order by area_code
+	</select>
+	
+	<select id="selectPort_name" resultClass="string">
+		select port_name from TB_PORT where port_name=#port_name#
+	</select>
+	
+	<select id="selectPort_nameList" resultClass="string">
+		select port_name from TB_PORT
+	</select>
+	
+	<select id="selectPortListByPatten" resultClass="string" parameterClass="string">
+		select port_name from tb_port where port_name like #patten#
+	</select>
+	
+	<select id="selectPortInfoByPortName" parameterClass="string" resultClass="com.ksg.domain.PortInfo">
+		select * from TB_PORT where port_name=#port_name#
+	</select>	
+	<update id="updatePortInfo" parameterClass="com.ksg.domain.PortInfo">
+	update TB_PORT 
+	set port_name=#port_name#,
+	<isNotEmpty prepend="," property="port_area">
+	port_area=#port_area#
+	</isNotEmpty>
+	<isNotEmpty prepend="," property="port_nationality">
+	port_nationality=#port_nationality#
+	</isNotEmpty>
+	<isNotEmpty prepend="," property="area_code">
+	area_code=#area_code#
+	</isNotEmpty>
+	where port_name=#port_name#
+	</update>
+	<insert id="insertPort" parameterClass="com.ksg.domain.PortInfo">
+		insert into TB_PORT(		
+		port_name
+		<isNotEmpty prepend="," property="port_area">
+		port_area
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="port_nationality">
+		port_nationality 
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="area_code">
+		area_code
+		</isNotEmpty>
+		 )
+		values(
+		#port_name#
+		<isNotEmpty prepend="," property="port_area">
+		#port_area# 
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="port_nationality">
+		#port_nationality# 
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="area_code">
+		#area_code# 
+		</isNotEmpty>);
+	</insert>
+	
+	<update id="updatePort" parameterClass="java.util.HashMap">
+		update TB_PORT set port_name=#port_name#,port_area=#port_area#, port_nationality=#port_nationality#,area_code=#area_code#,MLB=#MLB#,AlsoServed=#AlsoServed#
+		where (port_name=#port_name#)
+	</update>
+	<delete id="deletePort" parameterClass="string">
+	delete from TB_PORT where port_name=#port_name#
+	</delete>
+	<select id="selectArrangedPortList" resultClass="com.ksg.domain.PortInfo">
+	select * from TB_PORT
+	<isNotEmpty prepend="order by">	
+	$orderBy$
+	</isNotEmpty>
+	</select>
+	<select id="selectSearchedPortList" resultClass="com.ksg.domain.PortInfo">
+	select * from TB_PORT
+	<isNotEmpty prepend="where">	
+	$searchKeyword$
+	</isNotEmpty>
+	</select>
+<!-- *** PORT_ABBR *** -->	
+	<sql id="Port_AbbrList">
+		select * from TB_PORT_ABBR 
+	</sql>
+	
+	<select id="selectAreaInfoList" resultClass="com.ksg.domain.AreaInfo">
+		select * from TB_AREA
+		<isNotEmpty prepend="where" property="area_code">	
+		area_code=#area_code#
+		</isNotEmpty>
+		order by area_code
+	</select>
+	
+	<select id="selectAreaInfo" resultClass="com.ksg.domain.AreaInfo">
+		select * from TB_AREA where area_name=#area_name# 
+	</select>
+	
+	<select id="selectAreaGroupList" resultClass="com.ksg.domain.AreaInfo">
+		select * from TB_AREA where order by area_code
+	</select>
+	
+	<select id="selectAreaSubList" resultClass="com.ksg.domain.AreaInfo">
+		select * from TB_AREA
+		<isNotEmpty prepend="where" property="area_code">
+		area_code/100=#area_code#/100 and area_code%100!=0 
+		</isNotEmpty>
+		<isEmpty prepend="where" property="area_code">
+		area_code%100!=0
+		</isEmpty>
+		order by area_code
+	</select>
+	
+	<select id="selectArrangedAreaList" resultClass="com.ksg.domain.AreaInfo">
+	select * from TB_AREA
+	<isNotEmpty prepend="order by">	
+	$orderBy$
+	</isNotEmpty>
+	</select>
+	
+		
+	<select id="selectPort_AbbrList" resultClass="com.ksg.domain.PortInfo">
+		<include refid="Port_AbbrList"/>
+	</select>
+		
+	<select id="selectPortInfoAbbrByPortName" parameterClass="string" resultClass="com.ksg.domain.PortInfo">
+		select * from TB_PORT_ABBR,TB_PORT where port_abbr=#port_abbr# and TB_PORT.port_name= TB_PORT_ABBR.port_name 
+	</select>
+		
+	<insert id="insertPort_Abbr" parameterClass="com.ksg.domain.PortInfo">
+		insert into TB_PORT_ABBR(port_name,port_abbr)
+		values(#port_name#,#port_abbr#);
+	</insert>
+	
+	<update id="updatePort_Abbr" parameterClass="java.util.HashMap">
+		update TB_PORT_ABBR set port_abbr=#port_abbr#
+		where (port_name=#port_name#)
+	</update>
+	<delete id="deletePort_Abbr" parameterClass="string">
+	delete from TB_PORT_ABBR where port_abbr=#port_abbr#
+	</delete>
+	<select id="selectArrangedPort_AbbrList" resultClass="com.ksg.domain.PortInfo">
+	select * from TB_PORT_ABBR
+	<isNotEmpty prepend="order by">	
+	$orderBy$
+	</isNotEmpty>
+	</select>
+	<select id="selectSearchedPort_AbbrList" resultClass="com.ksg.domain.PortInfo">
+	select * from TB_PORT_ABBR
+	<isNotEmpty prepend="where">	
+	$searchKeyword$
+	</isNotEmpty>
+	</select>
+	
+<!-- *** VESSEL *** -->
+	<select id="selectVesselList" resultClass="com.ksg.domain.Vessel">
+		select * from TB_VESSEL
+	</select>
+	<select id="selectVesselInfo" resultClass="com.ksg.domain.Vessel">
+		select * from TB_VESSEL where vessel_name=#vessel#
+	</select>
+			
+	
+	<insert id="insertVessel" parameterClass="com.ksg.domain.Vessel">
+		insert into TB_VESSEL(vessel_name,request_company)
+		values(#vessel_name#, #request_company#);
+	</insert>
+	<!-- 수정 전
+	<insert id="insertVessel2" parameterClass="com.ksg.domain.Vessel">
+		insert into TB_VESSEL(vessel_id,vessel_name,port, fromDate,toDate,company_abbr,e_i)
+		values(#vessel_id#,#vessel_name#,#port#, #fromDate#,#toDate#,#company_abbr#,#e_i#);
+	</insert>
+	<update id="updateVessel" parameterClass="com.ksg.domain.Vessel">
+		update TB_VESSEL set vessel_name=#vessel_name#,port=#port#,fromDate=#fromDate#,toDate=#toDate#,company_abbr=#company_abbr#,e_i=#e_i#
+		where (vessel_id=#vessel_id#)
+	</update>
+	-->
+	<delete id="deleteVessel" parameterClass="string">
+		delete from TB_VESSEL where vessel_name=#vessel_name#
+	</delete>
+	<select id="selectArrangedVesselList" resultClass="com.ksg.domain.Vessel">
+	select * from TB_VESSEL
+	<isNotEmpty prepend="order by">	
+	$orderBy$
+	</isNotEmpty>
+	</select>
+	<select id="selectSearchedVesselList" resultClass="com.ksg.domain.Vessel">
+	select * from TB_PORT_ABBR
+	<isNotEmpty prepend="where">	
+	$searchKeyword$
+	</isNotEmpty>
+	</select>
+	
+<!-- *** COMPANY *** -->
+
+	<select id="selectCompanyInfo" parameterClass="string" resultClass="com.ksg.domain.Company">
+		select * from TB_COMPANY where company_abbr=#company_abbr#
+	</select>
+	
+	<select id="selectCompanyList" resultClass="com.ksg.domain.Company">
+		select * from TB_COMPANY
+	</select>
+	
+	<insert id="insertCompany" parameterClass="com.ksg.domain.Company">
+		insert into TB_COMPANY(company_name,agent_name,company_abbr, agent_abbr)
+		values(#company_name#,#agent_name#,#company_abbr#, #agent_abbr#);
+	</insert>
+	
+	<update id="updateCompany" parameterClass="com.ksg.domain.Company">
+		update TB_COMPANY set agent_name=#agent_name#,company_abbr=#company_abbr#,agent_abbr=#agent_abbr#,company_name=#company_name#
+		where (company_abbr=#company_abbr#)
+	</update>
+	<delete id="deleteCompany" parameterClass="string">
+		delete from TB_COMPANY where company_abbr=#company_abbr#
+	</delete>
+	
+	<select id="selectADV" resultClass="com.ksg.domain.ADVData">
+	select * from TB_ADV_INFO
+	</select>
+	<select id="selectArrangedCompanyList" resultClass="com.ksg.domain.Company">
+	select * from TB_COMPANY
+	<isNotEmpty prepend="order by">	
+	$orderBy$
+	</isNotEmpty>
+	</select>
+	<select id="selectSearchedCompanyList" resultClass="com.ksg.domain.Company">
+	select * from TB_COMPANY
+	<isNotEmpty prepend="where">
+	$searchKeyword$
+	</isNotEmpty>
+	</select>
+	<select id="selectKeywordList" resultClass="com.ksg.domain.KeyWordInfo">
+	select * from TB_KEY_TYPE where key_type= #searchKeywordType#
+	</select>
+	
+	<delete id="deleteKeyword" parameterClass="com.ksg.domain.KeyWordInfo" >
+	delete from TB_KEY_TYPE where key_name=#key_name#
+	</delete>
+	<delete id="insertKeyword" parameterClass="com.ksg.domain.KeyWordInfo" >
+	insert into TB_KEY_TYPE(key_name,key_type)
+		values(#key_name#, #key_type#);
+	</delete>
+	
+	<select id="selectVesselListByPatten" resultClass="com.ksg.domain.Vessel">
+		select * from TB_VESSEL where vessel_name like #patten#
+	</select>
+	
+				
+</sqlMap>
