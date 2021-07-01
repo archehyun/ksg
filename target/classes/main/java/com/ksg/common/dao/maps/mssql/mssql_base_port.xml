@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="port">
+
+
+<!-- *** Port *** -->
+	
+
+<!-- select -->
+
+	<select id="selectPortList" resultClass="java.util.HashMap">
+		select * from TB_PORT
+		<dynamic prepend="where">
+		    <isNotNull property="port_area" prepend="and">
+		        port_area=#port_area#
+		    </isNotNull>
+		    <isNotNull property="area_code" prepend="and">
+		        area_code=#area_code#
+		    </isNotNull>
+		    <isNotNull property="port_abbr" prepend="and">
+		        port_abbr=#port_abbr#
+		    </isNotNull>
+		    <isNotNull property="port_name" prepend="and">
+		        port_name like '%$port_name$%'
+		    </isNotNull>
+ 
+		</dynamic>
+	</select>
+	
+	<select id="selectPort" resultClass="java.util.HashMap">
+	select * from TB_PORT
+	where port_name = #port_name#
+	
+	</select>
+	
+	<select id="selectPortAbbr" resultClass="java.util.HashMap">
+	select A.port_abbr, B.port_name, B.area_code,B.port_area, B.port_nationality from TB_PORT_ABBR A, TB_PORT B
+	WHERE A.port_name=B.port_name 
+	AND A.port_abbr=#port_abbr#
+	
+	</select>
+	
+		<select id="selectPortAbbrList" resultClass="java.util.HashMap">
+		select * from TB_PORT_ABBR
+		<dynamic prepend="where">
+		    <isNotNull property="port_abbr" prepend="and">
+		        port_abbr=#port_abbr#
+		    </isNotNull>
+		    <isNotNull property="port_name" prepend="and">
+		        port_name=#port_name#
+		    </isNotNull>
+ 
+		</dynamic>
+	</select>	
+
+<!-- insert -->
+
+	<insert id="insertPort" parameterClass="java.util.HashMap">
+		insert into TB_PORT(
+			port_area,
+			port_name,
+			port_nationality,
+			area_code
+			
+		
+		)values
+		(
+			#port_area#,
+			#port_name#,
+			#port_nationality#,
+			#area_code#
+		);
+	</insert>
+	
+<!-- update -->
+	
+	<update id="updatePort" parameterClass="java.util.HashMap">
+		update TB_PORT 
+			set 
+				port_area=#port_area#,
+				port_name=#port_name#,
+				port_nationality=#port_nationality#,
+				area_code=#area_code#
+				
+			where 
+			(
+				port_name=#base_port_name#
+			)
+	</update>
+
+<!-- delete -->
+
+	<delete id="deletePort" parameterClass="java.util.HashMap">
+		delete from TB_PORT where port_name=#port_name#
+	</delete>
+	
+	<delete id="deletePortAbbr" parameterClass="java.util.HashMap">
+		delete from TB_PORT_ABBR where port_abbr=#port_abbr#
+	</delete>
+	
+	
+<!-- count -->
+
+	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
+		select count(*) from TB_PORT	
+	</select>
+
+<!-- ********************************************* -->	
+
+
+				
+</sqlMap>
