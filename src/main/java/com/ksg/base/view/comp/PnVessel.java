@@ -764,7 +764,6 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	}
 
-	@Override
 	public void updateTable() {
 
 		searchData();

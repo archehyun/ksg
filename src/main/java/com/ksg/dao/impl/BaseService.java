@@ -20,6 +20,7 @@ import com.ksg.domain.KeyWordInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
 
+@Deprecated
 public interface BaseService {
 	public void delete(Object key);
 	public int deleteArea(String data)throws SQLException;

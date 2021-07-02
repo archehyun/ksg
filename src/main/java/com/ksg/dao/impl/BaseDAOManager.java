@@ -11,6 +11,7 @@
 package com.ksg.dao.impl;
 
 import java.io.IOException;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,8 @@ import com.ksg.domain.Company;
 import com.ksg.domain.KeyWordInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
+
+@Deprecated
 @SuppressWarnings("unchecked")
 public class BaseDAOManager
 {

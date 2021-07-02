@@ -14,6 +14,7 @@ import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
 
+@Deprecated
 public abstract class BaseTable extends JTable{
 	/**
 	 * 

@@ -27,7 +27,7 @@ import com.ksg.workbench.KSGViewParameter;
  * @author ¹ÚÃ¢Çö
  *
  */
-public abstract class PnBase extends KSGPanel implements TableListener, ComponentListener{
+public abstract class PnBase extends KSGPanel implements ComponentListener, TableListener{
 	/**
 	 * 
 	 */

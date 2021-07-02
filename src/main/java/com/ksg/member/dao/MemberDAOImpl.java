@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.dao.impl;
+package com.ksg.member.dao;
 
 import java.io.IOException;
 import java.sql.SQLException;

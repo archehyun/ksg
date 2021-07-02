@@ -162,11 +162,7 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 		return pnMain;
 	}
 
-	@Override
-	public void updateTable() {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -397,6 +393,12 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateTable() {
 		// TODO Auto-generated method stub
 		
 	}

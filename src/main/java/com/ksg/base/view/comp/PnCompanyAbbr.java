@@ -42,6 +42,8 @@ import com.ksg.workbench.KSGViewParameter;
  * @author ¹ÚÃ¢Çö
  *
  */
+
+@Deprecated
 public class PnCompanyAbbr extends PnBase implements ActionListener{
 	/**
 	 * 
@@ -243,7 +245,6 @@ public class PnCompanyAbbr extends PnBase implements ActionListener{
 		lblTotal.setText(searchTotalSize+"/"+totalSize);
 	}
 
-	@Override
 	public void updateTable() {
 		searchData();
 

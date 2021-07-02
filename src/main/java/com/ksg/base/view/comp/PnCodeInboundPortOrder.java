@@ -27,6 +27,8 @@ import com.ksg.domain.Code;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.model.KSGTableModel;
 
+
+@Deprecated
 public class PnCodeInboundPortOrder extends PnBase implements ActionListener{
 	/**
 	 * 

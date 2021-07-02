@@ -21,6 +21,9 @@ import com.ksg.domain.Company;
 import com.ksg.domain.KeyWordInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
+
+
+@Deprecated
 @SuppressWarnings("unchecked")
 public class BaseServiceImpl implements BaseService
 {

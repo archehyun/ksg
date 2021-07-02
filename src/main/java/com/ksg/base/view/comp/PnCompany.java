@@ -440,7 +440,6 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 	}
 
-	@Override
 	public void updateTable() {
 		searchData();
 	}
