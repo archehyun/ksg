@@ -40,10 +40,10 @@ import javax.swing.tree.TreePath;
 
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
+import com.ksg.view.comp.KSGDialog;
 
 /**
  * @since v1.0

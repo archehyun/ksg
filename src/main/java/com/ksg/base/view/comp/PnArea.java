@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -38,14 +37,13 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.base.dao.AreaDAO;
 import com.ksg.base.service.AreaService;
 import com.ksg.base.view.BaseInfoUI;
-import com.ksg.base.view.dialog.InsertAreaInfodialog;
 import com.ksg.base.view.dialog.UpdateAreaInfodialog;
 import com.ksg.common.comp.KSGTable;
 import com.ksg.common.comp.KSGTableColumn;
-import com.ksg.common.view.comp.KSGDialog;
-import com.ksg.common.view.comp.KSGTableCellRenderer;
-import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.AreaInfo;
+import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.KSGTableModel;
 
 
 

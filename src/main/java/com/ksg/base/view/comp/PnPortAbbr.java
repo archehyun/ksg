@@ -38,10 +38,10 @@ import javax.swing.table.TableRowSorter;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.base.view.dialog.UpdatePortAbbrInfoDialog;
-import com.ksg.common.view.comp.KSGDialog;
-import com.ksg.common.view.comp.KSGTableCellRenderer;
-import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.PortInfo;
+import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
 
 /**

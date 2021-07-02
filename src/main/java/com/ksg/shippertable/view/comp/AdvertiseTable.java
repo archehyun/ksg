@@ -63,7 +63,6 @@ import com.ksg.commands.KSGCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.common.view.comp.KSGTableCellRenderer;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.ADVData;
@@ -74,6 +73,7 @@ import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.dialog.SearchAndInsertVesselDialog;
 import com.ksg.shippertable.view.dialog.SearchVesselDialog;
+import com.ksg.view.comp.KSGTableCellRenderer;
 import com.ksg.workbench.KSGViewParameter;
 
 /**광고 정보 수동 입력 테이블

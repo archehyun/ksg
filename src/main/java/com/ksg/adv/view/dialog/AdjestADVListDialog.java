@@ -24,16 +24,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.adv.view.ADVListPanel;
-import com.ksg.adv.view.ADVManageUI;
 import com.ksg.adv.view.xls.XLSTableInfo;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
 import com.ksg.domain.ShippersTable;
+import com.ksg.view.comp.KSGDialog;
 
 public class AdjestADVListDialog extends KSGDialog{
 

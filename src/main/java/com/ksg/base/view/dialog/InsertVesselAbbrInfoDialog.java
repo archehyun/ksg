@@ -34,8 +34,7 @@ import javax.swing.JTextField;
 import com.ksg.base.service.VesselService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
-import com.ksg.domain.Vessel;
+import com.ksg.view.comp.KSGDialog;
 
 /**선박 양어 정보 추가 다이어그램
  * @author 박창현

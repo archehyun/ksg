@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -37,13 +36,12 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.ksg.base.view.BaseInfoUI;
-import com.ksg.base.view.dialog.BaseInfoDialog;
 import com.ksg.base.view.dialog.InsertVesselAbbrInfoDialog;
 import com.ksg.base.view.dialog.UpdateVesselAbbrInfoDialog;
-import com.ksg.common.view.comp.KSGDialog;
-import com.ksg.common.view.comp.KSGTableCellRenderer;
-import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.KSGTableModel;
 
 
 /**

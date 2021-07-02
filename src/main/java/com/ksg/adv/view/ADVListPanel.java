@@ -48,13 +48,13 @@ import com.ksg.commands.xls.ImportXLSFileCommand;
 import com.ksg.commands.xls.ImportXLSFileCommandByXML;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.common.view.comp.PageInfo;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.ShipperTableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.view.comp.PageInfo;
 import com.ksg.workbench.KSGMainFrame;
 
 /**

@@ -49,11 +49,11 @@ import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.UpdateCompanyInfoDialog;
 import com.ksg.common.comp.KSGTableColumn;
 import com.ksg.common.comp.KSGTablePanel;
-import com.ksg.common.view.comp.KSGDialog;
-import com.ksg.common.view.comp.KSGTable;
-import com.ksg.common.view.comp.KSGTableCellRenderer;
-import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.Company;
+import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGTable;
+import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.KSGTableModel;
 
 
 /**

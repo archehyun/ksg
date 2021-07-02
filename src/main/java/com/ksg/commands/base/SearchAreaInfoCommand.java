@@ -13,10 +13,10 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.commands.BaseCommand;
-import com.ksg.common.view.comp.KSGTableCellRenderer;
-import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.AreaInfo;
+import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.KSGTableModel;
 
 public class SearchAreaInfoCommand extends BaseCommand{
 

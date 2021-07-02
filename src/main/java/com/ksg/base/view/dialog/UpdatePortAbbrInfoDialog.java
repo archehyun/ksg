@@ -30,8 +30,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.domain.PortInfo;
+import com.ksg.view.comp.KSGDialog;
 
 public class UpdatePortAbbrInfoDialog extends KSGDialog implements ActionListener{
 	/**

@@ -5,7 +5,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 
 import javax.swing.JButton;
@@ -20,8 +19,8 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.view.comp.KSGDialog;
 
 @SuppressWarnings("serial")
 public class SearchADVCountDialog extends KSGDialog{

@@ -58,23 +58,19 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import com.ksg.commands.CreateXTGCommand;
-import com.ksg.commands.CreateXTGCommandInD;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.common.view.comp.CurvedBorder;
-import com.ksg.common.view.comp.KSGPanel;
-import com.ksg.common.view.comp.KSGTableModel;
-import com.ksg.common.view.comp.KSGTree;
-import com.ksg.common.view.comp.KSGTreeImpl;
-import com.ksg.common.view.comp.KSGTreeDefault;
 import com.ksg.domain.ADVData;
 import com.ksg.print.logic.quark.XTGManager;
 import com.ksg.print.logic.quark.XTGPage;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
+import com.ksg.view.comp.CurvedBorder;
+import com.ksg.view.comp.KSGPanel;
+import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.KSGTree;
+import com.ksg.view.comp.KSGTreeDefault;
+import com.ksg.view.comp.KSGTreeImpl;
 
 public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 	/**

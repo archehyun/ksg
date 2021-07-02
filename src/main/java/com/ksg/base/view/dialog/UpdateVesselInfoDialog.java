@@ -26,7 +26,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -39,9 +38,9 @@ import javax.swing.JTextField;
 
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.KSGDialog;
 
 /**
  * 선박 정보 수정 다이어그램

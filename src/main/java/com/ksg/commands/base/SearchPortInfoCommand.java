@@ -13,9 +13,9 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.commands.BaseCommand;
-import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.PortInfo;
+import com.ksg.view.comp.KSGTableModel;
 
 public class SearchPortInfoCommand extends BaseCommand {
 	private String col_port[] = {"항구명","나라","지역","지역코드"};

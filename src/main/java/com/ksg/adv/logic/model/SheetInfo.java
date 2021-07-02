@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.ksg.adv.logic.model;
 
-import com.ksg.common.view.comp.FileInfo;
+import com.ksg.view.comp.FileInfo;
 
 public class SheetInfo extends FileInfo{
 	

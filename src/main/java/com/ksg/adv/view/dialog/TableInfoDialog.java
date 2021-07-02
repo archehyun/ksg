@@ -28,9 +28,9 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertyManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
+import com.ksg.view.comp.KSGDialog;
 
 /**
  * 엑섹 정보 입력시 조회된 테이블에 대한 정보 표시 

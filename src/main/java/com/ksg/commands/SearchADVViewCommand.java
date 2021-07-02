@@ -35,11 +35,11 @@ import org.jdom.JDOMException;
 
 import com.ksg.adv.service.ADVService;
 import com.ksg.common.dao.DAOManager;
-import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.view.comp.KSGTableModel;
 
 public class SearchADVViewCommand implements KSGCommand {
 

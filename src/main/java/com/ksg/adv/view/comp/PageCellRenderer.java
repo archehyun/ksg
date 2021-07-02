@@ -14,7 +14,7 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.PageInfo;
+import com.ksg.view.comp.PageInfo;
 
 public class PageCellRenderer extends JCheckBox implements ActionListener,ListCellRenderer, ListSelectionListener{
 	/**

@@ -16,17 +16,15 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
 import com.ksg.shippertable.view.comp.AdvertiseTable;
-import com.ksg.shippertable.view.comp.KSGADVTablePanel;
+import com.ksg.view.comp.KSGDialog;
 
 public class AddVesselDialog extends KSGDialog {
 

@@ -11,7 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGDialog;
 
 public class TextInputDialog extends KSGDialog {
 

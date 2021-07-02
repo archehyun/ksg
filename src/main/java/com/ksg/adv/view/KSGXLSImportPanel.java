@@ -72,11 +72,11 @@ import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.common.util.KSGPropertyManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGTable;
-import com.ksg.common.view.comp.KSGXMLTable;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.view.comp.KSGTable;
+import com.ksg.view.comp.KSGXMLTable;
 
 /**
  * @author ¹ÚÃ¢Çö

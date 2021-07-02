@@ -61,9 +61,6 @@ import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
-import com.ksg.common.view.comp.LookAheadTextField;
-import com.ksg.common.view.comp.StringArrayLookAhead;
 import com.ksg.common.view.dialog.SearchADVCountDialog;
 import com.ksg.common.view.dialog.WebScheduleCreateDialog;
 import com.ksg.domain.ShippersTable;
@@ -75,6 +72,9 @@ import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.view.ScheduleMgtUI;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
+import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.LookAheadTextField;
+import com.ksg.view.comp.StringArrayLookAhead;
 
 
 /**

@@ -29,8 +29,8 @@ import com.ksg.commands.ViewXLSFileCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.FileInfo;
-import com.ksg.common.view.comp.KSGDialog;
+import com.ksg.view.comp.FileInfo;
+import com.ksg.view.comp.KSGDialog;
 
 public class ViewXLSFileDialog extends KSGDialog {
 	/**

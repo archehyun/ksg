@@ -21,11 +21,11 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertInPortCodeInfodialog;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.KSGDialog;
-import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
+import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGTableModel;
 
 /**
  * @설명 인바운드 항구 코드 화면

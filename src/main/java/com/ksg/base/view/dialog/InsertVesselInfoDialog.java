@@ -39,11 +39,11 @@ import org.apache.log4j.Logger;
 
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.KSGDialog;
 
 @SuppressWarnings("serial")
 public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{

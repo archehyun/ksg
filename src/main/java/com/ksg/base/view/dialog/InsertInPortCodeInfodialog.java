@@ -31,8 +31,8 @@ import javax.swing.JTextField;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.comp.PnCode;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.domain.Code;
+import com.ksg.view.comp.KSGDialog;
 
 /**국내항 코드 추가 다이어그램
  * 

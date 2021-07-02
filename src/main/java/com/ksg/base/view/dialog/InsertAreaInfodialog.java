@@ -30,8 +30,8 @@ import javax.swing.JTextField;
 
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.domain.AreaInfo;
+import com.ksg.view.comp.KSGDialog;
 
 public class InsertAreaInfodialog extends BaseInfoDialog implements ActionListener {
 	/**

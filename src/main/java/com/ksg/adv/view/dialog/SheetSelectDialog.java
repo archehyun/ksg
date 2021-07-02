@@ -20,7 +20,7 @@ import javax.swing.JTable;
 import com.ksg.adv.view.comp.SheetModel;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGDialog;
 
 @SuppressWarnings("serial")
 public class SheetSelectDialog extends KSGDialog {

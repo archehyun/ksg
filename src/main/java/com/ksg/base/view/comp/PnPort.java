@@ -45,7 +45,7 @@ import com.ksg.common.comp.KSGPanel;
 import com.ksg.common.comp.KSGTable;
 import com.ksg.common.comp.KSGTableColumn;
 import com.ksg.common.comp.KSGTablePanel;
-import com.ksg.common.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGDialog;
 
 
 /**

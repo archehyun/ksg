@@ -34,7 +34,7 @@ import javax.swing.JTextField;
 
 import com.ksg.base.service.CompanyService;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGDialog;
 
 public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener {
 	/**

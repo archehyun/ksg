@@ -7,7 +7,7 @@ import javax.swing.DefaultListModel;
 
 import com.ksg.adv.logic.model.SheetInfo;
 import com.ksg.adv.view.xls.XLSManagerImpl;
-import com.ksg.common.view.comp.FileInfo;
+import com.ksg.view.comp.FileInfo;
 
 public class SearchSheetNameCommand implements KSGCommand {
 	DefaultListModel filemodel;

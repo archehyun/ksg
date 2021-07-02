@@ -42,10 +42,10 @@ import com.ksg.base.view.comp.PnVesselAbbr;
 import com.ksg.base.view.comp.TableListener;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.CurvedBorder;
-import com.ksg.common.view.comp.IconData;
-import com.ksg.common.view.comp.KSGPanel;
 import com.ksg.domain.Code;
+import com.ksg.view.comp.CurvedBorder;
+import com.ksg.view.comp.IconData;
+import com.ksg.view.comp.KSGPanel;
 
 /**
  * 마스터 정보 관리

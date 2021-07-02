@@ -37,9 +37,9 @@ import com.ksg.commands.LongTask;
 import com.ksg.commands.base.VesselInfoImportCommand;
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.KSGDialog;
 
 /**
  * @author ¹ÚÃ¢Çö

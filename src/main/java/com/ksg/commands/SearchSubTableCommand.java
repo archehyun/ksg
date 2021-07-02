@@ -30,12 +30,11 @@ import javax.swing.table.TableColumnModel;
 import org.apache.log4j.Logger;
 
 import com.ksg.common.dao.DAOManager;
-import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.ColorData;
-import com.ksg.common.view.comp.KSGTableCellRenderer;
-import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.view.comp.ColorData;
+import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.KSGTableModel;
 
 public class SearchSubTableCommand implements KSGCommand {
 

@@ -14,11 +14,11 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.KSGDialog;
-import com.ksg.common.view.comp.KSGPanel;
-import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
+import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGPanel;
+import com.ksg.view.comp.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
 
 /**

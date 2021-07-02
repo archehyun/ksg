@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
@@ -20,12 +19,11 @@ import javax.swing.JPanel;
 
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.common.view.comp.LookAheadTextField;
-import com.ksg.common.view.comp.StringArrayLookAhead;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.web.DefaultWebSchedule;
-import com.ksg.schedule.logic.web.DefaultWebScheduleV2;
+import com.ksg.view.comp.LookAheadTextField;
+import com.ksg.view.comp.StringArrayLookAhead;
 
 /**
  * @author archehyun

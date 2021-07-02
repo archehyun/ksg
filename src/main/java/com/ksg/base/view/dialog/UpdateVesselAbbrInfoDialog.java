@@ -30,8 +30,8 @@ import javax.swing.JTextField;
 
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.KSGDialog;
 
 /**
  * 선박 약어 정보 수정 다이어그램

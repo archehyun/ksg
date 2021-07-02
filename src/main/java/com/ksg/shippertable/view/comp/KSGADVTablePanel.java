@@ -33,11 +33,11 @@ import javax.swing.event.ChangeListener;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.common.view.comp.KSGPanel;
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.shippertable.view.dialog.ManageTablePortPop;
 import com.ksg.shippertable.view.dialog.ManageVesselDialog;
+import com.ksg.view.comp.KSGPanel;
 import com.ksg.workbench.KSGViewParameter;
 
 /**

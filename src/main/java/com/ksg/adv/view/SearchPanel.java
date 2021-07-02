@@ -73,17 +73,17 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.FileInfo;
-import com.ksg.common.view.comp.KSGCompboBox;
-import com.ksg.common.view.comp.KSGDialog;
-import com.ksg.common.view.comp.KSGTable;
-import com.ksg.common.view.comp.KSGTableImpl;
-import com.ksg.common.view.comp.PageInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.comp.SearchTable;
+import com.ksg.view.comp.FileInfo;
+import com.ksg.view.comp.KSGCompboBox;
+import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGTable;
+import com.ksg.view.comp.KSGTableImpl;
+import com.ksg.view.comp.PageInfo;
 import com.ksg.workbench.KSGViewParameter;
 
 public class SearchPanel extends JPanel implements ActionListener{

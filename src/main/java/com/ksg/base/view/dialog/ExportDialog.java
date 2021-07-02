@@ -24,9 +24,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import com.ksg.commands.LongTask;
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.KSGDialog;
 
 public class ExportDialog extends KSGDialog{
 

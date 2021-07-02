@@ -41,14 +41,12 @@ import org.apache.log4j.Logger;
 
 import com.ksg.base.view.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.base.view.dialog.InsertPortInfoDialog;
-import com.ksg.base.view.dialog.UpdatePortAbbrInfoDialog;
-import com.ksg.base.view.dialog.UpdatePortInfoDialog;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.PortInfo;
+import com.ksg.view.comp.KSGDialog;
 
 public class SearchPortCommand implements KSGCommand, ActionListener {
 	protected Logger 		logger = Logger.getLogger(this.getClass());

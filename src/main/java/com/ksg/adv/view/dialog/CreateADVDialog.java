@@ -37,7 +37,6 @@ import org.apache.log4j.Logger;
 import com.ksg.adv.service.ADVService;
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.view.comp.KSGCompboBox;
 import com.ksg.domain.ADVData;
 import com.ksg.print.logic.quark.XTGManager;
 import com.ksg.print.logic.quark.XTGPage;
@@ -45,6 +44,7 @@ import com.ksg.print.logic.quark.XTGParserImpl;
 import com.ksg.print.view.PrintADVUI;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.view.comp.KSGCompboBox;
 
 public class CreateADVDialog extends JDialog implements ActionListener{
 	private ADVService service = new ADVServiceImpl();
