@@ -37,7 +37,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.shippertable.view.dialog.ManageTablePortPop;
 import com.ksg.shippertable.view.dialog.ManageVesselDialog;
-import com.ksg.view.comp.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.KSGViewParameter;
 
 /**

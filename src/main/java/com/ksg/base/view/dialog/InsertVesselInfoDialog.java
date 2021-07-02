@@ -43,7 +43,7 @@ import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 @SuppressWarnings("serial")
 public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{

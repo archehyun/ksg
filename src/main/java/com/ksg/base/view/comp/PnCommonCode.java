@@ -25,7 +25,7 @@ import com.ksg.base.view.dialog.BasePop;
 import com.ksg.base.view.dialog.CommCodeUpdatePop;
 import com.ksg.base.view.dialog.CommonCodeDetailInsertPop;
 import com.ksg.base.view.dialog.CommonCodeInsertPop;
-import com.ksg.view.comp.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
 

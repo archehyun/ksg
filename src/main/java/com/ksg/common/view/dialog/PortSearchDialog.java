@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import org.apache.log4j.Logger;
 
 import com.ksg.dao.impl.BaseServiceImpl;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 @SuppressWarnings("serial")
 public class PortSearchDialog extends KSGDialog implements ActionListener{

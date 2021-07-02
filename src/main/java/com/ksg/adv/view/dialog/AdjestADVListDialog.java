@@ -32,7 +32,7 @@ import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
 import com.ksg.domain.ShippersTable;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 public class AdjestADVListDialog extends KSGDialog{
 

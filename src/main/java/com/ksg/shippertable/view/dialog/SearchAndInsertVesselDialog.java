@@ -33,7 +33,7 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.shippertable.view.comp.AdvertiseTable;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
  * @Ό³Έν 

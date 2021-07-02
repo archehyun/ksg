@@ -26,7 +26,7 @@ import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.domain.Vessel;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 public class ExportDialog extends KSGDialog{
 

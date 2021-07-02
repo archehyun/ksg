@@ -38,7 +38,7 @@ import javax.swing.tree.TreePath;
 
 import com.ksg.adv.view.SearchPanel;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.tree.KSGTree;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;

@@ -45,7 +45,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.IconData;
-import com.ksg.view.comp.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 
 /**
  * 마스터 정보 관리

@@ -42,7 +42,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 
 /**
  * @author ¹ÚÃ¢Çö

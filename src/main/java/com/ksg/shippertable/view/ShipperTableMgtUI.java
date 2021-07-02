@@ -86,7 +86,7 @@ import com.ksg.shippertable.view.comp.UpdateTablePanel;
 import com.ksg.shippertable.view.dialog.AddTableInfoDialog;
 import com.ksg.shippertable.view.dialog.ManagePortDialog;
 import com.ksg.view.comp.CurvedBorder;
-import com.ksg.view.comp.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableSelectListner;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;

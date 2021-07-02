@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.view.comp;
+package com.ksg.view.comp.table.model;
 
 import java.sql.SQLException;
 import java.util.Vector;
@@ -25,7 +25,7 @@ import com.ksg.domain.Vessel;
  * @author ¹ÚÃ¢Çö
  *
  */
-public class KSGADVTableData extends AbstractTableModel {
+public class KSGADVTableModel extends AbstractTableModel {
 	/**
 	 * 
 	 */
@@ -35,7 +35,7 @@ public class KSGADVTableData extends AbstractTableModel {
 	private BaseService baseService;
 	private DAOManager manager;
 	
-	public KSGADVTableData() {
+	public KSGADVTableModel() {
 		m_vector = new Vector();
 		manager = DAOManager.getInstance();
 		baseService = manager.createBaseService();

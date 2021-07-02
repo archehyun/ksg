@@ -80,8 +80,8 @@ import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.comp.SearchTable;
 import com.ksg.view.comp.FileInfo;
 import com.ksg.view.comp.KSGCompboBox;
-import com.ksg.view.comp.KSGDialog;
-import com.ksg.view.comp.PageInfo;
+import com.ksg.view.comp.PageInfoCheckBox;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableImpl;
 import com.ksg.workbench.KSGViewParameter;
@@ -791,7 +791,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 							for(int i=0;i<pageRow;i++)
 							{
 
-								PageInfo info=(PageInfo) model.get(i);
+								PageInfoCheckBox info=(PageInfoCheckBox) model.get(i);
 								if(info.isSelected())
 								{
 									ShippersTable table = new ShippersTable();
@@ -1172,7 +1172,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 				for(int i=0;i<m.getSize();i++)
 				{
 
-					PageInfo info=(PageInfo) m.get(i);
+					PageInfoCheckBox info=(PageInfoCheckBox) m.get(i);
 					if(info.isSelected())
 					{						
 						c.add((Integer)info.chekInfo);
@@ -1294,7 +1294,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 					{
 						ShippersTable tableInfo = (ShippersTable) li.get(i);
 
-						PageInfo info = new PageInfo(tableInfo.getPage());
+						PageInfoCheckBox info = new PageInfoCheckBox(tableInfo.getPage());
 
 						if(Integer.parseInt(page)==tableInfo.getPage())
 						{
@@ -1324,7 +1324,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 					{
 						ShippersTable tableInfo = (ShippersTable) li.get(i);
 
-						PageInfo info = new PageInfo(tableInfo.getCompany_abbr());
+						PageInfoCheckBox info = new PageInfoCheckBox(tableInfo.getCompany_abbr());
 
 						if(company.equals(info.getText()))
 						{
@@ -1422,11 +1422,11 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 			DefaultListModel model = (DefaultListModel) pageLi.getModel();
 			
-			Vector<PageInfo> pageInfoList = new Vector<PageInfo>();
+			Vector<PageInfoCheckBox> pageInfoList = new Vector<PageInfoCheckBox>();
 			
 			for(int i=0;i<model.getSize();i++)
 			{			
-				pageInfoList.add((PageInfo) model.get(i));	
+				pageInfoList.add((PageInfoCheckBox) model.get(i));	
 			}				
 			
 			//쉬트 선택
@@ -1700,7 +1700,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 			int count=0;
 			for(int i=0;i<listModel.size();i++)
 			{
-				PageInfo info=(PageInfo) listModel.get(i);
+				PageInfoCheckBox info=(PageInfoCheckBox) listModel.get(i);
 				if(info.isSelected())
 				{
 					ShippersTable shippersTable  = new ShippersTable();

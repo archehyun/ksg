@@ -16,8 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.KSGPanel;
 import com.ksg.view.comp.label.BoldLabel;
+import com.ksg.view.comp.panel.KSGPanel;
 
 @SuppressWarnings("serial")
 public class KSGTablePanel extends KSGPanel{

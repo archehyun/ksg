@@ -39,9 +39,9 @@ import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertVesselAbbrInfoDialog;
 import com.ksg.base.view.dialog.UpdateVesselAbbrInfoDialog;
 import com.ksg.domain.Vessel;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
-import com.ksg.view.comp.table.KSGTableModel;
+import com.ksg.view.comp.table.model.KSGTableModel;
 
 
 /**

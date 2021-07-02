@@ -54,7 +54,7 @@ import com.ksg.domain.TablePort;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.ShipperTableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
-import com.ksg.view.comp.PageInfo;
+import com.ksg.view.comp.PageInfoCheckBox;
 import com.ksg.workbench.KSGMainFrame;
 
 /**
@@ -371,7 +371,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	 * @param selectXLSFilePath
 	 * @param pageInfoList
 	 */
-	public void actionImportADVInfo(String company, String page,Vector sheetList, int keyType, String selectXLSFilePath, Vector<PageInfo> pageInfoList) 
+	public void actionImportADVInfo(String company, String page,Vector sheetList, int keyType, String selectXLSFilePath, Vector<PageInfoCheckBox> pageInfoList) 
 	{
 		try {
 
@@ -444,7 +444,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	 * @param pageInfoList
 	 * @return
 	 */
-	public int actionImportADVInfoSub(String company, String page,Vector sheetList, int keyType, String selectXLSFilePath, Vector<PageInfo> pageInfoList) {
+	public int actionImportADVInfoSub(String company, String page,Vector sheetList, int keyType, String selectXLSFilePath, Vector<PageInfoCheckBox> pageInfoList) {
 		try{
 			logger.debug("start");
 			
@@ -479,7 +479,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 
 				for(int i=0;i<pageInfoList.size();i++)
 				{
-					PageInfo info=(PageInfo) pageInfoList.get(i);
+					PageInfoCheckBox info=(PageInfoCheckBox) pageInfoList.get(i);
 					if(info.isSelected())
 					{
 						ShippersTable table = new ShippersTable();
@@ -497,7 +497,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 				{
 					DefaultListModel model = (DefaultListModel) companyLi.getModel();
 
-					PageInfo info=(PageInfo) model.get(i);
+					PageInfoCheckBox info=(PageInfoCheckBox) model.get(i);
 					if(info.isSelected())
 					{
 						ShippersTable table = new ShippersTable();
@@ -626,7 +626,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 
 						for(int i=0;i<pageRow;i++)
 						{
-							PageInfo info=(PageInfo) model.get(i);
+							PageInfoCheckBox info=(PageInfoCheckBox) model.get(i);
 
 							if(info.isSelected())
 							{
@@ -653,7 +653,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 						{
 							DefaultListModel model = (DefaultListModel) companyLi.getModel();
 
-							PageInfo info=(PageInfo) model.get(i);
+							PageInfoCheckBox info=(PageInfoCheckBox) model.get(i);
 							if(info.isSelected())
 							{
 								ShippersTable stable = new ShippersTable();

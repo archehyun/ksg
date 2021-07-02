@@ -1,4 +1,4 @@
-package com.ksg.view.comp;
+package com.ksg.view.comp.table;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,8 +18,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.table.KSGTable;
-import com.ksg.view.comp.table.KSGTableCellRenderer;
 
 /**
  * @author ¹ÚÃ¢Çö

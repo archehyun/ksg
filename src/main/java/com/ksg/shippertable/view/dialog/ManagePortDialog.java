@@ -50,7 +50,7 @@ import com.ksg.domain.TablePort;
 import com.ksg.schedule.logic.PortNullException;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
  * 

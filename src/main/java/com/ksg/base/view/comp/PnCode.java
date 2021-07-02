@@ -30,8 +30,8 @@ import com.ksg.commands.base.SearchBaseInfoCommand;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
-import com.ksg.view.comp.KSGDialog;
-import com.ksg.view.comp.table.KSGTableModel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.table.model.KSGTableModel;
 
 /**코드 정보관리 화면
  * 

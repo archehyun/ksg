@@ -14,7 +14,7 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.PageInfo;
+import com.ksg.view.comp.PageInfoCheckBox;
 
 public class PageCellRenderer extends JCheckBox implements ActionListener,ListCellRenderer, ListSelectionListener{
 	/**
@@ -36,9 +36,9 @@ public class PageCellRenderer extends JCheckBox implements ActionListener,ListCe
 			int index, boolean isSelected, boolean cellHasFocus) {
 		
 		
-		if(value instanceof PageInfo)
+		if(value instanceof PageInfoCheckBox)
 		{
-			PageInfo info = (PageInfo) value;
+			PageInfoCheckBox info = (PageInfoCheckBox) value;
 			info.setFont(defaultFont);
 			this.setText(info.getText());
 

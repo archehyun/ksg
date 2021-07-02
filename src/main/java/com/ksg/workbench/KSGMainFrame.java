@@ -72,9 +72,9 @@ import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.view.ScheduleMgtUI;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
-import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 
 /**

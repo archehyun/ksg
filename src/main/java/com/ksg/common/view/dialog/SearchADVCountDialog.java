@@ -20,7 +20,7 @@ import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.shippertable.service.TableService;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 @SuppressWarnings("serial")
 public class SearchADVCountDialog extends KSGDialog{

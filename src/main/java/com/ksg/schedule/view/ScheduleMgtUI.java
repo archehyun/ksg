@@ -64,7 +64,7 @@ import com.ksg.schedule.view.comp.PnNormal;
 import com.ksg.schedule.view.dialog.ScheduleResultDialog;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.CurvedBorder;
-import com.ksg.view.comp.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.ui.ErrorLogManager;
 
 /**

@@ -32,7 +32,7 @@ import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.comp.PnCode;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
  * 인바운드 코드 추가 다이어그램

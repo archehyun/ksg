@@ -35,6 +35,7 @@ import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.view.comp.ColorData;
+import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
 /**
  * @author archehyun

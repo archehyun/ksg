@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.view.comp;
+package com.ksg.view.comp.panel;
 
 import java.awt.Color;
 import java.awt.Component;

@@ -34,7 +34,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.view.comp.ColorData;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
-import com.ksg.view.comp.table.KSGTableModel;
+import com.ksg.view.comp.table.model.KSGTableModel;
 
 public class SearchSubTableCommand implements KSGCommand {
 

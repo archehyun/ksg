@@ -39,9 +39,9 @@ import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.base.view.dialog.UpdatePortAbbrInfoDialog;
 import com.ksg.domain.PortInfo;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
-import com.ksg.view.comp.table.KSGTableModel;
+import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
 
 /**

@@ -13,7 +13,7 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.commands.BaseCommand;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Vessel;
-import com.ksg.view.comp.table.KSGTableModel;
+import com.ksg.view.comp.table.model.KSGTableModel;
 
 public class SearchVesselAbbrCommand extends BaseCommand {
 

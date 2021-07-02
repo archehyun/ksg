@@ -45,7 +45,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.AreaInfo;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
  * 항구 정보 수정 다이어그램

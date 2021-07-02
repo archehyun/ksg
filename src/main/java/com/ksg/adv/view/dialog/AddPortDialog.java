@@ -33,7 +33,7 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.dialog.PortSearchDialog;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
  * ========================================

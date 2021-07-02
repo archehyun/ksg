@@ -16,9 +16,9 @@ import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
-import com.ksg.view.comp.KSGDialog;
-import com.ksg.view.comp.KSGPanel;
-import com.ksg.view.comp.table.KSGTableModel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
 
 /**

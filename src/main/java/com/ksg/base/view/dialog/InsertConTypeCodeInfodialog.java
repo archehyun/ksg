@@ -32,7 +32,7 @@ import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.comp.PnCode;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
  * 컨테이너 타입 추가 다이어그램

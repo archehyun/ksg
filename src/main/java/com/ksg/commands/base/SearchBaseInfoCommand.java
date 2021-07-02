@@ -36,7 +36,7 @@ import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
-import com.ksg.view.comp.table.KSGTableModel;
+import com.ksg.view.comp.table.model.KSGTableModel;
 
 public class SearchBaseInfoCommand implements KSGCommand {
 

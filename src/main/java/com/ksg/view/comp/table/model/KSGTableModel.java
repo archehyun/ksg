@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.view.comp.table;
+package com.ksg.view.comp.table.model;
 
 import javax.swing.table.DefaultTableModel;
 

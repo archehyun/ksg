@@ -46,7 +46,7 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.PortInfo;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 public class SearchPortCommand implements KSGCommand, ActionListener {
 	protected Logger 		logger = Logger.getLogger(this.getClass());

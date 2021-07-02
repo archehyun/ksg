@@ -40,7 +40,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
  * @author ¹ÚÃ¢Çö
