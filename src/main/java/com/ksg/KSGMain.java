@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.main;
+package com.ksg;
 
 import java.io.File;
 import java.io.IOException;
