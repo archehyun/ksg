@@ -18,10 +18,10 @@ import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.commands.schedule.task.SimpleTask;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.KSGPropertis;
+import com.ksg.common.util.StringCompare;
 import com.ksg.domain.Code;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.StringCompare;
 
 /**
  * 

@@ -13,10 +13,10 @@ import java.util.Set;
 import java.util.Vector;
 
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.util.StringCompare;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.StringCompare;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.ScheduleManager;
 

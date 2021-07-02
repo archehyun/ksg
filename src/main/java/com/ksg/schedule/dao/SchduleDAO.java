@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.schedule.service;
+package com.ksg.schedule.dao;
 
 import java.sql.SQLException;
 import java.util.List;

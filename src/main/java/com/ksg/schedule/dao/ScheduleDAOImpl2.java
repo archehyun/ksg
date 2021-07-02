@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.schedule.service;
+package com.ksg.schedule.dao;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,11 +19,16 @@ import com.ksg.common.dao.SqlMapManager;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 
-public class ScheduleDAOImpl implements SchduleDAO {
+
+/**
+ * @deprecated
+ * @author ¹ÚÃ¢Çö
+ *
+ */
+public class ScheduleDAOImpl2 implements SchduleDAO {
 
 	private SqlMapClient sqlMap;
-	
-	public ScheduleDAOImpl() {
+	public ScheduleDAOImpl2() {
 		try {
 			sqlMap = SqlMapManager.getSqlMapInstance();
 		} catch (IOException e) {
@@ -68,8 +73,11 @@ public class ScheduleDAOImpl implements SchduleDAO {
 		}else
 		{
 			return sqlMap.queryForList("Schedule.selectPort_nameListByOutbound");
-		}		
-	}	
+		}
+		
+	}
+	
+	
 
 	public List getScheduleListByPort(String port) throws SQLException {
 		return sqlMap.queryForList("Schedule.selectScheduleList",port);
@@ -95,8 +103,7 @@ public class ScheduleDAOImpl implements SchduleDAO {
 		
 		return sqlMap.queryForList("Schedule.selectOutboundScheduleList");
 	}
-	
-	public List getOutboundScheduleList(ScheduleData data)
+	public List getOutboundScheduleList(ScheduleData data) 
 			throws SQLException {
 		
 		return sqlMap.queryForList("Schedule.selectOutboundScheduleList",data);

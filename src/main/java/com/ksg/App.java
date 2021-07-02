@@ -34,13 +34,13 @@ import com.ksg.workbench.KSGMainFrame;
  * @author ¹ÚÃ¢Çö
  *
  */
-public class KSGMain 
+public class App 
 {
 	protected Logger logger = Logger.getLogger(getClass());
 	
 	PropertiManager manager = PropertiManager.getInstance();
 
-	public KSGMain() 
+	public App() 
 	{	
 		
 	}
@@ -104,7 +104,7 @@ public class KSGMain
 	}
 
 	public static void main(String[] args) {
-		new KSGMain().start();
+		new App().start();
 
 	}
 

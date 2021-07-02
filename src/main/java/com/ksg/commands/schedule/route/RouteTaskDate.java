@@ -28,11 +28,11 @@ import com.ksg.commands.schedule.ScheduleSortData;
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.util.StringCompare;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.StringCompare;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 public class RouteTaskDate extends DefaultRouteTask {

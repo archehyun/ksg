@@ -19,9 +19,9 @@ import org.apache.log4j.Logger;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
+import com.ksg.schedule.dao.SchduleDAO;
+import com.ksg.schedule.dao.ScheduleDAOImpl;
 import com.ksg.schedule.logic.KSGHashMap;
-import com.ksg.schedule.service.SchduleDAO;
-import com.ksg.schedule.service.ScheduleDAOImpl;
 @SuppressWarnings("unchecked")
 public class ScheduleServiceImpl implements ScheduleService{
 

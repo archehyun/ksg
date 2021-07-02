@@ -1,4 +1,4 @@
-package com.ksg.schedule;
+package com.ksg.common.util;
 
 import java.util.Comparator;
 
