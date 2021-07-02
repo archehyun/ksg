@@ -8,31 +8,17 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.logic.quark.v8;
+package com.ksg.print.logic.quark.v8;
 
-import com.ksg.quark.logic.quarkfactory.XTGCell;
+import com.ksg.print.logic.quark.quarkfactory.XTGPage;
 
-public class XTGCellV8 extends XTGCell{
+public class XTGPageV8 extends XTGPage {
 	
-	public XTGCellV8(String data)
-	{
-		super(data);
-	}
-
-	public XTGCellV8(String data, String prefix, String endfix) {
-		super(data, prefix, endfix);
-	}
 
 	@Override
 	public String makeXTG() {
-		if(!endFix.equals("<\\c>"))
-		{
-			return preFix+data+endFix;
-			
-		}else
-		{
-			return preFix+data;
-		}
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

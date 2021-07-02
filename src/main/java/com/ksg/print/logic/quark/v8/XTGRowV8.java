@@ -8,36 +8,20 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.logic.quark.v8;
+package com.ksg.print.logic.quark.v8;
 
-import java.util.Iterator;
+import com.ksg.print.logic.quark.quarkfactory.XTGRow;
 
-import com.ksg.print.logic.quark.XTGRow;
-import com.ksg.quark.logic.quarkfactory.XTGTable;
+public class XTGRowV8 extends XTGRow{
 
-public class XTGTableV8 extends XTGTable {
-
-	
-
-	public XTGTableV8(String info,int pageIndex) {
-		super(info,pageIndex);
-
+	public XTGRowV8(String data) {
+		super(data);
+		
 	}
 
-	@Override
 	public String makeXTG() {
-		String message = new String();
-		if(pageIndex==0)
-			message=info;
-		Iterator iter =xtgRow.iterator();
-		while(iter.hasNext())
-		{
-			XTGRow row = (XTGRow) iter.next();
-			message+=row.parseDoc();
-			if(iter.hasNext())
-				message+="\n";
-		}
-		return message;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

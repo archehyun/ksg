@@ -8,13 +8,13 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.logic.quark.v8;
+package com.ksg.print.logic.quark.v8;
 
-import com.ksg.quark.logic.quarkfactory.XTGCell;
-import com.ksg.quark.logic.quarkfactory.XTGFactory;
-import com.ksg.quark.logic.quarkfactory.XTGPage;
-import com.ksg.quark.logic.quarkfactory.XTGRow;
-import com.ksg.quark.logic.quarkfactory.XTGTable;
+import com.ksg.print.logic.quark.quarkfactory.XTGCell;
+import com.ksg.print.logic.quark.quarkfactory.XTGFactory;
+import com.ksg.print.logic.quark.quarkfactory.XTGPage;
+import com.ksg.print.logic.quark.quarkfactory.XTGRow;
+import com.ksg.print.logic.quark.quarkfactory.XTGTable;
 
 public class XTGFactoryV8 extends XTGFactory{
 
