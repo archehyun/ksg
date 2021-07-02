@@ -30,18 +30,15 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.ksg.commands.SearchADVCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.common.view.comp.KSGPanel;
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
-import com.ksg.shippertable.view.dialog.ManagePortDialog;
 import com.ksg.shippertable.view.dialog.ManageTablePortPop;
 import com.ksg.shippertable.view.dialog.ManageVesselDialog;
-import com.ksg.view.KSGViewParameter;
+import com.ksg.workbench.KSGViewParameter;
 
 /**
  * 광고정보 표시

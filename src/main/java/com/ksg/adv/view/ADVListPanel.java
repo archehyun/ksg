@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -42,8 +41,6 @@ import org.apache.log4j.Logger;
 
 import com.ksg.adv.service.ADVService;
 import com.ksg.adv.service.ADVServiceImpl;
-import com.ksg.adv.view.PortTable.PortTableInfo;
-import com.ksg.adv.view.comp.PortColorInfo;
 import com.ksg.adv.view.comp.SheetModel;
 import com.ksg.adv.view.dialog.AddAdvDialog;
 import com.ksg.adv.view.dialog.AdjestADVListDialog;
@@ -58,7 +55,7 @@ import com.ksg.domain.TablePort;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.ShipperTableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
-import com.ksg.view.KSGMainFrame;
+import com.ksg.workbench.KSGMainFrame;
 
 /**
  * 

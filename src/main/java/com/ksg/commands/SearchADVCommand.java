@@ -58,7 +58,7 @@ import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.view.comp.KSGADVTablePanel;
-import com.ksg.view.KSGViewParameter;
+import com.ksg.workbench.KSGViewParameter;
 
 public class SearchADVCommand implements KSGCommand {
 

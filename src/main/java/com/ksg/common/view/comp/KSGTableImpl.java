@@ -53,7 +53,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Vessel;
-import com.ksg.view.KSGViewParameter;
+import com.ksg.workbench.KSGViewParameter;
 
 /**
  * @author ¹ÚÃ¢Çö

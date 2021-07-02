@@ -19,7 +19,7 @@ import com.ksg.common.view.comp.KSGPanel;
 import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
-import com.ksg.view.KSGViewParameter;
+import com.ksg.workbench.KSGViewParameter;
 
 /**
  * 마스터 화면 추상 클래스

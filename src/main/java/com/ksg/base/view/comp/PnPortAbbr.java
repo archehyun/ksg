@@ -42,7 +42,7 @@ import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.common.view.comp.KSGTableCellRenderer;
 import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.PortInfo;
-import com.ksg.view.KSGViewParameter;
+import com.ksg.workbench.KSGViewParameter;
 
 /**
  * 항구 약어 정보 관리 화면

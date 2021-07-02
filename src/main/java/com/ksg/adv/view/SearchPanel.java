@@ -84,7 +84,7 @@ import com.ksg.domain.Table_Property;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.comp.SearchTable;
-import com.ksg.view.KSGViewParameter;
+import com.ksg.workbench.KSGViewParameter;
 
 public class SearchPanel extends JPanel implements ActionListener{
 

@@ -21,7 +21,7 @@ import javax.swing.table.JTableHeader;
 
 import org.jdom.Element;
 
-import com.ksg.view.KSGViewParameter;
+import com.ksg.workbench.KSGViewParameter;
 
 
 /**

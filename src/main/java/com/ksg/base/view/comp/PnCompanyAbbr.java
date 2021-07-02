@@ -34,7 +34,7 @@ import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.view.comp.KSGTableCellRenderer;
 import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.domain.Company;
-import com.ksg.view.KSGViewParameter;
+import com.ksg.workbench.KSGViewParameter;
 
 
 /**

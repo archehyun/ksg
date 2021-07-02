@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.view.comp.KSGTableModel;
 import com.ksg.dao.impl.BaseDAOManager;
-import com.ksg.view.KSGViewParameter;
+import com.ksg.workbench.KSGViewParameter;
 
 public abstract class BaseTable extends JTable{
 	/**

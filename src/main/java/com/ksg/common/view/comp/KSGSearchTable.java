@@ -34,7 +34,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
-import com.ksg.view.KSGViewParameter;
+import com.ksg.workbench.KSGViewParameter;
 /**
  * @author archehyun
  *
