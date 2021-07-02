@@ -34,7 +34,7 @@ import com.ksg.base.service.CodeService;
 import com.ksg.base.service.PortService;
 import com.ksg.common.comp.KSGTableColumn;
 import com.ksg.common.comp.KSGTablePanel;
-import com.ksg.common.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGDialog;
 
 
 /**

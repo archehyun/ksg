@@ -12,8 +12,8 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import com.ksg.common.view.comp.KSGTableCellRenderer;
 import com.ksg.domain.ScheduleData;
+import com.ksg.view.comp.KSGTableCellRenderer;
 
 public class ConsoleScheduleTable extends KSGScheduleTable{
 	/**

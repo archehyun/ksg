@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.ui.InboundTreeDialog;
 import com.ksg.view.ui.OutboundTreeDialog;
 import com.ksg.view.ui.WorldTreeDialog;

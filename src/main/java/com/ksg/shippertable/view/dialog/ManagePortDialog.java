@@ -41,7 +41,6 @@ import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.common.view.dialog.PortSearchDialog;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
@@ -51,6 +50,7 @@ import com.ksg.domain.TablePort;
 import com.ksg.schedule.logic.PortNullException;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
+import com.ksg.view.comp.KSGDialog;
 
 /**
  * 

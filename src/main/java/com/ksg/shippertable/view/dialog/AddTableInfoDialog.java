@@ -54,11 +54,11 @@ import javax.swing.tree.TreePath;
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Company;
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.view.comp.KSGDialog;
 
 @SuppressWarnings("serial")
 public class AddTableInfoDialog extends KSGDialog implements ActionListener,FocusListener{

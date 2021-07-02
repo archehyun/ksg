@@ -35,12 +35,12 @@ import com.ksg.commands.schedule.create.CreateInlandScheduleCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.common.view.comp.LookAheadTextField;
-import com.ksg.common.view.comp.StringArrayLookAhead;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.build.CreateNormalSchdeduleCommandNew;
+import com.ksg.view.comp.LookAheadTextField;
+import com.ksg.view.comp.StringArrayLookAhead;
 
 /**
  * @설명 스케줄 생성시 입력 날짜 및 옵셥 값 설정 화면

@@ -51,8 +51,6 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.CurvedBorder;
-import com.ksg.common.view.comp.KSGPanel;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleService;
@@ -65,6 +63,8 @@ import com.ksg.schedule.view.comp.PnInland;
 import com.ksg.schedule.view.comp.PnNormal;
 import com.ksg.schedule.view.dialog.ScheduleResultDialog;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.view.comp.CurvedBorder;
+import com.ksg.view.comp.KSGPanel;
 import com.ksg.view.ui.ErrorLogManager;
 
 /**

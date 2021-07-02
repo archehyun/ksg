@@ -25,10 +25,10 @@ import javax.swing.table.DefaultTableModel;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
 import com.ksg.shippertable.view.comp.KSGADVTablePanel;
+import com.ksg.view.comp.KSGDialog;
 
 public class AddVesselDialog extends KSGDialog {
 

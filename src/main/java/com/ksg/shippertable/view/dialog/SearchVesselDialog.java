@@ -19,8 +19,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.KSGDialog;
 
 /**
  * 

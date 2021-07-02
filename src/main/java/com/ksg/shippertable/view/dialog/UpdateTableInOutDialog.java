@@ -38,9 +38,9 @@ import javax.swing.JTabbedPane;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.comp.KSGDialog;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.view.comp.KSGDialog;
 
 /**
  * @author ¹ÚÃ¢Çö
