@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.SqlMapManager;
 import com.ksg.domain.Member;
-import com.ksg.member.service.MemberDAO;
 
 public class MemberDAOImpl implements MemberDAO
 {

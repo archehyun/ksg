@@ -14,11 +14,8 @@ import java.sql.SQLException;
 
 import com.ksg.domain.Member;
 
-/**
- * @author Administrator
- *
- */
-public interface MemberDAO {
-	public Member selectMember(String member_id) throws SQLException;
+public interface MemberService {
+
+	public Member selectMember(String id)throws SQLException;
 
 }

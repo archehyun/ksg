@@ -17,6 +17,8 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
+import com.ksg.adv.dao.AdvDAO;
+import com.ksg.adv.dao.AdvDAOImpl;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;

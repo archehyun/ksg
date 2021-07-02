@@ -44,8 +44,8 @@ import com.ksg.common.dao.SqlMapManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Member;
-import com.ksg.member.MemberService;
-import com.ksg.member.MemberServiceImpl;
+import com.ksg.member.service.MemberService;
+import com.ksg.member.service.MemberServiceImpl;
 
 import java.io.Reader;
 

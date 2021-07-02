@@ -8,24 +8,17 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.member;
+package com.ksg.member.dao;
 
 import java.sql.SQLException;
 
 import com.ksg.domain.Member;
-import com.ksg.member.service.MemberDAO;
-import com.ksg.member.service.MemberDAOImpl;
 
-public class MemberServiceImpl implements MemberService 
-{
-	private MemberDAO memberDAO;
-	public MemberServiceImpl() {
-		memberDAO = new MemberDAOImpl();
-	}
-
-	public Member selectMember(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return memberDAO.selectMember(id);
-	}
+/**
+ * @author Administrator
+ *
+ */
+public interface MemberDAO {
+	public Member selectMember(String member_id) throws SQLException;
 
 }
