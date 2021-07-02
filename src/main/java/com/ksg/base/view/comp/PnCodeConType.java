@@ -30,6 +30,8 @@ import com.ksg.view.comp.table.model.KSGTableModel;
  * @author ¹ÚÃ¢Çö
  *
  */
+
+@Deprecated
 public class PnCodeConType extends PnBase implements ActionListener{
 	/**
 	 * 

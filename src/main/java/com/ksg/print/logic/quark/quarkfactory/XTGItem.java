@@ -8,16 +8,14 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.quark.logic.quarkfactory;
+package com.ksg.print.logic.quark.quarkfactory;
 
-import java.util.Vector;
-
-public abstract class XTGPage {
-	protected Vector tables = new Vector();
-	public abstract String makeXTG();
-	public void addItem(XTGItem item)
+public abstract class XTGItem {
+	protected String data;
+	public XTGItem(String data)
 	{
-		tables.add(item);
+		this.data =data;
 	}
+	public abstract String makeXTG();
 
 }

@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.quark.logic.quarkfactory;
+package com.ksg.print.logic.quark.quarkfactory;
 
 import java.util.Vector;
 

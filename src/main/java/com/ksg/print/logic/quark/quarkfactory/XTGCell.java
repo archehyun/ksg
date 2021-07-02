@@ -8,22 +8,23 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.quark.logic.quarkfactory;
+package com.ksg.print.logic.quark.quarkfactory;
 
-import java.util.Vector;
+public abstract class XTGCell extends XTGItem
+{
+	protected String preFix;
+	protected String endFix;
 
-public abstract class XTGRow extends XTGItem{
-	public XTGRow(String data) 
+	public XTGCell(String data) 
 	{
 		super(data);
 	}
-
-	protected Vector cells = new Vector();
-	public void add(XTGItem item)
+	public XTGCell(String data,String prefix, String endfix) 
 	{
-		cells.add(item);
+		super(data);
+		this.preFix=prefix;
+		this.endFix = endfix;
 	}
-	public abstract String makeXTG();
 	
-	
+
 }
