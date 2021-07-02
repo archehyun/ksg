@@ -13,7 +13,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.ksg.domain.ScheduleData;
-import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.table.KSGTableCellRenderer;
 
 public class ConsoleScheduleTable extends KSGScheduleTable{
 	/**

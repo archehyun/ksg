@@ -75,10 +75,10 @@ import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.FileInfo;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.comp.KSGPanel;
-import com.ksg.view.comp.KSGTableImpl;
-import com.ksg.view.comp.KSGTree;
-import com.ksg.view.comp.KSGTreeDefault;
-import com.ksg.view.comp.KSGTreeImpl;
+import com.ksg.view.comp.table.KSGTableImpl;
+import com.ksg.view.comp.tree.KSGTree;
+import com.ksg.view.comp.tree.KSGTreeDefault;
+import com.ksg.view.comp.tree.KSGTreeImpl;
 
 /**
  * 

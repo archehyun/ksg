@@ -33,8 +33,8 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.view.comp.ColorData;
-import com.ksg.view.comp.KSGTableCellRenderer;
-import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.table.KSGTableCellRenderer;
+import com.ksg.view.comp.table.KSGTableModel;
 
 public class SearchSubTableCommand implements KSGCommand {
 

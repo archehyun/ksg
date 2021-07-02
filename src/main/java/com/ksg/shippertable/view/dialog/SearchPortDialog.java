@@ -33,8 +33,8 @@ import javax.swing.event.ChangeListener;
 import com.ksg.base.service.CodeService;
 import com.ksg.base.service.PortService;
 import com.ksg.view.comp.KSGDialog;
-import com.ksg.view.comp.KSGTableColumn;
-import com.ksg.view.comp.KSGTablePanel;
+import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 
 
 /**

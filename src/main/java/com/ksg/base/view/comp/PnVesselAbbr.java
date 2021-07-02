@@ -40,8 +40,8 @@ import com.ksg.base.view.dialog.InsertVesselAbbrInfoDialog;
 import com.ksg.base.view.dialog.UpdateVesselAbbrInfoDialog;
 import com.ksg.domain.Vessel;
 import com.ksg.view.comp.KSGDialog;
-import com.ksg.view.comp.KSGTableCellRenderer;
-import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.table.KSGTableCellRenderer;
+import com.ksg.view.comp.table.KSGTableModel;
 
 
 /**

@@ -15,8 +15,8 @@ import org.apache.log4j.Logger;
 
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
-import com.ksg.view.comp.KSGTable;
-import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.table.KSGTable;
+import com.ksg.view.comp.table.KSGTableModel;
 
 /**
  * @author ¹ÚÃ¢Çö

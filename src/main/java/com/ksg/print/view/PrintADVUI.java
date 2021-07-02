@@ -67,10 +67,10 @@ import com.ksg.print.logic.quark.XTGManager;
 import com.ksg.print.logic.quark.XTGPage;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.KSGPanel;
-import com.ksg.view.comp.KSGTableModel;
-import com.ksg.view.comp.KSGTree;
-import com.ksg.view.comp.KSGTreeDefault;
-import com.ksg.view.comp.KSGTreeImpl;
+import com.ksg.view.comp.table.KSGTableModel;
+import com.ksg.view.comp.tree.KSGTree;
+import com.ksg.view.comp.tree.KSGTreeDefault;
+import com.ksg.view.comp.tree.KSGTreeImpl;
 
 public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 	/**

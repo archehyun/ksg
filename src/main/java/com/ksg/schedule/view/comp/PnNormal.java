@@ -12,14 +12,13 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import com.ksg.common.comp.KSGTableColumn;
-import com.ksg.common.comp.KSGTablePanel;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.service.ScheduleService;
+import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 
 public class PnNormal extends JPanel implements ActionListener{
 

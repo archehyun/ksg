@@ -73,7 +73,7 @@ import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.dialog.SearchAndInsertVesselDialog;
 import com.ksg.shippertable.view.dialog.SearchVesselDialog;
-import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.workbench.KSGViewParameter;
 
 /**광고 정보 수동 입력 테이블

@@ -31,7 +31,7 @@ import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
 import com.ksg.view.comp.KSGDialog;
-import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.table.KSGTableModel;
 
 /**코드 정보관리 화면
  * 

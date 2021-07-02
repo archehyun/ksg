@@ -14,7 +14,7 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.commands.BaseCommand;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Vessel;
-import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.table.KSGTableModel;
 
 public class SearchVesselCommand extends BaseCommand {
 	SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");

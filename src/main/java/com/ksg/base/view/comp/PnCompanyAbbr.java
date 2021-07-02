@@ -32,8 +32,8 @@ import javax.swing.table.TableColumnModel;
 
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.domain.Company;
-import com.ksg.view.comp.KSGTableCellRenderer;
-import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.table.KSGTableCellRenderer;
+import com.ksg.view.comp.table.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
 
 

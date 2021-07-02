@@ -40,12 +40,12 @@ import com.ksg.base.service.PortService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.base.view.dialog.UpdatePortInfoDialog;
-import com.ksg.view.comp.BoldLabel;
-import com.ksg.view.comp.KSGAbstractTable;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.comp.KSGPanel;
-import com.ksg.view.comp.KSGTableColumn;
-import com.ksg.view.comp.KSGTablePanel;
+import com.ksg.view.comp.label.BoldLabel;
+import com.ksg.view.comp.table.KSGAbstractTable;
+import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 
 
 /**

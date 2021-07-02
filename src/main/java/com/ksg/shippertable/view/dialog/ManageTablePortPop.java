@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,10 +28,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.ksg.base.service.PortService;
-import com.ksg.common.comp.KSGTableColumn;
-import com.ksg.common.comp.KSGTablePanel;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.shippertable.service.impl.ShipperTableService;
+import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 
 /**
 
@@ -88,17 +87,17 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 	public static final String ACTION_UPDATE="¼öÁ¤";
 
 
-	KSGTablePanel tableH;
+	private KSGTablePanel tableH;
 
 	private String tableId;
 
-	PortService portService;
+	private PortService portService;
 
-	List<HashMap<String, Object>> master;
+	private List<HashMap<String, Object>> master;
 
-	PortIndexChangeAction indexChangeAction = new PortIndexChangeAction();
+	private PortIndexChangeAction indexChangeAction = new PortIndexChangeAction();
 
-	PortSelectionEventHandler portSelectionEventHandler = new PortSelectionEventHandler();
+	private PortSelectionEventHandler portSelectionEventHandler = new PortSelectionEventHandler();
 
 	private JLabel lblSearch;
 

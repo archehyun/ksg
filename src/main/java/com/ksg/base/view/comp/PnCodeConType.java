@@ -23,7 +23,7 @@ import com.ksg.base.view.dialog.InsertConTypeCodeInfodialog;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.view.comp.KSGDialog;
-import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.table.KSGTableModel;
 
 /**
  * @설명 컨테이너 타입(코드)

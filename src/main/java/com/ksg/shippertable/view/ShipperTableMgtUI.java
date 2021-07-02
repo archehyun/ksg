@@ -87,9 +87,9 @@ import com.ksg.shippertable.view.dialog.AddTableInfoDialog;
 import com.ksg.shippertable.view.dialog.ManagePortDialog;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.KSGPanel;
-import com.ksg.view.comp.KSGTableSelectListner;
-import com.ksg.view.comp.KSGTreeDefault;
-import com.ksg.view.comp.KSGTreeImpl;
+import com.ksg.view.comp.table.KSGTableSelectListner;
+import com.ksg.view.comp.tree.KSGTreeDefault;
+import com.ksg.view.comp.tree.KSGTreeImpl;
 /**
  * @author archehyun
  * @설명 광고 정보 조회 화면

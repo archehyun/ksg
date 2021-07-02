@@ -25,7 +25,7 @@ import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
 import com.ksg.view.comp.KSGDialog;
-import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.table.KSGTableModel;
 
 public class PnCodeInboundPortOrder extends PnBase implements ActionListener{
 	/**

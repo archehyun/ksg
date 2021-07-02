@@ -17,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -30,9 +29,10 @@ import com.ksg.base.service.PortService;
 import com.ksg.commands.DelPortExceptionCommand;
 import com.ksg.commands.SearchPortCommand;
 import com.ksg.commands.base.ADDPortExceptionCommand;
-import com.ksg.common.comp.KSGTable;
-import com.ksg.common.comp.KSGTableColumn;
 import com.ksg.shippertable.service.impl.ShipperTableService;
+import com.ksg.view.comp.table.KSGAbstractTable;
+import com.ksg.view.comp.table.KSGTable;
+import com.ksg.view.comp.table.KSGTableColumn;
 
 /**
 
@@ -68,7 +68,7 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 
 	CodeService codeService;
 
-	KSGTable tableH;
+	KSGAbstractTable tableH;
 
 	private HashMap<String, Object> result;
 
@@ -87,7 +87,7 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 	public SearchedPortTable() {
 		this.setLayout(new BorderLayout());
 
-		tableH = new KSGTable();
+		tableH = new KSGAbstractTable();
 
 		KSGTableColumn column = new KSGTableColumn("port_index", "¼ø¼­");
 
@@ -480,7 +480,7 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 				foreground = Color.WHITE;
 				background = new Color(51, 153, 255);
 			} else {
-				KSGTable tableH =(KSGTable) table;
+				KSGAbstractTable tableH =(KSGAbstractTable) table;
 				HashMap<String, Object> item=(HashMap<String, Object>)tableH.getValueAt(row);
 				int type=(Integer)item.get("type");
 				

@@ -61,14 +61,14 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
-import com.ksg.view.comp.BoldLabel;
-import com.ksg.view.comp.KSGAbstractTable;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.comp.KSGPanel;
-import com.ksg.view.comp.KSGTableCellRenderer;
-import com.ksg.view.comp.KSGTableColumn;
-import com.ksg.view.comp.KSGTableModel;
-import com.ksg.view.comp.KSGTablePanel;
+import com.ksg.view.comp.label.BoldLabel;
+import com.ksg.view.comp.table.KSGAbstractTable;
+import com.ksg.view.comp.table.KSGTableCellRenderer;
+import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTableModel;
+import com.ksg.view.comp.table.KSGTablePanel;
 
 
 /**

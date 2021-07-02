@@ -15,8 +15,8 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.commands.BaseCommand;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.AreaInfo;
-import com.ksg.view.comp.KSGTableCellRenderer;
-import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.table.KSGTableCellRenderer;
+import com.ksg.view.comp.table.KSGTableModel;
 
 public class SearchAreaInfoCommand extends BaseCommand{
 

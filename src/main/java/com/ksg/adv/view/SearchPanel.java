@@ -81,9 +81,9 @@ import com.ksg.shippertable.view.comp.SearchTable;
 import com.ksg.view.comp.FileInfo;
 import com.ksg.view.comp.KSGCompboBox;
 import com.ksg.view.comp.KSGDialog;
-import com.ksg.view.comp.KSGTable;
-import com.ksg.view.comp.KSGTableImpl;
 import com.ksg.view.comp.PageInfo;
+import com.ksg.view.comp.table.KSGTable;
+import com.ksg.view.comp.table.KSGTableImpl;
 import com.ksg.workbench.KSGViewParameter;
 
 public class SearchPanel extends JPanel implements ActionListener{
