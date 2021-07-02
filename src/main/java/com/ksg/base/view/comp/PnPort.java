@@ -40,12 +40,12 @@ import com.ksg.base.service.PortService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.base.view.dialog.UpdatePortInfoDialog;
-import com.ksg.common.comp.BoldLabel;
-import com.ksg.common.comp.KSGPanel;
-import com.ksg.common.comp.KSGTable;
-import com.ksg.common.comp.KSGTableColumn;
-import com.ksg.common.comp.KSGTablePanel;
+import com.ksg.view.comp.BoldLabel;
+import com.ksg.view.comp.KSGAbstractTable;
 import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGPanel;
+import com.ksg.view.comp.KSGTableColumn;
+import com.ksg.view.comp.KSGTablePanel;
 
 
 /**
@@ -80,7 +80,7 @@ public class PnPort extends PnBase implements ActionListener{
 	
 	KSGTablePanel tableH;
 	
-	KSGTable tableD;
+	KSGAbstractTable tableD;
 
 
 	private JLabel lblPortName;
@@ -270,7 +270,7 @@ public class PnPort extends PnBase implements ActionListener{
 		pnPortInfo.add(addComp("지역",lblArea));
 		pnPortInfo.add(addComp("지역코드",lblAreaCode));
 		
-		tableD = new KSGTable();
+		tableD = new KSGAbstractTable();
 		
 		tableD.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 

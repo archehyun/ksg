@@ -1,4 +1,4 @@
-package com.ksg.common.comp;
+package com.ksg.view.comp;
 
 import java.awt.Font;
 

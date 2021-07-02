@@ -1,4 +1,4 @@
-package com.ksg.common.comp;
+package com.ksg.view.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import com.ksg.common.model.KSGModelManager;
+
 @SuppressWarnings("serial")
 public class KSGTablePanel extends KSGPanel{
 	
@@ -26,7 +28,7 @@ public class KSGTablePanel extends KSGPanel{
 	
 	private int total;
 
-	private KSGTable table;
+	private KSGAbstractTable table;
 
 	private String title;
 
@@ -55,7 +57,7 @@ public class KSGTablePanel extends KSGPanel{
 		
 		this.setLayout(new BorderLayout(5,5));
 
-		table = new KSGTable();
+		table = new KSGAbstractTable();
 
 		this.add(new JScrollPane(table));
 
@@ -203,6 +205,18 @@ public class KSGTablePanel extends KSGPanel{
 	public void  clearResult()
 	{
 		table.clearReslult();
+	}
+
+	@Override
+	public void update(KSGModelManager manager) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void createAndUpdateUI() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

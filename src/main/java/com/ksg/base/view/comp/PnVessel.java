@@ -57,18 +57,18 @@ import com.ksg.base.view.dialog.InsertVesselInfoDialog;
 import com.ksg.base.view.dialog.UpdateVesselInfoDialog;
 import com.ksg.base.view.dialog.VesselImportDialog;
 import com.ksg.commands.base.VesselInfoExportCommand;
-import com.ksg.common.comp.BoldLabel;
-import com.ksg.common.comp.KSGPanel;
-import com.ksg.common.comp.KSGTable;
-import com.ksg.common.comp.KSGTableColumn;
-import com.ksg.common.comp.KSGTablePanel;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.BoldLabel;
+import com.ksg.view.comp.KSGAbstractTable;
 import com.ksg.view.comp.KSGDialog;
+import com.ksg.view.comp.KSGPanel;
 import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.KSGTableColumn;
 import com.ksg.view.comp.KSGTableModel;
+import com.ksg.view.comp.KSGTablePanel;
 
 
 /**
@@ -126,7 +126,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	private VesselService vesselService = new VesselService();
 
-	private KSGTable tableD;
+	private KSGAbstractTable tableD;
 	private JLabel lblVesselName;
 	private JLabel lblVesselMMSI;
 	private JLabel lblVesselType;
@@ -716,7 +716,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		pnPortInfo.add(addComp("대표선사",lblVesselCompany));
 		pnPortInfo.add(addComp("등록일",lblInputDate));
 
-		tableD = new KSGTable();
+		tableD = new KSGAbstractTable();
 
 		tableD.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 

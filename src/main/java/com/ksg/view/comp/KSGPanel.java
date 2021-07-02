@@ -10,8 +10,10 @@
  *******************************************************************************/
 package com.ksg.view.comp;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
 
@@ -29,7 +31,7 @@ import com.ksg.shippertable.service.TableService;
  * @author ¹ÚÃ¢Çö
  *
  */
-public abstract class KSGPanel extends JPanel implements KSGObserver {
+public class KSGPanel extends JPanel implements KSGObserver {
 	/**
 	 * 
 	 */
@@ -49,7 +51,10 @@ public abstract class KSGPanel extends JPanel implements KSGObserver {
 	
 	protected KSGPropertis 	propertis = KSGPropertis.getIntance();
 	
-	public abstract void createAndUpdateUI();
+	public void createAndUpdateUI()
+	{
+		
+	}
 	
 	public Component createMargin()
 	{
@@ -61,4 +66,24 @@ public abstract class KSGPanel extends JPanel implements KSGObserver {
 		pn.setPreferredSize(new Dimension(w,0));
 		return pn;
 	}
+	
+	public KSGPanel()
+	{
+		super();
+		this.setBackground(Color.white);
+	}
+	public KSGPanel(LayoutManager layout) {
+		super(layout);
+		this.setBackground(Color.white);
+	}
+
+	@Override
+	public void update(KSGModelManager manager) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
+	
 }

@@ -1,4 +1,4 @@
-package com.ksg.common.comp;
+package com.ksg.view.comp;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -35,7 +35,7 @@ import javax.swing.table.TableRowSorter;
 
  */
 @SuppressWarnings("serial")
-public class KSGTable extends JTable{
+public class KSGAbstractTable extends JTable{
 
 	/**
 	 *
@@ -46,7 +46,7 @@ public class KSGTable extends JTable{
 	
 	DefaultTableCellRenderer renderer;
 
-	public KSGTable() {
+	public KSGAbstractTable() {
 
 
 		model = new TableModel();

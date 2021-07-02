@@ -38,11 +38,11 @@ import com.ksg.base.dao.AreaDAO;
 import com.ksg.base.service.AreaService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.UpdateAreaInfodialog;
-import com.ksg.common.comp.KSGTable;
-import com.ksg.common.comp.KSGTableColumn;
 import com.ksg.domain.AreaInfo;
+import com.ksg.view.comp.KSGAbstractTable;
 import com.ksg.view.comp.KSGDialog;
 import com.ksg.view.comp.KSGTableCellRenderer;
+import com.ksg.view.comp.KSGTableColumn;
 import com.ksg.view.comp.KSGTableModel;
 
 
@@ -73,7 +73,7 @@ public class PnArea extends PnBase implements ActionListener{
 
 	private JLabel lblTable,lblTotal;
 	
-	KSGTable tableH;
+	KSGAbstractTable tableH;
 
 	private String columName[] = {"코드","지역명","지역코드"};
 	
@@ -92,7 +92,7 @@ public class PnArea extends PnBase implements ActionListener{
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
 		
-		tableH = new KSGTable();
+		tableH = new KSGAbstractTable();
 		tableH.addMouseListener(new TableSelectListner());
 		
 		pnMain.add(new JScrollPane(tableH));
