@@ -21,7 +21,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
-import com.ksg.shippertable.service.TableDAO;
+import com.ksg.shippertable.dao.TableDAO;
 @Deprecated
 public class TableDAOImpl implements TableDAO{
 	SqlMapClient sqlMap;
