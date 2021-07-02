@@ -32,7 +32,7 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
-import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;

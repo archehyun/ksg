@@ -29,7 +29,7 @@ import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
-import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.StringCompare;
 import com.ksg.schedule.logic.PortNullException;
 import com.ksg.schedule.logic.ScheduleJoint;

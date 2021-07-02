@@ -32,7 +32,7 @@ import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
-import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.ScheduleServiceImpl;
 

@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.print.logic.quark;
+package com.ksg.print.logic.quark.v1;
 
 import java.util.StringTokenizer;
 import java.util.Vector;

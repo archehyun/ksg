@@ -64,7 +64,6 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.dialog.SearchADVCountDialog;
 import com.ksg.common.view.dialog.WebScheduleCreateDialog;
 import com.ksg.domain.ShippersTable;
-import com.ksg.preference.view.PreferenceDialog;
 import com.ksg.print.view.PrintADVUI;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.ScheduleServiceImpl;
@@ -75,6 +74,7 @@ import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.workbench.preference.PreferenceDialog;
 
 
 /**

@@ -12,8 +12,8 @@ package com.ksg.print.logic.quark.v8;
 
 import java.util.Iterator;
 
-import com.ksg.print.logic.quark.XTGRow;
 import com.ksg.print.logic.quark.quarkfactory.XTGTable;
+import com.ksg.print.logic.quark.v1.XTGRow;
 
 public class XTGTableV8 extends XTGTable {
 

@@ -27,8 +27,8 @@ import com.ksg.adv.service.ADVService;
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.print.logic.quark.XTGManager;
-import com.ksg.print.logic.quark.XTGPage;
+import com.ksg.print.logic.quark.v1.XTGManager;
+import com.ksg.print.logic.quark.v1.XTGPage;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 

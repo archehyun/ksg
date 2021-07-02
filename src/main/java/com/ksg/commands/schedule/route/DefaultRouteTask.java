@@ -10,7 +10,7 @@ import com.ksg.commands.schedule.task.SimpleTask;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.Code;
 import com.ksg.domain.ShippersTable;
-import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 
 public abstract class DefaultRouteTask extends SimpleTask{

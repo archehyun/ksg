@@ -7,7 +7,7 @@ import com.ksg.commands.schedule.route.RouteTaskDate;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ShippersTable;
-import com.ksg.print.logic.quark.XTGManager;
+import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 

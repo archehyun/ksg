@@ -1,4 +1,4 @@
-package com.ksg.preference.view;
+package com.ksg.workbench.preference;
 
 import java.awt.Component;
 import java.awt.FlowLayout;

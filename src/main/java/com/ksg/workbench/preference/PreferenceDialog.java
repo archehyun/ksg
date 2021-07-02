@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.preference.view;
+package com.ksg.workbench.preference;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;

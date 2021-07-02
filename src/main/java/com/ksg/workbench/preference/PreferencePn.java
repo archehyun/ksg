@@ -1,4 +1,4 @@
-package com.ksg.preference.view;
+package com.ksg.workbench.preference;
 
 public interface PreferencePn {
 	public void saveAction();
