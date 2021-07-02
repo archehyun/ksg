@@ -16,8 +16,9 @@
       <resource>
         <directory>src/resources</directory>
       </resource>
-      
     </resources>
+    
+    
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -29,4 +30,20 @@
       </plugin>
     </plugins>
   </build>
+    <dependencies>
+  	
+  	<!--  mybastis 설정 -->
+  	<dependency>
+  		<groupId>org.mybatis</groupId>
+  		<artifactId>mybatis</artifactId>
+  		<version>3.4.1</version>
+  	</dependency>
+  	
+  	<dependency>
+  		<groupId>jdom</groupId>
+  		<artifactId>jdom</artifactId>
+  		<version>1.0</version>
+  	</dependency>
+  	</dependencies>
+  
 </project>
