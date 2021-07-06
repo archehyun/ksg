@@ -19,7 +19,9 @@ import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 
 public class SqlMapManager 
 {
-	private static String resource = "com/ksg/common/dao/sql-map-config.xml";
+	
+	private static String resource = "config/sql-map-config.xml";
+	//private static String resource = "com/ksg/common/dao/sql-map-config.xml";
 	private static SqlMapClient sqlMap;
 	private SqlMapManager(){}
 	public static SqlMapClient getSqlMapInstance() throws IOException 
