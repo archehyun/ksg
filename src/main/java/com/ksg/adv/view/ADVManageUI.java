@@ -69,6 +69,7 @@ import com.ksg.commands.SearchPortCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.TablePort;
+import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.dialog.AddTableInfoDialog;
 import com.ksg.view.comp.CurvedBorder;
@@ -150,7 +151,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 
 	private TablePort tablePort;
 	
-
+	private TableService tableService;
 	private SearchPanel searchPanel;
 	
 	public ADVManageUI() {
@@ -165,7 +166,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 		
 		manager.addObservers(this);
 		
-		createAndUpdateUI();		
+		createAndUpdateUI();
 	}
 	
 	public void actionPerformed(ActionEvent e) {

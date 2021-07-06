@@ -30,6 +30,7 @@ import com.ksg.common.util.KSGPropertyManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
@@ -71,7 +72,7 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 			
 			this.table_id =base.getTable_id();
 			
-			tableService = DAOManager.getInstance().createTableService();
+			tableService = new TableServiceImpl();
 			
 			shippersTable = tableService.getTableById(table_id);
 			

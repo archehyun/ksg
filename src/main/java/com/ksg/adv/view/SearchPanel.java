@@ -1634,7 +1634,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 			
 			initStyle();
 			
-			tableService = DAOManager.getInstance().createTableService();	
+			tableService = new TableServiceImpl();	
 			
 			DefaultTableModel model = new DefaultTableModel();
 

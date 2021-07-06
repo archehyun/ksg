@@ -29,6 +29,7 @@ import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 /**
  * @author ¹ÚÃ¢Çö
@@ -66,7 +67,7 @@ public abstract class CreateScheduleCommand implements KSGCommand, ScheduleBuild
 	protected Date selectedDate;
 	public CreateScheduleCommand() throws SQLException {
 
-		tableService 	= DAOManager.getInstance().createTableService();
+		tableService 	= new TableServiceImpl();
 		scheduleService = DAOManager.getInstance().createScheduleService();
 		advService		= DAOManager.getInstance().createADVService();
 		baseService 	= DAOManager.getInstance().createBaseService();

@@ -34,6 +34,8 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ShippersTable;
+import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.shippertable.view.dialog.ManageTablePortPop;
 import com.ksg.shippertable.view.dialog.ManageVesselDialog;
@@ -68,6 +70,8 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 	public JTable _tblVesselTable;	
 
 	private ManageVesselDialog vesseldialog;
+	
+	private TableService tableService;
 
 	public KSGADVTablePanel(ShipperTableMgtUI base) {
 		this.base=base;
@@ -78,7 +82,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		_baseSearvice = daoManager.createBaseService();
 
-		tableService = daoManager.createTableService();
+		tableService = new TableServiceImpl();
 
 		this.createAndUpdateUI();
 	}

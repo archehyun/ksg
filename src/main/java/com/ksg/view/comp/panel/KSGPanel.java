@@ -43,7 +43,7 @@ public class KSGPanel extends JPanel implements KSGObserver {
 	
 	protected ADVService	 		_advService;
 	
-	protected TableService 		tableService;  // 테이블 서비스 객체
+	//protected TableService 		tableService;  // 테이블 서비스 객체
 	
 	protected BaseService _baseSearvice;
 	

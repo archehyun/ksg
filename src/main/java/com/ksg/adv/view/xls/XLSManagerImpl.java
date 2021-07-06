@@ -35,6 +35,7 @@ import com.ksg.commands.xls.ImportXLSFileCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 /**
  * @author Administrator
@@ -64,7 +65,7 @@ public class XLSManagerImpl{
 	private TableService tableService;
 	
 	private XLSManagerImpl() {
-		tableService = manager.createTableService();
+		tableService = new TableServiceImpl();
 
 		errorHandler = new XLSErrorHandler();
 	}

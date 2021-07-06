@@ -39,6 +39,7 @@ import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 /**
  * @author ¹ÚÃ¢Çö
@@ -133,7 +134,7 @@ public class DefaultWebScheduleV2 extends DefaultScheduleJoint {
 
 		this.parameter = parameter;
 
-		tableService = DAOManager.getInstance().createTableService();
+		tableService = new TableServiceImpl();
 
 		advService = DAOManager.getInstance().createADVService();
 

@@ -37,6 +37,7 @@ import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 /**
  * @author archehyun
@@ -200,7 +201,7 @@ public class PortTable extends JTable implements ActionListener
 
 	public PortTable(JTextArea txaADV,KSGXLSImportPanel base) {
 		DAOManager manager = DAOManager.getInstance();
-		tableService= manager.createTableService();
+		tableService=new TableServiceImpl();
 		baseService  = manager.createBaseService();
 		
 		tableModel = new PortTableModel();

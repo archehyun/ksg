@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.view.comp.dialog.KSGDialog;
 
@@ -41,7 +42,7 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 		this.base =base;
 		this.table_id=selectedTableId;
 		DAOManager manager = DAOManager.getInstance();
-		tableService = manager.createTableService();
+		tableService = new TableServiceImpl();
 		baseService = manager.createBaseService();
 	}
 

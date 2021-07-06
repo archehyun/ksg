@@ -29,6 +29,7 @@ import com.ksg.common.util.KSGPropertis;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 /**
  * @author Administrator
@@ -73,7 +74,7 @@ public abstract class XLSReader {
 	
 	public XLSReader()
 	{
-		tableService = manager.createTableService();
+		tableService = new TableServiceImpl();
 		baseService =manager.createBaseService();
 		service = manager.createADVService();
 	}

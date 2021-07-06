@@ -21,6 +21,7 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.TablePort;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 /**테이블 항구 정보 관리 다이어그램
@@ -38,7 +39,7 @@ public class ManageTablePortDialog extends KSGDialog implements ActionListener
 	public ManageTablePortDialog(String table_id) {
 		this.table_id = table_id;
 		DAOManager manager = DAOManager.getInstance();
-		tableService = manager.createTableService();
+		tableService = new TableServiceImpl();
 		baseService  = manager.createBaseService();
 	}
 

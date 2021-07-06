@@ -27,6 +27,7 @@ import com.ksg.common.util.KSGPropertyManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 /**
  * 엑셀 정보가지고는 정보 클래스
@@ -75,7 +76,7 @@ public class XLSTableInfo extends TableLocation{
 
 		this.setTableType(xlsLocation.getTableType());
 		
-		this.tableService =  DAOManager.getInstance().createTableService();
+		this.tableService =  new TableServiceImpl();
 		
 		this.setTable_id(tableInfo.getTable_id());
 		

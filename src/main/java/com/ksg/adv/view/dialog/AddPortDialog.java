@@ -33,6 +33,7 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.dialog.PortSearchDialog;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
@@ -77,7 +78,7 @@ public class AddPortDialog extends KSGDialog {
 		this.portList=portList;
 		this.table_id= table_id;
 		DAOManager manager = DAOManager.getInstance();
-		tableService = manager.createTableService();
+		tableService = new TableServiceImpl();
 		baseService  = manager.createBaseService();
 
 	}

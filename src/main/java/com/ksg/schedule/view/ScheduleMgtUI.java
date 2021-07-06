@@ -62,6 +62,7 @@ import com.ksg.schedule.view.comp.PnConsole;
 import com.ksg.schedule.view.comp.PnInland;
 import com.ksg.schedule.view.comp.PnNormal;
 import com.ksg.schedule.view.dialog.ScheduleResultDialog;
+import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -144,11 +145,15 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 	
 	private JCheckBox cbxNew,cbxInboundSchedule,cbxOutboundSchedule,cbxRouteSchedule;
 
+	private TableService tableService;
+
 	
 	public ScheduleMgtUI() {
 
 		scheduleService = new ScheduleServiceImpl();
+		
 		tableService = new TableServiceImpl();
+		
 		createAndUpdateUI();
 	}
 

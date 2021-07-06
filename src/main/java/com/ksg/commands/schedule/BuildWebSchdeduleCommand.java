@@ -45,6 +45,7 @@ import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 @SuppressWarnings("unchecked")
 public class BuildWebSchdeduleCommand implements KSGCommand 
 {
@@ -87,7 +88,7 @@ public class BuildWebSchdeduleCommand implements KSGCommand
 	HashMap<String, Vector> map;
 	private int scheduleID;
 	public BuildWebSchdeduleCommand(ScheduleBuildMessageDialog ob) {
-		tableService = DAOManager.getInstance().createTableService();
+		tableService = new TableServiceImpl();
 		scheduleService = DAOManager.getInstance().createScheduleService();
 		advService = DAOManager.getInstance().createADVService();
 		baseService = DAOManager.getInstance().createBaseService();

@@ -79,6 +79,7 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.comp.KSGADVTablePanel;
 import com.ksg.shippertable.view.comp.SearchTable;
@@ -239,6 +240,10 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	private JLabel lblCompany,lblCount,lblDivision, lblPage, lblIndex, lblItem, lblDateSearch;
 
 	private JMenuItem itemDateUpdate;
+	
+	private TableService tableService;
+	
+	
 
 	public ShipperTableMgtUI() 
 	{

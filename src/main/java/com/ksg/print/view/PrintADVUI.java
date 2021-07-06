@@ -65,6 +65,8 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.print.logic.quark.v1.XTGPage;
+import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.model.KSGTableModel;
@@ -96,6 +98,7 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 	DAOManager daomanager = DAOManager.getInstance();
 	
 	int inD_flag=1;
+	private TableService tableService;
 	
 	
 	public PrintADVUI() {
@@ -103,7 +106,7 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 		manager.addObservers(this);
 		selectDate = KSGDateUtil.format(new Date());
 		_advService =daomanager.createADVService();
-		tableService = daomanager.createTableService();
+		tableService = new TableServiceImpl();
 		createAndUpdateUI();
 	}
 

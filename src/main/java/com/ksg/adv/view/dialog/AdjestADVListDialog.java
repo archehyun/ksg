@@ -25,15 +25,19 @@ import javax.swing.table.TableColumnModel;
 
 import com.ksg.adv.view.ADVListPanel;
 import com.ksg.adv.view.xls.XLSTableInfo;
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Code;
 import com.ksg.domain.ShippersTable;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
+/**
+ * @author pch
+ *
+ */
 public class AdjestADVListDialog extends KSGDialog{
 
 	/**
@@ -78,7 +82,7 @@ public class AdjestADVListDialog extends KSGDialog{
 		this.tableInfoList=tableInfoList;
 
 		logger.debug(this.tableInfoList);
-		tableService = DAOManager.getInstance().createTableService();
+		tableService = new TableServiceImpl();
 	}
 
 	JTable tblTable;

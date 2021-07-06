@@ -40,6 +40,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
@@ -84,7 +85,7 @@ public class UpdateTableInOutDialog extends KSGDialog implements ActionListener{
 	public UpdateTableInOutDialog(ShippersTable table) {
 		shippersTable = table;
 		DAOManager manager = DAOManager.getInstance();
-		tableService = manager.createTableService();
+		tableService = new TableServiceImpl();
 		advservice  = manager.createADVService();
 	}
 	public void createAndUpdateUI() {

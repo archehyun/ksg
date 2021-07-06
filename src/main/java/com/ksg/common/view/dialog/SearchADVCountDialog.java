@@ -20,6 +20,7 @@ import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 @SuppressWarnings("serial")
@@ -31,7 +32,7 @@ public class SearchADVCountDialog extends KSGDialog{
 	public SearchADVCountDialog() {
 		this.setTitle("광고입력 조회");
 		DAOManager manager = DAOManager.getInstance();
-		_tableService = manager.createTableService();
+		_tableService = new TableServiceImpl();
 	}
 	public void createAndUpdateUI()
 	{

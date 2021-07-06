@@ -12,6 +12,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 public class BuildScheduleAndCreateXMLCommand implements KSGCommand{
 	
@@ -28,7 +29,7 @@ public class BuildScheduleAndCreateXMLCommand implements KSGCommand{
 		scheduleService = DAOManager.getInstance().createScheduleService();
 	}
 	public BuildScheduleAndCreateXMLCommand(ScheduleBuildMessageDialog ob) {
-		tableService = DAOManager.getInstance().createTableService();
+		tableService = new TableServiceImpl();
 		scheduleService = DAOManager.getInstance().createScheduleService();
 		advService = DAOManager.getInstance().createADVService();
 		baseService = DAOManager.getInstance().createBaseService();

@@ -64,6 +64,7 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.shippertable.view.dialog.UpdateTableInOutDialog;
 
@@ -194,7 +195,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 	public UpdateTablePanel() {
 		enterKeyListener = new EnterKeyListener();
 		this.advService = DAOManager.getInstance().createADVService();
-		this.tableService= DAOManager.getInstance().createTableService();
+		this.tableService= new TableServiceImpl();
 		this.baseService = DAOManager.getInstance().createBaseService();
 		createAndUpdteUI();
 	}
