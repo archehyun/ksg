@@ -30,9 +30,6 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ibatis.sqlmap.client.SqlMapException;
 import com.ksg.base.view.comp.PnArea;
 import com.ksg.base.view.comp.PnBase;
@@ -55,7 +52,6 @@ import com.ksg.view.comp.panel.KSGPanel;
  * @author 박창현
  *
  */
-
 public class BaseInfoUI extends KSGPanel{
 	public static final String STRING_CODE_INFO 	= "코드정보";
 	public static final String STRING_VESSEL_ABBR 	= "선박 약어";
@@ -76,8 +72,7 @@ public class BaseInfoUI extends KSGPanel{
 	/**
 	 * 
 	 */
-	
-	private static final Logger logger = LoggerFactory.getLogger(BaseInfoUI.class);
+	private static final long serialVersionUID = 1L;
 
 	
 	private HashMap<String, TableListener> panelList;// 패널 저장 객체

@@ -70,7 +70,6 @@ import com.ksg.schedule.ScheduleServiceImpl;
 import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.view.ScheduleMgtUI;
 import com.ksg.shippertable.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
@@ -173,7 +172,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		
 		manager.addObservers(this);
 		
-		tableService = new TableServiceImpl();
+		tableService = DAOManager.getInstance().createTableService();
 
 		this.login = login;
 	}

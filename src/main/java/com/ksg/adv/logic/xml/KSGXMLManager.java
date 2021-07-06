@@ -22,11 +22,11 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.shippertable.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 public class KSGXMLManager {
 
@@ -38,7 +38,7 @@ public class KSGXMLManager {
 
 	public KSGXMLManager()
 	{
-		tableService = new TableServiceImpl();
+		tableService = DAOManager.getInstance().createTableService();	
 	}
 	/**
 	 * @param tableInfoList

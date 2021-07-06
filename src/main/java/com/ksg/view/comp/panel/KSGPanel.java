@@ -17,41 +17,33 @@ import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
 import com.ksg.adv.service.ADVService;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.dao.impl.BaseService;
+import com.ksg.shippertable.service.TableService;
 
 /**
  * @author 박창현
  *
  */
-/**
-
-  * @FileName : KSGPanel.java
-
-  * @Project : KSG2
-
-  * @Date : 2021. 7. 7. 
-
-  * @작성자 : pch
-
-  * @변경이력 :
-
-  * @프로그램 설명 : 화면 패널 클래스
-
-  */
 public class KSGPanel extends JPanel implements KSGObserver {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	protected KSGModelManager 	manager = KSGModelManager.getInstance();	
+	protected KSGModelManager 	manager = KSGModelManager.getInstance();
+	
+	protected Logger 			logger = Logger.getLogger(getClass());
 	
 	protected ADVService	 		_advService;
+	
+	protected TableService 		tableService;  // 테이블 서비스 객체
 	
 	protected BaseService _baseSearvice;
 	

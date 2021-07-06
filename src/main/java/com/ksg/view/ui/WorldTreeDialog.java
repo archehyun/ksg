@@ -40,8 +40,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -55,12 +53,9 @@ public class WorldTreeDialog extends KSGPanel {
 	/**
 	 * 
 	 */
-	
-	private static final Logger logger = LoggerFactory.getLogger(WorldTreeDialog.class);
-	
 	private static final long serialVersionUID = 1L;
-	private String vessel="vessel";
-	private String fromPort="fromPort";
+	String vessel="vessel";
+	String fromPort="fromPort";
 	private DefaultMutableTreeNode treeroot;
 	private JTree tree;
 	private IconCellRenderer m_renderer;

@@ -57,9 +57,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ksg.commands.CreateXTGCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -68,8 +65,6 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.print.logic.quark.v1.XTGPage;
-import com.ksg.shippertable.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.model.KSGTableModel;
@@ -85,8 +80,6 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 	private static final long serialVersionUID = 1L;
 	private JTextArea dataF;
 	private JTextArea dataE;
-	
-	private static final Logger logger = LoggerFactory.getLogger(PrintADVUI.class);
 
 	KSGModelManager manager = KSGModelManager.getInstance();
 	private JTable tblTableList;
@@ -103,7 +96,6 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 	DAOManager daomanager = DAOManager.getInstance();
 	
 	int inD_flag=1;
-	private TableService tableService;
 	
 	
 	public PrintADVUI() {
@@ -111,7 +103,7 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 		manager.addObservers(this);
 		selectDate = KSGDateUtil.format(new Date());
 		_advService =daomanager.createADVService();
-		tableService = new TableServiceImpl();
+		tableService = daomanager.createTableService();
 		createAndUpdateUI();
 	}
 

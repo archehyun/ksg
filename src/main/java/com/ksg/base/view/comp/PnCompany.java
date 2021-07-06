@@ -44,9 +44,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ksg.base.service.CompanyService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.UpdateCompanyInfoDialog;
@@ -93,9 +90,6 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 	KSGTablePanel tableH;
 
 	private String[] fieldName = {"company_name","company_abbr","agent_name", "agent_abbr","contents"};
-	
-	
-	private static final Logger logger = LoggerFactory.getLogger(PnCompany.class);
 
 	private String query;
 

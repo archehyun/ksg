@@ -21,11 +21,12 @@ public class DAOManager {
 			manager= new DAOManager();
 		return manager;
 	}
-
-	/*
-	 * @Deprecated public TableService createTableService() { if(tableservice
-	 * ==null) tableservice = new TableServiceImpl(); return tableservice; }
-	 */
+	public TableService createTableService()
+	{
+		if(tableservice ==null)
+			tableservice = new TableServiceImpl();
+		return tableservice;
+	}
 	public BaseService createBaseService()
 	{
 		if(baseservice ==null)
