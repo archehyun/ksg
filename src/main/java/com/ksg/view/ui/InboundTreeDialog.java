@@ -34,36 +34,15 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.ksg.base.view.comp.PnCompany;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.view.comp.panel.KSGPanel;
 
-/**
-
-  * @FileName : InboundTreeDialog.java
-
-  * @Project : KSG2
-
-  * @Date : 2021. 7. 7. 
-
-  * @작성자 : pch
-
-  * @변경이력 :
-
-  * @프로그램 설명 :
-
-  */
-@SuppressWarnings("serial")
 public class InboundTreeDialog extends KSGPanel{
 	/**
 	 * 
 	 */
-	
-	private static final Logger logger = LoggerFactory.getLogger(InboundTreeDialog.class);
-	
+	private static final long serialVersionUID = 1L;
 	String vessel="vessel";
 	String fromPort="fromPort";
 	private DefaultMutableTreeNode treeroot;

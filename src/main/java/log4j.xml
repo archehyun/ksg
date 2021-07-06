@@ -10,7 +10,7 @@
         IBM Corporation - initial API and implementation
  -->
 
-<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
 <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
@@ -28,7 +28,7 @@
          <!--<param name="ConversionPattern"
                 value="%5p-%m%n"/>-->
              <param name="ConversionPattern"
-                value="[%d{yyyy-MM-dd HH:mm:ss}] %p - %C{1}.%M(%L) | %m%n"/>
+                value="%p - %C{1}.%M(%L) | %m%n"/>
         </layout>
     </appender>
     <appender name="CONSOLE2" class="org.apache.log4j.ConsoleAppender">
@@ -52,7 +52,7 @@
             	<!--  <param name="ConversionPattern" value="%p - %C{1}.%M(%L) | %m%n"></param>
             	
             	-->
-            	<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] %p - %m%n"></param>
+            	<param name="ConversionPattern" value="%p - %m%n"></param>
         	</layout>
     </appender>
     <appender name="LogFile" class="org.apache.log4j.FileAppender">    
@@ -90,14 +90,25 @@
         <level value="info"/>
     </logger>
      <logger name="java.sql.Connection">
-        <level value="debug"/>	
+        <level value="info"/>	
     </logger>        
     
-
-    <logger name="com.ksg">
+    
+    <logger name="com.ksg.schedule">
+        <level value="info"/>	
+    </logger>
+    
+     <logger name="com.ksg.base">
         <level value="info"/>	
     </logger> 
-    
+    <logger name="com.ksg.shippertable">
+        <level value="info"/>	
+    </logger>    
+	<logger name="com.ksg.adv.view">
+        <level value="debug"/>	
+    </logger>    
+   
+
     <root>
         <level value="ERROR">
         

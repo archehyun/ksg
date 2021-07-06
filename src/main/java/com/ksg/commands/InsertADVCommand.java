@@ -11,7 +11,6 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ADVData;
 import com.ksg.shippertable.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 public class InsertADVCommand implements KSGCommand{
 	private ADVService 		service;
@@ -22,7 +21,7 @@ public class InsertADVCommand implements KSGCommand{
 	private TableService tableService;
 	public InsertADVCommand(ADVData data) {
 		service = manager.createADVService();
-		tableService = new TableServiceImpl();
+		tableService = manager.createTableService();
 		this.data=data;
 	}
 
