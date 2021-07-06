@@ -1,8 +1,23 @@
-INFO - init searchUI start
-INFO - init table
-INFO - create
-INFO - init searchUI end
-INFO - retirve:3133,[table_id:null,page:-1,date:null,null]
-INFO - nomal테이블 생성
-INFO - console테이블 생성
-INFO - inland테이블 생성
+[2021-07-07 02:00:41] INFO - PROGRAM START
+[2021-07-07 02:00:41] INFO - DB Connected..
+[2021-07-07 02:00:45] DEBUG - {conn-100000} Connection
+[2021-07-07 02:00:45] DEBUG - {conn-100000} Preparing Statement:    select * from TB_MEMBER where member_id=?  
+[2021-07-07 02:00:46] INFO - login...
+[2021-07-07 02:00:46] DEBUG - {conn-100003} Connection
+[2021-07-07 02:00:46] DEBUG - {conn-100003} Preparing Statement:       select * from TB_AREA                  
+[2021-07-07 02:00:47] DEBUG - {conn-100006} Connection
+[2021-07-07 02:00:47] DEBUG - {conn-100006} Preparing Statement:    select * from TB_CODE_INFO where    code_type=(select code_field from TB_CODE_INFO where code_name_kor=?) order by code_field     
+[2021-07-07 02:00:48] DEBUG - {conn-100009} Connection
+[2021-07-07 02:00:48] DEBUG - {conn-100009} Preparing Statement:   select area_name from TB_AREA group by area_name   
+[2021-07-07 02:00:49] DEBUG - {conn-100012} Connection
+[2021-07-07 02:00:49] DEBUG - {conn-100012} Preparing Statement:   select area_code from TB_AREA group by area_code   
+[2021-07-07 02:00:51] DEBUG - {conn-100015} Connection
+[2021-07-07 02:00:51] DEBUG - {conn-100015} Preparing Statement:       select * from TB_CODE_INFO where code_type=?    
+[2021-07-07 02:00:52] DEBUG - {conn-100018} Connection
+[2021-07-07 02:00:52] DEBUG - {conn-100018} Preparing Statement:    select * from TB_CODE_INFO   WHERE          code_type = ?                 
+[2021-07-07 02:00:52] INFO - init searchUI start
+[2021-07-07 02:00:52] INFO - init table
+[2021-07-07 02:00:52] INFO - create
+[2021-07-07 02:00:52] INFO - init searchUI end
+[2021-07-07 02:00:53] DEBUG - {conn-100021} Connection
+[2021-07-07 02:00:53] DEBUG - {conn-100021} Preparing Statement:   select * from TB_TABLE_INFO                                        order by page, table_index   
