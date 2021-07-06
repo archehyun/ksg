@@ -68,6 +68,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
 import org.jdom.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.base.view.dialog.UpdateTableInfoDialog;
@@ -91,6 +93,7 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableSelectListner;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;
+import com.ksg.view.ui.InboundTreeDialog;
 /**
  * @author archehyun
  * @설명 광고 정보 조회 화면
@@ -101,6 +104,9 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	private static final String ACTION_SEARCH = "조회";
 
 	private static final String ACTION_UPDATE_DATE = "입력일자 수정";
+	
+	private static final Logger logger = LoggerFactory.getLogger(ShipperTableMgtUI.class);
+	
 	/**
 	 * @author archehyun
 	 * @테이블에서의 마우스 동작
@@ -270,7 +276,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		String command = e.getActionCommand();
 
-		logger.debug("acction command:"+command);
+		logger.debug("acction command:{}",command);
 
 		if(command.equals("테이블검색:Page"))
 		{
@@ -292,7 +298,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 						tblSearchTable.setSearchParam(shippersTable);
 						tblSearchTable.retrive();
 						_searchedList = tblSearchTable.getSearchedList();
-						logger.info(_searchedList.size());
+						logger.info("size:{}",_searchedList.size());
 					} catch (SQLException e1) {
 						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e1.getMessage());
 						e1.printStackTrace();

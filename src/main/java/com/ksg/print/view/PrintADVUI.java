@@ -57,6 +57,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ksg.commands.CreateXTGCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -82,6 +85,8 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 	private static final long serialVersionUID = 1L;
 	private JTextArea dataF;
 	private JTextArea dataE;
+	
+	private static final Logger logger = LoggerFactory.getLogger(PrintADVUI.class);
 
 	KSGModelManager manager = KSGModelManager.getInstance();
 	private JTable tblTableList;
