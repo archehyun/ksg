@@ -81,13 +81,22 @@ import com.ksg.view.comp.tree.KSGTree;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;
 
+
 /**
- * 
- * 광고정보 자동 입력 화면
- * 
- * @author 박창현
- *
- */
+
+  * @FileName : ADVManageUI.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 7. 7. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 광고정보 자동 입력 화면
+
+  */
 @SuppressWarnings("unchecked")
 public class ADVManageUI extends KSGPanel implements ActionListener
 {	
@@ -107,9 +116,13 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 	
 	private JTree			_treeMenu;
 	
-	private JTextField  	_txfCPage,_txfPage,_txfPCompany,_txfPort,
-	_txfSearchByCompany,_txfVessel,
-	txfImportDate,txfTableCount;
+	private JTextField  	_txfCPage,
+	_txfPage,
+	_txfPCompany,
+	_txfPort,
+	_txfSearchByCompany,
+	_txfVessel,
+	txfImportDate;
 	
 	public JTextField		_txfXLSFile,_txfSearchedTableCount,_txfCompany,_txfDate;
 
