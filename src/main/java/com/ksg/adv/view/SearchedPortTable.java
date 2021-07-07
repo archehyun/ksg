@@ -31,7 +31,6 @@ import com.ksg.commands.SearchPortCommand;
 import com.ksg.commands.base.ADDPortExceptionCommand;
 import com.ksg.shippertable.service.impl.ShipperTableService;
 import com.ksg.view.comp.table.KSGAbstractTable;
-import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 
 /**

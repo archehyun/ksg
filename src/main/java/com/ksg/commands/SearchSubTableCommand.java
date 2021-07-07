@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.shippertable.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.ColorData;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.model.KSGTableModel;
@@ -48,7 +47,7 @@ public class SearchSubTableCommand implements KSGCommand {
 	public SearchSubTableCommand( JTable table,List searchedList) {
 		this.searchedList=searchedList;
 		_tblSubTotalTable=table;
-		_tableService = new TableServiceImpl();
+		_tableService = DAOManager.getInstance().createTableService();
 
 	}
 

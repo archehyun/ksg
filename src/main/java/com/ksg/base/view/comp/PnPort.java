@@ -74,14 +74,13 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private JTextField txfSearch;
 	
-	PortDAO portDAO = new PortDAO();
+	private PortDAO portDAO = new PortDAO();
 	
-	PortService portService = new PortService();
+	private PortService portService = new PortService();
 	
-	KSGTablePanel tableH;
+	private KSGTablePanel tableH;
 	
-	KSGAbstractTable tableD;
-
+	private KSGAbstractTable tableD;
 
 	private JLabel lblPortName;
 
@@ -103,7 +102,8 @@ public class PnPort extends PnBase implements ActionListener{
 	 * @return
 	 */
 	private JPanel buildSearchPanel() {
-		JPanel pnSearch = new JPanel();
+		
+		KSGPanel pnSearch = new KSGPanel();
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		lblTotal = new JLabel();
 		lblTable = new JLabel("항구 정보");
@@ -178,7 +178,7 @@ public class PnPort extends PnBase implements ActionListener{
 		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnCount.add(lblTable);
 
-		JPanel pnInfo= new JPanel(new BorderLayout());
+		KSGPanel pnMain= new KSGPanel(new BorderLayout());
 
 		JPanel pnS = new JPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
@@ -188,10 +188,10 @@ public class PnPort extends PnBase implements ActionListener{
 		Box info = new Box(BoxLayout.Y_AXIS);
 		info.add(pnS);
 		info.add(pnS1);
-		pnInfo.add(info,BorderLayout.SOUTH);
-		pnInfo.add(pnSearchAndCount,BorderLayout.EAST);
-		pnInfo.add(pnCount,BorderLayout.WEST);
-		return pnInfo;
+		pnMain.add(info,BorderLayout.SOUTH);
+		pnMain.add(pnSearchAndCount,BorderLayout.EAST);
+		pnMain.add(pnCount,BorderLayout.WEST);
+		return pnMain;
 	}
 	private JPanel buildButton()
 	{

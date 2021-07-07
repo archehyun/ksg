@@ -61,6 +61,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.adv.view.comp.SheetModel;
 import com.ksg.adv.view.dialog.AdjestADVListDialog;
@@ -69,6 +72,7 @@ import com.ksg.commands.SearchPortCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.TablePort;
+import com.ksg.print.view.PrintADVUI;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.dialog.AddTableInfoDialog;
@@ -81,16 +85,27 @@ import com.ksg.view.comp.tree.KSGTree;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;
 
+
 /**
- * 
- * 광고정보 자동 입력 화면
- * 
- * @author 박창현
- *
- */
+
+  * @FileName : ADVManageUI.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 7. 7. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 광고정보 자동 입력 화면
+
+  */
 @SuppressWarnings("unchecked")
 public class ADVManageUI extends KSGPanel implements ActionListener
 {	
+	
+	private static final Logger logger = LoggerFactory.getLogger(ADVManageUI.class);
 	private static int _tableViewCount = 10;
 	
 	private static final String SEARCH_TYPE_COMPANY = "선사";
@@ -107,9 +122,13 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 	
 	private JTree			_treeMenu;
 	
-	private JTextField  	_txfCPage,_txfPage,_txfPCompany,_txfPort,
-	_txfSearchByCompany,_txfVessel,
-	txfImportDate,txfTableCount;
+	private JTextField  	_txfCPage,
+	_txfPage,
+	_txfPCompany,
+	_txfPort,
+	_txfSearchByCompany,
+	_txfVessel,
+	txfImportDate;
 	
 	public JTextField		_txfXLSFile,_txfSearchedTableCount,_txfCompany,_txfDate;
 

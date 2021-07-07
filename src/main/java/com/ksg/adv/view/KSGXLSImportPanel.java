@@ -75,7 +75,6 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.shippertable.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGXMLTable;
 
@@ -175,7 +174,9 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 	{		
 		isUnderPort = (String)propertis.getValues(KSGPropertis.PROPERTIES_UNDERPORT).toString();
 		
-		tableService = new TableServiceImpl();
+		DAOManager manager = DAOManager.getInstance();
+		
+		tableService = manager.createTableService();
 		
 		createAndUpdatePN();
 
