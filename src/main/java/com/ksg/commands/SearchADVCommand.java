@@ -56,6 +56,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.shippertable.service.TableService;
+import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.comp.KSGADVTablePanel;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.workbench.KSGViewParameter;
@@ -84,7 +85,7 @@ public class SearchADVCommand implements KSGCommand {
 	{
 		daomanager = DAOManager.getInstance();
 		ADV_ROW_H=KSGModelManager.ADV_ROW_H; 
-		tableService = daomanager.createTableService();
+		tableService = new TableServiceImpl();
 		_advservice = daomanager.createADVService();
 		baseService = daomanager.createBaseService();
 		this._tblADVTable=panel.tblADVTable;
