@@ -9,6 +9,21 @@ import org.slf4j.LoggerFactory;
 
 import com.ksg.base.dao.VesselDAO;
 
+/**
+
+  * @FileName : VesselService.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 7. 8. 
+
+  * @작성자 : pch
+
+  * @변경이력 : Vessel 서비스
+
+  * @프로그램 설명 :
+
+  */
 public class VesselService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CompanyService.class);
