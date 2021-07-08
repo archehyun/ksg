@@ -143,7 +143,7 @@ public class PnVessel extends PnBase implements ActionListener{
 
 	private JPanel buildCenter()
 	{
-		JPanel pnMain = new JPanel(new BorderLayout());
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
 		tableH = new KSGTablePanel("선박목록");
 
@@ -222,8 +222,7 @@ public class PnVessel extends PnBase implements ActionListener{
 	 * @return
 	 */
 	private JPanel buildSearchPanel() {
-		JPanel pnSearch = new JPanel();
-		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnSearch = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		lblTotal = new JLabel();
 		lblTable = new JLabel("선박 정보");
 		lblTable.setSize(200, 25);
@@ -332,7 +331,7 @@ public class PnVessel extends PnBase implements ActionListener{
 	 */
 	private JPanel buildButton()
 	{
-		JPanel pnButtom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		JPanel pnButtomRight = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton butDel = new JButton(STRING_DELETE);
 
@@ -358,8 +357,8 @@ public class PnVessel extends PnBase implements ActionListener{
 		pnButtomRight.add(butExport);
 		pnButtomRight.add(butImport);
 		pnButtomRight.add(butVesselDel);
-		pnButtom.add(pnButtomRight);
-		return pnButtom;
+		pnMain.add(pnButtomRight);
+		return pnMain;
 	}
 
 	
