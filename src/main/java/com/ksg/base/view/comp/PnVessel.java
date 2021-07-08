@@ -84,7 +84,7 @@ import com.ksg.view.comp.table.model.KSGTableModel;
  * @프로그램 설명 : 선박 관리 화면
 
  */
-public class PnVessel extends PnBase implements ActionListener, ComponentListener {
+public class PnVessel extends PnBase implements ActionListener{
 
 	private static final String STRING_ALL_DELETE 		= "전체 선박 데이터 삭제";
 	private static final String STRING_VESSEL_TYPE 		= "선박타입";

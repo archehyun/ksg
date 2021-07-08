@@ -193,6 +193,7 @@ public class PnPort extends PnBase implements ActionListener{
 		pnInfo.add(pnCount,BorderLayout.WEST);
 		return pnInfo;
 	}
+	
 	private JPanel buildButton()
 	{
 		JPanel pnButtom = new JPanel(new FlowLayout(FlowLayout.RIGHT));

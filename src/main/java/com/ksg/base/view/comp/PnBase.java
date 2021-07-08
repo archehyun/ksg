@@ -52,7 +52,7 @@ public abstract class PnBase extends KSGPanel implements ComponentListener, Tabl
 	public BaseInfoUI getBaseInfoUI() {
 		return baseInfoUI;
 	}
-	protected BaseService service = new BaseServiceImpl();
+	
 	
 	public PnBase(BaseInfoUI baseInfoUI) {
 		this.baseInfoUI = baseInfoUI;
