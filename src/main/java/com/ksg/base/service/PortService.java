@@ -2,6 +2,7 @@ package com.ksg.base.service;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.ksg.base.dao.PortDAO;
@@ -41,10 +42,12 @@ public class PortService {
 		if(resultMap==null)
 		{
 			resultMap = (HashMap<String, Object>) portDAO.selectPortAbbr(param);
-		}		
+		}
 		
 		return resultMap;
 	}
+	
+	
 
 	public int updatePort(HashMap<String, Object> param) throws SQLException {
 		return portDAO.updatePort(param);
@@ -59,6 +62,11 @@ public class PortService {
 	public int deletePort(HashMap<String, Object> param) throws SQLException {
 		// TODO Auto-generated method stub
 		return portDAO.deletePort(param);
+	}
+
+	public List selectPortAbbrList(HashMap<String, Object> commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return portDAO.selectPortAbbrList(commandMap);
 	}
 	
 	

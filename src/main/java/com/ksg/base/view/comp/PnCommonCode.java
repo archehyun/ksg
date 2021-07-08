@@ -46,11 +46,11 @@ import com.ksg.view.comp.table.KSGTablePanel;
 @SuppressWarnings("serial")
 public class PnCommonCode extends PnBase implements ActionListener, ComponentListener{
 	
-	JTextField txfCodeName;
+	private JTextField txfCodeName;
 	
-	KSGTablePanel tableH;
+	private KSGTablePanel tableH;
 	
-	KSGTablePanel tableD;
+	private KSGTablePanel tableD;
 	
 	CodeService codeService;
 	

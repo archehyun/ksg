@@ -85,9 +85,9 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 	private JLabel lblTable,lblTotal;
 
-	CompanyTable tblCompanyTable;
+	private CompanyTable tblCompanyTable;
 
-	KSGTablePanel tableH;
+	private KSGTablePanel tableH;
 
 	private String[] fieldName = {"company_name","company_abbr","agent_name", "agent_abbr","contents"};
 
