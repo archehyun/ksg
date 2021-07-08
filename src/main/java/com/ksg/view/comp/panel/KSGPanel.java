@@ -25,7 +25,6 @@ import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.dao.impl.BaseService;
-import com.ksg.shippertable.service.TableService;
 
 /**
  * @author 박창현
@@ -42,8 +41,6 @@ public class KSGPanel extends JPanel implements KSGObserver {
 	protected Logger 			logger = Logger.getLogger(getClass());
 	
 	protected ADVService	 		_advService;
-	
-	//protected TableService 		tableService;  // 테이블 서비스 객체
 	
 	protected BaseService _baseSearvice;
 	

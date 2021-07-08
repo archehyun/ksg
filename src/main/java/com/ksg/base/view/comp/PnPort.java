@@ -35,7 +35,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 
-import com.ksg.base.dao.PortDAO;
 import com.ksg.base.service.PortService;
 import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.InsertPortAbbrInfoDialog;
@@ -74,8 +73,6 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private JTextField txfSearch;
 	
-	//private PortDAO portDAO = new PortDAO();
-	
 	private PortService portService = new PortService();
 	
 	private KSGTablePanel tableH;
@@ -91,10 +88,8 @@ public class PnPort extends PnBase implements ActionListener{
 	private JLabel lblPationality;
 
 	public PnPort(BaseInfoUI baseInfoUI) {
-		super(baseInfoUI);
-		this.setBackground(Color.white);
+		super(baseInfoUI);		
 		
-		this.addComponentListener(this);
 		this.add(buildCenter());
 
 	}
@@ -130,7 +125,9 @@ public class PnPort extends PnBase implements ActionListener{
 
 		
 		JButton butUpSearch = new JButton("검색");
+		
 		butUpSearch.addActionListener(this);
+		
 		cbxField.setPreferredSize(new Dimension(150,23));
 
 		JLabel lblArea = new JLabel("지역:");
@@ -221,7 +218,7 @@ public class PnPort extends PnBase implements ActionListener{
 	{
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 		layout.setHgap(5);		
-		JPanel pnMain = new JPanel(layout);
+		KSGPanel pnMain = new KSGPanel(layout);
 		
 		pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		
@@ -251,8 +248,6 @@ public class PnPort extends PnBase implements ActionListener{
 		lblPortName.setBackground(Color.WHITE);
 		
 		KSGPanel pnMain = new KSGPanel(new BorderLayout(5,5));
-		
-		//pnMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 10));
 		
 		pnMain.setPreferredSize(new Dimension(400, 0));
 		

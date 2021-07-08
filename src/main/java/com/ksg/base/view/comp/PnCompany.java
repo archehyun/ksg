@@ -69,12 +69,8 @@ import com.ksg.view.comp.table.model.KSGTableModel;
  * @프로그램 설명 : 선사 정보 관리
 
  */
-public class PnCompany extends PnBase implements ActionListener, ComponentListener{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+public class PnCompany extends PnBase implements ActionListener{
 
 	/**
 	 * 
@@ -367,7 +363,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 	}
 
 	/**
-	 * 
+	 * @deprecated
 	 */
 	private void searchData() {
 		String field=(String) cbxField.getSelectedItem();
@@ -432,9 +428,6 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 				{
 					fnSearch();
 				}
-				
-
-
 			}
 		}
 
@@ -686,26 +679,15 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		}
 		
 	}
-	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+
+
+
 	@Override
 	public void componentShown(ComponentEvent e) {
 		fnSearch();
 		
 	}
-	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 
 }

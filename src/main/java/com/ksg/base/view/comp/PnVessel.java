@@ -361,14 +361,6 @@ public class PnVessel extends PnBase implements ActionListener{
 		return pnMain;
 	}
 
-	
-
-	@Override
-	public void updateTable(String query) {
-
-
-
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
