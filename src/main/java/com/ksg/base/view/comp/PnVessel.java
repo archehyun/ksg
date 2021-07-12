@@ -133,11 +133,18 @@ public class PnVessel extends PnBase implements ActionListener{
 	private JLabel lblVesselCompany;
 	private JLabel lblVesselUse;
 	private JLabel lblInputDate;
+	private HashMap<String, Object> param;
 
 	public PnVessel(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
-		this.addComponentListener(this);
+		
+		this.path ="기초정보";
+		
+		this.tiltle ="선박정보";
+		
+		this.add(createNavigate(),BorderLayout.NORTH);
+		
 		this.add(buildCenter());
 	}
 
@@ -222,13 +229,11 @@ public class PnVessel extends PnBase implements ActionListener{
 	 * @return
 	 */
 	private JPanel buildSearchPanel() {
+		
+		
+		
 		KSGPanel pnSearch = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		lblTotal = new JLabel();
-		lblTable = new JLabel("선박 정보");
-		lblTable.setSize(200, 25);
-		lblTable.setFont(new Font("돋움",0,16));
-		lblTable.setIcon(new ImageIcon("images/db_table.png"));
-
+		
 		JLabel lbl = new JLabel("필드명 : ");
 		cbxField = new JComboBox<KSGTableColumn>();
 		cbxField.addItem(new KSGTableColumn("vessel_name",STRING_VESSEL_NAME));
@@ -244,12 +249,12 @@ public class PnVessel extends PnBase implements ActionListener{
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
-					searchData();
+					fnSearch();
 				}
 			}
 		});
 
-		JLabel label = new JLabel("개 항목");
+		
 		JButton butUpSearch = new JButton(STRING_SEARCH);
 		butUpSearch.addActionListener(this);
 
@@ -296,35 +301,16 @@ public class PnVessel extends PnBase implements ActionListener{
 		pnSearch.add(lbl);
 		pnSearch.add(cbxField);
 		pnSearch.add(txfSearch);
-		pnSearch.add(butUpSearch);
-		Box pnSearchAndCount = Box.createVerticalBox();
-		pnSearchAndCount.add(pnSearch);
+		
+		KSGPanel pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnControl.add(butUpSearch);
 
-		JPanel pnCountInfo = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pnCountInfo.add(lblTotal);
-		pnCountInfo.add(label);
-		pnSearchAndCount.add(pnCountInfo);
+		KSGPanel pnMain= new KSGPanel(new BorderLayout());
 
-		JPanel pnCount = new JPanel();
-		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnCount.add(lblTable);
-
-		JPanel pnInfo= new JPanel(new BorderLayout());
-
-		JPanel pnS = new JPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-		Box info = new Box(BoxLayout.Y_AXIS);
-		info.add(pnS);
-		info.add(pnS1);
-
-
-		pnInfo.add(info,BorderLayout.SOUTH);
-		pnInfo.add(pnSearchAndCount,BorderLayout.EAST);
-		pnInfo.add(pnCount,BorderLayout.WEST);
-		return pnInfo;
+		pnMain.add(pnSearch,BorderLayout.WEST);
+		pnMain.add(pnControl,BorderLayout.EAST);
+		
+		return pnMain;
 	}
 	/**하단 버튼 목록 생성
 	 * @return
@@ -555,10 +541,10 @@ public class PnVessel extends PnBase implements ActionListener{
 			}
 		}
 	}
-
-	public void fnSearch()
+	
+	public void setParam()
 	{
-		HashMap<String, Object> param = new HashMap<String, Object>();		
+		param = new HashMap<String, Object>();		
 
 
 		if(cbxUse.getSelectedItem().equals("사용안함"))
@@ -579,8 +565,13 @@ public class PnVessel extends PnBase implements ActionListener{
 			param.put(col.columnField, txfSearch.getText());
 
 		}
+	}
 
+	public void fnSearch()
+	{
 		try {
+			setParam();
+			
 			HashMap<String, Object> result = (HashMap<String, Object>) vesselService.selectVesselList(param);
 
 			tableH.setResultData(result);
@@ -830,28 +821,13 @@ public class PnVessel extends PnBase implements ActionListener{
 		colmodel.getColumn(5).setPreferredWidth(100);
 	}
 
-	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public void componentShown(ComponentEvent e) {
 		fnSearch();
 	}
 
-	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	class SelectionListner implements ListSelectionListener
 	{

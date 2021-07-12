@@ -397,10 +397,5 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 		
 	}
 
-	@Override
-	public void updateTable() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

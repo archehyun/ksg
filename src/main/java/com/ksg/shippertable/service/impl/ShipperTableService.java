@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ksg.base.service.CompanyService;
 import com.ksg.shippertable.dao.ShipperTableDAO;
 
 /**
@@ -21,12 +25,36 @@ import com.ksg.shippertable.dao.ShipperTableDAO;
 
  */
 public class ShipperTableService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CompanyService.class);
 
 	ShipperTableDAO shipperTableDao;
 
 
 	public ShipperTableService() {
 		shipperTableDao = new ShipperTableDAO();
+	}
+	
+	public Map<String, Object> selectShipperTableList(Map<String, Object> param) throws SQLException
+	{
+		
+		
+		logger.info("param:{}",param);
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		
+		try {
+
+			resultMap.put("total", 0);
+
+			resultMap.put("master", shipperTableDao.selectShipperTableList(param));
+
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return resultMap;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -145,6 +145,10 @@ public class KSGTablePanel extends KSGPanel{
 		return table.getValueAt(row, col);
 	}
 
+	public int getRowCount()
+	{
+		return table.getRowCount();
+	}
 	public void initComp() {
 		table.initComp();
 

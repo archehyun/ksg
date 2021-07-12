@@ -15,7 +15,7 @@
   "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
 
 <sqlMapConfig>
-	<properties resource="db.properties"/>
+	<properties resource="config/db.properties"/>
 	<settings enhancementEnabled="true" useStatementNamespaces="true" />	
 	 <transactionManager type="JDBC">
 		<dataSource type="SIMPLE">
@@ -51,13 +51,14 @@
 	
 	<!-- new mapper -->
 	
-	<sqlMap resource="mybatis/mssql/mssql_base_area.xml" />
-	<sqlMap resource="mybatis/mssql/mssql_base_port.xml" />
-	<sqlMap resource="mybatis/mssql/mssql_base_company.xml" />
-	<sqlMap resource="mybatis/mssql/mssql_base_vessel.xml" />
-	<sqlMap resource="mybatis/mssql/mssql_common_code.xml" />
-	<sqlMap resource="mybatis/mssql/mssql_shippertable.xml" />
-	<sqlMap resource="mybatis/mssql/mssql_schedule.xml" />
+	<sqlMap resource="ibatis/mssql/mssql_base_area.xml" />
+	<sqlMap resource="ibatis/mssql/mssql_base_port.xml" />
+	<sqlMap resource="ibatis/mssql/mssql_base_company.xml" />
+	<sqlMap resource="ibatis/mssql/mssql_base_vessel.xml" />
+	<sqlMap resource="ibatis/mssql/mssql_common_code.xml" />
+	<sqlMap resource="ibatis/mssql/mssql_shippertable.xml" />
+	<sqlMap resource="ibatis/mssql/mssql_schedule.xml" />
+	
 	
 	
 	

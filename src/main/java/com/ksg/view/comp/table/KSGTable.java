@@ -102,6 +102,10 @@ public abstract class KSGTable extends JTable implements KSGObserver {
 	public abstract void retrive() throws SQLException;
 	
 	class IconHeaderRenderer extends DefaultTableCellRenderer {
+		
+		
+		
+		
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 				boolean hasFocus, int row, int column) {
 			if (table != null) {

@@ -14,6 +14,21 @@
 
 <sqlMap namespace="shippertable">
 
+
+
+	<select id="selectShipperTableList" resultClass="java.util.HashMap">
+		select * from TB_TABLE_INFO
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="page">	
+			page=#page#
+			</isNotNull>
+			
+		</dynamic>
+	</select>	
+
+
+
+
 	<select id="selectPortList" resultClass="java.util.HashMap">
 		select * from TB_TABLE_PORTLIST
 		

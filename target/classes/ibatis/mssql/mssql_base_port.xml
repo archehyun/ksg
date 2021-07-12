@@ -21,7 +21,17 @@
 <!-- select -->
 
 	<select id="selectPortList" resultClass="java.util.HashMap">
-		select * from TB_PORT
+	
+	SELECT * FROM (
+
+		SELECT A.port_name, A.port_nationality, A.port_area,A.area_code,  count(port_abbr) abbr_count
+			FROM TB_PORT A
+				LEFT JOIN TB_PORT_ABBR B
+				ON A.port_name = B.port_name
+		GROUP BY A.port_name, A.port_nationality,A.area_code, A.port_area, A.area_code
+		
+		) TB
+		
 		<dynamic prepend="where">
 		    <isNotNull property="port_area" prepend="and">
 		        port_area=#port_area#
@@ -37,6 +47,8 @@
 		    </isNotNull>
  
 		</dynamic>
+		
+				
 	</select>
 	
 	<select id="selectPort" resultClass="java.util.HashMap">

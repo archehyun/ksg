@@ -42,6 +42,7 @@ import com.ibatis.common.resources.Resources;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.SqlMapManager;
 import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.PropertiManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Member;
 import com.ksg.member.service.MemberService;
@@ -70,15 +71,16 @@ public class KSGLogin extends JDialog {
 	private Properties properties = new Properties();
 	private Properties db_properties = new Properties();
 	private String url,db;
+	
+	
+	PropertiManager manager = PropertiManager.getInstance();
+	
+	
+	
 	public KSGLogin() {
 		try
 		{
-			String resource = "db.properties";
-			Reader reader = Resources.getResourceAsReader(resource);
-			properties.load(new FileInputStream("ksg.properties.txt"));
-			db_properties.load(reader);			
-
-			url = db_properties.getProperty("mssql.ip");
+			url = manager.getProperties().getProperty("mssql.ip");
 			if(url.startsWith("$"))
 			{
 				String newUrl =url.substring(2,url.length()-1);
@@ -86,14 +88,11 @@ public class KSGLogin extends JDialog {
 			}
 			db = (String) db_properties.get("mssql.db");
 		} 
-		catch (FileNotFoundException e) 
+		catch (Exception e) 
 		{			
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			System.exit(1);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		} 
 		try {
 			sqlMap=SqlMapManager.getSqlMapInstance();
 

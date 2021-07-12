@@ -2,6 +2,7 @@ package com.ksg.base.view.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
@@ -25,7 +27,7 @@ import com.ksg.workbench.KSGViewParameter;
  * @author ¹ÚÃ¢Çö
  *
  */
-public abstract class PnBase extends KSGPanel implements ComponentListener, TableListener{
+public abstract class PnBase extends KSGPanel implements ComponentListener{
 	/**
 	 * 
 	 */
@@ -44,6 +46,11 @@ public abstract class PnBase extends KSGPanel implements ComponentListener, Tabl
 	private static final long serialVersionUID = 1L;
 
 	DAOImplManager daoImplManager = DAOImplManager.getInstance();
+	
+	
+	protected String path;
+	
+	protected String tiltle;
 
 	protected BaseInfoUI baseInfoUI;	
 
@@ -57,7 +64,17 @@ public abstract class PnBase extends KSGPanel implements ComponentListener, Tabl
 		this.addComponentListener(this);
 	}
 
-
+	protected KSGPanel createNavigate()
+	{
+		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		BoldLabel lblTitle = new BoldLabel(path+">>"+tiltle);
+		
+		pnMain.add(lblTitle);
+		
+		return pnMain;
+		
+	}
 
 
 	public PnBase(BaseInfoUI baseInfoUI) {
@@ -65,8 +82,6 @@ public abstract class PnBase extends KSGPanel implements ComponentListener, Tabl
 		this();
 
 		this.baseInfoUI = baseInfoUI;
-
-
 
 		baseDaoService = DAOImplManager.getInstance().createBaseDAOImpl();
 

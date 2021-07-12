@@ -22,6 +22,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
@@ -55,11 +57,11 @@ import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.BuildXMLInboundCommand;
 import com.ksg.commands.schedule.BuildXMLOutboundCommand;
 import com.ksg.commands.schedule.BuildXMLRouteScheduleCommand;
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.util.PropertiManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.dialog.SearchADVCountDialog;
 import com.ksg.common.view.dialog.WebScheduleCreateDialog;
@@ -72,6 +74,7 @@ import com.ksg.schedule.view.ScheduleMgtUI;
 import com.ksg.shippertable.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
+import com.ksg.shippertable.view.ShipperTableView;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
 import com.ksg.view.comp.dialog.KSGDialog;
@@ -91,7 +94,7 @@ import com.ksg.workbench.preference.PreferenceDialog;
   * @프로그램 설명 :
 
   */
-public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
+public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, ComponentListener{
 	private static final String SCHEDULE_WORLDWIDE	= "항로별 스케줄 생성";
 	private static final String SCHEDULE_INBOUND	= "Inbound 스케줄 생성";
 	private static final String SCHEDULE_OUTBOUND	= "Outbound 스케줄 생성";
@@ -103,6 +106,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	private static final String ADV_INPUT 			= "광고정보 입력";
 	private static final String PREFERENCE 			= "환경설정";
 	private static final String ADV_SEARCH 			= "광고정보 조회";
+	private static final String ADV_SEARCH2 			= "광고정보 조회2";
 	private static final String BASE_MAIN 			= "기초정보관리";
 	private static final String BASE_CODE 			= "코드정보";
 	private static final String BASE_AREA 			= "지역정보";
@@ -127,6 +131,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	private CardLayout cardLayout= new CardLayout();
 	
 	ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
+	
+	PropertiManager properties = PropertiManager.getInstance();
 
 	private JPanel pnCenter,pnSearch,pnPrintADV,pnSchedule;
 	
@@ -152,7 +158,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 	private TableService tableService;
 
-	String cardTable[]={ADV_SEARCH,ADV_INPUT,SCHEDULE_SEARCH,BASE_MAIN,ADV_PRINT};
+	private String cardTable[]={ADV_SEARCH,ADV_INPUT,SCHEDULE_SEARCH,BASE_MAIN,ADV_PRINT};
 	
 	private BaseActionListener baseAction = new BaseActionListener();
 	
@@ -163,6 +169,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	private SortActionListenr sortActionListenr = new SortActionListenr();
 	
 	private BuildActionListenr buildActionListenr = new BuildActionListenr();
+	private ShipperTableView pnShippterTable;
 	
 	public KSGMainFrame(KSGLogin login) 
 	{
@@ -173,6 +180,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		
 		manager.addObservers(this);
 		
+		this.addComponentListener(this);
+		
 		tableService = new TableServiceImpl();
 
 		this.login = login;
@@ -181,6 +190,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	public void completeCardLayout()
 	{
 		new Thread(){
+			
+
 			public void run()
 			{
 				
@@ -196,7 +207,14 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				pnSchedule  = new ScheduleMgtUI();
 				
+				pnShippterTable = new ShipperTableView();			
+				
+				
+				
+				
 				pnCenter.add(pnSearch,ADV_SEARCH);
+				
+				pnCenter.add(pnShippterTable,ADV_SEARCH2);
 				
 				pnCenter.add(pnAdvAdd,ADV_INPUT);
 				
@@ -252,7 +270,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	public void createAndUpdateUI()
 	{
 		
-		logger.debug("create frame start");
+		logger.info("create frame start");
 
 		scheduleService= new ScheduleServiceImpl();
 
@@ -279,6 +297,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		this.setTitle(TITLE);
 
 		this.setVisible(false);
+		
+		
 		
 		modelManager.frame=this;
 		
@@ -318,11 +338,13 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		
 		pnLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		JLabel label = new JLabel(KSGModelManager.getInstance().version);
+		lblIpInfo = new JLabel();
 		
-		label.setFont(KSGModelManager.getInstance().defaultFont);
+		lblIpInfo.setFont(KSGModelManager.getInstance().defaultFont);
 		
-		pnLeft.add(label);
+		pnLeft.add(lblIpInfo);
+		
+		
 		
 		pnMain.add(pnButtom,BorderLayout.EAST);
 		
@@ -425,6 +447,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	private KSGCommand scheduleCommand;
 	protected JDialog optionDialog;
 	private LookAheadTextField txfDate;
+	private String url;
+	private String db;
+	private JLabel lblIpInfo;
 	private JMenuBar crateMenuBar() 
 	{
 		menuBar = new JMenuBar();
@@ -449,8 +474,13 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		BiggerMenu AdvMenu = new BiggerMenu("광고정보관리");
 
 		this.addMenuItem(AdvMenu, ADV_SEARCH, KeyEvent.VK_X,advActionListener);
+		
+		this.addMenuItem(AdvMenu, ADV_SEARCH2, KeyEvent.VK_X,advActionListener);
+		
 		this.addMenuItem(AdvMenu, ADV_INPUT, KeyEvent.VK_X,advActionListener);
+		
 		this.addMenuItem(AdvMenu, ADV_PRINT, KeyEvent.VK_X,advActionListener);
+		
 		AdvMenu.addSeparator();
 		this.addMenuItem(AdvMenu, ADV_INPUT_SEARCH, KeyEvent.VK_X,advActionListener);
 		//===============================================
@@ -1146,6 +1176,39 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			}
 			
 		}
+		
+	}
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		url = properties.getProperties().getProperty("mssql.ip");
+		
+		
+		if(url.startsWith("$"))
+		{
+			String newUrl =url.substring(2,url.length()-1);
+			url = properties.getProperties().getProperty(newUrl);		
+		}
+		
+		db = (String) properties.getProperties().get("mssql.db");
+		
+		lblIpInfo.setText("IP:"+url+":"+db);
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 

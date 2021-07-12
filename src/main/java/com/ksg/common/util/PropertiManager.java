@@ -31,7 +31,7 @@ public class PropertiManager {
 	private void load() throws IOException
 	{
 		properties = new Properties();
-		Reader reader = com.ibatis.common.resources.Resources.getResourceAsReader("db.properties");
+		Reader reader = com.ibatis.common.resources.Resources.getResourceAsReader("config/db.properties");
 		properties.load(reader);
 	}
 	

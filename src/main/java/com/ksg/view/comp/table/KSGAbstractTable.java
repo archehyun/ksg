@@ -2,6 +2,7 @@ package com.ksg.view.comp.table;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,6 +17,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
+
+import com.ksg.common.util.KSGViewPropertis;
 
 /**
 
@@ -36,6 +39,9 @@ import javax.swing.table.TableRowSorter;
  */
 @SuppressWarnings("serial")
 public class KSGAbstractTable extends JTable{
+	
+	
+	private static Color GRID_COLOR;
 
 	/**
 	 *
@@ -45,9 +51,19 @@ public class KSGAbstractTable extends JTable{
 	private TableModel model;
 	
 	DefaultTableCellRenderer renderer;
+	
+	KSGViewPropertis propeties = KSGViewPropertis.getInstance();
+
+	private int HEADER_HEIGHT;
+	
+	private int ROW_HEIGHT;
 
 	public KSGAbstractTable() {
-
+		
+		
+		HEADER_HEIGHT=Integer.parseInt(propeties.getProperty("table.header.height"));
+		ROW_HEIGHT=Integer.parseInt(propeties.getProperty("table.row.height"));
+		GRID_COLOR = getColor(propeties.getProperty("table.girdcolor"));
 
 		model = new TableModel();
 
@@ -55,11 +71,23 @@ public class KSGAbstractTable extends JTable{
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		// 정렬 기능 추가
-		setRowSorter(new TableRowSorter<TableModel>(model));
+		this.setRowSorter(new TableRowSorter<TableModel>(model));
+		
+		this.setGridColor(GRID_COLOR);
+		
+		this.setRowHeight(ROW_HEIGHT);
+		
+		this.getTableHeader().setPreferredSize(new Dimension(100, HEADER_HEIGHT));
 		
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 	}
+	private Color getColor(String param)
+	{
+		String index[] = param.split(",");
+		return new Color(Integer.parseInt(index[0].trim()),Integer.parseInt(index[1].trim()), Integer.parseInt(index[2].trim()));
+	}
+
 
 	private DefaultTableCellRenderer getCellRenderer()
 	{
@@ -110,8 +138,6 @@ public class KSGAbstractTable extends JTable{
 				namecol.setPreferredWidth(col.size);
 			}
 		}
-		this.setRowHeight(30);
-		
 		
 
 		DefaultTableCellRenderer renderer =  
@@ -145,6 +171,11 @@ public class KSGAbstractTable extends JTable{
 
 	public Object getValueAt(int rowIndex) {
 		return model.getValueAt(rowIndex);
+	}
+	
+	public int getRowCount()
+	{
+		return model.getRowCount();	
 	}
 
 	/**
@@ -300,6 +331,9 @@ public class KSGAbstractTable extends JTable{
 
 	 */
 	class KSGTableCellRenderer extends DefaultTableCellRenderer {
+		
+		
+		private final Color ODD_COLOR = new Color(240, 240, 240);
 
 		/**
 		 *
@@ -320,7 +354,7 @@ public class KSGAbstractTable extends JTable{
 					foreground = Color.black;
 					background = Color.WHITE;
 				} else {
-					background = new Color(225, 235, 255);
+					background = ODD_COLOR;
 					foreground = Color.black;
 				}
 			}

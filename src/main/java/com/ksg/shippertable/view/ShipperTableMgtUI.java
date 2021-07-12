@@ -88,6 +88,7 @@ import com.ksg.shippertable.view.dialog.AddTableInfoDialog;
 import com.ksg.shippertable.view.dialog.ManagePortDialog;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableSelectListner;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;
@@ -174,6 +175,8 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	private JPopupMenu 			popupMenu;	
 
 	private SearchTable tblSearchTable;
+	
+	private KSGAbstractTable tableH;
 
 	private JTable				currentTable;
 
@@ -761,7 +764,6 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		this.setLayout(new BorderLayout());
 		this.add(buildCenter(),BorderLayout.CENTER);	
 		this.add(pnTitleMain,BorderLayout.NORTH);
-		this.add(this.createMargin(10),BorderLayout.WEST);
 		logger.info("init searchUI end");
 
 
@@ -1050,8 +1052,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		JPanel pnMain = new JPanel();
 		pnMain.setLayout( new BorderLayout());
-		pnMain.add(this.createMargin(),BorderLayout.WEST);
-		pnMain.add(this.createMargin(),BorderLayout.EAST);
+		
 		pnMain.add(pnSearchInfoMain,BorderLayout.CENTER);
 		return pnMain;
 	}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shipperTable">
+
+
+
+<sql id="footer">
+) TEMP1
+		order BY pageIndex OFFSET (#{PAGE_NO}-1)*#{PAGE_SIZE} ROW 
+		FETCH NEXT #{PAGE_SIZE} ROW ONLY
+</sql>
+
+<select resultType="java.util.HashMap" id="selectShipperList" parameterType="java.util.HashMap">
+
+
+	
+
+	select * from TB_TABLE_INFO
+	<where>
+		<if test="gubun != null">AND gubun = #{gubun} </if>		
+		<if test="page != null">AND page = #{page} </if>
+		
+	</where>
+	
+
+</select>
+
+
+<select resultType="java.util.HashMap" id="selectList" parameterType="java.util.HashMap">
+
+
+	
+	SELECT *, TEMP1.table_id as pageIndex FROM
+	(
+	select * from TB_TABLE_INFO
+	<where>
+		<if test="gubun != null">AND gubun = #{gubun} </if>		
+		<if test="page != null">AND page = #{page} </if>
+		
+	</where>
+	
+	<include refid="footer"></include>
+</select>
+
+	<select id="selectCount" resultType="int" parameterType="java.util.HashMap">
+		select count(*) from TB_TABLE_INFO
+		
+	</select>
+	
+	
+	<select id="selectAdv" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select * from TB_ADV_INFO
+		where table_id = #{table_id}
+		
+	</select>
+	
+	
+	<select id="selectTablePortList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select * from TB_TABLE_PORTLIST
+		where table_id = #{table_id}
+		order by port_index
+		
+	</select>
+	
+
+</mapper>

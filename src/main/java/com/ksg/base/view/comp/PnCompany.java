@@ -4,11 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -20,9 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -49,6 +44,8 @@ import com.ksg.base.view.BaseInfoUI;
 import com.ksg.base.view.dialog.UpdateCompanyInfoDialog;
 import com.ksg.domain.Company;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.label.BoldLabel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.KSGTableColumn;
@@ -91,17 +88,26 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private String orderby;
 	
+
+	
 	CompanyService companyService = new CompanyService();
 
 	private List<HashMap<String, Object>> master;
 
 	public PnCompany(BaseInfoUI baseInfoUI) {
-		super(baseInfoUI);		
-		this.addComponentListener(this);
+		super(baseInfoUI);
+		
+		this.path ="기초정보";
+		
+		this.tiltle ="선사정보";
+		
+		this.add(createNavigate(),BorderLayout.NORTH);
+		
 		this.add(buildCenter());
 
-
 	}
+	
+
 	public String getOrderBy(TableColumnModel columnModel)	
 	{
 		/*
@@ -143,7 +149,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private JPanel buildCenter()
 	{
-		JPanel pnMain = new JPanel(new BorderLayout());		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());		
 
 		tableH = new KSGTablePanel("선사목록");
 
@@ -190,11 +196,13 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		tableH.setColumnName(columns);
 		tableH.initComp();
-
-
+		
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 
 		pnMain.add(buildButton(),BorderLayout.SOUTH);
+		
+		
+		
 		return pnMain;
 
 	}
@@ -202,14 +210,10 @@ public class PnCompany extends PnBase implements ActionListener{
 	 * @return
 	 */
 	private JPanel buildSearchPanel() {
-		JPanel pnSearch = new JPanel();
-		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		lblTotal = new JLabel();
-		lblTable = new JLabel("선사 정보");
-		lblTable.setSize(200, 25);
-		lblTable.setFont(new Font("돋움",0,16));
-		lblTable.setIcon(new ImageIcon("images/db_table.png"));
-		JLabel lbl = new JLabel("필드명 : ");
+		KSGPanel pnSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT	));
+		
+		JLabel lbl = new JLabel("필드명 : ");		
+		
 		cbxField = new JComboBox();		
 		cbxField.addItem("선사명");
 		cbxField.addItem("선사명 약어");
@@ -239,44 +243,50 @@ public class PnCompany extends PnBase implements ActionListener{
 		pnSearch.add(lbl);
 		pnSearch.add(cbxField);
 		pnSearch.add(txfSearch);
-		pnSearch.add(butUpSearch);
-		Box pnSearchAndCount = Box.createVerticalBox();
-		pnSearchAndCount.add(pnSearch);
-
-		JPanel pnCountInfo = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		pnCountInfo.add(lblTotal);
-		pnCountInfo.add(label);
-		pnSearchAndCount.add(pnCountInfo);
-
-		JPanel pnCount = new JPanel();
 		
-		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnControl.add(butUpSearch);
+		/*
+		 * Box pnSearchAndCount = Box.createVerticalBox();
+		 * pnSearchAndCount.add(pnSearch);
+		 * 
+		 * JPanel pnCountInfo = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		 * pnCountInfo.add(lblTotal); pnCountInfo.add(label);
+		 * pnSearchAndCount.add(pnCountInfo);
+		 */
+
+		/*
+		 * JPanel pnCount = new JPanel();
+		 * 
+		 * pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
+		 * 
+		 * pnCount.add(lblTable);
+		 */
+
+		KSGPanel pnMain= new KSGPanel(new BorderLayout());
+
+		/*
+		 * JPanel pnS = new JPanel();
+		 * pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		 * pnS.setPreferredSize(new Dimension(0,1)); JPanel pnS1 = new JPanel();
+		 * pnS1.setPreferredSize(new Dimension(0,15)); Box info = new
+		 * Box(BoxLayout.Y_AXIS); info.add(pnS); info.add(pnS1);
+		 */
+
+
+//		pnMain.add(info,BorderLayout.SOUTH);
 		
-		pnCount.add(lblTable);
-
-		JPanel pnInfo= new JPanel(new BorderLayout());
-
-		JPanel pnS = new JPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-		Box info = new Box(BoxLayout.Y_AXIS);
-		info.add(pnS);
-		info.add(pnS1);
-
-
-		pnInfo.add(info,BorderLayout.SOUTH);
-		pnInfo.add(pnSearchAndCount,BorderLayout.EAST);
-		pnInfo.add(pnCount,BorderLayout.WEST);
-		return pnInfo;
+		
+		pnMain.add(pnSearch,BorderLayout.WEST);
+		pnMain.add(pnControl,BorderLayout.EAST);
+		return pnMain;
 	}
 	/**
 	 * @return
 	 */
 	private JPanel buildButton()
 	{
-		JPanel pnButtom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		JPanel pnButtomRight = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton butDel = new JButton("삭제");
 		JButton butNew = new JButton("신규");
@@ -286,8 +296,8 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		pnButtomRight.add(butNew);
 		pnButtomRight.add(butDel);
-		pnButtom.add(pnButtomRight);
-		return pnButtom;
+		pnMain.add(pnButtomRight);
+		return pnMain;
 	}
 
 

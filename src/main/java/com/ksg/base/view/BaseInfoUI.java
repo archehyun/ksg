@@ -75,7 +75,7 @@ public class BaseInfoUI extends KSGPanel{
 	private static final long serialVersionUID = 1L;
 
 	
-	private HashMap<String, TableListener> panelList;// 패널 저장 객체
+	private HashMap<String, Object> panelList;// 패널 저장 객체
 	
 	/**
 	 * 
@@ -85,7 +85,7 @@ public class BaseInfoUI extends KSGPanel{
 		
 		_baseSearvice = DAOManager.getInstance().createBaseService();
 		
-		panelList = new HashMap<String, TableListener>();
+		panelList = new HashMap<String, Object>();
 		
 		createAndUpdateUI();
 	}
@@ -194,9 +194,7 @@ public class BaseInfoUI extends KSGPanel{
 	{
 		
 		if(panelList.containsKey(baseName))
-		{			
-			panelList.get(baseName).updateTable();
-			
+		{	
 			cardLayout.show(pnMain, baseName);
 		}
 		

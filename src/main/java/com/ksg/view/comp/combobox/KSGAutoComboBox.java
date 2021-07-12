@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.view.comp;
+package com.ksg.view.comp.combobox;
 
 import java.sql.SQLException;
 import java.util.Iterator;

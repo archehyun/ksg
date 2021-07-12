@@ -26,4 +26,9 @@ public class ShipperTableDAO extends AbstractDAO{
 		
 	}
 
+	public List<Map<String, Object>> selectShipperTableList(Map<String, Object> commandMap) throws SQLException {
+		return selectList("shippertable.selectShipperTableList", commandMap);
+		
+	}
+
 }

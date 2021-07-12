@@ -53,16 +53,7 @@ public class KSGPanel extends JPanel implements KSGObserver {
 		
 	}
 	
-	public Component createMargin()
-	{
-		return createMargin(15);
-	}
-	public Component createMargin(int w)
-	{
-		JPanel pn =  new JPanel();
-		pn.setPreferredSize(new Dimension(w,0));
-		return pn;
-	}
+
 	
 	public KSGPanel()
 	{
