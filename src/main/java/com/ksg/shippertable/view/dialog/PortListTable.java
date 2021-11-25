@@ -54,7 +54,7 @@ import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
 import com.ksg.schedule.logic.PortNullException;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.dialog.ManagePortDialog.TablePortTransable;
 

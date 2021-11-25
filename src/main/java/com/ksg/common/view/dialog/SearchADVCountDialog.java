@@ -19,7 +19,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 

@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 import com.ksg.workbench.KSGViewParameter;
 
 /**

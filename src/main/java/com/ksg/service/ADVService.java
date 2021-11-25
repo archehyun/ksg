@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.adv.service;
+package com.ksg.service;
 
 import java.sql.SQLException;
 import java.util.List;

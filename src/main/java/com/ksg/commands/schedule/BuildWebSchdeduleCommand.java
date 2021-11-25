@@ -29,7 +29,6 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.task.WebScheduleTask;
 import com.ksg.common.dao.DAOManager;
@@ -44,7 +43,8 @@ import com.ksg.domain.TablePort;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 @SuppressWarnings("unchecked")
 public class BuildWebSchdeduleCommand implements KSGCommand 

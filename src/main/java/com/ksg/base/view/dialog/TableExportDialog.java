@@ -9,7 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import com.ksg.domain.ShippersTable;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 public class TableExportDialog extends JDialog{

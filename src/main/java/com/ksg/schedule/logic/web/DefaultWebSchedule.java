@@ -23,7 +23,6 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -44,6 +43,7 @@ import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
 import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.service.ADVService;
 
 /**
  * @author archehyun

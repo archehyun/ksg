@@ -34,7 +34,7 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ShippersTable;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.shippertable.view.dialog.ManageTablePortPop;

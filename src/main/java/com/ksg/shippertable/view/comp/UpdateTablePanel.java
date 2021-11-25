@@ -54,7 +54,6 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
@@ -63,7 +62,8 @@ import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.shippertable.view.dialog.UpdateTableInOutDialog;

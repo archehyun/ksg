@@ -8,12 +8,12 @@ import java.util.Map;
 
 import com.ksg.schedule.dao.ADVScheduleDAO;
 
-public class ScheduleService {
+public class ScheduleServiceLogic {
 	
 	
 	ADVScheduleDAO advScheduleDAO;
 	
-	public ScheduleService() {
+	public ScheduleServiceLogic() {
 		advScheduleDAO = new ADVScheduleDAO();
 	}
 	

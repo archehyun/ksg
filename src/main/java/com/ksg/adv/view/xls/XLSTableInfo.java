@@ -26,7 +26,7 @@ import com.ksg.common.util.KSGPropertis;
 import com.ksg.common.util.KSGPropertyManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 /**

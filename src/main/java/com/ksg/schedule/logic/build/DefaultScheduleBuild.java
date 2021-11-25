@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
@@ -18,7 +17,8 @@ import com.ksg.domain.TablePort;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.ScheduleServiceImpl;
 import com.ksg.schedule.logic.ScheduleBuild;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 /**

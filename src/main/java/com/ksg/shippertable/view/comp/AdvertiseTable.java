@@ -56,7 +56,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import com.ksg.adv.logic.xml.KSGXMLManager;
-import com.ksg.adv.service.ADVService;
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.commands.InsertADVCommand;
 import com.ksg.commands.KSGCommand;
@@ -69,7 +68,8 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.dialog.SearchAndInsertVesselDialog;
 import com.ksg.shippertable.view.dialog.SearchVesselDialog;

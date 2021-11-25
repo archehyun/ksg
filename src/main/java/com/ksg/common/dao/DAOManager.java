@@ -1,12 +1,12 @@
 package com.ksg.common.dao;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.ScheduleServiceImpl;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 public class DAOManager {

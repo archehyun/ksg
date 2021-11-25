@@ -14,8 +14,8 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.adv.service.ADVServiceImpl;
+import com.ksg.service.ADVService;
 
 public class RemoveADVDataCommand implements KSGCommand {
 	String company;

@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.KSGDateUtil;
@@ -21,7 +20,8 @@ import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 
 /**
  * @author archehyun

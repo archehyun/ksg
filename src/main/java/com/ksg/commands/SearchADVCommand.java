@@ -48,14 +48,14 @@ import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
 import com.ksg.adv.logic.xml.KSGXMLManager;
-import com.ksg.adv.service.ADVService;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.comp.KSGADVTablePanel;
 import com.ksg.view.comp.table.KSGTableCellRenderer;

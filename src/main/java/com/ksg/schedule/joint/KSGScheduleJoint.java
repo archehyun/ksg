@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.schedule.service.ScheduleService;
+import com.ksg.schedule.service.ScheduleServiceLogic;
 
 /**
 
@@ -26,13 +26,13 @@ public abstract class KSGScheduleJoint {
 	
 	protected Logger 			logger = Logger.getLogger(getClass());
 	
-	protected ScheduleService scheduleService;
+	protected ScheduleServiceLogic scheduleService;
 	
 	protected HashMap<String, Object> scheduleList;
 	
 	public KSGScheduleJoint() {
 		
-		scheduleService = new ScheduleService();
+		scheduleService = new ScheduleServiceLogic();
 	}
 	
 	public abstract int execute() throws Exception;

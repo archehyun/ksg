@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ADVData;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 public class ImportTextCommand implements KSGCommand{

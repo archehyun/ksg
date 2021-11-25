@@ -17,11 +17,11 @@ import javax.swing.JComboBox;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.domain.Company;
+import com.ksg.service.ADVService;
 import com.ksg.view.comp.tree.KSGTreeImpl;
 
 /**

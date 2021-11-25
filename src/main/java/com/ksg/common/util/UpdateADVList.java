@@ -12,11 +12,11 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import com.ksg.adv.logic.xml.KSGXMLManager;
-import com.ksg.adv.service.ADVService;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 public class UpdateADVList {

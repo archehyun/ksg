@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.shippertable.service;
+package com.ksg.service;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ShippersTable;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 public class DelTableCommand implements KSGCommand {

@@ -3,7 +3,6 @@ package com.ksg.commands.schedule;
 import java.sql.SQLException;
 import java.util.Date;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.create.CreateNormalSchdeduleCommand;
 import com.ksg.common.dao.DAOManager;
@@ -11,7 +10,8 @@ import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 
 public class BuildScheduleAndCreateXMLCommand implements KSGCommand{
 	

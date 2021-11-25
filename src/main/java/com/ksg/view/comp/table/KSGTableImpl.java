@@ -45,7 +45,6 @@ import javax.swing.table.TableColumnModel;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.adv.view.comp.ADVTableData;
 import com.ksg.adv.view.xls.XLSTableInfo;
 import com.ksg.common.dao.DAOManager;
@@ -53,6 +52,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Vessel;
+import com.ksg.service.ADVService;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.KSGViewParameter;
 

@@ -39,7 +39,6 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.adv.view.comp.SheetModel;
 import com.ksg.adv.view.dialog.AddAdvDialog;
@@ -51,7 +50,8 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.ShipperTableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.view.comp.PageInfoCheckBox;

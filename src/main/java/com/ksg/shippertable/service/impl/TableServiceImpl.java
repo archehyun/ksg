@@ -20,9 +20,9 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.dao.TableDAO;
 import com.ksg.shippertable.dao.TableDAOImpl;
-import com.ksg.shippertable.service.TableService;
 @SuppressWarnings("unchecked")
 public class TableServiceImpl implements TableService{
 	

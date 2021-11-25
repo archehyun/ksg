@@ -34,7 +34,7 @@ import com.ksg.adv.logic.parser.XLSParserVoy;
 import com.ksg.commands.xls.ImportXLSFileCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.ShippersTable;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 
 /**
  * @author Administrator

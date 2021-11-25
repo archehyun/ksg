@@ -73,7 +73,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.TablePort;
 import com.ksg.print.view.PrintADVUI;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 import com.ksg.shippertable.view.dialog.AddTableInfoDialog;
 import com.ksg.view.comp.CurvedBorder;

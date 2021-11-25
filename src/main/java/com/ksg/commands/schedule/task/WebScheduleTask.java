@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 
 import org.jdom.JDOMException;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -36,7 +35,8 @@ import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 import com.ksg.shippertable.service.impl.TableServiceImpl;
 
 public class WebScheduleTask extends SimpleTask{

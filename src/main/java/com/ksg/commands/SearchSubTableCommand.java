@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.ShippersTable;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.TableService;
 import com.ksg.view.comp.ColorData;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.model.KSGTableModel;
