@@ -27,7 +27,7 @@ import com.ksg.common.util.KSGPropertis;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.KeyWordInfo;
 import com.ksg.service.BaseService;
-import com.ksg.service.BaseServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
 
 public class PnKeyWord extends JPanel implements ActionListener,PreferencePn {
 	private JList listKeyword;

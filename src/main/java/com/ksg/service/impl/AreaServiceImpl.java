@@ -1,4 +1,4 @@
-package com.ksg.service;
+package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -7,11 +7,11 @@ import java.util.Map;
 
 import com.ksg.dao.impl.AreaDAOImpl;
 
-public class AreaService {
+public class AreaServiceImpl {
 	
 	AreaDAOImpl areaDAO;
 	
-	public AreaService() {
+	public AreaServiceImpl() {
 		areaDAO = new AreaDAOImpl();
 	}
 	

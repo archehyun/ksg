@@ -56,7 +56,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;

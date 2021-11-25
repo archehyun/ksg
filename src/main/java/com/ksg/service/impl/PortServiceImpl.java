@@ -1,22 +1,21 @@
-package com.ksg.service;
+package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.ksg.dao.impl.PortDAOImpl;
-import com.ksg.domain.PortInfo;
-import com.sun.org.apache.bcel.internal.generic.DALOAD;
+import com.ksg.service.PortService;
 
-public class PortService {
+public class PortServiceImpl implements PortService{
 	
 	PortDAOImpl portDAO;
-	public PortService() {
+	public PortServiceImpl() {
 		portDAO = new PortDAOImpl();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> selectPortList(Map<String, Object> commandMap) throws SQLException {
+	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException {
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -46,20 +45,22 @@ public class PortService {
 		return resultMap;
 	}
 
-	public int updatePort(HashMap<String, Object> param) throws SQLException {
+	public int update(HashMap<String, Object> param) throws SQLException {
 		return portDAO.updatePort(param);
 		
 	}
 
-	public void insertPort(HashMap<String, Object> param) throws SQLException {
+	public void insert(HashMap<String, Object> param) throws SQLException {
 		portDAO.isnertPort(param);
 		
 	}
 
-	public int deletePort(HashMap<String, Object> param) throws SQLException {
+	public int delete(HashMap<String, Object> param) throws SQLException {
 		// TODO Auto-generated method stub
 		return portDAO.deletePort(param);
 	}
+
+
 	
 	
 

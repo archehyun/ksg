@@ -35,7 +35,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;

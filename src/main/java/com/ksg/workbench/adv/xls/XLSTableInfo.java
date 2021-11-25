@@ -27,7 +27,7 @@ import com.ksg.common.util.KSGPropertyManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 
 /**
  * 엑셀 정보가지고는 정보 클래스

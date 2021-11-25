@@ -22,7 +22,7 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainDocument;
 
 import com.ksg.service.BaseService;
-import com.ksg.service.BaseServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
 
 public class KSGAutoComboBox extends JComboBox{
 

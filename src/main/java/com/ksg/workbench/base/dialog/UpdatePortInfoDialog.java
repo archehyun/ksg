@@ -41,10 +41,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.dao.impl.BaseDAOManager;
+
 import com.ksg.domain.AreaInfo;
-import com.ksg.service.BaseServiceImpl;
 import com.ksg.service.PortService;
+
+import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
@@ -59,6 +60,7 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	HashMap<String, Object> param;
 
 	private JTextField txfPort_name;
@@ -67,11 +69,12 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 
 	private JTextField txfPort_area;
 
-	private JTextField txfArea_code;
+	private JTextField txfArea_code;	
 	
-	protected BaseDAOManager baseServices;
 	private JButton butOK;
+	
 	private JButton butCancel;
+	
 	private JLabel lblTitleInfo;
 	
 	PortService portService;
@@ -79,7 +82,7 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 	public UpdatePortInfoDialog(int type)
 	{
 		super();
-		portService = new PortService();
+		portService = new PortServiceImpl();
 		this.type = type;
 	}
 	
@@ -311,7 +314,7 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 		String command = e.getActionCommand();
 		if(command.equals("수정"))
 		{
-			baseService = new BaseServiceImpl();
+			
 			if(txfPort_name.getText().length()<=0)
 			{
 				JOptionPane.showMessageDialog(this, "항구명이 없습니다.");
@@ -343,7 +346,7 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 			param.put("base_port_name", this.param.get("port_name"));
 
 			try {
-				portService.updatePort(param);
+				portService.update(param);
 				this.setVisible(false);
 				this.dispose();
 				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "항구를 수정했습니다.");
@@ -395,7 +398,7 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 				
 				param.put("port_area", txfPort_area.getText());
 				
-				portService.insertPort(param);
+				portService.insert(param);
 				
 				this.setVisible(false);
 				

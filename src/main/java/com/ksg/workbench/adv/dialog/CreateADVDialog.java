@@ -40,9 +40,9 @@ import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.print.logic.quark.v1.XTGPage;
 import com.ksg.print.logic.quark.v1.XTGParserImpl;
 import com.ksg.service.ADVService;
-import com.ksg.service.ADVServiceImpl;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.ADVServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.KSGCompboBox;
 import com.ksg.workbench.print.PrintADVUI;
 

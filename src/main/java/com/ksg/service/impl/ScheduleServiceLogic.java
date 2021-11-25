@@ -1,4 +1,4 @@
-package com.ksg.schedule.service;
+package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -42,8 +42,7 @@ public class ScheduleServiceLogic {
 		{
 			HashMap<String, Object> param = new HashMap<String, Object>();
 			
-			String area_name = (String) areaItem.get("area_name");		
-			
+			String area_name = (String) areaItem.get("area_name");			
 			
 			commandMap.put("area_name", area_name);			
 			

@@ -33,6 +33,8 @@ import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Company;
+import com.ksg.service.CompanyService;
+import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.base.BaseInfoUI;
 
@@ -53,7 +55,7 @@ public class InsertCompanyInfoDialog extends BaseInfoDialog implements ActionLis
 	private JTextArea txaContents;
 	public static final int UPDATE=1;
 	public static  final int INSERT=0;
-	int type;
+	private int type;
 	private JLabel lblTitle;
 	private String titleInfo;
 	private String title;
@@ -61,9 +63,13 @@ public class InsertCompanyInfoDialog extends BaseInfoDialog implements ActionLis
 	private String company_abbr;
 	private String agent_name;
 	private String agent_abbr;
+	
+	CompanyService service;
 
 	public InsertCompanyInfoDialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
+		
+		service = new CompanyServiceImpl();
 		title = "선사 정보 추가";
 	}
 	public void actionPerformed(ActionEvent e) {

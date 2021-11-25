@@ -41,8 +41,8 @@ import javax.swing.border.TitledBorder;
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
-import com.ksg.service.ADVServiceImpl;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.ADVServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
@@ -198,7 +198,7 @@ public class UpdateTableInfoDialog extends KSGDialog implements ActionListener,F
 				table.setGubun(txfGubun.getText());
 				try 
 				{
-					int result=tableService.updateTable(table);
+					int result=tableService.update(table);
 
 					if(result==1)
 					{

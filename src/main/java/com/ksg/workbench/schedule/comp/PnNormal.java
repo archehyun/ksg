@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.schedule.service.ScheduleServiceLogic;
+import com.ksg.service.impl.ScheduleServiceLogic;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
 

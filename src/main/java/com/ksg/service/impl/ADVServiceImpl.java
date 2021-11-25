@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.service;
+package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -22,6 +22,7 @@ import com.ksg.dao.AdvDAO;
 import com.ksg.dao.impl.AdvDAOImpl;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.service.ADVService;
 @SuppressWarnings("unchecked")
 public class ADVServiceImpl implements ADVService{
 

@@ -53,9 +53,9 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
 import com.ksg.schedule.logic.PortNullException;
 import com.ksg.service.BaseService;
-import com.ksg.service.BaseServiceImpl;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.shippertable.dialog.ManagePortDialog.TablePortTransable;
 
 /**

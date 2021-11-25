@@ -35,7 +35,7 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.adv.PortTable.PortTableInfo;
 import com.ksg.workbench.adv.dialog.AddPortDialog;
 

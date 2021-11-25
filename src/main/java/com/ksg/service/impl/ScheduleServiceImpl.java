@@ -8,9 +8,10 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.service;
+package com.ksg.service.impl;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -22,6 +23,7 @@ import com.ksg.dao.impl.ScheduleDAOImpl;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.KSGHashMap;
+import com.ksg.service.ScheduleService;
 @SuppressWarnings("unchecked")
 public class ScheduleServiceImpl implements ScheduleService{
 
@@ -219,5 +221,11 @@ public class ScheduleServiceImpl implements ScheduleService{
 	public List<String> getOutboundAreaList() throws SQLException {
 		return schduleDAO.getOutboundAreaList();
 		
+	}
+
+	@Override
+	public List selectScheduleList(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

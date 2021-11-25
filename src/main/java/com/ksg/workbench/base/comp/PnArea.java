@@ -36,7 +36,7 @@ import javax.swing.table.TableColumnModel;
 
 import com.ksg.dao.impl.AreaDAOImpl;
 import com.ksg.domain.AreaInfo;
-import com.ksg.service.AreaService;
+import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
@@ -77,7 +77,7 @@ public class PnArea extends PnBase implements ActionListener{
 
 	private String columName[] = {"코드","지역명","지역코드"};
 	
-	AreaService areaService = new AreaService();
+	AreaServiceImpl areaService = new AreaServiceImpl();
 	
 	AreaDAOImpl areaDAO = new AreaDAOImpl();
 

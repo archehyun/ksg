@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.service.CodeService;
+import com.ksg.service.impl.CodeServiceImpl;
 
 /**
 
@@ -34,14 +34,14 @@ public class InboundJoint extends KSGScheduleJoint{
 	
 	private ScheduleGroup group;
 	
-	CodeService codeService;
+	CodeServiceImpl codeService;
 	
 	String tag="-";
 	
 	public InboundJoint() {
 		super();
 		group = new ScheduleGroup("vessel", new InboundJointGroup("vessel"));
-		codeService = new CodeService();
+		codeService = new CodeServiceImpl();
 	}
 	
 	/**

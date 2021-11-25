@@ -33,9 +33,9 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
-import com.ksg.service.ADVServiceImpl;
-import com.ksg.service.BaseServiceImpl;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.ADVServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 public class ADDADVDialog extends KSGDialog implements ActionListener{

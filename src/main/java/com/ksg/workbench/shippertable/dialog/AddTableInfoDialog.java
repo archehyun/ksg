@@ -55,9 +55,9 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Company;
 import com.ksg.domain.ShippersTable;
-import com.ksg.service.ADVServiceImpl;
-import com.ksg.service.BaseServiceImpl;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.ADVServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 @SuppressWarnings("serial")
@@ -225,7 +225,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 				return;
 			}
 			try {
-				tableService.insertTable(shippersTable);
+				tableService.insert(shippersTable);
 				manager.execute(searchUI.getName());
 				this.setVisible(false);
 				this.dispose();

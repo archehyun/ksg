@@ -14,7 +14,7 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.BaseService;
-import com.ksg.service.BaseServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.model.KSGTableModel;

@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.schedule.service.ScheduleServiceLogic;
+import com.ksg.service.impl.ScheduleServiceLogic;
 
 /**
 

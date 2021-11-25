@@ -23,7 +23,7 @@ public interface TableService {
 	 * @return 삭제 결과
 	 * @throws SQLException
 	 */
-	public int deleteTable(ShippersTable table) throws SQLException;
+	public int delete(ShippersTable table) throws SQLException;
 	/**
 	 * @param company_abbr
 	 * @return 테이블 인덱스
@@ -83,12 +83,13 @@ public interface TableService {
 	 * @param table
 	 * @throws SQLException
 	 */
-	public ShippersTable insertTable(ShippersTable table) throws SQLException;
+	public ShippersTable insert(ShippersTable table) throws SQLException;
+	
 	public List selectCompanyList()throws SQLException;
+	
 	public List selectCompanyListGroupByCompany_abbr()throws SQLException;
 
 	public List selectCompanyListGroupByCompany_abbr(String date)throws SQLException;
-
 
 	public List selectTableInfoByCompany(String company_name) throws SQLException;
 
@@ -98,7 +99,7 @@ public interface TableService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int updateTable(ShippersTable table) throws SQLException;
+	public int update(ShippersTable table) throws SQLException;
 	/**
 	 * @param data
 	 * @return

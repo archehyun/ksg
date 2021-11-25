@@ -45,7 +45,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.ksg.domain.Company;
-import com.ksg.service.CompanyService;
+import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
@@ -95,7 +95,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 	private String orderby;
 	
-	CompanyService companyService = new CompanyService();
+	CompanyServiceImpl companyService = new CompanyServiceImpl();
 
 	private List<HashMap<String, Object>> master;
 
@@ -338,7 +338,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 			if(result==JOptionPane.OK_OPTION)
 			{	
 				try {
-					int count=companyService.deleteCompany(data);
+					int count=companyService.delete(data);
 					
 					if(count>0)
 					{
@@ -661,7 +661,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		
 		
 		try {
-			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectCompanyList(param);
+			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectList(param);
 
 			tableH.setResultData(result);
 

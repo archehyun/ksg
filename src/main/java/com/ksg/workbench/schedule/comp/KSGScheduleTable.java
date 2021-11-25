@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ScheduleData;
 import com.ksg.service.ScheduleService;
-import com.ksg.service.ScheduleServiceImpl;
+import com.ksg.service.impl.ScheduleServiceImpl;
 
 public abstract class KSGScheduleTable extends JTable{
 

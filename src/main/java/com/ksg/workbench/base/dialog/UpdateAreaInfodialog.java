@@ -32,7 +32,7 @@ import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.AreaInfo;
-import com.ksg.service.AreaService;
+import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.base.BaseInfoUI;
 
@@ -60,7 +60,7 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener{
 	AreaInfo selectedInfo;
 	private JButton butOK;
 	private JButton butCancel;
-	AreaService areaService = new AreaService();
+	AreaServiceImpl areaService = new AreaServiceImpl();
 	private JLabel lblTitleInfo;
 	public UpdateAreaInfodialog(int type) {
 		super();

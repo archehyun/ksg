@@ -20,7 +20,7 @@ import com.ksg.schedule.logic.joint.InboundScheduleJoint;
 import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
 import com.ksg.schedule.logic.joint.RouteScheduleJoint;
 import com.ksg.service.BaseService;
-import com.ksg.service.BaseServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**

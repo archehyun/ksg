@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
 
 import com.ksg.domain.KSGError;
 import com.ksg.service.ADVService;
-import com.ksg.service.ADVServiceImpl;
+import com.ksg.service.impl.ADVServiceImpl;
 
 public class XLSErrorHandler 
 {

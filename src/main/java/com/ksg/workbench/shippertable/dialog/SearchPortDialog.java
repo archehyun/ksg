@@ -30,8 +30,8 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.ksg.service.CodeService;
-import com.ksg.service.PortService;
+import com.ksg.service.impl.CodeServiceImpl;
+import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
@@ -59,9 +59,9 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 
 	Component main;
 
-	PortService portService = new PortService();
+	PortServiceImpl portService = new PortServiceImpl();
 
-	CodeService codeService = new CodeService();
+	CodeServiceImpl codeService = new CodeServiceImpl();
 
 	KSGTablePanel nTable;
 
@@ -305,7 +305,7 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 					{
 						param.put(this.type, val);
 						
-						HashMap<String, Object> result=(HashMap<String, Object>) portService.selectPortList(param);
+						HashMap<String, Object> result=(HashMap<String, Object>) portService.selectList(param);
 
 						this.table.setResultData(result);	
 					}
@@ -409,7 +409,7 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 
 			HashMap<String, Object> param = new HashMap<String, Object>();		
 
-			HashMap<String, Object> result=(HashMap<String, Object>) portService.selectPortList(param);
+			HashMap<String, Object> result=(HashMap<String, Object>) portService.selectList(param);
 
 			this.nTable.setResultData(result);
 

@@ -1,4 +1,4 @@
-package com.ksg.service;
+package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -19,11 +19,11 @@ import com.ksg.dao.CodeDAO;
   * @프로그램 설명 : 코드 정보 관리
 
   */
-public class CodeService {
+public class CodeServiceImpl {
 	
 	CodeDAO codeDAO;
 	
-	public CodeService() {
+	public CodeServiceImpl() {
 		codeDAO = new CodeDAO();
 	}
 	

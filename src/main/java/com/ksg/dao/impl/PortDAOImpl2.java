@@ -1,4 +1,4 @@
-package com.ksg.service;
+package com.ksg.dao.impl;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.SqlMapManager;
 
-public class PortDAOImpl {
+public class PortDAOImpl2 {
 	
 	private SqlMapClient sqlMap;
-	public PortDAOImpl() {
+	public PortDAOImpl2() {
 		try {
 			sqlMap = SqlMapManager.getSqlMapInstance();
 		} catch (IOException e) {

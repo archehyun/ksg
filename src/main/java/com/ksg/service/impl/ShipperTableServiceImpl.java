@@ -1,4 +1,4 @@
-package com.ksg.service;
+package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -20,12 +20,12 @@ import com.ksg.dao.impl.ShipperTableDAO;
  * @프로그램 설명 :
 
  */
-public class ShipperTableService {
+public class ShipperTableServiceImpl {
 
 	ShipperTableDAO shipperTableDao;
 
 
-	public ShipperTableService() {
+	public ShipperTableServiceImpl() {
 		shipperTableDao = new ShipperTableDAO();
 	}
 

@@ -26,9 +26,9 @@ import org.jdom.Element;
 import com.ksg.commands.DelPortExceptionCommand;
 import com.ksg.commands.SearchPortCommand;
 import com.ksg.commands.base.ADDPortExceptionCommand;
-import com.ksg.service.CodeService;
-import com.ksg.service.PortService;
-import com.ksg.service.ShipperTableService;
+import com.ksg.service.impl.CodeServiceImpl;
+import com.ksg.service.impl.PortServiceImpl;
+import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.adv.PortTable.PortTableInfo;
@@ -61,11 +61,11 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 	public static final int TYPE_NOT_MATCH_INDEX=3;
 	public static final int TYPE_BLUE=4; 
 
-	PortService portService;
+	PortServiceImpl portService;
 
-	ShipperTableService shipperTableService;
+	ShipperTableServiceImpl shipperTableService;
 
-	CodeService codeService;
+	CodeServiceImpl codeService;
 
 	KSGAbstractTable tableH;
 
@@ -112,11 +112,11 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 
 		tableH.initComp();
 
-		portService = new PortService();
+		portService = new PortServiceImpl();
 
-		shipperTableService = new ShipperTableService();
+		shipperTableService = new ShipperTableServiceImpl();
 
-		codeService = new CodeService();
+		codeService = new CodeServiceImpl();
 
 		tableH.setComponentPopupMenu(createPopup());
 

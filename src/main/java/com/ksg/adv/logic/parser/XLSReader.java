@@ -27,7 +27,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.adv.comp.ADVTableNotMatchException;
 import com.ksg.workbench.adv.xls.XLSTableInfo;
 

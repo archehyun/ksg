@@ -15,11 +15,11 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.service.ADVService;
-import com.ksg.service.ADVServiceImpl;
 import com.ksg.service.ScheduleService;
-import com.ksg.service.ScheduleServiceImpl;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.ADVServiceImpl;
+import com.ksg.service.impl.ScheduleServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 
 /**
  * @author ¹ÚÃ¢Çö

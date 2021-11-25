@@ -47,10 +47,10 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.service.ADVService;
-import com.ksg.service.ADVServiceImpl;
-import com.ksg.service.ShipperTableService;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.ADVServiceImpl;
+import com.ksg.service.impl.ShipperTableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.PageInfoCheckBox;
 import com.ksg.workbench.KSGMainFrame;
 import com.ksg.workbench.adv.comp.SheetModel;
@@ -89,7 +89,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	
 	private ADVService advService;
 	
-	ShipperTableService shipperTableService;
+	ShipperTableServiceImpl shipperTableService;
 	
 	private Vector 			pageList;
 	
@@ -141,7 +141,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		
 		advService = new ADVServiceImpl();
 		
-		shipperTableService = new ShipperTableService();
+		shipperTableService = new ShipperTableServiceImpl();
 		
 		setLayout(new BorderLayout());
 

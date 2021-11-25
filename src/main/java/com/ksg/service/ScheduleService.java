@@ -11,7 +11,8 @@
 package com.ksg.service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.List;
 
 import com.ksg.domain.PortInfo;
@@ -19,7 +20,12 @@ import com.ksg.domain.ScheduleData;
 public interface ScheduleService {
 
 	public static final String INBOUND = "I";
+	
+	
 	public static final String OUTBOUND = "O";
+	
+	
+	public List selectScheduleList(HashMap<String, Object> param) throws SQLException;
 	
 	/**
 	 * @return
@@ -103,7 +109,9 @@ public interface ScheduleService {
 	 * @return
 	 * @throws SQLException
 	 */
+	
 	public ScheduleData insertScheduleData(ScheduleData data)				throws SQLException;
+	
 	public ScheduleData insertInlandScheduleData(ScheduleData data)				throws SQLException;
 	/**
 	 * @param port_name

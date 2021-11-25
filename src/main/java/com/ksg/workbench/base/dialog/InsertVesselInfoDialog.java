@@ -41,7 +41,7 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
-import com.ksg.service.BaseServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.base.BaseInfoUI;
 

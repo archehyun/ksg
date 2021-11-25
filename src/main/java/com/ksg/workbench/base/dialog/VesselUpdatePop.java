@@ -17,8 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ksg.service.CodeService;
-import com.ksg.service.VesselService;
+import com.ksg.service.impl.CodeServiceImpl;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.base.comp.PnCommonCode;
 
 
@@ -38,7 +38,7 @@ import com.ksg.workbench.base.comp.PnCommonCode;
 @SuppressWarnings("serial")
 public class VesselUpdatePop extends BasePop implements ActionListener{
 
-	VesselService vesselService;
+	VesselServiceImpl vesselService;
 
 	JButton butOk;
 
@@ -59,7 +59,7 @@ public class VesselUpdatePop extends BasePop implements ActionListener{
 	private PnCommonCode pnCommonCode;
 
 	public VesselUpdatePop() {
-		vesselService = new VesselService();
+		vesselService = new VesselServiceImpl();
 		this.getContentPane().add(createCenter());
 
 		this.getContentPane().add(createNorth(),BorderLayout.SOUTH);
@@ -168,7 +168,7 @@ public class VesselUpdatePop extends BasePop implements ActionListener{
 
 
 			try {
-				vesselService.updateVesselAbbr(param);
+				vesselService.updateDetail(param);
 				result = BasePop.OK;
 				pnCommonCode.fnSearch();
 				close();

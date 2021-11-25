@@ -47,7 +47,7 @@ import com.ksg.common.util.KSGPropertis;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Company;
 import com.ksg.service.ADVService;
-import com.ksg.service.ADVServiceImpl;
+import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.workbench.adv.ADVListPanel;
 import com.ksg.workbench.adv.xls.XLSManagerImpl;
 

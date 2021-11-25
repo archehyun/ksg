@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.service;
+package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -22,6 +22,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
+import com.ksg.service.TableService;
 @SuppressWarnings("unchecked")
 public class TableServiceImpl implements TableService{
 	
@@ -32,17 +33,17 @@ public class TableServiceImpl implements TableService{
 		tableDAO = new TableDAOImpl();
 	}
 	
-	public int deleteTable(ShippersTable table) throws SQLException {
+	public int delete(ShippersTable table) throws SQLException {
 		return tableDAO.deleteTableInfo(table);
 	}
 
 	
-	public ShippersTable insertTable(ShippersTable table) throws SQLException {
+	public ShippersTable insert(ShippersTable table) throws SQLException {
 		return tableDAO.insertTableInfo(table);
 	}
 
 	
-	public int updateTable(ShippersTable table) throws SQLException {
+	public int update(ShippersTable table) throws SQLException {
 		return tableDAO.updateTableInfo(table);
 	}
 	

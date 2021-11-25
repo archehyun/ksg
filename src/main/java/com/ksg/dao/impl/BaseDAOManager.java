@@ -24,31 +24,27 @@ import com.ksg.domain.Company;
 import com.ksg.domain.KeyWordInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
-import com.ksg.service.AreaDAOImpl;
-import com.ksg.service.CompanyDAOImpl;
-import com.ksg.service.PortDAOImpl;
-import com.ksg.service.VesselDAOImpl;
 
 @Deprecated
 @SuppressWarnings("unchecked")
 public class BaseDAOManager
 {
-	AreaDAOImpl areaDAOImpl;
+	AreaDAOImpl2 areaDAOImpl;
 	
-	private CompanyDAOImpl companyDAOImpl;
+	private CompanyDAOImpl2 companyDAOImpl;
 	private SqlMapClient sqlMap;
-	private VesselDAOImpl vesselDAOImpl;
-	private PortDAOImpl portDAOImpl;
+	private VesselDAOImpl2 vesselDAOImpl;
+	private PortDAOImpl2 portDAOImpl;
 	public BaseDAOManager() {
 		try {
 			sqlMap = SqlMapManager.getSqlMapInstance();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		areaDAOImpl =new AreaDAOImpl();
-		vesselDAOImpl = new VesselDAOImpl();
-		companyDAOImpl = new CompanyDAOImpl();
-		portDAOImpl = new PortDAOImpl();
+		areaDAOImpl =new AreaDAOImpl2();
+		vesselDAOImpl = new VesselDAOImpl2();
+		companyDAOImpl = new CompanyDAOImpl2();
+		portDAOImpl = new PortDAOImpl2();
 	}	
 
 	

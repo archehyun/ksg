@@ -10,7 +10,7 @@ import javax.swing.JTable;
 
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 
 public class TableExportDialog extends JDialog{
 	private TableService tableService = new TableServiceImpl();

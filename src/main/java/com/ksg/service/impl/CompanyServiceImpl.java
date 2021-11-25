@@ -1,21 +1,37 @@
-package com.ksg.service;
+package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.ksg.dao.impl.CompanyDAOImpl;
+import com.ksg.service.CompanyService;
 
-public class CompanyService {
-	
+/**
+
+  * @FileName : CompanyServiceImpl.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 11. 25. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
+public class CompanyServiceImpl implements CompanyService{ 
 	
 	CompanyDAOImpl companyDAO;
-	public CompanyService() {
+	
+	public CompanyServiceImpl() {
 		companyDAO = new CompanyDAOImpl();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> selectCompanyList(Map<String, Object> commandMap) throws SQLException {
+	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException {
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -27,17 +43,17 @@ public class CompanyService {
 
 	}
 
-	public int updateComapny(HashMap<String, Object> param) throws SQLException{
+	public int update(HashMap<String, Object> param) throws SQLException{
 		return companyDAO.updateCompany(param);
 		
 	}
 
-	public int deleteCompany(HashMap<String, Object> param) throws SQLException{
+	public int delete(HashMap<String, Object> param) throws SQLException{
 		// TODO Auto-generated method stub
 		return companyDAO.deleteCompany(param);
 	}
 
-	public void insertComapny(HashMap<String, Object> param) throws SQLException{
+	public void insert(HashMap<String, Object> param) throws SQLException{
 		// TODO Auto-generated method stub
 		
 		companyDAO.insertCompany(param);

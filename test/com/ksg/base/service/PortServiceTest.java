@@ -7,16 +7,16 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
-import com.ksg.service.PortService;
+import com.ksg.service.impl.PortServiceImpl;
 
 public class PortServiceTest {
 	
-	PortService service;
+	PortServiceImpl service;
 
 	@Test
 	public void testSelectPort() {
 		
-		service = new PortService();
+		service = new PortServiceImpl();
 		HashMap<String, Object> param = new HashMap<String, Object>();
 		
 		param.put("port_name", "PUSAN");

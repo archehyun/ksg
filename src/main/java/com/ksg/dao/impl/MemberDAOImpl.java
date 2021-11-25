@@ -8,24 +8,32 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.member.service;
+package com.ksg.dao.impl;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
+import com.ibatis.sqlmap.client.SqlMapClient;
+import com.ksg.common.dao.SqlMapManager;
+import com.ksg.dao.MemberDAO;
 import com.ksg.domain.Member;
-import com.ksg.member.dao.MemberDAO;
-import com.ksg.member.dao.MemberDAOImpl;
 
-public class MemberServiceImpl implements MemberService 
+public class MemberDAOImpl implements MemberDAO
 {
-	private MemberDAO memberDAO;
-	public MemberServiceImpl() {
-		memberDAO = new MemberDAOImpl();
+	private SqlMapClient sqlMap;
+
+	public MemberDAOImpl() 
+	{
+		try {
+			sqlMap = SqlMapManager.getSqlMapInstance();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public Member selectMember(String id) throws SQLException {
+	public Member selectMember(String member_id) throws SQLException {
 		// TODO Auto-generated method stub
-		return memberDAO.selectMember(id);
+		return (Member) sqlMap.queryForObject("Member.selectMember",member_id);
 	}
 
 }

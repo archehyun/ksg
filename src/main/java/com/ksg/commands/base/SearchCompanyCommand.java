@@ -12,7 +12,7 @@ import javax.swing.table.TableColumnModel;
 
 import com.ksg.commands.BaseCommand;
 import com.ksg.domain.Company;
-import com.ksg.service.BaseServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.view.comp.table.model.KSGTableModel;
 
 public class SearchCompanyCommand extends BaseCommand{

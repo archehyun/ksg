@@ -32,7 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ksg.common.util.ViewUtil;
-import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.base.BaseInfoUI;
 
@@ -51,7 +51,7 @@ public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 	private String vessel_abbr="";
 	HashMap<String, Object> info;
 	
-	VesselService vesselService;
+	VesselServiceImpl vesselService;
 
 	public InsertVesselAbbrInfoDialog(String vessel_name) {
 		super();
@@ -63,7 +63,7 @@ public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 		super();
 		this.info = info;
 		this.title="선박명 약어 추가";
-		vesselService = new VesselService();
+		vesselService = new VesselServiceImpl();
 	}
 
 	public void createAndUpdateUI() {
@@ -139,7 +139,7 @@ public class InsertVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 			info.put("vessel_abbr", txfVesselAbbr.getText());
 
 			try {
-				vesselService.insertVessel(info);
+				vesselService.insert(info);
 				
 				result = KSGDialog.SUCCESS;
 				this.setVisible(false);

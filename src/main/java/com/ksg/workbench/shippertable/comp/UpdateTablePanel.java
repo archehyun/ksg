@@ -64,7 +64,7 @@ import com.ksg.domain.TablePort;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 import com.ksg.workbench.shippertable.dialog.UpdateTableInOutDialog;
 
@@ -646,7 +646,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 		table.setInland_indexs(txfInland.getText());
 
 
-		int result=tableService.updateTable(table);
+		int result=tableService.update(table);
 		logger.debug("save result:"+result);
 		return result;
 	}

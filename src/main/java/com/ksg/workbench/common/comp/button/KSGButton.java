@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.view.comp.button;
+package com.ksg.workbench.common.comp.button;
 
 import java.awt.Dimension;
 

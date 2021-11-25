@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.service.BaseService;
-import com.ksg.service.BaseServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
 
 public class PnXLS extends JPanel implements ActionListener,PreferencePn{
 	

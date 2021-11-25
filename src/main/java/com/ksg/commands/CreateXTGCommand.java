@@ -28,9 +28,9 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.print.logic.quark.v1.XTGPage;
 import com.ksg.service.ADVService;
-import com.ksg.service.ADVServiceImpl;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.ADVServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 
 public class CreateXTGCommand implements KSGCommand{
 

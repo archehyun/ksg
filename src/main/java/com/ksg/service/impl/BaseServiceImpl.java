@@ -8,17 +8,20 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.service;
+package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.List;
 
+import com.ksg.dao.BaseDAO;
+import com.ksg.dao.impl.BaseDAOImpl2;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Code;
 import com.ksg.domain.Company;
 import com.ksg.domain.KeyWordInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
+import com.ksg.service.BaseService;
 
 
 @Deprecated
@@ -27,7 +30,7 @@ public class BaseServiceImpl implements BaseService
 {
 	BaseDAO baseDAO; 
 	public BaseServiceImpl() {
-		baseDAO = new BaseDAOImpl();
+		baseDAO = new BaseDAOImpl2();
 	}
 	
 	public List getBaseInfo(String type) throws SQLException {

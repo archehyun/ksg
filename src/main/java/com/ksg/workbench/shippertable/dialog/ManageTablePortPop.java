@@ -28,8 +28,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.ksg.common.util.ViewUtil;
-import com.ksg.service.PortService;
-import com.ksg.service.ShipperTableService;
+import com.ksg.service.impl.PortServiceImpl;
+import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
 
@@ -74,7 +74,7 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 
 	private HashMap<String, Object> result;
 
-	ShipperTableService shipperTableService;
+	ShipperTableServiceImpl shipperTableService;
 
 	public static final String ACTION_SAVE="历厘";
 
@@ -91,7 +91,7 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 
 	private String tableId;
 
-	private PortService portService;
+	private PortServiceImpl portService;
 
 	private List<HashMap<String, Object>> master;
 
@@ -111,9 +111,9 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 
 		this.setTitle("亲备沥焊包府");
 
-		shipperTableService = new ShipperTableService();
+		shipperTableService = new ShipperTableServiceImpl();
 
-		portService = new PortService();
+		portService = new PortServiceImpl();
 
 		this.tableId = tableId;	
 
@@ -640,7 +640,7 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 					param.put("port_name", val);
 					try {
 
-						HashMap<String, Object> result=(HashMap<String, Object>) portService.selectPortList(param);
+						HashMap<String, Object> result=(HashMap<String, Object>) portService.selectList(param);
 
 						List master = (List) result.get("master");
 

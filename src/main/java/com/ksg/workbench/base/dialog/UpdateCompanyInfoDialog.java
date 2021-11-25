@@ -33,7 +33,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.service.CompanyService;
+import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener {
@@ -41,7 +41,7 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private CompanyService companyService;
+	private CompanyServiceImpl companyService;
 	private JTextField txfCompany_name; // 선사명
 	private JTextField txfCompany_abbr; // 선사 약어
 	private JTextField txfAgent_name;// 에이전트명
@@ -62,7 +62,7 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 	{
 		super();
 
-		companyService = new CompanyService();
+		companyService = new CompanyServiceImpl();
 
 		this.type = type;
 		title = "선사 정보 관리";
@@ -107,7 +107,7 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 
 
 			try {
-				int obj=companyService.updateComapny(param);
+				int obj=companyService.update(param);
 
 				if(obj>0)
 				{	
@@ -144,7 +144,7 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 
 
 			try {
-				companyService.insertComapny(param);
+				companyService.insert(param);
 
 
 				result = SUCCESS;

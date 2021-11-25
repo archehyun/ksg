@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Company;
-import com.ksg.service.BaseServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 /**@설명 선사 검색 화면

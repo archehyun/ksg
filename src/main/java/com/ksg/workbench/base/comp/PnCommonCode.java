@@ -19,7 +19,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 
-import com.ksg.service.CodeService;
+import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
@@ -52,14 +52,14 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 	
 	KSGTablePanel tableD;
 	
-	CodeService codeService;
+	CodeServiceImpl codeService;
 	
 	SelectionListner selectionListner = new SelectionListner();
 
 	public PnCommonCode(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
 		
-		codeService = new CodeService();		
+		codeService = new CodeServiceImpl();		
 		
 		this.add(createCenter());
 		this.addComponentListener(this);

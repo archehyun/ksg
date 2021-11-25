@@ -39,7 +39,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.service.ADVService;
 import com.ksg.service.TableService;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.table.model.KSGTableModel;
 
 public class SearchADVViewCommand implements KSGCommand {

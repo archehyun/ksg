@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ksg.service.CodeService;
+import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.workbench.base.comp.PnCommonCode;
 
 
@@ -36,7 +36,7 @@ import com.ksg.workbench.base.comp.PnCommonCode;
 @SuppressWarnings("serial")
 public class CommonCodeDetailInsertPop extends BasePop implements ActionListener{
 	
-	CodeService codeService;
+	CodeServiceImpl codeService;
 	
 	JButton butOk;
 	
@@ -53,7 +53,7 @@ public class CommonCodeDetailInsertPop extends BasePop implements ActionListener
 	private PnCommonCode pnCommonCode;
 	
 	public CommonCodeDetailInsertPop() {
-		codeService = new CodeService();
+		codeService = new CodeServiceImpl();
 		this.getContentPane().add(createCenter());
 		this.getContentPane().add(createNorth(),BorderLayout.SOUTH);
 		this.setTitle("코드 추가");

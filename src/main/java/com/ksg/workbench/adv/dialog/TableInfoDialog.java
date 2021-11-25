@@ -29,7 +29,7 @@ import com.ksg.common.util.KSGPropertyManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.adv.KSGXLSImportPanel;
 
@@ -435,7 +435,7 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 				table.setOut_port(txfOutboundIn.getText().equals("")?" ":txfOutboundIn.getText());
 				table.setOut_to_port(txfOutboundIn.getText().equals("")?" ":txfOutboundOut.getText());
 
-				tableService.updateTable(table);
+				tableService.update(table);
 				tableService.updateTableProperty(property);
 				
 				KSGPropertyManager.getInstance().init();

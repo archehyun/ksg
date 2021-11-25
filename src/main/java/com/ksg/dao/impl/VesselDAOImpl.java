@@ -45,7 +45,7 @@ public class VesselDAOImpl extends AbstractDAO{
 		return (Integer) delete("vessel.deleteVessel", param);
 	}
 	
-	public int deleteVesselAbbr(HashMap<String, Object> param) throws SQLException {
+	public Object deleteVesselAbbr(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete("vessel.deleteVesselAbbr", param);
 	}
 	

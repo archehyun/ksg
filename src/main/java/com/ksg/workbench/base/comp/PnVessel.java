@@ -54,7 +54,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
-import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -124,7 +124,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	
 	SelectionListner selectionListner = new SelectionListner();
 
-	private VesselService vesselService = new VesselService();
+	private VesselServiceImpl vesselService = new VesselServiceImpl();
 
 	private KSGAbstractTable tableD;
 	private JLabel lblVesselName;
@@ -393,7 +393,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 			HashMap<String, Object> item=(HashMap<String, Object>) tableD.getValueAt(row);
 			
 			try {
-			vesselService.deleteVesselAbbr(item);
+			vesselService.deleteDetail(item);
 			
 			fnSearchDetail((String)item.get("vessel_name"));
 			
@@ -546,7 +546,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		{	
 			try {
 				
-				vesselService.deleteVessel(item);
+				vesselService.delete(item);
 				
 				JOptionPane.showMessageDialog(this, "삭제되었습니다.");
 				
@@ -589,7 +589,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		}
 
 		try {
-			HashMap<String, Object> result = (HashMap<String, Object>) vesselService.selectVesselList(param);
+			HashMap<String, Object> result = (HashMap<String, Object>) vesselService.selectList(param);
 
 			tableH.setResultData(result);
 
@@ -900,7 +900,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 			
 			commandMap.put("vessel_name", vessel_name);
 			
-			HashMap<String, Object> resultMap =  (HashMap<String, Object>) vesselService.selectVesselAbbrList(commandMap);
+			HashMap<String, Object> resultMap =  (HashMap<String, Object>) vesselService.selectDetailList(commandMap);
 			
 			List result = (List) resultMap.get("master");
 			

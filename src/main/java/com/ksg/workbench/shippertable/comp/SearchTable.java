@@ -14,7 +14,7 @@ import javax.swing.table.TableColumnModel;
 import org.apache.log4j.Logger;
 
 import com.ksg.domain.ShippersTable;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.model.KSGTableModel;
 

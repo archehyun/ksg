@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.service;
+package com.ksg.dao.impl;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.SqlMapManager;
+import com.ksg.dao.BaseDAO;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.BaseInfo;
 import com.ksg.domain.Code;
@@ -27,14 +28,14 @@ import com.ksg.domain.KeyWordInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
 @SuppressWarnings("unchecked")
-public class BaseDAOImpl implements BaseDAO
+public class BaseDAOImpl2 implements BaseDAO
 {
 	
 	protected Logger logger = Logger.getLogger(this.getClass());
 	
 	private SqlMapClient sqlMap;
 
-	public BaseDAOImpl() {
+	public BaseDAOImpl2() {
 		try {
 			sqlMap = SqlMapManager.getSqlMapInstance();
 		} catch (IOException e) {

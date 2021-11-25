@@ -47,8 +47,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.schedule.logic.PortNullException;
-import com.ksg.service.BaseServiceImpl;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 
@@ -863,7 +863,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		table.setTable_id(table_id);
 		table.setPort_col(count);
 		table.setGubun(op.getGubun());
-		tableService.updateTable(table);
+		tableService.update(table);
 		base.setPortCount(count);
 	}
 

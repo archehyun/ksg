@@ -24,8 +24,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
-import com.ksg.service.BaseServiceImpl;
-import com.ksg.service.TableServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 
 
 /**
@@ -155,7 +155,7 @@ public class DataInput {
 			try{
 				ShippersTable t = initParameter3(ss);
 
-				serviceImpl.updateTable(t);
+				serviceImpl.update(t);
 			}
 			catch(Exception e)
 			{
@@ -367,7 +367,7 @@ public class DataInput {
 			try{
 				ShippersTable t = initQuarkParameter(ss);
 
-				serviceImpl.updateTable(t);
+				serviceImpl.update(t);
 			}
 			catch(Exception e)
 			{

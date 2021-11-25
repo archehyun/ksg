@@ -36,7 +36,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.dao.impl.PortDAOImpl;
-import com.ksg.service.PortService;
+import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -76,7 +76,7 @@ public class PnPort extends PnBase implements ActionListener{
 	
 	private PortDAOImpl portDAO = new PortDAOImpl();
 	
-	private PortService portService = new PortService();
+	private PortServiceImpl portService = new PortServiceImpl();
 	
 	private KSGTablePanel tableH;
 	
@@ -445,7 +445,7 @@ public class PnPort extends PnBase implements ActionListener{
 					
 					param.put("port_name", data);
 					
-					int count=portService.deletePort(param);
+					int count=portService.delete(param);
 					
 					if(count>0)
 					{						
@@ -594,7 +594,7 @@ public class PnPort extends PnBase implements ActionListener{
 		}		
 		
 		try {
-			HashMap<String, Object> result = (HashMap<String, Object>) portService.selectPortList(param);
+			HashMap<String, Object> result = (HashMap<String, Object>) portService.selectList(param);
 			
 			tableH.setResultData(result);
 			

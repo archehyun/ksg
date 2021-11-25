@@ -14,6 +14,21 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+/**
+
+  * @FileName : CharUtil.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 11. 25. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class CharUtil {
 	public static Hashtable<Character,List<Character>> BOKJAUM;
 	// 복모음
