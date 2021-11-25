@@ -19,13 +19,13 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.service.BaseService;
+import com.ksg.service.BaseServiceImpl;
+import com.ksg.service.TableServiceImpl;
 
 
 /**

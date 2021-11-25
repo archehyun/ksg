@@ -36,7 +36,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
 

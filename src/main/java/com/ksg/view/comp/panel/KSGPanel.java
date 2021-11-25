@@ -23,8 +23,8 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.dao.impl.BaseDAOManager;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.service.ADVService;
+import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
 
 /**

@@ -16,11 +16,11 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.build.CreateScheduleCommand;
+import com.ksg.service.ScheduleService;
 
 /**인랜드 스케줄 생성
  * @author archehyun

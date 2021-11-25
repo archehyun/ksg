@@ -17,7 +17,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
 import com.ksg.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.service.TableServiceImpl;
 
 public class UpdateADVList {
 	

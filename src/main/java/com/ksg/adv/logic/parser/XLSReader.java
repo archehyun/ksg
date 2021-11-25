@@ -21,15 +21,15 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import com.ksg.adv.logic.model.TableLocation;
-import com.ksg.adv.view.comp.ADVTableNotMatchException;
-import com.ksg.adv.view.xls.XLSTableInfo;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.KSGPropertis;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
+import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.service.TableServiceImpl;
+import com.ksg.workbench.adv.comp.ADVTableNotMatchException;
+import com.ksg.workbench.adv.xls.XLSTableInfo;
 
 /**
  * @author Administrator

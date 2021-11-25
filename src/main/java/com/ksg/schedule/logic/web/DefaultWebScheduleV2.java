@@ -32,13 +32,13 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.logic.PortNullException;
 import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.service.ScheduleService;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
  * @author ¹ÚÃ¢Çö

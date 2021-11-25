@@ -5,11 +5,11 @@ import org.apache.log4j.Logger;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.route.RouteTaskDate;
 import com.ksg.common.dao.DAOManager;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ShippersTable;
 import com.ksg.print.logic.quark.v1.XTGManager;
-import com.ksg.schedule.ScheduleService;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleService;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 public class BuildXMLRouteScheduleCommand implements KSGCommand {
 

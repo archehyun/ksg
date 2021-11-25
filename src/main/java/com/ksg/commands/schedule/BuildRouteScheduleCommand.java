@@ -26,13 +26,13 @@ import javax.swing.JTextArea;
 import com.ksg.commands.KSGCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.print.logic.quark.v1.XTGManager;
-import com.ksg.schedule.ScheduleService;
-import com.ksg.schedule.ScheduleServiceImpl;
+import com.ksg.service.BaseService;
+import com.ksg.service.BaseServiceImpl;
+import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleServiceImpl;
 
 public class BuildRouteScheduleCommand implements KSGCommand {
 	private static final String WORLD_SCHEDULE_ = "WorldSchedule_";

@@ -49,8 +49,6 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.view.ADVManageUI;
-import com.ksg.base.view.BaseInfoUI;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.BuildXMLInboundCommand;
 import com.ksg.commands.schedule.BuildXMLOutboundCommand;
@@ -64,17 +62,19 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.dialog.SearchADVCountDialog;
 import com.ksg.common.view.dialog.WebScheduleCreateDialog;
 import com.ksg.domain.ShippersTable;
-import com.ksg.print.view.PrintADVUI;
-import com.ksg.schedule.ScheduleService;
-import com.ksg.schedule.ScheduleServiceImpl;
 import com.ksg.schedule.ScheduleServiceManager;
-import com.ksg.schedule.view.ScheduleMgtUI;
+import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleServiceImpl;
 import com.ksg.service.TableService;
-import com.ksg.shippertable.view.ShipperTableMgtUI;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.workbench.adv.ADVManageUI;
+import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.preference.PreferenceDialog;
+import com.ksg.workbench.print.PrintADVUI;
+import com.ksg.workbench.schedule.ScheduleMgtUI;
+import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 
 
 /**

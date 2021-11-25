@@ -39,14 +39,14 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.base.view.dialog.InsertPortAbbrInfoDialog;
-import com.ksg.base.view.dialog.InsertPortInfoDialog;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.PortInfo;
+import com.ksg.service.BaseService;
+import com.ksg.service.BaseServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.workbench.base.dialog.InsertPortAbbrInfoDialog;
+import com.ksg.workbench.base.dialog.InsertPortInfoDialog;
 
 public class SearchPortCommand implements KSGCommand, ActionListener {
 	protected Logger 		logger = Logger.getLogger(this.getClass());

@@ -6,12 +6,12 @@ import java.util.Date;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.create.CreateNormalSchdeduleCommand;
 import com.ksg.common.dao.DAOManager;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ShippersTable;
-import com.ksg.schedule.ScheduleService;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 import com.ksg.service.ADVService;
+import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleService;
 import com.ksg.service.TableService;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 public class BuildScheduleAndCreateXMLCommand implements KSGCommand{
 	

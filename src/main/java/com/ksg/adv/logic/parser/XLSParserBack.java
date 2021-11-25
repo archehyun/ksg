@@ -18,8 +18,8 @@ import java.util.Vector;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import com.ksg.adv.logic.model.TableLocation;
-import com.ksg.adv.view.comp.ADVTableNotMatchException;
 import com.ksg.domain.ShippersTable;
+import com.ksg.workbench.adv.comp.ADVTableNotMatchException;
 
 public class XLSParserBack extends XLSParser{
 

@@ -30,10 +30,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import com.ksg.adv.logic.model.SheetInfo;
 import com.ksg.adv.logic.model.TableLocation;
-import com.ksg.adv.view.comp.ADVTableNotMatchException;
-import com.ksg.adv.view.xls.XLSTableInfo;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ShippersTable;
+import com.ksg.workbench.adv.comp.ADVTableNotMatchException;
+import com.ksg.workbench.adv.xls.XLSTableInfo;
 
 @SuppressWarnings("unchecked")
 public class XLSParserVoy extends XLSReader{

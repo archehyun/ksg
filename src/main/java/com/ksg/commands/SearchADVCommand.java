@@ -50,16 +50,16 @@ import org.jdom.JDOMException;
 import com.ksg.adv.logic.xml.KSGXMLManager;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.service.ADVService;
+import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
-import com.ksg.shippertable.view.comp.KSGADVTablePanel;
+import com.ksg.service.TableServiceImpl;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.workbench.KSGViewParameter;
+import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 
 public class SearchADVCommand implements KSGCommand {
 

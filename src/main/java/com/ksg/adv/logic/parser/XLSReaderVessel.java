@@ -27,10 +27,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import com.ksg.adv.logic.model.SheetInfo;
 import com.ksg.adv.logic.model.TableLocation;
-import com.ksg.adv.view.comp.ADVTableNotMatchException;
-import com.ksg.adv.view.comp.KeyWordManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ShippersTable;
+import com.ksg.workbench.adv.comp.ADVTableNotMatchException;
+import com.ksg.workbench.adv.comp.KeyWordManager;
 
 @SuppressWarnings("unchecked")
 public class XLSReaderVessel extends XLSReader{

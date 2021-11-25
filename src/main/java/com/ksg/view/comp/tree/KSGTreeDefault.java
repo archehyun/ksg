@@ -20,15 +20,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
-import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.CharUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
+import com.ksg.service.ADVServiceImpl;
 import com.ksg.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.service.TableServiceImpl;
 /**
  * @author archehyun
  * @ 기본 트리 컴포넌트

@@ -6,10 +6,10 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.view.comp.ADVTableNotMatchException;
-import com.ksg.adv.view.xls.XLSManagerImpl;
 import com.ksg.commands.KSGCommand;
 import com.ksg.common.model.KSGModelManager;
+import com.ksg.workbench.adv.comp.ADVTableNotMatchException;
+import com.ksg.workbench.adv.xls.XLSManagerImpl;
 
 public class ImportXLSFileNewCommand implements KSGCommand {
 

@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.ksg.schedule.dao.ADVScheduleDAO;
+import com.ksg.dao.impl.ADVScheduleDAO;
 
 public class ScheduleServiceLogic {
 	

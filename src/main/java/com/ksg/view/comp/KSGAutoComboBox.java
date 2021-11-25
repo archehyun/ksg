@@ -21,8 +21,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainDocument;
 
-import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.BaseServiceImpl;
+import com.ksg.service.BaseService;
+import com.ksg.service.BaseServiceImpl;
 
 public class KSGAutoComboBox extends JComboBox{
 

@@ -9,12 +9,12 @@ import java.util.Vector;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.StringCompare;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.joint.RouteScheduleJoint;
+import com.ksg.service.BaseService;
 
 public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<GroupVessel>{
 	/**

@@ -9,8 +9,6 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import com.ksg.common.util.KSGPropertis;
-import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
@@ -21,7 +19,9 @@ import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
 import com.ksg.schedule.logic.joint.InboundScheduleJoint;
 import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
 import com.ksg.schedule.logic.joint.RouteScheduleJoint;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.service.BaseService;
+import com.ksg.service.BaseServiceImpl;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
  * 

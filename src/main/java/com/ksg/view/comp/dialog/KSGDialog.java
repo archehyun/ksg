@@ -22,13 +22,13 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.base.view.BaseInfoUI;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
+import com.ksg.service.BaseService;
+import com.ksg.service.BaseServiceImpl;
 import com.ksg.service.TableService;
+import com.ksg.workbench.base.BaseInfoUI;
 
 /**
  * @author ¹ÚÃ¢Çö

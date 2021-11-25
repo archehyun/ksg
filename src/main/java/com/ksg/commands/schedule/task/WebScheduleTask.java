@@ -32,12 +32,12 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.print.logic.quark.v1.XTGManager;
-import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
 import com.ksg.service.ADVService;
+import com.ksg.service.ScheduleService;
 import com.ksg.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.service.TableServiceImpl;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 public class WebScheduleTask extends SimpleTask{
 	public static final int RESULT_SUCCESS=0;

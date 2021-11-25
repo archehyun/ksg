@@ -23,8 +23,8 @@ import org.apache.log4j.Logger;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Code;
+import com.ksg.service.BaseService;
 
 public class PnPortExcpetion extends JPanel implements ActionListener,PreferencePn{
 

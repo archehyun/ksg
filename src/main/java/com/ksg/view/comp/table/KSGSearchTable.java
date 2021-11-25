@@ -32,11 +32,11 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
-import com.ksg.shippertable.view.ShipperTableMgtUI;
+import com.ksg.service.TableServiceImpl;
 import com.ksg.view.comp.ColorData;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
+import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 /**
  * @author archehyun
  *

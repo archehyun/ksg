@@ -20,10 +20,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import com.ksg.adv.logic.model.SheetInfo;
-import com.ksg.adv.view.xls.XLSManagerImpl;
-import com.ksg.adv.view.xls.XLSStringUtil;
 import com.ksg.common.dao.DAOManager;
-import com.ksg.dao.impl.BaseService;
+import com.ksg.service.BaseService;
+import com.ksg.workbench.adv.xls.XLSManagerImpl;
+import com.ksg.workbench.adv.xls.XLSStringUtil;
 
 public class ViewXLSFileCommand implements KSGCommand {
 	SheetInfo info;

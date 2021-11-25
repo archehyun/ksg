@@ -16,10 +16,10 @@ import java.util.Vector;
 import javax.swing.JLabel;
 import javax.swing.table.AbstractTableModel;
 
-import com.ksg.adv.view.comp.ADVTableData;
 import com.ksg.common.dao.DAOManager;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Vessel;
+import com.ksg.service.BaseService;
+import com.ksg.workbench.adv.comp.ADVTableData;
 
 /**
  * @author ¹ÚÃ¢Çö

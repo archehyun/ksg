@@ -24,7 +24,7 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
  * 2014-11-20 업데이트

@@ -38,7 +38,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.ksg.common.util.KSGPropertis;
-import com.ksg.dao.impl.BaseServiceImpl;
+import com.ksg.service.BaseServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
 public class PreferenceDialog extends KSGDialog implements ActionListener {

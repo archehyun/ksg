@@ -17,10 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ksg.base.service.AreaDAOImpl;
-import com.ksg.base.service.CompanyDAOImpl;
-import com.ksg.base.service.PortDAOImpl;
-import com.ksg.base.service.VesselDAOImpl;
 import com.ksg.common.dao.SqlMapManager;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Code;
@@ -28,6 +24,10 @@ import com.ksg.domain.Company;
 import com.ksg.domain.KeyWordInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
+import com.ksg.service.AreaDAOImpl;
+import com.ksg.service.CompanyDAOImpl;
+import com.ksg.service.PortDAOImpl;
+import com.ksg.service.VesselDAOImpl;
 
 @Deprecated
 @SuppressWarnings("unchecked")

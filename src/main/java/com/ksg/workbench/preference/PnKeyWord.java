@@ -25,9 +25,9 @@ import javax.swing.JScrollPane;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.KeyWordInfo;
+import com.ksg.service.BaseService;
+import com.ksg.service.BaseServiceImpl;
 
 public class PnKeyWord extends JPanel implements ActionListener,PreferencePn {
 	private JList listKeyword;

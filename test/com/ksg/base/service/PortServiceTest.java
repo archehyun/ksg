@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
+import com.ksg.service.PortService;
+
 public class PortServiceTest {
 	
 	PortService service;

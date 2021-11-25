@@ -18,14 +18,14 @@ import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import com.ksg.adv.service.ADVServiceImpl;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.CharUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
+import com.ksg.service.ADVServiceImpl;
 import com.ksg.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.service.TableServiceImpl;
 
 /**
  * @author ¹ÚÃ¢Çö
