@@ -1,0 +1,26 @@
+package com.ksg.service;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+public interface VesselService {
+	
+	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
+	
+	public Map<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException;
+	
+	public int update(HashMap<String, Object> param) throws SQLException;	
+	
+	public Object updateDetail(HashMap<String, Object> param) throws SQLException;
+
+	public int delete(HashMap<String, Object> param) throws SQLException;
+	
+	public Object deleteDetail(HashMap<String, Object> param) throws SQLException;
+
+	public void insert(HashMap<String, Object> param) throws SQLException;
+	
+	public void insertDetail(HashMap<String, Object> param) throws SQLException;
+
+
+}
