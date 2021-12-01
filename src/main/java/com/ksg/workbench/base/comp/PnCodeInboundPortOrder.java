@@ -22,10 +22,10 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.InsertInboundCodeInfodialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 
 @Deprecated

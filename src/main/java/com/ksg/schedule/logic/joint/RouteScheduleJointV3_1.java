@@ -596,8 +596,7 @@ public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 
 	}
 
-	public static final int ORDER_BY_DATE=1;
-	public static final int ORDER_BY_VESSEL=2;
+
 
 	private String fileName;
 	

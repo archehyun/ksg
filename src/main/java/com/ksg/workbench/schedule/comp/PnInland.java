@@ -34,8 +34,7 @@ public class PnInland extends JPanel implements ActionListener{
 	private JLabel lblInlandCount;
 
 	public PnInland()
-	{
-		
+	{		
 		this.setLayout(new BorderLayout());
 		_tblInlandScheduleList = new InlandScheduleTable();
 		

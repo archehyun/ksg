@@ -11,7 +11,9 @@
 package com.ksg.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
@@ -164,4 +166,8 @@ public interface SchduleDAO {
 	public int deleteInlandSchedule()throws SQLException;
 	public List getOutboundScheduleList(ScheduleData data)throws SQLException;
 	public List<String> getOutboundAreaList()throws SQLException;
+	public List selectList(HashMap<String, Object> param) throws SQLException;
+	public int selectCount(Map<String, Object> commandMap) throws SQLException;
+	
+	
 }

@@ -30,8 +30,11 @@ public class ScheduleServiceImpl implements ScheduleService{
 	private SchduleDAO schduleDAO;
 
 	private Vector<KSGHashMap> ksgHashMapList;
+	
 	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	KSGModelManager manager = KSGModelManager.getInstance();
+	
 
 	public ScheduleServiceImpl() {
 		schduleDAO = new ScheduleDAOImpl();
@@ -222,10 +225,21 @@ public class ScheduleServiceImpl implements ScheduleService{
 		return schduleDAO.getOutboundAreaList();
 		
 	}
+	public HashMap<String, Object> selectScheduleList(HashMap<String, Object> commandMap) throws SQLException {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("total", schduleDAO.selectCount(commandMap));
+		
+		resultMap.put("master", schduleDAO.selectList(commandMap));
+		
+		return resultMap;
 
-	@Override
-	public List selectScheduleList(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
 	}
+	
+//	
+//	@Override
+//	public List selectScheduleList(HashMap<String, Object> param) throws SQLException {
+//		
+//		return schduleDAO.selectList(param);
+//	}
 }

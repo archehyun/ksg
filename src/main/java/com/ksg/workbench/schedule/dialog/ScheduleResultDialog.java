@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import com.ksg.common.util.ViewUtil;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.ui.InboundTreeDialog;
 import com.ksg.view.ui.OutboundTreeDialog;
 import com.ksg.view.ui.WorldTreeDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 public class ScheduleResultDialog extends KSGDialog {
 	

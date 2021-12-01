@@ -36,13 +36,13 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.ksg.domain.PortInfo;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.workbench.base.dialog.UpdatePortAbbrInfoDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * 항구 약어 정보 관리 화면

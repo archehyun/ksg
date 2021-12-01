@@ -23,10 +23,10 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 	private static final long serialVersionUID = 1L;
 	private static final String AUSTRALIA_NEW_ZEALAND_SOUTH_PACIFIC = "AUSTRALIA, NEW ZEALAND & SOUTH PACIFIC";
 	private static final String PERSIAN_GULF = "PERSIAN GULF";
-	private static final String RUSSIA = "Russia";
-	private static final String ASIA = "Asia";
-	private static final String JAPAN = "Japan";
-	private static final String CHINA = "China";
+	private static final String RUSSIA = "RUSSIA";
+	private static final String ASIA = "ASIA";
+	private static final String JAPAN = "JAPAN";
+	private static final String CHINA = "CHINA";
 	ScheduleManager scheduleManager = ScheduleManager.getInstance();
 	private String vessel_name;
 	public String getVessel_name() {
@@ -101,7 +101,10 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 		groupPort.addPort(data);
 
 	}
-
+	public String toString()
+	{
+		return "["+this.getVessel_name()+"," +this.getVoyage_num()+"]";
+	}
 
 	private void initMayorVesselName(ScheduleData data) throws SQLException, VesselNullException
 	{
@@ -158,7 +161,7 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 			companyStringList+=array2[i]+(i<array2.length-1?",":"");
 
 		}
-		
+	
 		
 		return companyStringList;
 
@@ -344,17 +347,18 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 			return index;
 
 		int base=0; // 공동배선 기준 일자
-		if(area_name.equals(CHINA)||
-				area_name.equals(JAPAN)||
-				area_name.equals(RUSSIA)) // 중국, 일본, 러시아
+		String upCaseAreaName = area_name.toUpperCase();
+		if(upCaseAreaName.equals(CHINA)||
+				upCaseAreaName.equals(JAPAN)||
+				upCaseAreaName.equals(RUSSIA)) // 중국, 일본, 러시아
 		{
 			base=4;
-		}else if(area_name.equals(ASIA)) // 동남아
+		}else if(upCaseAreaName.equals(ASIA)) // 동남아
 		{
 			base=6;
 
-		}else if(area_name.equals(PERSIAN_GULF)||
-				area_name.equals(AUSTRALIA_NEW_ZEALAND_SOUTH_PACIFIC))// 중동, 호주
+		}else if(upCaseAreaName.equals(PERSIAN_GULF)||
+				upCaseAreaName.equals(AUSTRALIA_NEW_ZEALAND_SOUTH_PACIFIC))// 중동, 호주
 		{
 			base=8;
 		}		
@@ -415,8 +419,6 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 	public PortScheduleInfo[] getOutPortList() throws ParseException {
 
 		return groupPort.createOutPortArray();
-
-
 	}
 
 	public PortScheduleInfo[] getOutPortList(int startIndex, int endIndex) throws ParseException {

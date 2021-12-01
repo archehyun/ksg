@@ -35,18 +35,7 @@
 
 		</dataSource>
 	</transactionManager>
-	<sqlMap resource="com/ksg/common/dao/maps/Table.xml" />
-
-	<sqlMap resource="com/ksg/common/dao/maps/Adv.xml" />
-	<sqlMap resource="com/ksg/common/dao/maps/Base.xml" />
-	<sqlMap resource="com/ksg/common/dao/maps/BASE_AREA.xml" />
-	<sqlMap resource="com/ksg/common/dao/maps/BASE_VESSEL.xml" />
-	<sqlMap resource="com/ksg/common/dao/maps/BASE_PORT.xml" />
-	<sqlMap resource="com/ksg/common/dao/maps/BASE_COMPANY.xml" />
 	
-	<sqlMap resource="com/ksg/common/dao/maps/Member.xml" />
-	<sqlMap resource="com/ksg/common/dao/maps/Schedule.xml" />
-	<sqlMap resource="com/ksg/common/dao/maps/TABLEProperty.xml" />
 	
 	
 	<!-- new mapper -->
@@ -58,6 +47,19 @@
 	<sqlMap resource="mybatis/mssql/mssql_common_code.xml" />
 	<sqlMap resource="mybatis/mssql/mssql_shippertable.xml" />
 	<sqlMap resource="mybatis/mssql/mssql_schedule.xml" />
+	
+	<sqlMap resource="mybatis/Table.xml" />
+
+	<sqlMap resource="mybatis/Adv.xml" />
+	<sqlMap resource="mybatis/Base.xml" />
+	<sqlMap resource="mybatis/BASE_AREA.xml" />
+	<sqlMap resource="mybatis/BASE_VESSEL.xml" />
+	<sqlMap resource="mybatis/BASE_PORT.xml" />
+	<sqlMap resource="mybatis/BASE_COMPANY.xml" />
+	
+	<sqlMap resource="mybatis/Member.xml" />
+	<sqlMap resource="mybatis/Schedule.xml" />
+	<sqlMap resource="mybatis/TABLEProperty.xml" />
 	
 	
 	

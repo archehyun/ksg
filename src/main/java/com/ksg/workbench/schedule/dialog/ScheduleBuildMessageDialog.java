@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ksg.commands.LongTask;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 public class ScheduleBuildMessageDialog extends KSGDialog{
 

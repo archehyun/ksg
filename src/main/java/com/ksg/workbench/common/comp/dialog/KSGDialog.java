@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.view.comp.dialog;
+package com.ksg.workbench.common.comp.dialog;
 
 import java.awt.Component;
 import java.awt.Dialog;

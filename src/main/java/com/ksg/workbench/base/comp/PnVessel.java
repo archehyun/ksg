@@ -55,7 +55,6 @@ import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
@@ -69,6 +68,7 @@ import com.ksg.workbench.base.dialog.InsertVesselAbbrInfoDialog;
 import com.ksg.workbench.base.dialog.InsertVesselInfoDialog;
 import com.ksg.workbench.base.dialog.UpdateVesselInfoDialog;
 import com.ksg.workbench.base.dialog.VesselImportDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 
 /**

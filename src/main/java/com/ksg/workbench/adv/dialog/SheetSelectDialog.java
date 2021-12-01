@@ -19,8 +19,8 @@ import javax.swing.JTable;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.adv.comp.SheetModel;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 @SuppressWarnings("serial")
 public class SheetSelectDialog extends KSGDialog {

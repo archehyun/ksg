@@ -6,9 +6,9 @@ import java.util.Map;
 
 public interface VesselService {
 	
-	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
+	public HashMap<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
 	
-	public Map<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException;
+	public HashMap<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException;
 	
 	public int update(HashMap<String, Object> param) throws SQLException;	
 	

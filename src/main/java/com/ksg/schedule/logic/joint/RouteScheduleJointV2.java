@@ -57,22 +57,22 @@ public class RouteScheduleJointV2 extends RouteAbstractScheduleJoint {
 	
 	final int BACK =1;
 
-	XTGManager xtgmanager = new XTGManager();
+	private XTGManager xtgmanager = new XTGManager();
 	
 	private static final String WORLD_SOURCE_XML = "world_source.xml";
 
 	DAOManager manager =DAOManager.getInstance();
 
-	ScheduleBuildMessageDialog di;
+	private ScheduleBuildMessageDialog di;
 
 	private int UP_SIZE,DOWN_SIZE;
 
 	public RouteScheduleJointV2(ShippersTable op) throws SQLException {
 		super();
+		this.op=op;		
 		map = new HashMap<String, MiniSchedule>();
 		logger.info("op date:"+op.getDate_isusse());
 
-		this.op=op;
 	}
 
 	public void initTag(){

@@ -37,13 +37,13 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.dao.impl.AreaDAOImpl;
 import com.ksg.domain.AreaInfo;
 import com.ksg.service.impl.AreaServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.UpdateAreaInfodialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 
 

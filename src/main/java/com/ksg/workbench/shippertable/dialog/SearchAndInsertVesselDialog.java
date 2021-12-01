@@ -30,9 +30,9 @@ import javax.swing.table.DefaultTableModel;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.adv.comp.VesselInfo;
 import com.ksg.workbench.adv.dialog.AddVesselDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.AdvertiseTable;
 
 /**

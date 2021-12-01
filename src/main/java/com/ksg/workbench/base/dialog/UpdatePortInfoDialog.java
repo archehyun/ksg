@@ -46,7 +46,7 @@ import com.ksg.domain.AreaInfo;
 import com.ksg.service.PortService;
 
 import com.ksg.service.impl.PortServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * 항구 정보 수정 다이어그램

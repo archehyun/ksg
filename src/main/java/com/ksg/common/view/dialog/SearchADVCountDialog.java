@@ -21,7 +21,7 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 @SuppressWarnings("serial")
 public class SearchADVCountDialog extends KSGDialog{

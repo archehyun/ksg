@@ -30,9 +30,9 @@ import javax.swing.JTextField;
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.comp.PnCode;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * 컨테이너 타입 추가 다이어그램

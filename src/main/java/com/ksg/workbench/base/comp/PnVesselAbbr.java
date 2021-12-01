@@ -36,12 +36,12 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.ksg.domain.Vessel;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.InsertVesselAbbrInfoDialog;
 import com.ksg.workbench.base.dialog.UpdateVesselAbbrInfoDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 
 /**

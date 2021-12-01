@@ -11,21 +11,23 @@
 package com.ksg.service;
 
 import java.sql.SQLException;
-
 import java.util.HashMap;
 import java.util.List;
 
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 public interface ScheduleService {
+	
+	
+	
+	
 
 	public static final String INBOUND = "I";
 	
 	
-	public static final String OUTBOUND = "O";
+	public static final String OUTBOUND = "O";	
 	
-	
-	public List selectScheduleList(HashMap<String, Object> param) throws SQLException;
+	public HashMap<String, Object> selectScheduleList(HashMap<String, Object> commandMap) throws SQLException;
 	
 	/**
 	 * @return

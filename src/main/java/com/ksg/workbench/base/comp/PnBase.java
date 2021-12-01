@@ -15,11 +15,11 @@ import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.base.BaseInfoUI;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * 마스터 화면 추상 클래스

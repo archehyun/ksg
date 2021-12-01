@@ -74,7 +74,6 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.FileInfo;
 import com.ksg.view.comp.KSGCompboBox;
 import com.ksg.view.comp.PageInfoCheckBox;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableImpl;
 import com.ksg.workbench.KSGViewParameter;
@@ -84,6 +83,7 @@ import com.ksg.workbench.adv.comp.SimpleFileFilter;
 import com.ksg.workbench.adv.dialog.SearchCompanyAndPageDialog;
 import com.ksg.workbench.adv.dialog.SheetSelectDialog;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.SearchTable;
 
 public class SearchPanel extends JPanel implements ActionListener{

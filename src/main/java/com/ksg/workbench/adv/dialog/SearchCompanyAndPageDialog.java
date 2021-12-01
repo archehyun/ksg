@@ -37,11 +37,11 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.tree.KSGTree;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;
 import com.ksg.workbench.adv.SearchPanel;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 public class SearchCompanyAndPageDialog extends KSGDialog{
 	private String selectedParam;// 검색된 정보

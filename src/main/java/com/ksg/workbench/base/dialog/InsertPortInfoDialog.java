@@ -42,8 +42,8 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.base.BaseInfoUI;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * @since v1.0

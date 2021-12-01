@@ -10,28 +10,25 @@
  *******************************************************************************/
 package com.ksg.dao.impl;
 
-import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ksg.common.dao.SqlMapManager;
+import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.SchduleDAO;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 
-public class ScheduleDAOImpl implements SchduleDAO {
+public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 
-	private SqlMapClient sqlMap;
+	
 	
 	public ScheduleDAOImpl() {
-		try {
-			sqlMap = SqlMapManager.getSqlMapInstance();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		super();
 	}
-		public List getScheduleList() throws SQLException {
+	public List getScheduleList() throws SQLException {
 		return sqlMap.queryForList("Schedule.selectScheduleList");
 	}
 
@@ -255,6 +252,16 @@ public class ScheduleDAOImpl implements SchduleDAO {
 	public List<String> getOutboundAreaList() throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectOutboundAreaList");
+	}
+	@Override
+	public List selectList(HashMap<String, Object> param) throws SQLException{
+		
+		return selectList("schedule.selectScheduleList", param);
+	}
+	
+	@Override
+	public int selectCount(Map<String, Object> commandMap) throws SQLException{
+		return  (Integer) selectOne("schedule.selectCount", commandMap);
 	}
 
 	

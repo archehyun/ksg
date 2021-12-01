@@ -32,7 +32,7 @@ public class VesselServiceImpl implements VesselService{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException {
+	public HashMap<String, Object> selectList(Map<String, Object> commandMap) throws SQLException {
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -74,7 +74,7 @@ public class VesselServiceImpl implements VesselService{
 	}
 
 	@Override
-	public Map<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException {
+	public HashMap<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

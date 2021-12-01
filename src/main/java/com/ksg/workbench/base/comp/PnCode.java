@@ -29,9 +29,9 @@ import com.ksg.commands.base.SearchBaseInfoCommand;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.base.BaseInfoUI;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**코드 정보관리 화면
  * 

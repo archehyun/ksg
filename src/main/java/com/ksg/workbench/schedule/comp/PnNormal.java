@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.service.ScheduleService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.ScheduleServiceLogic;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
@@ -39,6 +41,8 @@ public class PnNormal extends JPanel implements ActionListener{
 	
 	private ScheduleServiceLogic scheduleService;
 	
+	private ScheduleService service;
+	
 	private List<HashMap<String, Object>> master;
 	
 	KSGTablePanel tableH;
@@ -51,6 +55,7 @@ public class PnNormal extends JPanel implements ActionListener{
 		this.setLayout(new BorderLayout());
 
 		scheduleService = new ScheduleServiceLogic();
+		service = new ScheduleServiceImpl();
 		JPanel pnNormalSearchMain = new JPanel(new BorderLayout());
 		JPanel pnNormalSearchCenter = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		cbxNormalInOut = new JComboBox();
@@ -132,6 +137,8 @@ public class PnNormal extends JPanel implements ActionListener{
 		
 		HashMap<String, Object> param = new HashMap<String, Object>();
 		
+		
+		
 		try {
 			
 			switch (cbxNormalInOut.getSelectedIndex()) {
@@ -152,11 +159,11 @@ public class PnNormal extends JPanel implements ActionListener{
 				KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
 				param.put(item.columnField, searchOption);
 				
-				System.out.println("set");
+				
 			}
 			
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectScheduleList(param);
+			HashMap<String, Object> result = (HashMap<String, Object>) service.selectScheduleList(param);
 
 			tableH.setResultData(result);
 
@@ -181,6 +188,7 @@ public class PnNormal extends JPanel implements ActionListener{
 		}
 		
 		ScheduleData data = new ScheduleData();
+		
 		data.setGubun(ShippersTable.GUBUN_NORMAL);
 
 		switch (cbxNormalInOut.getSelectedIndex()) {

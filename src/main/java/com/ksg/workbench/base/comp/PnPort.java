@@ -37,7 +37,6 @@ import javax.swing.table.TableColumnModel;
 
 import com.ksg.dao.impl.PortDAOImpl;
 import com.ksg.service.impl.PortServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
@@ -46,6 +45,7 @@ import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.workbench.base.dialog.UpdatePortInfoDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 
 /**

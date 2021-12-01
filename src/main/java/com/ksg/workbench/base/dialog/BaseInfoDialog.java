@@ -1,7 +1,7 @@
 package com.ksg.workbench.base.dialog;
 
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.base.BaseInfoUI;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 public abstract class BaseInfoDialog extends KSGDialog{
 	

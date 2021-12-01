@@ -22,7 +22,9 @@ import com.ksg.domain.Vessel;
 
 @Deprecated
 public interface BaseService {
+	
 	public void delete(Object key);
+	
 	public int deleteArea(String data)throws SQLException;
 
 	public int deleteCode(Code code_info)throws SQLException;	

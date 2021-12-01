@@ -73,7 +73,6 @@ import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.FileInfo;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableImpl;
 import com.ksg.view.comp.tree.KSGTree;
@@ -82,6 +81,7 @@ import com.ksg.view.comp.tree.KSGTreeImpl;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.print.PrintADVUI;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
 

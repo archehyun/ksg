@@ -20,7 +20,7 @@
 
 <!-- select -->
 
-	<select id="selectScheduleList" resultClass="java.util.HashMap">
+	<select id="selectScheduleList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		select * from TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 		    	<isNotNull property="table_id" prepend="and">

@@ -13,7 +13,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
  */
 public abstract class AbstractDAO {
 	
-	private SqlMapClient sqlMap;
+	protected SqlMapClient sqlMap;
 
 
 	public AbstractDAO() {

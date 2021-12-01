@@ -20,10 +20,10 @@ import javax.swing.table.TableColumnModel;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.InsertConTypeCodeInfodialog;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * @설명 컨테이너 타입(코드)

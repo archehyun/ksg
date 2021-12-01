@@ -35,8 +35,8 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Company;
 import com.ksg.service.CompanyService;
 import com.ksg.service.impl.CompanyServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.base.BaseInfoUI;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * 선박정보 추가 다이어그램

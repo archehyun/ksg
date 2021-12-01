@@ -24,12 +24,12 @@ public class ScheduleServiceLogic {
 		return advScheduleDAO.selectScheduledAreaList(commandMap);
 	}
 	
-	
-	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> selectSceduleList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
-		return advScheduleDAO.selectScheduleList(commandMap);
-	}
+//	
+//	@SuppressWarnings("unchecked")
+//	public List<Map<String, Object>> selectSceduleList(Map<String, Object> commandMap) throws SQLException {
+//		// TODO Auto-generated method stub
+//		return advScheduleDAO.selectScheduleList(commandMap);
+//	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException {

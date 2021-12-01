@@ -75,7 +75,7 @@
     </appender>
      
      <logger name="java.sql.Statement">
-        <level value="info"/>
+        <level value="DEBUG"/>
     </logger>   
 
     
@@ -87,7 +87,7 @@
     </logger>
      
       <logger name="java.sql.ResultSet">
-        <level value="info"/>
+        <level value="DEBUG"/>
     </logger>
      <logger name="java.sql.Connection">
         <level value="info"/>	
@@ -110,7 +110,7 @@
    
 
     <root>
-        <level value="ERROR">
+        <level value="DEBUG">
         
         </level>
         	
