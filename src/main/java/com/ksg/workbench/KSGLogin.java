@@ -73,9 +73,9 @@ public class KSGLogin extends JDialog {
 	public KSGLogin() {
 		try
 		{
-			String resource = "db.properties";
+			String resource = "config/db.properties";
 			Reader reader = Resources.getResourceAsReader(resource);
-			properties.load(new FileInputStream("ksg.properties.txt"));
+			properties.load(new FileInputStream("ksg.properties"));
 			db_properties.load(reader);			
 
 			url = db_properties.getProperty("mssql.ip");
@@ -98,6 +98,7 @@ public class KSGLogin extends JDialog {
 			sqlMap=SqlMapManager.getSqlMapInstance();
 
 		} catch (IOException e) {
+			e.printStackTrace();
 			System.err.println(e.getMessage());
 		}
 		service = new MemberServiceImpl();

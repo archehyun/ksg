@@ -82,12 +82,13 @@ public class BaseInfoUI extends KSGPanel{
 	 */
 	
 	public BaseInfoUI() {
-		
+		logger.debug("create view start");
 		_baseSearvice = DAOManager.getInstance().createBaseService();
 		
 		panelList = new HashMap<String, TableListener>();
 		
 		createAndUpdateUI();
+		logger.debug("create view end");
 	}
 	public void createAndUpdateUI() {
 		this.setLayout(new BorderLayout());

@@ -68,7 +68,7 @@ public class KSGPropertis extends Properties{
 	};
 	
 	
-	private  String KSG_PROPERTIES_TXT = "ksg.properties.txt";
+	private  String KSG_PROPERTIES_TXT = "ksg.properties";
 	
 	private static KSGPropertis instance = new KSGPropertis();
 	public static KSGPropertis getIntance()

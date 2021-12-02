@@ -44,16 +44,12 @@
         </layout>
     </appender>    
     <appender name="ROLLFile" class="org.apache.log4j.RollingFileAppender">
-	    <param name="File" value="log/ksgerror.log"></param>
+	    <param name="File" value="log/ksglog.log"></param>
 	    <param name="Append" value="false"></param>
-	    <param name="MaxFileSize" value="1000KB"></param>
-	        
-        <layout class="org.apache.log4j.PatternLayout">
-            	<!--  <param name="ConversionPattern" value="%p - %C{1}.%M(%L) | %m%n"></param>
-            	
-            	-->
-            	<param name="ConversionPattern" value="%p - %m%n"></param>
-        	</layout>
+	   <param name="DatePattern" value="'.'yyyy-MM-dd"/> <!-- 매일 로그 롤링, ex) rolling.log.2016.06.27  -->
+		  <layout class="org.apache.log4j.PatternLayout">
+		    <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] [%-5p](%F:%L) %m%n"/>
+		  </layout>
     </appender>
     <appender name="LogFile" class="org.apache.log4j.FileAppender">    
         <param name="File" value="log/tacLog.log"></param>
@@ -87,10 +83,10 @@
     </logger>
      
       <logger name="java.sql.ResultSet">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
     </logger>
      <logger name="java.sql.Connection">
-        <level value="info"/>	
+        <level value="DEBUG"/>	
     </logger>        
     
     

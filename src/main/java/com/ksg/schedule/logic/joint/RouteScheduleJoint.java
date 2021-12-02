@@ -341,9 +341,8 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 				return true;
 			}
 			else
-			{
-				logger.info("china and japan validation false");
-				return true;
+			{	
+				return false;
 			}
 		}
 		// ·¯½Ã¾Æ

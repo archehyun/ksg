@@ -126,7 +126,7 @@ public class SearchTable extends KSGTable
 
 			updateColumModel();
 
-			logger.info("retirve:"+this.getRowCount()+","+searchParam);
+			logger.debug("retirve:"+this.getRowCount()+","+searchParam);
 
 			updateUI();
 	}

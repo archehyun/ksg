@@ -243,6 +243,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	public ShipperTableMgtUI() 
 	{
 		try{
+			logger.debug("create view start");
 			selectedList = new LinkedList();
 
 			tableService = new TableServiceImpl();
@@ -255,9 +256,12 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 			searchParam = new ShippersTable();
 
 			updateView(searchParam);
+			logger.debug("create view end");
 
 		}catch(Exception e)
 		{
+			e.printStackTrace();
+			
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
 	}
@@ -1687,6 +1691,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 	private void updateView(ShippersTable searchParam) throws SQLException
 	{
+		logger.debug("searhParam:"+searchParam);
 		tblSearchTable.setSearchParam(searchParam);
 
 		tblSearchTable.retrive();

@@ -21,7 +21,33 @@
  
  
 	<sql id="TableListSQL">
-	select * from TB_TABLE_INFO
+	SELECT 
+		table_id
+		,table_index
+		,date_isusse
+		,vsl_row
+		,title
+		,out_port
+		,common_shipping
+		,company_abbr
+		,TS
+		,company_name
+		,gubun
+		,page
+		,agent
+		,quark_format
+		,port_col
+		,out_to_port
+		,in_to_port
+		,in_port
+		,othercell
+		,console_cfs
+		,d_time
+		,c_time
+		,console_page
+		,inland_indexs
+		,bookPage
+	FROM TB_TABLE_INFO
 	</sql>
 	<sql id="ADVListSQL">
 	select * from TB_ADV_INFO
@@ -417,7 +443,7 @@
 	</select>
 	
 	<select id="selectTableList" resultClass="com.ksg.domain.ShippersTable">
-	select * from TB_TABLE_INFO
+	<include refid="TableListSQL"/>
 	
 		<dynamic prepend="where">
 		<isNotEmpty prepend="and" property="table_id">
