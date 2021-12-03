@@ -23,12 +23,8 @@ import com.ksg.dao.impl.ShipperTableDAO;
  */
 public class ShipperTableServiceImpl {
 
+
 	ShipperTableDAO shipperTableDao;
-	
-
-	
-	
-
 	public ShipperTableServiceImpl() {
 		shipperTableDao = new ShipperTableDAO();
 	}

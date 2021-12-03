@@ -155,9 +155,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 				InOut, forSch);
 	}
 
-	public List getScheduleList(String date) throws SQLException {
-		return schduleDAO.getScheduleList(date);
-	}
+//	public List getScheduleList(String date) throws SQLException {
+//		return schduleDAO.getScheduleList(date);
+//	}
 
 	public List getScheduleListGroupByCompany(String searchDate)
 			throws SQLException {
@@ -205,11 +205,13 @@ public class ScheduleServiceImpl implements ScheduleService{
 		// TODO Auto-generated method stub
 		return schduleDAO.getConsoleScheduleList();
 	}
+	
+	@Override
 	public List getConsoleScheduleList(ScheduleData data) throws SQLException {
 		// TODO Auto-generated method stub
 		return schduleDAO.getConsoleScheduleList(data);
 	}
-
+	
 	public List<ScheduleData> getInlandScheduleList(ScheduleData data) 
 			throws SQLException {
 		// TODO Auto-generated method stub
@@ -328,4 +330,5 @@ public class ScheduleServiceImpl implements ScheduleService{
 	{
 		return advScheduleDAO.selectScheduleCount(commandMap);
 	}
+
 }

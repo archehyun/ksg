@@ -140,7 +140,7 @@ public interface ScheduleService {
 	public List getScheduleListByVesselVoy(String vessel, String voy)throws SQLException;
 	public List getScheduleListByToFrom(String areaCode, String areaCode2,
 			String InOut, int forSch)throws SQLException;
-	public List getScheduleList(String date)throws SQLException;
+	//public List getScheduleList(String date)throws SQLException;
 	public List<ScheduleData> getScheduleList(ScheduleData data)throws SQLException;
 	public List getScheduleListGroupByCompany(String searchDate)throws SQLException;
 	/**
@@ -148,22 +148,36 @@ public interface ScheduleService {
 	 * @throws SQLException
 	 */
 	public List getScheduleDateList()throws SQLException;
+	
 	public int getScheduleTotalCount()throws SQLException;
+	
 	public int getScheduleNTopCount(ScheduleData data)throws SQLException;
+	
 	public List getScheduleListNTop(ScheduleData data) throws SQLException;
+	
 	public List getOutboundFromPortTSList(String port)throws SQLException;
-	public List<ScheduleData> getConsoleScheduleList()throws SQLException;
+	
+	
+	//public List<ScheduleData> getConsoleScheduleList()throws SQLException;
+	
 	
 	/**콘솔 스케줄 조회 
 	 * @param data ScheduleData 클래스
 	 * @return
 	 * @throws SQLException
 	 */
+	@Deprecated
 	public List<ScheduleData> getConsoleScheduleList(ScheduleData data) throws SQLException;
+	
+	@Deprecated
 	public List<ScheduleData> getInlandScheduleList(ScheduleData data) throws SQLException;
+	
 	public List getInlandScheduleDateList()throws SQLException;
+	
 	public int deleteInlnadSchedule()throws SQLException;
+	
 	public List<ScheduleData> getOutboundScheduleList(ScheduleData op)throws SQLException;
+	
 	public List<String> getOutboundAreaList()throws SQLException;
 
 	public int getTotalCount(HashMap<String, Object> commandMap) throws SQLException;

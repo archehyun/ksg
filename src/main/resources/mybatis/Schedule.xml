@@ -467,6 +467,8 @@ select fromPort from TB_SCHEDULE_INFO where inOutType='O'
 	</isNotEmpty>
 	order by dateF
 </select>
+
+
 <select id="selectOutboundScheduleListAll" resultClass="com.ksg.domain.ScheduleData" >
 	select * from TB_SCHEDULE_INFO where inOutType='O'
 	<isNotEmpty prepend="and ">
@@ -477,6 +479,8 @@ select fromPort from TB_SCHEDULE_INFO where inOutType='O'
 	</isNotEmpty>
 	order by dateF
 </select>
+
+
 <select id="selectConsoleList" resultClass="com.ksg.domain.ScheduleData" parameterClass="com.ksg.domain.ScheduleData">
 	select * from TB_SCHEDULE_INFO where inOutType='O' and gubun='console'
 
@@ -486,6 +490,8 @@ select fromPort from TB_SCHEDULE_INFO where inOutType='O'
 		
 	order by port, fromPort, DateF,DateT
 </select>
+
+
 <select id="selectInlandList" resultClass="com.ksg.domain.ScheduleData" parameterClass="com.ksg.domain.ScheduleData">
 	select * from TB_INLAND_SCHEDULE_INFO where gubun='inland'
 				<isNotNull property="table_id" prepend="and">
