@@ -13,6 +13,7 @@ package com.ksg.service;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
@@ -164,6 +165,15 @@ public interface ScheduleService {
 	public int deleteInlnadSchedule()throws SQLException;
 	public List<ScheduleData> getOutboundScheduleList(ScheduleData op)throws SQLException;
 	public List<String> getOutboundAreaList()throws SQLException;
+
+	public int getTotalCount(HashMap<String, Object> commandMap) throws SQLException;
+
+	public List<Map<String, Object>> selectInboundScheduleJointList(Map<String, Object> commandMap) throws SQLException;
+
+	List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException;
+	
+	
+	
 	
 
 

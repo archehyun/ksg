@@ -61,6 +61,7 @@ import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 
+@Deprecated
 public class SearchADVCommand implements KSGCommand {
 
 	private int ADV_ROW_H;

@@ -71,6 +71,7 @@ public class PnNormal extends JPanel implements ActionListener{
 		cbxNormalSearch.addItem(new KSGTableColumn("agent", "에이전트"));
 		cbxNormalSearch.addItem(new KSGTableColumn("vessel", "선박명"));
 		cbxNormalSearch.addItem(new KSGTableColumn("voyage_num", "항차명"));
+		cbxNormalSearch.addItem(new KSGTableColumn("n_voyage_num", "항차번호"));
 		cbxNormalSearch.addItem(new KSGTableColumn("fromPort", "출발항"));
 		cbxNormalSearch.addItem(new KSGTableColumn("toPort", "도착항"));
 		cbxNormalSearch.addItem(new KSGTableColumn("DateF", "출발일"));
@@ -158,7 +159,6 @@ public class PnNormal extends JPanel implements ActionListener{
 				
 				KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
 				param.put(item.columnField, searchOption);
-				
 				
 			}
 			

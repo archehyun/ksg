@@ -20,9 +20,10 @@ import org.jdom.JDOMException;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.KSGPropertis;
+import com.ksg.domain.ConsoleType;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
-import com.ksg.domain.ShippersTable;
+
 import com.ksg.domain.Vessel;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
@@ -194,7 +195,7 @@ public class ConsoleTask extends SimpleTask{
 		 */
 		private String toStringAgentInfoByTag(String comapny_abbr, String d_time, String c_time,String console_info, int console_print_type) throws ArrayIndexOutOfBoundsException,NumberFormatException		
 		{
-			return TAG_BODY_AGENT+"\t"+comapny_abbr+"\t"+getClosingTime(d_time)+"\t"+getClosingTime(c_time)+"\t"+(console_print_type==ShippersTable.CONSOLE_PAGE?"[Page] ":"")+console_info+TAG_BODY_AGENT_CLOSE;
+			return TAG_BODY_AGENT+"\t"+comapny_abbr+"\t"+getClosingTime(d_time)+"\t"+getClosingTime(c_time)+"\t"+(console_print_type==ConsoleType.CONSOLE_PAGE?"[Page] ":"")+console_info+TAG_BODY_AGENT_CLOSE;
 		}
 
 		/**
@@ -212,7 +213,7 @@ public class ConsoleTask extends SimpleTask{
 					buffer.append(this.toStringAgentInfoByTag(	data.getCompany_abbr(),
 							data.getD_time(),
 							data.getC_time(),
-							op.getConsole_print_type()==ShippersTable.CONSOLE_PAGE?data.getConsole_page():data.getConsole_cfs(),
+							op.getConsole_print_type()==ConsoleType.CONSOLE_PAGE?data.getConsole_page():data.getConsole_cfs(),
 									op.getConsole_print_type())+"\r\n");
 				}catch(ArrayIndexOutOfBoundsException e)
 				{

@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 import com.ksg.service.ADVService;
 import com.ksg.service.impl.ADVServiceImpl;
 
+
+@Deprecated
 public class RemoveADVDataCommand implements KSGCommand {
 	String company;
 	String date;

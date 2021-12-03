@@ -12,6 +12,8 @@ import com.ksg.domain.ADVData;
 import com.ksg.service.ADVService;
 import com.ksg.service.TableService;
 
+
+@Deprecated
 public class InsertADVCommand implements KSGCommand{
 	private ADVService 		service;
 	private DAOManager manager =DAOManager.getInstance();

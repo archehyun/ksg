@@ -21,8 +21,7 @@ import com.ksg.common.util.KSGDateUtil;
  */
 public class ShippersTable extends BaseInfo{
 	
-	public static final int CONSOLE_CFS=1;	
-	public static final int CONSOLE_PAGE=0;	
+	
 	public static final String GUBUN_CONSOLE 	= "Console";
 	public static final String GUBUN_INLAND 	= "Inland";
 	public static final String GUBUN_NNN 		= "NNN";

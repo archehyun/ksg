@@ -56,6 +56,9 @@
 				<isNotNull property="port" prepend="and">
 					port=#port#
 				</isNotNull>
+				<isNotNull property="n_voyage_num" prepend="and">
+					n_voyage_num=#n_voyage_num#
+				</isNotNull>
   
 		</dynamic>
 	</select>

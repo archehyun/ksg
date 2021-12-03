@@ -51,6 +51,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
+import com.ksg.domain.ConsoleType;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleServiceManager;
@@ -780,7 +781,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 					{
 						op.setDate_issue(selectedDate);
 
-						op.setConsole_print_type(optPage.isSelected()?ShippersTable.CONSOLE_PAGE:ShippersTable.CONSOLE_CFS);
+						op.setConsole_print_type(optPage.isSelected()?ConsoleType.CONSOLE_PAGE:ConsoleType.CONSOLE_CFS);
 
 						ScheduleJoint console=scheduleManager.getConsoleSchedudle(op);
 						
