@@ -53,10 +53,10 @@ public class BaseDAOManager
 		
 	}
 
-	//delete
-	public int deleteArea(String data) throws SQLException {
-		return areaDAOImpl.delete(data);		
-	}
+//	//delete
+//	public int deleteArea(String data) throws SQLException {
+//		return areaDAOImpl.delete(data);		
+//	}
 	public int deleteCompany(String company) throws SQLException {
 		return companyDAOImpl.delete(company);
 	}
@@ -101,9 +101,9 @@ public class BaseDAOManager
 //		return areaDAOImpl.getAreaInfoList(info);
 //	}
 
-	public List getAreaListGroupByAreaCode() throws SQLException {
-		return sqlMap.queryForList("BASE_AREA.selectAreaCodeListGroupByAreaCode");
-	}
+//	public List getAreaListGroupByAreaCode() throws SQLException {
+//		return sqlMap.queryForList("BASE_AREA.selectAreaCodeListGroupByAreaCode");
+//	}
 
 //	public List getAreaListGroupByAreaName() throws SQLException {
 //		return areaDAOImpl.getAreaListGroupByAreaName();
@@ -180,9 +180,9 @@ public class BaseDAOManager
 		return (Company) sqlMap.queryForObject("BASE_COMPANY.selectCompanyInfo",company_abbr);
 	}
 
-	public List getCompanyList() throws SQLException {
-		return companyDAOImpl.getCompanyList();
-	}
+//	public List getCompanyList() throws SQLException {
+//		return companyDAOImpl.getCompanyList();
+//	}
 
 	public List getCompanyList(Company company) throws SQLException {
 		return companyDAOImpl.getCompanyList(company);
