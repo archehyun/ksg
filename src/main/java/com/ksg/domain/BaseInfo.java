@@ -17,6 +17,7 @@ package com.ksg.domain;
 public abstract class BaseInfo {
 	
 	protected String updatetime;
+	
 	public String getUpdatetime() {
 		return updatetime;
 	}
