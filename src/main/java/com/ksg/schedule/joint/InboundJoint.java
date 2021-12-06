@@ -63,6 +63,8 @@ public class InboundJoint extends KSGScheduleJoint{
 	@Override
 	public int execute() throws Exception {
 		
+		
+		logger.info("START");
 		count=0;
 		
 		for(Map<String, Object> item:scheduleList)
@@ -82,7 +84,8 @@ public class InboundJoint extends KSGScheduleJoint{
 			group.makeJointGroup();
 
 		}
-		System.out.println("size:"+total+",count:"+count);
+		logger.info("END : "+ "size:"+total+",count:"+count);
+		
 		return 0;
 	}
 
@@ -343,15 +346,6 @@ public class InboundJoint extends KSGScheduleJoint{
 		}		
 	}
 
-	public static void main(String[] args) {
-		InboundJoint joint = new InboundJoint();
-		joint.init();
-		try {
-			joint.execute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 
 }

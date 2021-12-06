@@ -1,5 +1,6 @@
 package com.ksg.schedule.joint;
 
+@Deprecated
 public class InboundJoint2 extends KSGScheduleJoint{
 
 	@Override

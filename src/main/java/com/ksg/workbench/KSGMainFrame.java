@@ -54,6 +54,7 @@ import com.ksg.commands.schedule.BuildXMLInboundCommand;
 import com.ksg.commands.schedule.BuildXMLOutboundCommand;
 import com.ksg.commands.schedule.BuildXMLRouteScheduleCommand;
 import com.ksg.common.dao.DAOManager;
+import com.ksg.common.model.Configure;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.DateFormattException;
@@ -163,9 +164,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	
 	private BuildActionListenr buildActionListenr = new BuildActionListenr();
 	
+	Configure config = Configure .getInstance();
+	
 	public KSGMainFrame(KSGLogin login) 
-	{
-		
+	{	
 		this.setName(NAME);
 	
 		manager = KSGModelManager.getInstance();
@@ -234,7 +236,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			}
 
 		}.start();
-
 	}
 
 	private Component buildCenter() 
@@ -317,7 +318,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		
 		pnLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		JLabel label = new JLabel(KSGModelManager.getInstance().version);
+		JLabel label = new JLabel("DB : "+config.getProperty("mssql.db"));
 		
 		label.setFont(KSGModelManager.getInstance().defaultFont);
 		
