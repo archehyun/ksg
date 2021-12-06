@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ksg.dao.CodeDAO;
+import com.ksg.domain.PortInfo;
 
 /**
 
@@ -78,6 +79,10 @@ public class CodeServiceImpl {
 	public Object deleteCodeD(HashMap<String, Object> param) throws SQLException {
 		return codeDAO.deleteCodeD(param);
 		
+	}
+	
+	public PortInfo getPortInfoAbbrByPortName(String port) throws SQLException {
+		return codeDAO.getPortInfoAbbrByPortName(port);
 	}
 
 }

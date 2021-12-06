@@ -24,10 +24,22 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
+
 /**
- * @author Administrator
- *
- */
+
+  * @FileName : XLSFileReader.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 6. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class XLSFileReader implements IF_XLSManager
 {
 	/**

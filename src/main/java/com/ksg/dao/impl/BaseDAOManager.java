@@ -88,13 +88,13 @@ public class BaseDAOManager
 	}
 	
 
-	public int getAreaCount() throws SQLException {
-		return areaDAOImpl.getCount();
-	}
+//	public int getAreaCount() throws SQLException {
+//		return areaDAOImpl.getCount();
+//	}
 
-	public List getAreaGroupList() throws SQLException {
-		return areaDAOImpl.getAreaGroupList();
-	}
+//	public List getAreaGroupList() throws SQLException {
+//		return areaDAOImpl.getAreaGroupList();
+//	}
 
 	public List getAreaInfoList(AreaInfo info) throws SQLException {
 		

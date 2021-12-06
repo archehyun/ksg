@@ -241,7 +241,7 @@ public class PnArea extends PnBase implements ActionListener{
 	}
 	public void updateTable(String query)
 	{
-		searchData(query);
+		//searchData(query);
 	}
 	
 	private void searchData()
@@ -256,31 +256,31 @@ public class PnArea extends PnBase implements ActionListener{
 		}	
 	}
 
-	private void searchData(String query) {
-
-		model.clear();
-
-		try {
-			List li =baseDaoService.getSearchedAreaList(query);
-
-			Iterator iter = li.iterator();
-			searchTotalSize=li.size();
-			totalSize = baseDaoService.getAreaCount();
-			while(iter.hasNext())
-			{
-				AreaInfo areaInfo = (AreaInfo) iter.next();
-				model.addRow(new Object[]{	areaInfo.getArea_book_code(),
-						areaInfo.getArea_name(),
-						areaInfo.getArea_code()});
-			}
-			lblTotal.setText(searchTotalSize+"/"+totalSize);
-			tblTable.setModel(model);
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	private void searchData(String query) {
+//
+//		model.clear();
+//
+//		try {
+//			List li =baseDaoService.getSearchedAreaList(query);
+//
+//			Iterator iter = li.iterator();
+//			searchTotalSize=li.size();
+//			totalSize = baseDaoService.getAreaCount();
+//			while(iter.hasNext())
+//			{
+//				AreaInfo areaInfo = (AreaInfo) iter.next();
+//				model.addRow(new Object[]{	areaInfo.getArea_book_code(),
+//						areaInfo.getArea_name(),
+//						areaInfo.getArea_code()});
+//			}
+//			lblTotal.setText(searchTotalSize+"/"+totalSize);
+//			tblTable.setModel(model);
+//
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	class TableSelectListner extends MouseAdapter
 	{
 		KSGDialog dialog;
