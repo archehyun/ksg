@@ -15,9 +15,20 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 
 /**
- * @author 박창현
- *
- */
+
+  * @FileName : KSGButton.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 6. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class KSGButton extends JButton
 {
 	/**
