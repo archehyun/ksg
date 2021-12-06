@@ -111,10 +111,6 @@ public class AreaDAOImpl2 {
 		return sqlMap.queryForList("BASE_AREA.selectAreaInfoListOrderBy",info);
 	}
 	
-	public List getAreaListGroupByAreaName() throws SQLException {
-		return sqlMap.queryForList("BASE_AREA.selectAreaListGroupByAreaName");
-	}
-
 
 
 }

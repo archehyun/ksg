@@ -36,6 +36,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.dao.impl.PortDAOImpl;
+import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -77,6 +78,8 @@ public class PnPort extends PnBase implements ActionListener{
 	private PortDAOImpl portDAO = new PortDAOImpl();
 	
 	private PortServiceImpl portService = new PortServiceImpl();
+	
+	private AreaServiceImpl areaService = new AreaServiceImpl();
 	
 	private KSGTablePanel tableH;
 	
@@ -141,8 +144,8 @@ public class PnPort extends PnBase implements ActionListener{
 		try {
 			cbxPortArea.addItem("선택");
 			cbxAreaCode.addItem("선택");
-			List listArea = baseDaoService.getAreaListGroupByAreaName();
-			List listAreaCode = baseDaoService.getAreaListGroupByAreaCode();
+			List listArea = areaService.getAreaListGroupByAreaName();
+			List listAreaCode = areaService.getAreaListGroupByAreaCode();
 			Iterator areaIter = listArea.iterator();
 			while(areaIter.hasNext())
 			{

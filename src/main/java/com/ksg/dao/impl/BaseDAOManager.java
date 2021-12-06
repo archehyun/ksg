@@ -96,18 +96,18 @@ public class BaseDAOManager
 //		return areaDAOImpl.getAreaGroupList();
 //	}
 
-	public List getAreaInfoList(AreaInfo info) throws SQLException {
-		
-		return areaDAOImpl.getAreaInfoList(info);
-	}
+//	public List getAreaInfoList(AreaInfo info) throws SQLException {
+//		
+//		return areaDAOImpl.getAreaInfoList(info);
+//	}
 
 	public List getAreaListGroupByAreaCode() throws SQLException {
 		return sqlMap.queryForList("BASE_AREA.selectAreaCodeListGroupByAreaCode");
 	}
 
-	public List getAreaListGroupByAreaName() throws SQLException {
-		return areaDAOImpl.getAreaListGroupByAreaName();
-	}
+//	public List getAreaListGroupByAreaName() throws SQLException {
+//		return areaDAOImpl.getAreaListGroupByAreaName();
+//	}
 
 	public List getArrangedAreaInfoList(String orderBy) throws SQLException {
 
