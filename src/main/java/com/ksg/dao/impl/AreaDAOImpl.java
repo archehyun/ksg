@@ -56,7 +56,7 @@ public class AreaDAOImpl extends AbstractDAO{
 		else
 			
 		{
-			return sqlMap.queryForList("area.selectAreaListGroupByAreaCode");
+			return sqlMap.queryForList("area.selectAreaCodeListGroupByAreaCode");
 		}
 		
 	}

@@ -36,7 +36,6 @@ import com.ksg.domain.TablePort;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.workbench.adv.PortTable.PortTableInfo;
 import com.ksg.workbench.adv.dialog.AddPortDialog;
 
 /**
@@ -193,8 +192,6 @@ public class PortTable extends JTable implements ActionListener
 	
 	private JMenuItem menuPortAdd, menuPortExceptionAdd, menuPortExceptionDel, menuPortSearch;
 	
-	//private DefaultTableModel portTableModel;
-	
 	private PortTableModel tableModel;
 
 	private String selectedPort;
@@ -218,9 +215,6 @@ public class PortTable extends JTable implements ActionListener
 		int row =this.getSelectedRow();
 		if(row<0)
 			return;
-		
-		System.out.println(this.getValueAt(row, 1));
-		//PortTableInfo selectedInfo=(PortTableInfo) this.getValueAt(row, 1);
 		
 		selectedPort = this.getValueAt(row, 1).toString();
 		String command = comm.getActionCommand();
