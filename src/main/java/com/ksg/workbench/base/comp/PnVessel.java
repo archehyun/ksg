@@ -48,6 +48,9 @@ import javax.swing.table.TableRowSorter;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
 import com.ksg.commands.base.VesselInfoExportCommand;
 import com.ksg.common.model.KSGModelManager;
@@ -236,18 +239,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		cbxField.addItem(new KSGTableColumn("vessel_company",STRING_VESSEL_COMPANY));		
 		cbxField.addItem(new KSGTableColumn("input_date",STRING_INPUTDATE));
 
-		txfSearch = new JTextField(15);
-
-		txfSearch.addKeyListener(new KeyAdapter() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER)
-				{
-					searchData();
-				}
-			}
-		});
+		txfSearch = new JTextField(15);		
 
 		JLabel label = new JLabel("개 항목");
 		JButton butUpSearch = new JButton(STRING_SEARCH);
@@ -446,8 +438,18 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 			//JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "파일명이 없습니다.");
 			return;
 		}
+		
+		
+		
 		VesselInfoExportCommand command = new VesselInfoExportCommand(fileName);
 		command.execute();
+		
+		
+		
+		
+		
+		
+		
 	}
 
 
@@ -509,7 +511,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		dialog.createAndUpdateUI();
 		if(dialog.result==KSGDialog.SUCCESS)
 		{
-			searchData();
+			//searchData();
 		}
 	}
 	private void deleteAllAction()
@@ -617,74 +619,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	}
 
-	/**
-	 * 
-	 */
-	private void searchData() {
 
-		String query=null;
-
-		Vessel option = new Vessel();		
-
-		if(cbxUse.getSelectedItem().equals("사용안함"))
-		{
-			option.setVessel_use(1);
-		}
-		else if(cbxUse.getSelectedItem().equals("사용함"))
-		{
-			option.setVessel_use(0);
-		}
-
-		if(cbxVesselType.getSelectedIndex()!=0)
-		{
-			option.setVessel_type((String)cbxVesselType.getSelectedItem());
-		}
-
-		String field=cbxField.getSelectedItem().toString();
-
-		if(field.equals(STRING_VESSEL_NAME))
-		{
-			query="vessel_name";
-		}else if(field.equals("선박명 약어"))
-		{
-			query="vessel_abbr";
-		}
-		else if(field.equals(STRING_VESSEL_MMSI))
-		{
-			query="vessel_mmsi";
-		}
-		else if(field.equals("대표 선사"))
-		{
-			query="vessel_company";
-		}
-		else if(field.equals("사용유무"))
-		{
-			query="vessel_use";
-		}
-		else if(field.equals(STRING_INPUTDATE))
-		{
-			query="CONVERT(varchar(10), input_date, 120)";
-		}
-
-		query+=" like '%"+txfSearch.getText()+"%'";
-		option.setSearchKeyword(query);
-
-
-		try {
-			List li =baseDaoService.getSearchedVesselList(option);
-			searchTotalSize=li.size();
-			totalSize = baseDaoService.getVesselCount();			
-		} catch (SQLException ee) {
-
-			ee.printStackTrace();
-			JOptionPane.showMessageDialog(PnVessel.this, ee.getMessage());
-		}
-	}
-	
-	public void fnCallBack()
-	{
-		
-	}
 
 	private JPanel createVesselDetail()
 	{		
@@ -765,7 +700,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	public void updateTable() {
 
-		searchData();
+		//searchData();
 
 	}
 

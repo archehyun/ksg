@@ -13,5 +13,8 @@ public interface CompanyService {
 	public int delete(HashMap<String, Object> param) throws SQLException;
 
 	public void insert(HashMap<String, Object> param) throws SQLException;
+	
+	
+	public int getCompanyCount();
 
 }

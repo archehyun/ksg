@@ -60,5 +60,9 @@ public class CompanyDAOImpl extends AbstractDAO{
 		return sqlMap.delete("BASE_COMPANY.deleteCompany",data);
 		
 	}
+	public int getCount() throws SQLException {
+	// TODO Auto-generated method stub
+	return (Integer) sqlMap.queryForObject("BASE_COMPANY.selectCompanyCount");
+}
 
 }

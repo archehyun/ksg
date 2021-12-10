@@ -26,9 +26,9 @@ public class VesselDAOImpl2 {
 		return (Integer) sqlMap.queryForObject("BASE_VESSEL.selectVesselAbbrCount");
 	}
 	
-	public List selectList(Vessel info) throws SQLException {
-		return sqlMap.queryForList("BASE_VESSEL.selectVesselList", info);
-	}
+//	public List selectList(Vessel info) throws SQLException {
+//		return sqlMap.queryForList("BASE_VESSEL.selectVesselList", info);
+//	}
 
 	public List getVesselListByPatten(String patten) throws SQLException {
 		return sqlMap.queryForList("Base.selectVesselListByPatten",patten);
@@ -73,17 +73,17 @@ public class VesselDAOImpl2 {
 		return sqlMap.update("BASE_VESSEL.updateVesselAbbr",vessel);
 	}
 	
-	public List getSearchedVesselList(Vessel op) throws SQLException {
-		return sqlMap.queryForList("BASE_VESSEL.selectSearchedVesselList",op);
-	}
+//	public List getSearchedVesselList(Vessel op) throws SQLException {
+//		return sqlMap.queryForList("BASE_VESSEL.selectSearchedVesselList",op);
+//	}
 	
-	public List getVesselAbbrList(String vesselName) throws SQLException {
-		return sqlMap.queryForList("BASE_VESSEL.selectVesselAbbrInfo",vesselName);
-	}
+//	public List getVesselAbbrList(String vesselName) throws SQLException {
+//		return sqlMap.queryForList("BASE_VESSEL.selectVesselAbbrInfo",vesselName);
+//	}
 
-	public List getVesselAbbrList(Vessel info) throws SQLException {
-		return sqlMap.queryForList("BASE_VESSEL.selectVesselAbbrList", info);
-	}
+//	public List getVesselAbbrList(Vessel info) throws SQLException {
+//		return sqlMap.queryForList("BASE_VESSEL.selectVesselAbbrList", info);
+//	}
 
 
 }

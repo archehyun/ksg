@@ -28,7 +28,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowSorter;
@@ -85,7 +84,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 	private JLabel lblTable,lblTotal;
 
-	CompanyTable tblCompanyTable;
+	//CompanyTable tblCompanyTable;
 
 	KSGTablePanel tableH;
 
@@ -108,40 +107,41 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 	}
 	public String getOrderBy(TableColumnModel columnModel)	
 	{
-		/*
-		 * 1. 현재 칼럼 목록 순서를 이용해서 order by 순서를 생성하고 
-		 * 2. 조회결과를 위한 현재 칼럼 목록 순서를 저장함
-		 */
-		tblCompanyTable.currentColumnNameList.clear();// 현재 칼럼 순서 초기화
+//		/*
+//		 * 1. 현재 칼럼 목록 순서를 이용해서 order by 순서를 생성하고 
+//		 * 2. 조회결과를 위한 현재 칼럼 목록 순서를 저장함
+//		 */
+//		tblCompanyTable.currentColumnNameList.clear();// 현재 칼럼 순서 초기화
+//
+//		StringBuffer buffer = new StringBuffer();
+//
+//		int col=tblCompanyTable.getColumnModel().getColumnCount();
+//
+//		ArrayList<String> orderbyList = new ArrayList<String>();
+//		for(int i=0;i<col;i++)
+//		{
+//			String headerValue =(String) tblCompanyTable.getColumnModel().getColumn(i).getHeaderValue();
+//			tblCompanyTable.currentColumnNameList.add(headerValue);//현재 칼럼 순서 생성
+//			String row=tblCompanyTable.arrangeMap.get(headerValue);
+//
+//			// 데이터 타입이 text인 것은 정렬에 포함할수 없음
+//			if(!row.equals("contents"))
+//			{	
+//				orderbyList.add(row);
+//			}
+//		}
+//
+//		//질의를 위한 'order by' 생성
+//		for(int i=0;i<orderbyList.size();i++)
+//		{
+//			buffer.append(orderbyList.get(i));
+//			if(i<(orderbyList.size()-1))
+//				buffer.append(",");
+//		}
 
-		StringBuffer buffer = new StringBuffer();
 
-		int col=tblCompanyTable.getColumnModel().getColumnCount();
-
-		ArrayList<String> orderbyList = new ArrayList<String>();
-		for(int i=0;i<col;i++)
-		{
-			String headerValue =(String) tblCompanyTable.getColumnModel().getColumn(i).getHeaderValue();
-			tblCompanyTable.currentColumnNameList.add(headerValue);//현재 칼럼 순서 생성
-			String row=tblCompanyTable.arrangeMap.get(headerValue);
-
-			// 데이터 타입이 text인 것은 정렬에 포함할수 없음
-			if(!row.equals("contents"))
-			{	
-				orderbyList.add(row);
-			}
-		}
-
-		//질의를 위한 'order by' 생성
-		for(int i=0;i<orderbyList.size();i++)
-		{
-			buffer.append(orderbyList.get(i));
-			if(i<(orderbyList.size()-1))
-				buffer.append(",");
-		}
-
-
-		return buffer.toString();
+		//return buffer.toString();
+		return null;
 
 	}
 
@@ -151,17 +151,17 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 		tableH = new KSGTablePanel("선사목록");
 
-		tblCompanyTable = new CompanyTable();
-
-		tblCompanyTable.addMouseListener(new TableSelectListner());
-
-		tblCompanyTable.getColumnModel().addColumnModelListener(new MyTableColumnModelListener(tblCompanyTable));
+//		tblCompanyTable = new CompanyTable();
+//
+//		tblCompanyTable.addMouseListener(new TableSelectListner());
+//
+//		tblCompanyTable.getColumnModel().addColumnModelListener(new MyTableColumnModelListener(tblCompanyTable));
 
 		tableH.addMouseListener(new TableSelectListner());
 
-		JScrollPane jScrollPane = new JScrollPane(tblCompanyTable);
+		//JScrollPane jScrollPane = new JScrollPane(tblCompanyTable);
 
-		jScrollPane.getViewport().setBackground(Color.white);
+		//jScrollPane.getViewport().setBackground(Color.white);
 
 		pnMain.add(tableH);
 
@@ -299,18 +299,18 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 	@Override
 	public void updateTable(String query) {
 
-		logger.info("order by:"+orderby);
-
-		try {
-			tblCompanyTable.setQuery(query);
-			tblCompanyTable.retrive();
-
-			lblTotal.setText(tblCompanyTable.getRowCount()+" / "+tblCompanyTable.getToalCount());
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(PnCompany.this, e.getMessage());
-		}
+//		logger.info("order by:"+orderby);
+//
+//		try {
+//			tblCompanyTable.setQuery(query);
+//			tblCompanyTable.retrive();
+//
+//			lblTotal.setText(tblCompanyTable.getRowCount()+" / "+tblCompanyTable.getToalCount());
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			JOptionPane.showMessageDialog(PnCompany.this, e.getMessage());
+//		}
 
 	}
 
@@ -460,7 +460,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 			if(fromIndex!=toIndex)
 			{
-				orderby =getOrderBy(tblCompanyTable.getColumnModel());
+				//orderby =getOrderBy(tblCompanyTable.getColumnModel());
 			}
 		}
 
@@ -600,7 +600,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 			logger.info("search : " + li.size());
 
-			totalCount = baseDaoService.getCompanyCount();
+			totalCount = companyService.getCompanyCount();
 
 			while(iter.hasNext())
 			{

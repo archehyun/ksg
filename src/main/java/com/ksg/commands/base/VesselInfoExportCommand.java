@@ -1,9 +1,14 @@
 package com.ksg.commands.base;
 
+import java.io.FileInputStream;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -12,13 +17,19 @@ import org.apache.poi.ss.usermodel.Workbook;
 import com.ksg.commands.KSGCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Vessel;
+import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 
+
+@Deprecated
 public class VesselInfoExportCommand extends ExportCommand{
 	
 	
 	
 
 	private List<Vessel> vesselList;
+	
+	private VesselService service = new VesselServiceImpl();
 
 	public VesselInfoExportCommand(String fileName)  {
 		
@@ -40,9 +51,13 @@ public class VesselInfoExportCommand extends ExportCommand{
 		// 선박 정보 조회
 		try {
 			
-			vesselList = baseService.selectList(new Vessel());
+			wb = (Workbook) new HSSFWorkbook();
 			
-			System.out.println("wb:"+wb);
+			HashMap<String,Object> result = service.selectList(new HashMap<String, Object>());
+			
+			List vesselList = (List) result.get("master");
+			//vesselList = baseService.selectList(new Vessel());		
+			
 			
 			Sheet sheet = wb.createSheet(sheetName);
 			
@@ -70,22 +85,25 @@ public class VesselInfoExportCommand extends ExportCommand{
 				Row row = sheet.createRow((short)i+1);
 				// Create a cell and put a value in it.
 
-				Vessel info=vesselList.get(i);
+				HashMap<String, Object> info=(HashMap<String, Object>) vesselList.get(i);
 				row.createCell(0).setCellValue(
-						createHelper.createRichTextString(info.getVessel_name()));
+						createHelper.createRichTextString((String) info.get("vessel_name")));
 				row.createCell(1).setCellValue(
-						createHelper.createRichTextString(info.getVessel_abbr()));
+						createHelper.createRichTextString((String) info.get("vessel_abbr")));
 				row.createCell(2).setCellValue(
-						createHelper.createRichTextString(info.getVessel_type()));
+						createHelper.createRichTextString((String) info.get("vessel_type")));
 				row.createCell(3).setCellValue(
-						createHelper.createRichTextString(String.valueOf(info.getVessel_use())));
+						createHelper.createRichTextString(String.valueOf(info.get("vessel_use"))));
 				row.createCell(4).setCellValue(
-						createHelper.createRichTextString(info.getVessel_company()));
+						createHelper.createRichTextString((String) info.get("vessel_company")));
 				row.createCell(5).setCellValue(
-						createHelper.createRichTextString(info.getVessel_mmsi()));
+						createHelper.createRichTextString((String) info.get("vessel_mmsi")));
+				
+				String varInput_date = (String)info.get("input_date");
+				logger.debug("date info:"+varInput_date);
 				row.createCell(6).setCellValue(
 						createHelper.createRichTextString(								
-								(info.getInput_date()==null)?"":format.format(info.getInput_date())));
+								varInput_date==null?"":varInput_date));
 
 			}
 			

@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.ksg.dao.impl.VesselDAOImpl;
 import com.ksg.service.VesselService;
 
@@ -24,6 +26,8 @@ import com.ksg.service.VesselService;
   */
 public class VesselServiceImpl implements VesselService{
 	
+	protected Logger 			logger = Logger.getLogger(getClass());
+	
 	VesselDAOImpl vesselDAO;
 	
 	public VesselServiceImpl() {
@@ -33,6 +37,8 @@ public class VesselServiceImpl implements VesselService{
 	
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> selectList(Map<String, Object> commandMap) throws SQLException {
+		
+		logger.debug("param:"+commandMap);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -45,6 +51,9 @@ public class VesselServiceImpl implements VesselService{
 	}
 
 	public Map<String, Object> selectDetailList(HashMap<String, Object> commandMap) throws SQLException {
+		
+		logger.debug("param:"+commandMap);
+		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
 		//resultMap.put("total", vesselDAO.selectVesselCount(commandMap));
@@ -63,8 +72,10 @@ public class VesselServiceImpl implements VesselService{
 		
 	}
 
-	public void insert(HashMap<String, Object> info) throws SQLException {
-		vesselDAO.insertVessel(info);
+	public void insert(HashMap<String, Object> param) throws SQLException {
+		
+		logger.debug("param:"+param);
+		vesselDAO.insertVessel(param);
 		
 	}
 

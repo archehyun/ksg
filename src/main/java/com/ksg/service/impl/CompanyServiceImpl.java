@@ -59,4 +59,10 @@ public class CompanyServiceImpl implements CompanyService{
 		companyDAO.insertCompany(param);
 	}
 
+	@Override
+	public int getCompanyCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

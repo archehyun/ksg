@@ -31,7 +31,7 @@ public class BaseDAOManager
 {
 	AreaDAOImpl2 areaDAOImpl;
 	
-	private CompanyDAOImpl2 companyDAOImpl;
+
 	private SqlMapClient sqlMap;
 	private VesselDAOImpl2 vesselDAOImpl;
 	private PortDAOImpl2 portDAOImpl;
@@ -43,7 +43,7 @@ public class BaseDAOManager
 		}
 		areaDAOImpl =new AreaDAOImpl2();
 		vesselDAOImpl = new VesselDAOImpl2();
-		companyDAOImpl = new CompanyDAOImpl2();
+
 		portDAOImpl = new PortDAOImpl2();
 	}	
 
@@ -118,10 +118,10 @@ public class BaseDAOManager
 		
 		return areaDAOImpl.getArrangedAreaInfoList(orderBy,type);
 	}
-
-	public List getArrangedCompanyList(Object orderBy) throws SQLException {
-		return companyDAOImpl.getArrangedCompanyList(orderBy);
-	}
+//
+//	public List getArrangedCompanyList(Object orderBy) throws SQLException {
+//		return companyDAOImpl.getArrangedCompanyList(orderBy);
+//	}
 
 	public List getArrangedPort_AbbrList(Object orderBy) throws SQLException {
 		return sqlMap.queryForList("BASE_PORT.selectArrangedPort_AbbrList",orderBy);
@@ -170,11 +170,11 @@ public class BaseDAOManager
 	public List getCodeTypeList() throws SQLException {
 		return sqlMap.queryForList("Base.selectCodeType");
 	}
-
-	public int getCompanyCount() throws SQLException {
-		
-		return companyDAOImpl.getCount();
-	}
+//
+//	public int getCompanyCount() throws SQLException {
+//		
+//		return companyDAOImpl.getCount();
+//	}
 
 	public Company getCompanyInfo(String company_abbr) throws SQLException {
 		return (Company) sqlMap.queryForObject("BASE_COMPANY.selectCompanyInfo",company_abbr);
@@ -261,9 +261,9 @@ public class BaseDAOManager
 	public List getSearchedVesselList(String searchKeyword) throws SQLException {
 		return vesselDAOImpl.getSearchedVesselList(searchKeyword);
 	}
-	public List getSearchedVesselList(Vessel op) throws SQLException {
-		return vesselDAOImpl.getSearchedVesselList(op);
-	}	
+//	public List getSearchedVesselList(Vessel op) throws SQLException {
+//		return vesselDAOImpl.getSearchedVesselList(op);
+//	}	
 	public List<Code> getSubCodeInfo(Code code_info) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Base.selectSubCodeInfo",code_info);
@@ -279,9 +279,9 @@ public class BaseDAOManager
 		return (Vessel) sqlMap.queryForObject("BASE_VESSEL.selectVesselAbbrInfo",vesselName);
 	}
 
-	public List getVesselAbbrList(String vesselName) throws SQLException {
-		return vesselDAOImpl.getVesselAbbrList(vesselName);
-	}
+//	public List getVesselAbbrList(String vesselName) throws SQLException {
+//		return vesselDAOImpl.getVesselAbbrList(vesselName);
+//	}
 
 	public List getVesselAbbrList(Vessel info) throws SQLException {
 		return getVesselAbbrList(info);
@@ -323,10 +323,10 @@ public class BaseDAOManager
 		
 	}
 
-	public Object insertCompany(Company info) throws SQLException {
-		return companyDAOImpl.insert(info);
-		
-	}
+//	public Object insertCompany(Company info) throws SQLException {
+//		return companyDAOImpl.insert(info);
+//		
+//	}
 
 	public void insertPort(PortInfo info) throws SQLException {
 		sqlMap.insert("BASE_PORT.insertPort",info);
@@ -390,9 +390,9 @@ public class BaseDAOManager
 		return areaDAOImpl.getAreaSubList(info);
 	}
 
-	public List selectList(Vessel info) throws SQLException {
-		return vesselDAOImpl.selectList(info);
-	}
+//	public List selectList(Vessel info) throws SQLException {
+//		return vesselDAOImpl.selectList(info);
+//	}
 
 	public Vessel selectVessel(Vessel vessel) throws SQLException {
 		return vesselDAOImpl.select(vessel);
@@ -414,14 +414,14 @@ public class BaseDAOManager
 		
 	}
 
-	/**
-	 * @param companyInfo
-	 * @throws SQLException
-	 */
-	public int update(Company companyInfo) throws SQLException {
-		return companyDAOImpl.update(companyInfo);
-		
-	}
+//	/**
+//	 * @param companyInfo
+//	 * @throws SQLException
+//	 */
+//	public int update(Company companyInfo) throws SQLException {
+//		return companyDAOImpl.update(companyInfo);
+//		
+//	}
 
 	public void update(PortInfo portInfo) throws SQLException {
 		sqlMap.update("BASE_PORT.updatePort",portInfo);
