@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ksg.dao.impl.ADVScheduleDAO;
-import com.ksg.dao.impl.ShipperTableDAO;
+import org.apache.log4j.Logger;
+
+import com.ksg.dao.TableDAO;
+import com.ksg.dao.impl.ShipperTableDAOImpl;
+import com.ksg.service.ShipperTableService;
 
 /**
 
@@ -21,17 +24,44 @@ import com.ksg.dao.impl.ShipperTableDAO;
  * @프로그램 설명 :
 
  */
-public class ShipperTableServiceImpl {
+public class ShipperTableServiceImpl implements ShipperTableService{
 
 
-	ShipperTableDAO shipperTableDao;
+
+	private TableDAO tableDAO;
+
+	private ShipperTableDAOImpl shipperTableDao;
+
+	Logger logger = Logger.getLogger(this.getClass());
+
 	public ShipperTableServiceImpl() {
-		shipperTableDao = new ShipperTableDAO();
+		shipperTableDao = new ShipperTableDAOImpl();
 	}
+
+	public Map<String, Object> selectList(Map<String, Object> commandMap)
+	{
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		try {
+
+			resultMap.put("total", 0);
+
+			resultMap.put("master", shipperTableDao.selectList(commandMap));
+
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return resultMap;
+	}
+
+
+
 
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> selectPortList(Map<String, Object> commandMap) {
-
+		logger.info("param:"+ commandMap);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		try {
@@ -58,39 +88,33 @@ public class ShipperTableServiceImpl {
 	public void insertShipperPort(HashMap<String, Object> commandMap) throws SQLException
 	{
 		shipperTableDao.insertShipperPort(commandMap);
-		System.out.println("insert port:"+commandMap);
+
 	}
 
-	public void saveShipperPort(HashMap<String, Object> commandMap) {
+	public void saveShipperPort(HashMap<String, Object> commandMap) throws Exception{
+
+		logger.debug("param:"+commandMap);
 
 
-		System.out.println("save port");
 
+		deleteShipperPortList(commandMap);	
 
-		try
+		List<HashMap<String, Object>> master  = (List) commandMap.get("master");
+
+		String table_id = (String) commandMap.get("table_id");
+
+		for(int i=0;i<master.size();i++)
 		{
-			deleteShipperPortList(commandMap);	
+			HashMap<String, Object> port = master.get(i);
+			port.put("table_id", table_id);
 
-			List<HashMap<String, Object>> master  = (List) commandMap.get("master");
-			
-			String table_id = (String) commandMap.get("table_id");
+			insertShipperPort(port);
 
-			for(int i=0;i<master.size();i++)
-			{
-				HashMap<String, Object> port = master.get(i);
-				port.put("table_id", table_id);
+			System.out.println(port);
 
-				insertShipperPort(port);
-
-				System.out.println(port);
-
-			}
 		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}		
 
+		logger.debug("end:");
 
 
 	}

@@ -323,20 +323,30 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 			// check ports
 
 			// save ports info
+			
+			try {
 
 			HashMap<String, Object> commandMap = new HashMap<String, Object>();
 
 			commandMap.put("table_id", tableId);
 
 			commandMap.put("master", master);
+			
 
 			shipperTableService.saveShipperPort(commandMap);
 
 			RESLULT=OK;
 
-			this.setVisible(false);
+			}catch(Exception ee)
+			{
+				ee.printStackTrace();
+				
+				JOptionPane.showMessageDialog(ManageTablePortPop.this, ee.getMessage());
+			}finally {
+				this.setVisible(false);
 
-			this.dispose();
+				this.dispose();
+			}
 		}
 
 		else if(command.equals(ACTION_INSERT))

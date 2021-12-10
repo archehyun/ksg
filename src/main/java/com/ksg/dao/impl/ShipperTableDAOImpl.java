@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
+import com.ksg.dao.ShipperTableDAO;
 
-public class ShipperTableDAO extends AbstractDAO{
+public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectPortList(Map<String, Object> commandMap) throws SQLException {
@@ -24,6 +25,12 @@ public class ShipperTableDAO extends AbstractDAO{
 	public void deleteShipperPortList(HashMap<String, Object> commandMap) throws SQLException {
 		delete("shippertable.deleteShipperPortList", commandMap);
 		
+	}
+
+	@Override
+	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("shippertable.selectList", commandMap);
 	}
 
 }

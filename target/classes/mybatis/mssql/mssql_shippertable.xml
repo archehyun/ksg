@@ -14,6 +14,71 @@
 
 <sqlMap namespace="shippertable">
 
+
+	<sql id="TableList">
+	SELECT 
+		table_id
+		,table_index
+		,date_isusse
+		,vsl_row
+		,title
+		,out_port
+		,common_shipping
+		,company_abbr
+		,TS
+		,company_name
+		,gubun
+		,page
+		,agent
+		,quark_format
+		,port_col
+		,out_to_port
+		,in_to_port
+		,in_port
+		,othercell
+		,console_cfs
+		,d_time
+		,c_time
+		,console_page
+		,inland_indexs
+		,bookPage
+	FROM TB_TABLE_INFO
+	</sql>
+	<select id="selectList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		<include refid="TableList"/>
+		
+		<dynamic prepend="where">
+		<isNotEmpty prepend="and" property="table_id">
+		table_id = #table_id#
+		</isNotEmpty>
+		<isGreaterThan prepend="and" property="page" compareValue="-1">
+		page = #page#
+		</isGreaterThan>
+		<isGreaterThan prepend="and" property="table_index" compareValue="-1">
+		table_index = #table_index#
+		</isGreaterThan>
+		<isNotEmpty prepend="and" property="company_abbr">
+		company_abbr = #company_abbr#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="title">
+		title = #title#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="agent">
+		agent = #agent#
+		</isNotNull>
+		<isNotNull prepend="and" property="gubun">
+		gubun = #gubun#
+		</isNotNull>
+		<isNotNull prepend="and" property="date_isusse">
+			 date_isusse=#date_isusse#
+		</isNotNull>
+		
+		
+		</dynamic>
+	order by page, table_index 
+	</select>
+
+
 	<select id="selectPortList" resultClass="java.util.HashMap">
 		select * from TB_TABLE_PORTLIST
 		

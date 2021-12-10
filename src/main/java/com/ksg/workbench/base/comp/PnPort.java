@@ -75,7 +75,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private JTextField txfSearch;
 	
-	private PortDAOImpl portDAO = new PortDAOImpl();
+	//private PortDAOImpl portDAO = new PortDAOImpl();
 	
 	private PortServiceImpl portService = new PortServiceImpl();
 	
@@ -326,7 +326,7 @@ public class PnPort extends PnBase implements ActionListener{
 					commandMap.put("port_name", portName);
 					
 					try {
-						List li=portDAO.selectPortAbbrList(commandMap);
+						List li=portService.selectPortAbbrList(commandMap);
 						tableD.setResultData(li);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
@@ -426,7 +426,7 @@ public class PnPort extends PnBase implements ActionListener{
 				
 				HashMap<String, Object> param2 = new HashMap<String, Object>();
 				param2.put("port_name", port_name);
-				tableD.setResultData(portDAO.selectPortAbbrList(param2));
+				tableD.setResultData(portService.selectPortAbbrList(param2));
 				}catch (Exception ee) {
 					ee.printStackTrace();
 				}
@@ -483,7 +483,7 @@ public class PnPort extends PnBase implements ActionListener{
 						
 						HashMap<String, Object> param2 = new HashMap<String, Object>();
 						param2.put("port_name", port_name);
-						tableD.setResultData(portDAO.selectPortAbbrList(param2));
+						tableD.setResultData(portService.selectPortAbbrList(param2));
 						
 					}
 				} catch (SQLException e1) {
@@ -529,7 +529,7 @@ public class PnPort extends PnBase implements ActionListener{
 				commandMap.put("port_name", param.get("port_name"));
 				
 				try {
-					List li=portDAO.selectPortAbbrList(commandMap);
+					List li=portService.selectPortAbbrList(commandMap);
 					tableD.setResultData(li);
 					
 				} catch (SQLException e1) {

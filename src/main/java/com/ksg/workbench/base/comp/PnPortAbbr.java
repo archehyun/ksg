@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,7 +37,11 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.ksg.domain.PortInfo;
+import com.ksg.service.impl.PortServiceImpl;
+import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
+import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.base.BaseInfoUI;
@@ -61,11 +66,16 @@ public class PnPortAbbr extends PnBase implements ActionListener{
 	private JComboBox cbxField;
 	private JTextField txfSearch;
 	private String[] columName = {"항구명","항구명 약어"};
+	
+	private KSGAbstractTable tableH;
+	
+	private PortServiceImpl portService = new PortServiceImpl();
+	
 	public PnPortAbbr(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
 
 		this.add(buildCenter());
-		this.initTable();
+		//this.initTable();
 
 	}
 
@@ -81,8 +91,7 @@ public class PnPortAbbr extends PnBase implements ActionListener{
 		lblTable.setFont(new Font("돋움",0,16));
 		lblTable.setIcon(new ImageIcon("images/db_table.png"));
 		JLabel lbl = new JLabel("필드명 : ");
-		cbxField = new JComboBox();
-		//cbxField.addItem("선택");
+		cbxField = new JComboBox();		
 		cbxField.addItem("항구명");
 		cbxField.addItem("항구명 약어");
 
@@ -156,12 +165,30 @@ public class PnPortAbbr extends PnBase implements ActionListener{
 	private JPanel buildCenter()
 	{
 		JPanel pnMain = new JPanel(new BorderLayout());
-		tblTable = new JTable();
+		
+		
+		tableH = new KSGAbstractTable();
+		
+//		tableH.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-		tblTable.addMouseListener(new TableSelectListner());
-		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
-		JScrollPane jScrollPane = new JScrollPane(tblTable);
+		KSGTableColumn dcolumns1 = new KSGTableColumn();
+		dcolumns1.columnField = "port_name";
+		dcolumns1.columnName = "항구명";
+		dcolumns1.size=200;
+		
+		
+		KSGTableColumn dcolumns2 = new KSGTableColumn();
+		dcolumns2.columnField = "port_abbr";
+		dcolumns2.columnName = "항구명 약어";
+		dcolumns2.size=200;
+		
+		tableH.addColumn(dcolumns1);
+		tableH.addColumn(dcolumns2);
+		tableH.initComp();	
+		
+		JScrollPane jScrollPane = new JScrollPane(tableH);
+		
+		
 		jScrollPane.getViewport().setBackground(Color.white);
 		pnMain.add(jScrollPane);
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
@@ -231,9 +258,10 @@ public class PnPortAbbr extends PnBase implements ActionListener{
 		lblTotal.setText(searchTotalSize+"/"+totalSize);
 	}
 
-
 	public void updateTable() {
-		searchData();
+	//	searchData();
+		
+		fnSearch();
 	}
 
 	@Override
@@ -271,15 +299,41 @@ public class PnPortAbbr extends PnBase implements ActionListener{
 			if(result==JOptionPane.OK_OPTION)
 			{	
 				try {
-					int count=baseDaoService.deletePortAbbr(data);
+					HashMap<String, Object> param = new HashMap<String, Object>();
+					
+					param.put("port_abbr", data);
+					
+					int count=portService.deletePortAbbr(param);
 					if(count>0)
 					{
-						searchData();
+						int hrow = tableH.getSelectedRow();
+						
+						String port_name =(String) tableH.getValueAt(hrow,0);
+						
+						HashMap<String, Object> param2 = new HashMap<String, Object>();
+						param2.put("port_name", port_name);
+						tableH.setResultData(portService.selectPortAbbrList(param2));
+						
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
+				
+				
+				
+				
+//				try {
+//					int count=baseDaoService.deletePortAbbr(data);
+//					if(count>0)
+//					{
+//						searchData();
+//					}
+//				} catch (SQLException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 			}
 		}
 
@@ -355,7 +409,18 @@ public class PnPortAbbr extends PnBase implements ActionListener{
 
 	@Override
 	public void fnSearch() {
-		// TODO Auto-generated method stub
+		HashMap<String, Object> commandMap = new HashMap<String, Object>();
+		
+		//commandMap.put("port_name", param.get("port_name"));
+		
+		try {
+			List li=portService.selectPortAbbrList(commandMap);
+			tableH.setResultData(li);
+			
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 	}
 

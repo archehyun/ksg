@@ -29,40 +29,40 @@ public class CompanyDAOImpl2 {
 	}
 	
 	
-	/**
-	 * @param data
-	 * @return
-	 * @throws SQLException
-	 */
-	public int delete(String data) throws SQLException {
-		return sqlMap.delete("BASE_COMPANY.deleteCompany",data);
-		
-	}
+//	/**
+//	 * @param data
+//	 * @return
+//	 * @throws SQLException
+//	 */
+//	public int delete(String data) throws SQLException {
+//		return sqlMap.delete("BASE_COMPANY.deleteCompany",data);
+//		
+//	}
 	
-	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	public List getCompanyList() throws SQLException {
-		return sqlMap.queryForList("BASE_COMPANY.selectCompanyList");
-	}
-	/**
-	 * @param company
-	 * @return
-	 * @throws SQLException
-	 */
-	public List getCompanyList(Company company) throws SQLException {
-		return sqlMap.queryForList("BASE_COMPANY.selectCompanyListOrderby",company);
-	}
-	/**
-	 * @param searchKeyword
-	 * @return
-	 * @throws SQLException
-	 */
-	public List getSearchedCompanyList(String searchKeyword) throws SQLException {
-		return sqlMap.queryForList("BASE_COMPANY.selectSearchedCompanyList",searchKeyword);
-	}
-	
+//	/**
+//	 * @return
+//	 * @throws SQLException
+//	 */
+//	public List getCompanyList() throws SQLException {
+//		return sqlMap.queryForList("BASE_COMPANY.selectCompanyList");
+//	}
+//	/**
+//	 * @param company
+//	 * @return
+//	 * @throws SQLException
+//	 */
+//	public List getCompanyList(Company company) throws SQLException {
+//		return sqlMap.queryForList("BASE_COMPANY.selectCompanyListOrderby",company);
+//	}
+//	/**
+//	 * @param searchKeyword
+//	 * @return
+//	 * @throws SQLException
+//	 */
+//	public List getSearchedCompanyList(String searchKeyword) throws SQLException {
+//		return sqlMap.queryForList("BASE_COMPANY.selectSearchedCompanyList",searchKeyword);
+//	}
+//	
 	/**
 	 * @param info
 	 * @return

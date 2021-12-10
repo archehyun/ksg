@@ -52,28 +52,28 @@ public class BaseDAOManager
 		return sqlMap.delete("Base.deleteCode",code_info);
 		
 	}
-
-//	//delete
-//	public int deleteArea(String data) throws SQLException {
-//		return areaDAOImpl.delete(data);		
+//
+////	//delete
+////	public int deleteArea(String data) throws SQLException {
+////		return areaDAOImpl.delete(data);		
+////	}
+//	public int deleteCompany(String company) throws SQLException {
+//		return companyDAOImpl.delete(company);
 //	}
-	public int deleteCompany(String company) throws SQLException {
-		return companyDAOImpl.delete(company);
-	}
 
 	
 	public void deleteKeyword(Object key_name) throws SQLException {
 		sqlMap.delete("Base.deleteKeyword",key_name);
 	}
 	
-	public int deletePort(String port) throws SQLException {
-		
-		return portDAOImpl.deletePort(port);
-	}
+//	public int deletePort(String port) throws SQLException {
+//		
+//		return portDAOImpl.deletePort(port);
+//	}
 	
-	public int deletePortAbbr(String data) throws SQLException {
-		return portDAOImpl.deletePortAbbr(data);
-	}
+//	public int deletePortAbbr(String data) throws SQLException {
+//		return portDAOImpl.deletePortAbbr(data);
+//	}
 	
 	public int deleteVessel(String data) throws SQLException {
 		return vesselDAOImpl.deleteVessel(data);
@@ -184,9 +184,9 @@ public class BaseDAOManager
 //		return companyDAOImpl.getCompanyList();
 //	}
 
-	public List getCompanyList(Company company) throws SQLException {
-		return companyDAOImpl.getCompanyList(company);
-	}
+//	public List getCompanyList(Company company) throws SQLException {
+//		return companyDAOImpl.getCompanyList(company);
+//	}
 
 	public List getFieldInfo(String type) throws SQLException {
 		return sqlMap.queryForList("Base.selectFieldList",type);
@@ -243,9 +243,9 @@ public class BaseDAOManager
 	public List getSearchedCompanyList(Company company) throws SQLException {
 		return sqlMap.queryForList("BASE_COMPANY.selectSearchedCompanyListOrderby",company);
 	}
-	public List getSearchedCompanyList(String searchKeyword) throws SQLException {
-		return companyDAOImpl.getSearchedCompanyList(searchKeyword);
-	}
+//	public List getSearchedCompanyList(String searchKeyword) throws SQLException {
+//		return companyDAOImpl.getSearchedCompanyList(searchKeyword);
+//	}
 	public List getSearchedPortAbbrList(String searchKeyword) throws SQLException {
 		return sqlMap.queryForList("BASE_PORT.selectSearchedPort_AbbrList",searchKeyword);
 	}

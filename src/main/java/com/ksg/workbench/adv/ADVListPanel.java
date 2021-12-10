@@ -848,6 +848,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			commandMap.put("master", portList);
 			
 			System.out.println("tableid:"+xlsPn.getTable_id());
+			
 			shipperTableService.saveShipperPort(commandMap);
 			
 			
@@ -865,17 +866,12 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 				tablePort.setParent_port(port.getPort_name());
 				tableService.insertPortList(tablePort);
 			}*/
-		}catch(SQLException e)
+		}catch(Exception e)
 		{
 
-			if(e.getErrorCode()==2627)
-			{
-				e.printStackTrace();
-			}else
-			{
-				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e.getMessage());
-				e.printStackTrace();
-			}
+		
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e.getMessage());
 		}
 	}
 	

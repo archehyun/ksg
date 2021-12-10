@@ -2,14 +2,35 @@ package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import com.ksg.dao.impl.PortDAOImpl;
 import com.ksg.service.PortService;
 
+/**
+
+  * @FileName : PortServiceImpl.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 7. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class PortServiceImpl implements PortService{
 	
 	PortDAOImpl portDAO;
+	
+	Logger logger = Logger.getLogger(this.getClass());
+	
 	public PortServiceImpl() {
 		portDAO = new PortDAOImpl();
 	}
@@ -28,7 +49,6 @@ public class PortServiceImpl implements PortService{
 	}
 
 	public int deletePortAbbr(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return portDAO.deletePortAbbr(param);
 	}
 
@@ -58,6 +78,18 @@ public class PortServiceImpl implements PortService{
 	public int delete(HashMap<String, Object> param) throws SQLException {
 		// TODO Auto-generated method stub
 		return portDAO.deletePort(param);
+	}
+
+	@Override
+	public Object selectPortAbbr(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return portDAO.selectPortAbbr(param);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectPortAbbrList(HashMap<String, Object> commandMap) throws SQLException {
+		
+		return portDAO.selectPortAbbrList(commandMap);
 	}
 
 

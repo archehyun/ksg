@@ -50,5 +50,15 @@ public class CompanyDAOImpl extends AbstractDAO{
 		// TODO Auto-generated method stub
 		return insert("company.insertCompany",param);
 	}
+	
+	/**
+	 * @param data
+	 * @return
+	 * @throws SQLException
+	 */
+	public int delete(String data) throws SQLException {
+		return sqlMap.delete("BASE_COMPANY.deleteCompany",data);
+		
+	}
 
 }
