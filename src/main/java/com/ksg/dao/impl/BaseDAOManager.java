@@ -109,15 +109,15 @@ public class BaseDAOManager
 //		return areaDAOImpl.getAreaListGroupByAreaName();
 //	}
 
-	public List getArrangedAreaInfoList(String orderBy) throws SQLException {
-
-		return areaDAOImpl.getArrangedAreaInfoList(orderBy);
-	}
-	public List getArrangedAreaInfoList(String orderBy, String type)
-			throws SQLException {
-		
-		return areaDAOImpl.getArrangedAreaInfoList(orderBy,type);
-	}
+//	public List getArrangedAreaInfoList(String orderBy) throws SQLException {
+//
+//		return areaDAOImpl.getArrangedAreaInfoList(orderBy);
+//	}
+//	public List getArrangedAreaInfoList(String orderBy, String type)
+//			throws SQLException {
+//		
+//		return areaDAOImpl.getArrangedAreaInfoList(orderBy,type);
+//	}
 //
 //	public List getArrangedCompanyList(Object orderBy) throws SQLException {
 //		return companyDAOImpl.getArrangedCompanyList(orderBy);
@@ -272,9 +272,9 @@ public class BaseDAOManager
 		return sqlMap.queryForList("BASE_VESSEL.selectVesselAbbrListByPatten",op);
 	}
 	//vessel_abbr========================================
-	public int getVesselAbbrCount() throws SQLException {
-		return vesselDAOImpl.getVesselAbbrCount();
-	}
+//	public int getVesselAbbrCount() throws SQLException {
+//		return vesselDAOImpl.getVesselAbbrCount();
+//	}
 	public Vessel getVesselAbbrInfo(String vesselName) throws SQLException {
 		return (Vessel) sqlMap.queryForObject("BASE_VESSEL.selectVesselAbbrInfo",vesselName);
 	}
@@ -288,9 +288,9 @@ public class BaseDAOManager
 	}
 
 	//vessel===========================================
-	public int getVesselCount() throws SQLException {
-		return vesselDAOImpl.getCount();
-	}
+//	public int getVesselCount() throws SQLException {
+//		return vesselDAOImpl.getCount();
+//	}
 
 //	public Vessel getVesselInfo(Vessel vessel) throws SQLException {
 ////		return vesselDAOImpl.getVesselInfo(vessel);
@@ -316,12 +316,12 @@ public class BaseDAOManager
 		return (Code) sqlMap.queryForObject("Base.selectCodeByField",code_field)
 		;
 	}
-
-	public Object insertArea(AreaInfo info) throws SQLException {
-		
-		return areaDAOImpl.insert(info);
-		
-	}
+//
+//	public Object insertArea(AreaInfo info) throws SQLException {
+//		
+//		return areaDAOImpl.insert(info);
+//		
+//	}
 
 //	public Object insertCompany(Company info) throws SQLException {
 //		return companyDAOImpl.insert(info);
@@ -374,21 +374,21 @@ public class BaseDAOManager
 	}
 
 
-	public AreaInfo select(AreaInfo  area) throws SQLException {
-		return areaDAOImpl.select(area);
-	}
-	
-	public List selectADV() throws SQLException {
-		return sqlMap.queryForList("Base.selectADV");
-	}
-
-	public List selectAreaList() throws SQLException {
-		return areaDAOImpl.selectAreaList();
-	}
-
-	public List selectAreaSubList(AreaInfo info) throws SQLException {
-		return areaDAOImpl.getAreaSubList(info);
-	}
+//	public AreaInfo select(AreaInfo  area) throws SQLException {
+//		return areaDAOImpl.select(area);
+//	}
+//	
+//	public List selectADV() throws SQLException {
+//		return sqlMap.queryForList("Base.selectADV");
+//	}
+//
+//	public List selectAreaList() throws SQLException {
+//		return areaDAOImpl.selectAreaList();
+//	}
+//
+//	public List selectAreaSubList(AreaInfo info) throws SQLException {
+//		return areaDAOImpl.getAreaSubList(info);
+//	}
 
 //	public List selectList(Vessel info) throws SQLException {
 //		return vesselDAOImpl.selectList(info);
@@ -404,10 +404,10 @@ public class BaseDAOManager
 	 * @param update
 	 * @throws SQLException
 	 */
-	public int update(AreaInfo update) throws SQLException {
-		return areaDAOImpl.update(update);
-		
-	}
+//	public int update(AreaInfo update) throws SQLException {
+//		return areaDAOImpl.update(update);
+//		
+//	}
 
 	public void update(Code code) throws SQLException {
 		sqlMap.update("Base.updateCode",code);
@@ -453,10 +453,10 @@ public class BaseDAOManager
 //	}
 
 
-
-	public int deletePortAll() throws SQLException {
-		return portDAOImpl.deletePortAll();
-		
-	}
+//
+//	public int deletePortAll() throws SQLException {
+//		return portDAOImpl.deletePortAll();
+//		
+//	}
 
 }

@@ -8,6 +8,8 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.SqlMapManager;
 import com.ksg.domain.Vessel;
 
+
+@Deprecated
 public class VesselDAOImpl2 {
 	private SqlMapClient sqlMap;
 	public VesselDAOImpl2() {
@@ -19,12 +21,12 @@ public class VesselDAOImpl2 {
 		}
 	}
 	
-	public int getCount() throws SQLException {
-		return (Integer) sqlMap.queryForObject("BASE_VESSEL.selectVesselCount");
-	}
-	public int getVesselAbbrCount() throws SQLException {
-		return (Integer) sqlMap.queryForObject("BASE_VESSEL.selectVesselAbbrCount");
-	}
+//	public int getCount() throws SQLException {
+//		return (Integer) sqlMap.queryForObject("BASE_VESSEL.selectVesselCount");
+//	}
+//	public int getVesselAbbrCount() throws SQLException {
+//		return (Integer) sqlMap.queryForObject("BASE_VESSEL.selectVesselAbbrCount");
+//	}
 	
 //	public List selectList(Vessel info) throws SQLException {
 //		return sqlMap.queryForList("BASE_VESSEL.selectVesselList", info);

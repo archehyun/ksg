@@ -270,7 +270,7 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 			
 			searchTotalSize=li.size();
 			
-			totalSize = baseDaoService.getVesselAbbrCount();
+			//totalSize = baseDaoService.getVesselAbbrCount();
 			
 			createTable(li);
 		} catch (SQLException e) {

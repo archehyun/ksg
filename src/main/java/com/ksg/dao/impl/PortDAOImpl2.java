@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.SqlMapManager;
 
+@Deprecated
 public class PortDAOImpl2 {
 	
 	private SqlMapClient sqlMap;
@@ -17,18 +18,18 @@ public class PortDAOImpl2 {
 			e.printStackTrace();
 		}
 	}
-	public int deletePortAbbr(String data) throws SQLException {
-		return sqlMap.delete("BASE_PORT.deletePort_Abbr",data);
-		
-	}
-	public int deletePort(String port) throws SQLException {
-		
-		return sqlMap.delete("BASE_PORT.deletePort",port);
-	}
-	public int deletePortAll() throws SQLException {
-		
-		return sqlMap.delete("BASE_PORT.deletePortAll");
-	}
+//	public int deletePortAbbr(String data) throws SQLException {
+//		return sqlMap.delete("BASE_PORT.deletePort_Abbr",data);
+//		
+//	}
+//	public int deletePort(String port) throws SQLException {
+//		
+//		return sqlMap.delete("BASE_PORT.deletePort",port);
+//	}
+//	public int deletePortAll() throws SQLException {
+//		
+//		return sqlMap.delete("BASE_PORT.deletePortAll");
+//	}
 	
 
 }
