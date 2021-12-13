@@ -48,10 +48,10 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
+import com.ksg.common.exception.PortNullException;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
-import com.ksg.schedule.logic.PortNullException;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.BaseServiceImpl;

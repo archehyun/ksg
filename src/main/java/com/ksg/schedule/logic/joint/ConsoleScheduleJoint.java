@@ -14,6 +14,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import com.ksg.commands.schedule.XML_INFO;
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.SortUtil;
 import com.ksg.domain.Code;
@@ -23,7 +24,6 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleJoint;
-import com.ksg.schedule.logic.VesselNullException;
 
 /**
  * 2014-11-20 업데이트

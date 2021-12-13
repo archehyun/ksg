@@ -10,9 +10,9 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.schedule.logic.VesselNullException;
 
  /**
  * @설명 최상위 정렬 기준, 지역이름을 기준으로 선박을 그룹화 하는 클래스 

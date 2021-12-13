@@ -10,6 +10,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
@@ -18,7 +19,6 @@ import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.build.CreateScheduleCommand;
 import com.ksg.service.ScheduleService;
 

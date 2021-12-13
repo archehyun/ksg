@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ScheduleData;
@@ -20,7 +21,6 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.route.GroupArea;
 import com.ksg.schedule.logic.route.GroupPort;
 import com.ksg.schedule.logic.route.GroupVessel;

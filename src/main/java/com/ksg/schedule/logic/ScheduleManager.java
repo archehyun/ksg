@@ -8,6 +8,8 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
+import com.ksg.common.exception.PortNullException;
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;

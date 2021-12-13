@@ -25,6 +25,7 @@ import org.jdom.JDOMException;
 
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.commands.schedule.SwingWorker;
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
@@ -35,7 +36,6 @@ import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.service.ScheduleService;
 import com.ksg.view.ui.ErrorLogManager;
 /**

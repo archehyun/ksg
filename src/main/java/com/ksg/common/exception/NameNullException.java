@@ -1,4 +1,4 @@
-package com.ksg.schedule.logic;
+package com.ksg.common.exception;
 
 /**
  * @author ¹ÚÃ¢Çö

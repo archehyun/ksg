@@ -10,11 +10,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.ksg.common.exception.PortNullException;
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.SortUtil;
 import com.ksg.domain.ScheduleData;
-import com.ksg.schedule.logic.PortNullException;
 import com.ksg.schedule.logic.ScheduleBuild;
-import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.joint.outbound.FromPortGroup;
 import com.ksg.schedule.logic.joint.outbound.PrintItem;
 import com.ksg.schedule.logic.joint.outbound.ToPortGroup;

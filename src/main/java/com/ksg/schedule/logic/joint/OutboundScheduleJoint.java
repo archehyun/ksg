@@ -21,6 +21,8 @@ import org.jdom.output.XMLOutputter;
 
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.dao.DAOManager;
+import com.ksg.common.exception.PortNullException;
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.StringCompare;
 import com.ksg.domain.Code;
@@ -28,10 +30,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
-import com.ksg.schedule.logic.PortNullException;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.VesselNullException;
 
 /**
  * @deprecated

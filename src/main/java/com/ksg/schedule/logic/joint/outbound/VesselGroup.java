@@ -11,12 +11,12 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.StringCompare;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 
 /**

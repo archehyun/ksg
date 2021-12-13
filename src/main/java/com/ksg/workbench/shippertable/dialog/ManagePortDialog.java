@@ -40,13 +40,13 @@ import javax.swing.ListCellRenderer;
 import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 
+import com.ksg.common.exception.PortNullException;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.dialog.PortSearchDialog;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
-import com.ksg.schedule.logic.PortNullException;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;

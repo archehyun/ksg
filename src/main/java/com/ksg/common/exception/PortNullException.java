@@ -1,4 +1,4 @@
-package com.ksg.schedule.logic;
+package com.ksg.common.exception;
 
 /**
  * 항구 null 오류 예외
