@@ -25,6 +25,8 @@ public class VesselInfoImportCommand extends ImportCommand {
 
 	Vessel insertParameter=null;
 	
+	HashMap<String, Object> param;
+	
 	VesselService service = new VesselServiceImpl();
 
 	public VesselInfoImportCommand(File xlsfile) throws FileNotFoundException, IOException {
@@ -48,10 +50,12 @@ public class VesselInfoImportCommand extends ImportCommand {
 
 	public int execute()
 	{
+		
+		
 		try{
 
 			this.message = sheet.getLastRowNum()+"개 선박정보 가져오는중";
-
+			
 
 			for(int i=1;i<=sheet.getLastRowNum();i++)
 			{
@@ -75,7 +79,7 @@ public class VesselInfoImportCommand extends ImportCommand {
 
 				logger.info("xls insert:"+insertParameter.toInfoString());
 				
-				HashMap<String, Object> param = new HashMap<String, Object>();
+				param = new HashMap<String, Object>();
 				
 				param.put("vessel_name", cell0.getStringCellValue());
 				param.put("vessel_abbr", cell1.getStringCellValue());
@@ -100,7 +104,8 @@ public class VesselInfoImportCommand extends ImportCommand {
 			{
 				try 
 				{
-					baseService.update(insertParameter);
+					service.update(param);
+					//baseService.update(insertParameter);
 				} catch (SQLException e2) 
 				{
 					// TODO Auto-generated catch block

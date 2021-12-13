@@ -66,6 +66,8 @@ public class VesselImportDialog extends KSGDialog{
 	private ArrayList<String> errorList;
 
 	protected BaseDAOManager baseService;
+	
+	
 
 	private JTable tblErrorList;
 
@@ -280,92 +282,92 @@ public class VesselImportDialog extends KSGDialog{
 		}
 	}
 	
-	private void importAction2()
-	{
-		Vessel insertParameter=null;
-		try{
-			POIFSFileSystem fs= new POIFSFileSystem(new FileInputStream(xlsfile));
-			Workbook wb = (Workbook) new HSSFWorkbook(fs);
-			Sheet sheet = wb.getSheetAt(0);
-			
-			
-			lblCurrentMessage.setText(sheet.getLastRowNum()+"개 선박정보 가져오는중");
-			bar.setMaximum(sheet.getLastRowNum());
-			bar.setValue(1);
-			bar.setStringPainted(true);
-
-			
-			
-			for(int i=1;i<=sheet.getLastRowNum();i++)
-			{
-				HSSFRow row =(HSSFRow) sheet.getRow(i);
-				Cell cell0 =row.getCell(0, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_name
-				Cell cell1 =row.getCell(1, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_abbr
-				Cell cell2 =row.getCell(2, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_type
-				Cell cell3 =row.getCell(3, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_use
-				Cell cell4 =row.getCell(4, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_company
-				Cell cell5 =row.getCell(5, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_mmsi
-				Cell cell6 =row.getCell(6, HSSFRow.RETURN_BLANK_AS_NULL);//input_date
-				insertParameter = new Vessel();
-
-				insertParameter.setVessel_name(cell0.getStringCellValue());
-				insertParameter.setVessel_abbr(cell1.getStringCellValue());
-				insertParameter.setVessel_type(cell2.getStringCellValue());
-				insertParameter.setVessel_use(this.getVesselUse(cell3));					
-				insertParameter.setVessel_company(cell4.getStringCellValue());
-				insertParameter.setVessel_mmsi(cell5.getStringCellValue());
-				insertParameter.setInput_date(cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
-
-				logger.info("xls insert:"+insertParameter.toInfoString());
-				HashMap<String, Object> param = new HashMap<String, Object>();
-				
-				param.put("vessel_name", cell0.getStringCellValue());
-				param.put("vessel_abbr", cell1.getStringCellValue());
-				param.put("vessel_type", cell2.getStringCellValue());
-				param.put("vessel_use", this.getVesselUse(cell3));
-				param.put("vessel_company", cell4.getStringCellValue());
-				param.put("vessel_mmsi", cell5.getStringCellValue());
-				param.put("input_date", cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
-				
-				
-				service.insert(param);
-				bar.setValue(i);
-			}
-			end();
-		}
-		catch (SQLException e1) 
-		{
-			e1.printStackTrace();
-
-			// 동일한 항목이 있을 경우
-			if(e1.getErrorCode()==2627)
-			{
-				try 
-				{
-					baseService.update(insertParameter);
-				} catch (SQLException e2) 
-				{
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-			}
-			else
-			{
-				logger.error(e1.getErrorCode()+":"+e1.getMessage()+" : "+insertParameter.toInfoString());
-
-				JOptionPane.showMessageDialog(this, e1.getMessage());
-			}
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, e.getMessage());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	private void importAction2()
+//	{
+//		Vessel insertParameter=null;
+//		try{
+//			POIFSFileSystem fs= new POIFSFileSystem(new FileInputStream(xlsfile));
+//			Workbook wb = (Workbook) new HSSFWorkbook(fs);
+//			Sheet sheet = wb.getSheetAt(0);
+//			
+//			
+//			lblCurrentMessage.setText(sheet.getLastRowNum()+"개 선박정보 가져오는중");
+//			bar.setMaximum(sheet.getLastRowNum());
+//			bar.setValue(1);
+//			bar.setStringPainted(true);
+//
+//			
+//			
+//			for(int i=1;i<=sheet.getLastRowNum();i++)
+//			{
+//				HSSFRow row =(HSSFRow) sheet.getRow(i);
+//				Cell cell0 =row.getCell(0, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_name
+//				Cell cell1 =row.getCell(1, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_abbr
+//				Cell cell2 =row.getCell(2, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_type
+//				Cell cell3 =row.getCell(3, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_use
+//				Cell cell4 =row.getCell(4, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_company
+//				Cell cell5 =row.getCell(5, HSSFRow.RETURN_BLANK_AS_NULL);//vessel_mmsi
+//				Cell cell6 =row.getCell(6, HSSFRow.RETURN_BLANK_AS_NULL);//input_date
+//				insertParameter = new Vessel();
+//
+//				insertParameter.setVessel_name(cell0.getStringCellValue());
+//				insertParameter.setVessel_abbr(cell1.getStringCellValue());
+//				insertParameter.setVessel_type(cell2.getStringCellValue());
+//				insertParameter.setVessel_use(this.getVesselUse(cell3));					
+//				insertParameter.setVessel_company(cell4.getStringCellValue());
+//				insertParameter.setVessel_mmsi(cell5.getStringCellValue());
+//				insertParameter.setInput_date(cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
+//
+//				logger.info("xls insert:"+insertParameter.toInfoString());
+//				HashMap<String, Object> param = new HashMap<String, Object>();
+//				
+//				param.put("vessel_name", cell0.getStringCellValue());
+//				param.put("vessel_abbr", cell1.getStringCellValue());
+//				param.put("vessel_type", cell2.getStringCellValue());
+//				param.put("vessel_use", this.getVesselUse(cell3));
+//				param.put("vessel_company", cell4.getStringCellValue());
+//				param.put("vessel_mmsi", cell5.getStringCellValue());
+//				param.put("input_date", cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
+//				
+//				
+//				service.insert(param);
+//				bar.setValue(i);
+//			}
+//			end();
+//		}
+//		catch (SQLException e1) 
+//		{
+//			e1.printStackTrace();
+//
+//			// 동일한 항목이 있을 경우
+//			if(e1.getErrorCode()==2627)
+//			{
+//				try 
+//				{
+//					baseService.update(insertParameter);
+//				} catch (SQLException e2) 
+//				{
+//					// TODO Auto-generated catch block
+//					e2.printStackTrace();
+//				}
+//			}
+//			else
+//			{
+//				logger.error(e1.getErrorCode()+":"+e1.getMessage()+" : "+insertParameter.toInfoString());
+//
+//				JOptionPane.showMessageDialog(this, e1.getMessage());
+//			}
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			JOptionPane.showMessageDialog(this, e.getMessage());
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 }
 

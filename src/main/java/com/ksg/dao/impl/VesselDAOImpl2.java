@@ -45,33 +45,33 @@ public class VesselDAOImpl2 {
 //	public Object insertNew(Vessel vessel) throws SQLException {
 //		return sqlMap.insert("BASE_VESSEL.insertNewVessel",vessel);
 //	}
-	public int update(Vessel info) throws SQLException {
-		return sqlMap.update("BASE_VESSEL.updateVessel",info);
-	}
-	public Object insertVesselAbbr(Vessel vesselAbbr) throws SQLException {
-		return sqlMap.insert("BASE_VESSEL.insertVesselAbbr",vesselAbbr);
-	}
-	public Vessel select(Vessel vessel) throws SQLException {
-		return (Vessel) sqlMap.queryForObject("BASE_VESSEL.selectVesselInfo",vessel);
-	}
-	public List getArrangedVesselList(Object orderBy) throws SQLException {
-		return sqlMap.queryForList("BASE_VESSEL.selectArrangedVesselAbbrList",orderBy);
-	}
-	public List getVesselListGroupByName(Vessel info) throws SQLException {
-		return sqlMap.queryForList("BASE_VESSEL.selectVesselListGroupByName", info);
-	}
-	public List getVesselListByPattenGroupByName(String string)throws SQLException {
-		return sqlMap.queryForList("BASE_VESSEL.selectVesselListByPattenGroupBynName",string);
-	}
-	public Vessel getVesselInfo(Vessel vessel) throws SQLException {
-		return (Vessel) sqlMap.queryForObject("BASE_VESSEL.selectVesselInfoItem",vessel);
-	}
-	public int deleteVesselAll() throws SQLException {
-		return sqlMap.delete("BASE_VESSEL.deleteVesselAll");
-	}
-	public int updateVesselAbbr(Vessel vessel) throws SQLException {
-		return sqlMap.update("BASE_VESSEL.updateVesselAbbr",vessel);
-	}
+//	public int update(Vessel info) throws SQLException {
+//		return sqlMap.update("BASE_VESSEL.updateVessel",info);
+//	}
+//	public Object insertVesselAbbr(Vessel vesselAbbr) throws SQLException {
+//		return sqlMap.insert("BASE_VESSEL.insertVesselAbbr",vesselAbbr);
+//	}
+//	public Vessel select(Vessel vessel) throws SQLException {
+//		return (Vessel) sqlMap.queryForObject("BASE_VESSEL.selectVesselInfo",vessel);
+//	}
+//	public List getArrangedVesselList(Object orderBy) throws SQLException {
+//		return sqlMap.queryForList("BASE_VESSEL.selectArrangedVesselAbbrList",orderBy);
+//	}
+//	public List getVesselListGroupByName(Vessel info) throws SQLException {
+//		return sqlMap.queryForList("BASE_VESSEL.selectVesselListGroupByName", info);
+//	}
+//	public List getVesselListByPattenGroupByName(String string)throws SQLException {
+//		return sqlMap.queryForList("BASE_VESSEL.selectVesselListByPattenGroupBynName",string);
+//	}
+//	public Vessel getVesselInfo(Vessel vessel) throws SQLException {
+//		return (Vessel) sqlMap.queryForObject("BASE_VESSEL.selectVesselInfoItem",vessel);
+//	}
+//	public int deleteVesselAll() throws SQLException {
+//		return sqlMap.delete("BASE_VESSEL.deleteVesselAll");
+//	}
+//	public int updateVesselAbbr(Vessel vessel) throws SQLException {
+//		return sqlMap.update("BASE_VESSEL.updateVesselAbbr",vessel);
+//	}
 	
 //	public List getSearchedVesselList(Vessel op) throws SQLException {
 //		return sqlMap.queryForList("BASE_VESSEL.selectSearchedVesselList",op);

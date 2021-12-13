@@ -83,9 +83,9 @@ public class BaseDAOManager
 		return sqlMap.delete("BASE_VESSEL.deleteVesselAbbr",op);
 	}
 
-	public int deleteVesselAll() throws SQLException {
-		return vesselDAOImpl.deleteVesselAll();
-	}
+//	public int deleteVesselAll() throws SQLException {
+//		return vesselDAOImpl.deleteVesselAll();
+//	}
 	
 
 //	public int getAreaCount() throws SQLException {
@@ -141,9 +141,9 @@ public class BaseDAOManager
 		return sqlMap.queryForList("BASE_VESSEL.selectArrangedVesselList",orderBy);
 	}
 
-	public List getArrangedVesselList(Object orderBy) throws SQLException {
-		return vesselDAOImpl.getArrangedVesselList(orderBy);
-	}
+//	public List getArrangedVesselList(Object orderBy) throws SQLException {
+//		return vesselDAOImpl.getArrangedVesselList(orderBy);
+//	}
 
 	public List getBaseInfo(String type) throws SQLException 
 	{
@@ -292,25 +292,25 @@ public class BaseDAOManager
 		return vesselDAOImpl.getCount();
 	}
 
-	public Vessel getVesselInfo(Vessel vessel) throws SQLException {
-		return vesselDAOImpl.getVesselInfo(vessel);
-	}
-	
-	public Vessel select(Vessel vessel) throws SQLException {
-		return vesselDAOImpl.select(vessel);
-	}
+//	public Vessel getVesselInfo(Vessel vessel) throws SQLException {
+////		return vesselDAOImpl.getVesselInfo(vessel);
+////	}
+////	
+//	public Vessel select(Vessel vessel) throws SQLException {
+//		return vesselDAOImpl.select(vessel);
+//	}
 
 //	public List getVesselListByPatten(String patten) throws SQLException {
 //		return vesselDAOImpl.getVesselListByPatten(patten);
 //	}
-
-	public List getVesselListByPattenGroupByName(String string)throws SQLException {
-		return vesselDAOImpl.getVesselListByPattenGroupByName(string);
-	}
-
-	public List getVesselListGroupByName(Vessel info) throws SQLException {
-		return vesselDAOImpl.getVesselListGroupByName(info);
-	}
+//
+//	public List getVesselListByPattenGroupByName(String string)throws SQLException {
+//		return vesselDAOImpl.getVesselListByPattenGroupByName(string);
+//	}
+//
+//	public List getVesselListGroupByName(Vessel info) throws SQLException {
+//		return vesselDAOImpl.getVesselListGroupByName(info);
+//	}
 	public Code hasCodeByField(String code_field) throws SQLException {
 		
 		return (Code) sqlMap.queryForObject("Base.selectCodeByField",code_field)
@@ -361,9 +361,9 @@ public class BaseDAOManager
 	public void insertPortAbbr(PortInfo info) throws SQLException {
 		sqlMap.insert("Base.insertPort_Abbr",info);
 	}
-	public Object insertVesselAbbr(Vessel vesselAbbr) throws SQLException {
-		return vesselDAOImpl.insertVesselAbbr(vesselAbbr);
-	}
+//	public Object insertVesselAbbr(Vessel vesselAbbr) throws SQLException {
+//		return vesselDAOImpl.insertVesselAbbr(vesselAbbr);
+//	}
 
 	public boolean isExitPort(String port_name) throws SQLException {
 		String name =(String) sqlMap.queryForObject("BASE_PORT.selectPort_name",port_name);
@@ -393,10 +393,10 @@ public class BaseDAOManager
 //	public List selectList(Vessel info) throws SQLException {
 //		return vesselDAOImpl.selectList(info);
 //	}
-
-	public Vessel selectVessel(Vessel vessel) throws SQLException {
-		return vesselDAOImpl.select(vessel);
-	}
+//
+//	public Vessel selectVessel(Vessel vessel) throws SQLException {
+//		return vesselDAOImpl.select(vessel);
+//	}
 
 
 	/**
@@ -427,10 +427,10 @@ public class BaseDAOManager
 		sqlMap.update("BASE_PORT.updatePort",portInfo);
 		
 	}
-
-	public int update(Vessel info) throws SQLException {
-		return vesselDAOImpl.update(info);
-	}
+//
+//	public int update(Vessel info) throws SQLException {
+//		return vesselDAOImpl.update(info);
+//	}
 
 	public int updateBaseInfo(HashMap<Object, Object> map, String type)
 			throws SQLException {
@@ -448,9 +448,9 @@ public class BaseDAOManager
 		
 	}
 
-	public int updateVesselAbbr(Vessel vessel) throws SQLException {
-		return vesselDAOImpl.updateVesselAbbr(vessel);		
-	}
+//	public int updateVesselAbbr(Vessel vessel) throws SQLException {
+//		return vesselDAOImpl.updateVesselAbbr(vessel);		
+//	}
 
 
 

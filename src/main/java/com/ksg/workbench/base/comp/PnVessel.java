@@ -57,6 +57,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
+import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -127,7 +128,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	SelectionListner selectionListner = new SelectionListner();
 
-	private VesselServiceImpl vesselService = new VesselServiceImpl();
+	private VesselService vesselService = new VesselServiceImpl();
 
 	private KSGAbstractTable tableD;
 	private JLabel lblVesselName;
@@ -521,7 +522,9 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		if(result.equals("삭제확인"))
 		{
 			try {
-				baseDaoService.deleteVesselAll();
+				
+				vesselService.delete(new HashMap<String, Object>());
+//				baseDaoService.deleteVesselAll();
 				updateTable();
 				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "데이터를 삭제 했습니다.");
 			} catch (SQLException e1) {
