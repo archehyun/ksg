@@ -80,7 +80,14 @@
 			#vessel_mmsi#,
 			#vessel_type#,
 			#vessel_company#,
-			getdate()
+			
+			<isNotNull property="input_date">
+		        #input_date#
+		    </isNotNull>		    
+		    <isNull property="input_date">
+		        getdate()
+		    </isNull>
+			
 			
 			
 		);

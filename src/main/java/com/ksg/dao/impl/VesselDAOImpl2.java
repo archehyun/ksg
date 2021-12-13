@@ -30,21 +30,21 @@ public class VesselDAOImpl2 {
 //		return sqlMap.queryForList("BASE_VESSEL.selectVesselList", info);
 //	}
 
-	public List getVesselListByPatten(String patten) throws SQLException {
-		return sqlMap.queryForList("Base.selectVesselListByPatten",patten);
-	}
-	public int deleteVessel(String data) throws SQLException {
-		return sqlMap.delete("BASE_VESSEL.deleteVessel",data);
-	}
-	public List getSearchedVesselList(String searchKeyword) throws SQLException {
-		return sqlMap.queryForList("BASE_VESSEL.selectSearchedVesselList",searchKeyword);
-	}
-	public Object insert(Vessel vessel) throws SQLException {
-		return sqlMap.insert("BASE_VESSEL.insertVessel",vessel);
-	}
-	public Object insertNew(Vessel vessel) throws SQLException {
-		return sqlMap.insert("BASE_VESSEL.insertNewVessel",vessel);
-	}
+//	public List getVesselListByPatten(String patten) throws SQLException {
+//		return sqlMap.queryForList("Base.selectVesselListByPatten",patten);
+//	}
+//	public int deleteVessel(String data) throws SQLException {
+//		return sqlMap.delete("BASE_VESSEL.deleteVessel",data);
+//	}
+//	public List getSearchedVesselList(String searchKeyword) throws SQLException {
+//		return sqlMap.queryForList("BASE_VESSEL.selectSearchedVesselList",searchKeyword);
+//	}
+//	public Object insert(Vessel vessel) throws SQLException {
+//		return sqlMap.insert("BASE_VESSEL.insertVessel",vessel);
+//	}
+//	public Object insertNew(Vessel vessel) throws SQLException {
+//		return sqlMap.insert("BASE_VESSEL.insertNewVessel",vessel);
+//	}
 	public int update(Vessel info) throws SQLException {
 		return sqlMap.update("BASE_VESSEL.updateVessel",info);
 	}

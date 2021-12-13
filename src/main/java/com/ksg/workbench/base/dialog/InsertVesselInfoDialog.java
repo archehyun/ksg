@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,7 +42,9 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
+import com.ksg.service.VesselService;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -60,7 +63,7 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 	private JCheckBox chbUse;
 	
 	private BaseDAOManager baseDAOManager;
-
+	VesselService service = new VesselServiceImpl();
 	Vessel dataInfo;
 	private JCheckBox cbxMMSICheck;
 	public InsertVesselInfoDialog()
@@ -348,7 +351,35 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 			vessel.setVessel_company(txfCompany.getText());
 			
 			try {
-				baseDAOManager.insertNewVessel(vessel);
+				
+				
+				HashMap<String, Object> param = new HashMap<String, Object>();
+				param.put("vessel_name",vesselName);
+				param.put("vessel_abbr",(vesselAbbr==null||vesselAbbr.equals("")?vesselName:vesselAbbr));
+				param.put("vessel_type", con.getTypeField());
+				
+				
+				param.put("vessel_use",chbUse.isSelected()?Vessel.NON_USE:Vessel.USE);
+				param.put("vessel_company", txfCompany.getText());
+				
+				if(!cbxMMSICheck.isSelected())
+				{
+					int mmsi_size=txfMMSI.getText().length();
+					if(mmsi_size<9)					
+					{
+						JOptionPane.showMessageDialog(this, "MMSI는 9자리입니다.");
+						return;
+					}
+					param.put("vessel_mmsi", txfMMSI.getText());
+				}
+				else
+				{
+					param.put("vessel_mmsi", "");
+				}
+				
+				
+				service.insert(param);
+				
 				
 				this.setVisible(false);
 				

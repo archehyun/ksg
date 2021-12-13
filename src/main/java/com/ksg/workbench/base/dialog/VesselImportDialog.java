@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -39,6 +40,8 @@ import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.domain.Vessel;
+import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
@@ -74,6 +77,8 @@ public class VesselImportDialog extends KSGDialog{
 	private String message = "엑셀 파일에서 가져오는 중...";
 
 	DefaultTableModel defaultTableModel = new DefaultTableModel();
+	
+	VesselService service = new VesselServiceImpl();
 	
 	File xlsfile;
 
@@ -312,7 +317,18 @@ public class VesselImportDialog extends KSGDialog{
 				insertParameter.setInput_date(cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
 
 				logger.info("xls insert:"+insertParameter.toInfoString());
-				baseService.insertVessel(insertParameter);
+				HashMap<String, Object> param = new HashMap<String, Object>();
+				
+				param.put("vessel_name", cell0.getStringCellValue());
+				param.put("vessel_abbr", cell1.getStringCellValue());
+				param.put("vessel_type", cell2.getStringCellValue());
+				param.put("vessel_use", this.getVesselUse(cell3));
+				param.put("vessel_company", cell4.getStringCellValue());
+				param.put("vessel_mmsi", cell5.getStringCellValue());
+				param.put("input_date", cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
+				
+				
+				service.insert(param);
 				bar.setValue(i);
 			}
 			end();

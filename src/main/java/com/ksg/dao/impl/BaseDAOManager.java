@@ -75,9 +75,9 @@ public class BaseDAOManager
 //		return portDAOImpl.deletePortAbbr(data);
 //	}
 	
-	public int deleteVessel(String data) throws SQLException {
-		return vesselDAOImpl.deleteVessel(data);
-	}
+//	public int deleteVessel(String data) throws SQLException {
+//		return vesselDAOImpl.deleteVessel(data);
+//	}
 
 	public int deleteVesselAbbr(Vessel op) throws SQLException {
 		return sqlMap.delete("BASE_VESSEL.deleteVesselAbbr",op);
@@ -258,9 +258,9 @@ public class BaseDAOManager
 	public List getSearchedVesselAbbrList(String searchKeyword) throws SQLException {
 		return sqlMap.queryForList("BASE_VESSEL.selectSearchedVesselAbbrList",searchKeyword);
 	}
-	public List getSearchedVesselList(String searchKeyword) throws SQLException {
-		return vesselDAOImpl.getSearchedVesselList(searchKeyword);
-	}
+//	public List getSearchedVesselList(String searchKeyword) throws SQLException {
+//		return vesselDAOImpl.getSearchedVesselList(searchKeyword);
+//	}
 //	public List getSearchedVesselList(Vessel op) throws SQLException {
 //		return vesselDAOImpl.getSearchedVesselList(op);
 //	}	
@@ -300,9 +300,9 @@ public class BaseDAOManager
 		return vesselDAOImpl.select(vessel);
 	}
 
-	public List getVesselListByPatten(String patten) throws SQLException {
-		return vesselDAOImpl.getVesselListByPatten(patten);
-	}
+//	public List getVesselListByPatten(String patten) throws SQLException {
+//		return vesselDAOImpl.getVesselListByPatten(patten);
+//	}
 
 	public List getVesselListByPattenGroupByName(String string)throws SQLException {
 		return vesselDAOImpl.getVesselListByPattenGroupByName(string);
@@ -332,12 +332,12 @@ public class BaseDAOManager
 		sqlMap.insert("BASE_PORT.insertPort",info);
 	}
 
-	public Object insertVessel(Vessel vessel) throws SQLException {
-		return vesselDAOImpl.insert(vessel);
-	}
-	public Object insertNewVessel(Vessel vessel) throws SQLException {
-		return vesselDAOImpl.insertNew(vessel);
-	}
+//	public Object insertVessel(Vessel vessel) throws SQLException {
+//		return vesselDAOImpl.insert(vessel);
+//	}
+//	public Object insertNewVessel(Vessel vessel) throws SQLException {
+//		return vesselDAOImpl.insertNew(vessel);
+//	}
 	
 	/**
 	 * @deprecated

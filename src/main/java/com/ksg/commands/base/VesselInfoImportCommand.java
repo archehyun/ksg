@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.HashMap;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -16,11 +17,15 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import com.ksg.commands.KSGCommand;
 import com.ksg.domain.Vessel;
+import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 
 public class VesselInfoImportCommand extends ImportCommand {
 
 
 	Vessel insertParameter=null;
+	
+	VesselService service = new VesselServiceImpl();
 
 	public VesselInfoImportCommand(File xlsfile) throws FileNotFoundException, IOException {
 		super();
@@ -69,7 +74,20 @@ public class VesselInfoImportCommand extends ImportCommand {
 				insertParameter.setInput_date(cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
 
 				logger.info("xls insert:"+insertParameter.toInfoString());
-				baseService.insertVessel(insertParameter);
+				
+				HashMap<String, Object> param = new HashMap<String, Object>();
+				
+				param.put("vessel_name", cell0.getStringCellValue());
+				param.put("vessel_abbr", cell1.getStringCellValue());
+				param.put("vessel_type", cell2.getStringCellValue());
+				param.put("vessel_use", this.getVesselUse(cell3));
+				param.put("vessel_company", cell4.getStringCellValue());
+				param.put("vessel_mmsi", cell5.getStringCellValue());
+				param.put("input_date", cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
+				
+				
+				service.insert(param);
+				//baseService.insertVessel(insertParameter);
 				current++;
 			}
 		}

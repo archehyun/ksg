@@ -124,7 +124,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	private JComboBox cbxUse;// 사용 유무 선택
 
 	KSGTablePanel tableH;
-	
+
 	SelectionListner selectionListner = new SelectionListner();
 
 	private VesselServiceImpl vesselService = new VesselServiceImpl();
@@ -182,14 +182,14 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 				}
 				else {
 					return "N";
-					
+
 				}				
 			}
 		};
 		columns[4].columnField = "vessel_use";
 		columns[4].columnName = "사용유무";
 		columns[4].size = 70;
-		
+
 
 		columns[5] = new KSGTableColumn();
 		columns[5].columnField = "input_date";
@@ -201,7 +201,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		tableH.initComp();
 
 		tableH.addMouseListener(new TableSelectListner());
-		
+
 		tableH.getSelectionModel().addListSelectionListener(selectionListner);
 
 		KSGPanel pnMainCenter = new KSGPanel(new BorderLayout(5,5));
@@ -353,7 +353,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		return pnMain;
 	}
 
-	
+
 
 	@Override
 	public void updateTable(String query) {
@@ -383,31 +383,31 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 			if(row<0)
 				return;
 			HashMap<String, Object> item=(HashMap<String, Object>) tableD.getValueAt(row);
-			
+
 			try {
-			vesselService.deleteDetail(item);
-			
-			fnSearchDetail((String)item.get("vessel_name"));
-			
+				vesselService.deleteDetail(item);
+
+				fnSearchDetail((String)item.get("vessel_name"));
+
 			}catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, e1.getMessage());
-				
+
 			}
 		}
 		else if(command.equals("약어등록"))
 		{
 			int row=tableH.getSelectedRow();
-			
+
 			if(row<0)
 				return;
-			
+
 			HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(tableH.getSelectedRow());
 			KSGDialog dialog = new InsertVesselAbbrInfoDialog(item);
 			dialog.createAndUpdateUI();
 			fnSearchDetail((String)item.get("vessel_name"));
-			
+
 		}
 		else if(command.equals(STRING_EXPORT))
 		{
@@ -438,18 +438,18 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 			//JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "파일명이 없습니다.");
 			return;
 		}
-		
-		
-		
+
+
+
 		VesselInfoExportCommand command = new VesselInfoExportCommand(fileName);
 		command.execute();
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 	}
 
 
@@ -507,6 +507,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	 * 
 	 */
 	private void insertAction() {
+		logger.debug("insert");
 		KSGDialog dialog = new InsertVesselInfoDialog();
 		dialog.createAndUpdateUI();
 		if(dialog.result==KSGDialog.SUCCESS)
@@ -539,28 +540,28 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		if(row<0)
 			return;
 
-		
+
 		HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(row);
-		
+
 		String vessel_name = (String) item.get("vessel_name");
 		int result=JOptionPane.showConfirmDialog(this,vessel_name+"를 삭제 하시겠습니까?", "선박 정보 삭제", JOptionPane.YES_NO_OPTION);
 		if(result==JOptionPane.OK_OPTION)
 		{	
 			try {
-				
+
 				vesselService.delete(item);
-				
+
 				JOptionPane.showMessageDialog(this, "삭제되었습니다.");
-				
+
 				fnSearch();
-				
+
 				tableD.clearReslult();
-				
+
 
 			} catch (SQLException e1) {
 
 				e1.printStackTrace();
-				
+
 				JOptionPane.showConfirmDialog(this, e1.getMessage());
 			}
 		}
@@ -570,16 +571,17 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	{
 		HashMap<String, Object> param = new HashMap<String, Object>();		
 
-
-		if(cbxUse.getSelectedItem().equals("사용안함"))
-		{	
-			param.put("vessel_use", Vessel.NON_USE);
-		}
-		else
+		if(cbxUse.getSelectedIndex()>0)
 		{
-			param.put("vessel_use", Vessel.USE);
+			if(cbxUse.getSelectedItem().equals("사용안함"))
+			{	
+				param.put("vessel_use", Vessel.NON_USE);
+			}
+			else
+			{
+				param.put("vessel_use", Vessel.USE);
+			}
 		}
-
 
 		if(!"".equals(txfSearch.getText()))
 		{
@@ -655,13 +657,13 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		tableD.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 		KSGTableColumn dcolumns = new KSGTableColumn();
-		
+
 		dcolumns.columnField = "vessel_abbr";
-		
+
 		dcolumns.columnName = "선박명 약어";
 
 		tableD.addColumn(dcolumns);
-		
+
 		tableD.initComp();
 
 		pnSubMain.add(pnPortInfo,BorderLayout.NORTH);
@@ -718,7 +720,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 				HashMap<String, Object> item = (HashMap<String, Object>) tableH.getValueAt(row);
 				UpdateVesselInfoDialog dialog = new UpdateVesselInfoDialog(item);
 				dialog.createAndUpdateUI();
-				
+
 			}
 		}
 	}
@@ -776,13 +778,13 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	@Override
 	public void componentResized(ComponentEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void componentMoved(ComponentEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -793,21 +795,21 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	@Override
 	public void componentHidden(ComponentEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	class SelectionListner implements ListSelectionListener
 	{
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			
+
 			if(!e.getValueIsAdjusting())
 			{
-				
+
 				int row=tableH.getSelectedRow();
 				if(row<0)
 					return;
-				
+
 				String vessel_name=(String) tableH.getValueAt(row, 0);
 				String vessel_mmsi=(String) tableH.getValueAt(row, 1);
 				String vessel_type=(String) tableH.getValueAt(row, 2);
@@ -821,9 +823,9 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 				lblVesselMMSI.setText(vessel_mmsi);
 				lblVesselUse.setText(vessel_use);
 				lblInputDate.setText(input_date);
-				
+
 				fnSearchDetail(vessel_name);
-				
+
 			}
 		}
 	}
@@ -832,13 +834,13 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 		try {
 			HashMap<String, Object> commandMap = new HashMap<String, Object>();
-			
+
 			commandMap.put("vessel_name", vessel_name);
-			
+
 			HashMap<String, Object> resultMap =  (HashMap<String, Object>) vesselService.selectDetailList(commandMap);
-			
+
 			List result = (List) resultMap.get("master");
-			
+
 			tableD.setResultData(result);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
