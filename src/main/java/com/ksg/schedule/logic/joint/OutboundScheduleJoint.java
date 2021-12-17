@@ -51,8 +51,6 @@ public class OutboundScheduleJoint extends DefaultScheduleJoint{
 	TAG_VERSION3,
 	TAG_VERSION4,
 	TAG_VERSION5;
-	
-	ScheduleManager scheduleManager = ScheduleManager.getInstance();
 
 	DAOManager manager =DAOManager.getInstance();
 

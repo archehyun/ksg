@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
@@ -28,7 +29,9 @@ import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
 import com.ksg.service.TableService;
+import com.ksg.service.VesselService;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
@@ -46,6 +49,9 @@ public abstract class CreateScheduleCommand implements KSGCommand, ScheduleBuild
 	protected ADVService 		advService;
 	protected ScheduleService 	scheduleService;
 	protected BaseService 		baseService;
+	
+	private VesselService vesselService = new VesselServiceImpl();
+	
 	protected Vector errorlist ;
 	protected int lengthOfTask;
 	protected int current = 0;
@@ -84,10 +90,18 @@ public abstract class CreateScheduleCommand implements KSGCommand, ScheduleBuild
 		portList = 		baseService.getPortInfoList();
 		portAbbrList = 	baseService.getPort_AbbrList();
 
-		Vessel op = new Vessel();
-		op.setVessel_use(Vessel.NON_USE);
-
-		NO_VESSEL = baseService.getVesselList(op);
+//		Vessel op = new Vessel();
+//		op.setVessel_use(Vessel.NON_USE);
+		//NO_VESSEL = baseService.getVesselList(op);
+		
+		
+		HashMap<String, Object> vesselParam = new HashMap<String, Object>();
+		
+		vesselParam.put("vessel_use", Vessel.NON_USE);
+		
+		HashMap<String, Object> result=vesselService.selectList(vesselParam);		
+		NO_VESSEL = (List) result.get("master");
+		
 	}
 	public int getLengthOfTask() {
 		return lengthOfTask;

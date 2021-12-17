@@ -58,7 +58,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 
 
 	
-	ScheduleManager scheduleManager = ScheduleManager.getInstance();
+	//ScheduleManager scheduleManager = ScheduleManager.getInstance();
 	/**
 	 * @설명 최상위 그룹
 	 * @author 박창현

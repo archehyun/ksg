@@ -10,13 +10,8 @@
  *******************************************************************************/
 package com.ksg;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
-import java.util.Properties;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -28,12 +23,22 @@ import com.ksg.common.util.PropertiManager;
 import com.ksg.workbench.KSGLogin;
 import com.ksg.workbench.KSGMainFrame;
 
+
 /**
- * 
- * 메인 클래스 
- * @author 박창현
- *
- */
+
+  * @FileName : App.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 13. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 메인 클래스
+
+  */
 public class App 
 {
 	protected Logger logger = Logger.getLogger(getClass());
@@ -58,16 +63,7 @@ public class App
 			logger.info("PROGRAM START");
 			logger.info("DB Connected..");
 
-//			if(new File("ksg.jar").isFile())
-//			{
-//				
-//				logger.debug("load jar file");
-//				JarFile file = new JarFile("ksg.jar");
-//				JarEntry en = file.getJarEntry("db.properties");
-//				InputStream input=file.getInputStream(en);
-//				Properties pp = new Properties();
-//				pp.load(input);
-//			}
+
 			try {
 				UIManager.setLookAndFeel(
 						UIManager.getSystemLookAndFeelClassName());

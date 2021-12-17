@@ -61,7 +61,7 @@ public class RouteScheduleJointV2 extends RouteAbstractScheduleJoint {
 	
 	private static final String WORLD_SOURCE_XML = "world_source.xml";
 
-	DAOManager manager =DAOManager.getInstance();
+	//DAOManager manager =DAOManager.getInstance();
 
 	private ScheduleBuildMessageDialog di;
 

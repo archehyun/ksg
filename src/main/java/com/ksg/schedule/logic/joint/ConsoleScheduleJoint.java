@@ -18,18 +18,28 @@ import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.SortUtil;
 import com.ksg.domain.Code;
-import com.ksg.domain.ScheduleType;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
-import com.ksg.domain.ShippersTable;
+import com.ksg.domain.ScheduleType;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleJoint;
 
+
 /**
- * 2014-11-20 업데이트
- * @author 박창현
- *
- */
+
+  * @FileName : ConsoleScheduleJoint.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 17. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class ConsoleScheduleJoint extends DefaultScheduleJoint{
 
 	/**
