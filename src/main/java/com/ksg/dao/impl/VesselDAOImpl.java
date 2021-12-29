@@ -36,7 +36,7 @@ public class VesselDAOImpl extends AbstractDAO{
 	
 	public List<Map<String, Object>> selectVesselAbbrList(HashMap<String, Object> commandMap) throws SQLException{
 		
-		System.out.println(commandMap.get("vessel_name"));
+		
 		return selectList("vessel.selectVesselAbbrList", commandMap);
 		
 	}

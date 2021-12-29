@@ -49,6 +49,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
  * @author archehyun
  *
  */
+@Deprecated
 public class PnVesselAbbr extends PnBase implements ActionListener{
 	private String[] columName = {"선박명", "선박명 약어"};
 	/**

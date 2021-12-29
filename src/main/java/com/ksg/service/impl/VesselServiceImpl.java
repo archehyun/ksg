@@ -86,8 +86,10 @@ public class VesselServiceImpl implements VesselService{
 
 	@Override
 	public HashMap<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("master",vesselDAO.selectVesselAbbrList((HashMap<String, Object>) commandMap));
+		return resultMap;
 	}
 
 	@Override

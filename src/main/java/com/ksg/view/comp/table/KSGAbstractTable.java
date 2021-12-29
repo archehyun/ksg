@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -87,13 +89,17 @@ public class KSGAbstractTable extends JTable{
 
 
 		for (int i = 0; i < colmodel.getColumnCount(); i++) {
+			
+			
+			DefaultTableCellRenderer cellRenderer = new KSGTableCellRenderer();
 			TableColumn namecol = colmodel.getColumn(i);
 
-			namecol.setCellRenderer(getCellRenderer());
+			namecol.setCellRenderer(cellRenderer);
 			
 			KSGTableColumn col = model.getColumn(i);
 
-			renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			cellRenderer.setHorizontalAlignment(col.ALIGNMENT);
+			
 
 			if(col.maxSize!=0)
 			{
@@ -300,6 +306,11 @@ public class KSGAbstractTable extends JTable{
 
 	 */
 	class KSGTableCellRenderer extends DefaultTableCellRenderer {
+		
+		int leftPadding = 10;
+		int rightPadding = 10;
+		
+		Border padding = BorderFactory.createEmptyBorder(0, leftPadding, 0, rightPadding);
 
 		/**
 		 *
@@ -324,7 +335,7 @@ public class KSGAbstractTable extends JTable{
 					foreground = Color.black;
 				}
 			}
-
+			setBorder(BorderFactory.createCompoundBorder(getBorder(), padding));
 			renderer.setForeground(foreground);
 			renderer.setBackground(background);
 

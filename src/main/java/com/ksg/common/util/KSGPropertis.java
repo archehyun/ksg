@@ -16,6 +16,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import com.ibatis.common.resources.Resources;
+
 public class KSGPropertis extends Properties{
 	
 	/**
@@ -68,7 +70,7 @@ public class KSGPropertis extends Properties{
 	};
 	
 	
-	private  String KSG_PROPERTIES_TXT = "ksg.properties";
+	private  String KSG_PROPERTIES_TXT = "config/ksg.properties";
 	
 	private static KSGPropertis instance = new KSGPropertis();
 	public static KSGPropertis getIntance()
@@ -86,7 +88,8 @@ public class KSGPropertis extends Properties{
 	}
 	private void load() {
 		try {
-			this.load(new FileInputStream(KSG_PROPERTIES_TXT));
+			
+			this.load(Resources.getResourceAsReader("config/ksg.properties"));
 		} catch (FileNotFoundException e) 
 		{
 			e.printStackTrace();
@@ -109,6 +112,7 @@ public class KSGPropertis extends Properties{
 	public void store()
 	{
 		try {
+			//TODO 저장 위치 확인
 			this.store(new FileOutputStream(KSG_PROPERTIES_TXT), "no commments");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

@@ -94,7 +94,7 @@ public class InlnandScheduleJoint extends DefaultScheduleJoint{
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("M/d"); 
 
-	private String fileName,portFileName;
+	
 	
 	private FileWriter fw;
 	
@@ -243,7 +243,7 @@ public class InlnandScheduleJoint extends DefaultScheduleJoint{
 		 * @param vessel 		선박명
 		 * @param inland_date 	기항일자
 		 * @param agent 		에이전트
-		 * @param dateT			도착일
+		 * @param dateT		 	도착일
 		 * @return
 		 */
 		private String toStringAgentInfoByTag(String dateF, String vessel, String inland_date,String agent, String dateT)		

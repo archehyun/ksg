@@ -25,9 +25,9 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowSorter;
@@ -45,6 +45,7 @@ import javax.swing.table.TableRowSorter;
 
 import com.ksg.domain.Company;
 import com.ksg.service.impl.CompanyServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.KSGTableColumn;
@@ -145,25 +146,10 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 	}
 
-	private JPanel buildCenter()
+	private JComponent buildCenter()
 	{
-		JPanel pnMain = new JPanel(new BorderLayout());		
-
-		tableH = new KSGTablePanel("선사목록");
-
-//		tblCompanyTable = new CompanyTable();
-//
-//		tblCompanyTable.addMouseListener(new TableSelectListner());
-//
-//		tblCompanyTable.getColumnModel().addColumnModelListener(new MyTableColumnModelListener(tblCompanyTable));
-
-		tableH.addMouseListener(new TableSelectListner());
-
-		//JScrollPane jScrollPane = new JScrollPane(tblCompanyTable);
-
-		//jScrollPane.getViewport().setBackground(Color.white);
-
-		pnMain.add(tableH);
+		logger.info("화면 초기화");
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());	
 
 		KSGTableColumn columns[] = new KSGTableColumn[5];
 
@@ -171,42 +157,55 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		columns[0].columnField = "company_name";
 		columns[0].columnName = "선사명";
 		columns[0].size = 300;
+		columns[0].ALIGNMENT = SwingConstants.LEFT;
 
 		columns[1] = new KSGTableColumn();
 		columns[1].columnField = "company_abbr";
 		columns[1].columnName = "선사약어";
 		columns[1].size = 300;
+		columns[1].ALIGNMENT = SwingConstants.LEFT;
 
 		columns[2] = new KSGTableColumn();
 		columns[2].columnField = "agent_name";
 		columns[2].columnName = "에이전트명";
 		columns[2].size = 300;
+		columns[2].ALIGNMENT = SwingConstants.LEFT;
 
 		columns[3] = new KSGTableColumn();
 		columns[3].columnField = "agent_abbr";
 		columns[3].columnName = "에이전트 약어";
 		columns[3].size = 300;
+		columns[3].ALIGNMENT = SwingConstants.LEFT;
 		
 		columns[4] = new KSGTableColumn();
 		columns[4].columnField = "contents";
 		columns[4].columnName = "비고";
 		columns[4].size = 300;
+		
+		
+		tableH = new KSGTablePanel("선사목록");
+
+		tableH.addMouseListener(new TableSelectListner());
+
+		pnMain.add(tableH);
 
 		tableH.setColumnName(columns);
 		tableH.initComp();
-
+		
 
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 
 		pnMain.add(buildButton(),BorderLayout.SOUTH);
+		
+		logger.info("화면 초기화 종료");
 		return pnMain;
 
 	}
 	/**
 	 * @return
 	 */
-	private JPanel buildSearchPanel() {
-		JPanel pnSearch = new JPanel();
+	private KSGPanel buildSearchPanel() {
+		KSGPanel pnSearch = new KSGPanel();
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		lblTotal = new JLabel();
 		lblTable = new JLabel("선사 정보");
@@ -247,23 +246,23 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		Box pnSearchAndCount = Box.createVerticalBox();
 		pnSearchAndCount.add(pnSearch);
 
-		JPanel pnCountInfo = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnCountInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		pnCountInfo.add(lblTotal);
 		pnCountInfo.add(label);
 		pnSearchAndCount.add(pnCountInfo);
 
-		JPanel pnCount = new JPanel();
+		KSGPanel pnCount = new KSGPanel();
 		
 		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		pnCount.add(lblTable);
 
-		JPanel pnInfo= new JPanel(new BorderLayout());
+		KSGPanel pnInfo= new KSGPanel(new BorderLayout());
 
-		JPanel pnS = new JPanel();
+		KSGPanel pnS = new KSGPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
+		KSGPanel pnS1 = new KSGPanel();
 		pnS1.setPreferredSize(new Dimension(0,15));
 		Box info = new Box(BoxLayout.Y_AXIS);
 		info.add(pnS);
@@ -278,10 +277,10 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 	/**
 	 * @return
 	 */
-	private JPanel buildButton()
+	private KSGPanel buildButton()
 	{
-		JPanel pnButtom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JPanel pnButtomRight = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnButtom = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnButtomRight = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton butDel = new JButton("삭제");
 		JButton butNew = new JButton("신규");
 		pnButtomRight.setBorder(BorderFactory.createEtchedBorder());		
@@ -299,18 +298,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 	@Override
 	public void updateTable(String query) {
 
-//		logger.info("order by:"+orderby);
-//
-//		try {
-//			tblCompanyTable.setQuery(query);
-//			tblCompanyTable.retrive();
-//
-//			lblTotal.setText(tblCompanyTable.getRowCount()+" / "+tblCompanyTable.getToalCount());
-//
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//			JOptionPane.showMessageDialog(PnCompany.this, e.getMessage());
-//		}
+
 
 	}
 

@@ -80,7 +80,9 @@ public class KSGLogin extends JDialog {
 			config = Configure.getInstance();
 			String resource = "config/db.properties";
 			Reader reader = Resources.getResourceAsReader(resource);
-			properties.load(new FileInputStream("ksg.properties"));
+			
+			
+			properties.load(Resources.getResourceAsReader("config/ksg.properties"));
 			db_properties.load(reader);			
 
 			url = config.getProperty("mssql.ip");
@@ -92,7 +94,8 @@ public class KSGLogin extends JDialog {
 			db = (String) db_properties.get("mssql.db");
 		} 
 		catch (FileNotFoundException e) 
-		{			
+		{
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			System.exit(1);
 		} catch (IOException e) {

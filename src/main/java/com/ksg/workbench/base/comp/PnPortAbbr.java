@@ -54,6 +54,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
  * @author ¹ÚÃ¢Çö
  *
  */
+@Deprecated
 public class PnPortAbbr extends PnBase implements ActionListener{
 
 

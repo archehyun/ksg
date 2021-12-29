@@ -30,6 +30,7 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 public abstract class DefaultScheduleJoint implements ScheduleJoint{
 	
 	
+	
 	protected ScheduleData data;
 	
 	public ScheduleManager scheduleManager = ScheduleManager.getInstance();
@@ -46,7 +47,7 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 	protected SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
 
-	protected String fileName;
+	protected String fileName, portFileName;
 	
 	protected String fileLocation;
 

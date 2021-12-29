@@ -10,8 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -32,7 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -46,11 +44,9 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 
 import com.ksg.commands.base.VesselInfoExportCommand;
 import com.ksg.common.model.KSGModelManager;
@@ -107,6 +103,8 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	 * 
 	 */
 	private KSGPropertis 	propertis = KSGPropertis.getIntance();
+	
+	protected Logger logger = Logger.getLogger(getClass());
 
 	private SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
 
@@ -145,7 +143,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		this.add(buildCenter());
 	}
 
-	private JPanel buildCenter()
+	private JComponent buildCenter()
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
@@ -157,6 +155,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		columns[0].columnField = "vessel_name";
 		columns[0].columnName = STRING_VESSEL_NAME;
 		columns[0].size = 200;
+		columns[0].ALIGNMENT = SwingConstants.LEFT;
 
 		columns[1] = new KSGTableColumn();
 		columns[1].columnField = "vessel_mmsi";
@@ -225,7 +224,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	 * 검색 항목 표시 패널
 	 * @return
 	 */
-	private JPanel buildSearchPanel() {
+	private JComponent buildSearchPanel() {
 		KSGPanel pnSearch = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		lblTotal = new JLabel();
 		lblTable = new JLabel("선박 정보");
@@ -236,7 +235,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		JLabel lbl = new JLabel("필드명 : ");
 		cbxField = new JComboBox<KSGTableColumn>();
 		cbxField.addItem(new KSGTableColumn("vessel_name",STRING_VESSEL_NAME));
-		cbxField.addItem(new KSGTableColumn("mmsi",STRING_VESSEL_MMSI));
+		cbxField.addItem(new KSGTableColumn("vessel_mmsi",STRING_VESSEL_MMSI));
 		cbxField.addItem(new KSGTableColumn("vessel_company",STRING_VESSEL_COMPANY));		
 		cbxField.addItem(new KSGTableColumn("input_date",STRING_INPUTDATE));
 
@@ -249,27 +248,6 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		cbxVesselType = new JComboBox();
 
 		cbxVesselType.addItem(STRING_ALL);
-
-		Code code = new Code();
-
-		code.setCode_name_kor(STRING_CONTAINER_TYPE);
-		try {
-			List li=	baseDaoService.getSubCodeInfo(code);
-
-			DefaultComboBoxModel boxModel = new DefaultComboBoxModel();
-
-			Iterator iter = li.iterator();
-
-			while(iter.hasNext())
-			{
-				Code code2=(Code) iter.next();
-				cbxVesselType.addItem(code2.getCode_field());
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		cbxUse = new JComboBox();
 		cbxUse.addItem(STRING_ALL);
@@ -293,21 +271,21 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		Box pnSearchAndCount = Box.createVerticalBox();
 		pnSearchAndCount.add(pnSearch);
 
-		JPanel pnCountInfo = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnCountInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		pnCountInfo.add(lblTotal);
 		pnCountInfo.add(label);
 		pnSearchAndCount.add(pnCountInfo);
 
-		JPanel pnCount = new JPanel();
+		KSGPanel pnCount = new KSGPanel();
 		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnCount.add(lblTable);
 
-		JPanel pnInfo= new JPanel(new BorderLayout());
+		KSGPanel pnInfo= new KSGPanel(new BorderLayout());
 
-		JPanel pnS = new JPanel();
+		KSGPanel pnS = new KSGPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
+		KSGPanel pnS1 = new KSGPanel();
 		pnS1.setPreferredSize(new Dimension(0,15));
 		Box info = new Box(BoxLayout.Y_AXIS);
 		info.add(pnS);
@@ -322,10 +300,10 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	/**하단 버튼 목록 생성
 	 * @return
 	 */
-	private JPanel buildButton()
+	private JComponent buildButton()
 	{
 		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		JPanel pnButtomRight = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnButtomRight = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton butDel = new JButton(STRING_DELETE);
 
 		JButton butNew = new JButton(STRING_INSERT);
@@ -572,7 +550,15 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	public void fnSearch()
 	{
-		HashMap<String, Object> param = new HashMap<String, Object>();		
+		HashMap<String, Object> param = new HashMap<String, Object>();	
+		
+		
+		
+		if(cbxVesselType.getSelectedIndex()>0)
+		{
+			param.put("vessel_type", cbxVesselType.getSelectedItem());
+			
+		}
 
 		if(cbxUse.getSelectedIndex()>0)
 		{
@@ -594,6 +580,8 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 			param.put(col.columnField, txfSearch.getText());
 
 		}
+		
+		logger.info("param:"+param);
 
 		try {
 			HashMap<String, Object> result = (HashMap<String, Object>) vesselService.selectList(param);
@@ -626,7 +614,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 
 
-	private JPanel createVesselDetail()
+	private JComponent createVesselDetail()
 	{		
 		lblVesselName = new JLabel();
 		lblVesselMMSI = new JLabel();
@@ -678,11 +666,11 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 		return pnMain;
 	}
-	private JPanel addComp(String name, JComponent comp)
+	private JComponent addComp(String name, JComponent comp)
 	{
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 		layout.setHgap(5);		
-		JPanel pnMain = new JPanel(layout);
+		KSGPanel pnMain = new KSGPanel(layout);
 
 		pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
@@ -792,6 +780,29 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	@Override
 	public void componentShown(ComponentEvent e) {
+		
+		Code code = new Code();
+
+		code.setCode_name_kor(STRING_CONTAINER_TYPE);
+		try {
+			List li=	baseDaoService.getSubCodeInfo(code);
+
+			DefaultComboBoxModel boxModel = new DefaultComboBoxModel();
+
+			Iterator iter = li.iterator();
+
+			while(iter.hasNext())
+			{
+				Code code2=(Code) iter.next();
+				cbxVesselType.addItem(code2.getCode_field());
+
+			}
+		} catch (SQLException ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
+		}
+		
+		
 		fnSearch();
 	}
 
@@ -845,8 +856,8 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 			List result = (List) resultMap.get("master");
 
 			tableD.setResultData(result);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(null, "error : "+e1.getMessage());
 			e1.printStackTrace();
 		}
 	}

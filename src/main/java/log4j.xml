@@ -86,7 +86,7 @@
         <level value="INFO"/>
     </logger>
      <logger name="java.sql.Connection">
-        <level value="DEBUG"/>	
+        <level value="INFO"/>	
     </logger>        
     
     
@@ -106,7 +106,7 @@
    
 
     <root>
-        <level value="DEBUG">
+        <level value="INFO">
         
         </level>
         	

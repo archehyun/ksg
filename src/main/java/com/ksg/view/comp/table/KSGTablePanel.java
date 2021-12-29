@@ -18,13 +18,30 @@ import javax.swing.ListSelectionModel;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
+ 
 
+
+/**
+
+  * @FileName : KSGTablePanel.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 29. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 @SuppressWarnings("serial")
-public class KSGTablePanel extends KSGPanel{
-	
-	
+public class KSGTablePanel extends KSGPanel{ 
 	public static final String INSERT="insert";
+	
 	public static final String DELETE="delete";
+	
 	public static final String UPDATE="update";
 	
 	
@@ -43,6 +60,7 @@ public class KSGTablePanel extends KSGPanel{
 	private JButton butDelete;
 
 	private JButton butUpdate;
+	
 	private KSGPanel pnControl;
 
 	public void setShowControl(boolean showControl) {
@@ -60,6 +78,7 @@ public class KSGTablePanel extends KSGPanel{
 		this.setLayout(new BorderLayout(5,5));
 
 		table = new KSGAbstractTable();
+		table.setGridColor(Color.lightGray);
 
 		this.add(new JScrollPane(table));
 

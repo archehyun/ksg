@@ -35,7 +35,9 @@
 		    <isNotNull property="port_name" prepend="and">
 		        port_name like '%$port_name$%'
 		    </isNotNull>
- 
+		    <isNotNull property="port_nationality" prepend="and">
+		        port_nationality like '%$port_nationality$%'
+		    </isNotNull>
 		</dynamic>
 	</select>
 	

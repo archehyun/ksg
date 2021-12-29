@@ -27,15 +27,18 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 
-import com.ksg.dao.impl.PortDAOImpl;
+import org.apache.log4j.Logger;
+
+
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.label.BoldLabel;
@@ -75,7 +78,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private JTextField txfSearch;
 	
-	//private PortDAOImpl portDAO = new PortDAOImpl();
+	protected Logger logger = Logger.getLogger(getClass());	
 	
 	private PortServiceImpl portService = new PortServiceImpl();
 	
@@ -98,13 +101,14 @@ public class PnPort extends PnBase implements ActionListener{
 		this.setBackground(Color.white);
 		
 		this.addComponentListener(this);
+		
 		this.add(buildCenter());
 
 	}
 	/**
 	 * @return
 	 */
-	private JPanel buildSearchPanel() {
+	private JComponent buildSearchPanel() {
 		
 		KSGPanel pnSearch = new KSGPanel();
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -177,16 +181,16 @@ public class PnPort extends PnBase implements ActionListener{
 		pnSearchAndCount.add(pnSearch);
 
 
-		JPanel pnCount = new JPanel();
+		KSGPanel pnCount = new KSGPanel();
 		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnCount.add(lblTable);
 
 		KSGPanel pnMain= new KSGPanel(new BorderLayout());
 
-		JPanel pnS = new JPanel();
+		KSGPanel pnS = new KSGPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
+		KSGPanel pnS1 = new KSGPanel();
 		pnS1.setPreferredSize(new Dimension(0,15));
 		Box info = new Box(BoxLayout.Y_AXIS);
 		info.add(pnS);
@@ -196,10 +200,10 @@ public class PnPort extends PnBase implements ActionListener{
 		pnMain.add(pnCount,BorderLayout.WEST);
 		return pnMain;
 	}
-	private JPanel buildButton()
+	private KSGPanel buildButton()
 	{
-		JPanel pnButtom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JPanel pnButtomRight = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnButtom = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnButtomRight = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton butDel = new JButton("삭제");
 
 		JButton butNew = new JButton("신규");
@@ -219,11 +223,11 @@ public class PnPort extends PnBase implements ActionListener{
 		return pnButtom;
 	}
 	
-	private JPanel addComp(String name, JComponent comp)
+	private KSGPanel addComp(String name, JComponent comp)
 	{
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
 		layout.setHgap(5);		
-		JPanel pnMain = new JPanel(layout);
+		KSGPanel pnMain = new KSGPanel(layout);
 		
 		pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		
@@ -243,7 +247,7 @@ public class PnPort extends PnBase implements ActionListener{
 		
 		
 	}
-	private JPanel createPortDetail()
+	private KSGPanel createPortDetail()
 	{		
 		lblPortName = new JLabel();
 		lblArea = new JLabel();
@@ -252,9 +256,7 @@ public class PnPort extends PnBase implements ActionListener{
 		
 		lblPortName.setBackground(Color.WHITE);
 		
-		KSGPanel pnMain = new KSGPanel(new BorderLayout(5,5));
-		
-		//pnMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 10));
+		KSGPanel pnMain = new KSGPanel(new BorderLayout(5,5));		
 		
 		pnMain.setPreferredSize(new Dimension(400, 0));
 		
@@ -295,7 +297,7 @@ public class PnPort extends PnBase implements ActionListener{
 	}
 
 
-	private JPanel buildCenter()
+	private JComponent buildCenter()
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
@@ -351,16 +353,19 @@ public class PnPort extends PnBase implements ActionListener{
 		columns[0].columnField = "port_name";
 		columns[0].columnName = "항구명";
 		columns[0].size = 300;
+		columns[0].ALIGNMENT = SwingConstants.LEFT;
 
 		columns[1] = new KSGTableColumn();
 		columns[1].columnField = "port_nationality";
 		columns[1].columnName = "나라";
 		columns[1].size = 300;
+		columns[1].ALIGNMENT = SwingConstants.LEFT;
 
 		columns[2] = new KSGTableColumn();
 		columns[2].columnField = "port_area";
 		columns[2].columnName = "지역";
 		columns[2].size = 300;
+		columns[2].ALIGNMENT = SwingConstants.LEFT;
 		
 		columns[3] = new KSGTableColumn();
 		columns[3].columnField = "area_code";
@@ -594,9 +599,11 @@ public class PnPort extends PnBase implements ActionListener{
 			{
 				param.put("port_nationality", searchParam);
 			}	
-		}		
+		}			
+		
 		
 		try {
+			logger.info("param:"+param);
 			HashMap<String, Object> result = (HashMap<String, Object>) portService.selectList(param);
 			
 			tableH.setResultData(result);
