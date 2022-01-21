@@ -58,12 +58,12 @@ public abstract class PnBase extends KSGPanel implements ComponentListener, Tabl
 	public BaseInfoUI getBaseInfoUI() {
 		return baseInfoUI;
 	}
-	protected BaseService service = new BaseServiceImpl();
+	//protected BaseService service = new BaseServiceImpl();
 	
 	public PnBase(BaseInfoUI baseInfoUI) {
 		this.baseInfoUI = baseInfoUI;
 		
-		baseDaoService = DAOImplManager.getInstance().createBaseDAOImpl();
+		//baseDaoService = DAOImplManager.getInstance().createBaseDAOImpl();
 		
 		//order by를 위한 칼럼 목록 생성		
 		arrangeMap = new HashMap<String, String>();

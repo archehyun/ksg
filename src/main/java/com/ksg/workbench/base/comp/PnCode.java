@@ -80,11 +80,11 @@ public abstract class PnCode extends JPanel implements ActionListener
 
 	BaseInfoUI base;
 
-	private PnCodeConType pnCodeConType;
+	//private PnCodeConType pnCodeConType;
 	
-	private PnCodeInboundPortOrder pnCodeInboundPort;
+	//private PnCodeInboundPortOrder pnCodeInboundPort;
 	
-	private PnCodeInboundPort pnCodeInboundInCode;
+	//private PnCodeInboundPort pnCodeInboundInCode;
 
 	public PnCode(BaseInfoUI base) {
 		this.base=base;
@@ -100,23 +100,23 @@ public abstract class PnCode extends JPanel implements ActionListener
 
 		Box subMain1 = Box.createHorizontalBox();
 
-		pnCodeConType 	  = new PnCodeConType(base);
-
-		pnCodeInboundPort = new PnCodeInboundPortOrder(base);
-
-		pnCodeInboundInCode = new PnCodeInboundPort(base);
-
-		subMain1.add(pnCodeConType);
-
-		subMain1.add(Box.createHorizontalStrut(15));
-
-		subMain1.add(pnCodeInboundInCode);
+//		pnCodeConType 	  = new PnCodeConType(base);
+//
+//		pnCodeInboundPort = new PnCodeInboundPortOrder(base);
+//
+//		pnCodeInboundInCode = new PnCodeInboundPort(base);
+//
+//		subMain1.add(pnCodeConType);
+//
+//		subMain1.add(Box.createHorizontalStrut(15));
+//
+//		subMain1.add(pnCodeInboundInCode);
 
 		subMain1.add(Box.createGlue());
 
 		Box subMain2 = Box.createHorizontalBox();
 
-		subMain2.add(pnCodeInboundPort);
+		//subMain2.add(pnCodeInboundPort);
 
 		subMain2.add(Box.createGlue());
 
@@ -124,11 +124,11 @@ public abstract class PnCode extends JPanel implements ActionListener
 
 		pnMain.add(subMain2);
 		
-		pnCodeConType.updateTable();
-
-		pnCodeInboundInCode.updateTable();
-
-		pnCodeInboundPort.updateTable();
+//		pnCodeConType.updateTable();
+//
+//		pnCodeInboundInCode.updateTable();
+//
+//		pnCodeInboundPort.updateTable();
 
 
 		JPanel pnTitle = createTiltlePn();
