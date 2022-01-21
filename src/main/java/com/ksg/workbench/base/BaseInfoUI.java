@@ -18,7 +18,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.UIManager;
@@ -67,7 +67,7 @@ public class BaseInfoUI extends KSGPanel{
 	
 	
 	private JTree tree;
-	private JPanel pnMain;
+	private KSGPanel pnMain;
 	private CardLayout cardLayout;
 	/**
 	 * 
@@ -93,7 +93,7 @@ public class BaseInfoUI extends KSGPanel{
 	public void createAndUpdateUI() {
 		this.setLayout(new BorderLayout());
 
-		JPanel pnTitle = new JPanel();
+		KSGPanel pnTitle = new KSGPanel();
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEADING));
 		JLabel lblTitle = new JLabel("기초정보관리");
 		
@@ -131,16 +131,16 @@ public class BaseInfoUI extends KSGPanel{
 	private Component buildLeftMenu() {
 		JTree tree = createTreeMenu();
 
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 
-		JPanel pnTitle = new JPanel();
+		KSGPanel pnTitle = new KSGPanel();
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		pnTitle.setPreferredSize( new Dimension(0,22));
 		pnMain.add(pnTitle,BorderLayout.NORTH);
 		pnMain.add(new JScrollPane(tree),BorderLayout.CENTER);
-		JPanel pnTableMainLeft = new JPanel();
+		KSGPanel pnTableMainLeft = new KSGPanel();
 		pnTableMainLeft.setPreferredSize(new Dimension(15,0));
 		pnMain.add(pnTableMainLeft,BorderLayout.WEST);
 		pnMain.setPreferredSize(new Dimension(200,100));
@@ -203,7 +203,7 @@ public class BaseInfoUI extends KSGPanel{
 		
 	}
 	private Component buildCenter() {
-		pnMain = new JPanel();
+		pnMain = new KSGPanel();
 		
 		cardLayout = new CardLayout();
 		
@@ -212,9 +212,7 @@ public class BaseInfoUI extends KSGPanel{
 	
 		
 		addBasePanel(pnMain,new PnCommonCode(this),STRING_COMMONCODE_INFO);
-		//addBasePanel(pnMain,new PnCodeInboundPortOrder(this),CODE_TYPE_INBOUND_PORT_ORDER);
-		//addBasePanel(pnMain,new PnCodeInboundPort(this),CODE_TYPE_INBOUND_PORT);
-		//addBasePanel(pnMain,new PnCodeConType(this),CODE_TYPE_CON_TYPE);
+
 		
 		addBasePanel(pnMain,new PnArea(this),		STRING_AREA_INFO);
 		addBasePanel(pnMain,new PnVessel(this),		STRING_VESSEL_INFO);
@@ -226,7 +224,7 @@ public class BaseInfoUI extends KSGPanel{
 		return pnMain;
 	}
 	
-	private void addBasePanel(JPanel pnMain, PnBase insertPanel, String panelName)
+	private void addBasePanel(KSGPanel pnMain, PnBase insertPanel, String panelName)
 	{
 		pnMain.add(insertPanel,panelName);
 		

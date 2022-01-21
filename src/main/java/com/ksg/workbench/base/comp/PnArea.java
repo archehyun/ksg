@@ -37,6 +37,7 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.dao.impl.AreaDAOImpl;
 import com.ksg.domain.AreaInfo;
 import com.ksg.service.impl.AreaServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.KSGTableColumn;
@@ -88,9 +89,9 @@ public class PnArea extends PnBase implements ActionListener{
 		searchData();		
 	}
 
-	private JPanel buildCenter()
+	private KSGPanel buildCenter()
 	{
-		JPanel pnMain = new JPanel(new BorderLayout());
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
 		tableH = new KSGAbstractTable();
 		tableH.addMouseListener(new TableSelectListner());
@@ -124,8 +125,8 @@ public class PnArea extends PnBase implements ActionListener{
 		return pnMain;
 
 	}
-	private JPanel buildSearchPanel() {
-		JPanel pnSearch = new JPanel();
+	private KSGPanel buildSearchPanel() {
+		KSGPanel pnSearch = new KSGPanel();
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		lblTotal = new JLabel();		
 		lblTable = new JLabel("지역 정보");
@@ -152,22 +153,22 @@ public class PnArea extends PnBase implements ActionListener{
 		Box pnSearchAndCount = Box.createVerticalBox();
 		pnSearchAndCount.add(pnSearch);
 
-		JPanel pnCountInfo = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnCountInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		pnCountInfo.add(lblTotal);
 		pnCountInfo.add(label);
 		pnSearchAndCount.add(pnCountInfo);
 
-		JPanel pnCount = new JPanel();
+		KSGPanel pnCount = new KSGPanel();
 		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnCount.add(lblTable);
 
 
-		JPanel pnInfo= new JPanel(new BorderLayout());
+		KSGPanel pnInfo= new KSGPanel(new BorderLayout());
 
-		JPanel pnS = new JPanel();
+		KSGPanel pnS = new KSGPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
+		KSGPanel pnS1 = new KSGPanel();
 		pnS1.setPreferredSize(new Dimension(0,15));
 		Box info = new Box(BoxLayout.Y_AXIS);
 		info.add(pnS);
