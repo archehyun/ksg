@@ -70,7 +70,7 @@ public abstract class PnCode extends JPanel implements ActionListener
 	
 	private JTable tableCurrent;
 	
-	private BaseService service = new BaseServiceImpl();
+	//private BaseService service = new BaseServiceImpl();
 	
 	private JTable tableInboundPortList;
 	
@@ -190,336 +190,336 @@ public abstract class PnCode extends JPanel implements ActionListener
 
 
 	private void updateCodeTable2() throws SQLException,SqlMapException{
-		if(selectedTable==null)
-			return;
-
-
-
-		Code code_info = new Code();
-		code_info.setCode_name_kor(selectedTable);
-
-		List<Code> li=service.getSubCodeInfo(code_info);
-		String[] colums2 = {"","Name","한글","Field"};
-
-		DefaultTableModel model = new KSGTableModel(colums2,li.size());
-
-		for(int i=0;i<li.size();i++)
-		{
-			Code code = li.get(i);
-			model.setValueAt("", i, 0);
-			model.setValueAt(code.getCode_name(), i, 1);
-			model.setValueAt(code.getCode_name_kor(), i, 2);
-			model.setValueAt(code.getCode_field(), i, 3);
-		}
-
-
-
-		if(selectedTable.equals("errorCode"))
-		{
-			table_type = SearchBaseInfoCommand.CODE_ERROR;
-			lblTable.setText("에러 정보");
-		}else if(selectedTable.equals("table"))
-		{
-			table_type = SearchBaseInfoCommand.CODE_TABLE;
-			lblTable.setText("테이블 필드명");
-		}
-		else if(selectedTable.equals(CODE_TYPE_CON_TYPE))
-		{
-			lblTable.setText(CODE_TYPE_CON_TYPE);
-
-			tableCurrent = tblConType;
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_CON_TYPE;
-			tblConType.setModel(model);
-
-			TableColumnModel colmodel = tblConType.getColumnModel();
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-				namecol.setCellRenderer(renderer);
-				if(i==0)
-				{
-					namecol.setPreferredWidth(200);	
-				}else
-				{
-					namecol.setPreferredWidth(400);
-				}
-			}
-		}
-		else if(selectedTable.equals("항구 예외 항목"))
-		{
-			lblTable.setText("항구 예외 항목");
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_EXCEPTION_PORT;
-			tableCurrent = tableExPortList;
-			tableExPortList.setModel(model);
-			tableExPortList.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			TableColumnModel colmodel = tableExPortList.getColumnModel();
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-				namecol.setCellRenderer(renderer);
-				if(i==0)
-				{
-					namecol.setPreferredWidth(200);	
-				}else
-				{
-					namecol.setPreferredWidth(400);
-				}
-			}
-		}
-		else if(selectedTable.equals(CODE_TYPE_INBOUND_PORT))
-		{
-			lblTable.setText(CODE_TYPE_INBOUND_PORT);
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_START_PORT;
-
-			tableCurrent = tableInboundPortList;
-			tableInboundPortList.setModel(model);
-			TableColumnModel colmodel = tableInboundPortList.getColumnModel();
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-				namecol.setCellRenderer(renderer);
-				if(i==0)
-				{
-					namecol.setPreferredWidth(200);	
-				}else
-				{
-					namecol.setPreferredWidth(400);
-				}
-			}
-		}
-		else if(selectedTable.equals("DB 테이블"))
-		{
-			lblTable.setText("DB 테이블");
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_DB_TABLE;
-		}
-		else if(selectedTable.equals(CODE_TYPE_IN_PORT))
-		{
-			lblTable.setText(CODE_TYPE_IN_PORT);
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_PORT_LIST;
-			tableInCode.setModel(model);
-			tableInCode.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			TableColumnModel colmodel = tableInCode.getColumnModel();
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-				namecol.setCellRenderer(renderer);
-
-				if(i==0)
-				{
-					namecol.setMaxWidth(15);
-					namecol.setMinWidth(15);
-				}
-				else if(i==1)
-				{
-					namecol.setPreferredWidth(70);	
-				}else
-				{
-					namecol.setPreferredWidth(120);
-				}
-			}
-		}
-		else if(selectedTable.equals("테이블 INDEX"))
-		{
-			lblTable.setText(CODE_TYPE_IN_PORT);
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_PORT_LIST;
-		}
-		tableCurrent.setRowHeight(_ROW_SIZE);
+//		if(selectedTable==null)
+//			return;
+//
+//
+//
+//		Code code_info = new Code();
+//		code_info.setCode_name_kor(selectedTable);
+//
+//		//List<Code> li=service.getSubCodeInfo(code_info);
+//		String[] colums2 = {"","Name","한글","Field"};
+//
+//		DefaultTableModel model = new KSGTableModel(colums2,li.size());
+//
+//		for(int i=0;i<li.size();i++)
+//		{
+//			Code code = li.get(i);
+//			model.setValueAt("", i, 0);
+//			model.setValueAt(code.getCode_name(), i, 1);
+//			model.setValueAt(code.getCode_name_kor(), i, 2);
+//			model.setValueAt(code.getCode_field(), i, 3);
+//		}
+//
+//
+//
+//		if(selectedTable.equals("errorCode"))
+//		{
+//			table_type = SearchBaseInfoCommand.CODE_ERROR;
+//			lblTable.setText("에러 정보");
+//		}else if(selectedTable.equals("table"))
+//		{
+//			table_type = SearchBaseInfoCommand.CODE_TABLE;
+//			lblTable.setText("테이블 필드명");
+//		}
+//		else if(selectedTable.equals(CODE_TYPE_CON_TYPE))
+//		{
+//			lblTable.setText(CODE_TYPE_CON_TYPE);
+//
+//			tableCurrent = tblConType;
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_CON_TYPE;
+//			tblConType.setModel(model);
+//
+//			TableColumnModel colmodel = tblConType.getColumnModel();
+//			for(int i=0;i<colmodel.getColumnCount();i++)
+//			{
+//				TableColumn namecol = colmodel.getColumn(i);
+//
+//				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//				namecol.setCellRenderer(renderer);
+//				if(i==0)
+//				{
+//					namecol.setPreferredWidth(200);	
+//				}else
+//				{
+//					namecol.setPreferredWidth(400);
+//				}
+//			}
+//		}
+//		else if(selectedTable.equals("항구 예외 항목"))
+//		{
+//			lblTable.setText("항구 예외 항목");
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_EXCEPTION_PORT;
+//			tableCurrent = tableExPortList;
+//			tableExPortList.setModel(model);
+//			tableExPortList.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//			TableColumnModel colmodel = tableExPortList.getColumnModel();
+//			for(int i=0;i<colmodel.getColumnCount();i++)
+//			{
+//				TableColumn namecol = colmodel.getColumn(i);
+//
+//				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//				namecol.setCellRenderer(renderer);
+//				if(i==0)
+//				{
+//					namecol.setPreferredWidth(200);	
+//				}else
+//				{
+//					namecol.setPreferredWidth(400);
+//				}
+//			}
+//		}
+//		else if(selectedTable.equals(CODE_TYPE_INBOUND_PORT))
+//		{
+//			lblTable.setText(CODE_TYPE_INBOUND_PORT);
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_START_PORT;
+//
+//			tableCurrent = tableInboundPortList;
+//			tableInboundPortList.setModel(model);
+//			TableColumnModel colmodel = tableInboundPortList.getColumnModel();
+//			for(int i=0;i<colmodel.getColumnCount();i++)
+//			{
+//				TableColumn namecol = colmodel.getColumn(i);
+//
+//				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//				namecol.setCellRenderer(renderer);
+//				if(i==0)
+//				{
+//					namecol.setPreferredWidth(200);	
+//				}else
+//				{
+//					namecol.setPreferredWidth(400);
+//				}
+//			}
+//		}
+//		else if(selectedTable.equals("DB 테이블"))
+//		{
+//			lblTable.setText("DB 테이블");
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_DB_TABLE;
+//		}
+//		else if(selectedTable.equals(CODE_TYPE_IN_PORT))
+//		{
+//			lblTable.setText(CODE_TYPE_IN_PORT);
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_PORT_LIST;
+//			tableInCode.setModel(model);
+//			tableInCode.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//			TableColumnModel colmodel = tableInCode.getColumnModel();
+//			for(int i=0;i<colmodel.getColumnCount();i++)
+//			{
+//				TableColumn namecol = colmodel.getColumn(i);
+//
+//				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//				namecol.setCellRenderer(renderer);
+//
+//				if(i==0)
+//				{
+//					namecol.setMaxWidth(15);
+//					namecol.setMinWidth(15);
+//				}
+//				else if(i==1)
+//				{
+//					namecol.setPreferredWidth(70);	
+//				}else
+//				{
+//					namecol.setPreferredWidth(120);
+//				}
+//			}
+//		}
+//		else if(selectedTable.equals("테이블 INDEX"))
+//		{
+//			lblTable.setText(CODE_TYPE_IN_PORT);
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_PORT_LIST;
+//		}
+//		tableCurrent.setRowHeight(_ROW_SIZE);
 
 
 	}
 	public void updateCodeTable(String selectedTable) throws SQLException,SqlMapException{
-		if(selectedTable==null)
-			return;
-
-
-
-		Code code_info = new Code();
-		code_info.setCode_name_kor(selectedTable);		
-		List<Code> li=service.getSubCodeInfo(code_info);
-		String[] colums2 = {"","Name","한글","Field"};
-
-		DefaultTableModel model = new KSGTableModel(colums2,li.size());
-
-		for(int i=0;i<li.size();i++)
-		{
-			Code code = li.get(i);
-			model.setValueAt("", i, 0);
-			model.setValueAt(code.getCode_name(), i, 1);
-			model.setValueAt(code.getCode_name_kor(), i, 2);
-			model.setValueAt(code.getCode_field(), i, 3);
-		}
-
-		if(selectedTable.equals("errorCode"))
-		{
-			table_type = SearchBaseInfoCommand.CODE_ERROR;
-			//			lblTable.setText("에러 정보");
-		}else if(selectedTable.equals("table"))
-		{
-			table_type = SearchBaseInfoCommand.CODE_TABLE;
-			//			lblTable.setText("테이블 필드명");
-		}
-		else if(selectedTable.equals(CODE_TYPE_CON_TYPE))
-		{
-			//			lblTable.setText("컨테이너 타입");
-
-			tableCurrent = tblConType;
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_CON_TYPE;
-			tblConType.setModel(model);
-			//			tableConType.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			TableColumnModel colmodel = tblConType.getColumnModel();
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-				namecol.setCellRenderer(renderer);
-				if(i==0)
-				{
-					namecol.setMaxWidth(20);
-					namecol.setMinWidth(20);
-				}
-				else if(i==1)
-				{
-					namecol.setPreferredWidth(70);	
-				}else
-				{
-					namecol.setPreferredWidth(120);
-				}
-			}
-		}
-		else if(selectedTable.equals("항구 예외 항목"))
-		{
-			lblTable.setText("항구 예외 항목");
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_EXCEPTION_PORT;
-			tableCurrent = tableExPortList;
-			tableExPortList.setModel(model);
-			tableExPortList.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			TableColumnModel colmodel = tableExPortList.getColumnModel();
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-				namecol.setCellRenderer(renderer);
-				if(i==0)
-				{
-					namecol.setMaxWidth(20);
-					namecol.setMinWidth(20);
-				}
-				else if(i==1)
-				{
-					namecol.setPreferredWidth(70);	
-				}else
-				{
-					namecol.setPreferredWidth(120);
-				}
-			}
-		}
-		else if(selectedTable.equals(CODE_TYPE_INBOUND_PORT))
-		{
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_START_PORT;
-
-			tableCurrent = tableInboundPortList;
-			tableInboundPortList.setModel(model);
-			tableInCode.setRowHeight(25);
-			TableColumnModel colmodel = tableInboundPortList.getColumnModel();
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-				namecol.setCellRenderer(renderer);
-				if(i==0)
-				{
-					namecol.setMaxWidth(20);
-					namecol.setMinWidth(20);
-				}
-				else if(i==1)
-				{
-					namecol.setPreferredWidth(70);	
-				}else
-				{
-					namecol.setPreferredWidth(120);
-				}
-			}
-		}
-		else if(selectedTable.equals("DB 테이블"))
-		{
-			lblTable.setText("DB 테이블");
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_DB_TABLE;
-		}
-		else if(selectedTable.equals(CODE_TYPE_IN_PORT))
-		{
-			//			lblTable.setText("IN항구");
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_PORT_LIST;
-			tableCurrent = tableInCode;
-			tableInCode.setModel(model);
-			//			tableInCode.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			tableInCode.setRowHeight(25);
-			TableColumnModel colmodel = tableInCode.getColumnModel();
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-				namecol.setCellRenderer(renderer);
-
-				if(i==0)
-				{
-					namecol.setMaxWidth(20);
-					namecol.setMinWidth(20);
-				}
-				else if(i==1)
-				{
-					namecol.setPreferredWidth(70);	
-				}else
-				{
-					namecol.setPreferredWidth(120);
-				}
-			}
-		}
-		else if(selectedTable.equals("테이블 INDEX"))
-		{
-			lblTable.setText(CODE_TYPE_IN_PORT);
-			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_PORT_LIST;
-		}
-		tableCurrent.setRowHeight(_ROW_SIZE);
+//		if(selectedTable==null)
+//			return;
+//
+//
+//
+//		Code code_info = new Code();
+//		code_info.setCode_name_kor(selectedTable);		
+//		List<Code> li=service.getSubCodeInfo(code_info);
+//		String[] colums2 = {"","Name","한글","Field"};
+//
+//		DefaultTableModel model = new KSGTableModel(colums2,li.size());
+//
+//		for(int i=0;i<li.size();i++)
+//		{
+//			Code code = li.get(i);
+//			model.setValueAt("", i, 0);
+//			model.setValueAt(code.getCode_name(), i, 1);
+//			model.setValueAt(code.getCode_name_kor(), i, 2);
+//			model.setValueAt(code.getCode_field(), i, 3);
+//		}
+//
+//		if(selectedTable.equals("errorCode"))
+//		{
+//			table_type = SearchBaseInfoCommand.CODE_ERROR;
+//			//			lblTable.setText("에러 정보");
+//		}else if(selectedTable.equals("table"))
+//		{
+//			table_type = SearchBaseInfoCommand.CODE_TABLE;
+//			//			lblTable.setText("테이블 필드명");
+//		}
+//		else if(selectedTable.equals(CODE_TYPE_CON_TYPE))
+//		{
+//			//			lblTable.setText("컨테이너 타입");
+//
+//			tableCurrent = tblConType;
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_CON_TYPE;
+//			tblConType.setModel(model);
+//			//			tableConType.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//			TableColumnModel colmodel = tblConType.getColumnModel();
+//			for(int i=0;i<colmodel.getColumnCount();i++)
+//			{
+//				TableColumn namecol = colmodel.getColumn(i);
+//
+//				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//				namecol.setCellRenderer(renderer);
+//				if(i==0)
+//				{
+//					namecol.setMaxWidth(20);
+//					namecol.setMinWidth(20);
+//				}
+//				else if(i==1)
+//				{
+//					namecol.setPreferredWidth(70);	
+//				}else
+//				{
+//					namecol.setPreferredWidth(120);
+//				}
+//			}
+//		}
+//		else if(selectedTable.equals("항구 예외 항목"))
+//		{
+//			lblTable.setText("항구 예외 항목");
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_EXCEPTION_PORT;
+//			tableCurrent = tableExPortList;
+//			tableExPortList.setModel(model);
+//			tableExPortList.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//			TableColumnModel colmodel = tableExPortList.getColumnModel();
+//			for(int i=0;i<colmodel.getColumnCount();i++)
+//			{
+//				TableColumn namecol = colmodel.getColumn(i);
+//
+//				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//				namecol.setCellRenderer(renderer);
+//				if(i==0)
+//				{
+//					namecol.setMaxWidth(20);
+//					namecol.setMinWidth(20);
+//				}
+//				else if(i==1)
+//				{
+//					namecol.setPreferredWidth(70);	
+//				}else
+//				{
+//					namecol.setPreferredWidth(120);
+//				}
+//			}
+//		}
+//		else if(selectedTable.equals(CODE_TYPE_INBOUND_PORT))
+//		{
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_START_PORT;
+//
+//			tableCurrent = tableInboundPortList;
+//			tableInboundPortList.setModel(model);
+//			tableInCode.setRowHeight(25);
+//			TableColumnModel colmodel = tableInboundPortList.getColumnModel();
+//			for(int i=0;i<colmodel.getColumnCount();i++)
+//			{
+//				TableColumn namecol = colmodel.getColumn(i);
+//
+//				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//				namecol.setCellRenderer(renderer);
+//				if(i==0)
+//				{
+//					namecol.setMaxWidth(20);
+//					namecol.setMinWidth(20);
+//				}
+//				else if(i==1)
+//				{
+//					namecol.setPreferredWidth(70);	
+//				}else
+//				{
+//					namecol.setPreferredWidth(120);
+//				}
+//			}
+//		}
+//		else if(selectedTable.equals("DB 테이블"))
+//		{
+//			lblTable.setText("DB 테이블");
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_DB_TABLE;
+//		}
+//		else if(selectedTable.equals(CODE_TYPE_IN_PORT))
+//		{
+//			//			lblTable.setText("IN항구");
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_PORT_LIST;
+//			tableCurrent = tableInCode;
+//			tableInCode.setModel(model);
+//			//			tableInCode.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//			tableInCode.setRowHeight(25);
+//			TableColumnModel colmodel = tableInCode.getColumnModel();
+//			for(int i=0;i<colmodel.getColumnCount();i++)
+//			{
+//				TableColumn namecol = colmodel.getColumn(i);
+//
+//				DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//				namecol.setCellRenderer(renderer);
+//
+//				if(i==0)
+//				{
+//					namecol.setMaxWidth(20);
+//					namecol.setMinWidth(20);
+//				}
+//				else if(i==1)
+//				{
+//					namecol.setPreferredWidth(70);	
+//				}else
+//				{
+//					namecol.setPreferredWidth(120);
+//				}
+//			}
+//		}
+//		else if(selectedTable.equals("테이블 INDEX"))
+//		{
+//			lblTable.setText(CODE_TYPE_IN_PORT);
+//			table_type = SearchBaseInfoCommand.CODE_SUBTABLE_IN_PORT_LIST;
+//		}
+//		tableCurrent.setRowHeight(_ROW_SIZE);
 
 	}
 
 	public void actionPerformed(ActionEvent e) 
 	{
 
-		int row=tableCurrent.getSelectedRow();
-		if(row==-1)
-			return;
-
-		Code code_info = new Code();
-		code_info.setCode_field((String) tableCurrent.getValueAt(row, 3));
-
-		int result=JOptionPane.showConfirmDialog(this,tableCurrent.getValueAt(row, 3)+"를 삭제 하시겠습니까?",selectedTable,JOptionPane.YES_NO_OPTION);
-		if(result==JOptionPane.YES_OPTION)
-		{
-
-			try {
-				int count=service.deleteCode(code_info);
-				if(count>0)
-					updateCodeTable2();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}else
-		{
-			return;
-		}
+//		int row=tableCurrent.getSelectedRow();
+//		if(row==-1)
+//			return;
+//
+//		Code code_info = new Code();
+//		code_info.setCode_field((String) tableCurrent.getValueAt(row, 3));
+//
+//		int result=JOptionPane.showConfirmDialog(this,tableCurrent.getValueAt(row, 3)+"를 삭제 하시겠습니까?",selectedTable,JOptionPane.YES_NO_OPTION);
+//		if(result==JOptionPane.YES_OPTION)
+//		{
+//
+//			try {
+//				int count=service.deleteCode(code_info);
+//				if(count>0)
+//					updateCodeTable2();
+//			} catch (SQLException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//		}else
+//		{
+//			return;
+//		}
 	}
 }
