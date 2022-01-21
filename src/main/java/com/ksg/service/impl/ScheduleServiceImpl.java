@@ -157,18 +157,14 @@ public class ScheduleServiceImpl implements ScheduleService{
 				InOut, forSch);
 	}
 
-//	public List getScheduleList(String date) throws SQLException {
-//		return schduleDAO.getScheduleList(date);
-//	}
-
 	public List getScheduleListGroupByCompany(String searchDate)
 			throws SQLException {
 		return schduleDAO.getScheduleListGroupByCompany(searchDate);
 	}
 
-	public List getScheduleList(ScheduleData data) throws SQLException {
-		logger.debug("");
-		return schduleDAO.getScheduleList(data);
+	public List getScheduleList(ScheduleData param) throws SQLException {
+		logger.info("param:{}",param);
+		return schduleDAO.getScheduleList(param);
 	}
 
 	public List getScheduleDateList() throws SQLException {

@@ -36,30 +36,35 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException {
+	public Map<String, Object> selectList(Map<String, Object> param) throws SQLException {
+		
+		
+		
+		logger.info("param:{}", param);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", companyDAO.selectCompanyCount(commandMap));
+		resultMap.put("total", companyDAO.selectCompanyCount(param));
 		
-		resultMap.put("master", companyDAO.selectCompanyList(commandMap));
+		resultMap.put("master", companyDAO.selectCompanyList(param));
 		
 		return resultMap;
 
 	}
 
 	public int update(HashMap<String, Object> param) throws SQLException{
+		logger.info("param:{}", param);
 		return companyDAO.updateCompany(param);
 		
 	}
 
 	public int delete(HashMap<String, Object> param) throws SQLException{
-		// TODO Auto-generated method stub
+		logger.info("param:{}", param);
 		return companyDAO.deleteCompany(param);
 	}
 
 	public void insert(HashMap<String, Object> param) throws SQLException{
-		// TODO Auto-generated method stub
+		logger.info("param:{}", param);
 		
 		companyDAO.insertCompany(param);
 	}

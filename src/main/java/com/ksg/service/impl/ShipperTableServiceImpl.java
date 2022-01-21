@@ -39,15 +39,16 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 		shipperTableDao = new ShipperTableDAOImpl();
 	}
 
-	public Map<String, Object> selectList(Map<String, Object> commandMap)
+	public Map<String, Object> selectList(Map<String, Object> param)
 	{
+		logger.info("param:{}",param);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		try {
 
 			resultMap.put("total", 0);
 
-			resultMap.put("master", shipperTableDao.selectList(commandMap));
+			resultMap.put("master", shipperTableDao.selectList(param));
 
 		}catch(Exception e)
 		{
@@ -61,15 +62,15 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> selectPortList(Map<String, Object> commandMap) {
-		logger.info("param:"+ commandMap);
+	public Map<String, Object> selectPortList(Map<String, Object> param) {
+		logger.info("param:{}",param);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		try {
 
 			resultMap.put("total", 0);
 
-			resultMap.put("master", shipperTableDao.selectPortList(commandMap));
+			resultMap.put("master", shipperTableDao.selectPortList(param));
 
 		}catch(Exception e)
 		{
@@ -80,29 +81,28 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 	}
 
-	public void deleteShipperPortList(HashMap<String, Object> commandMap) throws SQLException
+	public void deleteShipperPortList(HashMap<String, Object> param) throws SQLException
 	{
-		System.out.println("delete portList");
-		shipperTableDao.deleteShipperPortList(commandMap);
+		logger.info("param:{}",param);
+		shipperTableDao.deleteShipperPortList(param);
 	}
 
-	public void insertShipperPort(HashMap<String, Object> commandMap) throws SQLException
+	public void insertShipperPort(HashMap<String, Object> param) throws SQLException
 	{
-		shipperTableDao.insertShipperPort(commandMap);
+		logger.info("param:{}",param);
+		shipperTableDao.insertShipperPort(param);
 
 	}
 
-	public void saveShipperPort(HashMap<String, Object> commandMap) throws Exception{
+	public void saveShipperPort(HashMap<String, Object> param) throws Exception{
 
-		logger.debug("param:"+commandMap);
+		logger.info("param:{}",param);
 
+		deleteShipperPortList(param);	
 
+		List<HashMap<String, Object>> master  = (List) param.get("master");
 
-		deleteShipperPortList(commandMap);	
-
-		List<HashMap<String, Object>> master  = (List) commandMap.get("master");
-
-		String table_id = (String) commandMap.get("table_id");
+		String table_id = (String) param.get("table_id");
 
 		for(int i=0;i<master.size();i++)
 		{
@@ -113,9 +113,7 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 			System.out.println(port);
 
-		}
-
-		logger.debug("end:");
+		}		
 
 
 	}

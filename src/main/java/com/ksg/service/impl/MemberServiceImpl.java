@@ -29,10 +29,10 @@ public class MemberServiceImpl implements MemberService
 		memberDAO = new MemberDAOImpl();
 	}
 
-	public Member selectMember(String id) throws SQLException {
+	public Member selectMember(String param) throws SQLException {
 		
-		logger.info("select:"+id);
-		return memberDAO.selectMember(id);
+		logger.info("param:{}", param);
+		return memberDAO.selectMember(param);
 	}
 
 }
