@@ -54,7 +54,9 @@ import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
+import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
+import com.ksg.view.comp.KSGCompboBox;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
@@ -115,6 +117,8 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	private JTextField txfSearch;
 
 	private JLabel lblTable,lblTotal;
+	
+	KSGCompboBox cbxType;
 
 	private JComboBox<KSGTableColumn> cbxField;
 
@@ -127,6 +131,8 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	SelectionListner selectionListner = new SelectionListner();
 
 	private VesselService vesselService = new VesselServiceImpl();
+	
+	private CodeServiceImpl codeService= new CodeServiceImpl();
 
 	private KSGAbstractTable tableD;
 	private JLabel lblVesselName;
@@ -785,16 +791,24 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 		code.setCode_name_kor(STRING_CONTAINER_TYPE);
 		try {
-			List li=	baseDaoService.getSubCodeInfo(code);
+			
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			
+			param.put("code_type", "conType");
+			
+			HashMap<String , Object> result=(HashMap<String, Object>) codeService.selectCodeDList(param);
+			
+			List<HashMap<String, Object>> list = (List<HashMap<String, Object>>) result.get("master");			
 
 			DefaultComboBoxModel boxModel = new DefaultComboBoxModel();
 
-			Iterator iter = li.iterator();
+			Iterator iter =list.iterator();
 
 			while(iter.hasNext())
 			{
-				Code code2=(Code) iter.next();
-				cbxVesselType.addItem(code2.getCode_field());
+				HashMap<String, Object> item = (HashMap<String, Object>) iter.next();
+				
+				cbxVesselType.addItem(item.get("code_field"));
 
 			}
 		} catch (SQLException ee) {

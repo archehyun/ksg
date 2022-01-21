@@ -33,40 +33,45 @@ public class CodeServiceImpl {
 		codeDAO = new CodeDAO();
 	}
 	
-	public Map<String, Object> selectCodeHList(Map<String, Object> commandMap) throws SQLException {
+	public Map<String, Object> selectCodeHList(Map<String, Object> param) throws SQLException {
+		
+		logger.info("param:{}"+param);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", codeDAO.selectCodeHCount(commandMap));
+		resultMap.put("total", codeDAO.selectCodeHCount(param));
 		
-		resultMap.put("master", codeDAO.selectCodeHList(commandMap));
+		resultMap.put("master", codeDAO.selectCodeHList(param));
 		
 		return resultMap;
 
 	}
 	
-	public Map<String, Object> selectCodeDList(Map<String, Object> commandMap) throws SQLException {
+	public Map<String, Object> selectCodeDList(Map<String, Object> param) throws SQLException {
+		logger.info("param:{}"+param);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", codeDAO.selectCodeCount(commandMap));
+		resultMap.put("total", codeDAO.selectCodeCount(param));
 		
-		resultMap.put("master", codeDAO.selectCodeDList(commandMap));
+		resultMap.put("master", codeDAO.selectCodeDList(param));
 		
 		return resultMap;
 
 	}
-	public Object selectCodeD(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
-		return codeDAO.selectCodeD(commandMap);
+	public Object selectCodeD(Map<String, Object> param) throws SQLException {
+		logger.info("param:{}"+param);
+		return codeDAO.selectCodeD(param);
 	}
 
 	public Object insertCodeH(HashMap<String, Object> param) throws SQLException{
+		logger.info("param:{}"+param);
 		return codeDAO.insertCodeH(param);
 		
 	}
 
 	public Object updateCodeH(HashMap<String, Object> param) throws SQLException{
+		logger.info("param:{}"+param);
 		return codeDAO.updateCodeH(param);
 		
 	}
