@@ -46,7 +46,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.text.JTextComponent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.exception.PortNullException;
 import com.ksg.domain.Code;
@@ -76,7 +77,7 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 
 	private static final int PORT_NAME_COLUM = 1;
 
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	protected TableService tableService;
 

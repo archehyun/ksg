@@ -26,7 +26,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.PortInfo;
@@ -37,7 +37,7 @@ import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
-public class BuildInboundCommand implements KSGCommand {
+public class BuildInboundCommand implements IFCommand {
 	private static final String TAG_SIZE = "<$z7f$>";
 	private ScheduleService scheduleService;
 	private BaseService baseService;

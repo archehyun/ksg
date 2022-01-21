@@ -16,7 +16,8 @@ import java.sql.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -30,7 +31,7 @@ import org.jdom.input.SAXBuilder;
 @SuppressWarnings("unchecked")
 public class ADVData {
 	public static final String COL_DIVIDER = "\t";
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public int test;
 	public String data;
 	public String table_id;

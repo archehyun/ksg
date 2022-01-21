@@ -4,7 +4,8 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -14,11 +15,11 @@ import com.ksg.service.TableService;
 
 
 @Deprecated
-public class InsertADVCommand implements KSGCommand{
+public class InsertADVCommand extends AbstractCommand{
 	private ADVService 		service;
 	private DAOManager manager =DAOManager.getInstance();
 	String table_id;
-	protected Logger 			logger = Logger.getLogger(getClass());
+	
 	ADVData data;
 	private TableService tableService;
 	public InsertADVCommand(ADVData data) {

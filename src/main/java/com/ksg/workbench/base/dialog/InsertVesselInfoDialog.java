@@ -36,7 +36,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.dao.impl.BaseDAOManager;
@@ -50,7 +50,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 @SuppressWarnings("serial")
 public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
-	protected Logger logger = Logger.getLogger(getClass());
+	
 	private  String LABEL = "선박명 추가";
 	private JTextField txfVesselName;
 	private JTextField txfMMSI;

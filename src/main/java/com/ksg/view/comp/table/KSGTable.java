@@ -24,7 +24,8 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
@@ -56,7 +57,7 @@ public abstract class KSGTable extends JTable implements KSGObserver {
 	
 	protected Font defaultFont = new Font("µ¸À½",0,12);
 	
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public KSGTable() {
 		initStyle();

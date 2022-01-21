@@ -44,7 +44,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.apache.log4j.Logger;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
 
@@ -104,7 +104,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	 */
 	private KSGPropertis 	propertis = KSGPropertis.getIntance();
 	
-	protected Logger logger = Logger.getLogger(getClass());
+	
 
 	private SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
 

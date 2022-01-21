@@ -37,7 +37,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.commands.xls.ImportXLSFileCommand;
 import com.ksg.commands.xls.ImportXLSFileCommandByXML;
@@ -67,7 +68,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	
 	private static final int UNIT_INCREMENT = 15;
 	
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	private JTable			_tblSheetNameList;
 	
@@ -597,6 +598,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			public void actionPerformed(ActionEvent e) {
 
 				AddAdvDialog dialog = new AddAdvDialog(null,true,ADVListPanel.this);
+				dialog.createAndUpdateUI();
 
 			}});
 		JButton butSave = new JButton("광고정보저장",new ImageIcon("images/save.gif"));

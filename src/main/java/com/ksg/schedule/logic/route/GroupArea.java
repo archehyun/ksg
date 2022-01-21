@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.ScheduleData;
@@ -24,7 +25,7 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 	/**
 	 * 
 	 */
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private ShippersTable op;
 	private static final long serialVersionUID = 1L;
 	private String area_name;

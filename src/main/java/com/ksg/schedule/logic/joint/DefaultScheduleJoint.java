@@ -5,7 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.dao.DAOManager;
@@ -63,7 +64,7 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 	protected ADVService advService;
 
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	protected Thread thread;
 

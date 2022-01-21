@@ -4,7 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.ScheduleServiceImpl;
@@ -26,7 +27,7 @@ import com.ksg.service.impl.ScheduleServiceLogic;
   */
 public abstract class KSGScheduleJoint {
 	
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	protected ScheduleService scheduleService;
 	

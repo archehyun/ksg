@@ -1,0 +1,12 @@
+[2021-12-29 16:37:40] [INFO ](App.java:63) PROGRAM START
+[2021-12-29 16:37:40] [INFO ](App.java:64) DB Connected..
+[2021-12-29 16:37:43] [INFO ](KSGLogin.java:243) login...
+[2021-12-29 16:37:43] [INFO ](PnCompany.java:151) 화면 초기화
+[2021-12-29 16:37:43] [INFO ](PnCompany.java:200) 화면 초기화 종료
+[2021-12-29 16:37:43] [INFO ](ShipperTableMgtUI.java:735) init searchUI start
+[2021-12-29 16:37:43] [INFO ](SearchTable.java:61) init table
+[2021-12-29 16:37:43] [INFO ](AdvertiseTable.java:1152) create
+[2021-12-29 16:37:43] [INFO ](ShipperTableMgtUI.java:772) init searchUI end
+[2021-12-29 16:37:44] [INFO ](KSGScheduleTable.java:83) nomal테이블 생성
+[2021-12-29 16:37:44] [INFO ](KSGScheduleTable.java:83) console테이블 생성
+[2021-12-29 16:37:44] [INFO ](KSGScheduleTable.java:83) inland테이블 생성

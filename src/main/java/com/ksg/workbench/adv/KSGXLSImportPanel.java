@@ -57,7 +57,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.JDOMException;
 
 import com.ksg.adv.logic.model.TableLocation;
@@ -134,7 +135,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 	private VesselListComp litVessel;
 
-	protected Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	private JPanel pnCard,pnDivider;
 

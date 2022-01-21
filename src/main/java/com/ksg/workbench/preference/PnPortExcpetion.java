@@ -19,7 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -37,7 +38,7 @@ public class PnPortExcpetion extends JPanel implements ActionListener,Preference
 	private Font defaultfont;
 	PreferenceDialog preferenceDialog;
 	DAOManager dao;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public PnPortExcpetion(PreferenceDialog preferenceDialog) {
 		
 		dao = DAOManager.getInstance();

@@ -14,7 +14,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -25,10 +24,10 @@ import com.ksg.service.BaseService;
 import com.ksg.workbench.adv.xls.XLSManagerImpl;
 import com.ksg.workbench.adv.xls.XLSStringUtil;
 
-public class ViewXLSFileCommand implements KSGCommand {
+public class ViewXLSFileCommand extends AbstractCommand {
 	SheetInfo info;
 	XLSManagerImpl managerImpl;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	JTable table;
 	private String[] vesselKeyWord;
 	private String[] bothKeyWord;

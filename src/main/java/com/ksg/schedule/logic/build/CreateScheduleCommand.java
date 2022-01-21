@@ -11,9 +11,11 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
 
-import com.ksg.commands.KSGCommand;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.ErrorLog;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.common.dao.DAOManager;
@@ -38,7 +40,7 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
  * @author ¹ÚÃ¢Çö
  *
  */
-public abstract class CreateScheduleCommand implements KSGCommand, ScheduleBuild{
+public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 
 
 	public static final int TYPE_INBOUND=1;
@@ -61,7 +63,7 @@ public abstract class CreateScheduleCommand implements KSGCommand, ScheduleBuild
 	protected int total;
 	protected int result;
 	protected ShippersTable searchOption;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	protected ScheduleBuildMessageDialog processMessageDialog;
 	protected int process;
 	protected long startTime,endtime;

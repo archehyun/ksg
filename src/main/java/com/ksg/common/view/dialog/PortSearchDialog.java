@@ -23,14 +23,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 @SuppressWarnings("serial")
 public class PortSearchDialog extends KSGDialog implements ActionListener{
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	public String portName;
 	int x,y,h;
 	public PortSearchDialog(Dialog dialog) {	

@@ -27,9 +27,9 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import org.apache.log4j.Logger;
 
-import com.ksg.commands.KSGCommand;
+
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildWebSchdeduleCommand;
 import com.ksg.commands.schedule.create.CreateInlandScheduleCommand;
 import com.ksg.common.model.KSGModelManager;
@@ -41,47 +41,48 @@ import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.build.CreateNormalSchdeduleCommandNew;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * @설명 스케줄 생성시 입력 날짜 및 옵셥 값 설정 화면
  * @author 박창현
  *
  */
-public class ScheduleCreateOptionDialog extends JDialog implements ActionListener{
+public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListener{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	protected Logger 			logger = Logger.getLogger(getClass());
+
+
 
 	/**
 	 * 
 	 */
 	private int scheduleType;
-	
+
 	public int getScheduleType() {
 		return scheduleType;
 	}
 	private JRadioButton rdoPage;
-	
+
 	private JTextField txfOptionInput;
-	
+
 	public static final int NOMAL=0;
 
 	public static final int WEB=1;
-	
+
 	private LookAheadTextField txfDateInput;
-	
+
 	private JPanel pnOption;
-	
+
 	private boolean isOption=false;
-	
+
 	private JComboBox cbxType;
-	
+
 	private String inputDate;
-	
+
 	ScheduleServiceManager scheduleServiceManager = ScheduleServiceManager.getInstance();
 	public int getGubun()
 	{
@@ -93,9 +94,9 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 	public void setOption(boolean isOption) {
 		this.isOption = isOption;
 	}
-	
+
 	public ScheduleCreateOptionDialog(int scheduleType) {
-		super(KSGModelManager.getInstance().frame);
+
 		logger.info("스케줄 생성");
 		this.scheduleType =scheduleType;
 	}
@@ -103,26 +104,28 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 		this(scheduleType);
 		this.inputDate = inputDate;
 	}
-	
+
 	public void close()
 	{
 		setVisible(false);
 		dispose();
 	}
-	  protected JRootPane createRootPane() {
-		    JRootPane rootPane = new JRootPane();
-		    KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
-		    Action actionListener = new AbstractAction() {
-		      public void actionPerformed(ActionEvent actionEvent) {
-		        setVisible(false);
-		      }
-		    };
-		    InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		    inputMap.put(stroke, "ESCAPE");
-		    rootPane.getActionMap().put("ESCAPE", actionListener);
+	protected JRootPane createRootPane() {
+		JRootPane rootPane = new JRootPane();
+		KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+		Action actionListener = new AbstractAction() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				setVisible(false);
+			}
+		};
+		InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		inputMap.put(stroke, "ESCAPE");
+		rootPane.getActionMap().put("ESCAPE", actionListener);
 
-		    return rootPane;
-		  }
+		return rootPane;
+	}
+	
+	@Override
 	public void createAndUpdateUI()
 	{	
 		setModal(true);
@@ -136,7 +139,7 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 		txfDateInput = new LookAheadTextField("생성 날짜 입력",8,lookAhead);
 		txfDateInput.setFocus_lost(false);
 		if(inputDate !=null)
-		txfDateInput.setText(inputDate);
+			txfDateInput.setText(inputDate);
 
 		JCheckBox cbxMondya = new JCheckBox("월요일");
 		cbxMondya.addActionListener(new ActionListener(){
@@ -148,7 +151,7 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 					txfDateInput.setText(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
 				}
 			}});
-		
+
 		cbxType = new JComboBox();			
 		cbxType.addItem(ShippersTable.GUBUN_NORMAL);
 		cbxType.addItem(ShippersTable.GUBUN_CONSOLE);
@@ -163,21 +166,21 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 		pnOption.setVisible(false);
 
 		rdoPage = new JRadioButton("페이지",true);
-		
+
 		JRadioButton rdoCompany = new JRadioButton("선사");
-		
+
 		ButtonGroup group = new ButtonGroup();
-		
+
 		group.add(rdoPage);
-		
+
 		group.add(rdoCompany);
-		
+
 		pnOption.add(rdoPage);
-		
+
 		pnOption.add(rdoCompany);
-		
+
 		txfOptionInput = new JTextField(10);
-		
+
 		txfOptionInput.addKeyListener(new KeyAdapter() {
 
 			public void keyReleased(KeyEvent e) {
@@ -193,35 +196,35 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 		JPanel pnControl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		JButton butOk = new JButton("확인(D)");
-		
+
 		butOk.setActionCommand("확인");
-		
+
 		butOk.setMnemonic(KeyEvent.VK_D);
-		
+
 		JButton butCancel = new JButton("취소");	
-		
+
 		JButton butOption = new JButton("옵션>>");
-		
+
 		butOption.setActionCommand("옵션");		
-		
+
 		butOk.addActionListener(this);
-		
+
 		butCancel.addActionListener(this);
-		
+
 		butOption.addActionListener(this);
 
 
 		pnControl.add(butOk);
-		
+
 		pnControl.add(butCancel);
-		
+
 		pnControl.add(butOption);
 
 		Box box = Box.createVerticalBox();
 		JPanel pn1 = new JPanel();
 		pn1.setLayout(new FlowLayout(FlowLayout.LEADING));
 		box.setBorder(BorderFactory.createTitledBorder("스케줄을 생성할 날짜를 입력 하세요"));
-		
+
 		box.add(pn1);
 		box.add(pnInput);
 		box.add(pnOption);
@@ -229,12 +232,12 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 
 		getContentPane().add(pnMain);
 		getContentPane().add(pnControl,BorderLayout.SOUTH);
-			
+
 		this.pack();
 		this.setResizable(false);
 		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
 		setVisible(true);
-		
+
 	}
 	/**
 	 * 
@@ -244,9 +247,9 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 		final String inputDate=txfDateInput.getText();
 		String optionData = txfOptionInput.getText();
 		boolean isPage = rdoPage.isSelected();
-		
-		
-		
+
+
+
 		/*
 		 * 유효성 체크
 		 */
@@ -254,7 +257,7 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 			return;
 
 		String datePattern = "\\d{4}.\\d{1,2}.\\d{1,2}";
-		
+
 		boolean retval = inputDate.matches(datePattern);
 
 		if(!retval)
@@ -272,7 +275,7 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 			}	
 		}
 		close();
-		
+
 		scheduleServiceManager.startScheduleMake(isOption(),isPage, optionData, inputDate,(String)cbxType.getSelectedItem(),getScheduleType());
 
 	}
@@ -282,7 +285,7 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 		if(command.equals("확인"))
 		{
 			buildSchedule();
-			
+
 		}else if(command.equals("취소"))
 		{
 			this.close();
@@ -318,8 +321,8 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 	 */
 	private void startScheduleMake(final boolean isOption, final boolean isPage,
 			final String optionData, final String inputDate,final String gubun, final int scheduleType) {
-		
-		
+
+
 
 		new Thread(){
 			public void run()
@@ -327,9 +330,9 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 				try 
 				{
 					ShippersTable op = new ShippersTable();
-					
+
 					op.setDate_isusse(KSGDateUtil.toDate3(inputDate).toString());
-					
+
 					if(isOption)
 					{
 						if(isPage)
@@ -340,13 +343,13 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 							op.setCompany_abbr(optionData);
 						}
 					}
-					
+
 					op.setGubun(gubun);
-					
+
 					ScheduleManager.getInstance().init();
-					
-					KSGCommand command=null;
-					
+
+					IFCommand command=null;
+
 					switch (scheduleType) {
 					case NOMAL:
 						if(op.getGubun().equals(ShippersTable.GUBUN_INLAND))
@@ -360,7 +363,7 @@ public class ScheduleCreateOptionDialog extends JDialog implements ActionListene
 					case WEB:
 						ScheduleBuildMessageDialog di = new ScheduleBuildMessageDialog ();
 						command = new BuildWebSchdeduleCommand(di,op);
-						
+
 						break;
 					default:
 						break;

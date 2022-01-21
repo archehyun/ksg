@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
@@ -29,7 +30,7 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 	/**
 	 * 
 	 */
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public ScheduleManager scheduleManager = ScheduleManager.getInstance();
 	private static final long serialVersionUID = 1L;
 	private int use;// 선박 사용 유무

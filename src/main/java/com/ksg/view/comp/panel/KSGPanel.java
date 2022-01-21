@@ -17,7 +17,8 @@ import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
@@ -39,7 +40,7 @@ public class KSGPanel extends JPanel implements KSGObserver {
 	
 	protected KSGModelManager 	manager = KSGModelManager.getInstance();
 	
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	protected ADVService	 		_advService;
 	

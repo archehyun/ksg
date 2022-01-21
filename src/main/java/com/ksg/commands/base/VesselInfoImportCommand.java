@@ -15,7 +15,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
@@ -125,7 +125,7 @@ public class VesselInfoImportCommand extends ImportCommand {
 			isdone=true;
 		}
 
-		return KSGCommand.RESULT_SUCCESS;
+		return IFCommand.RESULT_SUCCESS;
 	}
 	private int getVesselUse(Cell vesselUseCell)
 	{

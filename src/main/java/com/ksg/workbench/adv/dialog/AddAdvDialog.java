@@ -40,7 +40,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
+
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
@@ -50,17 +50,18 @@ import com.ksg.service.ADVService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.workbench.adv.ADVListPanel;
 import com.ksg.workbench.adv.xls.XLSManagerImpl;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * @author archehyun
  *
  */
-public class AddAdvDialog extends JDialog implements ActionListener{
+public class AddAdvDialog extends KSGDialog implements ActionListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected Logger logger = Logger.getLogger(getClass());
+	
 	private JTextField txfXLFile;
 	private JTextField field2;
 	private JPanel pnStepOne;
@@ -91,18 +92,7 @@ public class AddAdvDialog extends JDialog implements ActionListener{
 
 		this.setModal(modal);	
 
-		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-		this.getContentPane().add(buildButtom(),BorderLayout.SOUTH);
-
-		Dimension screensize = manageUI.getSize();
-		this.setSize(500,180);
-		this.setLocation(((int)screensize.getWidth())/3, ((int)screensize.getHeight())/3);
-		ViewUtil.center(this, false);
-		this.lblXLSFile=manageUI.txfXLSFile;
-		this.setTitle("외부데이터 불러오기");
-		this.setVisible(true);
 	}
 
 
@@ -384,6 +374,24 @@ public class AddAdvDialog extends JDialog implements ActionListener{
 	public void setSelectedXLSFilLabel(JTextField lblXLSFile) {
 		this.lblXLSFile =lblXLSFile; 
 
+	}
+
+
+	@Override
+	public void createAndUpdateUI() {
+		this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.getContentPane().add(buildButtom(),BorderLayout.SOUTH);
+
+		Dimension screensize = manageUI.getSize();
+		this.setSize(500,180);
+		this.setLocation(((int)screensize.getWidth())/3, ((int)screensize.getHeight())/3);
+		ViewUtil.center(this, false);
+		this.lblXLSFile=manageUI.txfXLSFile;
+		this.setTitle("외부데이터 불러오기");
+		this.setVisible(true);
+		
 	}
 
 

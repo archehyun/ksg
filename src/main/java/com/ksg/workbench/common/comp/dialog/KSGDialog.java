@@ -20,7 +20,8 @@ import java.awt.event.ComponentListener;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ShippersTable;
@@ -67,7 +68,7 @@ public abstract class KSGDialog extends JDialog implements ComponentListener{
 	
 	protected Font defaultFont = new Font("µ¸À½",0,10);
 	
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public KSGDialog() {
 		super(KSGModelManager.getInstance().frame);

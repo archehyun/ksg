@@ -21,7 +21,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import org.apache.log4j.Logger;
+
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.workbench.adv.dialog.AddAdvDialog;
@@ -29,7 +29,7 @@ import com.ksg.workbench.adv.xls.XLSManagerImpl;
 
 public class SelectOptionDialog extends JDialog implements ActionListener{
 	
-	protected Logger logger = Logger.getLogger(getClass());
+	
 	KSGModelManager manager = KSGModelManager.getInstance();
 	private XLSManagerImpl managerImpl;
 	String filename;

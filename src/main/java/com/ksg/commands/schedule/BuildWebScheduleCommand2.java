@@ -17,9 +17,10 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
@@ -29,11 +30,11 @@ import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
-public class BuildWebScheduleCommand2 implements KSGCommand {
+public class BuildWebScheduleCommand2 implements IFCommand {
 	private BaseService baseService;
 	private ScheduleService scheduleService;
 	Vector webSchedule;
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private XTGManager xtgManager;
 	public BuildWebScheduleCommand2() {
 		baseService = new BaseServiceImpl();

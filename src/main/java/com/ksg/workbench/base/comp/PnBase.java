@@ -11,6 +11,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.BaseService;
@@ -32,6 +35,9 @@ public abstract class PnBase extends KSGPanel implements ComponentListener, Tabl
 	 * 
 	 */
 	protected HashMap<String, String> arrangeMap;
+	
+	
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	protected ArrayList<String> currentColumnNameList;
 	

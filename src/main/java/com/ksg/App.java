@@ -17,7 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ksg.common.util.PropertiManager;
 import com.ksg.workbench.KSGLogin;
@@ -41,7 +42,7 @@ import com.ksg.workbench.KSGMainFrame;
   */
 public class App 
 {
-	protected Logger logger = Logger.getLogger(getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	PropertiManager manager = PropertiManager.getInstance();
 

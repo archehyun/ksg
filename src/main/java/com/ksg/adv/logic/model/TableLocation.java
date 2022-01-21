@@ -10,7 +10,8 @@
  *******************************************************************************/
 package com.ksg.adv.logic.model;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -23,7 +24,7 @@ import com.ksg.domain.ShippersTable;
  */
 public class TableLocation extends ShippersTable{
 	
-	protected Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public static final int NONE=0;
 	

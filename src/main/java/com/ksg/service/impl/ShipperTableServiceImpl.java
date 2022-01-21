@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ksg.dao.TableDAO;
 import com.ksg.dao.impl.ShipperTableDAOImpl;
@@ -32,7 +33,7 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 	private ShipperTableDAOImpl shipperTableDao;
 
-	Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public ShipperTableServiceImpl() {
 		shipperTableDao = new ShipperTableDAOImpl();

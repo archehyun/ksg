@@ -36,7 +36,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -127,7 +127,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 	
 	SimpleDateFormat consoleDateformat = new SimpleDateFormat("yyyy-mm-ss");
 
-	private JPanel pnConsoleOption;
+	private KSGPanel pnConsoleOption;
 
 	private JRadioButton optPage;
 
@@ -137,7 +137,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 	private JTabbedPane tabPane;
 	
-	private JPanel pnNormalOption,pnOption;
+	private KSGPanel pnNormalOption,pnOption;
 	
 	private JRadioButton optDate,optVessel;
 	
@@ -161,15 +161,15 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		this.setName("SearchUI");
 		this.setLayout(new BorderLayout());		
 
-		JPanel pnNorth 		= buildNorthPn();		
-		JPanel pnSouth		= buildSouthPn();
-		JPanel pnLeftMenu	= buildLeftMenu();		
-		JPanel pnCenter		= buildCenter();
+		KSGPanel pnNorth 		= buildNorthPn();		
+		KSGPanel pnSouth		= buildSouthPn();
+		KSGPanel pnLeftMenu	= buildLeftMenu();		
+		KSGPanel pnCenter		= buildCenter();
 
 		pnCenter.add(pnLeftMenu,BorderLayout.WEST);
 
-		JPanel pnSystemPaddingLeft = new JPanel();
-		JPanel pnSystemPaddingRight = new JPanel();
+		KSGPanel pnSystemPaddingLeft = new KSGPanel();
+		KSGPanel pnSystemPaddingRight = new KSGPanel();
 		pnSystemPaddingLeft.setPreferredSize(new Dimension(15,0));
 		pnSystemPaddingRight.setPreferredSize(new Dimension(15,0));
 
@@ -190,9 +190,9 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 	}
 
-	private JPanel buildLeftMenu() {
+	private KSGPanel buildLeftMenu() {
 		// 왼쪽 일짜 목록====================
-		JPanel pnMain = new JPanel(new BorderLayout());	
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());	
 
 		butSort = new JButton("파일 출력 (P)");
 		butSort.setActionCommand("파일 출력");
@@ -210,10 +210,10 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 
 		// 테이블 업데이트 일자 항목 생성======================		
-		JPanel pnTableDateModel = new JPanel(new BorderLayout());
+		KSGPanel pnTableDateModel = new KSGPanel(new BorderLayout());
 
-		JPanel pnTableDateModelSouth = new JPanel(new BorderLayout());
-		JPanel pnTableDateModelSouthPadding = new JPanel();
+		KSGPanel pnTableDateModelSouth = new KSGPanel(new BorderLayout());
+		KSGPanel pnTableDateModelSouthPadding = new KSGPanel();
 		pnTableDateModelSouthPadding.setPreferredSize(new Dimension(15,15));
 
 		pnTableDateModelSouth.add(pnTableDateModelSouthPadding,BorderLayout.SOUTH);
@@ -223,9 +223,9 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		JButton butUpdate = new JButton("갱신");
 		butUpdate.addActionListener(this);
 
-		JPanel pnDateMain = new JPanel(new BorderLayout());
+		KSGPanel pnDateMain = new KSGPanel(new BorderLayout());
 		
-		JPanel pnDate = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnDate = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		pnDate.add(new JLabel("기준 일자"));
 		
@@ -237,7 +237,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		
 		butlayout.setVgap(5);
 		
-		JPanel pnDateButton = new JPanel(butlayout);
+		KSGPanel pnDateButton = new KSGPanel(butlayout);
 		
 		pnDateButton.setPreferredSize(new Dimension(190,100));
 		
@@ -257,7 +257,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 
 		// 스케줄 생성일자 목록===============================
-		JPanel pnTblScheduleDateList = new JPanel(new BorderLayout());
+		KSGPanel pnTblScheduleDateList = new KSGPanel(new BorderLayout());
 		tblScheduleDateList=  new JTable();
 
 		tblScheduleDateList.setShowGrid(false);
@@ -297,7 +297,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		});
 		pnTblScheduleDateList.add(new JLabel("스케줄 생성 일자"),BorderLayout.NORTH);
 		pnTblScheduleDateList.add(new JScrollPane(tblScheduleDateList));
-		pnConsoleOption = new JPanel(new FlowLayout(FlowLayout.LEADING));
+		pnConsoleOption = new KSGPanel(new FlowLayout(FlowLayout.LEADING));
 		pnConsoleOption.setBorder(BorderFactory.createTitledBorder("출력 항목"));
 		optPage = new JRadioButton("Page",true);
 		optCFS = new JRadioButton("CFS");
@@ -310,9 +310,9 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		pnConsoleOption.add(optPage);
 		pnConsoleOption.add(optCFS);		
 
-		pnNormalOption = new JPanel(new GridLayout(2,1));
+		pnNormalOption = new KSGPanel(new GridLayout(2,1));
 
-		JPanel pnNormalSelectionOption = new JPanel(new GridLayout(3,1));
+		KSGPanel pnNormalSelectionOption = new KSGPanel(new GridLayout(3,1));
 		pnNormalSelectionOption.setBorder(BorderFactory.createTitledBorder("스케줄 생성 여부"));
 		cbxInboundSchedule = new JCheckBox("Inbound",true);
 		cbxOutboundSchedule = new JCheckBox("Outbound",true);
@@ -331,7 +331,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		
 		pnNormalSelectionOption.add(cbxRouteSchedule);
 
-		pnNormalRouteOption = new JPanel(new FlowLayout());
+		pnNormalRouteOption = new KSGPanel(new FlowLayout());
 		pnNormalRouteOption.setBorder(BorderFactory.createTitledBorder("항로별 정렬 기준"));
 
 		optDate = new JRadioButton("날짜",true);
@@ -356,7 +356,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		pnNormalOption.add(pnNormalRouteOption);		
 
 		optionLayout = new CardLayout();
-		pnOption = new JPanel(optionLayout);
+		pnOption = new KSGPanel(optionLayout);
 
 		pnOption.add(pnConsoleOption,ShippersTable.GUBUN_CONSOLE);
 		
@@ -373,7 +373,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 		GridLayout gridLayout = butlayout;
 		gridLayout.setVgap(5);
-		JPanel pnLeftMenuButtonList = new JPanel(gridLayout);
+		KSGPanel pnLeftMenuButtonList = new KSGPanel(gridLayout);
 		pnLeftMenuButtonList.setPreferredSize(new Dimension(190,50));
 
 		pnLeftMenuButtonList.add(butSort);		
@@ -384,7 +384,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		pnMain.add(pnTableDateModel,BorderLayout.NORTH);
 		pnMain.add(pnTblScheduleDateList);
 
-		JPanel pnLefMenuLeftpadding = new JPanel();
+		KSGPanel pnLefMenuLeftpadding = new KSGPanel();
 		pnLefMenuLeftpadding.setPreferredSize(new Dimension(10,0));
 
 		pnMain.add(pnLefMenuLeftpadding,BorderLayout.EAST);
@@ -405,14 +405,14 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		}
 	}
 
-	private JPanel buildCenter() {
-		JPanel pnMain = new JPanel(new BorderLayout());
+	private KSGPanel buildCenter() {
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
-		JPanel pnNormal = new PnNormal();
+		PnNormal pnNormal = new PnNormal();
 
-		JPanel pnConsole = new PnConsole();
+		PnConsole pnConsole = new PnConsole();
 
-		JPanel pnInland = new PnInland();
+		PnInland pnInland = new PnInland();
 
 		tabPane = new JTabbedPane();
 
@@ -420,7 +420,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		tabPane.add(pnConsole,ShippersTable.GUBUN_CONSOLE);
 		tabPane.add(pnInland,ShippersTable.GUBUN_INLAND);
 		pnMain.add(tabPane);
-		JPanel pnCenterLeftPadding = new JPanel();
+		KSGPanel pnCenterLeftPadding = new KSGPanel();
 		pnCenterLeftPadding.setPreferredSize(new Dimension(10,0));
 		pnMain.add(pnCenterLeftPadding,BorderLayout.WEST);
 
@@ -477,14 +477,14 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 	/**
 	 * @return
 	 */
-	private JPanel buildNorthPn() {
-		JPanel pnNorth = new JPanel(new BorderLayout());
+	private KSGPanel buildNorthPn() {
+		KSGPanel pnNorth = new KSGPanel(new BorderLayout());
 		
 		pnNorth.setPreferredSize(new Dimension(0,35));
 
-		JPanel pnTitleMain = new JPanel(new BorderLayout());
+		KSGPanel pnTitleMain = new KSGPanel(new BorderLayout());
 		
-		JPanel pnTitle = new JPanel();
+		KSGPanel pnTitle = new KSGPanel();
 		
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEADING));
 		
@@ -502,7 +502,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		
 		pnTitleMain.add(pnTitle);
 		
-		JPanel pnTitleBouttom = new JPanel();
+		KSGPanel pnTitleBouttom = new KSGPanel();
 		
 		pnTitleBouttom.setPreferredSize(new Dimension(0,15));
 		
@@ -592,11 +592,11 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 	/** @설명 화면 생성
 	 * @return
 	 */
-	private JPanel buildSouthPn() {
-		JPanel pnMain = new JPanel();
+	private KSGPanel buildSouthPn() {
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 
-		JPanel pnRight = new JPanel();
+		KSGPanel pnRight = new KSGPanel();
 		pnRight.setLayout(new FlowLayout(FlowLayout.RIGHT));	
 
 		JButton butArrange = new JButton("정렬");
@@ -604,7 +604,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				JDialog dialog = new JDialog(KSGModelManager.getInstance().frame);
 				dialog.setModal(true);
-				JPanel pnMain = new JPanel();
+				KSGPanel pnMain = new KSGPanel();
 				pnMain.add(new JLabel("작성 중입니다."));
 				dialog.getContentPane().add(pnMain,BorderLayout.CENTER);
 				dialog.setSize(400, 400);
@@ -642,7 +642,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 				searchScheduleByCompanyDialog = new JDialog();				
 				searchScheduleByCompanyDialog.setModal(true);
 				searchScheduleByCompanyDialog.setTitle("선사별 스케줄 검색");
-				JPanel pnMain = new JPanel();
+				KSGPanel pnMain = new KSGPanel();
 
 				JTable tblCompany = new JTable();
 				DefaultTableModel model = new DefaultTableModel();
@@ -671,7 +671,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 				pnMain.add(new JScrollPane(tblCompany));
 
-				JPanel pncontrol = new JPanel();
+				KSGPanel pncontrol = new KSGPanel();
 				pncontrol.setLayout(new FlowLayout(FlowLayout.RIGHT));
 				JButton butOk = new JButton("확인");
 				butOk.addActionListener(new ActionListener(){
@@ -729,7 +729,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 			}
 		});
 
-		JPanel pnLeft = new JPanel();
+		KSGPanel pnLeft = new KSGPanel();
 
 
 		lblNTop = new JLabel("0/0");
@@ -744,7 +744,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 	ScheduleManager scheduleManager = ScheduleManager.getInstance();
 
-	private JPanel pnNormalRouteOption;
+	private KSGPanel pnNormalRouteOption;
 
 	class SchedulePrintAction implements ActionListener
 	{

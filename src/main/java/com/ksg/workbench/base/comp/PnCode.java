@@ -22,7 +22,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ibatis.sqlmap.client.SqlMapException;
 import com.ksg.commands.base.SearchBaseInfoCommand;
@@ -74,7 +76,7 @@ public abstract class PnCode extends JPanel implements ActionListener
 	
 	private JTable tableExPortList;
 	
-	protected Logger logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	BaseInfoUI base;
 

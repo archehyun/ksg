@@ -20,11 +20,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Element;
 
 import com.ksg.commands.DelPortExceptionCommand;
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.SearchPortCommand;
 import com.ksg.commands.base.ADDPortExceptionCommand;
 import com.ksg.commands.base.SearchPortExceptionCommand;
@@ -165,8 +166,8 @@ public class PortTable extends JTable implements ActionListener
 			
 			menuPortSearch.setText(selectedPort+" 항구검색");
 
-			KSGCommand  com = new SearchPortExceptionCommand(selectedPort);
-			if(com.execute()==KSGCommand.RESULT_SUCCESS)
+			IFCommand  com = new SearchPortExceptionCommand(selectedPort);
+			if(com.execute()==IFCommand.RESULT_SUCCESS)
 			{
 				menuPortExceptionDel.setEnabled(true);
 			}else
@@ -188,7 +189,7 @@ public class PortTable extends JTable implements ActionListener
 	
 	private String colums[]={"Index","Name","Area Code"};
 	
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	private JMenuItem menuPortAdd, menuPortExceptionAdd, menuPortExceptionDel, menuPortSearch;
 	
@@ -288,7 +289,7 @@ public class PortTable extends JTable implements ActionListener
 		else if(command.equals("예외 항구명 추가"))
 		{
 			ADDPortExceptionCommand com = new ADDPortExceptionCommand(selectedPort );
-			if(com.execute()==KSGCommand.RESULT_SUCCESS)
+			if(com.execute()==IFCommand.RESULT_SUCCESS)
 			{
 				KSGModelManager.getInstance().execute(base.getName());
 			}
@@ -296,7 +297,7 @@ public class PortTable extends JTable implements ActionListener
 		else if(command.equals("예외 항구명 제외"))
 		{
 			DelPortExceptionCommand com = new DelPortExceptionCommand(selectedPort );
-			if(com.execute()==KSGCommand.RESULT_SUCCESS)
+			if(com.execute()==IFCommand.RESULT_SUCCESS)
 			{
 				KSGModelManager.getInstance().execute(base.getName());
 			}

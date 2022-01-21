@@ -148,7 +148,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 	private JComponent buildCenter()
 	{
-		logger.info("화면 초기화");
+		logger.debug("화면 초기화");
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());	
 
 		KSGTableColumn columns[] = new KSGTableColumn[5];
@@ -197,7 +197,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 		pnMain.add(buildButton(),BorderLayout.SOUTH);
 		
-		logger.info("화면 초기화 종료");
+		logger.debug("화면 초기화 종료");
 		return pnMain;
 
 	}
@@ -649,6 +649,9 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		
 		
 		try {
+			
+			logger.info("param:"+param);
+			
 			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectList(param);
 
 			tableH.setResultData(result);

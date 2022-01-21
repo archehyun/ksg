@@ -2,7 +2,8 @@ package com.ksg.workbench.adv.xls;
 
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.domain.ShippersTable;
 @SuppressWarnings("unchecked")
@@ -10,7 +11,7 @@ public class XLSTableInfoMemento {
 	public Vector companyList;
 	public Vector<ShippersTable> pageList;	
 	public Vector tableList;
-	Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private String searchType;
 	private String selectedInput;
 	

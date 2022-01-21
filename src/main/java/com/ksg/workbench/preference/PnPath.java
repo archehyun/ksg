@@ -15,7 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
@@ -26,7 +27,7 @@ public class PnPath extends JPanel implements PreferencePn,ActionListener{
 	private Font defaultfont;
 	PreferenceDialog preferenceDialog;
 	private JButton butSearcFold;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private KSGPropertis propertis = KSGPropertis.getIntance();
 	public PnPath(PreferenceDialog preferenceDialog) {
 		this.setName("경로지정");

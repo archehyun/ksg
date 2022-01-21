@@ -8,7 +8,9 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -36,7 +38,7 @@ public class ImportVesselDataTask implements LongTask{
 	private int current = 0;
 
 	private BaseService service;
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private ScheduleBuildMessageDialog di;
 	public ImportVesselDataTask(File selectedFile) {
 		try {

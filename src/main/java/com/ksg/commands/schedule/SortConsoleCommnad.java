@@ -1,10 +1,10 @@
 package com.ksg.commands.schedule;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.task.ConsoleTask;
 import com.ksg.domain.ScheduleData;
 
-public class SortConsoleCommnad implements KSGCommand {
+public class SortConsoleCommnad implements IFCommand {
 
 	ScheduleData op;
 	

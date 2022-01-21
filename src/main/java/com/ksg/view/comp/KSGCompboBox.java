@@ -15,7 +15,8 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
@@ -40,7 +41,7 @@ public class KSGCompboBox extends JComboBox implements KSGObserver
 	public static final int TYPE1=1;
 	public static final int TYPE2=2;
 	int callSign;
-	protected Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public KSGCompboBox(String name,int callSign) {
 		this.setName(name);
 		model.addObservers(this);

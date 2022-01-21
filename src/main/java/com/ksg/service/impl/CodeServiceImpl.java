@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.ksg.dao.CodeDAO;
 import com.ksg.domain.PortInfo;
 
@@ -23,6 +26,8 @@ import com.ksg.domain.PortInfo;
 public class CodeServiceImpl {
 	
 	CodeDAO codeDAO;
+	
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public CodeServiceImpl() {
 		codeDAO = new CodeDAO();

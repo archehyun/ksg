@@ -33,7 +33,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.LongTask;
 import com.ksg.commands.base.VesselInfoImportCommand;
 import com.ksg.common.dao.DAOImplManager;
@@ -269,7 +269,7 @@ public class VesselImportDialog extends KSGDialog{
 			VesselInfoImportCommand command = new VesselInfoImportCommand(xlsfile);			
 			this.setTask(command);
 			int result=command.execute();
-			if(result== KSGCommand.RESULT_SUCCESS)
+			if(result== IFCommand.RESULT_SUCCESS)
 			{
 				end();
 			}

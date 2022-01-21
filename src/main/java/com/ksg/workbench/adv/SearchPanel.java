@@ -56,7 +56,8 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.adv.logic.model.SheetInfo;
 import com.ksg.commands.ImportTextCommand;
@@ -134,7 +135,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		return selectedCompany;
 	}
 
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	/**
 	 * 
 	 */

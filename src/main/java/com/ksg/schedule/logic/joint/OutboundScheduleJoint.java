@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -41,7 +41,7 @@ import com.ksg.schedule.logic.ScheduleManager;
 public class OutboundScheduleJoint extends DefaultScheduleJoint{
 
 	XTGManager xtgmanager = new XTGManager();
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	private String fromPort[];
 	int fromPortCount;
 	private String 	BOLD_TAG_F,

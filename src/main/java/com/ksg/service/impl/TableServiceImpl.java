@@ -14,7 +14,8 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ksg.dao.TableDAO;
 import com.ksg.dao.impl.TableDAOImpl;
@@ -29,7 +30,7 @@ import com.ksg.service.TableService;
 
 public class TableServiceImpl implements TableService{
 	
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	private TableDAO tableDAO;
 	

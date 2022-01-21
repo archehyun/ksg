@@ -19,9 +19,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -36,7 +36,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ibatis.common.resources.Resources;
 import com.ibatis.sqlmap.client.SqlMapClient;
@@ -48,11 +49,9 @@ import com.ksg.domain.Member;
 import com.ksg.service.MemberService;
 import com.ksg.service.impl.MemberServiceImpl;
 
-import java.io.Reader;
-
 
 public class KSGLogin extends JDialog {
-	protected Logger logger = Logger.getLogger(getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	/**
 	 * 
 	 */

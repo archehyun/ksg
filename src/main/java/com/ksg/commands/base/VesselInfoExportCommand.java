@@ -14,7 +14,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
@@ -115,7 +115,7 @@ public class VesselInfoExportCommand extends ExportCommand{
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "파일 생성시 오류가 발생했습니다."+e.getMessage());
 		} 
-		return KSGCommand.RESULT_SUCCESS;
+		return IFCommand.RESULT_SUCCESS;
 	}
 
 

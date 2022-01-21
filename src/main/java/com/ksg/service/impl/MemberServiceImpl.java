@@ -12,6 +12,9 @@ package com.ksg.service.impl;
 
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ksg.dao.MemberDAO;
 import com.ksg.dao.impl.MemberDAOImpl;
 import com.ksg.domain.Member;
@@ -20,12 +23,15 @@ import com.ksg.service.MemberService;
 public class MemberServiceImpl implements MemberService 
 {
 	private MemberDAO memberDAO;
+	
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	public MemberServiceImpl() {
 		memberDAO = new MemberDAOImpl();
 	}
 
 	public Member selectMember(String id) throws SQLException {
-		// TODO Auto-generated method stub
+		
+		logger.info("select:"+id);
 		return memberDAO.selectMember(id);
 	}
 

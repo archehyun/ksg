@@ -20,7 +20,8 @@ import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.JDOMException;
 
 import com.ksg.domain.ADVData;
@@ -32,9 +33,9 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 
-public class CreateXTGCommand implements KSGCommand{
+public class CreateXTGCommand extends AbstractCommand{
 
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	protected ADVService	 		_advService;
 	protected TableService 		_tableService;
 	int pages;

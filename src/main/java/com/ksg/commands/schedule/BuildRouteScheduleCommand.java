@@ -23,7 +23,7 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.AreaInfo;
@@ -34,7 +34,7 @@ import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
-public class BuildRouteScheduleCommand implements KSGCommand {
+public class BuildRouteScheduleCommand implements IFCommand {
 	private static final String WORLD_SCHEDULE_ = "WorldSchedule_";
 	private ScheduleService scheduleService;
 	private BaseService baseService;

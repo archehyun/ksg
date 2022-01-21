@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.dao.SchduleDAO;
@@ -28,6 +29,7 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.KSGHashMap;
 import com.ksg.service.ScheduleService;
 @SuppressWarnings("unchecked")
+
 public class ScheduleServiceImpl implements ScheduleService{
 
 	private SchduleDAO schduleDAO;
@@ -36,7 +38,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	
 	private ADVScheduleDAO advScheduleDAO;
 	
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	KSGModelManager manager = KSGModelManager.getInstance();
 	

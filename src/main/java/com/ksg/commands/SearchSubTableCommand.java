@@ -27,8 +27,6 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
-
 import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.TableService;
@@ -36,9 +34,9 @@ import com.ksg.view.comp.ColorData;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.model.KSGTableModel;
 
-public class SearchSubTableCommand implements KSGCommand {
+public class SearchSubTableCommand extends AbstractCommand {
 
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	private List searchedList;
 	private JTable _tblSubTotalTable;
 	public String[] columNames ={"페이지","인덱스","입력일자","테이블 ID","항구 수","선박 수","선사명","제목","구분",

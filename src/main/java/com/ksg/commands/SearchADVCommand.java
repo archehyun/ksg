@@ -44,7 +44,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
 import com.ksg.adv.logic.xml.KSGXMLManager;
@@ -62,10 +61,10 @@ import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 
 @Deprecated
-public class SearchADVCommand implements KSGCommand {
+public class SearchADVCommand extends AbstractCommand{
 
 	private int ADV_ROW_H;
-	protected Logger 			logger = Logger.getLogger(getClass());
+	
 	//private List searchedList;
 	private ADVService	 		_advservice;
 	private TableService tableService;
@@ -113,21 +112,21 @@ public class SearchADVCommand implements KSGCommand {
 			{
 
 				nomalADV2();
-				result= KSGCommand.RESULT_SUCCESS;
+				result= IFCommand.RESULT_SUCCESS;
 				return RESULT_SUCCESS;
 			}
 			else
 			{
 				logger.debug("adv data is null");
 				nomalADV2();
-				result= KSGCommand.RESULT_FAILE;
+				result= IFCommand.RESULT_FAILE;
 				return RESULT_FAILE;
 			}
 
 
 		}catch (Exception ee) 
 		{
-			result= KSGCommand.RESULT_FAILE;
+			result= IFCommand.RESULT_FAILE;
 			ee.printStackTrace();
 			return RESULT_FAILE;
 		}

@@ -36,7 +36,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
+
 
 
 import com.ksg.service.impl.AreaServiceImpl;
@@ -78,7 +78,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private JTextField txfSearch;
 	
-	protected Logger logger = Logger.getLogger(getClass());	
+	
 	
 	private PortServiceImpl portService = new PortServiceImpl();
 	

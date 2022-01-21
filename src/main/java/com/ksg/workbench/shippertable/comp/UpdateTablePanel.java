@@ -52,7 +52,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -147,7 +148,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 			}
 		}
 	}
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	//private Font defaultFont = new Font("µ¸À½",0,10);
 	private static final long serialVersionUID = 1L;
 	//private JComponent 	parent;

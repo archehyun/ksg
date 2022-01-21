@@ -11,7 +11,7 @@
 package com.ksg.commands;
 
 
-public interface KSGCommand {
+public interface IFCommand {
 	public static final int RESULT_SUCCESS=0;
 	public static final int RESULT_FAILE=1;
 	public static final int PROCESS=2;

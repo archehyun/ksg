@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
+
 
 import com.ksg.adv.logic.model.SheetInfo;
 import com.ksg.commands.SearchSheetNameCommand;
@@ -66,7 +66,7 @@ public class ViewXLSFileDialog extends KSGDialog {
 		
 	}
 	private JTable table;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	private List vesselKeyList;
 	private List voyageKeyList;
 	private List bothKeyList;

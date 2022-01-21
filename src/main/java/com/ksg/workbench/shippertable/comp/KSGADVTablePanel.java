@@ -22,7 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTable;
@@ -139,11 +139,11 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		JScrollPane jScrollPane = new JScrollPane(tblADVTable);
 
-		JPanel pnCenter = new JPanel();
+		KSGPanel pnCenter = new KSGPanel();
 		pnCenter.setLayout(new BorderLayout());
 		pnCenter.add(jScrollPane);
 
-		JPanel pnADVControl = new JPanel();
+		KSGPanel pnADVControl = new KSGPanel();
 		pnADVControl.setLayout(new BorderLayout());
 
 		JButton butPortList = new JButton("항구 관리(P)");
@@ -176,7 +176,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		slider.setLabelTable(slider.createStandardLabels(15));
 
-		JPanel pn1 = new JPanel();
+		KSGPanel pn1 = new KSGPanel();
 		pn1.add(butPortList);
 		pn1.add(butVesselList);
 		pn1.add(butDel);
@@ -185,7 +185,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		pnADVControl.add(pn1,BorderLayout.WEST);
 
-		JPanel pn2 = new JPanel();
+		KSGPanel pn2 = new KSGPanel();
 		JLabel lblDate = new JLabel(" 입력날짜 : ");
 
 		txfImportDate = new JTextField(8);

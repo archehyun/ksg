@@ -20,7 +20,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Element;
 
 import com.ksg.commands.DelPortExceptionCommand;
@@ -54,7 +55,7 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 	public String ACTION_EXCEPTION_PORT_INSERT="예외 항구 추가";
 	public String ACTION_EXCEPTION_PORT_DELETE="예외 항구 제외";
 	
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public static final  int TYPE_NOMAL=1;
 	public static final  int TYPE_NEW_PORT=2;
