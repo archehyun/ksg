@@ -253,6 +253,9 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectOutboundAreaList");
 	}
+	
+	
+	
 	@Override
 	public List selectList(HashMap<String, Object> param) throws SQLException{
 		

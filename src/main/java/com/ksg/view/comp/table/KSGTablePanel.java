@@ -12,12 +12,15 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.table.model.TableModel;
+
  
 
 
@@ -78,16 +81,41 @@ public class KSGTablePanel extends KSGPanel{
 		this.setLayout(new BorderLayout(5,5));
 
 		table = new KSGAbstractTable();
+		
 		table.setGridColor(Color.lightGray);
 
 		this.add(new JScrollPane(table));
 
 		table.getParent().setBackground(Color.white);
 	}
+	
+	public KSGTablePanel(TableModel model) {
+
+		super();
+		
+		this.setLayout(new BorderLayout(5,5));
+
+		table = new KSGAbstractTable(model);
+		
+		table.setGridColor(Color.lightGray);
+
+		this.add(new JScrollPane(table));
+
+		table.getParent().setBackground(Color.white);
+		
+	}
 
 	public KSGTablePanel(String title) {
 
 		this();
+		this.title = title;
+		this.add(createTitle(), BorderLayout.NORTH);
+		
+	}
+	
+	public KSGTablePanel(String title, TableModel model) {
+
+		this(model);
 		this.title = title;
 		this.add(createTitle(), BorderLayout.NORTH);
 		
@@ -196,12 +224,10 @@ public class KSGTablePanel extends KSGPanel{
 	}
 
 	public Object getValueAt(int rowIndex, String columnField) {
-		// TODO Auto-generated method stub
 		return table.getValueAt(rowIndex, columnField);
 	}
 
 	public Object getValueAt(int rowIndex) {
-		// TODO Auto-generated method stub
 		return table.getValueAt(rowIndex);
 	}
 
@@ -215,6 +241,7 @@ public class KSGTablePanel extends KSGPanel{
 		
 		
 		if(lblTotalCount!=null)
+			
 		lblTotalCount.setText(String.valueOf(master.size())+"/"+total);
 	}
 
@@ -222,6 +249,12 @@ public class KSGTablePanel extends KSGPanel{
 		table.changeSelection(rowIndex, columnIndex, toggle, extend);
 		
 	}
+	public void setComponentPopupMenu(JPopupMenu popup) 
+	{
+		super.setComponentPopupMenu(popup);
+		table.setComponentPopupMenu(popup);
+	}
+
 	
 	public void  clearResult()
 	{
@@ -230,7 +263,7 @@ public class KSGTablePanel extends KSGPanel{
 
 	@Override
 	public void update(KSGModelManager manager) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -239,5 +272,8 @@ public class KSGTablePanel extends KSGPanel{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	
 
 }

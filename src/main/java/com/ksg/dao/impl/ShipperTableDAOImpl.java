@@ -10,9 +10,9 @@ import com.ksg.dao.ShipperTableDAO;
 
 public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 	
-	@SuppressWarnings("unchecked")
+	
 	public List<Map<String, Object>> selectPortList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
+		// 
 		return selectList("shippertable.selectPortList", commandMap);
 
 	}
@@ -27,10 +27,43 @@ public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 		
 	}
 
+
+	
+	
+
+
+	@Override
+	public Object select(Map<String, Object> param) throws SQLException {
+		
+		return selectOne("shippertable.select", param);
+	}
+	
 	@Override
 	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
+
 		return selectList("shippertable.selectList", commandMap);
+	}
+	
+	public int selectCount(Map<String, Object> param) throws SQLException{
+		return  (Integer) selectOne("shippertable.selectCount", param);
+	}
+
+	@Override
+	public int update(Map<String, Object> param) throws SQLException {
+		
+		return (Integer) update("shippertable.update", param);
+	}
+
+	@Override
+	public int delete(Map<String, Object> param) throws SQLException {
+		
+		return (Integer) delete("shippertable.delete", param);
+	}
+
+	@Override
+	public int insert(Map<String, Object> param) throws SQLException {
+		
+		return (Integer) insert("shippertable.insert", param);
 	}
 
 }

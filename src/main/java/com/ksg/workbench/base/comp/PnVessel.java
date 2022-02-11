@@ -56,7 +56,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.view.comp.KSGCompboBox;
+import com.ksg.view.comp.KSGCompboBox2;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
@@ -116,9 +116,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	private JTextField txfSearch;
 
-	private JLabel lblTable,lblTotal;
-	
-	KSGCompboBox cbxType;
+	private JLabel lblTable,lblTotal;	
 
 	private JComboBox<KSGTableColumn> cbxField;
 
@@ -587,7 +585,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 		}
 		
-		logger.info("param:"+param);
+		logger.info("param:{}",param);
 
 		try {
 			HashMap<String, Object> result = (HashMap<String, Object>) vesselService.selectList(param);

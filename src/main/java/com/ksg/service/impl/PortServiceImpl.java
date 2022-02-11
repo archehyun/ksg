@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ksg.dao.PortDAO;
 import com.ksg.dao.impl.PortDAOImpl;
 import com.ksg.service.PortService;
 
@@ -28,7 +29,7 @@ import com.ksg.service.PortService;
   */
 public class PortServiceImpl implements PortService{
 	
-	PortDAOImpl portDAO;
+	PortDAO portDAO;
 	
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	
@@ -39,64 +40,64 @@ public class PortServiceImpl implements PortService{
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> selectList(Map<String, Object> param) throws SQLException {
 		
-		logger.info("param:{}", param);
+		logger.debug("param:{}", param);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", portDAO.selectPortCount(param));
+		resultMap.put("total", portDAO.selectCount(param));
 		
-		resultMap.put("master", portDAO.selectPortList(param));
+		resultMap.put("master", portDAO.selectList(param));
 		
 		return resultMap;
 
 	}
 
 	public int deletePortAbbr(HashMap<String, Object> param) throws SQLException {
-		logger.info("param:{}", param);
-		return portDAO.deletePortAbbr(param);
+		logger.debug("param:{}", param);
+		return portDAO.deleteDetail(param);
 	}
 
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> selectPort(HashMap<String, Object> param) throws SQLException {
 		logger.info("param:{}", param);
 		
-		HashMap<String,Object> resultMap=(HashMap<String, Object>) portDAO.selectPort( param);
+		HashMap<String,Object> resultMap=(HashMap<String, Object>) portDAO.select( param);
 		
 		if(resultMap==null)
 		{
-			resultMap = (HashMap<String, Object>) portDAO.selectPortAbbr(param);
+			resultMap = (HashMap<String, Object>) portDAO.selectDetail(param);
 		}		
 		
 		return resultMap;
 	}
 
 	public int update(HashMap<String, Object> param) throws SQLException {
-		logger.info("param:{}", param);
-		return portDAO.updatePort(param);
+		logger.debug("param:{}", param);
+		return portDAO.update(param);
 		
 	}
 
 	public void insert(HashMap<String, Object> param) throws SQLException {
-		logger.info("param:{}", param);
-		portDAO.isnertPort(param);
+		logger.debug("param:{}", param);
+		portDAO.isnert(param);
 		
 	}
 
 	public int delete(HashMap<String, Object> param) throws SQLException {
-		logger.info("param:{}", param);
-		return portDAO.deletePort(param);
+		logger.debug("param:{}", param);
+		return portDAO.delete(param);
 	}
 
 	@Override
 	public Object selectPortAbbr(HashMap<String, Object> param) throws SQLException {
-		logger.info("param:{}", param);
-		return portDAO.selectPortAbbr(param);
+		logger.debug("param:{}", param);
+		return portDAO.selectDetail(param);
 	}
 
 	@Override
 	public List<Map<String, Object>> selectPortAbbrList(HashMap<String, Object> param) throws SQLException {
-		logger.info("param:{}", param);
-		return portDAO.selectPortAbbrList(param);
+		logger.debug("param:{}", param);
+		return portDAO.selectDetailList(param);
 	}
 
 

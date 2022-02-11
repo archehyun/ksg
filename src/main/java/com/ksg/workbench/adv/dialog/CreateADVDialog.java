@@ -43,7 +43,7 @@ import com.ksg.service.ADVService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.KSGCompboBox;
+import com.ksg.view.comp.KSGCompboBox2;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.print.PrintADVUI;
 
@@ -82,7 +82,7 @@ public class CreateADVDialog extends KSGDialog implements ActionListener{
 		return pnButtom;
 	}
 	private JTextField txfDate;	
-	private KSGCompboBox cbxCompany;
+	private KSGCompboBox2 cbxCompany;
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	private JPanel createPnZeroStep() {
@@ -90,7 +90,7 @@ public class CreateADVDialog extends KSGDialog implements ActionListener{
 		pnStepZero.setLayout(new GridLayout(0,1));
 
 		JPanel pnShipper = new JPanel();
-		cbxCompany = new KSGCompboBox("combo",KSGCompboBox.TYPE2);
+		cbxCompany = new KSGCompboBox2("combo",KSGCompboBox2.TYPE2);
 		manager.addObservers(cbxCompany);
 		manager.execute(cbxCompany.getName());
 		cbxCompany.setPreferredSize(new Dimension(200,25));

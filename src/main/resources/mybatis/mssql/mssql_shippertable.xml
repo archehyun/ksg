@@ -19,7 +19,7 @@
 	SELECT 
 		table_id
 		,table_index
-		,date_isusse
+		,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
 		,vsl_row
 		,title
 		,out_port
@@ -95,6 +95,73 @@
 		order by port_index
 	</select>
 
+	<insert id="insert" parameterClass="java.util.HashMap">
+		insert TB_TABLE_INFO(
+			table_id,
+			port_col,
+			vsl_row,
+			othercell,
+			company_abbr,
+			page,
+			bookPage,
+			table_index,
+			out_port,
+			out_to_port,
+			in_port,
+			in_to_port,
+			agent,		
+			title,
+			quark_format,
+			common_shipping,
+			gubun,
+			console_cfs,
+			d_time,
+			c_time,		
+			console_page,
+			inland_indexs
+		)
+		 values(
+			#table_id#,
+			#port_col#,
+			#vsl_row#,
+			#othercell#,
+			#company_abbr#,
+			#page#,
+			#bookPage#,
+			#table_index#,
+			#out_port#,
+			#out_to_port#,
+			#in_port#,
+			#in_to_port#,
+			#agent#,
+			#title#,		
+			#quark_format#,				
+			#common_shipping#,
+			#gubun#,
+			#console_cfs#,
+			#d_time#,
+			#c_time#,		
+			#console_page#,
+			#inland_indexs#
+		)
+	</insert>
+	<delete id="deleteTableInfo" parameterClass="com.ksg.domain.ShippersTable">
+		DELETE FROM TB_TABLE_INFO 
+		WHERE 
+			table_index=#table_index# and 
+			company_abbr=#company_abbr# and 
+			table_id=#table_id#
+	</delete>
+	
+	<delete id="delete" parameterClass="java.util.HashMap">
+		DELETE FROM TB_TABLE_INFO 
+		WHERE 
+			table_index=#table_index# and 
+			company_abbr=#company_abbr# and 
+			table_id=#table_id#
+	</delete>
+
+
 	
 
 	<insert id="insertShipperPort" parameterClass="java.util.HashMap">
@@ -119,6 +186,12 @@
 		delete from TB_TABLE_PORTLIST where table_id = #table_id#
 
 	</delete>
+	
+	<!-- count -->
+
+	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
+		select count(*) from TB_TABLE_INFO	
+	</select>
 	
 
 </sqlMap>

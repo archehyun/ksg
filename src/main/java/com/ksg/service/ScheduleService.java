@@ -185,6 +185,8 @@ public interface ScheduleService {
 	public List<Map<String, Object>> selectInboundScheduleJointList(Map<String, Object> commandMap) throws SQLException;
 
 	List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException;
+
+	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException;
 	
 	
 	

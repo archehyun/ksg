@@ -329,4 +329,15 @@ public class ScheduleServiceImpl implements ScheduleService{
 		return advScheduleDAO.selectScheduleCount(commandMap);
 	}
 
+	@Override
+	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("total", schduleDAO.selectCount(param));
+		
+		resultMap.put("master", schduleDAO.selectList(param));
+		
+		return resultMap;
+	}
+
 }

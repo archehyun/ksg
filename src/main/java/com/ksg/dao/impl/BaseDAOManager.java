@@ -29,22 +29,20 @@ import com.ksg.domain.Vessel;
 @SuppressWarnings("unchecked")
 public class BaseDAOManager
 {
-	AreaDAOImpl2 areaDAOImpl;
+	
 	
 
 	private SqlMapClient sqlMap;
-	private VesselDAOImpl2 vesselDAOImpl;
-	private PortDAOImpl2 portDAOImpl;
+	
+	
 	public BaseDAOManager() {
 		try {
 			sqlMap = SqlMapManager.getSqlMapInstance();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		areaDAOImpl =new AreaDAOImpl2();
-		vesselDAOImpl = new VesselDAOImpl2();
-
-		portDAOImpl = new PortDAOImpl2();
+		
+	
 	}	
 
 	
@@ -52,76 +50,20 @@ public class BaseDAOManager
 		return sqlMap.delete("Base.deleteCode",code_info);
 		
 	}
-//
-////	//delete
-////	public int deleteArea(String data) throws SQLException {
-////		return areaDAOImpl.delete(data);		
-////	}
-//	public int deleteCompany(String company) throws SQLException {
-//		return companyDAOImpl.delete(company);
-//	}
+
 
 	
 	public void deleteKeyword(Object key_name) throws SQLException {
 		sqlMap.delete("Base.deleteKeyword",key_name);
 	}
 	
-//	public int deletePort(String port) throws SQLException {
-//		
-//		return portDAOImpl.deletePort(port);
-//	}
-	
-//	public int deletePortAbbr(String data) throws SQLException {
-//		return portDAOImpl.deletePortAbbr(data);
-//	}
-	
-//	public int deleteVessel(String data) throws SQLException {
-//		return vesselDAOImpl.deleteVessel(data);
-//	}
+
 
 	public int deleteVesselAbbr(Vessel op) throws SQLException {
 		return sqlMap.delete("BASE_VESSEL.deleteVesselAbbr",op);
 	}
 
-//	public int deleteVesselAll() throws SQLException {
-//		return vesselDAOImpl.deleteVesselAll();
-//	}
-	
 
-//	public int getAreaCount() throws SQLException {
-//		return areaDAOImpl.getCount();
-//	}
-
-//	public List getAreaGroupList() throws SQLException {
-//		return areaDAOImpl.getAreaGroupList();
-//	}
-
-//	public List getAreaInfoList(AreaInfo info) throws SQLException {
-//		
-//		return areaDAOImpl.getAreaInfoList(info);
-//	}
-
-//	public List getAreaListGroupByAreaCode() throws SQLException {
-//		return sqlMap.queryForList("BASE_AREA.selectAreaCodeListGroupByAreaCode");
-//	}
-
-//	public List getAreaListGroupByAreaName() throws SQLException {
-//		return areaDAOImpl.getAreaListGroupByAreaName();
-//	}
-
-//	public List getArrangedAreaInfoList(String orderBy) throws SQLException {
-//
-//		return areaDAOImpl.getArrangedAreaInfoList(orderBy);
-//	}
-//	public List getArrangedAreaInfoList(String orderBy, String type)
-//			throws SQLException {
-//		
-//		return areaDAOImpl.getArrangedAreaInfoList(orderBy,type);
-//	}
-//
-//	public List getArrangedCompanyList(Object orderBy) throws SQLException {
-//		return companyDAOImpl.getArrangedCompanyList(orderBy);
-//	}
 
 	public List getArrangedPort_AbbrList(Object orderBy) throws SQLException {
 		return sqlMap.queryForList("BASE_PORT.selectArrangedPort_AbbrList",orderBy);

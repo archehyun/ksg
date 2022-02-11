@@ -43,9 +43,9 @@ public class VesselServiceImpl implements VesselService{
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", vesselDAO.selectVesselCount(commandMap));
+		resultMap.put("total", vesselDAO.selectCount(commandMap));
 		
-		resultMap.put("master",vesselDAO.selectVesselList(commandMap));
+		resultMap.put("master",vesselDAO.selectList(commandMap));
 		
 		return resultMap;
 
@@ -59,29 +59,29 @@ public class VesselServiceImpl implements VesselService{
 		
 		//resultMap.put("total", vesselDAO.selectVesselCount(commandMap));
 		
-		resultMap.put("master",vesselDAO.selectVesselAbbrList(commandMap));
+		resultMap.put("master",vesselDAO.selectDetailList(commandMap));
 		return resultMap;
 	}
 
 	public Object updateDetail(HashMap<String, Object> param) throws SQLException {
-		return vesselDAO.updateVesselAbbr(param);
+		return vesselDAO.updateDetail(param);
 		
 	}
 
 	public int delete(HashMap<String, Object> pram) throws SQLException {
-		return vesselDAO.deleteVessel(pram);
+		return vesselDAO.delete(pram);
 		
 	}
 
 	public void insert(HashMap<String, Object> param) throws SQLException {
 		
 		logger.debug("param:"+param);
-		vesselDAO.insertVessel(param);
+		vesselDAO.insert(param);
 		
 	}
 
 	public Object deleteDetail(HashMap<String, Object> param) throws SQLException {
-		return  vesselDAO.deleteVesselAbbr(param);
+		return  vesselDAO.deleteDetail(param);
 		
 	}
 
@@ -89,7 +89,7 @@ public class VesselServiceImpl implements VesselService{
 	public HashMap<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("master",vesselDAO.selectVesselAbbrList((HashMap<String, Object>) commandMap));
+		resultMap.put("master",vesselDAO.selectDetailList((HashMap<String, Object>) commandMap));
 		return resultMap;
 	}
 

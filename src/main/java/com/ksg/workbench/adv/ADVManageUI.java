@@ -83,7 +83,7 @@ import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.print.PrintADVUI;
-import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
+import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 
 
 /**
@@ -210,7 +210,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 
 		}else if(command.equals("신규등록"))
 		{
-			AddTableInfoDialog addTableInfoDialog = new AddTableInfoDialog(this,manager.selectedCompany);
+			AddTableInfoDialog_temp addTableInfoDialog = new AddTableInfoDialog_temp(this,manager.selectedCompany);
 			addTableInfoDialog.createAndUpdateUI();
 		}
 	}
@@ -813,7 +813,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 		itemTable.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				AddTableInfoDialog addTableInfoDialog = new AddTableInfoDialog(ADVManageUI.this,manager.selectedCompany);
+				AddTableInfoDialog_temp addTableInfoDialog = new AddTableInfoDialog_temp(ADVManageUI.this,manager.selectedCompany);
 				addTableInfoDialog.createAndUpdateUI();
 			}});
 		JMenuItem xlsMenu = new JMenuItem("파일 불러오기");

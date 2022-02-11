@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
+import com.ksg.dao.VesselDAO;
 
 /**
 
@@ -17,10 +18,10 @@ import com.ksg.common.dao.AbstractDAO;
 
   * @변경이력 :
 
-  * @프로그램 설명 :
+  * @프로그램 설명 : 선박 정보 DAO
 
   */
-public class VesselDAOImpl extends AbstractDAO{
+public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	/**
 	 * 
 	 */
@@ -28,41 +29,53 @@ public class VesselDAOImpl extends AbstractDAO{
 		super();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> selectVesselList(Map<String, Object> commandMap) throws SQLException {
+	@Override
+	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException {
 		return selectList("vessel.selectVesselList", commandMap);
 
 	}
-	
-	public List<Map<String, Object>> selectVesselAbbrList(HashMap<String, Object> commandMap) throws SQLException{
-		
+	@Override
+	public List<Map<String, Object>> selectDetailList(HashMap<String, Object> commandMap) throws SQLException{
 		
 		return selectList("vessel.selectVesselAbbrList", commandMap);
-		
 	}
-	
-	public int deleteVessel(HashMap<String, Object> param) throws SQLException {
+	@Override
+	public int delete(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete("vessel.deleteVessel", param);
 	}
 	
-	public Object deleteVesselAbbr(HashMap<String, Object> param) throws SQLException {
+	@Override
+	public int deleteDetail(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete("vessel.deleteVesselAbbr", param);
 	}
 	
-	public void insertVessel(HashMap<String, Object> param) throws SQLException{
-		
-		insert("vessel.insertVessel", param);
+	@Override
+	public Object insert(HashMap<String, Object> param) throws SQLException{		
+		return insert("vessel.insertVessel", param);
+	}
+	
+	@Override
+	public Object insertDetail(String queryId, Object param) throws SQLException {		
+		return insert("vessel.insertVesselAbbr", param);
 	}
 
-	
-	public int selectVesselCount(Map<String, Object> commandMap) throws SQLException{
+	@Override
+	public int selectCount(Map<String, Object> commandMap) throws SQLException{
 		return  (Integer) selectOne("vessel.selectCount", commandMap);
 	}
-
-	public Object updateVesselAbbr(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
-		return update("", param);
+	
+	@Override
+	public Object update(HashMap<String, Object> param) throws SQLException {		
+		return update("vessel.updateVessel", param);
 	}
+
+	public Object updateDetail(HashMap<String, Object> param) throws SQLException {		
+		return update("vessel.updateVesselAbbr", param);
+	}
+
+
+
+
 
 
 

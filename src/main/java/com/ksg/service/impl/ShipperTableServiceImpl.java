@@ -46,7 +46,7 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 		try {
 
-			resultMap.put("total", 0);
+			resultMap.put("total", shipperTableDao.selectCount(null));
 
 			resultMap.put("master", shipperTableDao.selectList(param));
 
@@ -109,12 +109,28 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 			HashMap<String, Object> port = master.get(i);
 			port.put("table_id", table_id);
 
-			insertShipperPort(port);
-
-			System.out.println(port);
+			insertShipperPort(port);			
 
 		}		
 
 
+	}
+
+	@Override
+	public void delete(Map<String, Object> param) {
+		
+		
+	}
+
+	@Override
+	public void update(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void insert(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ksg.dao.CodeDAO;
+import com.ksg.dao.impl.CodeDAOImpl;
 import com.ksg.domain.PortInfo;
 
 /**
@@ -25,12 +25,12 @@ import com.ksg.domain.PortInfo;
   */
 public class CodeServiceImpl {
 	
-	CodeDAO codeDAO;
+	CodeDAOImpl codeDAO;
 	
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public CodeServiceImpl() {
-		codeDAO = new CodeDAO();
+		codeDAO = new CodeDAOImpl();
 	}
 	
 	public Map<String, Object> selectCodeHList(Map<String, Object> param) throws SQLException {
@@ -39,9 +39,9 @@ public class CodeServiceImpl {
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", codeDAO.selectCodeHCount(param));
+		resultMap.put("total", codeDAO.selectCount(param));
 		
-		resultMap.put("master", codeDAO.selectCodeHList(param));
+		resultMap.put("master", codeDAO.selectList(param));
 		
 		return resultMap;
 
@@ -52,47 +52,43 @@ public class CodeServiceImpl {
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", codeDAO.selectCodeCount(param));
+		resultMap.put("total", codeDAO.selectDetailCount(param));
 		
-		resultMap.put("master", codeDAO.selectCodeDList(param));
+		resultMap.put("master", codeDAO.selectDetailList(param));
 		
 		return resultMap;
 
 	}
 	public Object selectCodeD(Map<String, Object> param) throws SQLException {
 		logger.info("param:{}"+param);
-		return codeDAO.selectCodeD(param);
+		return codeDAO.select(param);
 	}
 
 	public Object insertCodeH(HashMap<String, Object> param) throws SQLException{
 		logger.info("param:{}"+param);
-		return codeDAO.insertCodeH(param);
+		return codeDAO.insert(param);
 		
 	}
 
 	public Object updateCodeH(HashMap<String, Object> param) throws SQLException{
 		logger.info("param:{}"+param);
-		return codeDAO.updateCodeH(param);
+		return codeDAO.update(param);
 		
 	}
 
 	public Object deleteCodeH(HashMap<String, Object> param)throws SQLException {
-		return codeDAO.deleteCodeH(param);
+		return codeDAO.delete(param);
 		
 	}
 
 	public Object insertCodeD(HashMap<String, Object> param) throws SQLException {
-		return codeDAO.insertCodeD(param);
+		return codeDAO.insertDetail(param);
 		
 	}
 
 	public Object deleteCodeD(HashMap<String, Object> param) throws SQLException {
-		return codeDAO.deleteCodeD(param);
+		return codeDAO.deleteDetail(param);
 		
-	}
-	
-	public PortInfo getPortInfoAbbrByPortName(String port) throws SQLException {
-		return codeDAO.getPortInfoAbbrByPortName(port);
 	}
 
 }

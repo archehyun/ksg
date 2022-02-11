@@ -66,6 +66,7 @@ import com.ksg.view.ui.ErrorLogManager;
 import com.ksg.workbench.schedule.comp.PnConsole;
 import com.ksg.workbench.schedule.comp.PnInland;
 import com.ksg.workbench.schedule.comp.PnNormal;
+import com.ksg.workbench.schedule.comp.PnOutbound;
 import com.ksg.workbench.schedule.dialog.ScheduleResultDialog;
 
 /**
@@ -413,12 +414,19 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		PnConsole pnConsole = new PnConsole();
 
 		PnInland pnInland = new PnInland();
+		
+		PnOutbound pnOutbound = new PnOutbound();
 
 		tabPane = new JTabbedPane();
 
 		tabPane.add(pnNormal,ShippersTable.GUBUN_NORMAL);
 		tabPane.add(pnConsole,ShippersTable.GUBUN_CONSOLE);
 		tabPane.add(pnInland,ShippersTable.GUBUN_INLAND);
+		
+		
+		tabPane.add(pnOutbound, "OUTBOUND");
+		
+		
 		pnMain.add(tabPane);
 		KSGPanel pnCenterLeftPadding = new KSGPanel();
 		pnCenterLeftPadding.setPreferredSize(new Dimension(10,0));

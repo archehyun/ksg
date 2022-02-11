@@ -6,26 +6,27 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
+import com.ksg.dao.CompanyDAO;
 
 /**
 
-  * @FileName : CompanyDAO.java
+ * @FileName : CompanyDAO.java
 
-  * @Date : 2021. 2. 26. 
+ * @Date : 2021. 2. 26. 
 
-  * @작성자 : 박창현
+ * @작성자 : 박창현
 
-  * @변경이력 :
+ * @변경이력 :
 
-  * @프로그램 설명 :
+ * @프로그램 설명 :
 
-  */
-public class CompanyDAOImpl extends AbstractDAO{
-	
+ */
+public class CompanyDAOImpl extends AbstractDAO implements CompanyDAO{
+
 	public CompanyDAOImpl() {
 		super();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectCompanyList(Map<String, Object> commandMap) throws SQLException {
 		return selectList("company.selectCompanyList", commandMap);
@@ -36,33 +37,32 @@ public class CompanyDAOImpl extends AbstractDAO{
 		return (Integer) delete("company.deleteCompany", param);
 	}	
 
-	public int selectCompanyCount(Map<String, Object> commandMap) throws SQLException{
+	public int selectCount(Map<String, Object> commandMap) throws SQLException{
 		return  (Integer) selectOne("company.selectCount", commandMap);
 	}
 
-	public int updateCompany(HashMap<String, Object> param) throws SQLException{
-		
+	public int update(HashMap<String, Object> param) throws SQLException{
+
 		return (Integer) update("company.updateCompany", param);
-		
+
 	}
 
-	public Object insertCompany(HashMap<String, Object> param) throws SQLException{
+	public Object insert(HashMap<String, Object> param) throws SQLException{
 		// TODO Auto-generated method stub
 		return insert("company.insertCompany",param);
 	}
-	
-	/**
-	 * @param data
-	 * @return
-	 * @throws SQLException
-	 */
-	public int delete(String data) throws SQLException {
-		return sqlMap.delete("BASE_COMPANY.deleteCompany",data);
-		
+
+
+	@Override
+	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException {
+		return selectList("company.selectCompanyList", commandMap);
+
 	}
-	public int getCount() throws SQLException {
-	// TODO Auto-generated method stub
-	return (Integer) sqlMap.queryForObject("BASE_COMPANY.selectCompanyCount");
-}
+
+	@Override
+	public int delete(Map<String, Object> commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return sqlMap.delete("company.deleteCompany",commandMap);
+	}
 
 }

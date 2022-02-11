@@ -94,14 +94,14 @@ import com.ksg.workbench.base.dialog.UpdateTableInfoDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 import com.ksg.workbench.shippertable.comp.SearchTable;
 import com.ksg.workbench.shippertable.comp.UpdateTablePanel;
-import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
+import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 import com.ksg.workbench.shippertable.dialog.ManagePortDialog;
 /**
  * @author archehyun
  * @설명 광고 정보 조회 화면
  */
 @SuppressWarnings("unchecked")
-public class ShipperTableMgtUI extends KSGPanel implements ActionListener
+public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements ActionListener
 {	
 	private static final String ACTION_SEARCH = "조회";
 
@@ -190,7 +190,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 	private JTextField 			txfPageIndexSearchInput;
 
-	private AddTableInfoDialog addTableInfoDialog;
+	private AddTableInfoDialog_temp addTableInfoDialog;
 
 	private UpdateTableInfoDialog 	dialog = null;
 
@@ -299,7 +299,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 						tblSearchTable.setSearchParam(shippersTable);
 						tblSearchTable.retrive();
 						_searchedList = tblSearchTable.getSearchedList();
-						logger.info(_searchedList.size());
+						
 					} catch (SQLException e1) {
 						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e1.getMessage());
 						e1.printStackTrace();
@@ -327,7 +327,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 			if(addTableInfoDialog==null||!addTableInfoDialog.isVisible())
 			{
-				addTableInfoDialog = new AddTableInfoDialog(this,selectedshippersTable);
+				addTableInfoDialog = new AddTableInfoDialog_temp(this,selectedshippersTable);
 				addTableInfoDialog.createAndUpdateUI();
 			}
 
@@ -1189,7 +1189,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		itemTable.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				AddTableInfoDialog addTableInfoDialog = new AddTableInfoDialog(ShipperTableMgtUI.this,manager.selectedCompany);
+				AddTableInfoDialog_temp addTableInfoDialog = new AddTableInfoDialog_temp(ShipperTableMgtUI.this,manager.selectedCompany);
 				addTableInfoDialog.createAndUpdateUI();
 			}});
 		delMenu = new JMenuItem("테이블 삭제");
@@ -1366,7 +1366,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	 * @param colum
 	 * @throws SQLException
 	 */
-	public void searchSubTable() throws SQLException {
+	private void searchSubTable() throws SQLException {
 
 		if(_searchedList!=null)
 		{

@@ -29,7 +29,7 @@ import com.ksg.view.comp.tree.KSGTreeImpl;
  * @author ¹ÚÃ¢Çö
  *
  */
-public class KSGCompboBox extends JComboBox implements KSGObserver
+public class KSGCompboBox2 extends JComboBox implements KSGObserver
 {
 	/**
 	 * 
@@ -42,7 +42,7 @@ public class KSGCompboBox extends JComboBox implements KSGObserver
 	public static final int TYPE2=2;
 	int callSign;
 	protected Logger logger = LogManager.getLogger(this.getClass());
-	public KSGCompboBox(String name,int callSign) {
+	public KSGCompboBox2(String name,int callSign) {
 		this.setName(name);
 		model.addObservers(this);
 		this.callSign=callSign;

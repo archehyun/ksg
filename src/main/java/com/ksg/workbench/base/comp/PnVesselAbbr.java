@@ -35,6 +35,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.domain.Vessel;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.model.KSGTableModel;
@@ -59,6 +60,7 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 	private JComboBox cbxField;
 	private JTextField txfSearch;
 	private JLabel lblTable,lblTotal;
+	private BaseDAOManager baseDaoService = new BaseDAOManager();
 	public PnVesselAbbr(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
@@ -105,7 +107,6 @@ public class PnVesselAbbr extends PnBase implements ActionListener{
 				{
 					searchData();
 				}
-
 			}
 		});
 		JLabel label = new JLabel("°³ Ç×¸ñ");

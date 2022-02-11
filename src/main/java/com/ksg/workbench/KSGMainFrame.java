@@ -78,6 +78,7 @@ import com.ksg.workbench.preference.PreferenceDialog;
 import com.ksg.workbench.print.PrintADVUI;
 import com.ksg.workbench.schedule.ScheduleMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
+import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
 
 /**
@@ -193,7 +194,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				pnBaseInfo 	= new BaseInfoUI();
 				
-				pnSearch 	= new ShipperTableMgtUI();
+				pnSearch 	= new ShipperTableMgtUI2();
 				
 				pnPrintADV 	= new PrintADVUI();
 				

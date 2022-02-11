@@ -6,50 +6,51 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
+import com.ksg.dao.PortDAO;
 
-public class PortDAOImpl extends AbstractDAO{
+public class PortDAOImpl extends AbstractDAO implements PortDAO{
 	public PortDAOImpl() {
 		super();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> selectPortList(Map<String, Object> commandMap) throws SQLException {
+	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException {
 		return selectList("port.selectPortList", commandMap);
 
 	}
 	
-	public Object selectPort(HashMap<String, Object> param) throws SQLException
+	public List<Map<String, Object>> selectDetailList(HashMap<String, Object> commandMap) throws SQLException{
+		return selectList("port.selectPortAbbrList", commandMap);
+		
+	}
+	
+	public Object select(HashMap<String, Object> param) throws SQLException
 	{
 		return selectOne("port.selectPort", param);
 	}
-	public Object selectPortAbbr(HashMap<String, Object> param) throws SQLException
+	public Object selectDetail(HashMap<String, Object> param) throws SQLException
 	{
 		return selectOne("port.selectPortAbbr", param);
 	}
 
-	public int deletePort(HashMap<String, Object> param) throws SQLException {
+	public int delete(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete("port.deletePort", param);
 	}
-
-	public List<Map<String, Object>> selectPortAbbrList(HashMap<String, Object> commandMap) throws SQLException{
-		return selectList("port.selectPortAbbrList", commandMap);
-		
+	public int deleteDetail(HashMap<String, Object> param) throws SQLException{
+		return (Integer) delete("port.deletePortAbbr", param);
 	}
+	
 
-	public int selectPortCount(Map<String, Object> commandMap) throws SQLException{
+	public int selectCount(Map<String, Object> commandMap) throws SQLException{
 		return  (Integer) selectOne("port.selectCount", commandMap);
 	}
 
-	public int deletePortAbbr(HashMap<String, Object> param) throws SQLException{
-		return (Integer) delete("port.deletePortAbbr", param);
-	}
-
-	public int updatePort(HashMap<String, Object> param) throws SQLException{
+	public int update(HashMap<String, Object> param) throws SQLException{
 		// TODO Auto-generated method stub
 		return (Integer) update("port.updatePort",param);
 	}
 
-	public void isnertPort(HashMap<String, Object> param) throws SQLException{
+	public void isnert(HashMap<String, Object> param) throws SQLException{
 		insert("port.insertPort",param);
 	}
 

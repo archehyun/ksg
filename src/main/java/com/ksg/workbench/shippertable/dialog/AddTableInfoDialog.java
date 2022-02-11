@@ -19,6 +19,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -55,11 +56,30 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Company;
 import com.ksg.domain.ShippersTable;
+import com.ksg.service.ShipperTableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.view.comp.KSGComboBox;
+import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
+/**
+
+  * @FileName : AddTableInfoDialog.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 1. 23. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 신규 테이블 정보 추가
+
+  */
 @SuppressWarnings("serial")
 public class AddTableInfoDialog extends KSGDialog implements ActionListener,FocusListener{
 
@@ -91,20 +111,23 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	private JTextField txfDtime;
 	private JTextField txfCtime;
 	private int vgap=31;
-	private JComboBox cbxGubun;
+	private KSGComboBox cbxGubun;
 	private JPanel pnClosingTime;
 	private JRadioButton optPage;
 	private JRadioButton optCFS;
 	private JPanel pnInland;
 	
 	private JTextField txfInland;
-
+	private ShipperTableService service;
 
 	public AddTableInfoDialog() {
 		super();
 		advservice= new ADVServiceImpl();
 		tableService = new TableServiceImpl();
 		baseService = new BaseServiceImpl();
+		
+		
+		service = new ShipperTableServiceImpl();
 	}
 
 	public AddTableInfoDialog(JComponent parent) {
@@ -295,8 +318,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		
 		
 		txfCompany=createTextField( 13);
-		txfAgent=createTextField( 20);
-		
+		txfAgent=createTextField( 20);	
 		
 		
 		txfAgent.setEditable(false);
@@ -456,20 +478,25 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		pnTableInfo.add(createForm("페이지 : ", txfPage));
 		pnTableInfo.add(createForm("지면페이지 : ", txfBookPage,75));	
 		pnTableInfo.add(createForm("인덱스 : ", txfIndex,50));
+		
+		
+		
 
 
-		cbxGubun = new JComboBox();		
-		cbxGubun.addItem(ShippersTable.GUBUN_NORMAL);
-		cbxGubun.addItem(ShippersTable.GUBUN_CONSOLE);
-		cbxGubun.addItem(ShippersTable.GUBUN_INLAND);
-		cbxGubun.addItem(ShippersTable.GUBUN_NNN);
-		cbxGubun.addItem(ShippersTable.GUBUN_TS);
+		cbxGubun = new KSGComboBox("tableType");		
+//		cbxGubun.addItem(ShippersTable.GUBUN_NORMAL);
+//		cbxGubun.addItem(ShippersTable.GUBUN_CONSOLE);
+//		cbxGubun.addItem(ShippersTable.GUBUN_INLAND);
+//		cbxGubun.addItem(ShippersTable.GUBUN_NNN);
+//		cbxGubun.addItem(ShippersTable.GUBUN_TS);
 
 		cbxGubun.addActionListener(new ActionListener() {
 
 
 			public void actionPerformed(ActionEvent e) {
-				String command = (String) cbxGubun.getSelectedItem();
+				
+				KSGTableColumn column = (KSGTableColumn) cbxGubun.getSelectedItem();
+				String command = column.columnField;
 
 				if(command.equals(ShippersTable.GUBUN_CONSOLE))
 				{
@@ -615,12 +642,14 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 	public void createAndUpdateUI() {
 		this.setTitle("테이블 정보 추가");
+		
+		this.addComponentListener(this);
 		JPanel pnTitleInfo = new JPanel();
 		pnTitleInfo.setLayout(new BorderLayout());
 		pnTitleInfo.setBorder(BorderFactory.createEtchedBorder());
 		pnTitleInfo.setPreferredSize(new Dimension(0,45));
 
-		JLabel label = new JLabel("Create a Table",JLabel.LEFT);
+		JLabel label = new JLabel("테이블 정보 생성",JLabel.LEFT);
 
 		label.setFont(new Font("aria", Font.BOLD, 16));
 		pnTitleInfo.add(label,BorderLayout.WEST);
@@ -638,37 +667,6 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		this.getContentPane().add(rightPadding, BorderLayout.EAST);
 
 
-		if(searchOp!=null)
-		{
-			try {
-				selectedTable = tableService.getTableById(searchOp.getTable_id());
-
-				txfTitle.setText(selectedTable.getTitle());
-				txfCompany.setText(selectedTable.getCompany_abbr());
-				txfPage.setText(String.valueOf(selectedTable.getPage()));
-				txfBookPage.setText(String.valueOf(selectedTable.getBookPage()));
-				txfPortCount.setText(String.valueOf(selectedTable.getPort_col()));
-				txfVesselCount.setText(String.valueOf(selectedTable.getVsl_row()));
-				txaQuark.setText(selectedTable.getQuark_format());
-				txaCommon.setText(selectedTable.getCommon_shipping());
-				txfInPort.setText(selectedTable.getIn_port());
-				txfOutPort.setText(selectedTable.getOut_port());
-				txfInToPort.setText(selectedTable.getIn_to_port());
-				txfOutToPort.setText(selectedTable.getOut_to_port());
-				txfOther.setText(String.valueOf(selectedTable.getOthercell()));
-				txfAgent.setText(selectedTable.getAgent());
-				cbxGubun.setSelectedItem(selectedTable.getGubun());				
-				txfCtime.setText(String.valueOf(selectedTable.getC_time()));
-				txfDtime.setText(String.valueOf(selectedTable.getD_time()));
-				txaConsoleCFS.setText(selectedTable.getConsole_cfs());
-				txfConsolePage.setText(selectedTable.getConsole_page());
-				txfInland.setText(selectedTable.getInland_indexs());
-				
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(AddTableInfoDialog.this, e.getMessage());
-				e.printStackTrace();
-			}
-		}
 
 		ViewUtil.center(this, true);
 		this.pack();
@@ -869,6 +867,47 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 	public void setSelectedCompany(ShippersTable selectedCompany) {
 		this.searchOp = selectedCompany;
+	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+		
+		cbxGubun.initComp();
+		if(searchOp!=null)
+		{
+			
+			
+			try {
+				selectedTable = tableService.getTableById(searchOp.getTable_id());
+
+				txfTitle.setText(selectedTable.getTitle());
+				txfCompany.setText(selectedTable.getCompany_abbr());
+				txfPage.setText(String.valueOf(selectedTable.getPage()));
+				txfBookPage.setText(String.valueOf(selectedTable.getBookPage()));
+				txfPortCount.setText(String.valueOf(selectedTable.getPort_col()));
+				txfVesselCount.setText(String.valueOf(selectedTable.getVsl_row()));
+				txaQuark.setText(selectedTable.getQuark_format());
+				txaCommon.setText(selectedTable.getCommon_shipping());
+				txfInPort.setText(selectedTable.getIn_port());
+				txfOutPort.setText(selectedTable.getOut_port());
+				txfInToPort.setText(selectedTable.getIn_to_port());
+				txfOutToPort.setText(selectedTable.getOut_to_port());
+				txfOther.setText(String.valueOf(selectedTable.getOthercell()));
+				txfAgent.setText(selectedTable.getAgent());
+				cbxGubun.setSelectedItem(selectedTable.getGubun());				
+				txfCtime.setText(String.valueOf(selectedTable.getC_time()));
+				txfDtime.setText(String.valueOf(selectedTable.getD_time()));
+				txaConsoleCFS.setText(selectedTable.getConsole_cfs());
+				txfConsolePage.setText(selectedTable.getConsole_page());
+				txfInland.setText(selectedTable.getInland_indexs());
+				
+			} catch (SQLException ee) {
+				JOptionPane.showMessageDialog(AddTableInfoDialog.this, ee.getMessage());
+				ee.printStackTrace();
+			}
+		}
+
 	}
 
 }

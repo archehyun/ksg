@@ -67,6 +67,7 @@ import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
+import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 import com.ksg.workbench.shippertable.dialog.UpdateTableInOutDialog;
 
 /**
@@ -208,6 +209,13 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 	public UpdateTablePanel(ShipperTableMgtUI searchUI, ShippersTable table) {
 		this();
 		this.searchUI=searchUI;
+		if(table!=null)
+			this.setShipperTableData(table);
+	}
+	
+	public UpdateTablePanel(ShipperTableMgtUI2 searchUI, ShippersTable table) {
+		this();
+		//this.searchUI=searchUI;
 		if(table!=null)
 			this.setShipperTableData(table);
 	}
@@ -750,6 +758,74 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 
 		try {
 			shippersTable = tableService.getTableById(tableData.getTable_id());
+			txfTable_id.setText(shippersTable.getTable_id());
+			txaQuark.setText(shippersTable.getQuark_format());
+			txfAgent.setText(shippersTable.getAgent());
+			txfGubun.setText(shippersTable.getGubun());
+			txfTitle.setText(shippersTable.getTitle());
+
+			TablePort tablePort = new TablePort();
+			tablePort.setTable_id(shippersTable.getTable_id());
+			List li=tableService.getTablePortList(tablePort);
+
+
+			txfPortCount.setText(String.valueOf(shippersTable.getPort_col()));
+
+			if(li.size()!=shippersTable.getPort_col())
+			{
+				txfPortCount.setForeground(Color.red);
+				
+			}else
+			{
+				txfPortCount.setForeground(Color.black);
+			}
+
+			txfVesselCount.setText(String.valueOf(shippersTable.getVsl_row()));
+			txfCompany_Abbr.setText(shippersTable.getCompany_abbr());
+			
+			
+			txfPage.setText(String.valueOf(shippersTable.getPage()));
+			txfBookPage.setText(shippersTable.getBookPage());
+			txfIndex.setText(String.valueOf(shippersTable.getTable_index()));
+			
+			
+			txaCommon.setText(shippersTable.getCommon_shipping());
+			txfInPort.setText(shippersTable.getIn_port());
+			txfInToPort.setText(shippersTable.getIn_to_port());
+			txfOutPort.setText(shippersTable.getOut_port());
+			txfOutToPort.setText(shippersTable.getOut_to_port());
+			txfOhterCount.setText(String.valueOf(shippersTable.getOthercell()));
+			txfCtime.setText(String.valueOf(shippersTable.getC_time()));
+			txfDtime.setText(String.valueOf(shippersTable.getD_time()));
+			txfInland.setText(shippersTable.getInland_indexs());
+			cbxGubun.setSelectedItem(shippersTable.getGubun());
+
+			if(shippersTable.getGubun().equals(ShippersTable.GUBUN_CONSOLE))
+			{
+				tabPaneInfo.setSelectedIndex(2);// 콘솔 탭 선택	
+			}else
+			{
+				tabPaneInfo.setSelectedIndex(0);//공동 배선 탭 선택
+			}
+
+
+			txaConsoleCFS.setText(shippersTable.getConsole_cfs());
+			txfConsolePage.setText(shippersTable.getConsole_page());
+
+
+
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+
+	}
+	
+	
+	public void setShipperTableData(String table_id) {
+
+
+		try {
+			shippersTable = tableService.getTableById(table_id);
 			txfTable_id.setText(shippersTable.getTable_id());
 			txaQuark.setText(shippersTable.getQuark_format());
 			txfAgent.setText(shippersTable.getAgent());

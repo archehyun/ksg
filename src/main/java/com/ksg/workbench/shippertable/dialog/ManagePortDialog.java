@@ -50,7 +50,9 @@ import com.ksg.domain.TablePort;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
+import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
 /**
  * 
@@ -101,7 +103,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 	private PortListTable tblPortList; // 항목 목록 테이블
 
-	private ShipperTableMgtUI base;
+	private ShipperTableAbstractMgtUI base;
 
 	private JCheckBox cbxDeleteAll;
 
@@ -122,7 +124,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	 * @param table_id 테이블 아이디
 	 * @param baseUI
 	 */
-	public ManagePortDialog(String table_id,ShipperTableMgtUI baseUI) 
+	public ManagePortDialog(String table_id,ShipperTableAbstractMgtUI baseUI) 
 	{	
 		super();
 
@@ -135,6 +137,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		portIndexController = new PortIndexController();
 
 	}
+	
+	
 	public void createAndUpdateUI() {
 
 

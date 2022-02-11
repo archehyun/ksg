@@ -44,7 +44,7 @@ public class CompanyServiceImpl implements CompanyService{
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", companyDAO.selectCompanyCount(param));
+		resultMap.put("total", companyDAO.selectCount(param));
 		
 		resultMap.put("master", companyDAO.selectCompanyList(param));
 		
@@ -54,7 +54,7 @@ public class CompanyServiceImpl implements CompanyService{
 
 	public int update(HashMap<String, Object> param) throws SQLException{
 		logger.info("param:{}", param);
-		return companyDAO.updateCompany(param);
+		return companyDAO.update(param);
 		
 	}
 
@@ -66,7 +66,7 @@ public class CompanyServiceImpl implements CompanyService{
 	public void insert(HashMap<String, Object> param) throws SQLException{
 		logger.info("param:{}", param);
 		
-		companyDAO.insertCompany(param);
+		companyDAO.insert(param);
 	}
 
 	@Override

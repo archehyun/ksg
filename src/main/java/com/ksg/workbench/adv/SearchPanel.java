@@ -73,7 +73,7 @@ import com.ksg.domain.Table_Property;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.FileInfo;
-import com.ksg.view.comp.KSGCompboBox;
+import com.ksg.view.comp.KSGCompboBox2;
 import com.ksg.view.comp.PageInfoCheckBox;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableImpl;
@@ -148,7 +148,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	private JTable _tblSheetNameList;// 선택된 엑셀 파일의 쉬트 이름 목록
 
-	private KSGCompboBox comp;
+	private KSGCompboBox2 comp;
 
 	private JTextField txfTableCount;
 
@@ -210,7 +210,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		_tblSheetNameList = new JTable();
 
-		comp = new KSGCompboBox("vessel",KSGCompboBox.TYPE1);
+		comp = new KSGCompboBox2("vessel",KSGCompboBox2.TYPE1);
 
 		txfTableCount = new JTextField(2);
 

@@ -38,7 +38,9 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.KSGViewParameter;
+import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
+import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 import com.ksg.workbench.shippertable.dialog.ManageTablePortPop;
 import com.ksg.workbench.shippertable.dialog.ManageVesselDialog;
 
@@ -63,7 +65,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 	private ShippersTable selectedTable;
 
-	private ShipperTableMgtUI base;
+	private ShipperTableAbstractMgtUI base;
 
 	private JTextField txfImportDate;
 
@@ -73,7 +75,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 	
 	private TableService tableService;
 
-	public KSGADVTablePanel(ShipperTableMgtUI base) {
+	public KSGADVTablePanel(ShipperTableAbstractMgtUI base) {
 		this.base=base;
 
 		daoManager =DAOManager.getInstance();
@@ -110,7 +112,12 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 			if(pop.RESLULT==ManageTablePortPop.OK)
 			{
-				base.searchADVTable();
+				try {
+					base.searchADVTable();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 
 		}
@@ -228,9 +235,13 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 		butCancel.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				
+				
 				try 
 				{
+					logger.info("START");
 					base.showTableList();
+					logger.info("END");
 				} catch (SQLException e1)
 				{
 

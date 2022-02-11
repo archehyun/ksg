@@ -20,6 +20,7 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 
 /**
@@ -34,10 +35,10 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	String table_id;
-	ShipperTableMgtUI base;
+	ShipperTableAbstractMgtUI base;
 	JTable _tblVesselList;
 	DefaultTableModel model;
-	public ManageVesselDialog(String selectedTableId, ShipperTableMgtUI base) {
+	public ManageVesselDialog(String selectedTableId, ShipperTableAbstractMgtUI base) {
 		this.base =base;
 		this.table_id=selectedTableId;
 		DAOManager manager = DAOManager.getInstance();
@@ -45,11 +46,12 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 		baseService = manager.createBaseService();
 	}
 
-	public ManageVesselDialog(String selectedTableId, ShipperTableMgtUI base2,
-			DefaultTableModel vesselModel) {
-		this(selectedTableId,base2);
-		model = vesselModel;	
+
+	public ManageVesselDialog(String table_id, ShipperTableAbstractMgtUI base, DefaultTableModel vesselModel) {
+		this(table_id, base);
+		this.model =vesselModel;
 	}
+
 
 	public void createAndUpdateUI() {
 		setTitle(this.table_id+"테이블 선박 관리");

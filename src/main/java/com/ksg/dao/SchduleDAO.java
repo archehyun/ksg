@@ -166,7 +166,7 @@ public interface SchduleDAO {
 	public int deleteInlandSchedule()throws SQLException;
 	public List getOutboundScheduleList(ScheduleData data)throws SQLException;
 	public List<String> getOutboundAreaList()throws SQLException;
-	public List selectList(HashMap<String, Object> param) throws SQLException;
+	public List<Map<String, Object>> selectList(HashMap<String, Object> param) throws SQLException;
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
 	
 	

@@ -19,6 +19,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
+import com.ksg.view.comp.table.model.TableModel;
+
 /**
 
  * @FileName : KSGTable.java
@@ -52,6 +54,23 @@ public class KSGAbstractTable extends JTable{
 
 
 		model = new TableModel();
+		
+
+		// 컬럼 리사이징 오프
+		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+		// 정렬 기능 추가
+		setRowSorter(new TableRowSorter<TableModel>(model));
+		
+		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	}
+	
+	public KSGAbstractTable(TableModel model) {
+
+
+		this.model = model;
+		
 
 		// 컬럼 리사이징 오프
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -116,16 +135,14 @@ public class KSGAbstractTable extends JTable{
 				namecol.setPreferredWidth(col.size);
 			}
 		}
-		this.setRowHeight(30);
 		
-		
+		this.setRowHeight(30);		
 
 		DefaultTableCellRenderer renderer =  
 				(DefaultTableCellRenderer)this.getTableHeader().getDefaultRenderer();
 		renderer.setHorizontalAlignment(SwingConstants.CENTER);
 		this.getTableHeader().setDefaultRenderer(renderer);
-
-
+				
 
 	}
 
@@ -173,122 +190,122 @@ public class KSGAbstractTable extends JTable{
 	 * @프로그램 설명 : 사용자 정의 테이블 모델
 
 	 */
-	class TableModel extends AbstractTableModel {
-
-
-		@SuppressWarnings("rawtypes")
-		private List data;
-
-		private List<KSGTableColumn> columnNames;
-
-
-		public TableModel() {
-			columnNames = new LinkedList<KSGTableColumn>();
-		}
-
-		public List getData() {
-			return data;
-		}
-
-		public void addColumn(KSGTableColumn column) {
-
-			columnNames.add(column);
-
-		}
-
-		public KSGTableColumn getColumn(int col) {
-			return columnNames.get(col);
-		}
-
-		public void setData(List data) {
-			this.data = data;
-		}
-
-		@Override
-		public String getColumnName(int index) {
-
-			KSGTableColumn column = columnNames.get(index);
-
-
-			return column.columnName;
-		}
-
-		public void setColumns(KSGTableColumn columns[]) {
-
-			columnNames = Arrays.asList(columns);
-		}
-
-		/**
-		 * 데이터 초기화
-		 */
-		public void clearResult() {
-
-			if (data != null) {
-				data.clear();
-				updateUI();
-			}
-		}
-
-		@Override
-		public int getRowCount() {
-			if (data == null)
-				return 0;
-
-			return data.size();
-		}
-
-		@Override
-		public int getColumnCount() {
-
-			if (columnNames == null)
-				return 0;
-
-			return columnNames.size();
-		}
-
-		public Object getValueAt(int rowIndex) {
-
-			try {
-
-				return data.get(rowIndex);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		@Override
-		public Object getValueAt(int rowIndex, int columnIndex) {
-
-			try {
-				HashMap<String, Object> item = (HashMap<String, Object>) data.get(rowIndex);
-
-				KSGTableColumn colum =columnNames.get(columnIndex);
-
-				Object obj = item.get(colum.columnField);
-
-				return colum.getValue(obj);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		public Object getValueAt(int rowIndex, String columnField) {
-
-			try {
-
-				HashMap<String, Object> item = (HashMap<String, Object>) data.get(rowIndex);
-
-				return item.get(columnField);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-	}
+//	class TableModel extends AbstractTableModel {
+//
+//
+//		@SuppressWarnings("rawtypes")
+//		private List data;
+//
+//		private List<KSGTableColumn> columnNames;
+//
+//
+//		public TableModel() {
+//			columnNames = new LinkedList<KSGTableColumn>();
+//		}
+//
+//		public List getData() {
+//			return data;
+//		}
+//
+//		public void addColumn(KSGTableColumn column) {
+//
+//			columnNames.add(column);
+//
+//		}
+//
+//		public KSGTableColumn getColumn(int col) {
+//			return columnNames.get(col);
+//		}
+//
+//		public void setData(List data) {
+//			this.data = data;
+//		}
+//
+//		@Override
+//		public String getColumnName(int index) {
+//
+//			KSGTableColumn column = columnNames.get(index);
+//
+//
+//			return column.columnName;
+//		}
+//
+//		public void setColumns(KSGTableColumn columns[]) {
+//
+//			columnNames = Arrays.asList(columns);
+//		}
+//
+//		/**
+//		 * 데이터 초기화
+//		 */
+//		public void clearResult() {
+//
+//			if (data != null) {
+//				data.clear();
+//				fireTableDataChanged();
+//			}
+//		}
+//
+//		@Override
+//		public int getRowCount() {
+//			if (data == null)
+//				return 0;
+//
+//			return data.size();
+//		}
+//
+//		@Override
+//		public int getColumnCount() {
+//
+//			if (columnNames == null)
+//				return 0;
+//
+//			return columnNames.size();
+//		}
+//
+//		public Object getValueAt(int rowIndex) {
+//
+//			try {
+//
+//				return data.get(rowIndex);
+//
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				return null;
+//			}
+//		}
+//
+//		@Override
+//		public Object getValueAt(int rowIndex, int columnIndex) {
+//
+//			try {
+//				HashMap<String, Object> item = (HashMap<String, Object>) data.get(rowIndex);
+//
+//				KSGTableColumn colum =columnNames.get(columnIndex);
+//
+//				Object obj = item.get(colum.columnField);
+//
+//				return colum.getValue(obj);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				return null;
+//			}
+//		}
+//
+//		public Object getValueAt(int rowIndex, String columnField) {
+//
+//			try {
+//
+//				HashMap<String, Object> item = (HashMap<String, Object>) data.get(rowIndex);
+//
+//				return item.get(columnField);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				return null;
+//			}
+//		}
+//
+//	}
 
 	/**
 
@@ -308,6 +325,7 @@ public class KSGAbstractTable extends JTable{
 	class KSGTableCellRenderer extends DefaultTableCellRenderer {
 		
 		int leftPadding = 10;
+		
 		int rightPadding = 10;
 		
 		Border padding = BorderFactory.createEmptyBorder(0, leftPadding, 0, rightPadding);
