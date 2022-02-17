@@ -94,14 +94,17 @@ public class VesselServiceImpl implements VesselService{
 	}
 
 	@Override
-	public int update(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+	public Object update(HashMap<String, Object> param) throws SQLException {
+		logger.info("param:{}", param);
+		Object result = vesselDAO.update(param);;
+		
+		logger.debug("result:{}:",param);
+		return result;
 	}
 
 	@Override
 	public void insertDetail(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

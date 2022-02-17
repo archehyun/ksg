@@ -48,7 +48,7 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return (ScheduleData) sqlMap.insert("Schedule.insertInlandSchedule", data);
 	}
 	public int deleteSchedule() throws SQLException {
-		return sqlMap.delete("Schedule.deleteSchedule");
+		return sqlMap.delete("schedule.deleteSchedule");
 	}
 
 	public List getScheduleListOrderBy(String inOutType) throws SQLException {
@@ -59,15 +59,15 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return 0;
 	}
 
-	public List getPortListBySchedule(String inOutType) throws SQLException {
-		if(inOutType.equals("I"))
-		{
-			return sqlMap.queryForList("Schedule.selectPort_nameListByInbound");
-		}else
-		{
-			return sqlMap.queryForList("Schedule.selectPort_nameListByOutbound");
-		}		
-	}	
+//	public List getPortListBySchedule(String inOutType) throws SQLException {
+//		if(inOutType.equals("I"))
+//		{
+//			return sqlMap.queryForList("Schedule.selectPort_nameListByInbound");
+//		}else
+//		{
+//			return sqlMap.queryForList("Schedule.selectPort_nameListByOutbound");
+//		}		
+//	}	
 
 	public List getScheduleListByPort(String port) throws SQLException {
 		return sqlMap.queryForList("Schedule.selectScheduleList",port);
@@ -246,7 +246,7 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	}
 	public int deleteInlandSchedule() throws SQLException {
 		// TODO Auto-generated method stub
-		return sqlMap.delete("Schedule.deleteInlnadSchedule");
+		return sqlMap.delete("schedule.deleteInlnadSchedule");
 	}
 	@Override
 	public List<String> getOutboundAreaList() throws SQLException {
@@ -265,6 +265,11 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	@Override
 	public int selectCount(Map<String, Object> commandMap) throws SQLException{
 		return  (Integer) selectOne("schedule.selectCount", commandMap);
+	}
+	@Override
+	public Object selectListByPage(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("schedule.selectScheduleListByPage", param);
 	}
 
 	

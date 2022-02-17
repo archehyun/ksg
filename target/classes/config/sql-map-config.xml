@@ -47,6 +47,7 @@
 	<sqlMap resource="mybatis/mssql/mssql_common_code.xml" />
 	<sqlMap resource="mybatis/mssql/mssql_shippertable.xml" />
 	<sqlMap resource="mybatis/mssql/mssql_schedule.xml" />
+	<sqlMap resource="mybatis/mssql/mssql_member.xml" />
 	
 	<sqlMap resource="mybatis/Table.xml" />
 

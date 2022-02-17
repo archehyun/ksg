@@ -56,12 +56,17 @@ public class ScheduleServiceImpl implements ScheduleService{
 		return schduleDAO.deleteSchedule();
 
 	}
-
-	public List getPortlistBySchedule(String inOutType) throws SQLException
-	{
-		return schduleDAO.getPortListBySchedule(inOutType);
-
+	
+	public int deleteInlnadSchedule() throws SQLException {
+		return schduleDAO.deleteInlandSchedule();
+		
 	}
+
+//	public List getPortlistBySchedule(String inOutType) throws SQLException
+//	{
+//		return schduleDAO.getPortListBySchedule(inOutType);
+//
+//	}
 	public List getScheduleList() throws SQLException
 	{
 		return schduleDAO.getScheduleList();
@@ -115,10 +120,10 @@ public class ScheduleServiceImpl implements ScheduleService{
 		return schduleDAO.getInboundtoPortList();
 	}
 
-	public List getInboundScheduleList(String port, String toPort)
-	throws SQLException {
-		return schduleDAO.getInboundScheduleList(port, toPort);
-	}
+//	public List getInboundScheduleList(String port, String toPort)
+//	throws SQLException {
+//		return schduleDAO.getInboundScheduleList(port, toPort);
+//	}
 
 	public PortInfo getPortInfoByPortAbbr(String port) throws SQLException {
 		return schduleDAO.getPortInfoByPortAbbr(port);
@@ -221,10 +226,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 		return schduleDAO.getInlandScheduleDateList();
 	}
 
-	public int deleteInlnadSchedule() throws SQLException {
-		return schduleDAO.deleteInlandSchedule();
-		
-	}
+	
 
 	@Override
 	public List<String> getOutboundAreaList() throws SQLException {
@@ -336,6 +338,17 @@ public class ScheduleServiceImpl implements ScheduleService{
 		resultMap.put("total", schduleDAO.selectCount(param));
 		
 		resultMap.put("master", schduleDAO.selectList(param));
+		
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("total", schduleDAO.selectCount(param));
+		
+		resultMap.put("master", schduleDAO.selectListByPage(param));
 		
 		return resultMap;
 	}

@@ -10,7 +10,7 @@ public interface VesselService {
 	
 	public HashMap<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException;
 	
-	public int update(HashMap<String, Object> param) throws SQLException;	
+	public Object update(HashMap<String, Object> param) throws SQLException;	
 	
 	public Object updateDetail(HashMap<String, Object> param) throws SQLException;
 

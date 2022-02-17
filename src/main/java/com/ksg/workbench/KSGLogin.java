@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Properties;
 
 import javax.swing.ImageIcon;
@@ -42,6 +43,7 @@ import org.slf4j.LoggerFactory;
 import com.ibatis.common.resources.Resources;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.SqlMapManager;
+import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.model.Configure;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
@@ -230,14 +232,10 @@ public class KSGLogin extends JDialog {
 			return;
 		}
 		try {
-			Member member = service.selectMember(id);
-			if(member==null)
-			{
-				JOptionPane.showMessageDialog(KSGLogin.this, id+":정보가 존재하지 않습니다.");
-				logger.error("no exist id");
-				return;
-			}
-			if(member.isMatchPassword(pw))
+			
+			
+
+			if(service.login(id, pw))
 			{
 				logger.info("login...");
 				bar.setIndeterminate(true);
@@ -254,13 +252,22 @@ public class KSGLogin extends JDialog {
 
 				return;
 			}
-		} catch (SQLException e1) {
+		} 
+		
+		
+		
+		catch (ResourceNotFoundException e1) {
 
-			JOptionPane.showMessageDialog(null, "Database에 연결할수 없습니다. \n\n\t이유 : "+e1.getMessage());
-			logger.error("do not connected database");
-
-
-			e1.printStackTrace();
+			JOptionPane.showMessageDialog(KSGLogin.this, id+":id가 존재하지 않습니다.");
+			logger.error("no exist id");
+			return;
+		}
+		
+		catch (Exception e1) {
+			e1.getStackTrace();
+			JOptionPane.showMessageDialog(KSGLogin.this, "error:"+e1.getMessage());
+			
+			return;
 		}
 	}
 

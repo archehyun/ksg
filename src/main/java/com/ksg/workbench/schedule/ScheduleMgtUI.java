@@ -64,6 +64,7 @@ import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.ui.ErrorLogManager;
 import com.ksg.workbench.schedule.comp.PnConsole;
+import com.ksg.workbench.schedule.comp.PnInbound;
 import com.ksg.workbench.schedule.comp.PnInland;
 import com.ksg.workbench.schedule.comp.PnNormal;
 import com.ksg.workbench.schedule.comp.PnOutbound;
@@ -416,6 +417,8 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		PnInland pnInland = new PnInland();
 		
 		PnOutbound pnOutbound = new PnOutbound();
+		
+		PnInbound pnInbound = new PnInbound();
 
 		tabPane = new JTabbedPane();
 
@@ -425,6 +428,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 		
 		
 		tabPane.add(pnOutbound, "OUTBOUND");
+		tabPane.add(pnInbound, "INBOUND");
 		
 		
 		pnMain.add(tabPane);

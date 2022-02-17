@@ -53,7 +53,8 @@ public class PnNormal extends KSGPanel implements ActionListener{
 	@SuppressWarnings("rawtypes")
 	public PnNormal() {
 		
-		this.setLayout(new BorderLayout());
+		super(new BorderLayout());
+		
 
 		scheduleService = new ScheduleServiceLogic();
 		service = new ScheduleServiceImpl();
@@ -111,9 +112,9 @@ public class PnNormal extends KSGPanel implements ActionListener{
 		tableH = new KSGTablePanel("스케줄 목록");
 		
 		tableH.addColumn(new KSGTableColumn("InOutType", "I/O"));
-		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID"));
-		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명"));
-		tableH.addColumn(new KSGTableColumn("agent", "에이전트"));
+		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID",150));
+		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",150));
+		tableH.addColumn(new KSGTableColumn("agent", "에이전트",150));
 		tableH.addColumn(new KSGTableColumn("vessel", "선박명",200));
 		tableH.addColumn(new KSGTableColumn("date_issue", "출력일자",100));
 		tableH.addColumn(new KSGTableColumn("voyage_num", "항차번호"));

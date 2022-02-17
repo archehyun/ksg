@@ -124,13 +124,19 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 	@Override
 	public void update(Map<String, Object> param) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void insert(Map<String, Object> param) {
-		// TODO Auto-generated method stub
+		try {
+			shipperTableDao.update(param);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 }

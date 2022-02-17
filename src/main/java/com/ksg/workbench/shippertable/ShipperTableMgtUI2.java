@@ -112,44 +112,45 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	private static final String ACTION_UPDATE_DATE = "입력일자 수정";
 	/**
-	 * @author archehyun
+	 * @author 박창현
 	 * @테이블에서의 마우스 동작
 	 */
 	class UpdateMouseAdapter extends MouseAdapter
 	{
 		public void mouseClicked(MouseEvent e) 
-		{
-			
+		{			
 			try {
-			KSGAbstractTable table = (KSGAbstractTable) e.getSource();
+				KSGAbstractTable table = (KSGAbstractTable) e.getSource();
 
-			int row = table.getSelectedRow();
-			if(row<0) return;
+				int row = table.getSelectedRow();
+				if(row<0) return;
 
 
-			HashMap<String , Object> item = (HashMap<String, Object>) table.getValueAt(row);
+				HashMap<String , Object> item = (HashMap<String, Object>) table.getValueAt(row);
 
-			String table_id = String.valueOf(item.get("table_id"));
+				String table_id = String.valueOf(item.get("table_id"));
 
-			txfInboundIn.setText(String.valueOf(item.get("in_port")));
+				txfInboundIn.setText(String.valueOf(item.get("in_port")));
 
-			txfInboundOut.setText(String.valueOf(item.get("in_to_port")));
+				txfInboundOut.setText(String.valueOf(item.get("in_to_port")));
 
-			txfOutboundIn.setText(String.valueOf(item.get("out_port")));
+				txfOutboundIn.setText(String.valueOf(item.get("out_port")));
 
-			txfOutboundOut.setText(String.valueOf(item.get("out_to_port")));
-			txfPage.setText(String.valueOf(item.get("page")));
-			txfTable_id.setText(table_id);
+				txfOutboundOut.setText(String.valueOf(item.get("out_to_port")));
 
-			pnUpdateTable.setShipperTableData(table_id);
+				txfPage.setText(String.valueOf(item.get("page")));
 
-			if(e.getClickCount()>1)
-			{				
-				updateADVTable(table_id);
-				logger.info("click:"+e.getClickCount()+",selectedPage:"+manager.selectedPage);
-			}
+				txfTable_id.setText(table_id);
+
+				pnUpdateTable.setShipperTableData(table_id);
+
+				if(e.getClickCount()>1)
+				{				
+					updateADVTable(table_id);
+					logger.info("click:"+e.getClickCount()+",selectedPage:"+manager.selectedPage);
+				}
 			}catch(Exception E)
-			
+
 			{
 				JOptionPane.showMessageDialog(ShipperTableMgtUI2.this, E.getMessage());
 			}
@@ -178,7 +179,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	private JPopupMenu 			popupMenu;	
 
 	private SearchTable tblSearchTable;
-	
+
 	private KSGTablePanel tableH;
 
 	private JTable				currentTable;
@@ -230,7 +231,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	private JTextField txfCompany,txfCount,txfDate,txfDateSearch,txfPage,txfTable_id, txfImportDate;
 
 	private JComboBox cbbOption,cbbGubun;
-	
+
 	private KSGComboBox cbxGubun;
 
 	private ShippersTable searchParam;
@@ -247,20 +248,20 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	public ShipperTableMgtUI2() 
 	{		
-			
-			selectedList = new LinkedList();
 
-			tableService = new TableServiceImpl();
+		selectedList = new LinkedList();
 
-			_advService= new ADVServiceImpl();
-			
-			this.addComponentListener(this);
+		tableService = new TableServiceImpl();
 
-			createAndUpdateUI();
-			
-			fnSearch();			
+		_advService= new ADVServiceImpl();
 
-		
+		this.addComponentListener(this);
+
+		createAndUpdateUI();
+
+		fnSearch();			
+
+
 	}
 	public void actionPerformed(ActionEvent e) { 
 
@@ -427,7 +428,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		tableH.addColumn(new KSGTableColumn("out_port", "Outbound 출발항", 110, SwingConstants.LEFT ));
 		tableH.addColumn(new KSGTableColumn("out_to_port", "Outbound 도착항",110, SwingConstants.LEFT ));
 
-		
+
 		tableH.initComp();	
 
 
@@ -487,7 +488,15 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 						String table_id = String.valueOf(table.getValueAt(row, 3));
 						String date = String.valueOf(table.getValueAt(row, 2));
 
-						tableService.updateTableDate(table_id,date);
+						HashMap<String, Object> param = new HashMap<String, Object>();
+
+						param.put("table_id", table_id);
+
+						param.put("date_isusse", date);
+
+						shipperTableService.update(param);
+
+						//tableService.updateTableDate(table_id,date);
 
 						_advService.updateDateADVData(table_id, date);
 
@@ -513,7 +522,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		MyPopupMenuListener listener = new MyPopupMenuListener();
 
-
 		JPopupMenu popMenu = createPopupMenu();
 
 		popMenu.addPopupMenuListener(listener);
@@ -525,9 +533,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		tblSearchTable.addMouseListener( new UpdateMouseAdapter());
 
 		tableH.addMouseListener(new UpdateMouseAdapter());
-		
-		
-		
+
+
+
 		tableH.setComponentPopupMenu(popMenu);
 
 		JScrollPane jScrollPane = new JScrollPane(tblSearchTable);
@@ -783,7 +791,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		this.add(buildCenter(),BorderLayout.CENTER);	
 		this.add(pnTitleMain,BorderLayout.NORTH);
 		this.add(this.createMargin(10),BorderLayout.WEST);
-		
+
 		logger.debug("init searchUI end");
 
 
@@ -915,7 +923,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		});
 
 		cbbOption = new JComboBox();
-		
+
 
 
 
@@ -966,13 +974,13 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 			public void stateChanged(ChangeEvent e) {
 				JCheckBox box =(JCheckBox) e.getSource();
-				
+
 
 			}});
 
-		
+
 		cbxGubun = new KSGComboBox("tableType");
-		
+
 		cbxGubun.addItem(new KSGTableColumn("","전체"));
 
 		cbxGubun.initComp();
@@ -982,9 +990,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			public void actionPerformed(ActionEvent arg0) 
 			{
 
-				
-					fnSearch();
-				
+
+				fnSearch();
+
 			}
 		});		
 
@@ -1035,7 +1043,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		pnLeft.add(txfTable_id);
 
 		pnTableInfo.add(pnLeft,BorderLayout.WEST);
-		
+
 		bo.add(pnTableInfo);
 
 		JLabel lblOutboundIn = new JLabel("Outbound국내항:",new ImageIcon("images/buticon.png"),JLabel.LEFT);
@@ -1494,16 +1502,16 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	private void updatePortAction()
 	{
 		selectedshippersTable = this.getShipperTableBySelectedTable();
-		
-		
+
+
 		int row =tableH.getSelectedRow();
 		if(row<0)return;
-		
+
 		HashMap<String, Object> param = (HashMap<String, Object>) tableH.getValueAt(row);
 		ManagePortDialog dialog = new ManagePortDialog(String.valueOf(param.get("table_id")),this);
 		dialog.createAndUpdateUI();
-				
-		
+
+
 	}
 	/**
 	 * @throws SQLException
@@ -1586,25 +1594,25 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	private void fnSearch()
 	{
 		logger.info("START");
-		
+
 		String param=txfSearchInput.getText();
-		
+
 		searchParamHash = new HashMap<String, Object>();
-		
+
 		if(cbxGubun.getSelectedIndex()>0)
 		{
 			KSGTableColumn item=(KSGTableColumn) cbxGubun.getSelectedItem();
 			searchParamHash.put("gubun", item.columnField);
-			
+
 		}
-		
+
 		if(!param.equals("")) {
 			selectOptionHash(searchParamHash, param, cbbOption.getSelectedIndex());
 		}
-		
-		
+
+
 		String date=txfDateSearch.getText();
-		
+
 		if(!date.equals(""))
 		{
 			String fomattedDate;
@@ -1615,9 +1623,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
 
 		HashMap<String, Object> result = (HashMap<String, Object>) shipperTableService.selectList(searchParamHash);
 
@@ -1673,8 +1681,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			break;
 		}
 	}
-	
-	
+
+
 
 	/**
 	 * 구분에 의한 조회
@@ -1757,8 +1765,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			return;
 		updateView(searchParam);
 	}
-	
-	
+
+
 
 	private void updateView(ShippersTable searchParam) throws SQLException
 	{
@@ -1812,7 +1820,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			break;
 		}
 	}
-	
+
 	/**
 	 * @param param
 	 * @param index
@@ -1824,14 +1832,14 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		switch (index) {
 
 		case 0://페이지
-			
+
 			searchOption.put("page", Integer.parseInt(param));
 
 			break;
 		case 1:// 테이블 아이디
-			
+
 			searchOption.put("table_id", param);
-			
+
 			break;
 		case 5://테이블 인덱스
 			searchOption.put("table_index", param);			
@@ -1839,15 +1847,15 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			break;
 		case 2://선사명
 			searchOption.put("company_abbr", param);
-			
+
 			break;
 		case 3:// 제목
 			searchOption.put("title", param);
-			
+
 			break;
 		case 4:// 에이전트
 			searchOption.put("agent", param);
-			
+
 			break;
 
 		default:
@@ -2005,14 +2013,14 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		}
 
 	}
-	
+
 	class SearchTableModel extends TableModel{
-		
+
 		public SearchTableModel()
 		{
 			super();
 		}
-		
+
 		public boolean isCellEditable(int row, int column) 
 		{
 			return false;

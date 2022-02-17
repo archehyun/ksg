@@ -21,7 +21,7 @@
 <!-- select -->
 
 	<select id="selectPortList" resultClass="java.util.HashMap">
-		select * from TB_PORT
+		select *, (SELECT COUNT(*) FROM TB_PORT_ABBR ABBR WHERE ABBR.port_name=T.port_name) ABBR_COUNT from TB_PORT T
 		<dynamic prepend="where">
 		    <isNotNull property="port_area" prepend="and">
 		        port_area=#port_area#

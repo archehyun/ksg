@@ -37,15 +37,15 @@ import com.ksg.domain.Code;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.IconData;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.base.code.comp.PnCommonCode;
 import com.ksg.workbench.base.comp.PnArea;
 import com.ksg.workbench.base.comp.PnBase;
-import com.ksg.workbench.base.comp.PnCommonCode;
-import com.ksg.workbench.base.comp.PnCompany;
-import com.ksg.workbench.base.comp.PnPort;
-import com.ksg.workbench.base.comp.PnPortAbbr;
-import com.ksg.workbench.base.comp.PnVessel;
-import com.ksg.workbench.base.comp.PnVesselAbbr;
 import com.ksg.workbench.base.comp.TableListener;
+import com.ksg.workbench.base.company.PnCompany;
+import com.ksg.workbench.base.port.PnPort;
+import com.ksg.workbench.base.port.PnPortAbbr;
+import com.ksg.workbench.base.vessel.comp.PnVessel;
+import com.ksg.workbench.base.vessel.comp.PnVesselAbbr;
 
 /**
  * 마스터 정보 관리

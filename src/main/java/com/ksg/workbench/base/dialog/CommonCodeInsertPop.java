@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.impl.CodeServiceImpl;
-import com.ksg.workbench.base.comp.PnCommonCode;
+import com.ksg.workbench.base.code.comp.PnCommonCode;
 
 /**
 

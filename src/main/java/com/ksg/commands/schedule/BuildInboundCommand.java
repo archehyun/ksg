@@ -106,8 +106,14 @@ public class BuildInboundCommand implements IFCommand {
 						continue;
 					}
 				}
+				
+				
+				
 				// 항구이름으로 Inbound 스케줄 조회 
 				List inScheduleList = scheduleService.getInboundScheduleList(port);
+				
+				
+				
 				Iterator sIter = inScheduleList.iterator();
 
 				while(sIter.hasNext())

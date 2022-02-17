@@ -10,11 +10,12 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -23,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Company;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**@설명 선사 검색 화면
@@ -51,14 +53,15 @@ public class SearchCompanyInfoDialog extends KSGDialog {
 	public void createAndUpdateUI() {
 		this.setTitle("선사명 조회");
 		
-		JPanel pnMain = new JPanel(new BorderLayout());
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		final JTable table = new JTable();
-		JPanel pnSearch = new JPanel(new BorderLayout());
+		KSGPanel pnSearch = new KSGPanel(new BorderLayout());
+		pnSearch.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		
 		JLabel lblSearch = new JLabel("선사명: ");
 		final JTextField txfSearch = new JTextField(10);
 		txfSearch.addKeyListener(new KeyAdapter(){
-	
-		
 	
 			public void keyReleased(KeyEvent e) {
 				try {
@@ -88,7 +91,7 @@ public class SearchCompanyInfoDialog extends KSGDialog {
 		pnSearch.add(lblSearch,BorderLayout.WEST);
 		pnSearch.add(txfSearch);
 		
-		JPanel pnControl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton butOk = new JButton("확인");
 		
 		butOk.addActionListener(new ActionListener(){

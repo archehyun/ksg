@@ -28,7 +28,6 @@ import javax.swing.border.TitledBorder;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.dialog.PortSearchDialog;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
@@ -37,6 +36,7 @@ import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.dialog.PortSearchDialog;
 
 public class ADDADVDialog extends KSGDialog implements ActionListener{
 	/**

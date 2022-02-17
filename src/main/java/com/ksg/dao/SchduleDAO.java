@@ -20,7 +20,7 @@ import com.ksg.domain.ScheduleData;
 @SuppressWarnings("unchecked")
 public interface SchduleDAO {
 	
-	public int deleteSchedule()												throws SQLException;
+	
 	/**
 	 * @return
 	 * @throws SQLException
@@ -85,7 +85,7 @@ public interface SchduleDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List getPortListBySchedule(String inOutType)						throws SQLException;
+	//public List getPortListBySchedule(String inOutType)						throws SQLException;
 	/**
 	 * @return
 	 * @throws SQLException
@@ -127,8 +127,8 @@ public interface SchduleDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public ScheduleData insertScheduleData(ScheduleData data)				throws SQLException;
-	public ScheduleData insertInlandScheduleData(ScheduleData data)				throws SQLException;
+	
+	
 	/**
 	 * @param port_name
 	 * @return
@@ -141,33 +141,58 @@ public interface SchduleDAO {
 	 * @throws SQLException
 	 */
 	public int updateScheduleData(ScheduleData data)						throws SQLException;
+	@Deprecated
 	public List getScheduleListByVesselVoy(String vessel, String voy)		throws SQLException;
+	@Deprecated
 	public List getScheduleListByToFrom(String areaCode, String areaCode2,
 			String inOut, int forSch)										throws SQLException;
 	public List getScheduleList(String date)throws SQLException;
+	@Deprecated
 	public List getScheduleListGroupByCompany(String searchDate)throws SQLException;
+	@Deprecated
 	public List getScheduleList(ScheduleData data)throws SQLException;
 	/**
 	 * @return
 	 * @throws SQLException
 	 */
 	public List getScheduleDateList()throws SQLException;
+	@Deprecated
 	public int getScheduleTotalCount()throws SQLException;
+	@Deprecated
 	public List getScheduleListNTop(ScheduleData data) throws SQLException;
+	@Deprecated
 	public int getScheduleNTopCount(ScheduleData data)throws SQLException;
+	@Deprecated
 	public List getOutboundFromPortTSList(String port)throws SQLException;
+	@Deprecated
 	public List<ScheduleData> getConsoleScheduleList(String port,
 			String fromPort) throws SQLException;
+	@Deprecated
 	public List getConsoleScheduleList()throws SQLException;
 	public List<ScheduleData> getConsoleScheduleList(ScheduleData data)		throws SQLException;
+	@Deprecated
 	public List<ScheduleData> getInlandScheduleList(ScheduleData data)		throws SQLException;
+	
 	public List getOutboundScheduleList()throws SQLException;
+	@Deprecated
 	public List getInlandScheduleDateList()throws SQLException;
+	@Deprecated
 	public int deleteInlandSchedule()throws SQLException;
+	@Deprecated
 	public List getOutboundScheduleList(ScheduleData data)throws SQLException;
+	@Deprecated
 	public List<String> getOutboundAreaList()throws SQLException;
+	
+	
 	public List<Map<String, Object>> selectList(HashMap<String, Object> param) throws SQLException;
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
+	public Object selectListByPage(HashMap<String, Object> param)throws SQLException;
+	
+	
+	public ScheduleData insertInlandScheduleData(ScheduleData data)				throws SQLException;
+	public ScheduleData insertScheduleData(ScheduleData data)				throws SQLException;
+	
+	public int deleteSchedule()												throws SQLException;
 	
 	
 }

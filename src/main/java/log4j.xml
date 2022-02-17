@@ -88,7 +88,7 @@
         <level value="info"/>
     </logger>
      <logger name="java.sql.Connection">
-        <level value="info"/>	
+        <level value="DEBUG"/>	
     </logger>        
     
     
@@ -101,14 +101,18 @@
     </logger> 
     <logger name="com.ksg.shippertable">
         <level value="info"/>	
+    </logger>  
+    
+        <logger name="com.ksg.shippertable">
+        <level value="info"/>	
     </logger>    
-	<logger name="com.ksg.adv.view">
-        <level value="INFO"/>	
+	<logger name="com.ksg.dao.impl">
+        <level value="DEBUG"/>	
     </logger>    
    
 
     <root>
-        <level value="INFO">
+        <level value="DEBUG">
         
         </level>
         	

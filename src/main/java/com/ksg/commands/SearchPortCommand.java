@@ -42,8 +42,8 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.PortInfo;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.workbench.base.dialog.InsertPortAbbrInfoDialog;
-import com.ksg.workbench.base.dialog.InsertPortInfoDialog;
+import com.ksg.workbench.base.port.dialog.InsertPortAbbrInfoDialog;
+import com.ksg.workbench.base.port.dialog.InsertPortInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 public class SearchPortCommand extends AbstractCommand implements ActionListener {

@@ -11,12 +11,14 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.ksg.service.ScheduleService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.view.comp.table.KSGTablePanel;
+
 
 public class PnOutbound extends KSGPanel implements ActionListener{
 
@@ -25,7 +27,7 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private KSGTablePanel tableH;
+	private KSGPageTablePanel tableH;
 	
 	private ScheduleService scheduleService;
 	
@@ -37,11 +39,13 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 
 	private JTextField txfNoramlSearch;
 
-	private JLabel lblNormalCount;
+	
 	
 	public PnOutbound() {
 		
+		super();
 		
+		scheduleService = new ScheduleServiceImpl();
 		
 		this.setLayout(new BorderLayout());
 		
@@ -54,19 +58,19 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 	
 	public KSGPanel buildCenter()
 	{
-		tableH = new KSGTablePanel("스케줄 목록");
+		tableH = new KSGPageTablePanel("스케줄 목록");
 		
-		tableH.addColumn(new KSGTableColumn("InOutType", "I/O"));
-		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID"));
-		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명"));
-		tableH.addColumn(new KSGTableColumn("agent", "에이전트"));
+		
+		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID",100));
+		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",100));
+		tableH.addColumn(new KSGTableColumn("agent", "에이전트",100));
 		tableH.addColumn(new KSGTableColumn("vessel", "선박명",200));
 		tableH.addColumn(new KSGTableColumn("date_issue", "출력일자",100));
 		tableH.addColumn(new KSGTableColumn("voyage_num", "항차번호"));
-		tableH.addColumn(new KSGTableColumn("fromPort", "출발항"));
+		tableH.addColumn(new KSGTableColumn("fromPort", "출발항",200));
 		tableH.addColumn(new KSGTableColumn("DateF", "출발일", 90));
 		tableH.addColumn(new KSGTableColumn("DateT", "도착일", 90));
-		tableH.addColumn(new KSGTableColumn("port", "도착항"));
+		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
 		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
 		
 		
@@ -97,15 +101,13 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 		cbxNormalSearch.addItem(new KSGTableColumn("fromPort", "출발항"));
 		cbxNormalSearch.addItem(new KSGTableColumn("toPort", "도착항"));
 		cbxNormalSearch.addItem(new KSGTableColumn("DateF", "출발일"));
-		cbxNormalSearch.addItem(new KSGTableColumn("DateT", "도착일"));
-		
-		
+		cbxNormalSearch.addItem(new KSGTableColumn("DateT", "도착일"));	
 
 
 		txfNoramlSearch = new JTextField(15);
-		JButton butNormalSearch = new JButton("검색");
-		butNormalSearch.addActionListener(this);
-		butNormalSearch.setActionCommand("Normal 검색");
+		JButton butSearch = new JButton("검색");
+		butSearch.addActionListener(this);
+		//butSearch.setActionCommand("Normal 검색");
 
 
 		pnNormalSearchCenter.add(new JLabel("구분:"));
@@ -113,19 +115,10 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 		pnNormalSearchCenter.add(new JLabel("항목:"));
 		pnNormalSearchCenter.add(cbxNormalSearch);
 		pnNormalSearchCenter.add(txfNoramlSearch);
-		pnNormalSearchCenter.add(butNormalSearch);
-
-
-
-		KSGPanel pnNomalSearchEast =new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		lblNormalCount = new JLabel();
-		lblNormalCount.setText("0");
-		pnNomalSearchEast.add(lblNormalCount);
-		pnNomalSearchEast.add(new JLabel("건"));
-
+		pnNormalSearchCenter.add(butSearch);
 
 		pnNormalSearchMain.add(pnNormalSearchCenter);
-		pnNormalSearchMain.add(pnNomalSearchEast,BorderLayout.EAST);
+		
 		return pnNormalSearchMain;
 		
 	}
@@ -134,11 +127,20 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 		HashMap<String, Object> param = new HashMap<String, Object>();
 		
 		try {
-			param.put("InOutType", "O");
+			param.put("inOutType", "O");
+			
+			int page_size = tableH.getPageSize();
+			param.put("PAGE_SIZE", page_size);
+			param.put("PAGE_NO", 1);
+			
 			logger.info("param:"+param);
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectList(param);
+			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectListByPage(param);
 
+			
+			
+			result.put("PAGE_NO", 1);
+			
 			tableH.setResultData(result);
 
 			master = (List) result.get("master");
@@ -156,18 +158,74 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 				tableH.changeSelection(0,0,false,false);
 			}
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (Exception e) {
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "error:"+e.getMessage());
 		}
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		
-		if(e.equals("검색"))
+		if(command.equals("검색"))
 		{
 			fnSearch();
+		}
+		
+	}
+	class PageAction implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String command = e.getActionCommand();
+			int page = tableH.getPage();
+			
+			int endPage = tableH.getTotalPage();
+
+			int page_size = tableH.getPageSize();
+
+			HashMap<String, Object> commandMap = new HashMap<String, Object>();
+			commandMap.put("PAGE_SIZE", page_size);
+
+			if (command.equals("Next")) {
+
+				if (page < endPage) {
+					commandMap.put("PAGE_NO", page + 1);
+
+				} else {
+					return;
+				}
+
+			} else if (command.equals("Forword")) {
+				if (page > 1) {
+					commandMap.put("PAGE_NO", page - 1);
+
+				} else {
+					return;
+				}
+			} else if (command.equals("GoPage")) {
+				//				commandMap.put("PAGE_NO", page;
+			}
+
+			else if (command.equals("First")) {
+				commandMap.put("PAGE_NO", 1);
+			}
+
+			else if (command.equals("Last")) {
+				commandMap.put("PAGE_NO", endPage);
+			}
+
+			try {
+//				commandMap.put("selectID", selectID);
+				HashMap<String, Object> resultMap = (HashMap<String, Object>) scheduleService.selectListByPage(commandMap);
+				resultMap.put("PAGE_NO", commandMap.get("PAGE_NO"));
+
+				tableH.setResultData(resultMap);
+			} catch (Exception ee) {
+				ee.printStackTrace();
+			}
 		}
 		
 	}

@@ -42,7 +42,6 @@ import javax.swing.border.EmptyBorder;
 
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.dialog.PortSearchDialog;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
@@ -50,6 +49,7 @@ import com.ksg.domain.TablePort;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.dialog.PortSearchDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI2;

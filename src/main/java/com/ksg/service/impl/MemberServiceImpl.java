@@ -11,10 +11,13 @@
 package com.ksg.service.impl;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.dao.MemberDAO;
 import com.ksg.dao.impl.MemberDAOImpl;
 import com.ksg.domain.Member;
@@ -28,11 +31,42 @@ public class MemberServiceImpl implements MemberService
 	public MemberServiceImpl() {
 		memberDAO = new MemberDAOImpl();
 	}
-
-	public Member selectMember(String param) throws SQLException {
+	@Override
+	public boolean login(String id, String pw) throws Exception {
 		
-		logger.info("param:{}", param);
-		return memberDAO.selectMember(param);
+		logger.info("param:{}", id);
+		
+		HashMap<String, Object> param = new HashMap<String, Object>();
+		
+		
+		
+		Member member;
+		try {
+			
+			param.put("member_id", id);
+			
+			
+			member = (Member) memberDAO.select(param);
+			
+			if(member == null)
+			{
+				throw new ResourceNotFoundException(id);
+			}
+			
+			return member.isMatchPassword(pw);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		} 
+		
+		
 	}
+
+	@Override
+	public Map<String, Object> select(Map<String, Object> commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

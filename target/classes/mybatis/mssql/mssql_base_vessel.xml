@@ -96,16 +96,15 @@
 	
 <!-- update -->
 	
-	<update id="updateVesel" parameterClass="java.util.HashMap">
-		update TB_PORT 
-			set 
-				area_code=#area_code#, 
-				area_book_code=#area_book_code#, area_name=#area_name#
-			where 
-			(
-				area_name=#base_area_name#
-			)
+	<update id="updateVessel" parameterClass="java.util.HashMap">
+		UPDATE TB_VESSEL 
+		SET vessel_type=#vessel_type# 
+			,vessel_use=#vessel_use#
+			,vessel_company=#vessel_company#
+			,vessel_mmsi=#vessel_mmsi#  
+		WHERE vessel_name=#vessel_name#
 	</update>
+
 
 <!-- delete -->
 

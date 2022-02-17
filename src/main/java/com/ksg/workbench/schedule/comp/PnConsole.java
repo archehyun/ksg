@@ -15,12 +15,13 @@ import javax.swing.JTextField;
 
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.view.comp.panel.KSGPanel;
 
 /**
  * @author 박창현
  * 콘솔 스케줄 생성 정보 조회
  */
-public class PnConsole extends JPanel implements ActionListener{
+public class PnConsole extends KSGPanel implements ActionListener{
 	/**
 	 * 
 	 */
@@ -29,7 +30,7 @@ public class PnConsole extends JPanel implements ActionListener{
 	private ConsoleScheduleTable _tblConsoleScheduleList;
 
 	public PnConsole() {
-		this.setLayout(new BorderLayout());
+		super(new BorderLayout());
 
 		JPanel pnConsoleSearchMain = new JPanel(new BorderLayout());
 		JPanel pnConsoleSearchCenter = new JPanel(new FlowLayout(FlowLayout.LEFT));

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.ksg.dao.impl;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,13 +17,12 @@ import java.util.Map;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.AbstractDAO;
-import com.ksg.common.dao.SqlMapManager;
 import com.ksg.dao.MemberDAO;
 import com.ksg.domain.Member;
 
 public class MemberDAOImpl extends AbstractDAO implements MemberDAO
 {
-	private SqlMapClient sqlMap;
+	
 
 	public MemberDAOImpl() 
 	{
@@ -33,7 +31,7 @@ public class MemberDAOImpl extends AbstractDAO implements MemberDAO
 
 	public Member selectMember(String member_id) throws SQLException {
 		// TODO Auto-generated method stub
-		return (Member) sqlMap.queryForObject("Member.selectMember",member_id);
+		return (Member) selectOne("member.selectMember",member_id);
 	}
 
 	@Override
@@ -45,7 +43,7 @@ public class MemberDAOImpl extends AbstractDAO implements MemberDAO
 	@Override
 	public Object select(HashMap<String, Object> param) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return selectOne("member.select",param);
 	}
 
 	@Override

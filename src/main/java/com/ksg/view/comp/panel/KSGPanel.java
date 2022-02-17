@@ -71,6 +71,7 @@ public class KSGPanel extends JPanel implements KSGObserver {
 	public KSGPanel()
 	{
 		super();
+	
 		this.setBackground(Color.white);
 	}
 	public KSGPanel(LayoutManager layout) {

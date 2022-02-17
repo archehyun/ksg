@@ -52,7 +52,7 @@ public interface ScheduleService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List getInboundScheduleList(String port, String toPort)			throws SQLException;
+	//public List getInboundScheduleList(String port, String toPort)			throws SQLException;
 	/**
 	 * @param port
 	 * @param vessel
@@ -65,7 +65,7 @@ public interface ScheduleService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List getInboundtoPortList(String port)							throws SQLException;
+	//public List getInboundtoPortList(String port)							throws SQLException;
 	/**
 	 * @param port
 	 * @return
@@ -78,9 +78,11 @@ public interface ScheduleService {
 	 * @return
 	 * @throws SQLException
 	 */
+	@Deprecated
 	public List getOutboundPortList()										throws SQLException;
 	
 	
+	@Deprecated
 	public List<ScheduleData> getConsoleScheduleList(String port, String fromPort)		throws SQLException;
 	/**
 	 * @param port
@@ -88,24 +90,29 @@ public interface ScheduleService {
 	 * @return
 	 * @throws SQLException
 	 */
+	@Deprecated
 	public List<ScheduleData> getOutboundScheduleList()		throws SQLException;
 	
+	@Deprecated
 	public List<ScheduleData> getOutboundScheduleList(String port, String fromPort)		throws SQLException;
 	/**
 	 * @param port
 	 * @return
 	 * @throws SQLException
 	 */
+	@Deprecated
 	public PortInfo getPortInfoByPortAbbr(String port)						throws SQLException;
 	/**
 	 * @return
 	 * @throws SQLException
 	 */
+	@Deprecated
 	public List getScheduleList() 											throws SQLException;
 	/**
 	 * @return
 	 * @throws SQLException
 	 */
+	@Deprecated
 	public List getTableAndADVList()										throws SQLException;
 	/**
 	 * @param data
@@ -127,6 +134,7 @@ public interface ScheduleService {
 	 * @return
 	 * @throws SQLException
 	 */
+	@Deprecated
 	public int updateScheduleData(ScheduleData data)						throws SQLException;
 	
 	/**
@@ -172,12 +180,16 @@ public interface ScheduleService {
 	@Deprecated
 	public List<ScheduleData> getInlandScheduleList(ScheduleData data) throws SQLException;
 	
+	@Deprecated
 	public List getInlandScheduleDateList()throws SQLException;
 	
-	public int deleteInlnadSchedule()throws SQLException;
 	
+	
+	
+	@Deprecated
 	public List<ScheduleData> getOutboundScheduleList(ScheduleData op)throws SQLException;
 	
+	@Deprecated
 	public List<String> getOutboundAreaList()throws SQLException;
 
 	public int getTotalCount(HashMap<String, Object> commandMap) throws SQLException;
@@ -187,6 +199,11 @@ public interface ScheduleService {
 	List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException;
 
 	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException;
+	
+	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException;
+	
+	
+	public int deleteInlnadSchedule()throws SQLException;
 	
 	
 	

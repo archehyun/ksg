@@ -7,6 +7,7 @@ import java.util.Map;
 public interface ShipperTableDAO {
 	
 	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException;
+	
 	public Object select(Map<String, Object> commandMap) throws SQLException;
 	
 	public int selectCount(Map<String, Object> param) throws SQLException;

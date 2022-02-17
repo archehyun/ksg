@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -152,7 +153,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	//private Font defaultFont = new Font("µ¸À½",0,10);
 	private static final long serialVersionUID = 1L;
-	//private JComponent 	parent;
+	
 	private ADVService 	advService;
 	private TableService tableService;
 	private KSGModelManager modelManager = KSGModelManager.getInstance();
@@ -818,6 +819,26 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 
+	}
+	
+	public void setShipperTableData(HashMap<String, Object> param) {
+		
+		txfTable_id.setText(String.valueOf(param.get("table_id")));
+		txaQuark.setText(String.valueOf(param.get("quark_format")));
+		txfAgent.setText(String.valueOf(param.get("agent")));
+		txfGubun.setText(String.valueOf(param.get("gubun")));
+		txfTitle.setText(String.valueOf(param.get("title")));
+		txfPortCount.setText(String.valueOf(param.get("port_col")));
+		txfVesselCount.setText(String.valueOf(param.get("vsl_row")));
+		txfCompany_Abbr.setText(String.valueOf(param.get("company_abbr")));	
+		
+		txfPage.setText(String.valueOf(param.get("page")));
+		txfBookPage.setText(String.valueOf(param.get("bookPage")));
+		txfIndex.setText(String.valueOf(param.get("index")));
+		txaConsoleCFS.setText(String.valueOf(param.get("cfs")));
+		txfConsolePage.setText(String.valueOf(param.get("console_page")));
+		
+		
 	}
 	
 	

@@ -30,11 +30,11 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.dialog.PortSearchDialog;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.dialog.PortSearchDialog;
 
 /**
  * ========================================
