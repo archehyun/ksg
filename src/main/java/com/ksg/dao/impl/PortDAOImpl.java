@@ -11,16 +11,18 @@ import com.ksg.dao.PortDAO;
 public class PortDAOImpl extends AbstractDAO implements PortDAO{
 	public PortDAOImpl() {
 		super();
+		
+		this.namespace ="port";
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException {
-		return selectList("port.selectPortList", commandMap);
+		return selectList(this.namespace+".selectPortList", commandMap);
 
 	}
 	
 	public List<Map<String, Object>> selectDetailList(HashMap<String, Object> commandMap) throws SQLException{
-		return selectList("port.selectPortAbbrList", commandMap);
+		return selectList(this.namespace+".selectPortAbbrList", commandMap);
 		
 	}
 	
@@ -30,28 +32,34 @@ public class PortDAOImpl extends AbstractDAO implements PortDAO{
 	}
 	public Object selectDetail(HashMap<String, Object> param) throws SQLException
 	{
-		return selectOne("port.selectPortAbbr", param);
+		return selectOne(this.namespace+".selectPortAbbr", param);
 	}
 
 	public int delete(HashMap<String, Object> param) throws SQLException {
-		return (Integer) delete("port.deletePort", param);
+		return (Integer) delete(this.namespace+".deletePort", param);
 	}
 	public int deleteDetail(HashMap<String, Object> param) throws SQLException{
-		return (Integer) delete("port.deletePortAbbr", param);
+		return (Integer) delete(this.namespace+".deletePortAbbr", param);
 	}
 	
 
 	public int selectCount(Map<String, Object> commandMap) throws SQLException{
-		return  (Integer) selectOne("port.selectCount", commandMap);
+		return  (Integer) selectOne(this.namespace+".selectCount", commandMap);
 	}
 
 	public int update(HashMap<String, Object> param) throws SQLException{
 		// TODO Auto-generated method stub
-		return (Integer) update("port.updatePort",param);
+		return (Integer) update(this.namespace+".updatePort",param);
 	}
 
-	public void isnert(HashMap<String, Object> param) throws SQLException{
-		insert("port.insertPort",param);
+	public Object isnert(HashMap<String, Object> param) throws SQLException{
+		return insert(this.namespace+".insertPort",param);
 	}
+	
+	public Object selectListByPage(HashMap<String, Object> param)throws SQLException
+	{
+		return selectList(this.namespace+".selectPortListByPage", param);
+	}
+	
 
 }

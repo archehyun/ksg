@@ -30,6 +30,7 @@ import javax.swing.JTextField;
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.AreaInfo;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -46,12 +47,12 @@ public class InsertAreaInfodialog extends BaseInfoDialog implements ActionListen
 	private JTextField txfAreaBookCode;
 	String title;
 	AreaInfo selectedInfo;
-
+	private BaseServiceImpl baseService;
 	public InsertAreaInfodialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
 		this.baseInfoUI=baseInfoUI;
 		title = "Area 정보 추가";
-		
+		baseService = new BaseServiceImpl(); 
 	}
 
 	public InsertAreaInfodialog(BaseInfoUI infoUI, AreaInfo info) {

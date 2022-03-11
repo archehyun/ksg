@@ -16,9 +16,10 @@ import java.util.Map;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.domain.Member;
 
-public interface MemberService {
+public interface MemberService extends PageService{
 
 	public Map<String, Object> select(Map<String, Object> commandMap) throws SQLException;
+	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
 	
 	public boolean login(String id,String pw) throws Exception;
 

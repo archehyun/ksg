@@ -79,13 +79,13 @@ public interface SchduleDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List getPortList()												throws SQLException;
+
 	/**
 	 * @param inOutType
 	 * @return
 	 * @throws SQLException
 	 */
-	//public List getPortListBySchedule(String inOutType)						throws SQLException;
+
 	/**
 	 * @return
 	 * @throws SQLException
@@ -162,8 +162,8 @@ public interface SchduleDAO {
 	public List getScheduleListNTop(ScheduleData data) throws SQLException;
 	@Deprecated
 	public int getScheduleNTopCount(ScheduleData data)throws SQLException;
-	@Deprecated
-	public List getOutboundFromPortTSList(String port)throws SQLException;
+	
+//	public List getOutboundFromPortTSList(String port)throws SQLException;
 	@Deprecated
 	public List<ScheduleData> getConsoleScheduleList(String port,
 			String fromPort) throws SQLException;
@@ -185,11 +185,15 @@ public interface SchduleDAO {
 	
 	
 	public List<Map<String, Object>> selectList(HashMap<String, Object> param) throws SQLException;
+	
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
+	
 	public Object selectListByPage(HashMap<String, Object> param)throws SQLException;
 	
+	public Object insertSchedule(HashMap<String, Object> param) throws SQLException;
 	
 	public ScheduleData insertInlandScheduleData(ScheduleData data)				throws SQLException;
+	
 	public ScheduleData insertScheduleData(ScheduleData data)				throws SQLException;
 	
 	public int deleteSchedule()												throws SQLException;

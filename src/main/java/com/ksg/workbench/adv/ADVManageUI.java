@@ -41,7 +41,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -81,6 +81,7 @@ import com.ksg.view.comp.tree.KSGTreeImpl;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
+import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.print.PrintADVUI;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
@@ -102,7 +103,7 @@ import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 
   */
 @SuppressWarnings("unchecked")
-public class ADVManageUI extends KSGPanel implements ActionListener
+public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 {	
 	
 	private static final Logger logger = LoggerFactory.getLogger(ADVManageUI.class);
@@ -154,7 +155,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 	
 	private Vector 			pageList;
 	
-	private JPanel 			pnSubSearch,pnSubSelect,pnTableInfo,pnTableList,pnLeftMenu;
+	private KSGPanel 			pnSubSearch,pnSubSelect,pnTableInfo,pnTableList,pnLeftMenu;
 	
 	private JTabbedPane 	pnTab;
 	
@@ -172,8 +173,14 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 	
 	private TableService tableService;
 	private SearchPanel searchPanel;
+	private ADVServiceImpl _advService;
 	
 	public ADVManageUI() {
+		
+		super();
+		
+		this.title="광고정보 입력";
+		this.borderColor = new Color(179,195,207);
 
 		Properties properties = new Properties();
 
@@ -183,7 +190,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 		
 		_advService = new ADVServiceImpl();
 		
-		manager.addObservers(this);
+		
 		
 		createAndUpdateUI();
 	}
@@ -258,7 +265,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 		pnTab.addTab("입력정보", searchPanel);
 		pnTab.addTab("결과", advListPanel);
 		
-		JPanel pnMain = new JPanel(new BorderLayout());
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
 		pnMain.add(pnTab);
 		pnMain.add(buildLeftMenu(),BorderLayout.WEST);
@@ -268,12 +275,12 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 
 
 
-	private JPanel buildHistoryCenter()
+	private KSGPanel buildHistoryCenter()
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 
-		JPanel pnNorth = new JPanel(new BorderLayout());
+		KSGPanel pnNorth = new KSGPanel(new BorderLayout());
 		JLabel lblTableCountlbl =new JLabel("검색된 테이블 수 : ");
 
 
@@ -296,8 +303,8 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 			}});
 */
 
-		JPanel pnNorthLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JPanel pnNorthRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnNorthLeft = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnNorthRight = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		pnNorthLeft.add(lblTableCountlbl);
 		pnNorthLeft.add(_txfSearchedTableCount);
@@ -318,7 +325,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 		 *
 		*/
 		//pane.setDividerLocation(Integer.parseInt((propertis.getProperty("errorDividerLoction"))));
-		JPanel pnTableList = createPnTableList();
+		KSGPanel pnTableList = createPnTableList();
 
 		pane.setTopComponent(pnTableList);
 		pnMain.add(pane);
@@ -326,17 +333,17 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 		pnMain.add(buildSouthPn(),BorderLayout.SOUTH);
 		return pnMain;
 	}
-	private JPanel buildLeftMenu() 
+	private KSGPanel buildLeftMenu() 
 	{
-		pnLeftMenu = new JPanel();
-		JPanel pnSearch =  new JPanel();
+		pnLeftMenu = new KSGPanel();
+		KSGPanel pnSearch =  new KSGPanel();
 		pnSearch.setLayout(new BorderLayout());
 
 		_treeMenu = createTreeMenu();		
 		_txfSearchByCompany = new JTextField(8);
 
 
-		JPanel pnSearchByCompany = new JPanel();
+		KSGPanel pnSearchByCompany = new KSGPanel();
 		JLabel lblCompany = new JLabel("선사 검색");
 		lblCompany.setPreferredSize( new Dimension(60,15));
 		pnSearchByCompany .add(lblCompany);
@@ -407,7 +414,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 		pnLeftMenu.setLayout(new BorderLayout());
 
 
-		JPanel pnContorl = new JPanel();
+		KSGPanel pnContorl = new KSGPanel();
 		ButtonGroup group = new ButtonGroup();
 
 
@@ -457,7 +464,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 			butDelTable.addActionListener(this);
 			pnContorl.add(butDelTable);
 
-			JPanel pnTitle = new JPanel();
+			KSGPanel pnTitle = new KSGPanel();
 			pnTitle.setBackground(new Color(88,141,250));
 			pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 			JLabel label = new JLabel("테이블 목록");
@@ -470,7 +477,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 			pnSearch.add(pnContorl,BorderLayout.SOUTH);
 
 
-			JPanel pnMain = new JPanel(new BorderLayout());
+			KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
 			pnMain.add(pnSearch,BorderLayout.CENTER);
 
@@ -489,10 +496,10 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 	 */
 	private Component buildSouthPn() {
 
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 
-		JPanel paRight = new JPanel();
+		KSGPanel paRight = new KSGPanel();
 		paRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		JButton butADD = new JButton("광고불러오기",new ImageIcon("images/importxls.gif"));
@@ -625,7 +632,7 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 		//paRight.add(butSave);
 		paRight.add(butCancel);
 
-		JPanel pnLeft =new JPanel();
+		KSGPanel pnLeft =new KSGPanel();
 		pnLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JButton button = new JButton("설정 보기");
 		button.setVisible(false);
@@ -675,85 +682,27 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 	 */
 	public void createAndUpdateUI() 
 	{	
-		JLabel lblTitle = new JLabel("광고정보 입력");
-		
-		lblTitle.setForeground(new Color(61,86,113));
-		
-		Font titleFont = new Font("명조",Font.BOLD,18);
-		
-		lblTitle.setFont(titleFont);
-
-		JPanel pnTitleMain =new JPanel(new BorderLayout());
-		
-		JPanel pnTitle =new JPanel(new FlowLayout(FlowLayout.LEADING));
-		
-		pnTitle.setBorder(new CurvedBorder(8,new Color(179,195,207)));
-		
-		pnTitle.add(lblTitle);
-
-		pnTitleMain.add(pnTitle);
-		
-		JPanel pnTitleBouttom = new JPanel();
-		
-		pnTitleBouttom.setPreferredSize(new Dimension(0,15));
-		
-		pnTitleMain.add(pnTitleBouttom,BorderLayout.SOUTH);
-
 
 		this.setLayout(new BorderLayout());
-
-		JPanel pnMain = new JPanel();
+	
+		this.add(buildNorthPn(),BorderLayout.NORTH);
 		
-		pnMain.setLayout(new BorderLayout());
-
-		JPanel pnLeft = new JPanel();
-		
-		pnLeft.setPreferredSize(new Dimension(15,0));
-		
-		JPanel pnRight = new JPanel();
-		
-		pnRight.setPreferredSize(new Dimension(15,0));
-
-
-		pnMain.add(pnRight,BorderLayout.EAST);
-		
-		pnMain.add(pnLeft,BorderLayout.WEST);
-		
-		pnMain.add(buildCenter(),BorderLayout.CENTER);
-		
-		this.add(pnTitleMain,BorderLayout.NORTH);
-		
-		this.add(pnMain,BorderLayout.CENTER);
+		this.add(buildCenter(),BorderLayout.CENTER);
 	}
 
-//	private JPopupMenu createErrorPopupMenu() {
-//		JPopupMenu errorPopupMenu = new JPopupMenu();
-//		JMenuItem menu1 = new JMenuItem("포트검색");
-//		menu1.addActionListener(new ActionListener(){
-//
-//
-//			public void actionPerformed(ActionEvent e) 
-//			{
-//				SearchPortCommand  portCommand = new SearchPortCommand();
-//				portCommand.execute();
-//
-//			}});
-//		errorPopupMenu.add(menu1);
-//		return errorPopupMenu;
-//	}
 
 	/**
 	 * @return
 	 */
-	private JPanel createPnTableList() {
-		JPanel pnTableListMain = new JPanel();
+	private KSGPanel createPnTableList() {
+		KSGPanel pnTableListMain = new KSGPanel();
 		pnTableListMain.setLayout(new BorderLayout());
 
-		pnTableList = new JPanel();
+		pnTableList = new KSGPanel();
 		pnTableList.setLayout(new BoxLayout(pnTableList, BoxLayout.Y_AXIS));
 
 
-		JPanel pnTableListControl = new JPanel();
+		KSGPanel pnTableListControl = new KSGPanel();
 		butPre = new JButton("이전");
 		butPre.setEnabled(false);
 		butPre.addActionListener(this);
@@ -997,120 +946,6 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 	{
 		
 	}
-
-
-
-/*	private void updatePropertyTable(String company_abbr, int page) {
-		try {
-			List li=tableService.getTableProperty(company_abbr,page);
-
-			DefaultTableModel model = new DefaultTableModel();
-			model.setRowCount(li.size());
-
-			String[]colName = {"선사명","페이지","하위항구","Voyage추가여부","구분자","구분자 위치"};
-
-			for(int i=0;i<colName.length;i++)
-				model.addColumn(colName[i]);
-			logger.debug("property :"+li.size());
-			for(int i=0;i<li.size();i++)
-			{
-				Table_Property p=(Table_Property) li.get(i);
-				model.setValueAt(p.getCompany_abbr(), i, 0);
-				model.setValueAt(p.getPage(), i, 1);
-				model.setValueAt(p.getUnder_port(), i, 2);
-
-				if(p.getVoyage()==1)
-				{
-					model.setValueAt("추가", i, 3);
-				}else
-				{
-					model.setValueAt("-", i, 3);
-				}
-				model.setValueAt(p.getVoyage(), i, 3);
-				model.setValueAt(p.getVesselvoydivider(), i, 4);
-				model.setValueAt(p.getVesselvoycount(), i, 5);
-			}
-			tblPropertyTable.setModel(model);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
-
-/*	
-	*//**
-	 * 
-	 *//*
-	public void updateTableInfo()
-	{
-		try {
-			List li = new LinkedList();
-			if(tableInfoList==null)
-				return;
-			for(int i=0;i<tableInfoList.size();i++)
-			{
-				ShippersTable t = (ShippersTable) tableInfoList.get(i);
-				List  tempLI=tableService.getTableListByCompany(_txfCompany.getText(), t.getPage());
-				for(int j=0;j<tempLI.size();j++)
-				{
-					li.add(tempLI.get(j));
-				}
-			}
-
-			String columnames[]={"Tabel ID",SEARCH_TYPE_PAGE,"Title","Table Index","Index","항구 수","선박 수","기타"};
-			DefaultTableModel model = new EditTableModel(columnames,li.size());
-
-			int index=1;
-
-			for(int i=0;i<li.size();i++)
-			{
-				int col=0;
-				ShippersTable table=(ShippersTable) li.get(i);
-				model.setValueAt(table.getTable_id(), i, col++);
-				model.setValueAt(table.getPage(), i, col++);
-				model.setValueAt(table.getTitle(), i, col++);
-				model.setValueAt(table.getTable_index(), i, col++);
-				model.setValueAt(index, i, col++);
-				model.setValueAt(table.getPort_col(), i, col++);
-				model.setValueAt(table.getVsl_row(), i, col++);
-				model.setValueAt(table.getOthercell(), i, col++);
-				index++;
-			}
-			_tblTable.setModel(model);
-			TableColumnModel colmodel_width =_tblTable.getColumnModel();
-
-			colmodel_width.getColumn(2).setPreferredWidth(200);
-
-			model.addTableModelListener(new TableModelListener(){
-
-				public void tableChanged(TableModelEvent e) {
-					if(e.getType()==TableModelEvent.UPDATE)
-					{
-						int row = _tblTable.getSelectedRow();
-						ShippersTable table = new ShippersTable();
-						table.setTable_id((String) _tblTable.getValueAt(row, 0));
-						table.setPage(Integer.parseInt(_tblTable.getValueAt(row, 1).toString()));
-
-						table.setTable_index(Integer.parseInt(_tblTable.getValueAt(row, 3).toString()));
-						table.setPort_col(Integer.parseInt(_tblTable.getValueAt(row, 5).toString()));
-
-						table.setVsl_row(Integer.parseInt(_tblTable.getValueAt(row, 6).toString()));
-
-
-						table.setOthercell(Integer.parseInt(_tblTable.getValueAt(row, 7).toString()));
-						try {
-							tableService.updateTable(table);
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}});
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}*/
-
 
 	/**
 	 * @param index

@@ -12,7 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -35,7 +34,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import com.ksg.dao.impl.AreaDAOImpl;
-import com.ksg.domain.AreaInfo;
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
@@ -85,7 +83,8 @@ public class PnArea extends PnBase implements ActionListener{
 
 	public PnArea(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);		
-		this.add(buildCenter());		
+		this.add(buildCenter());	
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		searchData();		
 	}
 
@@ -121,6 +120,8 @@ public class PnArea extends PnBase implements ActionListener{
 		
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 		pnMain.add(buildButton(),BorderLayout.SOUTH);
+		
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 		
 		return pnMain;
 
@@ -257,31 +258,6 @@ public class PnArea extends PnBase implements ActionListener{
 		}	
 	}
 
-//	private void searchData(String query) {
-//
-//		model.clear();
-//
-//		try {
-//			List li =baseDaoService.getSearchedAreaList(query);
-//
-//			Iterator iter = li.iterator();
-//			searchTotalSize=li.size();
-//			totalSize = baseDaoService.getAreaCount();
-//			while(iter.hasNext())
-//			{
-//				AreaInfo areaInfo = (AreaInfo) iter.next();
-//				model.addRow(new Object[]{	areaInfo.getArea_book_code(),
-//						areaInfo.getArea_name(),
-//						areaInfo.getArea_code()});
-//			}
-//			lblTotal.setText(searchTotalSize+"/"+totalSize);
-//			tblTable.setModel(model);
-//
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
 	class TableSelectListner extends MouseAdapter
 	{
 		KSGDialog dialog;
@@ -356,13 +332,6 @@ public class PnArea extends PnBase implements ActionListener{
 		}
 	}
 
-	@Override
-	public String getOrderBy(TableColumnModel columnModel) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void initTable() {
 		model = new KSGTableModel();
 

@@ -67,6 +67,32 @@ public class MemberServiceImpl implements MemberService
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("total", memberDAO.selectCount(param));
+		
+		resultMap.put("master", memberDAO.selectListByPage(param));
+		
+		resultMap.put("PAGE_NO", 1);
+		
+		return resultMap;
+	}
+	@Override
+	public Map<String, Object> selectList(Map<String, Object> param) throws SQLException {
+		
+		logger.debug("param:{}", param);
+		
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("total", memberDAO.selectCount(param));
+		
+		resultMap.put("master", memberDAO.selectList(param));
+		
+		return resultMap;
+
+	}
 
 
 }

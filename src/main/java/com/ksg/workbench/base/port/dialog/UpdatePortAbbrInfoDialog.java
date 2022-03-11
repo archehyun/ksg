@@ -31,6 +31,7 @@ import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.PortInfo;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 public class UpdatePortAbbrInfoDialog extends KSGDialog implements ActionListener{
@@ -41,6 +42,7 @@ public class UpdatePortAbbrInfoDialog extends KSGDialog implements ActionListene
 	private JTextField txfPortName = new JTextField(20);
 	private JTextField txfPortAbbr = new JTextField(20);
 	String selectedPortCode;
+	private BaseServiceImpl baseService;
 	
 
 
@@ -50,6 +52,7 @@ public class UpdatePortAbbrInfoDialog extends KSGDialog implements ActionListene
 		txfPortAbbr.setText(portCode);
 		txfPortName.setText(portName);
 		selectedPortCode = portCode;
+		baseService = new BaseServiceImpl(); 
 		
 	}
 	public UpdatePortAbbrInfoDialog(String portName,String portAbbr) {
@@ -57,6 +60,7 @@ public class UpdatePortAbbrInfoDialog extends KSGDialog implements ActionListene
 		txfPortAbbr.setText(portAbbr);
 		txfPortName.setText(portName);
 		selectedPortCode = portAbbr;
+		baseService = new BaseServiceImpl(); 
 		
 	}
 

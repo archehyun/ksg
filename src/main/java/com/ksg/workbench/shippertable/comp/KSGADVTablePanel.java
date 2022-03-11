@@ -22,7 +22,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTable;
@@ -34,13 +33,13 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ShippersTable;
+import com.ksg.service.ADVService;
+import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 import com.ksg.workbench.shippertable.dialog.ManageTablePortPop;
 import com.ksg.workbench.shippertable.dialog.ManageVesselDialog;
 
@@ -74,6 +73,10 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 	private ManageVesselDialog vesseldialog;
 	
 	private TableService tableService;
+
+	private BaseService _baseSearvice;
+
+	private ADVService _advService;
 
 	public KSGADVTablePanel(ShipperTableAbstractMgtUI base) {
 		this.base=base;

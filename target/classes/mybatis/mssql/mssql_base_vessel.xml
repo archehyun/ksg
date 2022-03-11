@@ -15,14 +15,31 @@
 <sqlMap namespace="vessel">
 
 
-<!-- *** Port *** -->
+<sql id="LIKE_WHERE">
+	 where vessel_name=vessel_abbr
+		<dynamic prepend="and">
+			<isNotNull property="vessel_abbr" prepend="and">
+						vessel_abbr like '%$vessel_abbr$%'
+			</isNotNull>
+			<isNotNull property="vessel_name" prepend="and">
+						vessel_name like '%$vessel_name$%'
+			</isNotNull>
+			<isNotNull property="vessel_type" prepend="and">
+						vessel_type like '%$vessel_type$%'
+			</isNotNull>
+			<isNotEmpty property="vessel_mmsi" prepend="and">
+						vessel_mmsi like '%$vessel_mmsi$%'
+			</isNotEmpty>
+			<isGreaterThan prepend="and" property="vessel_use" compareValue="-1">
+			vessel_use=#vessel_use#
+			</isGreaterThan>
+		</dynamic>
+</sql>
 	
 
-<!-- select -->
 
-	<select id="selectVesselList" resultClass="java.util.HashMap">
-	
-	select * from (
+<sql id="SELECT">
+
 		select vessel_abbr
 		,vessel_name
 		,vessel_use
@@ -49,10 +66,34 @@
 			vessel_use=#vessel_use#
 			</isGreaterThan>
 		</dynamic>
-		) A
+
+
+</sql>
+<!-- select -->
+
+	<select id="selectVesselList" resultClass="java.util.HashMap">
+	
+	<include refid="SELECT"></include> 
 	</select>
 	
-		<select id="selectVesselAbbrList" resultClass="java.util.HashMap">
+	<select id="selectVesselListByPage" resultClass="java.util.HashMap">
+		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY vessel_name) 
+		
+		AS ROWNUM, vessel_abbr
+		,vessel_name
+		,vessel_use
+		,vessel_type
+		,vessel_mmsi
+		,vessel_company
+		,CONVERT(VARCHAR, input_date, 23) AS input_date	 FROM TB_VESSEL
+		WITH (NOLOCK) 
+		<include refid="LIKE_WHERE"></include>
+		 ) T 
+
+		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
+	</select>
+	
+	<select id="selectVesselAbbrList" resultClass="java.util.HashMap">
 		select * from TB_VESSEL
 		
 		where vessel_name =#vessel_name#

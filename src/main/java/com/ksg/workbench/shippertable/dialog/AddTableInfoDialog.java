@@ -119,6 +119,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	
 	private JTextField txfInland;
 	private ShipperTableService service;
+	private BaseServiceImpl baseService;
 
 	public AddTableInfoDialog() {
 		super();

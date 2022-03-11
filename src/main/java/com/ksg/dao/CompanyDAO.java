@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface CompanyDAO {
 	
-	@SuppressWarnings("unchecked")
+	
 	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException;
 	
 	public int update(HashMap<String, Object> param) throws SQLException;
@@ -17,5 +17,7 @@ public interface CompanyDAO {
 	public Object insert(HashMap<String, Object> param) throws SQLException;
 	
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
+	
+	public Object selectListByPage(HashMap<String, Object> param) throws SQLException;
 
 }

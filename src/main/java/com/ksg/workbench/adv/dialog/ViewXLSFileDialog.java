@@ -29,6 +29,7 @@ import com.ksg.commands.ViewXLSFileCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
+import com.ksg.service.BaseService;
 import com.ksg.view.comp.FileInfo;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -41,6 +42,7 @@ public class ViewXLSFileDialog extends KSGDialog {
 	FileInfo info;
 	private String[] vesselKeyWord;
 	private String[] bothKeyWord;
+	private BaseService baseService;
 	public ViewXLSFileDialog(FileInfo info) {
 		this.info =info;
 		try {

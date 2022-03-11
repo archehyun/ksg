@@ -20,7 +20,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -64,6 +64,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -82,10 +83,10 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ShipperTableService;
+import com.ksg.service.TableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
@@ -95,18 +96,21 @@ import com.ksg.view.comp.table.KSGTableSelectListner;
 import com.ksg.view.comp.table.model.TableModel;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;
+import com.ksg.workbench.common.comp.button.PageAction;
+import com.ksg.workbench.schedule.comp.KSGPageTablePanel;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 import com.ksg.workbench.shippertable.comp.SearchTable;
 import com.ksg.workbench.shippertable.comp.UpdateTablePanel;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 import com.ksg.workbench.shippertable.dialog.ManagePortDialog;
+import com.ksg.workbench.shippertable.dialog.UpdateShipperTableDateDialog;
 /**
  * @author archehyun
  * @설명 광고 정보 조회 화면
  */
 @SuppressWarnings("unchecked")
-public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements ActionListener, ComponentListener
+public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements ActionListener
 {	
 	private static final String ACTION_SEARCH = "조회";
 
@@ -180,7 +184,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	private SearchTable tblSearchTable;
 
-	private KSGTablePanel tableH;
+	private KSGPageTablePanel tableH;
 
 	private JTable				currentTable;
 
@@ -212,7 +216,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	private final int DEPTH_SUB=2; //
 
-	private UpdateDateDialog updateAllDateDialog; //날짜 일괄 수정 창
+	private UpdateShipperTableDateDialog updateAllDateDialog; //날짜 일괄 수정 창
 
 	private int endpage;	
 
@@ -246,8 +250,14 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	private ShipperTableService shipperTableService = new ShipperTableServiceImpl();
 
+	private ADVServiceImpl _advService;
+
+	private TableService tableService;	
+
 	public ShipperTableMgtUI2() 
 	{		
+
+		super();
 
 		selectedList = new LinkedList();
 
@@ -257,9 +267,13 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		this.addComponentListener(this);
 
+		this.title="광고정보 관리";
+
+		this.borderColor=new Color(91,152,185);
+
 		createAndUpdateUI();
 
-		fnSearch();			
+
 
 
 	}
@@ -332,6 +346,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		}
 		else if(command.equals("일자변경"))
 		{
+			logger.info("test");
 
 			selectedList.clear();
 
@@ -345,7 +360,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			if(selectedList.size()==0)
 				return;
 
-			updateAllDateDialog = new UpdateDateDialog(selectedList);
+			updateAllDateDialog = new UpdateShipperTableDateDialog(selectedList, this);
 
 			if(updateAllDateDialog.result==1)
 			{
@@ -357,6 +372,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 				}
 			}
 
+			//int[] selectedIndex=tableH.getSelectedRows();
+
 		}
 
 		else if(command.equals("광고삭제"))
@@ -366,7 +383,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		else if(command.equals(ACTION_UPDATE_DATE))
 		{
-			updateAllDateDialog = new UpdateDateDialog(_searchedList);
+			updateAllDateDialog = new UpdateShipperTableDateDialog(selectedList, this);
 			if(updateAllDateDialog.result==1)
 			{
 				try {
@@ -410,7 +427,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		pnTable.setLayout(tableLayout);
 
 
-		tableH = new KSGTablePanel("광고목록");
+		tableH = new KSGPageTablePanel("광고목록");
 		tableH.addColumn(new KSGTableColumn("page", "페이지"));
 		tableH.addColumn(new KSGTableColumn("table_index", "인덱스"));
 		tableH.addColumn(new KSGTableColumn("table_id", "테이블ID", 125));
@@ -429,7 +446,12 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		tableH.addColumn(new KSGTableColumn("out_to_port", "Outbound 도착항",110, SwingConstants.LEFT ));
 
 
-		tableH.initComp();	
+
+		tableH.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+		tableH.initComp();
+		tableH.addPageActionListener(new PageAction(tableH, shipperTableService));
+		tableH.setShowControl(true);
 
 
 		tblSearchTable = new SearchTable();
@@ -760,37 +782,16 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		keyAdapter = new SearchOptionKeyAdapter();
 
-		this.manager.addObservers(this);
+		
 
 		popupMenu = createPopupMenu();
 
-		KSGPanel pnTitleMain = new KSGPanel(new BorderLayout());
-
-		KSGPanel pnTitle = new KSGPanel();
-
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEADING));
-
-		JLabel label = new JLabel("광고정보 관리");
-
-		label.setForeground(new Color(61,86,113));		
-
-		Font titleFont = new Font("명조",Font.BOLD,18);
-
-		label.setFont(titleFont);
-
-		pnTitle.add(label);
-
-
-		pnTitle.setBorder(new CurvedBorder(8,new Color(91,152,185)));
-		pnTitleMain.add(pnTitle);
-		KSGPanel pnTitleBouttom = new KSGPanel();
-		pnTitleBouttom.setPreferredSize(new Dimension(0,15));
-		pnTitleMain.add(pnTitleBouttom,BorderLayout.SOUTH);
-
 		this.setLayout(new BorderLayout());
-		this.add(buildCenter(),BorderLayout.CENTER);	
-		this.add(pnTitleMain,BorderLayout.NORTH);
-		this.add(this.createMargin(10),BorderLayout.WEST);
+
+		this.add(buildCenter(),BorderLayout.CENTER);
+
+		this.add(buildNorthPn(),BorderLayout.NORTH);
+
 
 		logger.debug("init searchUI end");
 
@@ -1074,8 +1075,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout( new BorderLayout());
-		pnMain.add(this.createMargin(),BorderLayout.WEST);
-		pnMain.add(this.createMargin(),BorderLayout.EAST);
+		
 		pnMain.add(pnSearchInfoMain,BorderLayout.CENTER);
 		return pnMain;
 	}
@@ -1625,25 +1625,37 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			}
 
 		}
+		try {
+			
+			int page_size = tableH.getPageSize();
+			
+			searchParamHash.put("PAGE_SIZE", page_size);
+			
+			searchParamHash.put("PAGE_NO", 1);
+			
+			logger.info("param:"+searchParamHash);
 
+			HashMap<String, Object> result = (HashMap<String, Object>) shipperTableService.selectListByPage(searchParamHash);
 
-		HashMap<String, Object> result = (HashMap<String, Object>) shipperTableService.selectList(searchParamHash);
+			tableH.setResultData(result);
 
-		tableH.setResultData(result);
+			List master = (List) result.get("master");
 
-		List master = (List) result.get("master");
-
-		if(master.size()==0)
-		{
-			/*lblArea.setText("");
+			if(master.size()==0)
+			{
+				/*lblArea.setText("");
 				lblAreaCode.setText("");
 				lblPationality.setText("");
 				lblPortName.setText("");
 				tableD.clearReslult();*/
-		}
-		else
-		{
-			tableH.changeSelection(0,0,false,false);
+			}
+			else
+			{
+				tableH.changeSelection(0,0,false,false);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 
@@ -1966,6 +1978,12 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 				}
 			}
 		}
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+		if(isShowData)fnSearch();
 	}
 	class SearchOptionKeyAdapter extends KeyAdapter
 	{		

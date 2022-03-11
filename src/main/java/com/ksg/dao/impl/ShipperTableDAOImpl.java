@@ -66,4 +66,9 @@ public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 		return (Integer) insert("shippertable.insert", param);
 	}
 
+	public Object selectListByPage(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("shippertable.selectShipperTableListByPage", param);
+	}
+
 }

@@ -30,6 +30,7 @@ import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Vessel;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -49,6 +50,7 @@ public class UpdateVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 	private JTextField txfVessel_Abbr;
 	private String UPDATE_TITLE = "선박 약어 수정";
 	private Vessel dataInfo;
+	private BaseServiceImpl baseService;
 
 	/**
 	 * @deprecated
@@ -61,6 +63,8 @@ public class UpdateVesselAbbrInfoDialog extends KSGDialog implements ActionListe
 		this.setTitle(UPDATE_TITLE);
 		LABEL = "선박명: "+vessel.getVessel_name();
 		this.dataInfo = vessel;
+		
+		baseService = new BaseServiceImpl(); 
 
 	}
 	public UpdateVesselAbbrInfoDialog(Vessel vessel) {

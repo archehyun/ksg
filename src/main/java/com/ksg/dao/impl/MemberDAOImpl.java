@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.MemberDAO;
 import com.ksg.domain.Member;
@@ -37,7 +36,7 @@ public class MemberDAOImpl extends AbstractDAO implements MemberDAO
 	@Override
 	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return selectList("member.selectList",commandMap);
 	}
 
 	@Override
@@ -68,6 +67,11 @@ public class MemberDAOImpl extends AbstractDAO implements MemberDAO
 	public int selectCount(Map<String, Object> commandMap) throws SQLException {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public List selectListByPage(HashMap<String, Object> param) throws SQLException{
+		// TODO Auto-generated method stub
+		return selectList("member.selectMemberListByPage", param);
 	}
 
 }

@@ -17,6 +17,22 @@
 		select * from TB_MEMBER where member_id=#member_id#
 	</select>
 	
+	<select id="selectList" resultClass="java.util.HashMap">
+		select * from TB_MEMBER
+	</select>
+	
+		
+	<select id="selectMemberListByPage" resultClass="java.util.HashMap">
+		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY member_name) 
+		
+		AS ROWNUM, * FROM TB_MEMBER
+		WITH (NOLOCK) 
+		
+		 ) T 
+
+		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
+	</select>
+	
 	<select id="select" parameterClass="java.util.HashMap" resultClass="com.ksg.domain.Member">
 		select * from TB_MEMBER where member_id=#member_id#
 	</select>

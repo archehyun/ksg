@@ -70,10 +70,12 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 	
 	Vessel dataInfo;
 	private JCheckBox cbxMMSICheck;
+	private BaseServiceImpl baseService;
 	public InsertVesselInfoDialog()
 	{
 		super();
 		this.setTitle("신규 선박 정보 추가");
+		baseService = new BaseServiceImpl(); 
 		
 	}
 	public InsertVesselInfoDialog(BaseInfoUI baseInfoUI) {

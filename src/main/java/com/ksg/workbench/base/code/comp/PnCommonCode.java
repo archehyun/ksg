@@ -1,19 +1,23 @@
 package com.ksg.workbench.base.code.comp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -57,6 +61,10 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 	
 	SelectionListner selectionListner = new SelectionListner();
 
+	private JLabel lblTable;
+	
+	private List<HashMap<String, Object>> master;
+
 	public PnCommonCode(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
 		
@@ -64,6 +72,9 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 		
 		this.add(createCenter());
 		this.addComponentListener(this);
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		
+		
 	}
 
 	private Component createCenter() {
@@ -130,33 +141,45 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 		pnMain.add(tableD);
 		
 		pnMain.add(createSerch(),BorderLayout.NORTH);
-		
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 		
 		return pnMain;
 	}
 	
-	private JPanel createSerch()
+	private KSGPanel createSerch()
 	{		
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
+		
+		
+		lblTable = new JLabel("코드정보");
+		lblTable.setSize(200, 25);
+		lblTable.setFont(new Font("돋움",0,16));
+		lblTable.setIcon(new ImageIcon("images/db_table.png"));
 		
 		pnMain.setLayout(new BorderLayout());
 		
-		JPanel pnLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		pnLeft.add(new JLabel("코드명"));
+		KSGPanel pnLeft = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		txfCodeName = new JTextField(10);
 		
+		pnLeft.add(lblTable);
+		pnLeft.add(new JLabel("코드명:"));
 		pnLeft.add(txfCodeName);
 		
-		JPanel pnRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		
+		KSGPanel pnRight = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		
+		
+		pnRight.add(new JLabel("코드명:"));
+		pnRight.add(txfCodeName);
 		
 		JButton butSearch = new JButton("조회");
 		butSearch.addActionListener(this);
 		
 		pnRight.add(butSearch);
 		
-		//pnMain.add(pnLeft,BorderLayout.LINE_START);
+		pnMain.add(pnLeft,BorderLayout.LINE_START);
+		
 		
 		pnMain.add(pnRight,BorderLayout.LINE_END);
 		
@@ -194,23 +217,7 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 		}
 	}
 
-	@Override
-	public void updateTable(String query) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getOrderBy(TableColumnModel columnModel) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void initTable() {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public void fnSearch() {
@@ -227,13 +234,32 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 		}	
 		
 		try {
+			
+			logger.info("param:{}",param);
 		HashMap<String, Object> result = (HashMap<String, Object>) codeService.selectCodeHList(param);
 		
 		tableH.setResultData(result);
 		
 		tableH.getSelectionModel().addListSelectionListener(selectionListner);
 		
-		tableH.changeSelection(0, 0, false, false);
+		
+		
+		master = (List) result.get("master");
+
+		if(master.size()==0)
+		{
+			/*lblArea.setText("");
+			lblAreaCode.setText("");
+			lblPationality.setText("");
+			lblPortName.setText("");
+			tableD.clearReslult();*/
+			
+			tableD.clearResult();
+		}
+		else
+		{
+			tableH.changeSelection(0,0,false,false);
+		}
 		
 		
 		}catch(Exception e)
@@ -367,24 +393,19 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 			
 			if(!e.getValueIsAdjusting())
 			{
+				
+				int row = tableH.getSelectedRow();
+				logger.info("select row:{}",row);
+					
 				String CDENG = (String) tableH.getValueAt(tableH.getSelectedRow(), 2);
 				
 				fnSearchDetail(CDENG);
 				
+				
 			}
 		}
 	}
-	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
@@ -392,16 +413,6 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 		
 	}
 
-	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void updateTable() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

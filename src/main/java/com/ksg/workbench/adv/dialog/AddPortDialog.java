@@ -32,6 +32,7 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
+import com.ksg.service.BaseService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.dialog.PortSearchDialog;
@@ -67,6 +68,8 @@ public class AddPortDialog extends KSGDialog {
 	private JTable tblPortList;
 	
 	private JLabel lblInfo;
+
+	private BaseService baseService;
 	
 	/**
 	 * @param table_id

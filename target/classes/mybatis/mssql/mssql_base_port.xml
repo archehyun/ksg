@@ -15,16 +15,10 @@
 <sqlMap namespace="port">
 
 
-<!-- *** Port *** -->
-	
-
-<!-- select -->
-
-	<select id="selectPortList" resultClass="java.util.HashMap">
-		select *, (SELECT COUNT(*) FROM TB_PORT_ABBR ABBR WHERE ABBR.port_name=T.port_name) ABBR_COUNT from TB_PORT T
-		<dynamic prepend="where">
+<sql id="LIKE_WHERE">
+			<dynamic prepend="where">
 		    <isNotNull property="port_area" prepend="and">
-		        port_area=#port_area#
+		        port_area = #port_area#
 		    </isNotNull>
 		    <isNotNull property="area_code" prepend="and">
 		        area_code=#area_code#
@@ -39,11 +33,34 @@
 		        port_nationality like '%$port_nationality$%'
 		    </isNotNull>
 		</dynamic>
+
+</sql>
+
+	
+
+<!-- select -->
+
+	<select id="selectPortList" resultClass="java.util.HashMap">
+		select *, (SELECT COUNT(*) FROM TB_PORT_ABBR ABBR WHERE ABBR.port_name=TBL.port_name) ABBR_COUNT from TB_PORT TBL
+		<include refid="LIKE_WHERE"></include>
+	</select>
+	
+	<select id="selectPortListByPage"  resultClass="java.util.HashMap" parameterClass="java.util.HashMap">		
+		
+		SELECT * FROM ( 
+			SELECT ROW_NUMBER() OVER (ORDER BY port_name) AS ROWNUM, *, 
+				(SELECT COUNT(*) FROM TB_PORT_ABBR ABBR WHERE ABBR.port_name=TBL.port_name) ABBR_COUNT  FROM TB_PORT TBL
+		WITH (NOLOCK) 
+		<include refid="LIKE_WHERE"></include>
+		 ) T 
+
+		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
+				
 	</select>
 	
 	<select id="selectPort" resultClass="java.util.HashMap">
-	select * from TB_PORT
-	where port_name = #port_name#
+		select * from TB_PORT
+		where port_name = #port_name#
 	
 	</select>
 	

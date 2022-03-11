@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
+import com.ksg.service.BaseService;
 import com.ksg.workbench.adv.comp.VesselInfo;
 import com.ksg.workbench.adv.dialog.AddVesselDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
@@ -63,6 +64,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 	private String value;
 	private DefaultTableModel vesselModel;
 	private AdvertiseTable advTable;
+	private BaseService baseService;
 	public SearchAndInsertVesselDialog(String vesselName) {
 		super();
 		this.vesselName=vesselName;

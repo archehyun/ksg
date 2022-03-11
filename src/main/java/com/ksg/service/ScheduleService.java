@@ -17,7 +17,7 @@ import java.util.Map;
 
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
-public interface ScheduleService {
+public interface ScheduleService extends PageService{
 	
 	
 	
@@ -162,12 +162,7 @@ public interface ScheduleService {
 	public int getScheduleNTopCount(ScheduleData data)throws SQLException;
 	
 	public List getScheduleListNTop(ScheduleData data) throws SQLException;
-	
-	public List getOutboundFromPortTSList(String port)throws SQLException;
-	
-	
-	//public List<ScheduleData> getConsoleScheduleList()throws SQLException;
-	
+
 	
 	/**콘솔 스케줄 조회 
 	 * @param data ScheduleData 클래스
@@ -198,9 +193,7 @@ public interface ScheduleService {
 
 	List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException;
 
-	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException;
-	
-	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException;
+	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException;	
 	
 	
 	public int deleteInlnadSchedule()throws SQLException;

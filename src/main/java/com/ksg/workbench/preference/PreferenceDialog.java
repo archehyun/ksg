@@ -39,6 +39,7 @@ import javax.swing.tree.TreePath;
 
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 public class PreferenceDialog extends KSGDialog implements ActionListener {
@@ -48,14 +49,14 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Vector<PreferencePn> preferenceList;
+	Vector<PnOption> preferenceList;
 
 	private KSGPropertis propertis = KSGPropertis.getIntance();
 
 	String selectedKeyword="vessel";
 	
 	private CardLayout cardLayout;
-	private JPanel pnCardMain;
+	private KSGPanel pnCardMain;
 	private PnPath pnPath;
 	private PnXLS pnXLS;
 	private PnKeyWord pnKeyWord;
@@ -65,6 +66,8 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 	private JLabel lblTitle;
 	
 	String startTab;
+	private PnApperance pnApperance;
+	private BaseServiceImpl baseService;
 	public PreferenceDialog(String title, boolean modal) {
 		this.setTitle(title);
 		this.setModal(modal);
@@ -156,8 +159,8 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 	
 
 	private Component createCardPn() {
-		preferenceList = new Vector<PreferencePn>();
-		pnCardMain = new JPanel();
+		preferenceList = new Vector<PnOption>();
+		pnCardMain = new KSGPanel();
 		cardLayout = new CardLayout();
 		pnCardMain.setLayout(cardLayout);
 		
@@ -167,17 +170,31 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 		pnOtherPort = new PnPortExcpetion(this);
 		pnCheckPort = new PnCheckPort(this);
 		
-		pnCardMain.add(pnXLS,pnXLS.getName());
-		pnCardMain.add(pnKeyWord,pnKeyWord.getName());
-		pnCardMain.add(pnPath,pnPath.getName());
-		pnCardMain.add(pnOtherPort,pnOtherPort.getName());
-		pnCardMain.add(pnCheckPort,pnCheckPort.getName());
+		pnApperance = new PnApperance(this);
 		
-		preferenceList.add(pnXLS);
-		preferenceList.add(pnKeyWord);
-		preferenceList.add(pnPath);
-		preferenceList.add(pnOtherPort);
-		preferenceList.add(pnCheckPort);
+		
+		
+		addPnOption(pnXLS);
+		addPnOption(pnKeyWord);
+		addPnOption(pnPath);
+		addPnOption(pnOtherPort);
+		addPnOption(pnCheckPort);		
+		addPnOption(pnApperance);
+		
+//		
+//		pnCardMain.add(pnXLS,pnXLS.getName());
+//		pnCardMain.add(pnKeyWord,pnKeyWord.getName());
+//		pnCardMain.add(pnPath,pnPath.getName());
+//		pnCardMain.add(pnOtherPort,pnOtherPort.getName());
+//		pnCardMain.add(pnCheckPort,pnCheckPort.getName());
+//		pnCardMain.add(pnApperance,pnCheckPort.getName());
+//		
+//		preferenceList.add(pnXLS);
+//		preferenceList.add(pnKeyWord);
+//		preferenceList.add(pnPath);
+//		preferenceList.add(pnOtherPort);
+//		preferenceList.add(pnCheckPort);
+//		preferenceList.add(pnApperance);
 		
 		if(startTab==null)
 		{
@@ -188,8 +205,12 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 		}
 		
 		
-		
 		return pnCardMain;
+	}
+	private void addPnOption(PnOption pn)
+	{
+		pnCardMain.add((Component) pn, pn.getName());
+		preferenceList.add(pn);
 	}
 	
 	private JPanel buildControl() {
@@ -224,7 +245,7 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 		
-		Iterator<PreferencePn> iterator = preferenceList.iterator();
+		Iterator<PnOption> iterator = preferenceList.iterator();
 		while(iterator.hasNext())
 		{
 			DefaultMutableTreeNode rtGeneral = new DefaultMutableTreeNode(iterator.next().getName());
@@ -248,7 +269,7 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 	}
 	public void saveAction()
 	{
-		Iterator<PreferencePn> iterator = preferenceList.iterator();
+		Iterator<PnOption> iterator = preferenceList.iterator();
 		while(iterator.hasNext())
 		{
 			iterator.next().saveAction();

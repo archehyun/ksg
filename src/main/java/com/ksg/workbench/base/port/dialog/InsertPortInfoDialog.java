@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,10 +39,13 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
+import com.ksg.service.PortService;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.BaseInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
@@ -64,9 +68,16 @@ public class InsertPortInfoDialog extends BaseInfoDialog implements ActionListen
 	private JTextField txfPort_area;
 
 	private JTextField txfArea_code;
+	
+	private PortService service;
 
+
+	private BaseServiceImpl baseService;
+	
 	public InsertPortInfoDialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
+		service = new PortServiceImpl();
+		baseService = new BaseServiceImpl(); 
 		initComp();
 	}
 	public InsertPortInfoDialog(BaseInfoUI baseInfoUI,String port_name) {
@@ -300,57 +311,109 @@ public class InsertPortInfoDialog extends BaseInfoDialog implements ActionListen
 		txfPort_area = new JTextField(20);
 		txfArea_code = new JTextField(5);
 	}
+	
+	private void insertPort()
+	{
+		
+		String port_name = txfPort_name.getText();
+		String port_nationality = txfPort_nationailty.getText();
+		String area_code = txfArea_code.getText();
+		
+		if(txfPort_name.getText().length()<=0)
+		{
+			JOptionPane.showMessageDialog(this, "항구명이 없습니다.");
+			return;
+		}
+		if(txfPort_nationailty.getText().length()<=0)
+		{
+			JOptionPane.showMessageDialog(this, "국가명이 없습니다.");
+			return;
+		}
+		if(txfArea_code.getText().length()<=0)
+		{
+			JOptionPane.showMessageDialog(this, "코드번호를 선택하세요");
+			return;
+		}
+		
+		HashMap<String, Object> param = new HashMap<String, Object>();
+		param.put("port_name", port_name);
+		param.put("port_natinoality", port_nationality);
+		param.put("area_code", area_code);
+		
+		try {
+			service.insert(param);
+			
+			this.setVisible(false);
+			this.dispose();
+			this.result=KSGDialog.SUCCESS;
+			JOptionPane.showMessageDialog(this, "항구정보를 추가했습니다.");
+			
+			
+		} catch (AlreadyExistException e) {
+			
+			JOptionPane.showMessageDialog(this, "동일한 항구 정보가 존재합니다.");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "error:"+e.getMessage());
+			e.printStackTrace();
+		}
+
+		
+		
+	}
+	
+	private void insertPortTemp()
+	{
+		if(txfPort_name.getText().length()<=0)
+		{
+			JOptionPane.showMessageDialog(this, "항구명이 없습니다.");
+			return;
+		}
+		if(txfPort_nationailty.getText().length()<=0)
+		{
+			JOptionPane.showMessageDialog(this, "국가명이 없습니다.");
+			return;
+		}
+		if(txfArea_code.getText().length()<=0)
+		{
+			JOptionPane.showMessageDialog(this, "코드번호를 선택하세요");
+			return;
+		}	
+		
+		PortInfo info = new PortInfo();
+		info.setArea_code(txfArea_code.getText());
+		info.setPort_name(txfPort_name.getText());
+		info.setPort_nationality(txfPort_nationailty.getText());
+		info.setPort_area(txfPort_area.getText());
+
+		try {
+
+			baseService.insertPortInfo(info);
+			this.setVisible(false);
+			this.dispose();
+			this.result=KSGDialog.SUCCESS;
+			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "항구를 추가했습니다.");
+			
+		} catch (SQLException e1) {
+			
+			if(e1.getErrorCode()==2627)
+			{
+				JOptionPane.showMessageDialog(this, "항구명이 존재합니다.");
+				
+			}else
+			{
+				JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
+				e1.printStackTrace();
+			}
+		}
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals("확인"))
 		{
 			
-			baseService = new BaseServiceImpl();
-			if(txfPort_name.getText().length()<=0)
-			{
-				JOptionPane.showMessageDialog(this, "항구명이 없습니다.");
-				return;
-			}
-			if(txfPort_nationailty.getText().length()<=0)
-			{
-				JOptionPane.showMessageDialog(this, "국가명이 없습니다.");
-				return;
-			}
-			if(txfArea_code.getText().length()<=0)
-			{
-				JOptionPane.showMessageDialog(this, "코드번호를 선택하세요");
-				return;
-			}
+			insertPort();
 			
-			
-			PortInfo info = new PortInfo();
-			info.setArea_code(txfArea_code.getText());
-			info.setPort_name(txfPort_name.getText());
-			info.setPort_nationality(txfPort_nationailty.getText());
-			info.setPort_area(txfPort_area.getText());
-
-			try {
-
-				baseService.insertPortInfo(info);
-				this.setVisible(false);
-				this.dispose();
-				this.result=KSGDialog.SUCCESS;
-				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "항구를 추가했습니다.");
-				
-			} catch (SQLException e1) {
-				
-				if(e1.getErrorCode()==2627)
-				{
-					JOptionPane.showMessageDialog(this, "항구명이 존재합니다.");
-					
-					
-				}else
-				{
-					JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
-					e1.printStackTrace();
-				}
-			}
 		
 		}else if(command.equals("취소"))
 		{

@@ -7,8 +7,6 @@ import java.util.Map;
 
 public interface CodeDAO {
 	
-	
-	
 	public Object select(Map<String, Object> commandMap) throws SQLException ;
 	
 	public Object selectDetail(Map<String, Object> param) throws SQLException;

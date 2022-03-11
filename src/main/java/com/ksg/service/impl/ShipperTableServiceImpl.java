@@ -2,6 +2,7 @@ package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ksg.dao.TableDAO;
 import com.ksg.dao.impl.ShipperTableDAOImpl;
+import com.ksg.domain.ShippersTable;
 import com.ksg.service.ShipperTableService;
 
 /**
@@ -127,6 +129,24 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 		
 		
 	}
+	
+	@Override
+	public int updateTableDateByTableIDs(List table,String updateDate) throws SQLException {
+		logger.info("update by "+updateDate+", "+table);
+		Iterator<ShippersTable> iter = table.iterator();
+		int count=0;
+		while(iter.hasNext())
+		{
+			ShippersTable item = iter.next();
+			item.setDate_isusse(updateDate);
+			tableDAO.updateTableDateByTableIDs(item);
+			count++;
+		}
+		
+		return count;
+	}
+
+	
 
 	@Override
 	public void insert(Map<String, Object> param) {
@@ -139,4 +159,17 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 		}
 		
 	}
+
+	@Override
+	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+	
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("total", shipperTableDao.selectCount(param));
+		
+		resultMap.put("master",shipperTableDao.selectListByPage(param));
+		
+		return resultMap;
+	}
+
 }

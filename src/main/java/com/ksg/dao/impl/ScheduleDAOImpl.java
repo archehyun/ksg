@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.SchduleDAO;
 import com.ksg.domain.PortInfo;
@@ -59,15 +58,7 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return 0;
 	}
 
-//	public List getPortListBySchedule(String inOutType) throws SQLException {
-//		if(inOutType.equals("I"))
-//		{
-//			return sqlMap.queryForList("Schedule.selectPort_nameListByInbound");
-//		}else
-//		{
-//			return sqlMap.queryForList("Schedule.selectPort_nameListByOutbound");
-//		}		
-//	}	
+
 
 	public List getScheduleListByPort(String port) throws SQLException {
 		return sqlMap.queryForList("Schedule.selectScheduleList",port);
@@ -215,14 +206,11 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return (Integer) sqlMap.queryForObject("Schedule.getScheduleNTopCount",data);
 	}
 
-	public List getOutboundFromPortTSList(String port) throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlMap.queryForList("Schedule.selectOutboundFromPortTSList",port);
-	}
+
 
 	public List<ScheduleData> getConsoleScheduleList(String port,
 			String fromPort) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		ScheduleData data = new ScheduleData();
 		data.setPort(port);
 		data.setFromPort(fromPort);
@@ -254,8 +242,6 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return sqlMap.queryForList("Schedule.selectOutboundAreaList");
 	}
 	
-	
-	
 	@Override
 	public List selectList(HashMap<String, Object> param) throws SQLException{
 		
@@ -267,9 +253,14 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return  (Integer) selectOne("schedule.selectCount", commandMap);
 	}
 	@Override
-	public Object selectListByPage(HashMap<String, Object> param) throws SQLException {
+	public List selectListByPage(HashMap<String, Object> param) throws SQLException {
 		// TODO Auto-generated method stub
 		return selectList("schedule.selectScheduleListByPage", param);
+	}
+	@Override
+	public Object insertSchedule(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return insert("schedule.insertSchedule",param);
 	}
 
 	

@@ -24,5 +24,7 @@ public interface PortDAO {
 
 	public int update(HashMap<String, Object> param) throws SQLException;
 
-	public void isnert(HashMap<String, Object> param) throws SQLException;
+	public Object isnert(HashMap<String, Object> param) throws SQLException;
+	
+	public Object selectListByPage(HashMap<String, Object> param)throws SQLException;
 }

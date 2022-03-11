@@ -27,7 +27,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
 
-public class PnPortExcpetion extends JPanel implements ActionListener,PreferencePn{
+public class PnPortExcpetion extends PnOption{
 
 	/**
 	 * 
@@ -36,13 +36,14 @@ public class PnPortExcpetion extends JPanel implements ActionListener,Preference
 	private JList listKeyword;
 	private BaseService baseService;
 	private Font defaultfont;
-	PreferenceDialog preferenceDialog;
+	
 	DAOManager dao;
-	protected Logger logger = LogManager.getLogger(this.getClass());
+	
 	public PnPortExcpetion(PreferenceDialog preferenceDialog) {
+		super(preferenceDialog);
 		
 		dao = DAOManager.getInstance();
-		this.preferenceDialog=preferenceDialog;
+		
 		this.setName("예외 항구명 지정");
 		listKeyword = new JList();
 		baseService =DAOManager.getInstance().createBaseService();

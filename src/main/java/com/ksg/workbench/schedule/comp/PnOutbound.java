@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,8 +17,24 @@ import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.workbench.common.comp.button.PageAction;
 
 
+/**
+
+  * @FileName : PnOutbound.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 7. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class PnOutbound extends KSGPanel implements ActionListener{
 
 	/**
@@ -37,9 +52,7 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 
 	private JComboBox<KSGTableColumn> cbxNormalSearch;
 
-	private JTextField txfNoramlSearch;
-
-	
+	private JTextField txfNoramlSearch;	
 	
 	public PnOutbound() {
 		
@@ -61,6 +74,7 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 		tableH = new KSGPageTablePanel("스케줄 목록");
 		
 		
+		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
 		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID",100));
 		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",100));
 		tableH.addColumn(new KSGTableColumn("agent", "에이전트",100));
@@ -71,10 +85,11 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 		tableH.addColumn(new KSGTableColumn("DateF", "출발일", 90));
 		tableH.addColumn(new KSGTableColumn("DateT", "도착일", 90));
 		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
-		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
-		
 		
 		tableH.initComp();
+		
+		tableH.addActionListener(new PageAction(tableH,scheduleService));
+		
 		return tableH;
 	}
 	
@@ -86,8 +101,9 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		cbxNormalInOut = new JComboBox();
 		cbxNormalInOut.addItem("전체");
-		cbxNormalInOut.addItem("Inbound");
-		cbxNormalInOut.addItem("Outbound");
+		cbxNormalInOut.addItem("Console");
+		cbxNormalInOut.addItem("Normal");
+		cbxNormalInOut.addItem("Inland");
 
 
 		cbxNormalSearch = new JComboBox<KSGTableColumn>();
@@ -129,15 +145,31 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 		try {
 			param.put("inOutType", "O");
 			
+			
+			String searchOption  = txfNoramlSearch.getText();
+			
+			if(cbxNormalInOut.getSelectedIndex()>0) {
+				param.put("gubun", cbxNormalInOut.getSelectedItem());
+				
+			}
+			
+			if(cbxNormalSearch.getSelectedIndex()>0) {
+				
+				KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
+				if(!searchOption.equals(""))
+				param.put(item.columnField, searchOption);
+			}
+			
+			
 			int page_size = tableH.getPageSize();
+			
 			param.put("PAGE_SIZE", page_size);
+			
 			param.put("PAGE_NO", 1);
 			
 			logger.info("param:"+param);
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectListByPage(param);
-
-			
+			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectListByPage(param);			
 			
 			result.put("PAGE_NO", 1);
 			
@@ -174,59 +206,5 @@ public class PnOutbound extends KSGPanel implements ActionListener{
 		}
 		
 	}
-	class PageAction implements ActionListener
-	{
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			String command = e.getActionCommand();
-			int page = tableH.getPage();
-			
-			int endPage = tableH.getTotalPage();
-
-			int page_size = tableH.getPageSize();
-
-			HashMap<String, Object> commandMap = new HashMap<String, Object>();
-			commandMap.put("PAGE_SIZE", page_size);
-
-			if (command.equals("Next")) {
-
-				if (page < endPage) {
-					commandMap.put("PAGE_NO", page + 1);
-
-				} else {
-					return;
-				}
-
-			} else if (command.equals("Forword")) {
-				if (page > 1) {
-					commandMap.put("PAGE_NO", page - 1);
-
-				} else {
-					return;
-				}
-			} else if (command.equals("GoPage")) {
-				//				commandMap.put("PAGE_NO", page;
-			}
-
-			else if (command.equals("First")) {
-				commandMap.put("PAGE_NO", 1);
-			}
-
-			else if (command.equals("Last")) {
-				commandMap.put("PAGE_NO", endPage);
-			}
-
-			try {
-//				commandMap.put("selectID", selectID);
-				HashMap<String, Object> resultMap = (HashMap<String, Object>) scheduleService.selectListByPage(commandMap);
-				resultMap.put("PAGE_NO", commandMap.get("PAGE_NO"));
-
-				tableH.setResultData(resultMap);
-			} catch (Exception ee) {
-				ee.printStackTrace();
-			}
-		}
-		
-	}
 }

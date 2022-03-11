@@ -75,4 +75,17 @@ public class CompanyServiceImpl implements CompanyService{
 		return 0;
 	}
 
+	@Override
+	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("total", companyDAO.selectCount(param));
+		
+		resultMap.put("master", companyDAO.selectListByPage(param));
+		
+		resultMap.put("PAGE_NO", 1);
+		
+		return resultMap;
+	}
+
 }

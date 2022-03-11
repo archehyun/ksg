@@ -113,6 +113,7 @@ public class AddTableInfoDialog_temp extends KSGDialog implements ActionListener
 	private JPanel pnInland;
 	
 	private JTextField txfInland;
+	private BaseServiceImpl baseService;
 
 
 	public AddTableInfoDialog_temp() {

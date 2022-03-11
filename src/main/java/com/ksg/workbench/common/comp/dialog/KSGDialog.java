@@ -53,7 +53,7 @@ public abstract class KSGDialog extends JDialog implements ComponentListener{
 	
 	public static final int FAILE=1;
 	
-	protected BaseService baseService;
+	//protected BaseService baseService;
 	
 	protected ADVService 	advservice;
 	
@@ -73,7 +73,7 @@ public abstract class KSGDialog extends JDialog implements ComponentListener{
 	public KSGDialog() {
 		super(KSGModelManager.getInstance().frame);
 		
-		baseService = new BaseServiceImpl();
+		//baseService = new BaseServiceImpl();
 	}
 	public KSGDialog(Dialog arg0)
 	{

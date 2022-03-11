@@ -183,23 +183,7 @@ public class PnCodeInboundPortOrder extends PnBase implements ActionListener{
 		}
 	}
 
-	@Override
-	public void updateTable(String query) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public String getOrderBy(TableColumnModel columnModel) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void initTable() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void fnSearch() {

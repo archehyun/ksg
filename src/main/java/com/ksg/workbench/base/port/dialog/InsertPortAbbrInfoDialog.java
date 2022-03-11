@@ -48,6 +48,7 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 	private JTextField txfPortName = new JTextField(20);
 	private JTextField txfPortCode = new JTextField(20);
 	private String port_name,port_abbr="";
+	private BaseServiceImpl baseService;
 
 	public InsertPortAbbrInfoDialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);

@@ -12,6 +12,7 @@ package com.ksg.dao;
 
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -279,6 +280,12 @@ public interface TableDAO {
 	public List selectSystemDataList(String table_name) throws SQLException;
 	
 	public int updateTableDateByTableIDs(ShippersTable table) throws SQLException;
+
+	public Object selectListByPage(HashMap<String, Object> param) throws SQLException;
+
+	public Object selectCount(Map<String, Object> commandMap) throws SQLException;
+
+	Object selectCount(HashMap<String, Object> param) throws SQLException;
 	
 
 }

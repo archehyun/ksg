@@ -30,6 +30,7 @@ import javax.swing.JTextField;
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.code.comp.PnCode;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
@@ -56,12 +57,14 @@ public class InsertConTypeCodeInfodialog extends KSGDialog implements ActionList
 	
 	String code_type;
 	String title;
-	
+	private BaseServiceImpl baseService;
 	
 	public InsertConTypeCodeInfodialog(BaseInfoUI baseInfoUI) 
 	{
 		super();
 		this.baseInfoUI=baseInfoUI;
+		
+		baseService = new BaseServiceImpl();
 		
 	}
 

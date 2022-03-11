@@ -33,6 +33,7 @@ public class PortSearchDialog extends KSGDialog implements ActionListener{
 	
 	public String portName;
 	int x,y,h;
+	private BaseServiceImpl baseService;
 	public PortSearchDialog(Dialog dialog) {	
 		super(dialog);
 		x=dialog.getX()+dialog.getWidth();

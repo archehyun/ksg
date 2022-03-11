@@ -28,8 +28,22 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.KSGHashMap;
 import com.ksg.service.ScheduleService;
-@SuppressWarnings("unchecked")
+/**
 
+  * @FileName : ScheduleServiceImpl.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 8. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
+@SuppressWarnings("unchecked")
 public class ScheduleServiceImpl implements ScheduleService{
 
 	private SchduleDAO schduleDAO;
@@ -62,11 +76,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 		
 	}
 
-//	public List getPortlistBySchedule(String inOutType) throws SQLException
-//	{
-//		return schduleDAO.getPortListBySchedule(inOutType);
-//
-//	}
+
 	public List getScheduleList() throws SQLException
 	{
 		return schduleDAO.getScheduleList();
@@ -119,11 +129,6 @@ public class ScheduleServiceImpl implements ScheduleService{
 	public List getInboundtoPortList(String port) throws SQLException {
 		return schduleDAO.getInboundtoPortList();
 	}
-
-//	public List getInboundScheduleList(String port, String toPort)
-//	throws SQLException {
-//		return schduleDAO.getInboundScheduleList(port, toPort);
-//	}
 
 	public PortInfo getPortInfoByPortAbbr(String port) throws SQLException {
 		return schduleDAO.getPortInfoByPortAbbr(port);
@@ -193,11 +198,6 @@ public class ScheduleServiceImpl implements ScheduleService{
 		return schduleDAO.getScheduleListNTop(data);
 	}
 
-	public List getOutboundFromPortTSList(String port) throws SQLException {
-		// TODO Auto-generated method stub
-		return schduleDAO.getOutboundFromPortTSList(port);
-	}
-
 	public List<ScheduleData> getConsoleScheduleList(String port,
 			String fromPort) throws SQLException {
 		// TODO Auto-generated method stub
@@ -211,13 +211,15 @@ public class ScheduleServiceImpl implements ScheduleService{
 	
 	@Override
 	public List getConsoleScheduleList(ScheduleData data) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return schduleDAO.getConsoleScheduleList(data);
 	}
 	
+	@Deprecated
+	@Override
 	public List<ScheduleData> getInlandScheduleList(ScheduleData data) 
 			throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return schduleDAO.getInlandScheduleList(data);
 	}
 

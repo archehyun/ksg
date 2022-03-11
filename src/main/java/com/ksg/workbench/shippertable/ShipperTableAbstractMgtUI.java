@@ -4,9 +4,17 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.sql.SQLException;
 
-import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.AbstractMgtUI;
 
-public abstract class ShipperTableAbstractMgtUI extends KSGPanel implements ComponentListener{
+public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements ComponentListener{
+	
+	
+	protected boolean isShowData=true;
+	
+	public ShipperTableAbstractMgtUI()
+	{
+		super();
+	}
 	
 	public abstract void showTableList() throws SQLException;
 	

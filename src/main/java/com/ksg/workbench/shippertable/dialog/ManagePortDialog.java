@@ -51,8 +51,6 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.dialog.PortSearchDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
 /**
  * 
@@ -120,6 +118,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	private JTextField 	txflblPortName;
 	
 	private JTextField 	txfUpdatePortName;
+	
+	private BaseServiceImpl baseService;
 	/**
 	 * @param table_id 테이블 아이디
 	 * @param baseUI
@@ -127,6 +127,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	public ManagePortDialog(String table_id,ShipperTableAbstractMgtUI baseUI) 
 	{	
 		super();
+		
+		baseService = new BaseServiceImpl();
 
 		this.base =baseUI;
 
@@ -229,6 +231,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		txfUpdatePortName.addKeyListener(new KeyAdapter(){
 
+
+			
 
 			public void keyReleased(KeyEvent arg0) {
 				super.keyReleased(arg0);

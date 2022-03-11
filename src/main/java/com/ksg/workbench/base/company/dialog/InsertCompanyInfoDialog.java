@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Company;
 import com.ksg.service.CompanyService;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.base.BaseInfoUI;
@@ -67,10 +68,10 @@ public class InsertCompanyInfoDialog extends BaseInfoDialog implements ActionLis
 	private String agent_abbr;
 	
 	CompanyService service;
-
+	private BaseServiceImpl baseService;
 	public InsertCompanyInfoDialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
-		
+		baseService = new BaseServiceImpl();
 		service = new CompanyServiceImpl();
 		title = "선사 정보 추가";
 	}

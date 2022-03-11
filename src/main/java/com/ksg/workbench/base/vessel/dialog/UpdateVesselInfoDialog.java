@@ -40,6 +40,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.SearchCompanyInfoDialog;
@@ -76,6 +77,7 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 	
 	VesselService service;
 	private JCheckBox cbxMMSICheck;
+	private BaseServiceImpl baseService;
 	/**
 	 * @deprecated
 	 * @param baseInfoUI
@@ -86,6 +88,7 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		logger.info("»ý¼º");
 		this.baseInfoUI=baseInfoUI;
 		this.setTitle(INSERT_TITLE);
+		baseService = new BaseServiceImpl(); 
 	}
 	/**
 	 * @deprecated

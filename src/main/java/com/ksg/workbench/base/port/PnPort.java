@@ -50,7 +50,9 @@ import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.comp.PnBase;
 import com.ksg.workbench.base.port.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.workbench.base.port.dialog.UpdatePortInfoDialog;
+import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.schedule.comp.KSGPageTablePanel;
 
 
 /**
@@ -79,13 +81,11 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private JTextField txfSearch;
 	
-	
-	
 	private PortServiceImpl portService = new PortServiceImpl();
 	
 	private AreaServiceImpl areaService = new AreaServiceImpl();
 	
-	private KSGTablePanel tableH;
+	private KSGPageTablePanel tableH;
 	
 	private KSGAbstractTable tableD;
 
@@ -104,6 +104,8 @@ public class PnPort extends PnBase implements ActionListener{
 		this.addComponentListener(this);
 		
 		this.add(buildCenter());
+		
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
 	}
 	/**
@@ -119,8 +121,7 @@ public class PnPort extends PnBase implements ActionListener{
 		lblTable.setFont(new Font("돋움",0,16));
 		lblTable.setIcon(new ImageIcon("images/db_table.png"));
 		JLabel lbl = new JLabel("필드명 : ");
-		cbxField = new JComboBox();
-		//cbxField.addItem("선택");
+		cbxField = new JComboBox();		
 		cbxField.addItem("항구명");
 		cbxField.addItem("나라");
 
@@ -205,21 +206,20 @@ public class PnPort extends PnBase implements ActionListener{
 	{
 		KSGPanel pnButtom = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		KSGPanel pnButtomRight = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		JButton butDel = new JButton("삭제");
-
-		JButton butNew = new JButton("신규");
-		JButton butNewAbbr = new JButton("약어 등록");
-		JButton butDelAbbr = new JButton("약어 삭제");
+		
+		JButton butNewAbbr = new JButton("추가");
+		butNewAbbr.setActionCommand("약어 등록");
+		JButton butDelAbbr = new JButton("삭제");
+		butDelAbbr.setActionCommand("약어 삭제");
 		pnButtomRight.setBorder(BorderFactory.createEtchedBorder());		
-		butDel.addActionListener(this);
-		butNew.addActionListener(this);
+		
 		butNewAbbr.addActionListener(this);
 		butDelAbbr.addActionListener(this);
 
-		pnButtomRight.add(butNew);
-		pnButtomRight.add(butNewAbbr);
-		pnButtomRight.add(butDel);
-		pnButtomRight.add(butDelAbbr);
+		
+		//pnButtomRight.add(butNewAbbr);
+		
+		//pnButtomRight.add(butDelAbbr);
 		pnButtom.add(pnButtomRight);
 		return pnButtom;
 	}
@@ -261,11 +261,26 @@ public class PnPort extends PnBase implements ActionListener{
 		
 		pnMain.setPreferredSize(new Dimension(400, 0));
 		
-		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnTitle = new KSGPanel(new BorderLayout());
 		
 		pnTitle.setBackground(Color.WHITE);
 		
-		pnTitle.add(new BoldLabel("항구상세정보"));
+		pnTitle.add(new BoldLabel("항구상세정보"),BorderLayout.WEST);
+		
+		
+		KSGPanel pnControl = new KSGPanel(new FlowLayout());
+		JButton butNewAbbr = new JButton("추가");
+		butNewAbbr.setActionCommand("약어 등록");
+		JButton butDelAbbr = new JButton("삭제");
+		butDelAbbr.setActionCommand("약어 삭제");
+				
+		pnControl.add(butNewAbbr);
+		pnControl.add(butDelAbbr);
+		
+		butNewAbbr.addActionListener(this);
+		butDelAbbr.addActionListener(this);
+		
+		pnTitle.add(pnControl,BorderLayout.EAST);
 		
 		KSGPanel pnSubMain = new KSGPanel(new BorderLayout(5,5));
 		
@@ -302,7 +317,7 @@ public class PnPort extends PnBase implements ActionListener{
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
-		tableH = new KSGTablePanel("항구목록");
+		tableH = new KSGPageTablePanel("항구목록");
 		
 		tableH.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
@@ -380,14 +395,17 @@ public class PnPort extends PnBase implements ActionListener{
 		
 		tableH.setColumnName(columns);
 		tableH.initComp();
+		tableH.addPageActionListener(new PageAction(tableH, portService));
+		tableH.setShowControl(true);
 		
 		tableH.addMouseListener(new TableSelectListner());
+		
+		tableH.addContorlListener(this);
 		
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 		
 		pnMain.add(pnMainCenter);
-		
-		pnMain.add(buildButton(),BorderLayout.SOUTH);
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 
 		return pnMain;
 
@@ -412,7 +430,7 @@ public class PnPort extends PnBase implements ActionListener{
 			
 			
 		}
-		else if(command.equals("신규"))
+		else if(command.equals(KSGTablePanel.INSERT))
 		{
 			KSGDialog dialog = new UpdatePortInfoDialog(UpdatePortInfoDialog.INSERT);
 			dialog.createAndUpdateUI();
@@ -443,7 +461,7 @@ public class PnPort extends PnBase implements ActionListener{
 				}
 			}
 		}
-		else if(command.equals("삭제"))
+		else if(command.equals(KSGTablePanel.DELETE))
 		{
 			int row=tableH.getSelectedRow();
 			if(row<0)
@@ -567,16 +585,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 	}
 	
-	@Override
-	public void initTable() {
 
-		
-	}
-	@Override
-	public String getOrderBy(TableColumnModel columnModel) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	@Override
 	public void fnSearch() {
 		HashMap<String, Object> param = new HashMap<String, Object>();
@@ -609,8 +618,20 @@ public class PnPort extends PnBase implements ActionListener{
 		
 		
 		try {
+		
+			
+
+			int page_size = tableH.getPageSize();
+			
+			param.put("PAGE_SIZE", page_size);
+			
+			param.put("PAGE_NO", 1);
+			
 			logger.info("param:"+param);
-			HashMap<String, Object> result = (HashMap<String, Object>) portService.selectList(param);
+			
+			HashMap<String, Object> result = (HashMap<String, Object>) portService.selectListByPage(param);
+			
+			result.put("PAGE_NO", 1);
 			
 			tableH.setResultData(result);
 			
@@ -638,7 +659,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		fnSearch();
+		if(isShowData) fnSearch();
 		
 	}
 

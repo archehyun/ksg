@@ -248,6 +248,10 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 	
 	private ShipperTableService shipperTableService = new ShipperTableServiceImpl();
 
+	private ADVServiceImpl _advService;
+
+	private TableServiceImpl tableService;
+
 	public ShipperTableMgtUI() 
 	{
 		try{
@@ -738,7 +742,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 
 		keyAdapter = new SearchOptionKeyAdapter();
 
-		this.manager.addObservers(this);
+		
 
 		popupMenu = createPopupMenu();
 
@@ -768,7 +772,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 		this.setLayout(new BorderLayout());
 		this.add(buildCenter(),BorderLayout.CENTER);	
 		this.add(pnTitleMain,BorderLayout.NORTH);
-		this.add(this.createMargin(10),BorderLayout.WEST);
+		
 		logger.debug("init searchUI end");
 
 
@@ -1077,8 +1081,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 
 		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout( new BorderLayout());
-		pnMain.add(this.createMargin(),BorderLayout.WEST);
-		pnMain.add(this.createMargin(),BorderLayout.EAST);
+		
 		pnMain.add(pnSearchInfoMain,BorderLayout.CENTER);
 		return pnMain;
 	}

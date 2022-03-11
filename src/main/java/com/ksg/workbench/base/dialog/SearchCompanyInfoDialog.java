@@ -15,7 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -40,7 +39,7 @@ public class SearchCompanyInfoDialog extends KSGDialog {
 	private static final long serialVersionUID = 1L;
 	
 	JTextField txfCompanyName;
-	
+	private BaseServiceImpl baseService;
 	public SearchCompanyInfoDialog(JDialog dialog,JTextField textField) {
 		super(dialog);
 		

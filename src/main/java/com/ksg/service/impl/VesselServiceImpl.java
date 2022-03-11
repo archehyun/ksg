@@ -108,4 +108,16 @@ public class VesselServiceImpl implements VesselService{
 		
 	}
 
+	@Override
+	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("total", vesselDAO.selectCount(param));
+		
+		resultMap.put("master", vesselDAO.selectListByPage(param));
+		
+		resultMap.put("PAGE_NO", 1);
+		
+		return resultMap;
+	}
 }

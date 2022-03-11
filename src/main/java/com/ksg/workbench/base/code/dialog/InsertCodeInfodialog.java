@@ -58,6 +58,7 @@ public class InsertCodeInfodialog extends BaseInfoDialog implements ActionListen
 	
 	String code_type;
 	String title;
+	private BaseServiceImpl baseService;
 	
 	
 	public InsertCodeInfodialog(BaseInfoUI baseInfoUI) 

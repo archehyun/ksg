@@ -39,7 +39,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -65,16 +64,17 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.print.logic.quark.v1.XTGPage;
+import com.ksg.service.ADVService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.view.comp.tree.KSGTree;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;
+import com.ksg.workbench.common.comp.AbstractMgtUI;
 
-public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
+public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObserver{
 	/**
 	 * 
 	 */
@@ -91,7 +91,7 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 	private String selectCompany;
 	private JTextField _txfSearchByCompany;
 	private static KSGTreeDefault tree2;
-	private JPanel _pnADVTableList;
+	private KSGPanel _pnADVTableList;
 	private boolean 			isPageSearch=true;
 	private JTree				_treeMenu;
 	private static final int _LEFT_SIZE = 250;
@@ -99,14 +99,20 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 	
 	int inD_flag=1;
 	private TableService tableService;
+	private ADVService _advService;
 	
 	
 	public PrintADVUI() {
+		
+		super();
 		this.setName("PrintADVUI");
 		manager.addObservers(this);
 		selectDate = KSGDateUtil.format(new Date());
 		_advService =daomanager.createADVService();
 		tableService = new TableServiceImpl();
+		
+		this.title = "광고정보 출력";
+		this.borderColor = new Color(107,138,15);
 		createAndUpdateUI();
 	}
 
@@ -116,46 +122,47 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 		dataF = new JTextArea(15,15);
 		dataE = new JTextArea();
 
-		JPanel pnCenter = buildCenterPN();
+		KSGPanel pnCenter = buildCenterPN();
 
-		JPanel pnLeftMenu = buildLeftMenu();		
+		KSGPanel pnLeftMenu = buildLeftMenu();		
 
-		JPanel pnInfo = buildInfoPN();
+		KSGPanel pnInfo = buildNorthPn();
 
 		this.add(pnInfo,BorderLayout.NORTH);
 		this.add(pnCenter,BorderLayout.CENTER);
 		this.add(pnLeftMenu,BorderLayout.WEST);
+		
 
 	}
 
-	private JPanel buildInfoPN() {
-		JPanel pnInfo = new JPanel();
-		GridLayout gl_pnInfo = new GridLayout(1,0);
-		pnInfo.setLayout(gl_pnInfo);
-		JPanel pnSub2 = new JPanel();
-		pnSub2.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JLabel label = new JLabel("출력 날짜 : ");
-		label.setFont(defaultFont);
-		pnSub2.add(label);
-		lblDate = new JLabel(KSGDateUtil.format(new Date()));
-		lblDate.setFont(defaultFont);
-		pnSub2.add(lblDate);
-		JLabel lblTitle = new JLabel("광고정보 출력");
-		lblTitle.setForeground(new Color(61,86,113));
-		Font titleFont = new Font("명조",Font.BOLD,18);		
+//	private KSGPanel buildInfoPN() {
+//		KSGPanel pnInfo = new KSGPanel();
+//		GridLayout gl_pnInfo = new GridLayout(1,0);
+//		pnInfo.setLayout(gl_pnInfo);
+//		KSGPanel pnSub2 = new KSGPanel();
+//		pnSub2.setLayout(new FlowLayout(FlowLayout.RIGHT));
+//		JLabel label = new JLabel("출력 날짜 : ");
+//		label.setFont(defaultFont);
+//		pnSub2.add(label);
+//		lblDate = new JLabel(KSGDateUtil.format(new Date()));
+//		lblDate.setFont(defaultFont);
+//		pnSub2.add(lblDate);
+//		JLabel lblTitle = new JLabel("광고정보 출력");
+//		lblTitle.setForeground(new Color(61,86,113));
+//		Font titleFont = new Font("명조",Font.BOLD,18);		
+//
+//		lblTitle.setFont(titleFont);
+//
+//		pnInfo.setBorder(new CurvedBorder(8,new Color(107,138,15)));
+//
+//		pnInfo.add(lblTitle);
+//		pnInfo.add(pnSub2);
+//		return pnInfo;
+//	}
 
-		lblTitle.setFont(titleFont);
-
-		pnInfo.setBorder(new CurvedBorder(8,new Color(107,138,15)));
-
-		pnInfo.add(lblTitle);
-		pnInfo.add(pnSub2);
-		return pnInfo;
-	}
-
-	private JPanel buildCenterPN() {
-		JPanel pnCenter = new JPanel();
-		JPanel pnCenterControl = new JPanel(new BorderLayout());
+	private KSGPanel buildCenterPN() {
+		KSGPanel pnCenter = new KSGPanel();
+		KSGPanel pnCenterControl = new KSGPanel(new BorderLayout());
 
 /*		JButton butSelect = new JButton("선사선택");
 		butSelect.setActionCommand("선사선택");
@@ -166,13 +173,13 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 		cbxAgent = new JCheckBox("동일 Agent 선택");
 		pnCenterControl.add(cbxAgent,BorderLayout.WEST);
 		
-		JPanel left = new JPanel();
+		KSGPanel left = new KSGPanel();
 		left.setPreferredSize(new Dimension(15,0));
-		JPanel right = new JPanel();
+		KSGPanel right = new KSGPanel();
 		FlowLayout flowLayout = (FlowLayout) right.getLayout();
 		right.setPreferredSize(new Dimension(15,0));
 
-		_pnADVTableList = new JPanel();
+		_pnADVTableList = new KSGPanel();
 		_pnADVTableList.setLayout( new BorderLayout());
 
 		lblMessage = new JLabel("광고정보가 없습니다.");
@@ -180,16 +187,16 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 		lblCompany.setIcon(new ImageIcon("images/trans.png"));
 		_pnADVTableList.add(new JScrollPane(dataF));
 
-		JPanel pnS = new JPanel();
+		KSGPanel pnS = new KSGPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
+		KSGPanel pnS1 = new KSGPanel();
 		pnS1.setPreferredSize(new Dimension(0,15));
 		Box info = new Box(BoxLayout.Y_AXIS);
 		info.add(pnS);
 		info.add(pnS1);
 
-		JPanel pnInfo = new JPanel();
+		KSGPanel pnInfo = new KSGPanel();
 		BorderLayout bl_pnInfo = new BorderLayout();
 		pnInfo.setLayout( bl_pnInfo);
 		pnInfo.add(lblCompany,BorderLayout.WEST);
@@ -230,7 +237,7 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 					}
 				}
 			}});
-		JPanel pnSub = new JPanel();
+		KSGPanel pnSub = new KSGPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) pnSub.getLayout();
 		pnSub.add(txfDate);
 		pnInfo.add(pnSub,BorderLayout.EAST);
@@ -295,7 +302,7 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 				butExport.setActionCommand("출력하기");
 				butExport.addActionListener(this);
 		pnInfo.add(info,BorderLayout.SOUTH);
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout( new BorderLayout());
 		pnMain.add(pnInfo,BorderLayout.NORTH);
 		pnMain.add(_pnADVTableList,BorderLayout.CENTER);
@@ -337,16 +344,16 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 
 	}
 
-	private JPanel buildLeftMenu() 
+	private KSGPanel buildLeftMenu() 
 	{
-		JPanel pnMain = new JPanel();
-		JPanel pnSearch =  new JPanel();
+		KSGPanel pnMain = new KSGPanel();
+		KSGPanel pnSearch =  new KSGPanel();
 		pnSearch.setLayout( new BorderLayout());
 
 		_treeMenu = createTreeMenu();		
 		_txfSearchByCompany = new JTextField(8);
 
-		JPanel pnSearchByCompany = new JPanel();
+		KSGPanel pnSearchByCompany = new KSGPanel();
 		JLabel lblCompany = new JLabel("선사 검색");
 		lblCompany.setFont(defaultFont);
 		lblCompany.setPreferredSize( new Dimension(60,15));
@@ -415,7 +422,7 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 
 		pnMain.add(new JScrollPane(_treeMenu),BorderLayout.CENTER);
 		pnMain.setPreferredSize(new Dimension(_LEFT_SIZE,100));
-		JPanel panel = new JPanel();
+		KSGPanel panel = new KSGPanel();
 		ButtonGroup group = new ButtonGroup();
 
 
@@ -468,7 +475,7 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 			panel.add(butDelTable);
 
 
-			JPanel pnTitle = new JPanel();
+			KSGPanel pnTitle = new KSGPanel();
 //			pnTitle.setBackground(new Color(88,141,250));
 			pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 			JLabel label = new JLabel("등록된 선사");
@@ -480,7 +487,7 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 			pnSearch.add(pnSearchByCompany,BorderLayout.CENTER);
 
 			//pnSearch.add(pnSearchByPage);
-			JPanel pnTableMainLeft = new JPanel();
+			KSGPanel pnTableMainLeft = new KSGPanel();
 			pnTableMainLeft.setPreferredSize(new Dimension(15,0));
 			pnMain.add(pnTableMainLeft,BorderLayout.WEST);
 			pnMain.add(pnSearch,BorderLayout.NORTH);
@@ -611,8 +618,8 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 		}
 		return tree2;
 	}
-	private JPanel createLeftMenuPn2() {
-		JPanel pnMain = new JPanel();
+	private KSGPanel createLeftMenuPn2() {
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 		pnMain.setPreferredSize(new Dimension(500,0));
 		tblTableList = new JTable();
@@ -638,28 +645,28 @@ public class PrintADVUI extends KSGPanel implements ActionListener, KSGObserver{
 			}
 		});
 		tblSubTableList = new JTable();
-		JPanel pnSubMain = new JPanel();
+		KSGPanel pnSubMain = new KSGPanel();
 		pnSubMain.setLayout(new GridLayout(1,0));
-		JPanel pnTableList = new JPanel();
+		KSGPanel pnTableList = new KSGPanel();
 		pnTableList.setLayout(new BorderLayout());
 		JScrollPane scrollPane = new JScrollPane(tblTableList);
 		pnTableList.add(scrollPane,BorderLayout.CENTER);
 		pnTableList.add(new JLabel("입력정보"),BorderLayout.NORTH);	
 
 
-		JPanel pnSub1 =new JPanel();
+		KSGPanel pnSub1 =new KSGPanel();
 		pnSub1.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnSub1.add(new JLabel("날짜 입력"));
 
 		pnTableList.add(pnSub1,BorderLayout.SOUTH);
 
 
-		JPanel pnSubTableList = new JPanel();
+		KSGPanel pnSubTableList = new KSGPanel();
 		pnSubTableList.setLayout(new BorderLayout());
 		JScrollPane scrollPane1 = new JScrollPane(tblSubTableList);
 		pnSubTableList.add(scrollPane1,BorderLayout.CENTER);
 		pnSubTableList.add(new JLabel("테이블정보"),BorderLayout.NORTH);
-		JPanel pnSubTableListControl = new JPanel();
+		KSGPanel pnSubTableListControl = new KSGPanel();
 		pnSubTableListControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		JButton button = new JButton("출력하기",new ImageIcon("images/textOutput.gif"));
 

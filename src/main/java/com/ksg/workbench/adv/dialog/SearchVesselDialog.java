@@ -29,6 +29,7 @@ import javax.swing.event.ChangeListener;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
+import com.ksg.service.BaseService;
 import com.ksg.workbench.adv.comp.VesselInfo;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -51,6 +52,7 @@ public class SearchVesselDialog extends KSGDialog {
 	private JButton butAdd;
 	private JButton pnAddVesselAbbr;
 	private JDialog addDialog;
+	private BaseService baseService;
 
 
 	public SearchVesselDialog(String vesselName) {

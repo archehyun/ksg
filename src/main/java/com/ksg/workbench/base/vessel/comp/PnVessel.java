@@ -30,7 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -44,7 +44,6 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
 
@@ -56,13 +55,11 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.view.comp.KSGCompboBox2;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.adv.comp.SimpleFileFilter;
 import com.ksg.workbench.base.BaseInfoUI;
@@ -71,7 +68,9 @@ import com.ksg.workbench.base.vessel.dialog.InsertVesselAbbrInfoDialog;
 import com.ksg.workbench.base.vessel.dialog.InsertVesselInfoDialog;
 import com.ksg.workbench.base.vessel.dialog.UpdateVesselInfoDialog;
 import com.ksg.workbench.base.vessel.dialog.VesselImportDialog;
+import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.schedule.comp.KSGPageTablePanel;
 
 
 /**
@@ -117,7 +116,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	private JTextField txfSearch;
 
-	private JLabel lblTable,lblTotal;	
+	private JLabel lblTable;	
 
 	private JComboBox<KSGTableColumn> cbxField;
 
@@ -125,7 +124,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	private JComboBox cbxUse;// 사용 유무 선택
 
-	KSGTablePanel tableH;
+	KSGPageTablePanel tableH;
 
 	SelectionListner selectionListner = new SelectionListner();
 
@@ -146,13 +145,14 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		super(baseInfoUI);
 		this.addComponentListener(this);
 		this.add(buildCenter());
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 	}
 
 	private JComponent buildCenter()
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
-		tableH = new KSGTablePanel("선박목록");
+		tableH = new KSGPageTablePanel("선박목록");
 
 		KSGTableColumn columns[] = new KSGTableColumn[6];
 
@@ -206,6 +206,11 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		tableH.initComp();
 
 		tableH.addMouseListener(new TableSelectListner());
+		
+		tableH.setShowControl(true);
+		tableH.addContorlListener(this);
+		tableH.addPageActionListener(new PageAction(tableH, vesselService));
+		
 
 		tableH.getSelectionModel().addListSelectionListener(selectionListner);
 
@@ -217,9 +222,9 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 		pnMain.add(pnMainCenter);
 
-		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
+		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);	
 
-		pnMain.add(buildButton(),BorderLayout.SOUTH);
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 
 
 		return pnMain;
@@ -231,7 +236,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	 */
 	private JComponent buildSearchPanel() {
 		KSGPanel pnSearch = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		lblTotal = new JLabel();
+		
 		lblTable = new JLabel("선박 정보");
 		lblTable.setSize(200, 25);
 		lblTable.setFont(new Font("돋움",0,16));
@@ -246,7 +251,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 		txfSearch = new JTextField(15);		
 
-		JLabel label = new JLabel("개 항목");
+		
 		JButton butUpSearch = new JButton(STRING_SEARCH);
 		butUpSearch.addActionListener(this);
 
@@ -277,8 +282,8 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		pnSearchAndCount.add(pnSearch);
 
 		KSGPanel pnCountInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		pnCountInfo.add(lblTotal);
-		pnCountInfo.add(label);
+		
+		
 		pnSearchAndCount.add(pnCountInfo);
 
 		KSGPanel pnCount = new KSGPanel();
@@ -307,44 +312,38 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	 */
 	private JComponent buildButton()
 	{
-		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		JPanel pnMain = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		KSGPanel pnButtomRight = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton butDel = new JButton(STRING_DELETE);
 
-		JButton butNew = new JButton(STRING_INSERT);
+		
 		JButton butNewAbbr = new JButton("약어등록");
 		JButton butExport = new JButton(STRING_EXPORT);
 		JButton butImport = new JButton(STRING_IMPORT);
 		JButton butDelNewAbbr = new JButton("약어삭제");
 		JButton butVesselDel = new JButton(STRING_ALL_DELETE);
-		pnButtomRight.setBorder(BorderFactory.createEtchedBorder());		
+				
 		butDel.addActionListener(this);
-		butNew.addActionListener(this);
-		butDelNewAbbr.addActionListener(this);
-		butNewAbbr.addActionListener(this);
+		
+		
 		butExport.addActionListener(this);
 		butImport.addActionListener(this);
 		butVesselDel.addActionListener(this);
 
-		pnButtomRight.add(butNew);
-		pnButtomRight.add(butNewAbbr);
-		pnButtomRight.add(butDel);
-		pnButtomRight.add(butDelNewAbbr);
-		pnButtomRight.add(butExport);
-		pnButtomRight.add(butImport);
-		pnButtomRight.add(butVesselDel);
-		pnMain.add(pnButtomRight);
+		
+		//pnButtomRight.add(butNewAbbr);
+		//pnButtomRight.add(butDel);
+		//pnButtomRight.add(butDelNewAbbr);
+		pnMain.add(butExport);
+		pnMain.add(butImport);
+		pnMain.add(butVesselDel);
+		
 		return pnMain;
 	}
 
 
 
-	@Override
-	public void updateTable(String query) {
-
-
-
-	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -353,11 +352,11 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		{
 			fnSearch();
 		}
-		else if(command.equals(STRING_DELETE))
+		else if(command.equals(KSGPageTablePanel.DELETE))
 		{
 			deleteVesselAction();
 		}
-		else if(command.equals(STRING_INSERT))
+		else if(command.equals(KSGPageTablePanel.INSERT))
 		{
 			insertAction();
 		}
@@ -586,12 +585,25 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 		}
 		
-		logger.info("param:{}",param);
+		
 
 		try {
-			HashMap<String, Object> result = (HashMap<String, Object>) vesselService.selectList(param);
+			
+
+			int page_size = tableH.getPageSize();
+			
+			param.put("PAGE_SIZE", page_size);
+			
+			param.put("PAGE_NO", 1);
+			
+			logger.info("param:{}",param);
+			
+			
+			HashMap<String, Object> result = (HashMap<String, Object>) vesselService.selectListByPage(param);			
+			
 
 			tableH.setResultData(result);
+			
 
 			List master = (List) result.get("master");
 
@@ -632,11 +644,26 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 		pnMain.setPreferredSize(new Dimension(400, 0));
 
-		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnTitle = new KSGPanel(new BorderLayout());
 
 		pnTitle.setBackground(Color.WHITE);
 
-		pnTitle.add(new BoldLabel("선박상세정보"));
+		pnTitle.add(new BoldLabel("선박상세정보"),BorderLayout.WEST);
+		
+		KSGPanel pnControl = new KSGPanel(new FlowLayout());
+		
+		JButton butNewAbbr = new JButton("추가");
+		butNewAbbr.setActionCommand("약어등록");
+		JButton butDelAbbr = new JButton("삭제");
+		butDelAbbr.setActionCommand("약어삭제");
+				
+		pnControl.add(butNewAbbr);
+		pnControl.add(butDelAbbr);
+		
+		butNewAbbr.addActionListener(this);
+		butDelAbbr.addActionListener(this);
+		
+		pnTitle.add(pnControl,BorderLayout.EAST);
 
 		KSGPanel pnSubMain = new KSGPanel(new BorderLayout(5,5));
 
@@ -667,6 +694,8 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 		pnMain.add(pnTitle,BorderLayout.NORTH);
 		pnMain.add(pnSubMain);
+		
+		pnMain.add(buildButton(),BorderLayout.SOUTH);
 		tableD.getParent().setBackground(Color.white);
 
 		return pnMain;
@@ -721,13 +750,6 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		}
 	}
 
-	@Override
-	public String getOrderBy(TableColumnModel columnModel) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void initTable() {
 
 		model = new KSGTableModel();
@@ -777,11 +799,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	}
 
-	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
@@ -815,14 +833,8 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 			ee.printStackTrace();
 		}
 		
-		
+		if(isShowData)
 		fnSearch();
-	}
-
-	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	class SelectionListner implements ListSelectionListener

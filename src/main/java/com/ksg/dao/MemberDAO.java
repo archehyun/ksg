@@ -22,6 +22,7 @@ import com.ksg.domain.Member;
  *
  */
 public interface MemberDAO {
+	
 	public Member selectMember(String member_id) throws SQLException;	
 	
 	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException;
@@ -35,5 +36,7 @@ public interface MemberDAO {
 	public Object insert(HashMap<String, Object> param) throws SQLException;
 	
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
+
+	public Object selectListByPage(HashMap<String, Object> param)throws SQLException;
 
 }

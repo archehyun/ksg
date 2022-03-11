@@ -50,6 +50,7 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 	private String table_id;
 	Font defaultfont;
 	private JTextField txfPort;
+	private BaseServiceImpl baseService;
 
 	public ADDADVDialog(String table_id,int page, int t_index,String company_abbr) {
 		super();

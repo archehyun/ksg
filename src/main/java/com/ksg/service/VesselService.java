@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface VesselService {
+public interface VesselService extends PageService{
 	
 	public HashMap<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
 	

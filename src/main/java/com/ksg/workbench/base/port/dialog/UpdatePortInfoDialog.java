@@ -44,7 +44,7 @@ import com.ksg.common.model.KSGModelManager;
 
 import com.ksg.domain.AreaInfo;
 import com.ksg.service.PortService;
-
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -79,16 +79,20 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 	
 	PortService portService;
 
+	private BaseServiceImpl baseService;
+
 	public UpdatePortInfoDialog(int type)
 	{
 		super();
 		portService = new PortServiceImpl();
+		baseService = new BaseServiceImpl(); 
 		this.type = type;
 	}
 	
 	public UpdatePortInfoDialog(int type, HashMap<String, Object> param) {
 		this(type);
 		this.param = param;
+		
 		
 	}
 	public void createAndUpdateUI() {
@@ -419,6 +423,9 @@ public class UpdatePortInfoDialog extends KSGDialog implements ActionListener
 					JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
 					e1.printStackTrace();
 				}
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			
 			

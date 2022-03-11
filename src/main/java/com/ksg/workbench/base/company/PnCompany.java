@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -43,18 +42,20 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.domain.Company;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.comp.PnBase;
 import com.ksg.workbench.base.company.dialog.UpdateCompanyInfoDialog;
+import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.schedule.comp.KSGPageTablePanel;
 
 
 /**
@@ -70,7 +71,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
  * @프로그램 설명 : 선사 정보 관리
 
  */
-public class PnCompany extends PnBase implements ActionListener, ComponentListener{
+public class PnCompany extends PnBase implements ActionListener{
 
 	/**
 	 * 
@@ -84,11 +85,11 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 	private JTextField txfSearch;
 
-	private JLabel lblTable,lblTotal;
+	private JLabel lblTable;
+	
+	protected BaseDAOManager baseDaoService;
 
-	//CompanyTable tblCompanyTable;
-
-	KSGTablePanel tableH;
+	private KSGPageTablePanel tableH;
 
 	private String[] fieldName = {"company_name","company_abbr","agent_name", "agent_abbr","contents"};
 
@@ -104,48 +105,11 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		super(baseInfoUI);		
 		this.addComponentListener(this);
 		this.add(buildCenter());
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
 
 	}
-	public String getOrderBy(TableColumnModel columnModel)	
-	{
-//		/*
-//		 * 1. 현재 칼럼 목록 순서를 이용해서 order by 순서를 생성하고 
-//		 * 2. 조회결과를 위한 현재 칼럼 목록 순서를 저장함
-//		 */
-//		tblCompanyTable.currentColumnNameList.clear();// 현재 칼럼 순서 초기화
-//
-//		StringBuffer buffer = new StringBuffer();
-//
-//		int col=tblCompanyTable.getColumnModel().getColumnCount();
-//
-//		ArrayList<String> orderbyList = new ArrayList<String>();
-//		for(int i=0;i<col;i++)
-//		{
-//			String headerValue =(String) tblCompanyTable.getColumnModel().getColumn(i).getHeaderValue();
-//			tblCompanyTable.currentColumnNameList.add(headerValue);//현재 칼럼 순서 생성
-//			String row=tblCompanyTable.arrangeMap.get(headerValue);
-//
-//			// 데이터 타입이 text인 것은 정렬에 포함할수 없음
-//			if(!row.equals("contents"))
-//			{	
-//				orderbyList.add(row);
-//			}
-//		}
-//
-//		//질의를 위한 'order by' 생성
-//		for(int i=0;i<orderbyList.size();i++)
-//		{
-//			buffer.append(orderbyList.get(i));
-//			if(i<(orderbyList.size()-1))
-//				buffer.append(",");
-//		}
 
-
-		//return buffer.toString();
-		return null;
-
-	}
 
 	private JComponent buildCenter()
 	{
@@ -184,19 +148,24 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		columns[4].size = 300;
 		
 		
-		tableH = new KSGTablePanel("선사목록");
+		tableH = new KSGPageTablePanel("선사목록");
 
 		tableH.addMouseListener(new TableSelectListner());
+		
+		tableH.setShowControl(true);
+		tableH.addContorlListener(this);
 
 		pnMain.add(tableH);
 
 		tableH.setColumnName(columns);
 		tableH.initComp();
 		
+		tableH.addActionListener(new PageAction(tableH, companyService));
+		
 
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 
-		pnMain.add(buildButton(),BorderLayout.SOUTH);
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 		
 		logger.debug("화면 초기화 종료");
 		return pnMain;
@@ -208,7 +177,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 	private KSGPanel buildSearchPanel() {
 		KSGPanel pnSearch = new KSGPanel();
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		lblTotal = new JLabel();
+		
 		lblTable = new JLabel("선사 정보");
 		lblTable.setSize(200, 25);
 		lblTable.setFont(new Font("돋움",0,16));
@@ -232,7 +201,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 				}
 			}
 		});
-		JLabel label = new JLabel("개 항목");
+		
 		
 		JButton butUpSearch = new JButton("검색");
 		
@@ -247,10 +216,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		Box pnSearchAndCount = Box.createVerticalBox();
 		pnSearchAndCount.add(pnSearch);
 
-		KSGPanel pnCountInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		pnCountInfo.add(lblTotal);
-		pnCountInfo.add(label);
-		pnSearchAndCount.add(pnCountInfo);
+		
 
 		KSGPanel pnCount = new KSGPanel();
 		
@@ -274,36 +240,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		pnInfo.add(pnSearchAndCount,BorderLayout.EAST);
 		pnInfo.add(pnCount,BorderLayout.WEST);
 		return pnInfo;
-	}
-	/**
-	 * @return
-	 */
-	private KSGPanel buildButton()
-	{
-		KSGPanel pnButtom = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		KSGPanel pnButtomRight = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		JButton butDel = new JButton("삭제");
-		JButton butNew = new JButton("신규");
-		pnButtomRight.setBorder(BorderFactory.createEtchedBorder());		
-		butDel.addActionListener(this);
-		butNew.addActionListener(this);
-
-		pnButtomRight.add(butNew);
-		pnButtomRight.add(butDel);
-		pnButtom.add(pnButtomRight);
-		return pnButtom;
-	}
-
-
-
-	@Override
-	public void updateTable(String query) {
-
-
-
-	}
-
-	
+	}	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -314,7 +251,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		{
 			fnSearch();
 		}
-		else if(command.equals("삭제"))
+		else if(command.equals(KSGPageTablePanel.DELETE))
 		{
 			int row=tableH.getSelectedRow();
 			if(row<0)
@@ -342,7 +279,7 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 				}
 			}	
 		}
-		else if(command.equals("신규"))
+		else if(command.equals(KSGPageTablePanel.INSERT))
 		{
 			KSGDialog dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.INSERT);
 			
@@ -358,40 +295,40 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 	/**
 	 * 
 	 */
-	private void searchData() {
-		String field=(String) cbxField.getSelectedItem();
-
-		/*	if(cbxField.getSelectedIndex()==0)
-		{
-
-			txfSearch.setText("");
-			query = null;
-
-			this.updateTable(query);
-		}
-		else*/
-		{
-			if(field.equals("선사명"))
-			{
-				query="company_name";
-			}else if(field.equals("선사명 약어"))
-			{
-				query="company_abbr";
-			}
-			else if(field.equals("에이전트"))
-			{
-				query="agent_name";
-			}
-			else if(field.equals("에이전트 약어"))
-			{
-				query="agent_abbr";
-			}
-
-			query+=" like '"+txfSearch.getText()+"%'";
-
-			this.updateTable(query);
-		}
-	}
+//	private void searchData() {
+//		String field=(String) cbxField.getSelectedItem();
+//
+//		/*	if(cbxField.getSelectedIndex()==0)
+//		{
+//
+//			txfSearch.setText("");
+//			query = null;
+//
+//			this.updateTable(query);
+//		}
+//		else*/
+//		{
+//			if(field.equals("선사명"))
+//			{
+//				query="company_name";
+//			}else if(field.equals("선사명 약어"))
+//			{
+//				query="company_abbr";
+//			}
+//			else if(field.equals("에이전트"))
+//			{
+//				query="agent_name";
+//			}
+//			else if(field.equals("에이전트 약어"))
+//			{
+//				query="agent_abbr";
+//			}
+//
+//			query+=" like '"+txfSearch.getText()+"%'";
+//
+//			this.updateTable(query);
+//		}
+//	}
 
 	class TableSelectListner extends MouseAdapter
 	{
@@ -429,9 +366,9 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 
 	}
 
-	public void updateTable() {
-		searchData();
-	}
+//	public void updateTable() {
+//		searchData();
+//	}
 
 	class MyTableColumnModelListener implements TableColumnModelListener {
 		JTable table;
@@ -462,12 +399,6 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		}
 	}
 
-	@Override
-	public void initTable() {
-
-
-
-	}
 	class CompanyTable extends KSGTable
 	{
 		/**
@@ -653,7 +584,15 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 			
 			logger.info("param:"+param);
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectList(param);
+			int page_size = tableH.getPageSize();
+			
+			param.put("PAGE_SIZE", page_size);
+			
+			param.put("PAGE_NO", 1);
+			
+			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectListByPage(param);
+			
+			result.put("PAGE_NO", 1);
 
 			tableH.setResultData(result);
 
@@ -678,26 +617,12 @@ public class PnCompany extends PnBase implements ActionListener, ComponentListen
 		}
 		
 	}
-	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+
+
 	@Override
 	public void componentShown(ComponentEvent e) {
-		fnSearch();
+		if(isShowData)fnSearch();
 		
 	}
-	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 }

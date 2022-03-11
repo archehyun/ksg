@@ -15,7 +15,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +35,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -51,8 +49,8 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.domain.ScheduleType;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.ScheduleType;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.logic.ScheduleJoint;
@@ -60,13 +58,16 @@ import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.ui.ErrorLogManager;
+import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.schedule.comp.PnConsole;
+import com.ksg.workbench.schedule.comp.PnConsole2;
 import com.ksg.workbench.schedule.comp.PnInbound;
 import com.ksg.workbench.schedule.comp.PnInland;
+import com.ksg.workbench.schedule.comp.PnInland2;
 import com.ksg.workbench.schedule.comp.PnNormal;
+import com.ksg.workbench.schedule.comp.PnNormal2;
 import com.ksg.workbench.schedule.comp.PnOutbound;
 import com.ksg.workbench.schedule.dialog.ScheduleResultDialog;
 
@@ -88,7 +89,7 @@ import com.ksg.workbench.schedule.dialog.ScheduleResultDialog;
   * @프로그램 설명 :
 
   */
-public class ScheduleMgtUI extends KSGPanel implements ActionListener {
+public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 
 
 	private static final String ACTION_CREATE = "스케줄 생성";
@@ -147,13 +148,19 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 	
 	private JCheckBox cbxNew,cbxInboundSchedule,cbxOutboundSchedule,cbxRouteSchedule;
 
+	private TableServiceImpl tableService;
+
 	
 	public ScheduleMgtUI() {
 
 		scheduleService = new ScheduleServiceImpl();
 		tableService = new TableServiceImpl();
+		
+		this.title = "스케줄정보 관리";
+		this.borderColor = new Color(255,100,100);
 		createAndUpdateUI();
 	}
+	
 
 	/**
 	 *@설명 화면 생성 및 업데이트 
@@ -161,26 +168,20 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 	public void createAndUpdateUI() 
 	{
 		this.setName("SearchUI");
-		this.setLayout(new BorderLayout());		
+		
+		this.setLayout(new BorderLayout(10,10));		
 
 		KSGPanel pnNorth 		= buildNorthPn();		
 		KSGPanel pnSouth		= buildSouthPn();
-		KSGPanel pnLeftMenu	= buildLeftMenu();		
+		KSGPanel pnLeftMenu		= buildLeftMenu();		
 		KSGPanel pnCenter		= buildCenter();
 
-		pnCenter.add(pnLeftMenu,BorderLayout.WEST);
-
-		KSGPanel pnSystemPaddingLeft = new KSGPanel();
-		KSGPanel pnSystemPaddingRight = new KSGPanel();
-		pnSystemPaddingLeft.setPreferredSize(new Dimension(15,0));
-		pnSystemPaddingRight.setPreferredSize(new Dimension(15,0));
+		this.add(pnLeftMenu,BorderLayout.WEST);	
 
 		this.add(pnCenter,BorderLayout.CENTER);
-		this.add(pnNorth,BorderLayout.NORTH);
-		this.add(pnSouth,BorderLayout.SOUTH);
-		this.add(pnSystemPaddingLeft,BorderLayout.WEST);
-		this.add(pnSystemPaddingRight,BorderLayout.EAST);
-
+		
+		this.add(pnNorth,BorderLayout.NORTH);		
+		
 
 		try {
 			updateTableDateList();
@@ -194,7 +195,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 	private KSGPanel buildLeftMenu() {
 		// 왼쪽 일짜 목록====================
-		KSGPanel pnMain = new KSGPanel(new BorderLayout());	
+		KSGPanel pnLeftMenu = new KSGPanel(new BorderLayout(5,5));	
 
 		butSort = new JButton("파일 출력 (P)");
 		butSort.setActionCommand("파일 출력");
@@ -382,16 +383,20 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 		//====================================================
 
-		pnMain.add(pnLeftMenuButtonList,BorderLayout.SOUTH);
-		pnMain.add(pnTableDateModel,BorderLayout.NORTH);
-		pnMain.add(pnTblScheduleDateList);
-
-		KSGPanel pnLefMenuLeftpadding = new KSGPanel();
-		pnLefMenuLeftpadding.setPreferredSize(new Dimension(10,0));
-
-		pnMain.add(pnLefMenuLeftpadding,BorderLayout.EAST);
-		pnMain.setPreferredSize(new Dimension(230,0));
-		pnMain.setBorder(BorderFactory.createTitledBorder("스케줄 정보 관리"));
+		pnLeftMenu.add(pnLeftMenuButtonList,BorderLayout.SOUTH);
+		pnLeftMenu.add(pnTableDateModel,BorderLayout.NORTH);
+		pnLeftMenu.add(pnTblScheduleDateList);
+		
+		pnLeftMenu.setPreferredSize(new Dimension(230,0));
+		
+		pnLeftMenu.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
+		pnMain.add(pnLeftMenu);
+		pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		
+		//pnMain.setBorder(BorderFactory.createTitledBorder("스케줄 정보 관리"));
 		return pnMain;
 	}
 
@@ -422,19 +427,22 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 		tabPane = new JTabbedPane();
 
-		tabPane.add(pnNormal,ShippersTable.GUBUN_NORMAL);
-		tabPane.add(pnConsole,ShippersTable.GUBUN_CONSOLE);
-		tabPane.add(pnInland,ShippersTable.GUBUN_INLAND);
+//		tabPane.add(pnNormal,ShippersTable.GUBUN_NORMAL);
+//		tabPane.add(pnConsole,ShippersTable.GUBUN_CONSOLE);
+//		tabPane.add(pnInland,ShippersTable.GUBUN_INLAND);
 		
 		
-		tabPane.add(pnOutbound, "OUTBOUND");
-		tabPane.add(pnInbound, "INBOUND");
+		//tabPane.add(pnOutbound, "OUTBOUND");
+		//tabPane.add(pnInbound, "INBOUND");
+		
+		
+		tabPane.add(new PnNormal2(), "NORMAL");
+		tabPane.add(new PnConsole2(), "CONSOLE");		
+		tabPane.add(new PnInland2(), "INLAND");
 		
 		
 		pnMain.add(tabPane);
-		KSGPanel pnCenterLeftPadding = new KSGPanel();
-		pnCenterLeftPadding.setPreferredSize(new Dimension(10,0));
-		pnMain.add(pnCenterLeftPadding,BorderLayout.WEST);
+		
 
 		return pnMain;
 	}
@@ -486,42 +494,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 	}
 
 
-	/**
-	 * @return
-	 */
-	private KSGPanel buildNorthPn() {
-		KSGPanel pnNorth = new KSGPanel(new BorderLayout());
-		
-		pnNorth.setPreferredSize(new Dimension(0,35));
-
-		KSGPanel pnTitleMain = new KSGPanel(new BorderLayout());
-		
-		KSGPanel pnTitle = new KSGPanel();
-		
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEADING));
-		
-		JLabel label = new JLabel("스케줄정보 관리");
-		
-		label.setForeground(new Color(61,86,113));
-
-		Font titleFont = new Font("명조",Font.BOLD,18);
-		
-		label.setFont(titleFont);
-		
-		pnTitle.add(label);
-
-		pnTitle.setBorder(new CurvedBorder(8,new Color(255,100,100)));
-		
-		pnTitleMain.add(pnTitle);
-		
-		KSGPanel pnTitleBouttom = new KSGPanel();
-		
-		pnTitleBouttom.setPreferredSize(new Dimension(0,15));
-		
-		pnTitleMain.add(pnTitleBouttom,BorderLayout.SOUTH);
-
-		return pnTitleMain;
-	}
+	
 	/**
 	 * @throws SQLException 
 	 * 
@@ -894,11 +867,7 @@ public class ScheduleMgtUI extends KSGPanel implements ActionListener {
 
 	}
 
-	@Override
-	public void update(KSGModelManager manager) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 
 }

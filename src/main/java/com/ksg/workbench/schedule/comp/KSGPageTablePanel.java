@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -14,10 +15,29 @@ import javax.swing.JTextField;
 
 import com.ksg.view.comp.table.KSGTablePanel;
 
+/**
+
+  * @FileName : KSGPageTablePanel.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 7. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class KSGPageTablePanel extends KSGTablePanel{
 	
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel lblTotalPage;
 	private JComboBox<String> cbxPageCount;
 	private JButton butFirst;
@@ -30,7 +50,7 @@ public class KSGPageTablePanel extends KSGTablePanel{
 	public int getTotalPage() {
 		return totalPage;
 	}
-	private int total;
+	
 	private int page;
 	private int endPage;
 	
@@ -40,6 +60,9 @@ public class KSGPageTablePanel extends KSGTablePanel{
 		super(title);
 		
 		this.add(createPagingPanel(),BorderLayout.SOUTH);
+		
+		
+		
 		
 	}
 
@@ -82,7 +105,7 @@ public class KSGPageTablePanel extends KSGTablePanel{
 		pnMain.add(butBw);
 		pnMain.add(butEnd);
 		pnMain.add(cbxPageCount);
-
+		//pnMain.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		return pnMain;
 	}
 
@@ -120,6 +143,14 @@ public class KSGPageTablePanel extends KSGTablePanel{
 		}
 	}
 	
+	
+	public void addPageActionListener(ActionListener l)	
+	{
+		this.butEnd.addActionListener(l);
+		this.butFirst.addActionListener(l);
+		this.butBw.addActionListener(l);
+		this.butFw.addActionListener(l);
+	}
 	public void addActionListener(ActionListener l) {
 		this.butEnd.addActionListener(l);
 		this.butFirst.addActionListener(l);

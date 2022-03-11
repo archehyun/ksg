@@ -48,7 +48,7 @@ public class KSGTablePanel extends KSGPanel{
 	public static final String UPDATE="update";
 	
 	
-	private int total;
+	protected int total;
 
 	private KSGAbstractTable table;
 
@@ -60,9 +60,7 @@ public class KSGTablePanel extends KSGPanel{
 
 	private JButton butInsert;
 
-	private JButton butDelete;
-
-	private JButton butUpdate;
+	private JButton butDelete;	
 	
 	private KSGPanel pnControl;
 
@@ -121,6 +119,12 @@ public class KSGTablePanel extends KSGPanel{
 		
 	}
 	
+	public void setSelectionMode(int SINGLE_SELECTION)
+	{
+		table.setSelectionMode(SINGLE_SELECTION);
+	}
+	
+	
 	public void setAutoResizeMode(int mode)
 	{
 		table.setAutoResizeMode(mode);
@@ -147,18 +151,18 @@ public class KSGTablePanel extends KSGPanel{
 		
 		butInsert = new JButton("추가");
 		butDelete = new JButton("삭제");
-		butUpdate = new JButton("수정");
+		//butUpdate = new JButton("수정");
 		
 		butInsert.setActionCommand(INSERT);
 		butDelete.setActionCommand(DELETE);
-		butUpdate.setActionCommand(UPDATE);
+		//butUpdate.setActionCommand(UPDATE);
 		
 		lblTotalCount = new JLabel("0");
 		lblTotalCount.setForeground(Color.red);
 		
 		
 		pnControl.add(butInsert);
-		pnControl.add(butUpdate);
+		//pnControl.add(butUpdate);
 		pnControl.add(butDelete);
 		
 		pnTitle.add(lblTitle);
@@ -215,7 +219,7 @@ public class KSGTablePanel extends KSGPanel{
 	{
 		butDelete.addActionListener(l);
 		butInsert.addActionListener(l);
-		butUpdate.addActionListener(l);
+		//butUpdate.addActionListener(l);
 	}
 
 	public void addColumn(KSGTableColumn ksgTableColumn) {
@@ -261,16 +265,16 @@ public class KSGTablePanel extends KSGPanel{
 		table.clearReslult();
 	}
 
-	@Override
-	public void update(KSGModelManager manager) {
-		
-		
-	}
 
 	@Override
 	public void createAndUpdateUI() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public int[] getSelectedRows() {
+		// TODO Auto-generated method stub
+		return table.getSelectedRows();
 	}
 	
 	

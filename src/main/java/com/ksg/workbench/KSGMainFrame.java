@@ -42,7 +42,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
@@ -77,7 +76,6 @@ import com.ksg.workbench.common.comp.dialog.WebScheduleCreateDialog;
 import com.ksg.workbench.preference.PreferenceDialog;
 import com.ksg.workbench.print.PrintADVUI;
 import com.ksg.workbench.schedule.ScheduleMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
 
@@ -216,7 +214,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				KSGMainFrame.this.setResizable(true);
 
-				KSGMainFrame.this.setDefaultLookAndFeelDecorated(true);
+				KSGMainFrame.this.setDefaultLookAndFeelDecorated(true);			
+				
 				
 				KSGMainFrame.this.setMinimumSize(new Dimension(1300,800));
 				
@@ -228,7 +227,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				login.setVisible(false);
 				
-				login.dispose();
+				login.dispose();				
 				
 				KSGMainFrame.this.setVisible(true);
 				
@@ -241,12 +240,18 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		}.start();
 	}
 
-	private Component buildCenter() 
+	private KSGPanel buildCenter() 
 	{
+		KSGPanel pnMain = new KSGPanel(new BorderLayout(0,10));  
+				
+		
 		pnCenter = new KSGPanel();
 		pnCenter.setLayout(cardLayout);
+		
+		pnMain.add(pnCenter);
+		pnMain.add(buildButtom(),BorderLayout.SOUTH);
 
-		return pnCenter;
+		return pnMain;
 	}
 	//화면 초기화
 	/**
@@ -257,9 +262,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		
 		logger.debug("create frame start");
 
-		scheduleService= new ScheduleServiceImpl();
-
-		KSGPanel pnButtom = buildButtom();
+		scheduleService= new ScheduleServiceImpl();	
 		
 		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -269,13 +272,12 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		this.setIconImage(img);		
 
 		this.setJMenuBar(crateMenuBar());
+		
+		this.setLayout(new BorderLayout(0,5 ));
 
 		this.getContentPane().add(buildToolBar(),BorderLayout.NORTH);
 		
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-		
-		this.getContentPane().add(pnButtom,BorderLayout.SOUTH);
-
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

@@ -18,7 +18,7 @@ import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.view.comp.table.KSGTablePanel;
+import com.ksg.workbench.common.comp.button.PageAction;
 
 public class PnInbound extends KSGPanel implements ActionListener{
 
@@ -27,7 +27,7 @@ public class PnInbound extends KSGPanel implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private KSGTablePanel tableH;
+	private KSGPageTablePanel tableH;
 	
 	private ScheduleService scheduleService;
 	
@@ -58,9 +58,10 @@ public class PnInbound extends KSGPanel implements ActionListener{
 	
 	public KSGPanel buildCenter()
 	{
-		tableH = new KSGTablePanel("스케줄 목록");
+		tableH = new KSGPageTablePanel("스케줄 목록");
 		
 		
+		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
 		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID"));
 		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명"));
 		tableH.addColumn(new KSGTableColumn("agent", "에이전트"));
@@ -71,10 +72,12 @@ public class PnInbound extends KSGPanel implements ActionListener{
 		tableH.addColumn(new KSGTableColumn("DateF", "출발일", 90));
 		tableH.addColumn(new KSGTableColumn("DateT", "도착일", 90));
 		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
-		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
+		
 		
 		
 		tableH.initComp();
+		tableH.addActionListener(new PageAction(tableH, scheduleService));
+		
 		return tableH;
 	}
 	
@@ -116,10 +119,6 @@ public class PnInbound extends KSGPanel implements ActionListener{
 		pnNormalSearchCenter.add(cbxNormalSearch);
 		pnNormalSearchCenter.add(txfNoramlSearch);
 		pnNormalSearchCenter.add(butSearch);
-
-
-
-		
 		
 
 
@@ -134,10 +133,29 @@ public class PnInbound extends KSGPanel implements ActionListener{
 		
 		try {
 			param.put("InOutType", "I");
+			String searchOption  = txfNoramlSearch.getText();
+			if(cbxNormalSearch.getSelectedIndex()>0) {
+				
+				KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
+				if(!searchOption.equals(""))
+				param.put(item.columnField, searchOption);
+				
+			}
+			
+			
+			
+			int page_size = tableH.getPageSize();
+			
+			param.put("PAGE_SIZE", page_size);
+			
+			param.put("PAGE_NO", 1);
+			
 			logger.info("param:"+param);
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectList(param);
-
+			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectListByPage(param);
+			
+			result.put("PAGE_NO", 1);
+			
 			tableH.setResultData(result);
 
 			master = (List) result.get("master");
@@ -160,6 +178,7 @@ public class PnInbound extends KSGPanel implements ActionListener{
 			e.printStackTrace();
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(this, "error:"+e.getMessage());
 		}
 	}

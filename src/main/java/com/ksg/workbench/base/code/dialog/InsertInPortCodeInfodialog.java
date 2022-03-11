@@ -30,6 +30,7 @@ import javax.swing.JTextField;
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
+import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.code.comp.PnCode;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
@@ -59,11 +60,13 @@ public class InsertInPortCodeInfodialog extends KSGDialog implements ActionListe
 	
 	private String code_type;
 	
-	
+	private BaseServiceImpl baseService;
 	public InsertInPortCodeInfodialog(BaseInfoUI baseInfoUI) 
 	{
 		super();
 		this.baseInfoUI=baseInfoUI;
+		
+		baseService = new BaseServiceImpl();
 		
 	}
 

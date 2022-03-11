@@ -21,6 +21,7 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.TablePort;
+import com.ksg.service.BaseService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -36,6 +37,7 @@ public class ManageTablePortDialog extends KSGDialog implements ActionListener
 	private static final long serialVersionUID = 1L;
 	private JTable tblPortList;
 	private String table_id;
+	private BaseService baseService;
 	public ManageTablePortDialog(String table_id) {
 		this.table_id = table_id;
 		DAOManager manager = DAOManager.getInstance();

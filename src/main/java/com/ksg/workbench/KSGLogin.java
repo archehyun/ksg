@@ -22,8 +22,6 @@ import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Properties;
 
 import javax.swing.ImageIcon;
@@ -47,11 +45,25 @@ import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.model.Configure;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.domain.Member;
 import com.ksg.service.MemberService;
 import com.ksg.service.impl.MemberServiceImpl;
 
 
+/**
+
+  * @FileName : KSGLogin.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 9. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class KSGLogin extends JDialog {
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	/**
@@ -59,16 +71,14 @@ public class KSGLogin extends JDialog {
 	 */
 	private static final long serialVersionUID = -7969440705693961226L;
 	
-	private KSGMainFrame mainFrame;
-	
 	private JTextField txfID, txfPassword;
 	
 	private MemberService service;
 	private JProgressBar bar;
 	private JPanel pnProgress;
-	private JPanel pnCenter;
+	
 	private JPanel pnMain;
-	private SqlMapClient sqlMap;
+	
 	private Properties properties = new Properties();
 	private Properties db_properties = new Properties();
 	private String url,db;
@@ -103,13 +113,7 @@ public class KSGLogin extends JDialog {
 			e.printStackTrace();
 		}
 
-		try {
-			sqlMap=SqlMapManager.getSqlMapInstance();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.err.println(e.getMessage());
-		}
+		
 		service = new MemberServiceImpl();
 		createAndUpdateUI();
 	}
@@ -117,7 +121,7 @@ public class KSGLogin extends JDialog {
 	private void createAndUpdateUI() {
 
 		bar = new JProgressBar();
-		pnCenter = new JPanel();
+		
 		JLabel label = new JLabel();
 		label.setIcon(new ImageIcon("images/loginlogo2.png"));
 
@@ -150,9 +154,7 @@ public class KSGLogin extends JDialog {
 		pnMain.setLayout(new GridLayout(0,1));
 
 		txfID = new JTextField(20);
-		txfPassword = new JPasswordField(20);
-		txfID.setText("test");
-		txfPassword.setText("test");
+		txfPassword = new JPasswordField(20);	
 
 		txfPassword.addKeyListener(new KeyAdapter(){
 
@@ -187,7 +189,6 @@ public class KSGLogin extends JDialog {
 		pnControl.add(butOK);
 		pnControl.add(butCancel);
 
-		//pnMain.add(createItem("DB Server : ", new JLabel(url+":"+db)));
 		pnMain.add(createItem("사용자 이름 : ", txfID));
 		pnMain.add(createItem("암호 : ", txfPassword));
 		JPanel pnControlMain = new JPanel(new BorderLayout());
@@ -232,8 +233,6 @@ public class KSGLogin extends JDialog {
 			return;
 		}
 		try {
-			
-			
 
 			if(service.login(id, pw))
 			{
@@ -252,9 +251,7 @@ public class KSGLogin extends JDialog {
 
 				return;
 			}
-		} 
-		
-		
+		}
 		
 		catch (ResourceNotFoundException e1) {
 

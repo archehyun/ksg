@@ -10,6 +10,7 @@ public interface VesselDAO {
 	
 	
 	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException;
+	public Object selectListByPage(Map<String, Object> commandMap) throws SQLException;
 	
 	public List<Map<String, Object>> selectDetailList(HashMap<String, Object> commandMap) throws SQLException;
 	

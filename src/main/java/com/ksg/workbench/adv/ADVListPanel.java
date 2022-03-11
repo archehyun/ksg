@@ -29,7 +29,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -53,6 +53,7 @@ import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.PageInfoCheckBox;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.KSGMainFrame;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.AddAdvDialog;
@@ -64,7 +65,7 @@ import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
  * @author 박창현
  *
  */
-public class ADVListPanel extends JPanel implements ActionListener, MouseWheelListener{
+public class ADVListPanel extends KSGPanel implements ActionListener, MouseWheelListener{
 	
 	private static final int UNIT_INCREMENT = 15;
 	
@@ -106,7 +107,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	
 	private int totalTableCount;
 	
-	private JPanel pnTableList;
+	private KSGPanel pnTableList;
 	
 	private String			selectedInput="File";
 	
@@ -146,7 +147,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		
 		setLayout(new BorderLayout());
 
-		JPanel pnNorth = new JPanel(new BorderLayout());
+		KSGPanel pnNorth = new KSGPanel(new BorderLayout());
 		
 		JLabel lblTableCountlbl =new JLabel("검색된 테이블 수 : ");
 
@@ -162,9 +163,9 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		
 		butReLoad.addActionListener(this);
 
-		JPanel pnNorthLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnNorthLeft = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
-		JPanel pnNorthRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnNorthRight = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		lblSearchedTableCount = new JLabel();
 
@@ -189,7 +190,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		 *
 		 */
 		//pane.setDividerLocation(Integer.parseInt((propertis.getProperty("errorDividerLoction"))));
-		JPanel pnTableList = createPnTableList();
+		KSGPanel pnTableList = createPnTableList();
 
 		pane.setTopComponent(pnTableList);
 		
@@ -202,17 +203,17 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	/**
 	 * @return
 	 */
-	private JPanel createPnTableList() {
+	private KSGPanel createPnTableList() {
 		
-		JPanel pnTableListMain = new JPanel();
+		KSGPanel pnTableListMain = new KSGPanel();
 		
 		pnTableListMain.setLayout(new BorderLayout());
 
-		pnTableList = new JPanel();
+		pnTableList = new KSGPanel();
 		
 		pnTableList.setLayout(new BoxLayout(pnTableList, BoxLayout.Y_AXIS));
 
-		JPanel pnTableListControl = new JPanel();
+		KSGPanel pnTableListControl = new KSGPanel();
 		
 		butPre = new JButton("이전");
 		
@@ -583,10 +584,10 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	 */
 	private Component buildSouthPn() {
 
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 
-		JPanel paRight = new JPanel();
+		KSGPanel paRight = new KSGPanel();
 		paRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		JButton butADD = new JButton("광고불러오기",new ImageIcon("images/importxls.gif"));
@@ -707,7 +708,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		paRight.add(butSave);
 		paRight.add(butCancel);
 
-		JPanel pnLeft =new JPanel();
+		KSGPanel pnLeft =new KSGPanel();
 		pnLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JButton button = new JButton("설정 보기");
 		button.setVisible(false);

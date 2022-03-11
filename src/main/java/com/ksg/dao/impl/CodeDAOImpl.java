@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.CodeDAO;
-import com.ksg.domain.PortInfo;
 
 /**
 
@@ -25,52 +24,54 @@ import com.ksg.domain.PortInfo;
 public class CodeDAOImpl extends AbstractDAO implements CodeDAO{
 	public CodeDAOImpl() {
 		super();
+		
+		this.namespace ="code";
 	}
 
 	@Override
 	public Object select(Map<String, Object> commandMap) throws SQLException {
-		return  selectOne("code.selectCodeH", commandMap);
+		return  selectOne(namespace+".selectCodeH", commandMap);
 	}
 
 
 	@Override
 	public Object selectDetail(Map<String, Object> commandMap) throws SQLException {
-		return  selectOne("code.selectCodeD", commandMap);
+		return  selectOne(namespace+".selectCodeD", commandMap);
 	}
 
 
 
 	@Override
 	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException {
-		return selectList("code.selectCodeHList", commandMap);
+		return selectList(namespace+".selectCodeHList", commandMap);
 
 	}
 
 	@Override
 	public List<Map<String, Object>> selectDetailList(Map<String, Object> commandMap) throws SQLException {
-		return selectList("code.selectCodeDList", commandMap);
+		return selectList(namespace+".selectCodeDList", commandMap);
 
 	}
 	
 	@Override
 	public Object selectCount(Map<String, Object> commandMap)throws SQLException {
-		return  (Integer) selectOne("code.selectCountH", commandMap);
+		return  (Integer) selectOne(namespace+".selectCountH", commandMap);
 	}
 
 	@Override
 	public int selectDetailCount(Map<String, Object> commandMap) throws SQLException{
-		return  (Integer) selectOne("code.selectCount", commandMap);
+		return  (Integer) selectOne(namespace+".selectCount", commandMap);
 	}	
 
 	@Override
 	public Object insert(HashMap<String, Object> param) throws SQLException{
-		return insert("code.insertCodeH",param);
+		return insert(namespace+".insertCodeH",param);
 
 	}
 	
 	@Override
 	public Object insertDetail(HashMap<String, Object> param) throws SQLException {
-		return insert("code.insertCodeD",param);
+		return insert(namespace+".insertCodeD",param);
 	}
 
 	@Override
@@ -80,12 +81,12 @@ public class CodeDAOImpl extends AbstractDAO implements CodeDAO{
 
 	@Override
 	public Object delete(HashMap<String, Object> param) throws SQLException{
-		return delete("code.deleteCodeH",param);
+		return delete(namespace+".deleteCodeH",param);
 	}
 
 	@Override
 	public Object deleteDetail(HashMap<String, Object> param) throws SQLException {
-		return delete("code.deleteCodeD",param);
+		return delete(namespace+".deleteCodeD",param);
 	}
 
 
