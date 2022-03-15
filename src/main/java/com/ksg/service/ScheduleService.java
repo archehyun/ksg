@@ -155,7 +155,7 @@ public interface ScheduleService extends PageService{
 	 * @return
 	 * @throws SQLException
 	 */
-	public List getScheduleDateList()throws SQLException;
+	public List selectScheduleDateList()throws SQLException;
 	
 	public int getScheduleTotalCount()throws SQLException;
 	
@@ -193,7 +193,9 @@ public interface ScheduleService extends PageService{
 
 	List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException;
 
-	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException;	
+	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException;
+	
+	public HashMap<String, Object> selectGroupList(HashMap<String, Object> param) throws SQLException;
 	
 	
 	public int deleteInlnadSchedule()throws SQLException;
@@ -204,3 +206,5 @@ public interface ScheduleService extends PageService{
 
 
 }
+
+

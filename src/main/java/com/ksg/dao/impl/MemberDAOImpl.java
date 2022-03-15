@@ -52,15 +52,15 @@ public class MemberDAOImpl extends AbstractDAO implements MemberDAO
 	}
 
 	@Override
-	public int delete(Map<String, Object> commandMap) throws SQLException {
+	public int delete(Map<String, Object> param) throws SQLException {
 		// TODO Auto-generated method stub
-		return 0;
+		return (Integer) delete("member.deleteMember",param);
 	}
 
 	@Override
 	public Object insert(HashMap<String, Object> param) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return insert("member.insertMember", param);
 	}
 
 	@Override

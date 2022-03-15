@@ -11,10 +11,8 @@
 package com.ksg.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
-
-import com.ksg.common.exception.ResourceNotFoundException;
-import com.ksg.domain.Member;
 
 public interface MemberService extends PageService{
 
@@ -22,5 +20,7 @@ public interface MemberService extends PageService{
 	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
 	
 	public boolean login(String id,String pw) throws Exception;
+	public Object insertMember(HashMap<String, Object> param)throws Exception;
+	public int deleteMember(HashMap<String, Object> item)throws  SQLException;
 
 }

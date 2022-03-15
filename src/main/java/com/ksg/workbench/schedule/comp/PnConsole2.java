@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -19,6 +20,7 @@ import com.ksg.view.comp.KSGAutoComboBox;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 
 
@@ -37,16 +39,14 @@ import com.ksg.workbench.common.comp.button.PageAction;
   * @프로그램 설명 :
 
   */
-public class PnConsole2 extends KSGPanel implements ActionListener{
+public class PnConsole2 extends PnSchedule{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private KSGPageTablePanel tableH;
-	
-	private ScheduleService scheduleService;
+	private KSGPageTablePanel tableH;	
 	
 	private List<HashMap<String, Object>> master;
 
@@ -58,9 +58,7 @@ public class PnConsole2 extends KSGPanel implements ActionListener{
 	
 	public PnConsole2() {
 		
-		super();
-		
-		scheduleService = new ScheduleServiceImpl();
+		super();		
 		
 		this.setLayout(new BorderLayout());
 		
@@ -97,7 +95,11 @@ public class PnConsole2 extends KSGPanel implements ActionListener{
 		
 		tableH.addActionListener(new PageAction(tableH,scheduleService));
 		
-		return tableH;
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
+		pnMain.add(tableH);
+		
+		return pnMain;
 	}
 	
 	
@@ -163,6 +165,11 @@ public class PnConsole2 extends KSGPanel implements ActionListener{
 				param.put(item.columnField, searchOption);
 			}
 			
+			if(input_date!=null||!input_date.equals(""))
+				
+			{
+				param.put("date_issue", input_date);
+			}
 			
 			int page_size = tableH.getPageSize();
 			

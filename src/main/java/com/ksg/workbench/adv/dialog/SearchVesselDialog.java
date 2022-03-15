@@ -30,6 +30,8 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
+import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.adv.comp.VesselInfo;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -53,12 +55,16 @@ public class SearchVesselDialog extends KSGDialog {
 	private JButton pnAddVesselAbbr;
 	private JDialog addDialog;
 	private BaseService baseService;
+	
+	private VesselService service;
 
 
 	public SearchVesselDialog(String vesselName) {
 		super();
 		this.vesselName=vesselName;
 		baseService = DAOManager.getInstance().createBaseService();
+		
+		service = new VesselServiceImpl();
 	}
 	public void createAndUpdateUI() {
 		setTitle("선박명 검색");
@@ -256,8 +262,7 @@ public class SearchVesselDialog extends KSGDialog {
 
 		getContentPane().add(pnTitle,BorderLayout.NORTH);
 		getContentPane().add(pnControl,BorderLayout.SOUTH);
-		getContentPane().add(KSGDialog.createMargin(),BorderLayout.WEST);
-		getContentPane().add(KSGDialog.createMargin(),BorderLayout.EAST);
+		
 		getContentPane().add(pnCenter);
 
 		pack();

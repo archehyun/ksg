@@ -11,30 +11,23 @@
 package com.ksg.workbench.base.port.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.PortInfo;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.base.dialog.BaseInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
-public class UpdatePortAbbrInfoDialog extends KSGDialog implements ActionListener{
+public class UpdatePortAbbrInfoDialog extends BaseInfoDialog{
 	/**
 	 * 
 	 */
@@ -46,87 +39,52 @@ public class UpdatePortAbbrInfoDialog extends KSGDialog implements ActionListene
 	
 
 
-	public UpdatePortAbbrInfoDialog(Dialog dialog,String portCode,String portName) {
-		super(dialog);
-
-		txfPortAbbr.setText(portCode);
-		txfPortName.setText(portName);
-		selectedPortCode = portCode;
-		baseService = new BaseServiceImpl(); 
-		
-	}
+	String portName;
+	String portAbbr;
 	public UpdatePortAbbrInfoDialog(String portName,String portAbbr) {
 		super();
-		txfPortAbbr.setText(portAbbr);
-		txfPortName.setText(portName);
+		this.addComponentListener(this);
+
 		selectedPortCode = portAbbr;
+		
+		this.portAbbr=  portAbbr;
+		this.portName = portName;
 		baseService = new BaseServiceImpl(); 
 		
 	}
 
 	public void createAndUpdateUI() {
 		this.setModal(true);
+		
 		this.setTitle("항구 정보 관리");
+		
+		this.getContentPane().add(buildTitle("항구 약어 수정"),BorderLayout.NORTH);
+		
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		
+		
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		
+		this.pack();
+		
+		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+		
+		this.setVisible(true);
+	}
+	
+	private KSGPanel buildCenter()
+	{
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		
-		JPanel pnName = new JPanel();
-		pnName.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblPortName = new JLabel("항구명");
-		lblPortName.setPreferredSize(new Dimension(80,25));
-		txfPortName.setEditable(false);
-		pnName.add(lblPortName);
-		pnName.add(txfPortName);
-		JPanel pnCode = new JPanel();
-		pnCode.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblPortAbbr = new JLabel("항구명 약어");
-		lblPortAbbr.setPreferredSize(new Dimension(80,25));
-		pnCode.add(lblPortAbbr);	
-		pnCode.add(txfPortAbbr);
+		
+		pnCenter.add(createFormItem(txfPortName, "항구명"));
+		
+		pnCenter.add(createFormItem(txfPortAbbr, "항구명약어"));	
 
-
-
-
-		JPanel pnS = new JPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-
-		JPanel pnControl =  new JPanel();
-		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butOK = new JButton("확인");
-		JButton butCancel = new JButton("취소");
-		butOK.addActionListener(this);
-		butCancel.addActionListener(this);
-
-		pnControl.add(butOK);
-		pnControl.add(butCancel);
-
-		JPanel pnTitle = new JPanel();
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnTitle.setBackground(Color.white);
-		JLabel label = new JLabel("항구 약어 수정");
-		label.setFont(new Font("area",Font.BOLD,16));
-		pnTitle.add(label);
-
-		pnCenter.add(pnName);
-		pnCenter.add(pnCode);
-		pnCenter.add(pnS);
-		pnCenter.add(pnControl);
-
-		JPanel left = new JPanel();
-		left.setPreferredSize(new Dimension(15,0));
-		JPanel right = new JPanel();
-		right.setPreferredSize(new Dimension(15,0));
-
-
-		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
-		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
-		this.getContentPane().add(left,BorderLayout.WEST);
-		this.getContentPane().add(right,BorderLayout.EAST);
-		this.pack();
-		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
-		this.setVisible(true);
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		pnMain.add(pnCenter);
+		return pnMain;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -163,6 +121,12 @@ public class UpdatePortAbbrInfoDialog extends KSGDialog implements ActionListene
 			this.dispose();
 		}
 		
+	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		txfPortAbbr.setText(portAbbr);
+		txfPortName.setText(portName);
 	}
 
 }

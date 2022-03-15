@@ -409,6 +409,13 @@ public class TableDAOImplTemp implements TableDAO{
 	}
 
 
+	@Override
+	public int delete(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 
 
 

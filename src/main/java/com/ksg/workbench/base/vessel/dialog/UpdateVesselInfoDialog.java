@@ -17,178 +17,94 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
-import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.workbench.base.BaseInfoUI;
+import com.ksg.view.comp.KSGCheckBox;
+import com.ksg.view.comp.KSGComboBox;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.base.dialog.SearchCompanyInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
+
 /**
- * 선박 정보 수정 다이어그램
- * 
- * @author 박창현
- *
- */
+
+  * @FileName : UpdateVesselInfoDialog.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 12. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 선박 정보 수정 다이어그램
+
+  */
 public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private  String LABEL,vesselName;
+	
 	private JTextField txfCompanyName;
-	private JTextField txfMMSI;
-	private String UPDATE_TITLE = "선박 정보 수정";
-	private String INSERT_TITLE = "선박 정보 추가";
-	private String data;
+	
+	private JTextField txfMMSI;	
 
 	private JList listVesselAbbr;
 
-	private JComboBox cbxType;
+	private KSGComboBox cbxConType;
 
 	private JCheckBox chbUse;
-
-//	private Vessel dataInfo;
 	
 	HashMap<String, Object> info;
 	
 	VesselService service;
+	
 	private JCheckBox cbxMMSICheck;
-	private BaseServiceImpl baseService;
-	/**
-	 * @deprecated
-	 * @param baseInfoUI
-	 */
-	public UpdateVesselInfoDialog(BaseInfoUI baseInfoUI) {
-		super();
-		service = new VesselServiceImpl();
-		logger.info("생성");
-		this.baseInfoUI=baseInfoUI;
-		this.setTitle(INSERT_TITLE);
-		baseService = new BaseServiceImpl(); 
-	}
-	/**
-	 * @deprecated
-	 * @param baseInfoUI
-	 * @param data
-	 */
-	public UpdateVesselInfoDialog(BaseInfoUI baseInfoUI,String data) {
-		super();
-		service = new VesselServiceImpl();
-		this.baseInfoUI=baseInfoUI;
-		this.setTitle(UPDATE_TITLE);
-
-		this.data=data;
-
-		logger.info("data:"+data);
-
-
-	}
-
-	public UpdateVesselInfoDialog(Vessel vessel)
-	{
-		super();
-		
-		service = new VesselServiceImpl();
-		this.setTitle(UPDATE_TITLE);	
-	//	this.dataInfo = vessel;
-	}
-
-
-	/**
-	 * @deprecated
-	 * @param baseInfoUI
-	 * @param vessel
-	 */
-	public UpdateVesselInfoDialog(BaseInfoUI baseInfoUI, Vessel vessel) {
-		super();
-		service = new VesselServiceImpl();
-		this.baseInfoUI=baseInfoUI;
-		this.setTitle(UPDATE_TITLE);
-		//this.dataInfo = vessel;
-	}
+	
 	public UpdateVesselInfoDialog(HashMap<String, Object> item) {
 		super();
 		service = new VesselServiceImpl();
 		this.info = item;
+		this.addComponentListener(this);
 	}
 	public void createAndUpdateUI() 
 	{
 		this.setModal(true);
 
-		cbxType = new JComboBox();
+		cbxConType = new KSGComboBox("conType");
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		txfCompanyName = new JTextField(20);
 		txfCompanyName.setEditable(false);
 		txfCompanyName.setEnabled(false);
-		Code code = new Code();
-		code.setCode_name_kor("컨테이너 타입");
-		try {
-			List li=	baseService.getSubCodeInfo(code);
-
-			DefaultComboBoxModel boxModel = new DefaultComboBoxModel();
-
-			Iterator iter = li.iterator();
-
-			while(iter.hasNext())
-			{
-				Code code2=(Code) iter.next();
-
-				ConType conType = new ConType();
-				conType.setTypeField(code2.getCode_field());
-				conType.setTypeName(code2.getCode_name());
-				boxModel.addElement(conType);
-
-			}
-			cbxType.setModel(boxModel);
-
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		chbUse= new JCheckBox("사용안함");
+		
+		chbUse= new KSGCheckBox("사용안함");
 		txfMMSI = new JTextField(5);
 
-		/*Vessel info = new Vessel();
-		info.setVessel_name(dataInfo.getVessel_name());
-		try {
-			List li=baseService.getVesselListGroupByName(info);
-			if(li.size()>0)
-			{	
-				Vessel item = (Vessel) li.get(0);
-				if(item.getVessel_use()==Vessel.NON_USE)
-				{
-					chbUse.setSelected(true);
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/	
+		
 		
 		int use=(Short)info.get("vessel_use");
 		if(use==Vessel.NON_USE)
@@ -196,23 +112,23 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 			chbUse.setSelected(true);
 		}
 
-		JPanel pnRequest = new JPanel();
+		KSGPanel pnRequest = new KSGPanel();
 		pnRequest.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 
-		JPanel pnType = new JPanel();
+		KSGPanel pnType = new KSGPanel();
 		pnType.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblType = new JLabel("선박 타입");
 		lblType.setPreferredSize(new Dimension(100,25));
 		pnType.add(lblType);
-		pnType.add(cbxType);
+		pnType.add(cbxConType);
 
-		JPanel pnMMSI = new JPanel();
+		KSGPanel pnMMSI = new KSGPanel();
 		pnMMSI.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblMMSI = new JLabel("MMSI");
 		lblMMSI.setPreferredSize(new Dimension(100,25));
 
-		cbxMMSICheck = new JCheckBox("없음");
+		cbxMMSICheck = new KSGCheckBox("없음");
 		cbxMMSICheck.setSelected(false);
 		cbxMMSICheck.addActionListener(new ActionListener() {
 
@@ -243,7 +159,7 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 
 
 
-		JPanel pnCompany = new JPanel();
+		KSGPanel pnCompany = new KSGPanel();
 		pnCompany.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblCompany = new JLabel("대표 선사");
 		lblCompany.setPreferredSize(new Dimension(100,25));
@@ -271,20 +187,20 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		pnCompany.add(butCancelCompany);
 
 
-		JPanel pnUse = new JPanel();
+		KSGPanel pnUse = new KSGPanel();
 		pnUse.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblUse = new JLabel("사용유무");
 		lblUse.setPreferredSize(new Dimension(100,25));
 		pnUse.add(lblUse);
 		pnUse.add(chbUse);
 
-		JPanel pnS = new JPanel();
+		KSGPanel pnS = new KSGPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
+		KSGPanel pnS1 = new KSGPanel();
 		pnS1.setPreferredSize(new Dimension(0,15));
 
-		JPanel pnControl =  new JPanel();
+		KSGPanel pnControl =  new KSGPanel();
 		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		JButton butOK = new JButton("저장");
 		JButton butCancel = new JButton("취소");
@@ -293,15 +209,11 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		pnControl.add(butOK);
 		pnControl.add(butCancel);
 
-		JPanel pnTitle = new JPanel();
+		KSGPanel pnTitle = new KSGPanel();
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnTitle.setBackground(Color.white);
 		LABEL ="선박 명: ";
-		/*if(dataInfo!=null)
-		{		
-			LABEL +=dataInfo.getVessel_name();
-			vesselName =dataInfo.getVessel_name();
-		}*/
+
 		
 		LABEL +=info.get("vessel_name");
 		vesselName = (String) info.get("vessel_name");
@@ -312,7 +224,7 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		
 
 
-		JPanel pnVesselAbbrList = new JPanel(new BorderLayout());
+		KSGPanel pnVesselAbbrList = new KSGPanel(new BorderLayout());
 
 		JLabel lblVesselAbbrList = new JLabel("선박 약어");
 		lblVesselAbbrList.setPreferredSize(new Dimension(110,25));
@@ -325,64 +237,23 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		pnCenter.add(pnType);
 		pnCenter.add(pnMMSI);
 		pnCenter.add(pnCompany);
-		pnCenter.add(pnUse);
-		//pnCenter.add(pnVesselAbbrList);
+		pnCenter.add(pnUse);		
 		pnCenter.add(pnS);
 		pnCenter.add(pnControl);
 
-		JPanel left = new JPanel();
-		left.setPreferredSize(new Dimension(15,0));
-		JPanel right = new JPanel();
-		right.setPreferredSize(new Dimension(15,0));
 
 			
 
 		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
 		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
-		this.getContentPane().add(left,BorderLayout.WEST);
-		this.getContentPane().add(right,BorderLayout.EAST);
+
 		this.pack();
-		initView();	
+		
 		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
 		this.setResizable(false);
 		this.setVisible(true);
 	}
-	private void initView() {
-		
-		
-		{		
-			
-			String vessel_type = (String) info.get("vessel_type");
-			String vessel_company = (String) info.get("vessel_company");
-			String vessel_mmsi = (String) info.get("vessel_mmsi");
-			
-			int count=cbxType.getItemCount();
-			for(int i=0;i<count;i++)
-			{
-				ConType type=(ConType) cbxType.getItemAt(i);
 
-				if(type.getTypeField().equals(vessel_type))
-				{
-					cbxType.setSelectedIndex(i);
-					break;
-				}
-			}
-			txfCompanyName.setText(vessel_company);
-
-			if(vessel_mmsi!=null&&!vessel_mmsi.equals("         "))
-			{
-				cbxMMSICheck.setSelected(false);
-				txfMMSI.setEnabled(true);
-				txfMMSI.setText(vessel_mmsi);
-			}
-			else
-			{
-				cbxMMSICheck.setSelected(true);
-				txfMMSI.setEnabled(false);	
-			}
-
-		}
-	}
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -390,7 +261,7 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		{
 			
 			HashMap<String, Object> param = new HashMap<String, Object>();
-			Vessel vessel = new Vessel();
+			
 
 			if(!cbxMMSICheck.isSelected())			
 			{
@@ -400,29 +271,22 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 					JOptionPane.showMessageDialog(this, "MMSI는 9자리입니다.");
 					return;
 				}
-				vessel.setVessel_mmsi(txfMMSI.getText());
+				
 				param.put("vessel_mmsi", txfMMSI.getText());
 			}
+			
+			KSGTableColumn conType = (KSGTableColumn) cbxConType.getSelectedItem(); 
 
 
-			param.put("vessel_name", this.vesselName);
-			
-			
-			vessel.setVessel_name(this.vesselName);
-			ConType con =(ConType) cbxType.getSelectedItem();
-			
-			param.put("vessel_type", con.getTypeField());
+			param.put("vessel_name", this.vesselName);			
+			param.put("vessel_type", conType.columnField);
 			param.put("vessel_use", chbUse.isSelected()?Vessel.NON_USE:Vessel.USE);
-			param.put("vessel_company", txfCompanyName.getText());
+			param.put("vessel_company", txfCompanyName.getText());			
 			
-			vessel.setVessel_type(con.getTypeField());
-			vessel.setVessel_use(chbUse.isSelected()?Vessel.NON_USE:Vessel.USE);
-			vessel.setVessel_company(txfCompanyName.getText());
-
 			try {
 				
 				service.update(param);
-				//baseService.updateVessel(vessel);
+				
 
 
 				this.setVisible(false);
@@ -458,29 +322,44 @@ public class UpdateVesselInfoDialog extends KSGDialog implements ActionListener{
 		}
 
 	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+		cbxConType.initComp();
+		
+		
+		String vessel_type = (String) info.get("vessel_type");
+		String vessel_company = (String) info.get("vessel_company");
+		String vessel_mmsi = (String) info.get("vessel_mmsi");
+		
+		txfCompanyName.setText(vessel_company);
 
-	class ConType
-	{
-		private String typeName;
-		private String typeField;
-		public String getTypeName() {
-			return typeName;
-		}
-		public String toString()
+		if(vessel_mmsi!=null&&!vessel_mmsi.equals("         "))
 		{
-			return typeField+" : "+typeName;
+			cbxMMSICheck.setSelected(false);
+			txfMMSI.setEnabled(true);
+			txfMMSI.setText(vessel_mmsi);
 		}
-		public void setTypeName(String typeName) {
-			this.typeName = typeName;
+		else
+		{
+			cbxMMSICheck.setSelected(true);
+			txfMMSI.setEnabled(false);	
 		}
-		public String getTypeField() {
-			return typeField;
-		}
-		public void setTypeField(String typeField) {
-			this.typeField = typeField;
-		}
+		
+		for(int i=0;i<cbxConType.getItemCount();i++)
+		{
+			KSGTableColumn type=(KSGTableColumn) cbxConType.getItemAt(i);
 
-
+			if(type.columnField.equals(vessel_type))
+			{
+				cbxConType.setSelectedIndex(i);
+				break;
+			}
+		}
+		
 	}
+
+
 
 }

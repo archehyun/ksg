@@ -11,6 +11,7 @@
 package com.ksg.workbench.shippertable.comp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -71,10 +72,6 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 	public JTable _tblVesselTable;	
 
 	private ManageVesselDialog vesseldialog;
-	
-	private TableService tableService;
-
-	private BaseService _baseSearvice;
 
 	private ADVService _advService;
 
@@ -83,11 +80,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		daoManager =DAOManager.getInstance();
 
-		_advService= daoManager.createADVService();
-
-		_baseSearvice = daoManager.createBaseService();
-
-		tableService = new TableServiceImpl();
+		_advService= daoManager.createADVService();		
 
 		this.createAndUpdateUI();
 	}
@@ -98,18 +91,8 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		if(command.equals("亲备 包府"))
 		{
-			/*KSGDialog dialog = new ManagePortDialog(KSGModelManager.getInstance().selectedTable_id,base);
-			dialog.createAndUpdateUI();
-			int result = dialog.OPTION;
-			if(result == ManagePortDialog.UPDATE_OPTION)
-			{
-				SearchADVCommand advCommand = new SearchADVCommand(this);
-				advCommand.execute();
-				this.updateUI();
-			}*/
 
-
-			ManageTablePortPop pop = new ManageTablePortPop(KSGModelManager.getInstance().selectedTable_id);
+			ManageTablePortPop pop = new ManageTablePortPop(tblADVTable.getTableID());
 
 			pop.showPop();
 
@@ -170,6 +153,9 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 		butDel.addActionListener(this);
 
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 50, 150, 75);
+		
+		slider.setBackground(Color.white);
+		
 		slider.addChangeListener(new ChangeListener(){
 
 			public void stateChanged(ChangeEvent item) {
@@ -201,6 +187,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 		txfImportDate = new JTextField(8);
 		txfImportDate.setText(KSGDateUtil.format(KSGDateUtil.nextMonday(new Date())));
 		JCheckBox cbxImportDate = new JCheckBox("岿夸老",true);
+		cbxImportDate.setBackground(Color.white);
 		cbxImportDate.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) 

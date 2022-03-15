@@ -11,12 +11,11 @@
 package com.ksg.workbench.base.port.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -24,14 +23,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -46,6 +43,7 @@ import com.ksg.domain.PortInfo;
 import com.ksg.service.PortService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.BaseInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
@@ -55,7 +53,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
  * @author 박창현
  * @설명 항구정보 입력 폼
  */
-public class InsertPortInfoDialog extends BaseInfoDialog implements ActionListener
+public class InsertPortInfoDialog extends BaseInfoDialog
 {
 	
 	private static final long serialVersionUID = 1L;
@@ -74,27 +72,19 @@ public class InsertPortInfoDialog extends BaseInfoDialog implements ActionListen
 
 	private BaseServiceImpl baseService;
 	
+	String port_name;
+	
 	public InsertPortInfoDialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
 		service = new PortServiceImpl();
-		baseService = new BaseServiceImpl(); 
-		initComp();
+		baseService = new BaseServiceImpl();
+		this.addComponentListener(this);
+		
 	}
 	public InsertPortInfoDialog(BaseInfoUI baseInfoUI,String port_name) {
 		this(baseInfoUI);
+		this.port_name = port_name;
 		
-		initComp();
-		try {
-			PortInfo port=baseService.getPortInfo(port_name);
-			if(port!=null){
-			txfArea_code.setText(port.getArea_code());
-			txfPort_area.setText(port.getPort_area());
-			txfPort_name.setText(port.getPort_name());
-			txfPort_nationailty.setText(port.getPort_nationality());
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 	
 
@@ -102,11 +92,29 @@ public class InsertPortInfoDialog extends BaseInfoDialog implements ActionListen
 		
 		this.setModal(true);
 		this.setTitle("항구 정보 추가");
-		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+
+		this.getContentPane().add(buildTitle("Port Info"),BorderLayout.NORTH);
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		
+
+		this.pack();
+		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+		this.setVisible(true);
 	
+	}
+	
+	public KSGPanel buildCenter()
+	{
+		
+		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+		
 		txfArea_code.setEditable(false);
 		txfPort_area.setEditable(false);
-		JPanel pnPort_name = new JPanel();
+		
+		
+		
+		KSGPanel pnPort_name = new KSGPanel();
 		pnPort_name.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblCompany_name = new JLabel("Port Name");
 		lblCompany_name.setPreferredSize(new Dimension(100,25));
@@ -114,7 +122,7 @@ public class InsertPortInfoDialog extends BaseInfoDialog implements ActionListen
 		pnPort_name.add(txfPort_name);
 
 
-		JPanel pnPort_nationailty = new JPanel();
+		KSGPanel pnPort_nationailty = new KSGPanel();
 		pnPort_nationailty.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblCompany_abbr = new JLabel("Port Nationality");
 		lblCompany_abbr.setPreferredSize(new Dimension(100,25));
@@ -122,14 +130,14 @@ public class InsertPortInfoDialog extends BaseInfoDialog implements ActionListen
 		pnPort_nationailty.add(txfPort_nationailty);
 
 
-		JPanel pnPort_area = new JPanel();
+		KSGPanel pnPort_area = new KSGPanel();
 		pnPort_area.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblAgentCode = new JLabel("Port Area");
 		lblAgentCode.setPreferredSize(new Dimension(100,25));
 		pnPort_area.add(lblAgentCode);	
 		pnPort_area.add(txfPort_area);
 
-		JPanel pnArea_code = new JPanel();
+		KSGPanel pnArea_code = new KSGPanel();
 		pnArea_code.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblAgent_abbr = new JLabel("Area Code");
 
@@ -141,12 +149,12 @@ public class InsertPortInfoDialog extends BaseInfoDialog implements ActionListen
 
 				final JDialog dialog = new JDialog(InsertPortInfoDialog.this);
 				dialog.setModal(true);
-				JPanel pnMain = new JPanel();
+				KSGPanel pnMain = new KSGPanel();
 
 				JTable tblAreaList = new JTable();
 				pnMain.setLayout(new BorderLayout());
 
-				JPanel pnControl = new JPanel();
+				KSGPanel pnControl = new KSGPanel();
 				pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 				final JButton butOk = new JButton("확인");
 				butOk.addActionListener(new ActionListener(){
@@ -258,52 +266,15 @@ public class InsertPortInfoDialog extends BaseInfoDialog implements ActionListen
 		pnArea_code.add(butSearchCode);
 
 
-
-
-		JPanel pnS = new JPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-
-		JPanel pnControl =  new JPanel();
-		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butOK = new JButton("확인");
-		JButton butCancel = new JButton("취소");
-		butOK.addActionListener(this);
-		butCancel.addActionListener(this);
-		pnControl.add(butOK);
-		pnControl.add(butCancel);
-
-		JPanel pnTitle = new JPanel();
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnTitle.setBackground(Color.white);
-		JLabel label = new JLabel("Port Info");
-		label.setFont(new Font("area",Font.BOLD,16));
-		pnTitle.add(label);
-
 		pnCenter.add(pnPort_name);
 		pnCenter.add(pnPort_nationailty);
 		pnCenter.add(pnArea_code);
 		pnCenter.add(pnPort_area);
-
-		pnCenter.add(pnS);
-		pnCenter.add(pnControl);
-
-		JPanel left = new JPanel();
-		left.setPreferredSize(new Dimension(15,0));
-		JPanel right = new JPanel();
-		right.setPreferredSize(new Dimension(15,0));
-
-
-		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
-		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
-		this.getContentPane().add(left,BorderLayout.WEST);
-		this.getContentPane().add(right,BorderLayout.EAST);
-		this.pack();
-		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
-		this.setVisible(true);
-	
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		pnMain.add(pnCenter);
+		return pnMain;
+				
 	}
 	private void initComp() {
 		txfPort_name = new JTextField(20);
@@ -422,6 +393,22 @@ public class InsertPortInfoDialog extends BaseInfoDialog implements ActionListen
 			this.dispose();
 		}
 
+	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		initComp();
+		try {
+			PortInfo port=baseService.getPortInfo(port_name);
+			if(port!=null){
+			txfArea_code.setText(port.getArea_code());
+			txfPort_area.setText(port.getPort_area());
+			txfPort_name.setText(port.getPort_name());
+			txfPort_nationailty.setText(port.getPort_nationality());
+			}
+		} catch (SQLException ee) {
+			ee.printStackTrace();
+		}
 	}
 
 

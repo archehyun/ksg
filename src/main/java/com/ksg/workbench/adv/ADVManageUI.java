@@ -22,8 +22,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
@@ -41,7 +39,6 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -64,15 +61,15 @@ import javax.swing.tree.TreePath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.TablePort;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.FileInfo;
+import com.ksg.view.comp.KSGCheckBox;
+import com.ksg.view.comp.KSGRadioButton;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableImpl;
 import com.ksg.view.comp.tree.KSGTree;
@@ -83,46 +80,47 @@ import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.print.PrintADVUI;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 
 
 /**
 
-  * @FileName : ADVManageUI.java
+ * @FileName : ADVManageUI.java
 
-  * @Project : KSG2
+ * @Project : KSG2
 
-  * @Date : 2021. 7. 7. 
+ * @Date : 2021. 7. 7. 
 
-  * @작성자 : 박창현
+ * @작성자 : 박창현
 
-  * @변경이력 :
+ * @변경이력 :
 
-  * @프로그램 설명 : 광고정보 자동 입력 화면
+ * @프로그램 설명 : 광고정보 자동 입력 화면
 
-  */
+ */
 @SuppressWarnings("unchecked")
 public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 {	
+
 	
 	private static final Logger logger = LoggerFactory.getLogger(ADVManageUI.class);
+	
 	private static int _tableViewCount = 10;
-	
+
 	private static final String SEARCH_TYPE_COMPANY = "선사";
-	
+
 	private static final String SEARCH_TYPE_PAGE = "페이지";
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static KSGTreeDefault tree1;
-	
+
 	public KSGTableImpl 		_tblError;
-	
+
 	private JTable			_tblSheetNameList;
-	
+
 	private JTree			_treeMenu;
-	
+
 	private JTextField  	_txfCPage,
 	_txfPage,
 	_txfPCompany,
@@ -130,71 +128,73 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	_txfSearchByCompany,
 	_txfVessel,
 	txfImportDate;
-	
+
 	public JTextField		_txfXLSFile,_txfSearchedTableCount,_txfCompany,_txfDate;
 
 	private AdjestADVListDialog adjestADVListDialog;
-	
+
 	private ButtonGroup 	bgKeyword;
-	
+
 	private JButton 		butAdjust,butCompanyAdd,butPre;
-	
+
 	public JButton			butNext;
-	
+
 	private JList 			companyLi;
-	
+
 	private Vector 			companyList;
-	
+
 	private JList 			fileLi,fileLi2,pageLi;
-	
+
 	private Vector<KSGXLSImportPanel> importTableList = new Vector<KSGXLSImportPanel>();
-	
+
 	private boolean 		isPageSearch=true;
-	
+
 	private int 			pageCount;
-	
+
 	private Vector 			pageList;
-	
+
 	private KSGPanel 			pnSubSearch,pnSubSelect,pnTableInfo,pnTableList,pnLeftMenu;
-	
+
 	private JTabbedPane 	pnTab;
-	
+
 	private Vector 			resultA = new Vector();
 
 	private int 			resultOK,currentPage,resultCancel,startTableIndex,totalTableCount;
 
 	private String 			searchType=SEARCH_TYPE_COMPANY;
-	
+
 	private String			selectedInput="File";
-	
+
 	private ADVListPanel advListPanel;
 
 	private TablePort tablePort;
-	
+
 	private TableService tableService;
-	private SearchPanel searchPanel;
-	private ADVServiceImpl _advService;
 	
+	private SearchPanel searchPanel;
+	
+	private ADVServiceImpl _advService;
+
 	public ADVManageUI() {
-		
+
 		super();
-		
+
 		this.title="광고정보 입력";
 		this.borderColor = new Color(179,195,207);
 
 		Properties properties = new Properties();
 
 		this.setName("ADVManageUI");
-		
+
 		tableService = new TableServiceImpl();
-		
+
 		_advService = new ADVServiceImpl();
-		
-		
-		
+
+
+
 		createAndUpdateUI();
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals("이전"))
@@ -227,9 +227,9 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	 */
 	private Component buildCenter() {
 
-		
+
 		pnTab = new JTabbedPane();
-		
+
 		pnTab.addChangeListener(new ChangeListener(){
 
 			public void stateChanged(ChangeEvent e) {
@@ -245,30 +245,30 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 				}
 
 			}});
-		
+
 		initComp();
-		
-		
+
+
 		//검색 화면
-		
+
 		searchPanel = new SearchPanel(this);
-		
+
 		// 결과 봐면
-		
+
 		advListPanel = new ADVListPanel();
-		
+
 		advListPanel.setSearchPanel(searchPanel);
-		
+
 		searchPanel.setAdvListPanel(advListPanel);
-		
-		
+
+
 		pnTab.addTab("입력정보", searchPanel);
 		pnTab.addTab("결과", advListPanel);
-		
+
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-		
+
 		pnMain.add(pnTab);
-		pnMain.add(buildLeftMenu(),BorderLayout.WEST);
+		
 
 		return pnMain;
 	}
@@ -287,21 +287,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		butAdjust = new JButton("위치조정");
 		butAdjust.addActionListener(this);
 		butAdjust.setEnabled(false);
-		
-/*		JButton butReLoad = new JButton("다시 불러오기");
-		butReLoad.addActionListener(new ActionListener(){
 
-			public void actionPerformed(ActionEvent e) {
-				//initInfo();
-				if(selectedInput.equals("File"))
-				{
-				//	actionImportADVInfo();
-				}else
-				{
-					//importADVTextInfoAction();
-				}
-			}});
-*/
 
 		KSGPanel pnNorthLeft = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		KSGPanel pnNorthRight = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -319,11 +305,11 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 
 		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-		
+
 		//TODO 설정 파일 오류 확인
 		/* 2014.11.3 오류 발생 주석 처리
 		 *
-		*/
+		 */
 		//pane.setDividerLocation(Integer.parseInt((propertis.getProperty("errorDividerLoction"))));
 		KSGPanel pnTableList = createPnTableList();
 
@@ -349,56 +335,56 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		pnSearchByCompany .add(lblCompany);
 		pnSearchByCompany .add(_txfSearchByCompany);
 		_txfSearchByCompany.addKeyListener(new KeyAdapter(){
-		public void keyPressed(KeyEvent e) 
-		{
-			if(e.getKeyCode()==KeyEvent.VK_ENTER)
+			public void keyPressed(KeyEvent e) 
 			{
-				String text=_txfSearchByCompany.getText();
-				if(!isPageSearch)
+				if(e.getKeyCode()==KeyEvent.VK_ENTER)
+				{
+					String text=_txfSearchByCompany.getText();
+					if(!isPageSearch)
 
-				{
-					DefaultMutableTreeNode node = KSGTree.searchNodeByCompany(tree1,text);
-					if(node!=null)
 					{
-						TreeNode[] nodes = ((DefaultTreeModel)tree1.getModel()).getPathToRoot(node);
-						TreePath path = new TreePath(nodes);
-						tree1.scrollPathToVisible(path);
-						tree1.setSelectionPath(path);
-					}else
-					{
-						JOptionPane.showMessageDialog(null, "해당선사가 없습니다.");
-						_txfSearchByCompany.setText("");
-					}
-					_txfSearchByCompany.setText("");
-				}else
-				{
-					try{
-						int page= Integer.parseInt(text);
-						DefaultMutableTreeNode node = KSGTree.searchNodeByPage(tree1,page);
+						DefaultMutableTreeNode node = KSGTree.searchNodeByCompany(tree1,text);
 						if(node!=null)
 						{
 							TreeNode[] nodes = ((DefaultTreeModel)tree1.getModel()).getPathToRoot(node);
 							TreePath path = new TreePath(nodes);
 							tree1.scrollPathToVisible(path);
 							tree1.setSelectionPath(path);
-							_txfSearchByCompany.setText("");
 						}else
 						{
-							JOptionPane.showMessageDialog(null, "해당 Page가 없습니다.");
+							JOptionPane.showMessageDialog(null, "해당선사가 없습니다.");
 							_txfSearchByCompany.setText("");
 						}
-					}catch (NumberFormatException ee) {
-						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, text+" <== 정확한 숫자를 입력하세요");
-//						ee.printStackTrace();
-						logger.error(ee.getMessage());
 						_txfSearchByCompany.setText("");
+					}else
+					{
+						try{
+							int page= Integer.parseInt(text);
+							DefaultMutableTreeNode node = KSGTree.searchNodeByPage(tree1,page);
+							if(node!=null)
+							{
+								TreeNode[] nodes = ((DefaultTreeModel)tree1.getModel()).getPathToRoot(node);
+								TreePath path = new TreePath(nodes);
+								tree1.scrollPathToVisible(path);
+								tree1.setSelectionPath(path);
+								_txfSearchByCompany.setText("");
+							}else
+							{
+								JOptionPane.showMessageDialog(null, "해당 Page가 없습니다.");
+								_txfSearchByCompany.setText("");
+							}
+						}catch (NumberFormatException ee) {
+							JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, text+" <== 정확한 숫자를 입력하세요");
+							//						ee.printStackTrace();
+							logger.error(ee.getMessage());
+							_txfSearchByCompany.setText("");
+						}
 					}
-				}
 
+				}
 			}
-		}
 		});
-		JCheckBox box = new JCheckBox(SEARCH_TYPE_PAGE,true);
+		JCheckBox box = new KSGCheckBox(SEARCH_TYPE_PAGE,true);
 		box.addChangeListener(new ChangeListener(){
 
 			public void stateChanged(ChangeEvent e) {
@@ -418,8 +404,9 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		ButtonGroup group = new ButtonGroup();
 
 
-		JRadioButton button = new JRadioButton("선사별");
-		JRadioButton button1 = new JRadioButton("페이지별",true);
+		JRadioButton button = new KSGRadioButton("선사별");
+		
+		JRadioButton button1 = new KSGRadioButton("페이지별",true);
 		group.add(button);
 		group.add(button1);
 
@@ -473,16 +460,17 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 			pnTitle.setPreferredSize( new Dimension(0,22));
 
 			pnSearch.add(pnSearchByCompany,BorderLayout.NORTH);
+			
 			pnSearch.add(new JScrollPane(_treeMenu),BorderLayout.CENTER);
+			
 			pnSearch.add(pnContorl,BorderLayout.SOUTH);
+			
+			pnSearch.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));			
+			
+			pnLeftMenu.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-
-			KSGPanel pnMain = new KSGPanel(new BorderLayout());
-
-			pnMain.add(pnSearch,BorderLayout.CENTER);
-
-			pnLeftMenu.add(pnMain);
-			pnLeftMenu.add(KSGDialog.createMargin(10, 0),BorderLayout.WEST);
+			pnLeftMenu.add(pnSearch);
+			
 
 			return pnLeftMenu;
 	}
@@ -511,88 +499,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 
 			}});
-		/*JButton butSave = new JButton("광고정보저장",new ImageIcon("images/save.gif"));
-
-		butSave.setToolTipText("광고정보저장");
-		butSave.setActionCommand("광고정보저장");
-		butSave.setPreferredSize(new Dimension(150,25));
-
-		butSave.addActionListener(new ActionListener(){
-
-
-			public void actionPerformed(ActionEvent e) 
-			{
-				try{
-					if(txfImportDate.getText().length()<=0)
-					{
-						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "날짜입력:");	
-						return;
-					}
-
-					List tableli = new LinkedList();
-
-					if(searchType.equals(SEARCH_TYPE_COMPANY)){
-						
-						int pageRow = pageLi.getModel().getSize();
-						
-						DefaultListModel model = (DefaultListModel)pageLi.getModel();
-						
-						for(int i=0;i<pageRow;i++)
-						{
-							PageInfo info=(PageInfo) model.get(i);
-							
-							if(info.isSelected())
-							{
-								ShippersTable stable = new ShippersTable();
-								
-								stable.setPage(Integer.parseInt(info.chekInfo.toString()));
-								
-								stable.setCompany_abbr(_txfCompany.getText());
-								
-								List templi=tableService.selectTableInfoList(stable);
-								
-								for(int j=0;j<templi.size();j++)
-								{
-									ShippersTable table = (ShippersTable) templi.get(j);
-									tableli.add(table);
-								}
-							}
-
-						}
-					}else
-					{
-						int pageRow = companyLi.getModel().getSize();
-						for(int i=0;i<pageRow;i++)
-						{
-							DefaultListModel model = (DefaultListModel) companyLi.getModel();
-
-							PageInfo info=(PageInfo) model.get(i);
-							if(info.isSelected())
-							{
-								ShippersTable stable = new ShippersTable();
-								stable.setPage(Integer.parseInt(_txfCPage.getText()));
-								stable.setCompany_abbr(info.chekInfo.toString());
-								List templi=tableService.selectTableInfoList(stable);
-								for(int j=0;j<templi.size();j++)
-								{
-									ShippersTable table = (ShippersTable) templi.get(j);
-									tableli.add(table);
-								}
-							}
-						}
-					}
-
-					//saveAction(tableli);
-
-
-				}catch(Exception es)
-				{
-					JOptionPane.showMessageDialog(null, "등록실패:"+es.getMessage());
-					es.printStackTrace();
-				}
-
-			}});
-*/
+		
 		JButton butCancel = new JButton(new ImageIcon("images/cancel.gif"));
 		butCancel.setPreferredSize(new Dimension(35,25));
 		butCancel.addActionListener(new ActionListener(){
@@ -683,11 +590,13 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	public void createAndUpdateUI() 
 	{	
 
-		this.setLayout(new BorderLayout());
-	
+		this.setLayout(new BorderLayout(10,10));
+
 		this.add(buildNorthPn(),BorderLayout.NORTH);
-		
+
 		this.add(buildCenter(),BorderLayout.CENTER);
+		
+		this.add(buildLeftMenu(),BorderLayout.WEST);
 	}
 
 
@@ -723,30 +632,27 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		tree1 = new KSGTreeDefault("tree1");
 		tree1.setRowHeight(25);
 		tree1.setComponentPopupMenu(createTreePopuomenu());
-		try {
+		tree1.update();
 
-			tree1.addTreeSelectionListener(new TreeSelectionListener(){
+		tree1.addTreeSelectionListener(new TreeSelectionListener(){
 
-				public void valueChanged(TreeSelectionEvent e) {
+			public void valueChanged(TreeSelectionEvent e) {
 
-					TreePath path=e.getNewLeadSelectionPath();
-					if(path!=null)
+				TreePath path=e.getNewLeadSelectionPath();
+				if(path!=null)
+				{
+
+					try{
+						searchPanel.updateViewByTree(path);
+					}catch(Exception e2)
 					{
-
-						try{
-							searchPanel.updateViewByTree(path);
-						}catch(Exception e2)
-						{
-							e2.printStackTrace();
-							return;
-						}
+						e2.printStackTrace();
+						return;
 					}
 				}
-			});
+			}
+		});
 
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
 		return tree1;
 	}
 
@@ -793,7 +699,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		menu.add(viewMenu);
 		return menu;
 	}
-	
+
 
 	/**
 	 *컴포넌트 초기화 
@@ -821,131 +727,11 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		_txfSearchedTableCount.setEditable(false);
 	}
 
-
-
-/*	*//**
-	 * @param li
-	 * @throws SQLException
-	 * @throws ParseException
-	 *//* 
-	private void saveAction(List li) throws ParseException, SQLException {
-
-		logger.info("start");
-		resultA.removeAllElements();
-
-		for(int i=0;i<importTableList.size();i++)
-		{
-			KSGXLSImportPanel xlsPn = importTableList.get(i);
-			Vector portList=xlsPn.getPortList();
-			for(int j=0;j<portList.size();j++)
-			{
-				PortColorInfo port=(PortColorInfo) portList.get(j);
-				
-				if(port.getArea_code()==null)
-					continue;
-				if(port.getArea_code().equals("-"))
-				{
-					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, (xlsPn.getTableIndex()+1)+ "번 테이블의 ("+port.getPort_name()+") 항구 정보가 없음");
-					return;
-				}
-			}
-			Vector t=xlsPn.getNullVesselList();
-			if(t.size()>0)
-			{
-				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, (xlsPn.getTableIndex()+1)+ "번 테이블에 ("+t.size()+")개의 등록 되지 않은 선박 명이 있습니다. ");
-				return;
-			}			
-		}
-
-		for(int i=0;i<importTableList.size();i++)
-		{	
-			KSGXLSImportPanel xlsPn = importTableList.get(i);
-			Vector portList=xlsPn.getPortList();
-			savePortList(xlsPn, portList);
-			String insertData = new String();
-
-
-			// 수정 필요
-
-			insertData =xlsPn.getTableXMLInfo();
-
-			logger.info("table info : \n"+insertData);
-
-			ShippersTable tableinfo=(ShippersTable) li.get(i);
-
-			ADVData data = new ADVData();
-
-			data.setData(insertData);
-			data.setDate_isusse(KSGDateUtil.toDate2(txfImportDate.getText()));
-			//TODO 아이디 입력 부분 수정 
-			data.setTable_id(tableinfo.getTable_id());
-			data.setCompany_abbr(_txfCompany.getText());
-			data.setPage(manager.selectedPage);
-
-			data.setTable_id(tableinfo.getTable_id());
-			
-			advService.removeADVData(data.getTable_id());
-			ADVData d=advService.insertADVData(data);
-			if(d!=null)
-			{
-				tableService.updateTableDate(data);
-				logger.info("update table");
-			}
-			else
-			{
-				System.out.println("");
-			}
-			
-			KSGCommand command = new InsertADVCommand(data);
-			command.execute();
-		}
-		JOptionPane.showMessageDialog(null, "광고정보를 저장했습니다.");
-		logger.info("save");
-
-	}
-	*/
-
-	/*private void savePortList(KSGXLSImportPanel xlsPn, Vector portList) {
-		try {
-			TablePort delPort = new TablePort();
-			delPort.setTable_id(xlsPn.getTable_id());
-			tableService.deleteTablePort(delPort);
-
-			for(int j=0;j<portList.size();j++)
-			{
-				PortColorInfo port=(PortColorInfo) portList.get(j);
-				if(port.getArea_code()==null)
-					continue;
-				tablePort = new TablePort();
-				tablePort.setTable_id(xlsPn.getTable_id());
-				tablePort.setPort_type("P");
-				tablePort.setPort_index(port.getIndex());
-				tablePort.setPort_name(port.getPort_name());
-				tablePort.setParent_port(port.getPort_name());
-				tableService.insertPortList(tablePort);
-			}
-		}catch(SQLException e)
-		{
-
-			if(e.getErrorCode()==2627)
-			{
-				e.printStackTrace();
-			}else
-			{
-				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e.getMessage());
-				e.printStackTrace();
-			}
-		}
-	}*/
-
 	public void setTabIndex(int i) {
 		pnTab.getModel().setSelectedIndex(i);
 
 	}
-	public void update(KSGModelManager manager) 
-	{
-		
-	}
+
 
 	/**
 	 * @param index
@@ -957,11 +743,11 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		totalTableCount = manager.tableCount-1;
 		pageCount =totalTableCount/_tableViewCount;
 		pnTableList.removeAll();
-		
+
 		logger.debug("adv execute");
 		manager.execute("adv");
-		
-		
+
+
 		// 인덱스를 조회 하여 지정 하는 부분 필요
 		for(int i=0;i<importTableList.size();i++)
 		{
@@ -979,138 +765,10 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 	public void setSelectedIndex(int index) {
 		pnTab.setSelectedIndex(index);
-		
+
 	}
 
-/*	private void updateViewByTree(TreePath path) {
-
-		String selectedCompany = path.getLastPathComponent().toString();
-
-		switch (path.getPathCount()) {
-		case 1: // root 선택시
-
-
-			manager.selectedCompany=null;
-
-			manager.selectedPage=-1;
-			_txfCompany.setText("");
-			_txfPage.setText("");
-
-			lblSelectedCompanyName.setText("");
-			lblSelectedPage.setText("");
-			DefaultListModel listModel1 = new DefaultListModel();
-			pageLi.setModel(listModel1);
-			companyLi.setModel(listModel1);
-
-			//test
-			butCompanyAdd.setEnabled(false);
-			lblSelectedCompanyName.setText("");
-			lblSelectedPage.setText("");
-
-			break;
-		case 2: // 0~9 선택시
-			manager.selectedCompany=null;
-
-			manager.selectedPage=-1;
-			_txfCompany.setText("");
-			_txfPage.setText("");
-			_txfCPage.setText("");
-			_txfPCompany.setText("");
-			DefaultListModel listModel2 = new DefaultListModel();
-			pageLi.setModel(listModel2);
-			companyLi.setModel(listModel2);
-
-			//test
-			butCompanyAdd.setEnabled(false);
-			lblSelectedCompanyName.setText("");
-			lblSelectedPage.setText("");
-			break;
-		case 3: // 0~9 선택시
-			StringTokenizer st = new StringTokenizer(selectedCompany,":");
-
-			String com = new String();
-			String page = new String();
-
-			page=st.nextToken();
-			com = st.nextToken();
-
-			_txfCompany.setText(com);
-			_txfPage.setText(page);
-			_txfCPage.setText(page);
-			_txfPCompany.setText(com);
-
-			try {
-				if(searchType.equals(SEARCH_TYPE_COMPANY))
-				{
-					List li=tableService.getTablePageListByCompany(com);
-					DefaultListModel listModel = new DefaultListModel();
-					int row=0;
-					for(int i=0;i<li.size();i++)
-					{
-						ShippersTable tableInfo = (ShippersTable) li.get(i);
-
-						PageInfo info = new PageInfo(tableInfo.getPage());
-
-						if(Integer.parseInt(page)==tableInfo.getPage())
-						{
-							info.setSelected(true);
-							row=i;
-						}
-						if(isSamePageSelect)
-						{
-							info.setSelected(true);
-						}
-
-						listModel.addElement(info);
-					}
-					pageLi.setModel(listModel);
-					pageLi.setVisibleRowCount(row);
-					searchPanel.updateTableInfo2(listModel);
-					logger.debug("searched Page size:"+listModel.size());
-
-				}else
-				{
-					List li=tableService.getTableCompanyListByPage(Integer.parseInt(page));
-					DefaultListModel listModel = new DefaultListModel();
-					for(int i=0;i<li.size();i++)
-					{
-						ShippersTable tableInfo = (ShippersTable) li.get(i);
-
-						PageInfo info = new PageInfo(tableInfo.getCompany_abbr());
-
-						if(com.equals(info.getText()))
-						{
-							info.setSelected(true);
-						}
-						listModel.addElement(info);
-					}
-
-					companyLi.setModel(listModel);
-					searchPanel.updateTableInfo2(listModel);
-
-				}
-
-
-				updatePropertyTable(com,Integer.parseInt(page));
-
-
-				//test
-				butCompanyAdd.setEnabled(true);
-				lblSelectedPage.setText(page);
-				lblSelectedCompanyName.setText(com);
-
-			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e.getMessage());
-				e.printStackTrace();
-			}
-			manager.selectedCompany=com;
-
-			manager.selectedPage=Integer.parseInt(page);
-			break;
-		default:
-			break;
-		}
-	}*/
+	
 }
 
 

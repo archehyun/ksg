@@ -10,6 +10,10 @@ import com.ksg.dao.ShipperTableDAO;
 
 public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 	
+	public ShipperTableDAOImpl() {
+		super();
+	}
+	
 	
 	public List<Map<String, Object>> selectPortList(Map<String, Object> commandMap) throws SQLException {
 		// 
@@ -26,10 +30,6 @@ public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 		delete("shippertable.deleteShipperPortList", commandMap);
 		
 	}
-
-
-	
-	
 
 
 	@Override
@@ -53,6 +53,12 @@ public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 		
 		return (Integer) update("shippertable.update", param);
 	}
+	
+	@Override
+	public int updateDate(Map<String, Object> param) throws SQLException {
+		
+		return (Integer) update("shippertable.updateDate", param);
+	}
 
 	@Override
 	public int delete(Map<String, Object> param) throws SQLException {
@@ -61,13 +67,12 @@ public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 	}
 
 	@Override
-	public int insert(Map<String, Object> param) throws SQLException {
+	public Object insert(Map<String, Object> param) throws SQLException {
 		
 		return (Integer) insert("shippertable.insert", param);
 	}
 
 	public Object selectListByPage(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("shippertable.selectShipperTableListByPage", param);
 	}
 

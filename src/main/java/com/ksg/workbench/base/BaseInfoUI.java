@@ -139,7 +139,7 @@ public class BaseInfoUI extends AbstractMgtUI{
 		comp.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		comp.setBackground(Color.white);
 		pnMain.add(comp,BorderLayout.CENTER);
-		pnMain.setPreferredSize(new Dimension(230,100));
+		pnMain.setPreferredSize(new Dimension(250,100));
 		pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
 		return pnMain;

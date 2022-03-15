@@ -24,7 +24,23 @@ import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
+/**
+
+  * @FileName : UpdateShipperTableDateDialog.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 14. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 테이블별 날짜 정보 수정
+
+  */
 public class UpdateShipperTableDateDialog extends KSGDialog implements ActionListener{
 	
 	
@@ -40,10 +56,13 @@ public class UpdateShipperTableDateDialog extends KSGDialog implements ActionLis
 	private List tableIDlist;
 	private ShipperTableService service;
 	
+	JComponent parent;
+	
 	public UpdateShipperTableDateDialog(List list, JComponent parent)
 	{
 		this.tableIDlist = list;
 		service = new ShipperTableServiceImpl();
+		this.parent =parent; 
 		setLocationRelativeTo(parent);
 	}
 
@@ -111,9 +130,7 @@ public class UpdateShipperTableDateDialog extends KSGDialog implements ActionLis
 		{
 
 			try {
-				String date=txfImportDate.getText();
-				
-				HashMap<String, Object> param = new HashMap<String, Object>();
+				String date=txfImportDate.getText();				
 				
 				String inputDate = KSGDateUtil.toDate3(date).toString();
 
@@ -122,6 +139,8 @@ public class UpdateShipperTableDateDialog extends KSGDialog implements ActionLis
 				result=1;
 
 				close();
+				((ShipperTableMgtUI2)parent).fnSearch();
+				
 
 				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "날짜를 수정했습니다.");
 

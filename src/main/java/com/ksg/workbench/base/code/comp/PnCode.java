@@ -133,8 +133,7 @@ public abstract class PnCode extends JPanel implements ActionListener
 
 		JPanel pnTitle = createTiltlePn();
 		this.add(pnMain,BorderLayout.CENTER);
-		this.add(KSGDialog.createMargin(),BorderLayout.EAST);
-		this.add(KSGDialog.createMargin(),BorderLayout.WEST);		
+				
 		this.add(pnTitle,BorderLayout.NORTH);
 	}	
 

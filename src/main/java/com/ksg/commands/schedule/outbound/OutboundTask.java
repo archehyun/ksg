@@ -775,7 +775,7 @@ public class OutboundTask extends SimpleTask{
 						logger.info("set major-company:"+searchedVessel.getVessel_company());
 					}
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
 

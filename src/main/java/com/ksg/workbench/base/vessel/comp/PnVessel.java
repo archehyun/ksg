@@ -21,9 +21,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -68,9 +66,9 @@ import com.ksg.workbench.base.vessel.dialog.InsertVesselAbbrInfoDialog;
 import com.ksg.workbench.base.vessel.dialog.InsertVesselInfoDialog;
 import com.ksg.workbench.base.vessel.dialog.UpdateVesselInfoDialog;
 import com.ksg.workbench.base.vessel.dialog.VesselImportDialog;
+import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.schedule.comp.KSGPageTablePanel;
 
 
 /**
@@ -237,10 +235,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	private JComponent buildSearchPanel() {
 		KSGPanel pnSearch = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		lblTable = new JLabel("선박 정보");
-		lblTable.setSize(200, 25);
-		lblTable.setFont(new Font("돋움",0,16));
-		lblTable.setIcon(new ImageIcon("images/db_table.png"));
+	
 
 		JLabel lbl = new JLabel("필드명 : ");
 		cbxField = new JComboBox<KSGTableColumn>();
@@ -281,32 +276,18 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		Box pnSearchAndCount = Box.createVerticalBox();
 		pnSearchAndCount.add(pnSearch);
 
-		KSGPanel pnCountInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnCountInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));	
 		
-		
-		pnSearchAndCount.add(pnCountInfo);
-
-		KSGPanel pnCount = new KSGPanel();
-		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnCount.add(lblTable);
+		pnSearchAndCount.add(pnCountInfo);	
 
 		KSGPanel pnInfo= new KSGPanel(new BorderLayout());
 
-		KSGPanel pnS = new KSGPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		KSGPanel pnS1 = new KSGPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-		Box info = new Box(BoxLayout.Y_AXIS);
-		info.add(pnS);
-		info.add(pnS1);
-
-
-		pnInfo.add(info,BorderLayout.SOUTH);
+		pnInfo.add(buildLine(),BorderLayout.SOUTH);
 		pnInfo.add(pnSearchAndCount,BorderLayout.EAST);
-		pnInfo.add(pnCount,BorderLayout.WEST);
+		pnInfo.add(buildTitleIcon("선박 정보"),BorderLayout.WEST);
 		return pnInfo;
 	}
+	
 	/**하단 버튼 목록 생성
 	 * @return
 	 */
@@ -330,10 +311,6 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 		butImport.addActionListener(this);
 		butVesselDel.addActionListener(this);
 
-		
-		//pnButtomRight.add(butNewAbbr);
-		//pnButtomRight.add(butDel);
-		//pnButtomRight.add(butDelNewAbbr);
 		pnMain.add(butExport);
 		pnMain.add(butImport);
 		pnMain.add(butVesselDel);
@@ -491,12 +468,9 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 	 */
 	private void insertAction() {
 		logger.debug("insert");
-		KSGDialog dialog = new InsertVesselInfoDialog();
+		KSGDialog dialog = new InsertVesselInfoDialog(this);
 		dialog.createAndUpdateUI();
-		if(dialog.result==KSGDialog.SUCCESS)
-		{
-			//searchData();
-		}
+		
 	}
 	private void deleteAllAction()
 	{
@@ -507,7 +481,7 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 				
 				vesselService.delete(new HashMap<String, Object>());
 //				baseDaoService.deleteVesselAll();
-				updateTable();
+				
 				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "데이터를 삭제 했습니다.");
 			} catch (SQLException e1) {
 
@@ -725,11 +699,6 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 
 	}
 
-	public void updateTable() {
-
-		//searchData();
-
-	}
 
 	class TableSelectListner extends MouseAdapter
 	{
@@ -879,6 +848,8 @@ public class PnVessel extends PnBase implements ActionListener, ComponentListene
 			HashMap<String, Object> resultMap =  (HashMap<String, Object>) vesselService.selectDetailList(commandMap);
 
 			List result = (List) resultMap.get("master");
+			
+			System.out.println("list size:"+result.size());
 
 			tableD.setResultData(result);
 		} catch (Exception e1) {

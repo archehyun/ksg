@@ -20,6 +20,7 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.AbstractCellEditor;
@@ -69,9 +70,11 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
+import com.ksg.service.VesselService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.workbench.KSGViewParameter;
@@ -111,6 +114,8 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 	protected BaseService baseService;
 
 	private ADVService advservice;
+	
+	private VesselService vesselService;
 
 	private DAOManager daomanager;
 
@@ -158,6 +163,8 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		baseService = new BaseServiceImpl();
 
 		tableService = new TableServiceImpl();
+		
+		vesselService = new VesselServiceImpl();
 	}
 	public void setVesselModel(DefaultTableModel vesselModel) {
 		this.vesselModel = vesselModel;
@@ -498,17 +505,33 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 				return;
 			Vessel  op = new Vessel();
 			op.setVessel_name(String.valueOf(value));
+			
+			
 
-			List li=baseService.getVesselAbbrInfoByPatten(String.valueOf(value)+"%");
+			//List li=baseService.getVesselAbbrInfoByPatten(String.valueOf(value)+"%");
+			
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			param.put("vessel_name", value);
+			
+			HashMap<String, Object> resultMap= vesselService.selectDetailListByLike(param);
+			
+			List li = (List) resultMap.get("master");
+			
+			
 			if(li.size()==1)
 			{
-				Vessel vessel = (Vessel) li.get(0);
-				String obj = vessel.getVessel_abbr().toUpperCase();
+				HashMap<String, Object> vessel = (HashMap<String, Object>) li.get(0);
+				
+				
+				String obj = ((String)vessel.get("vessel_name")).toUpperCase();
+				
+				
+				
 
-				setValue(obj, selectedVesselrow, col)	;
+				setValue(obj, selectedVesselrow, col);
 				vesselModel.setRowCount(vesselModel.getRowCount()+1);
-				vesselModel.setValueAt(vessel.getVessel_name(), selectedVesselrow, 0);
-				vesselModel.setValueAt(vessel.getVessel_abbr(), selectedVesselrow, 1);
+				vesselModel.setValueAt(vessel.get("vessel_name"), selectedVesselrow, 0);
+				vesselModel.setValueAt(vessel.get("vessel_abbr"), selectedVesselrow, 1);
 				return;
 
 
@@ -520,7 +543,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 				if(searchVesselDialog.result!=null)
 				{
-					setValue(searchVesselDialog.resultAbbr, selectedVesselrow, col);
+					setValue(searchVesselDialog.result, selectedVesselrow, col);
 
 					vesselModel.setRowCount(vesselModel.getRowCount()+1);
 					vesselModel.setValueAt(searchVesselDialog.result, selectedVesselrow, 0);
@@ -1180,5 +1203,9 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			}
 
 		}
+	}
+	public String getTableID() {
+		// TODO Auto-generated method stub
+		return shippersTableInfo.getTable_id();
 	}
 }

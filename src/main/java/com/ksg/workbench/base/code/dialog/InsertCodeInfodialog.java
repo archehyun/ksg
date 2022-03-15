@@ -11,26 +11,19 @@
 package com.ksg.workbench.base.code.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.code.comp.PnCode;
 import com.ksg.workbench.base.dialog.BaseInfoDialog;
@@ -41,20 +34,19 @@ import com.ksg.workbench.base.dialog.BaseInfoDialog;
  * @author 박창현
  *
  */
-public class InsertCodeInfodialog extends BaseInfoDialog implements ActionListener {
+public class InsertCodeInfodialog extends BaseInfoDialog {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JLabel lblInfo
-	;
 
 	private JTextField txfCodeName;
 	private JTextField txtKorCode;
+	private JTextField txfField;
 	
 	private PnCode baseCode;
 	
-	private JTextField txfField;
+	
 	
 	String code_type;
 	String title;
@@ -64,6 +56,7 @@ public class InsertCodeInfodialog extends BaseInfoDialog implements ActionListen
 	public InsertCodeInfodialog(BaseInfoUI baseInfoUI) 
 	{
 		super(baseInfoUI);
+		this.addComponentListener(this);
 		baseService = new BaseServiceImpl();
 		this.baseInfoUI=baseInfoUI;
 		
@@ -96,85 +89,31 @@ public class InsertCodeInfodialog extends BaseInfoDialog implements ActionListen
 	public void createAndUpdateUI() {
 		this.setModal(true);
 		this.setTitle("Code 정보 추가");
-		Box pnCenter = new Box(BoxLayout.Y_AXIS);
-		txfCodeName = new JTextField(20);
-		txtKorCode = new JTextField(20);
-		txfField = new JTextField(20);
-		lblInfo = new JLabel("",JLabel.RIGHT);
-		lblInfo.setFont(defaultFont);
-		
-		JPanel pnName = new JPanel();
-		pnName.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblCodeName = new JLabel("Name");
-		lblCodeName.setPreferredSize(new Dimension(80,25));
-		pnName.add(lblCodeName);
-		pnName.add(txfCodeName);
-		
-		JPanel pnCode = new JPanel();
-		pnCode.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblKorName = new JLabel("한글");
-		lblKorName.setPreferredSize(new Dimension(80,25));
-		pnCode.add(lblKorName);	
-		pnCode.add(txtKorCode);
-		
-		
-		JPanel pnField = new JPanel();
-		pnCode.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblField = new JLabel("Field");
-		lblField.setPreferredSize(new Dimension(80,25));
-		pnField.add(lblField);	
-		pnField.add(txfField);
 
-
-		JPanel pnS = new JPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-
-		JPanel pnControl =  new JPanel();
-		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butOK = new JButton("확인");
-		butOK.setFont(defaultFont);
-		
-		butOK.addActionListener(this);
-		JButton butCancel = new JButton("취소");
-		butCancel.addActionListener(this);
-		butCancel.setFont(defaultFont);
-
-		pnControl.add(butOK);
-		pnControl.add(butCancel);
-
-		JPanel pnTitle = new JPanel();
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnTitle.setBackground(Color.white);
-		JLabel label = new JLabel(title+" 코드 추가");
-		label.setFont(new Font("돋음",0,16));
-		pnTitle.add(label);
-		JPanel pnInfo = new JPanel();
-		pnInfo.setLayout( new FlowLayout(FlowLayout.LEFT));
-		pnInfo.add(lblInfo);
-
-		pnCenter.add(pnName);
-		pnCenter.add(pnCode);
-		pnCenter.add(pnField);
-		pnCenter.add(pnInfo);
-		pnCenter.add(pnS);
-		pnCenter.add(pnControl);
-
-		JPanel left = new JPanel();
-		left.setPreferredSize(new Dimension(15,0));
-		JPanel right = new JPanel();
-		right.setPreferredSize(new Dimension(15,0));
-
-
-		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
-		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
-		this.getContentPane().add(left,BorderLayout.WEST);
-		this.getContentPane().add(right,BorderLayout.EAST);
+		this.getContentPane().add(buildTitle(title+" 코드 추가"),BorderLayout.NORTH);
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 		ViewUtil.center(this, true);
 		this.setResizable(false);
 		this.setVisible(true);
+	}
+	
+	public KSGPanel buildCenter()
+	{
+		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+		
+		txfCodeName = new JTextField(20);
+		txtKorCode = new JTextField(20);
+		txfField = new JTextField(20);	
+		
+
+
+		pnCenter.add(createFormItem(txfCodeName, "Name"));
+		pnCenter.add(createFormItem(txtKorCode, "한글"));
+		pnCenter.add(createFormItem(txfField, "Field"));
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		return pnMain;
 	}
 
 	public void actionPerformed(ActionEvent e) {

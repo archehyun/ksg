@@ -12,29 +12,24 @@ package com.ksg.workbench.base.company.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.domain.Company;
 import com.ksg.service.CompanyService;
-import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.base.BaseInfoUI;
@@ -46,7 +41,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
  * @author 박창현
  *
  */
-public class InsertCompanyInfoDialog extends BaseInfoDialog implements ActionListener  {
+public class InsertCompanyInfoDialog extends BaseInfoDialog{
 	/**
 	 * 
 	 */
@@ -68,26 +63,39 @@ public class InsertCompanyInfoDialog extends BaseInfoDialog implements ActionLis
 	private String agent_abbr;
 	
 	CompanyService service;
-	private BaseServiceImpl baseService;
+	
 	public InsertCompanyInfoDialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
-		baseService = new BaseServiceImpl();
+		
 		service = new CompanyServiceImpl();
 		title = "선사 정보 추가";
+		
+		this.addComponentListener(this);
 	}
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals("확인"))
 		{
-			Company info = new Company();
-			info.setCompany_name(txfCompany_name.getText());
-			info.setCompany_abbr(txfCompany_abbr.getText());
-			info.setAgent_name(txfAgent_name.getText());
-			info.setAgent_abbr(txfAgent_abbr.getText());
-			info.setContents(txaContents.getText());
+			
+			String company_name = txfCompany_name.getText();
+			String company_abbr = txfCompany_abbr.getText();
+			String agent_name = txfAgent_name.getText();
+			String agent_abbr = txfAgent_abbr.getText();
+			String contents = txaContents.getText();
+			
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			param.put("company_name",company_name);
+			param.put("company_abbr",company_abbr);
+			param.put("agent_name",agent_name);
+			param.put("agent_abbr",agent_abbr);
+			param.put("contents",contents);
+			
+			
+
 			try {
 
-				baseService.insertCompany(info);
+				service.insert(param);
+				
 				JOptionPane.showMessageDialog(this,"추가했습니다.");
 				this.setVisible(false);
 				this.dispose();
@@ -117,6 +125,22 @@ public class InsertCompanyInfoDialog extends BaseInfoDialog implements ActionLis
 
 	public void createAndUpdateUI() {
 		this.setModal(true);
+		this.setTitle(title);
+
+		this.getContentPane().add(buildTitle("선사정보수정"),BorderLayout.NORTH);
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		
+		this.pack();
+		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+		this.setResizable(false);
+		this.setVisible(true);
+
+	}
+	
+	public KSGPanel buildCenter()
+	{
+		
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		pnCenter.setBackground(Color.white);
 		txfCompany_name = new JTextField(20);
@@ -126,49 +150,18 @@ public class InsertCompanyInfoDialog extends BaseInfoDialog implements ActionLis
 		txaContents = new JTextArea(8,32);
 		KSGPanel pnCompany_name = new KSGPanel();
 		pnCompany_name.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+
+
+		pnCenter.add( createFormItem(txfCompany_name,"선사명"));
+		pnCenter.add( createFormItem(txfCompany_abbr,"선사명 약어(*)"));
+		pnCenter.add(createFormItem(txfAgent_name,"에이전트"));
+		pnCenter.add(createFormItem(txfAgent_abbr,"에이전트 약어"));
+		pnCenter.add(createFormItem(new JScrollPane(txaContents),"비고"));
+
+
 		
-		KSGPanel pnS = new KSGPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		KSGPanel pnS1 = new KSGPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
 
-		KSGPanel pnControl =  new KSGPanel();
-		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butOK = new JButton("확인");
-	
-		JButton butCancel = new JButton("취소");
-		butOK.addActionListener(this);
-		butCancel.addActionListener(this);
-		pnControl.add(butOK);
-		pnControl.add(butCancel);
-
-		KSGPanel pnTitle = new KSGPanel();
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnTitle.setBackground(Color.white);
-		lblTitle = new JLabel("Add a Company Field");
-		lblTitle.setFont(new Font("area",Font.BOLD,16));
-		pnTitle.add(lblTitle);
-
-		pnCenter.add( addFormItem(txfCompany_name,"선사명"));
-		pnCenter.add( addFormItem(txfCompany_abbr,"선사명 약어(*)"));
-		pnCenter.add(addFormItem(txfAgent_name,"에이전트"));
-		pnCenter.add(addFormItem(txfAgent_abbr,"에이전트 약어"));
-		pnCenter.add(addFormItem(new JScrollPane(txaContents),"비고"));
-		pnCenter.add(pnS);
-		pnCenter.add(pnControl);
-
-		KSGPanel left = new KSGPanel();
-		left.setPreferredSize(new Dimension(15,0));
-		KSGPanel right = new KSGPanel();
-		right.setPreferredSize(new Dimension(15,0));
-
-		this.setTitle(title);
-		this.lblTitle.setText(titleInfo);
-		this.txfCompany_abbr.setText(company_abbr);
-		this.txfCompany_name.setText(company_name);
-		this.txfAgent_abbr.setText(agent_abbr);
-		this.txfAgent_name.setText(agent_name);
 		
 		switch (type) {
 		case UPDATE:
@@ -185,25 +178,23 @@ public class InsertCompanyInfoDialog extends BaseInfoDialog implements ActionLis
 			break;
 		
 		}
-
-
-		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
-		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
-		this.getContentPane().add(left,BorderLayout.WEST);
-		this.getContentPane().add(right,BorderLayout.EAST);
-		this.pack();
-		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
-		this.setResizable(false);
-		this.setVisible(true);
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		pnMain.setBorder(BorderFactory.createEmptyBorder(4, 45, 45, 45));
+		
+		pnMain.add(pnCenter);
+		
+		return pnMain;
+	}
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+		this.lblTitle.setText(titleInfo);
+		this.txfCompany_abbr.setText(company_abbr);
+		this.txfCompany_name.setText(company_name);
+		this.txfAgent_abbr.setText(agent_abbr);
+		this.txfAgent_name.setText(agent_name);
+		
 
 	}
-	private KSGPanel addFormItem(JComponent comp, String title) {
-		KSGPanel pnCompany_abbr = new KSGPanel();
-		pnCompany_abbr.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblCompany_abbr = new JLabel(title);
-		lblCompany_abbr.setPreferredSize(new Dimension(100,25));
-		pnCompany_abbr.add(lblCompany_abbr);	
-		pnCompany_abbr.add(comp);
-		return pnCompany_abbr;
-	}
+	
 }

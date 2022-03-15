@@ -877,7 +877,6 @@ public class WebScheduleTask extends SimpleTask{
 	}
 	public void makeSchedule() throws SQLException, JDOMException, IOException,
 			ParseException {
-		// TODO Auto-generated method stub
 		
 	}
 	protected void initTag() {

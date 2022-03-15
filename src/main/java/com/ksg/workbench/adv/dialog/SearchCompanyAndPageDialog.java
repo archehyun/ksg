@@ -49,12 +49,12 @@ public class SearchCompanyAndPageDialog extends KSGDialog{
 	private KSGTreeDefault tree1;
 	private JTree _treeMenu;
 	private JPanel 			pnLeftMenu;
-	
+
 	private SearchPanel searchPanel;
-	
+
 	public SearchCompanyAndPageDialog(SearchPanel searchPanel) {
 		this.searchPanel = searchPanel;
-		
+
 	}
 
 	@Override
@@ -66,19 +66,19 @@ public class SearchCompanyAndPageDialog extends KSGDialog{
 		pnSearch.setLayout(new BorderLayout());
 
 		_treeMenu = createTreeMenu();
-		
+
 		_txfSearchByCompany = new JTextField(8);
 
 		JPanel pnSearchByCompany = new JPanel();
-		
+
 		JLabel lblCompany = new JLabel("선사 검색");
-		
+
 		lblCompany.setPreferredSize( new Dimension(60,15));
-		
+
 		pnSearchByCompany .add(lblCompany);
-		
+
 		pnSearchByCompany .add(_txfSearchByCompany);
-		
+
 		_txfSearchByCompany.addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e) 
 			{
@@ -190,7 +190,7 @@ public class SearchCompanyAndPageDialog extends KSGDialog{
 			button1.addItemListener(itemListener);
 			pnContorl.add(new JSeparator(JSeparator.HORIZONTAL));
 			JButton butADDTable = new JButton(new ImageIcon("images/plus.gif"));
-			
+
 
 			JPanel pnTitle = new JPanel();
 			pnTitle.setBackground(new Color(88,141,250));
@@ -224,31 +224,31 @@ public class SearchCompanyAndPageDialog extends KSGDialog{
 	private JTree createTreeMenu() 
 	{
 		tree1 = new KSGTreeDefault("tree1");
-		
+
 		tree1.setComponentPopupMenu(createTreePopuomenu());
-		try {
 
-			tree1.addTreeSelectionListener(new TreeSelectionListener(){
 
-				public void valueChanged(TreeSelectionEvent e) {
+		tree1.addTreeSelectionListener(new TreeSelectionListener(){
 
-					TreePath path=e.getNewLeadSelectionPath();
-					if(path!=null)
+			public void valueChanged(TreeSelectionEvent e) {
+
+				TreePath path=e.getNewLeadSelectionPath();
+				if(path!=null)
+				{
+					try{
+						searchPanel.updateViewByTree(path);
+					}catch(Exception e2)
 					{
-						try{
-							searchPanel.updateViewByTree(path);
-						}catch(Exception e2)
-						{
-							e2.printStackTrace();
-							return;
-						}
+						e2.printStackTrace();
+						return;
 					}
 				}
-			});
-			tree1.update(KSGModelManager.getInstance());
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
+			}
+		});
+
+		tree1.update();
+
+
 		return tree1;
 	}
 	/**
@@ -263,7 +263,7 @@ public class SearchCompanyAndPageDialog extends KSGDialog{
 		itemTable.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}});
 		JMenuItem xlsMenu = new JMenuItem("파일 불러오기");
 		newMenu.add(itemCompany);

@@ -55,7 +55,7 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	}
 	
 	@Override
-	public Object insertDetail(String queryId, Object param) throws SQLException {		
+	public Object insertDetail( Object param) throws SQLException {		
 		return insert("vessel.insertVesselAbbr", param);
 	}
 
@@ -77,6 +77,12 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	public Object selectListByPage(Map<String, Object> commandMap) throws SQLException {
 		// TODO Auto-generated method stub
 		return selectList("vessel.selectVesselListByPage", commandMap);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectDetailListByLike(HashMap<String, Object> commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("vessel.selectVesselAbbrListByLike", commandMap);
 	}
 
 

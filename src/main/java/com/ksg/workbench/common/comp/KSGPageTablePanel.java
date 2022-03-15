@@ -1,4 +1,4 @@
-package com.ksg.workbench.schedule.comp;
+package com.ksg.workbench.common.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -56,10 +55,18 @@ public class KSGPageTablePanel extends KSGTablePanel{
 	
 	
 	
+	/**
+	 * 
+	 * 페이지 테이블 생성자
+	 * 
+	 * @param title
+	 */
 	public KSGPageTablePanel(String title) {
 		super(title);
 		
 		this.add(createPagingPanel(),BorderLayout.SOUTH);
+		
+		//TO-DO TEST
 		
 		
 		
@@ -67,6 +74,11 @@ public class KSGPageTablePanel extends KSGTablePanel{
 	}
 
 
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
 	private JPanel createPagingPanel() {
 		JPanel pnMain = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -88,6 +100,7 @@ public class KSGPageTablePanel extends KSGTablePanel{
 		butFw.setActionCommand("Forword");
 
 		txfPage = new JTextField(2);
+		txfPage.setEditable(false);
 
 		txfPage.setText("1");
 
@@ -126,6 +139,7 @@ public class KSGPageTablePanel extends KSGTablePanel{
 
 		lblTotalPage.setText(String.valueOf(totalPage));
 
+		//TO-TO 오류 발생 가능 성 수정
 		page = (Integer) resultMap.get("PAGE_NO");
 
 		if (totalPage < page) {

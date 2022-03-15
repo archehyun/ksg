@@ -155,7 +155,7 @@ public interface SchduleDAO {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List getScheduleDateList()throws SQLException;
+	public List selectScheduleDateList()throws SQLException;
 	@Deprecated
 	public int getScheduleTotalCount()throws SQLException;
 	@Deprecated

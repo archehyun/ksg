@@ -23,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertyManager;
 import com.ksg.common.util.ViewUtil;
@@ -271,8 +270,7 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 
 		getContentPane().add(pnMain);
 		getContentPane().add(pnControl,BorderLayout.SOUTH);
-		getContentPane().add(KSGDialog.createMargin(),BorderLayout.WEST);
-		getContentPane().add(KSGDialog.createMargin(),BorderLayout.EAST);
+		
 
 
 		// °ª ÇÒ´ç

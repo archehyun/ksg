@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.ksg.workbench.print;
 
- import java.awt.BorderLayout;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -67,6 +67,8 @@ import com.ksg.print.logic.quark.v1.XTGPage;
 import com.ksg.service.ADVService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.view.comp.KSGCheckBox;
+import com.ksg.view.comp.KSGRadioButton;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.view.comp.tree.KSGTree;
@@ -96,29 +98,28 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 	private JTree				_treeMenu;
 	private static final int _LEFT_SIZE = 250;
 	DAOManager daomanager = DAOManager.getInstance();
-	
+
 	int inD_flag=1;
 	private TableService tableService;
 	private ADVService _advService;
-	
-	
+
+
 	public PrintADVUI() {
-		
+
 		super();
 		this.setName("PrintADVUI");
 		manager.addObservers(this);
 		selectDate = KSGDateUtil.format(new Date());
 		_advService =daomanager.createADVService();
 		tableService = new TableServiceImpl();
-		
+
 		this.title = "광고정보 출력";
 		this.borderColor = new Color(107,138,15);
 		createAndUpdateUI();
 	}
 
 	public void createAndUpdateUI() {
-		BorderLayout borderLayout = new BorderLayout();
-		this.setLayout(borderLayout);
+		this.setLayout(new BorderLayout(10,10));
 		dataF = new JTextArea(15,15);
 		dataE = new JTextArea();
 
@@ -131,53 +132,22 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 		this.add(pnInfo,BorderLayout.NORTH);
 		this.add(pnCenter,BorderLayout.CENTER);
 		this.add(pnLeftMenu,BorderLayout.WEST);
-		
+
 
 	}
 
-//	private KSGPanel buildInfoPN() {
-//		KSGPanel pnInfo = new KSGPanel();
-//		GridLayout gl_pnInfo = new GridLayout(1,0);
-//		pnInfo.setLayout(gl_pnInfo);
-//		KSGPanel pnSub2 = new KSGPanel();
-//		pnSub2.setLayout(new FlowLayout(FlowLayout.RIGHT));
-//		JLabel label = new JLabel("출력 날짜 : ");
-//		label.setFont(defaultFont);
-//		pnSub2.add(label);
-//		lblDate = new JLabel(KSGDateUtil.format(new Date()));
-//		lblDate.setFont(defaultFont);
-//		pnSub2.add(lblDate);
-//		JLabel lblTitle = new JLabel("광고정보 출력");
-//		lblTitle.setForeground(new Color(61,86,113));
-//		Font titleFont = new Font("명조",Font.BOLD,18);		
-//
-//		lblTitle.setFont(titleFont);
-//
-//		pnInfo.setBorder(new CurvedBorder(8,new Color(107,138,15)));
-//
-//		pnInfo.add(lblTitle);
-//		pnInfo.add(pnSub2);
-//		return pnInfo;
-//	}
 
 	private KSGPanel buildCenterPN() {
 		KSGPanel pnCenter = new KSGPanel();
 		KSGPanel pnCenterControl = new KSGPanel(new BorderLayout());
 
-/*		JButton butSelect = new JButton("선사선택");
-		butSelect.setActionCommand("선사선택");
-		butSelect.addActionListener(this);*/
 		BorderLayout bl_pnCenter = new BorderLayout();
 		pnCenter.setLayout(bl_pnCenter);
 
-		cbxAgent = new JCheckBox("동일 Agent 선택");
+		cbxAgent = new KSGCheckBox("동일 Agent 선택");
 		pnCenterControl.add(cbxAgent,BorderLayout.WEST);
+
 		
-		KSGPanel left = new KSGPanel();
-		left.setPreferredSize(new Dimension(15,0));
-		KSGPanel right = new KSGPanel();
-		FlowLayout flowLayout = (FlowLayout) right.getLayout();
-		right.setPreferredSize(new Dimension(15,0));
 
 		_pnADVTableList = new KSGPanel();
 		_pnADVTableList.setLayout( new BorderLayout());
@@ -241,7 +211,7 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 		FlowLayout flowLayout_1 = (FlowLayout) pnSub.getLayout();
 		pnSub.add(txfDate);
 		pnInfo.add(pnSub,BorderLayout.EAST);
-		JCheckBox box = new JCheckBox("월요일");
+		JCheckBox box = new KSGCheckBox("월요일");
 		box.setFont(new Font("굴림", Font.PLAIN, 12));
 		box.addActionListener(new ActionListener() {
 
@@ -254,63 +224,66 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 				}
 			}
 		});
-		
+
 		pnSub.add(box);
-		
+
 		/*
 		JCheckBox chckbxNewCheckBox = new JCheckBox("인디자인체크");
 		chckbxNewCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 			}
 		});
 		chckbxNewCheckBox.setAction(action);
 		pnSub.add(chckbxNewCheckBox);
-		*/
+		 */
 		//---------------
 		//int inD_flag;
 		//inD_flag=1;
 		//-----------------
-				JCheckBox chckbxNewCheckBox = new JCheckBox("인디자인체크");
-								
-				chckbxNewCheckBox.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-						JCheckBox newbo =(JCheckBox) arg0.getSource();
-						if(newbo.isSelected())
-						{
-							inD_flag=2;
-							System.out.println ("InDesign 체크");
-							
-						}
-						else
-						{
-							inD_flag=1;
-							System.out.println("InDesign 체크 해제");
-						}
+		JCheckBox chckbxNewCheckBox = new KSGCheckBox("인디자인체크");
 
-						
-					}
+		chckbxNewCheckBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JCheckBox newbo =(JCheckBox) arg0.getSource();
+				if(newbo.isSelected())
+				{
+					inD_flag=2;
+					System.out.println ("InDesign 체크");
+
 				}
-					);
-//				chckbxNewCheckBox.setAction(action);
-				pnSub.add(chckbxNewCheckBox);
+				else
+				{
+					inD_flag=1;
+					System.out.println("InDesign 체크 해제");
+				}
+
+
+			}
+		}
+				);
+		//				chckbxNewCheckBox.setAction(action);
+		pnSub.add(chckbxNewCheckBox);
 
 		JButton butExport = new JButton("파일출력",new ImageIcon("images/export.gif"));		
 		pnSub.add(butExport);
-		
-				butExport.setToolTipText("출력하기");
-				butExport.setActionCommand("출력하기");
-				butExport.addActionListener(this);
+
+		butExport.setToolTipText("출력하기");
+		butExport.setActionCommand("출력하기");
+		butExport.addActionListener(this);
 		pnInfo.add(info,BorderLayout.SOUTH);
 		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout( new BorderLayout());
 		pnMain.add(pnInfo,BorderLayout.NORTH);
 		pnMain.add(_pnADVTableList,BorderLayout.CENTER);
 		pnMain.add(pnCenterControl,BorderLayout.SOUTH);
+		
+		
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 
 		pnCenter.add(pnMain,BorderLayout.CENTER);
-		pnCenter.add(right,BorderLayout.EAST);
-		pnCenter.add(left,BorderLayout.WEST);
+		pnCenter.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+
 
 		return pnCenter;
 	}
@@ -346,7 +319,7 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 
 	private KSGPanel buildLeftMenu() 
 	{
-		KSGPanel pnMain = new KSGPanel();
+		KSGPanel pnLefMain = new KSGPanel();
 		KSGPanel pnSearch =  new KSGPanel();
 		pnSearch.setLayout( new BorderLayout());
 
@@ -355,8 +328,7 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 
 		KSGPanel pnSearchByCompany = new KSGPanel();
 		JLabel lblCompany = new JLabel("선사 검색");
-		lblCompany.setFont(defaultFont);
-		lblCompany.setPreferredSize( new Dimension(60,15));
+		
 		pnSearchByCompany .add(lblCompany);
 		pnSearchByCompany .add(_txfSearchByCompany);
 		_txfSearchByCompany.addKeyListener(new KeyAdapter(){public void keyPressed(KeyEvent e) 
@@ -405,9 +377,8 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 			}
 		}
 		});
-		JCheckBox box = new JCheckBox("페이지");
-		box.setSelected(true);
-		box.setFont(defaultFont);
+		JCheckBox box = new KSGCheckBox("페이지", true);
+		
 		box.addChangeListener(new ChangeListener(){
 
 			public void stateChanged(ChangeEvent e) {
@@ -418,18 +389,18 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 
 		pnSearchByCompany.add(box);
 
-		pnMain.setLayout(new BorderLayout());
+		pnLefMain.setLayout(new BorderLayout());
 
-		pnMain.add(new JScrollPane(_treeMenu),BorderLayout.CENTER);
-		pnMain.setPreferredSize(new Dimension(_LEFT_SIZE,100));
+		pnLefMain.add(new JScrollPane(_treeMenu),BorderLayout.CENTER);
+		pnLefMain.setPreferredSize(new Dimension(_LEFT_SIZE,100));
 		KSGPanel panel = new KSGPanel();
 		ButtonGroup group = new ButtonGroup();
 
 
-		JRadioButton button = new JRadioButton("선사별");
-		button.setFont(defaultFont);
-		JRadioButton button1 = new JRadioButton("페이지별",true);
-		button1.setFont(defaultFont);
+		JRadioButton button = new KSGRadioButton("선사별");
+		
+		JRadioButton button1 = new KSGRadioButton("페이지별",true);
+		
 		group.add(button);
 		group.add(button1);
 
@@ -474,148 +445,137 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 			butDelTable.addActionListener(this);
 			panel.add(butDelTable);
 
-
-			KSGPanel pnTitle = new KSGPanel();
-//			pnTitle.setBackground(new Color(88,141,250));
-			pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-			JLabel label = new JLabel("등록된 선사");
-			label.setForeground(Color.white);
-//			pnTitle.add(label);
-			pnTitle.setPreferredSize( new Dimension(0,22));
-
-			pnSearch.add(pnTitle,BorderLayout.NORTH);
 			pnSearch.add(pnSearchByCompany,BorderLayout.CENTER);
-
-			//pnSearch.add(pnSearchByPage);
-			KSGPanel pnTableMainLeft = new KSGPanel();
-			pnTableMainLeft.setPreferredSize(new Dimension(15,0));
-			pnMain.add(pnTableMainLeft,BorderLayout.WEST);
-			pnMain.add(pnSearch,BorderLayout.NORTH);
-			//			pnMain.add(pnTitle,BorderLayout.NORTH);
-
-			pnMain.add(panel,BorderLayout.SOUTH);
+			
+			
+			pnLefMain.add(pnSearch,BorderLayout.NORTH);
+			pnLefMain.add(panel,BorderLayout.SOUTH);
+			
+			pnLefMain.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+			
+			KSGPanel pnMain = new KSGPanel(new BorderLayout());
+			pnMain.add(pnLefMain);
+			pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
 			return pnMain;
 	}
 	private JTree createTreeMenu() 
 	{
 		tree2 = new KSGTreeDefault("tree1");
-		tree2.setFont(defaultFont);
-		try {
+		tree2.setRowHeight(25);
+		tree2.update();
 
-			tree2.addTreeSelectionListener(new TreeSelectionListener(){
 
-				public void valueChanged(TreeSelectionEvent e) {
+		tree2.addTreeSelectionListener(new TreeSelectionListener(){
 
-					TreePath path=e.getNewLeadSelectionPath();
-					if(path!=null)
+			public void valueChanged(TreeSelectionEvent e) {
+
+				TreePath path=e.getNewLeadSelectionPath();
+				if(path!=null)
+				{
+					try{
+						updateViewByTree(path);
+					}catch(Exception e2)
 					{
-						try{
-							updateViewByTree(path);
-						}catch(Exception e2)
-						{
-							return;
-						}
+						return;
 					}
 				}
-				private void updateViewByTree(TreePath path) {
-					String selectedCompany = path.getLastPathComponent().toString();
-					switch (path.getPathCount()) {
-					case 1: // root 선택시
-						lblCompany.setText("");
-						manager.selectedCompany=null;
-						selectedPage=-1;
-						selectedCompany = null;
-						dataF.setText("");
-						break;
-					case 2: //2번째 노드 선택 ex:0~9
-						lblCompany.setText("");
-						manager.selectedCompany=null;
-						selectedPage=-1;
-						selectedCompany = null;
-						dataF.setText("");
-						//						_pnADVTableList.removeAll();
+			}
+			private void updateViewByTree(TreePath path) {
+				String selectedCompany = path.getLastPathComponent().toString();
+				switch (path.getPathCount()) {
+				case 1: // root 선택시
+					lblCompany.setText("");
+					manager.selectedCompany=null;
+					selectedPage=-1;
+					selectedCompany = null;
+					dataF.setText("");
+					break;
+				case 2: //2번째 노드 선택 ex:0~9
+					lblCompany.setText("");
+					manager.selectedCompany=null;
+					selectedPage=-1;
+					selectedCompany = null;
+					dataF.setText("");
+					//						_pnADVTableList.removeAll();
 
-						break;
-					case 3: //3번재 노드 선택 ex) 11:OOCL
-						dataF.setText("");
-						StringTokenizer st = new StringTokenizer(selectedCompany,":");
+					break;
+				case 3: //3번재 노드 선택 ex) 11:OOCL
+					dataF.setText("");
+					StringTokenizer st = new StringTokenizer(selectedCompany,":");
 
 
-						String com = new String();
-						String page = new String();
+					String com = new String();
+					String page = new String();
 
-						page=st.nextToken();
-						com = st.nextToken();
-						lblCompany.setText("선사명 : "+com);
-						selectedPage=Integer.parseInt(page);
-						selectCompany=com;
-						selectDate=lblDate.getText();
-						try{
-							if(cbxAgent.isSelected())
+					page=st.nextToken();
+					com = st.nextToken();
+					lblCompany.setText("선사명 : "+com);
+					selectedPage=Integer.parseInt(page);
+					selectCompany=com;
+					selectDate=lblDate.getText();
+					try{
+						if(cbxAgent.isSelected())
+						{
+							String agent = tableService.getTableAgentByPage(selectedPage);
+							if(inD_flag==1)
 							{
-									String agent = tableService.getTableAgentByPage(selectedPage);
-									if(inD_flag==1)
-									{
-									CreateXTGCommand command = new CreateXTGCommand(com,agent,lblDate.getText(),false,"",1);
-									command.execute();
-									dataF.setText( command.result);
-									// inD_flag=1;
-									}
-									else
-									{
-										CreateXTGCommand command = new CreateXTGCommand(com,agent,lblDate.getText(),false,"",2);
-										command.execute();
-										dataF.setText( command.result);
-									//	inD_flag=1;
-									}						
-									
-									//logger.debug("command:"+command.result);
-							}else
-							{
-								if(inD_flag==1)
-								{
-									CreateXTGCommand command = new CreateXTGCommand(com,selectedPage,lblDate.getText(),false,"",1);
-									command.execute();
-									//logger.debug("command:"+command.result);
-									dataF.setText( command.result);
-									// inD_flag=1;
-									
-
-								}
-								else
-								{	
-									CreateXTGCommand command = new CreateXTGCommand(com,selectedPage,lblDate.getText(),false,"",2);
-									command.execute();
-									//logger.debug("command:"+command.result);
-									dataF.setText( command.result);
-									// inD_flag=1;
-
-								}
+								CreateXTGCommand command = new CreateXTGCommand(com,agent,lblDate.getText(),false,"",1);
+								command.execute();
+								dataF.setText( command.result);
+								// inD_flag=1;
 							}
-							/*String agent = _tableService.getTableAgentByPage(selectedPage);
+							else
+							{
+								CreateXTGCommand command = new CreateXTGCommand(com,agent,lblDate.getText(),false,"",2);
+								command.execute();
+								dataF.setText( command.result);
+								//	inD_flag=1;
+							}						
+
+							//logger.debug("command:"+command.result);
+						}else
+						{
+							if(inD_flag==1)
+							{
+								CreateXTGCommand command = new CreateXTGCommand(com,selectedPage,lblDate.getText(),false,"",1);
+								command.execute();
+								//logger.debug("command:"+command.result);
+								dataF.setText( command.result);
+								// inD_flag=1;
+
+
+							}
+							else
+							{	
+								CreateXTGCommand command = new CreateXTGCommand(com,selectedPage,lblDate.getText(),false,"",2);
+								command.execute();
+								//logger.debug("command:"+command.result);
+								dataF.setText( command.result);
+								// inD_flag=1;
+
+							}
+						}
+						/*String agent = _tableService.getTableAgentByPage(selectedPage);
 							CreateXTGCommand command = new CreateXTGCommand(com,agent,lblDate.getText(),false,"");
 							command.execute();
 							///logger.debug("command:"+command.result);
 							dataF.setText( command.result);*/
-						}catch (Exception e) {
-							e.printStackTrace();
-						}
-
-						manager.selectedCompany=com;
-						manager.selectedPage=Integer.parseInt(page);
-						break;
-					default:
-						break;
+					}catch (Exception e) {
+						e.printStackTrace();
 					}
 
-				}});
-			_pnADVTableList.updateUI();
+					manager.selectedCompany=com;
+					manager.selectedPage=Integer.parseInt(page);
+					break;
+				default:
+					break;
+				}
 
-		} catch (Exception e1) {
+			}});
+		_pnADVTableList.updateUI();
 
 
-		}
 		return tree2;
 	}
 	private KSGPanel createLeftMenuPn2() {
@@ -708,12 +668,12 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 				CreateXTGCommand commands = new CreateXTGCommand(selectCompany,selectedPage,selectDate,true,dataF.getText(),2);
 				commands.execute();
 			}
-		else 
-		{
-			if(command.equals("선사선택"));
+			else 
+			{
+				if(command.equals("선사선택"));
+			}
 		}
 	}
-}
 
 
 	public void update(KSGModelManager manager) {
@@ -727,10 +687,10 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 	private int selectedPage;
 	private JTextField txfDate;
 	private JCheckBox cbxAgent;
-//	private final Action action = new SwingAction();
+	//	private final Action action = new SwingAction();
 
 
-/*	private class SwingAction extends AbstractAction {
+	/*	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "인디자인체크");
 			putValue(SHORT_DESCRIPTION, "Some short description");
@@ -738,6 +698,6 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 		public void actionPerformed(ActionEvent e) {
 		}
 	}
-	*/
+	 */
 }
 

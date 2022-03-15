@@ -47,8 +47,7 @@ public class PortSearchDialog extends KSGDialog implements ActionListener{
 		this.setModal(true);
 		
 		this.getContentPane().add(buildCenter());
-		this.getContentPane().add(createMargin(),BorderLayout.WEST);
-		this.getContentPane().add(createMargin(),BorderLayout.EAST);
+		
 		this.getContentPane().add(buildInfo(),BorderLayout.NORTH);
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 		this.setSize(250, h);

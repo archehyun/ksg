@@ -31,6 +31,7 @@ import javax.swing.JTextField;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.PortInfo;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.BaseInfoDialog;
 
@@ -75,56 +76,26 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 	public void createAndUpdateUI() {
 		this.setModal(true);
 		this.setTitle("항구명 약어 추가");
-		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+
+		this.getContentPane().add(buildTitle("항구명: "+port_name),BorderLayout.NORTH);
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 		
-
-		JPanel pnCode = new JPanel();
-		pnCode.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblAreaCode = new JLabel("항구명 약어");
-		lblAreaCode.setPreferredSize(new Dimension(80,25));
-		pnCode.add(lblAreaCode);	
-		pnCode.add(txfPortCode);
-		txfPortCode.setText(port_abbr);
-		JPanel pnS = new JPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-
-		JPanel pnControl =  new JPanel();
-		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butOK = new JButton("확인");
-		JButton butCancel = new JButton("취소");
-		butOK.addActionListener(this);
-		butCancel.addActionListener(this);
-
-		pnControl.add(butOK);
-		pnControl.add(butCancel);
-
-		JPanel pnTitle = new JPanel();
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnTitle.setBackground(Color.white);
-		JLabel label = new JLabel("항구명: "+port_name);
-		label.setFont(new Font("area",Font.BOLD,16));
-		pnTitle.add(label);
-
-		pnCenter.add(pnCode);
-		pnCenter.add(pnS);
-		pnCenter.add(pnControl);
-
-		JPanel left = new JPanel();
-		left.setPreferredSize(new Dimension(15,0));
-		JPanel right = new JPanel();
-		right.setPreferredSize(new Dimension(15,0));
-
-
-		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
-		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
-		this.getContentPane().add(left,BorderLayout.WEST);
-		this.getContentPane().add(right,BorderLayout.EAST);
 		this.pack();
 		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
 		this.setVisible(true);
+	}
+	
+	public KSGPanel buildCenter() {
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
+		
+		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+		
+		pnCenter.add(createFormItem(txfPortCode, "항구명 약어"));
+		
+		pnMain.add(pnCenter);
+		return pnMain;
 	}
 
 	public void actionPerformed(ActionEvent e) {

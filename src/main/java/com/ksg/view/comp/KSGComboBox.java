@@ -38,6 +38,7 @@ public class KSGComboBox extends JComboBox<KSGTableColumn>{
 			param.put("code_type", codeType);
 			HashMap<String,Object> resullt = (HashMap<String, Object>) service.selectCodeDList(param);
 			List<HashMap<String,Object> > li = (List<HashMap<String, Object>>) resullt.get("master");
+			System.out.println("code size:"+li.size());
 			for(HashMap<String, Object> item:li)
 			{
 				this.addItem(new KSGTableColumn(String.valueOf(item.get("code_field")), String.valueOf(item.get("code_name"))));

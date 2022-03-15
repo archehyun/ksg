@@ -14,6 +14,8 @@ public interface VesselDAO {
 	
 	public List<Map<String, Object>> selectDetailList(HashMap<String, Object> commandMap) throws SQLException;
 	
+	public List<Map<String, Object>> selectDetailListByLike(HashMap<String, Object> commandMap) throws SQLException;
+	
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
 	
 	public int delete(HashMap<String, Object> param) throws SQLException ;
@@ -22,7 +24,7 @@ public interface VesselDAO {
 	
 	public Object insert(HashMap<String, Object> param) throws SQLException;
 	
-	public Object insertDetail(String queryId, Object params) throws SQLException;
+	public Object insertDetail( Object params) throws SQLException;
 	
 	public Object update(HashMap<String, Object> param) throws SQLException ;
 

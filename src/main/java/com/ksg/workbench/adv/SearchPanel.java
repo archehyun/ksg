@@ -72,6 +72,7 @@ import com.ksg.domain.Table_Property;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.FileInfo;
+import com.ksg.view.comp.KSGCheckBox;
 import com.ksg.view.comp.KSGCompboBox2;
 import com.ksg.view.comp.PageInfoCheckBox;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -529,7 +530,7 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		lblInputType.setHorizontalAlignment(JLabel.RIGHT);
 		lblInputType.setFont(lblFont);
 		
-		JCheckBox cbkCheck = new JCheckBox("동일 선사 추가 선택",isSamePageSelect);
+		JCheckBox cbkCheck = new KSGCheckBox("동일 선사 추가 선택",isSamePageSelect);
 		cbkCheck.addChangeListener(new ChangeListener(){
 
 			public void stateChanged(ChangeEvent e) {

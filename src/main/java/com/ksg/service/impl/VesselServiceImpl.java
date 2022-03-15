@@ -53,7 +53,7 @@ public class VesselServiceImpl implements VesselService{
 
 	public Map<String, Object> selectDetailList(HashMap<String, Object> commandMap) throws SQLException {
 		
-		logger.debug("param:"+commandMap);
+		logger.info("param:"+commandMap);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -86,10 +86,11 @@ public class VesselServiceImpl implements VesselService{
 	}
 
 	@Override
-	public HashMap<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException {
+	public HashMap<String, Object> selectDetailList(Map<String, Object> param) throws SQLException {
+		logger.debug("param:"+param);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("master",vesselDAO.selectDetailList((HashMap<String, Object>) commandMap));
+		resultMap.put("master",vesselDAO.selectDetailList((HashMap<String, Object>) param));
 		return resultMap;
 	}
 
@@ -105,6 +106,9 @@ public class VesselServiceImpl implements VesselService{
 	@Override
 	public void insertDetail(HashMap<String, Object> param) throws SQLException {
 		
+		logger.info("param:{}", param);
+		vesselDAO.insertDetail( param);
+		
 		
 	}
 
@@ -118,6 +122,15 @@ public class VesselServiceImpl implements VesselService{
 		
 		resultMap.put("PAGE_NO", 1);
 		
+		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> selectDetailListByLike(Map<String, Object> param) throws SQLException {
+		logger.debug("param:"+param);
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("master",vesselDAO.selectDetailListByLike((HashMap<String, Object>) param));
 		return resultMap;
 	}
 }

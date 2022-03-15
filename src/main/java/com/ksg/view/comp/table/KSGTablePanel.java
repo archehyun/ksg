@@ -150,8 +150,14 @@ public class KSGTablePanel extends KSGPanel{
 		BoldLabel lblTitle = new BoldLabel(title + " 총");
 		
 		butInsert = new JButton("추가");
+		
+		
 		butDelete = new JButton("삭제");
 		//butUpdate = new JButton("수정");
+		
+		
+		//butInsert.setBackground(Color.BLUE);
+		//butInsert.setForeground(Color.white);
 		
 		butInsert.setActionCommand(INSERT);
 		butDelete.setActionCommand(DELETE);

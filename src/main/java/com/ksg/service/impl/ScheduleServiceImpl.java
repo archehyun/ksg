@@ -177,9 +177,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 		return schduleDAO.getScheduleList(param);
 	}
 
-	public List getScheduleDateList() throws SQLException {
-		// TODO Auto-generated method stub
-		return schduleDAO.getScheduleDateList();
+	public List selectScheduleDateList() throws SQLException {
+		
+		return schduleDAO.selectScheduleDateList();
 	}
 
 
@@ -319,7 +319,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	private List<Map<String, Object>> selectScheduledPortList(String portType,Map<String, Object> commandMap) throws SQLException {
 		if(portType.equals("toPort"))
 		{
-		return advScheduleDAO.selectScheduledToPortList(commandMap);
+			return advScheduleDAO.selectScheduledToPortList(commandMap);
 		}else
 		{
 			return advScheduleDAO.selectScheduledFromPortList(commandMap);
@@ -353,6 +353,18 @@ public class ScheduleServiceImpl implements ScheduleService{
 		resultMap.put("master", schduleDAO.selectListByPage(param));
 		
 		return resultMap;
+	}
+
+	@Override
+	public HashMap<String, Object> selectGroupList(HashMap<String, Object> param) throws SQLException {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		List list=schduleDAO.selectList(param);
+		
+		
+		
+		
+		return null;
 	}
 
 }

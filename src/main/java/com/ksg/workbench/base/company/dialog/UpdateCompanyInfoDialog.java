@@ -12,11 +12,7 @@ package com.ksg.workbench.base.company.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,36 +20,34 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.base.dialog.BaseInfoDialog;
 
-public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener {
+public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private CompanyServiceImpl companyService;
+	
 	private JTextField txfCompany_name; // 선사명
+	
 	private JTextField txfCompany_abbr; // 선사 약어
+	
 	private JTextField txfAgent_name;// 에이전트명
+	
 	private JTextField txfAgent_abbr;// 에이전트 약어
+	
 	private JTextArea txaContents;// 비고
 	
 	private int type;
-	
-	private JLabel lblTitle;
-
-	private String titleInfo;
 
 
 	private HashMap<String, Object> company;
@@ -64,6 +58,8 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 		super();
 
 		companyService = new CompanyServiceImpl();
+		
+		this.addComponentListener(this);
 
 		this.type = type;
 		title = "선사 정보 관리";
@@ -91,8 +87,7 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 		this.company = company;
 	}
 
-	private JButton butOK;
-	private JButton butCancel;
+
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals("수정"))
@@ -166,75 +161,50 @@ public class UpdateCompanyInfoDialog extends KSGDialog implements ActionListener
 
 	public void createAndUpdateUI() {
 		this.setModal(true);
-		this.addComponentListener(this);
-		Box pnCenter = new Box(BoxLayout.Y_AXIS);
-		txfCompany_name = new JTextField(20);
-		txfCompany_abbr = new JTextField(20);
-		txfAgent_name = new JTextField(20);
-		txfAgent_abbr = new JTextField(20);
-		txaContents = new JTextArea(8,32);
-		txaContents.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		KSGPanel pnCompany_name = new KSGPanel();
-		pnCompany_name.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		KSGPanel pnS = new KSGPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		KSGPanel pnS1 = new KSGPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
+		this.getContentPane().add(buildTitle("Add a Company Field"),BorderLayout.NORTH);
+		
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 
-		KSGPanel pnControl =  new KSGPanel();
-		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-
-		butOK = new JButton("저장");
-
-		butCancel = new JButton("취소");
-		butOK.addActionListener(this);
-		butCancel.addActionListener(this);
-		pnControl.add(butOK);
-		pnControl.add(butCancel);
-
-		KSGPanel pnTitle = new KSGPanel();
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnTitle.setBackground(Color.white);
-		lblTitle = new JLabel("Add a Company Field");
-		lblTitle.setFont(new Font("area",Font.BOLD,16));
-		pnTitle.add(lblTitle);
-
-		pnCenter.add( addFormItem(txfCompany_name,"선사명"));
-		pnCenter.add( addFormItem(txfCompany_abbr,"선사명 약어"));
-		pnCenter.add(addFormItem(txfAgent_name,"에이전트"));
-		pnCenter.add(addFormItem(txfAgent_abbr,"에이전트 약어"));
-		pnCenter.add(addFormItem(txaContents,"비고"));
-		pnCenter.add(pnS);
-		pnCenter.add(pnControl);
-
-		KSGPanel left = new KSGPanel();
-		left.setPreferredSize(new Dimension(15,0));
-		KSGPanel right = new KSGPanel();
-		right.setPreferredSize(new Dimension(15,0));
-
-
-
-		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
-		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
-		this.getContentPane().add(left,BorderLayout.WEST);
-		this.getContentPane().add(right,BorderLayout.EAST);
 		this.pack();
 		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
 		this.setResizable(false);
 		this.setVisible(true);
 
 	}
-	private KSGPanel addFormItem(JComponent comp, String title) {
-		KSGPanel pnCompany_abbr = new KSGPanel();
-		pnCompany_abbr.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblCompany_abbr = new JLabel(title);
-		lblCompany_abbr.setPreferredSize(new Dimension(100,25));
-		pnCompany_abbr.add(lblCompany_abbr);	
-		pnCompany_abbr.add(comp);
-		return pnCompany_abbr;
+	
+
+
+	
+	public KSGPanel buildCenter()
+	{
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
+		
+		txfCompany_name = new JTextField(20);
+		txfCompany_abbr = new JTextField(20);
+		txfAgent_name = new JTextField(20);
+		txfAgent_abbr = new JTextField(20);
+		txaContents = new JTextArea(8,32);
+		txaContents.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		
+		Box pnCenter = new Box(BoxLayout.Y_AXIS);		
+		pnCenter.add( createFormItem(txfCompany_name,"선사명"));
+		pnCenter.add( createFormItem(txfCompany_abbr,"선사명 약어"));
+		pnCenter.add(createFormItem(txfAgent_name,"에이전트"));
+		pnCenter.add(createFormItem(txfAgent_abbr,"에이전트 약어"));
+		pnCenter.add(createFormItem(txaContents,"비고"));
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		
+		
+		
+		pnMain.add(pnCenter);
+		
+		return pnMain;
 	}
+
 
 	
 

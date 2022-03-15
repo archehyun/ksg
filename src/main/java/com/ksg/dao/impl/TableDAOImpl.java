@@ -398,6 +398,13 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 	}
 
 
+	@Override
+	public int delete(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 
 
 }

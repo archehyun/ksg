@@ -13,14 +13,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -29,33 +26,21 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowSorter;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
-import com.ksg.dao.impl.BaseDAOManager;
-import com.ksg.domain.Company;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.view.comp.table.KSGTable;
-import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.comp.PnBase;
 import com.ksg.workbench.base.company.dialog.UpdateCompanyInfoDialog;
+import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.schedule.comp.KSGPageTablePanel;
 
 
 /**
@@ -63,7 +48,6 @@ import com.ksg.workbench.schedule.comp.KSGPageTablePanel;
  * @FileName : PnCompany.java
 
  * @Date : 2021. 2. 26. 
-
  * @작성자 : 박창현
 
  * @변경이력 :
@@ -87,7 +71,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private JLabel lblTable;
 	
-	protected BaseDAOManager baseDaoService;
+	
 
 	private KSGPageTablePanel tableH;
 
@@ -216,30 +200,13 @@ public class PnCompany extends PnBase implements ActionListener{
 		Box pnSearchAndCount = Box.createVerticalBox();
 		pnSearchAndCount.add(pnSearch);
 
-		
-
-		KSGPanel pnCount = new KSGPanel();
-		
-		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		pnCount.add(lblTable);
-
-		KSGPanel pnInfo= new KSGPanel(new BorderLayout());
-
-		KSGPanel pnS = new KSGPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		KSGPanel pnS1 = new KSGPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-		Box info = new Box(BoxLayout.Y_AXIS);
-		info.add(pnS);
-		info.add(pnS1);
 
 
-		pnInfo.add(info,BorderLayout.SOUTH);
-		pnInfo.add(pnSearchAndCount,BorderLayout.EAST);
-		pnInfo.add(pnCount,BorderLayout.WEST);
-		return pnInfo;
+		KSGPanel pnMain= new KSGPanel(new BorderLayout());
+		pnMain.add(buildLine(),BorderLayout.SOUTH);
+		pnMain.add(pnSearchAndCount,BorderLayout.EAST);
+		pnMain.add(buildTitleIcon("사용자 정보"),BorderLayout.WEST);
+		return pnMain;
 	}	
 
 	@Override
@@ -292,43 +259,7 @@ public class PnCompany extends PnBase implements ActionListener{
 		}
 	}
 
-	/**
-	 * 
-	 */
-//	private void searchData() {
-//		String field=(String) cbxField.getSelectedItem();
-//
-//		/*	if(cbxField.getSelectedIndex()==0)
-//		{
-//
-//			txfSearch.setText("");
-//			query = null;
-//
-//			this.updateTable(query);
-//		}
-//		else*/
-//		{
-//			if(field.equals("선사명"))
-//			{
-//				query="company_name";
-//			}else if(field.equals("선사명 약어"))
-//			{
-//				query="company_abbr";
-//			}
-//			else if(field.equals("에이전트"))
-//			{
-//				query="agent_name";
-//			}
-//			else if(field.equals("에이전트 약어"))
-//			{
-//				query="agent_abbr";
-//			}
-//
-//			query+=" like '"+txfSearch.getText()+"%'";
-//
-//			this.updateTable(query);
-//		}
-//	}
+
 
 	class TableSelectListner extends MouseAdapter
 	{
@@ -397,158 +328,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		public void columnSelectionChanged(ListSelectionEvent e) {
 		}
-	}
-
-	class CompanyTable extends KSGTable
-	{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		int totalCount;
-
-		private String[] columName = {"선사명","선사명 약어","에이전트", "에이전트 약어","비고"};
-
-		private HashMap<String, String> arrangeMap;
-
-		private ArrayList<String> currentColumnNameList;
-
-		String query;
-
-		String orderby;
-
-		public CompanyTable() {
-			super();
-
-			//order by를 위한 칼럼 목록 생성		
-			arrangeMap = new HashMap<String, String>();
-
-			// 칼럼 순서 정보를 저장하기 위한 클래스 생성
-			currentColumnNameList = new ArrayList<String>();
-
-			// 칼럼 정보 초기화
-			for(int i=0;i<columName.length;i++)
-			{
-				arrangeMap.put(columName[i], fieldName[i]);
-				currentColumnNameList.add(columName[i]);
-			}
-			this.setModel(modelInit());
-			this.columInit();
-
-
-		}
-
-		public void setQuery(String query) {
-			this.query =query;
-		}
-
-		private Object[]  getRowData(Company info)
-		{
-
-			Object rows[] =new Object[currentColumnNameList.size()];
-
-			for(int columnIndex=0;columnIndex<currentColumnNameList.size();columnIndex++)
-			{
-				String columnName =currentColumnNameList.get(columnIndex);
-				if(columnName.equals("선사명"))
-				{
-					rows[columnIndex]= info.getCompany_name();
-				}
-				else if(columnName.equals("선사명 약어"))
-				{
-					rows[columnIndex]= info.getCompany_abbr();
-				}
-				else if(columnName.equals("에이전트"))
-				{
-					rows[columnIndex]= info.getAgent_name();
-				}
-				else if(columnName.equals("에이전트 약어"))
-				{
-					rows[columnIndex]= info.getAgent_abbr();
-				}
-				else if(columnName.equals("비고"))
-				{
-					rows[columnIndex]= info.getContents();
-				}
-			}
-			return rows;
-		}
-
-		private DefaultTableModel modelInit()
-		{
-			model = new KSGTableModel();
-
-			for(int i=0;i<currentColumnNameList.size();i++)
-			{
-				model.addColumn(currentColumnNameList.get(i));
-			}
-			return model;
-		}
-		private void columInit()
-		{
-			TableColumnModel colmodel = getColumnModel();
-
-			for(int i=0;i<colmodel.getColumnCount();i++)
-			{
-				TableColumn namecol = colmodel.getColumn(i);
-
-				DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
-				//if(i==1)
-				{
-					renderer.setHorizontalAlignment(SwingConstants.LEFT);
-				}
-				namecol.setCellRenderer(renderer);
-				namecol.setPreferredWidth(300);
-			}
-		}
-
-		@Override
-		public void retrive() throws SQLException {
-
-			modelInit();
-
-			Company searchOP = new Company();
-
-			searchOP.setSearchKeyword(query);
-
-			searchOP.setOrderBy(orderby);
-
-			List li =baseDaoService.getSearchedCompanyList(searchOP);
-
-			Iterator iter = li.iterator();
-
-			logger.info("search : " + li.size());
-
-			totalCount = companyService.getCompanyCount();
-
-			while(iter.hasNext())
-			{
-				Company companyInfo = (Company) iter.next();
-				model.addRow(this.getRowData(companyInfo));
-			}
-
-			RowSorter<TableModel> sorter
-			= new TableRowSorter<TableModel>(model);
-
-			setRowSorter(sorter);
-
-			setModel(model);
-
-			columInit();
-
-			updateUI();
-
-		}
-		public int getToalCount()
-		{
-			return totalCount;
-		}
-		public int getRowCount()
-		{
-			return model.getRowCount();
-		}
-	}
+	}	
 
 	@Override
 	public void fnSearch() {

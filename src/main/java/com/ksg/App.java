@@ -80,13 +80,7 @@ public class App
 		
 
 			KSGLogin login = new KSGLogin();
-			javax.swing.SwingUtilities.invokeLater(new Runnable(){
-
-				public void run() {
-
-				}
-
-			});
+			
 
 			KSGMainFrame frame = new KSGMainFrame(login);
 			frame.createAndUpdateUI();

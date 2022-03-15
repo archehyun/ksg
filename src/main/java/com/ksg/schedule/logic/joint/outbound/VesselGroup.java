@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,11 +21,22 @@ import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 
+
 /**
- * 선박 그룹
- * 
- * @author 박창현
- *
+
+ * @FileName : VesselGroup.java
+
+ * @Project : KSG2
+
+ * @Date : 2022. 3. 14. 
+
+ * @작성자 : pch
+
+ * @변경이력 :
+ *   20220314: 출발일이 도착일보다 늦은 경우 스케줄 제외(공동배선시)
+
+ * @프로그램 설명 :
+
  */
 public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<Object>{
 	/**
@@ -137,16 +149,32 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 			companyStringList.add(new CompanyString(company, agent));
 		}
 	}
-
 	/**
+	 * @param jointScheduleList
+	 * @param scheduleData
+	 */
+	private void addJointedSchedule(List jointScheduleList, PrintItem scheduleData)
+	{
+
+
+		//공동배선 룰 : 출발일이 도착일보다 빠르면 스케줄에서 제외
+		if(KSGDateUtil.dayDiff(scheduleData.getDateF(), scheduleData.getDateT())>-1)
+			jointScheduleList.add(scheduleData);
+
+	}
+	/**
+	 * 
+	 * 공동배선이 적용된 스케줄 리스트 조회
 	 * @return
 	 * @throws CompanyNameNullExcption 
 	 */
-	public ArrayList<PrintItem> getVesselList() 
+	public ArrayList<PrintItem> getJointedVesselList() 
 	{
 		HashMap<String, ArrayList<ScheduleData>> sulist = new HashMap<String, ArrayList<ScheduleData>>();
 
 		ArrayList<PrintItem> list = new ArrayList<PrintItem>();
+
+
 		//선박명 항차번호가 같은 스케줄끼리 그룹화
 		for(int i=0;i<this.size();i++)
 		{
@@ -181,7 +209,9 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 				logger.debug("일반 스케줄:"+vessel+",datef:"+dateF+",dateT:"+dateT+","+data.getVoyage_num());
 				company = data.getCompany_abbr();
 				PrintItem item = new PrintItem(dateF, vessel, vessel_type, new CompanyString(company, data.getAgent()).toString(), dateT);
-				list.add(item);
+
+				addJointedSchedule(list,item);
+				//list.add(item);
 			}
 			else if(datas.size()>1)
 			{
@@ -224,15 +254,15 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 
 						commonDateT = KSGDateUtil.rowerDate(itemFirst.getDateT(), commonDateT);
 						commonDateF =KSGDateUtil.upperDate(itemFirst.getDateF(), commonDateF);
-						
+
 						this.addCompany(itemFirst.getCompany_abbr());							
 						this.addCompany(itemSecond.getCompany_abbr());
-						
-												
-						
+
+
+
 						this.addCompany(itemFirst.getCompany_abbr(), itemFirst.getAgent());
 						this.addCompany(itemSecond.getCompany_abbr(), itemSecond.getAgent());
-						
+
 						isGroupedFormerSchedule=true;// 공동배선으로 묶였는지 여부 저장
 
 					}else
@@ -256,7 +286,8 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 
 							logger.info("공동배선:"+this.vessel+","+company);
 							PrintItem item = new PrintItem(commonSchedule.getDateF(), commonSchedule.getVessel(), vessel_type, company,  commonSchedule.getDateT());
-							list.add(item);
+							addJointedSchedule(list,item);
+							//list.add(item);
 							companyStringList.clear();
 							companyList.clear();
 
@@ -264,7 +295,8 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 						{
 							logger.info("단독 스케줄 추가:" +itemFirst.getVessel() +", "+itemFirst.getDateF()+", "+itemFirst.getDateT());
 							PrintItem item = new PrintItem(itemFirst.getDateF(), itemFirst.getVessel(), vessel_type, new CompanyString( itemFirst.getCompany_abbr(), itemFirst.getAgent()).toString(), itemFirst.getDateT());
-							list.add(item);
+							addJointedSchedule(list,item);
+							//list.add(item);
 
 						}
 						isGroupedFormerSchedule=false;
@@ -296,13 +328,15 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 								company=toCompanyString(companyStringList);
 							}
 							item = new PrintItem(commonSchedule.getDateF(), commonSchedule.getVessel(), vessel_type, company, commonSchedule.getDateT());
-							list.add(item);
+							addJointedSchedule(list,item);
+							//list.add(item);
 							companyStringList.clear();
 							companyList.clear();
 						}else
 						{
 							item = new PrintItem(itemSecond.getDateF(), itemSecond.getVessel(), vessel_type, new CompanyString( itemSecond.getCompany_abbr(), itemSecond.getAgent()).toString(), itemSecond.getDateT());
-							list.add(item);
+							addJointedSchedule(list,item);
+							//list.add(item);
 							logger.info("마지막 스케줄 추가:"+item.getDateF()+", "+item.getVessel_name() +", "+item.getDateT());
 						}
 
@@ -337,9 +371,9 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 		//대표 선사 검색
 
 		Vessel searchedVessel =scheduleManager.searchVessel(data.getVessel());
-		
+
 		this.vessel_type = searchedVessel.getVessel_type()!=null?searchedVessel.getVessel_type():"";
-		
+
 		if(searchedVessel.getVessel_company()!=null&&!searchedVessel.getVessel_company().equals(""))
 		{
 			this.setVessel_company(searchedVessel.getVessel_company());
@@ -483,7 +517,7 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 			// TODO Auto-generated method stub
 			return companyName;
 		}
-		
+
 
 		/* 
 		 * 2020-04-07

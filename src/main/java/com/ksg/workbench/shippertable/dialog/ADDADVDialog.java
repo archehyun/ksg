@@ -344,8 +344,7 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 		pnControl.add(pnRight,BorderLayout.EAST);
 		this.getContentPane().add(pnControl,BorderLayout.SOUTH);
 		this.getContentPane().add(pnMain,BorderLayout.CENTER);
-		this.getContentPane().add(createMargin(),BorderLayout.WEST);
-		this.getContentPane().add(createMargin(),BorderLayout.EAST);
+		
 		this.setSize(600,350);
 		ViewUtil.center(this, true);
 		this.setVisible(true);

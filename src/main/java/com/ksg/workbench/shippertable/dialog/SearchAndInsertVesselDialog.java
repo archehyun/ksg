@@ -31,8 +31,10 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.comp.VesselInfo;
 import com.ksg.workbench.adv.dialog.AddVesselDialog;
+import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.AdvertiseTable;
 
@@ -92,8 +94,11 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		JLabel lblTitle = new JLabel("검색된 선박명: "+vesselName);
 
 		JPanel pnMargin = new JPanel();
+		
 		pnMargin.setPreferredSize(new Dimension(15,0));
+		
 		pnTitle.add(pnMargin,BorderLayout.WEST);
+		
 		pnTitle.add(lblTitle);
 
 		JPanel pnSearchRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -264,8 +269,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 
 		getContentPane().add(pnTitle,BorderLayout.NORTH);
 		getContentPane().add(pnControl,BorderLayout.SOUTH);
-		getContentPane().add(KSGDialog.createMargin(),BorderLayout.WEST);
-		getContentPane().add(KSGDialog.createMargin(),BorderLayout.EAST);
+		
 		getContentPane().add(pnCenter);
 
 		pack();
@@ -273,6 +277,12 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		ViewUtil.center(this, false);
 		setVisible(true);
 
+	}
+	
+	public KSGPanel buildCenter()
+	{
+		KSGPanel pnMain = new KSGPanel();
+		return pnMain;
 	}
 	private void addVesselAbbrAction(String vessel_abbr,String vessel_name) {
 		

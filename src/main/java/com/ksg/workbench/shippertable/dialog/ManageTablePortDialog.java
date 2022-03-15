@@ -56,8 +56,7 @@ public class ManageTablePortDialog extends KSGDialog implements ActionListener
 			pnMain.add(new JScrollPane(tblPortList));
 			
 			this.getContentPane().add(pnMain);
-			getContentPane().add(KSGDialog.createMargin(),BorderLayout.WEST);
-			getContentPane().add(KSGDialog.createMargin(),BorderLayout.EAST);
+			
 			getContentPane().add(buildControl(),BorderLayout.SOUTH);
 
 			updatePortTable();

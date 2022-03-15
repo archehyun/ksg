@@ -36,4 +36,26 @@
 	<select id="select" parameterClass="java.util.HashMap" resultClass="com.ksg.domain.Member">
 		select * from TB_MEMBER where member_id=#member_id#
 	</select>
+	
+		<insert id="insertMember" parameterClass="java.util.HashMap">
+		insert into TB_MEMBER(
+			member_id,
+			member_name,
+			member_password
+			
+		
+		)values
+		(
+			#member_id#,
+			#member_name#,
+			#member_password#		
+			
+			
+			
+		);
+	</insert>
+	
+	<delete id="deleteMember" parameterClass="java.util.HashMap">
+		delete from TB_MEMBER where member_id=#member_id#
+	</delete>
 </sqlMap>

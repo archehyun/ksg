@@ -10,6 +10,9 @@ public interface VesselService extends PageService{
 	
 	public HashMap<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException;
 	
+	public HashMap<String, Object> selectDetailListByLike(Map<String, Object> commandMap) throws SQLException;
+	
+	
 	public Object update(HashMap<String, Object> param) throws SQLException;	
 	
 	public Object updateDetail(HashMap<String, Object> param) throws SQLException;

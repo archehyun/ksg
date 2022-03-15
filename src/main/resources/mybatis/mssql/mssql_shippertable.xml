@@ -113,7 +113,36 @@
 	</select>
 
 	<select id="selectShipperTableListByPage" resultClass="java.util.HashMap">
-		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY page, table_index) 
+		SELECT ROWNUM 
+		
+				,table_id
+				,table_index
+				,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
+				,vsl_row
+				,title
+				,out_port
+				,common_shipping
+				,company_abbr
+				,TS
+				,company_name
+				,gubun
+				,page
+				,agent
+				,quark_format
+				,port_col
+				,out_to_port
+				,in_to_port
+				,in_port
+				,othercell
+				,console_cfs
+				,d_time
+				,c_time
+				,console_page
+				,inland_indexs
+				,bookPage
+		
+		
+		FROM ( SELECT ROW_NUMBER() OVER (ORDER BY page, table_index) 
 		
 		AS ROWNUM, * FROM TB_TABLE_INFO
 		WITH (NOLOCK) 
@@ -164,7 +193,8 @@
 			d_time,
 			c_time,		
 			console_page,
-			inland_indexs
+			inland_indexs,
+			date_isusse
 		)
 		 values(
 			#table_id#,
@@ -188,7 +218,8 @@
 			#d_time#,
 			#c_time#,		
 			#console_page#,
-			#inland_indexs#
+			#inland_indexs#,
+			CONVERT(date,GETDATE())
 		)
 	</insert>
 	<delete id="deleteTableInfo" parameterClass="com.ksg.domain.ShippersTable">
@@ -294,6 +325,15 @@
 		date_isusse=#date_isusse#
 		</isNotEqual>		
 		
+		where table_id=#table_id#
+	</update>
+	
+	
+	<update id="updateDate" parameterClass="java.util.HashMap">
+		update TB_TABLE_INFO set
+		
+		date_isusse=#date_isusse#
+
 		where table_id=#table_id#
 	</update>
 

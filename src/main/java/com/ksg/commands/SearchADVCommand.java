@@ -237,11 +237,9 @@ public class SearchADVCommand extends AbstractCommand{
 		}
 		catch (IOException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (NullPointerException e) 

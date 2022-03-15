@@ -59,6 +59,8 @@ import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.table.KSGAbstractTable;
+import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.ui.ErrorLogManager;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.schedule.comp.PnConsole;
@@ -68,6 +70,7 @@ import com.ksg.workbench.schedule.comp.PnInland;
 import com.ksg.workbench.schedule.comp.PnInland2;
 import com.ksg.workbench.schedule.comp.PnNormal;
 import com.ksg.workbench.schedule.comp.PnNormal2;
+import com.ksg.workbench.schedule.comp.PnNormalByTree;
 import com.ksg.workbench.schedule.comp.PnOutbound;
 import com.ksg.workbench.schedule.dialog.ScheduleResultDialog;
 
@@ -102,7 +105,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;	
 
-	private JTable tblScheduleDateList;
+	private KSGAbstractTable tblScheduleDateList;
 	
 	private JLabel lblNTop;
 	
@@ -154,6 +157,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 	public ScheduleMgtUI() {
 
 		scheduleService = new ScheduleServiceImpl();
+		
 		tableService = new TableServiceImpl();
 		
 		this.title = "스케줄정보 관리";
@@ -254,14 +258,25 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 		
 		pnTableDateModel.add(pnDateMain);
 		
-		pnTableDateModel.add(pnTableDateModelSouth,BorderLayout.SOUTH);
+		pnTableDateModel.add(pnTableDateModelSouth,BorderLayout.SOUTH);	
 
 		//====================================
 
 
 		// 스케줄 생성일자 목록===============================
 		KSGPanel pnTblScheduleDateList = new KSGPanel(new BorderLayout());
-		tblScheduleDateList=  new JTable();
+		tblScheduleDateList=  new KSGAbstractTable();
+		
+		tblScheduleDateList.addColumn(new KSGTableColumn("gubun","구분",110));
+		
+		tblScheduleDateList.addColumn(new KSGTableColumn("date_issue","생성일자",120));
+		
+		tblScheduleDateList.addColumn(new KSGTableColumn("cnt","건수"));
+		
+		tblScheduleDateList.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+		
+		tblScheduleDateList.initComp();
+		
 
 		tblScheduleDateList.setShowGrid(false);
 		tblScheduleDateList.addMouseListener(new MouseAdapter() {
@@ -273,6 +288,13 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 				if(row==-1)
 					return;
 				String gubun = (String) tblScheduleDateList.getValueAt(row, 0);
+				String inputdate = (String) tblScheduleDateList.getValueAt(row, 1);
+				
+				pnNormal2.setInput_date(inputdate);
+				pnConsole2.setInput_date(inputdate);
+				pnInland2.setInput_date(inputdate);
+				pnNomalByTree.setInput_date(inputdate);
+				
 				if(gubun.equals(ShippersTable.GUBUN_CONSOLE)||gubun.equals(ShippersTable.GUBUN_NORMAL))
 				{
 					pnOption.setVisible(true);
@@ -283,23 +305,23 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 					pnOption.setVisible(false);
 				}
 
-				if(gubun.equals(ShippersTable.GUBUN_NORMAL))
-				{
-
-					tabPane.setSelectedIndex(0);
-
-				}else if(gubun.equals(ShippersTable.GUBUN_CONSOLE))
-				{
-					tabPane.setSelectedIndex(1);
-				}
-				else if(gubun.equals(ShippersTable.GUBUN_INLAND))
-				{
-					tabPane.setSelectedIndex(2);
-				}
+//				if(gubun.equals(ShippersTable.GUBUN_NORMAL))
+//				{
+//					tabPane.setSelectedIndex(0);
+//
+//				}else if(gubun.equals(ShippersTable.GUBUN_CONSOLE))
+//				{
+//					tabPane.setSelectedIndex(1);
+//				}
+//				else if(gubun.equals(ShippersTable.GUBUN_INLAND))
+//				{
+//					tabPane.setSelectedIndex(2);
+//				}
 			}
 		});
 		pnTblScheduleDateList.add(new JLabel("스케줄 생성 일자"),BorderLayout.NORTH);
 		pnTblScheduleDateList.add(new JScrollPane(tblScheduleDateList));
+		tblScheduleDateList.getParent().setBackground(Color.white);
 		pnConsoleOption = new KSGPanel(new FlowLayout(FlowLayout.LEADING));
 		pnConsoleOption.setBorder(BorderFactory.createTitledBorder("출력 항목"));
 		optPage = new JRadioButton("Page",true);
@@ -328,6 +350,13 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 				
 			}
 		});
+		
+		cbxInboundSchedule.setBackground(Color.white);
+		
+		cbxOutboundSchedule.setBackground(Color.white);
+		
+		cbxRouteSchedule.setBackground(Color.white);
+		
 		pnNormalSelectionOption.add(cbxInboundSchedule);
 		
 		pnNormalSelectionOption.add(cbxOutboundSchedule);
@@ -335,6 +364,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 		pnNormalSelectionOption.add(cbxRouteSchedule);
 
 		pnNormalRouteOption = new KSGPanel(new FlowLayout());
+		
 		pnNormalRouteOption.setBorder(BorderFactory.createTitledBorder("항로별 정렬 기준"));
 
 		optDate = new JRadioButton("날짜",true);
@@ -342,6 +372,10 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 		optVessel = new JRadioButton("선박");
 		
 		cbxNew = new JCheckBox("신규 방식");
+		
+		cbxNew.setBackground(Color.white);
+		optVessel.setBackground(Color.white);
+		optDate.setBackground(Color.white);
 
 
 		ButtonGroup bg2 = new ButtonGroup();
@@ -377,7 +411,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 		GridLayout gridLayout = butlayout;
 		gridLayout.setVgap(5);
 		KSGPanel pnLeftMenuButtonList = new KSGPanel(gridLayout);
-		pnLeftMenuButtonList.setPreferredSize(new Dimension(190,50));
+		pnLeftMenuButtonList.setPreferredSize(new Dimension(250,50));
 
 		pnLeftMenuButtonList.add(butSort);		
 
@@ -413,6 +447,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 	}
 
 	private KSGPanel buildCenter() {
+		
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
 		PnNormal pnNormal = new PnNormal();
@@ -436,9 +471,14 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 		//tabPane.add(pnInbound, "INBOUND");
 		
 		
-		tabPane.add(new PnNormal2(), "NORMAL");
-		tabPane.add(new PnConsole2(), "CONSOLE");		
-		tabPane.add(new PnInland2(), "INLAND");
+		pnNormal2 = new PnNormal2();
+		tabPane.add(pnNormal2, "NORMAL");
+		pnConsole2 = new PnConsole2();
+		tabPane.add(pnConsole2, "CONSOLE");		
+		pnInland2 = new PnInland2();
+		tabPane.add(pnInland2, "INLAND");
+		pnNomalByTree = new PnNormalByTree();
+		tabPane.add(pnNomalByTree, "TreeTable");
 		
 		
 		pnMain.add(tabPane);
@@ -462,7 +502,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 		;
 		defaultTableModel.addColumn("구분");
 		defaultTableModel.addColumn("생성일자");
-		List scheduleDateList = scheduleService.getScheduleDateList();
+		List scheduleDateList = scheduleService.selectScheduleDateList();
 		List inlandScheduleDateList = scheduleService.getInlandScheduleDateList();
 		if(scheduleDateList.size()==0&&inlandScheduleDateList.size()==0)
 		{
@@ -479,18 +519,20 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 
 		Iterator<ScheduleData> iter = scheduleDateList.iterator();
 		Iterator<ScheduleData> inlnadIter = inlandScheduleDateList.iterator();
-		while(iter.hasNext())
-		{
-			ScheduleData item = iter.next();
-			defaultTableModel.addRow(new Object[]{item.getGubun(),item.getDate_issue()});
-		}
+
 		while(inlnadIter.hasNext())
 		{
 			ScheduleData item = inlnadIter.next();
 			defaultTableModel.addRow(new Object[]{item.getGubun(),item.getDate_issue()});
 		}
-
-		tblScheduleDateList.setModel(defaultTableModel);
+		
+		List li = scheduleService.selectScheduleDateList();
+		tblScheduleDateList.setResultData(li);
+		
+		
+		
+		
+		
 	}
 
 
@@ -730,6 +772,14 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener {
 	ScheduleManager scheduleManager = ScheduleManager.getInstance();
 
 	private KSGPanel pnNormalRouteOption;
+
+	private PnNormal2 pnNormal2;
+
+	private PnConsole2 pnConsole2;
+
+	private PnInland2 pnInland2;
+
+	private PnNormalByTree pnNomalByTree;
 
 	class SchedulePrintAction implements ActionListener
 	{

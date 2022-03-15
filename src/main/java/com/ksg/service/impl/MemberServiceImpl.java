@@ -93,6 +93,19 @@ HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		return resultMap;
 
 	}
+	@Override
+	public Object insertMember(HashMap<String, Object> param) throws Exception {
+		logger.info("param:{}", param);
+		
+		return memberDAO.insert(param);
+		
+	}
+	@Override
+	public int deleteMember(HashMap<String, Object> param) throws  SQLException {
+		logger.info("param:{}", param);
+		return memberDAO.delete(param);
+		
+	}
 
 
 }

@@ -130,8 +130,8 @@ public class SheetSelectDialog extends KSGDialog {
 		this.add(new JScrollPane(_tblSheetNameList));
 		this.add(pnControl,BorderLayout.SOUTH);
 		this.add(this.buildTitle(),BorderLayout.NORTH);
-		this.add(KSGDialog.createMargin(),BorderLayout.WEST);
-		this.add(KSGDialog.createMargin(),BorderLayout.EAST);
+		
+
 		this.setSize(400, 300);
 		ViewUtil.center(this, false);
 		this.setVisible(true);

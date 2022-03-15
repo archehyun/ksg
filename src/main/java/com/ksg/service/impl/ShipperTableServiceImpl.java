@@ -9,6 +9,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.TableDAO;
 import com.ksg.dao.impl.ShipperTableDAOImpl;
 import com.ksg.domain.ShippersTable;
@@ -119,9 +120,9 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 	}
 
 	@Override
-	public void delete(Map<String, Object> param) {
-		
-		
+	public int delete(Map<String, Object> param) throws Exception {
+		logger.info("param:{}",param);
+		return shipperTableDao.delete(param);
 	}
 
 	@Override
@@ -133,13 +134,17 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 	@Override
 	public int updateTableDateByTableIDs(List table,String updateDate) throws SQLException {
 		logger.info("update by "+updateDate+", "+table);
-		Iterator<ShippersTable> iter = table.iterator();
+		Iterator<HashMap<String, Object>> iter = table.iterator();
 		int count=0;
 		while(iter.hasNext())
 		{
-			ShippersTable item = iter.next();
-			item.setDate_isusse(updateDate);
-			tableDAO.updateTableDateByTableIDs(item);
+			HashMap<String, Object> item = iter.next();
+			
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			param.put("table_id", item.get("table_id"));
+			param.put("date_isusse", updateDate);
+			
+			shipperTableDao.updateDate(param);
 			count++;
 		}
 		
@@ -149,13 +154,19 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 	
 
 	@Override
-	public void insert(Map<String, Object> param) {
+	public void insert(Map<String, Object> param) throws Exception{
+		logger.info("param:{}",param);
 		try {
-			shipperTableDao.update(param);
+			
+		Object result=	shipperTableDao.insert(param);
+		
+		logger.info("reslult:{}",result);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if(e.getErrorCode()==2627)
+			{
+				throw new AlreadyExistException();
+			}
 		}
 		
 	}

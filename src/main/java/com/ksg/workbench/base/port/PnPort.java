@@ -20,24 +20,17 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableColumnModel;
-
-
-
 
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
@@ -50,9 +43,9 @@ import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.comp.PnBase;
 import com.ksg.workbench.base.port.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.workbench.base.port.dialog.UpdatePortInfoDialog;
+import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.schedule.comp.KSGPageTablePanel;
 
 
 /**
@@ -99,7 +92,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 	public PnPort(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
-		this.setBackground(Color.white);
+		
 		
 		this.addComponentListener(this);
 		
@@ -115,11 +108,7 @@ public class PnPort extends PnBase implements ActionListener{
 		
 		KSGPanel pnSearch = new KSGPanel();
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		lblTotal = new JLabel();
-		lblTable = new JLabel("항구 정보");
-		lblTable.setSize(200, 25);
-		lblTable.setFont(new Font("돋움",0,16));
-		lblTable.setIcon(new ImageIcon("images/db_table.png"));
+
 		JLabel lbl = new JLabel("필드명 : ");
 		cbxField = new JComboBox();		
 		cbxField.addItem("항구명");
@@ -147,30 +136,7 @@ public class PnPort extends PnBase implements ActionListener{
 		cbxPortArea = new JComboBox();
 		cbxAreaCode = new JComboBox();
 
-		try {
-			cbxPortArea.addItem("선택");
-			cbxAreaCode.addItem("선택");
-			List listArea = areaService.getAreaListGroupByAreaName();
-			List listAreaCode = areaService.getAreaListGroupByAreaCode();
-			Iterator areaIter = listArea.iterator();
-			while(areaIter.hasNext())
-			{
-				String area = (String) areaIter.next();
-				cbxPortArea.addItem(area);
-			}
-
-			Iterator areaCodeIter = listAreaCode.iterator();
-			while(areaCodeIter.hasNext())
-			{
-				String code = (String) areaCodeIter.next();
-				cbxAreaCode.addItem(code);
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		
 		pnSearch.add(lblArea);
 		pnSearch.add(cbxPortArea);
 		pnSearch.add(lblAreaCode);
@@ -183,25 +149,15 @@ public class PnPort extends PnBase implements ActionListener{
 		pnSearchAndCount.add(pnSearch);
 
 
-		KSGPanel pnCount = new KSGPanel();
-		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnCount.add(lblTable);
 
 		KSGPanel pnMain= new KSGPanel(new BorderLayout());
-
-		KSGPanel pnS = new KSGPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		KSGPanel pnS1 = new KSGPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-		Box info = new Box(BoxLayout.Y_AXIS);
-		info.add(pnS);
-		info.add(pnS1);
-		pnMain.add(info,BorderLayout.SOUTH);
+		pnMain.add(buildLine(),BorderLayout.SOUTH);
 		pnMain.add(pnSearchAndCount,BorderLayout.EAST);
-		pnMain.add(pnCount,BorderLayout.WEST);
+		pnMain.add(buildTitleIcon("항구 정보"),BorderLayout.WEST);
 		return pnMain;
 	}
+	
+	
 	private KSGPanel buildButton()
 	{
 		KSGPanel pnButtom = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -405,21 +361,17 @@ public class PnPort extends PnBase implements ActionListener{
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 		
 		pnMain.add(pnMainCenter);
+		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 
 		return pnMain;
 
 	}
 
-	public void updateTable(String query) {
-
-		
-	}
-	
 
 
-	public void updateTable() {
-	}
+
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -659,6 +611,33 @@ public class PnPort extends PnBase implements ActionListener{
 
 	@Override
 	public void componentShown(ComponentEvent e) {
+		
+		try {
+			cbxPortArea.addItem("선택");
+			cbxAreaCode.addItem("선택");
+			List listArea = areaService.getAreaListGroupByAreaName();
+			List listAreaCode = areaService.getAreaListGroupByAreaCode();
+			Iterator areaIter = listArea.iterator();
+			while(areaIter.hasNext())
+			{
+				String area = (String) areaIter.next();
+				cbxPortArea.addItem(area);
+			}
+
+			Iterator areaCodeIter = listAreaCode.iterator();
+			while(areaCodeIter.hasNext())
+			{
+				String code = (String) areaCodeIter.next();
+				cbxAreaCode.addItem(code);
+			}
+
+		} catch (SQLException ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
+		}
+
+		
+		
 		if(isShowData) fnSearch();
 		
 	}

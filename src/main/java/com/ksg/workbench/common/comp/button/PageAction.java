@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.util.HashMap;
 
 import com.ksg.service.PageService;
-import com.ksg.workbench.schedule.comp.KSGPageTablePanel;
+import com.ksg.workbench.common.comp.KSGPageTablePanel;
 
 public class PageAction extends AbstractPageAction
 {

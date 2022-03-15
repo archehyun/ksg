@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -14,14 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableColumnModel;
 
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -59,9 +56,7 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 	
 	CodeServiceImpl codeService;
 	
-	SelectionListner selectionListner = new SelectionListner();
-
-	private JLabel lblTable;
+	SelectionListner selectionListner = new SelectionListner();	
 	
 	private List<HashMap<String, Object>> master;
 
@@ -141,49 +136,44 @@ public class PnCommonCode extends PnBase implements ActionListener, ComponentLis
 		pnMain.add(tableD);
 		
 		pnMain.add(createSerch(),BorderLayout.NORTH);
+		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 		
 		return pnMain;
 	}
 	
 	private KSGPanel createSerch()
-	{		
-		KSGPanel pnMain = new KSGPanel();
+	{
+		
+		txfCodeName = new JTextField(10);		
+		
+		KSGPanel pnSearchAndCount = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		
 		
-		lblTable = new JLabel("코드정보");
-		lblTable.setSize(200, 25);
-		lblTable.setFont(new Font("돋움",0,16));
-		lblTable.setIcon(new ImageIcon("images/db_table.png"));
+		pnSearchAndCount.add(new JLabel("코드명:"));
 		
-		pnMain.setLayout(new BorderLayout());
-		
-		KSGPanel pnLeft = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		txfCodeName = new JTextField(10);
-		
-		pnLeft.add(lblTable);
-		pnLeft.add(new JLabel("코드명:"));
-		pnLeft.add(txfCodeName);
-		
-		
-		KSGPanel pnRight = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		
-		
-		pnRight.add(new JLabel("코드명:"));
-		pnRight.add(txfCodeName);
+		pnSearchAndCount.add(txfCodeName);
 		
 		JButton butSearch = new JButton("조회");
+		
 		butSearch.addActionListener(this);
 		
-		pnRight.add(butSearch);
-		
-		pnMain.add(pnLeft,BorderLayout.LINE_START);
+		pnSearchAndCount.add(butSearch);
 		
 		
-		pnMain.add(pnRight,BorderLayout.LINE_END);
+		
+		KSGPanel pnMain= new KSGPanel(new BorderLayout());
+		
+		pnMain.add(buildLine(),BorderLayout.SOUTH);
+		
+		pnMain.add(pnSearchAndCount,BorderLayout.EAST);
+		
+		pnMain.add(buildTitleIcon("코드 정보"),BorderLayout.WEST);
 		
 		return pnMain;
+		
+		
+		
 	}
 
 

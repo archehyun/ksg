@@ -16,8 +16,8 @@
 
 
 <sql id="LIKE_WHERE">
-	 where vessel_name=vessel_abbr
-		<dynamic prepend="and">
+	 
+		<dynamic prepend="WHERE">
 			<isNotNull property="vessel_abbr" prepend="and">
 						vessel_abbr like '%$vessel_abbr$%'
 			</isNotNull>
@@ -47,9 +47,8 @@
 		,vessel_mmsi
 		,vessel_company
 		,CONVERT(VARCHAR, input_date, 23) AS input_date		
-		 from TB_VESSEL
-		 where vessel_name=vessel_abbr
-		<dynamic prepend="and">
+		 from TB_VESSEL		 
+		<dynamic prepend="where">
 			<isNotNull property="vessel_abbr" prepend="and">
 						vessel_abbr like '%$vessel_abbr$%'
 			</isNotNull>
@@ -79,13 +78,13 @@
 	<select id="selectVesselListByPage" resultClass="java.util.HashMap">
 		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY vessel_name) 
 		
-		AS ROWNUM, vessel_abbr
+		AS ROWNUM 
 		,vessel_name
 		,vessel_use
 		,vessel_type
 		,vessel_mmsi
 		,vessel_company
-		,CONVERT(VARCHAR, input_date, 23) AS input_date	 FROM TB_VESSEL
+		,CONVERT(VARCHAR, input_date, 23) AS input_date	 FROM TB_VESSEL_H
 		WITH (NOLOCK) 
 		<include refid="LIKE_WHERE"></include>
 		 ) T 
@@ -93,18 +92,26 @@
 		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
 	</select>
 	
-	<select id="selectVesselAbbrList" resultClass="java.util.HashMap">
-		select * from TB_VESSEL
+	<select id="selectVesselAbbrList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		select * from TB_VESSEL_ABBR
 		
 		where vessel_name =#vessel_name#
-		and vessel_name!=vessel_abbr
+		
+		
+	</select>
+	
+		<select id="selectVesselAbbrListByLike" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		select * from TB_VESSEL_ABBR
+		
+		where vessel_name like '%$vessel_name$%'
+		
 		
 	</select>	
 
 <!-- insert -->
 
-	<insert id="insertVessel" parameterClass="java.util.HashMap">
-		insert into TB_VESSEL(
+	<insert id="insertVessel_TEMP" parameterClass="java.util.HashMap">
+		insert into TB_VESSEL_(
 			vessel_abbr,
 			vessel_name,
 			vessel_use,
@@ -133,12 +140,58 @@
 			
 		);
 	</insert>
+	
+	<insert id="insertVessel" parameterClass="java.util.HashMap">
+		insert into TB_VESSEL_H(			
+			vessel_name,
+			vessel_use,
+			vessel_mmsi,
+			vessel_type,
+			vessel_company,
+			input_date
+		
+		)values
+		(
+			
+			#vessel_name#,
+			#vessel_use#,
+			#vessel_mmsi#,
+			#vessel_type#,
+			#vessel_company#,
+			
+			<isNotNull property="input_date">
+		        #input_date#
+		    </isNotNull>		    
+		    <isNull property="input_date">
+		        getdate()
+		    </isNull>
+			
+			
+			
+		);
+	</insert>
+	
+		<insert id="insertVesselAbbr" parameterClass="java.util.HashMap">
+		insert into TB_VESSEL_ABBR(			
+			vessel_name,
+			vessel_abbr,			
+			
+			input_date
+		
+		)values
+		(
+			
+			#vessel_name#,
+			#vessel_abbr#,
+			getdate()
+		);
+	</insert>
 
 	
 <!-- update -->
 	
 	<update id="updateVessel" parameterClass="java.util.HashMap">
-		UPDATE TB_VESSEL 
+		UPDATE TB_VESSEL_H 
 		SET vessel_type=#vessel_type# 
 			,vessel_use=#vessel_use#
 			,vessel_company=#vessel_company#
@@ -150,18 +203,18 @@
 <!-- delete -->
 
 	<delete id="deleteVessel" parameterClass="java.util.HashMap">
-		delete from TB_VESSEL where vessel_name=#vessel_name#
+		delete from TB_VESSEL_H where vessel_name=#vessel_name#
 	</delete>
 	
 	<delete id="deleteVesselAbbr" parameterClass="java.util.HashMap">
-		delete from TB_VESSEL where vessel_abbr=#vessel_abbr# and vessel_name= #vessel_name#
+		delete from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr# and vessel_name= #vessel_name#
 	</delete>
 	
 	
 <!-- count -->
 
 	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
-		select count(*) from TB_VESSEL	
+		select count(*) from TB_VESSEL_H	
 	</select>
 
 <!-- ********************************************* -->	

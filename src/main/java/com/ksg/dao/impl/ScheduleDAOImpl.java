@@ -193,9 +193,7 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return sqlMap.queryForList("Schedule.selectScheduleListNTop",data);
 	}
 
-	public List getScheduleDateList() throws SQLException {
-		return sqlMap.queryForList("Schedule.selectScheduleDateList");
-	}
+
 
 	public int getScheduleTotalCount() throws SQLException {
 		return (Integer) sqlMap.queryForObject("Schedule.selectScheduleTotalCount");
@@ -261,6 +259,10 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	public Object insertSchedule(HashMap<String, Object> param) throws SQLException {
 		// TODO Auto-generated method stub
 		return insert("schedule.insertSchedule",param);
+	}
+	
+	public List selectScheduleDateList() throws SQLException {
+		return sqlMap.queryForList("schedule.selectScheduleDateList");
 	}
 
 	
