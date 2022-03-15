@@ -191,10 +191,7 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 		pnCenter.add(pnUse);
 		
 		pnCenter.add(pnS);
-		pnCenter.add(pnControl);
-
-
-		
+		pnCenter.add(pnControl);		
 		
 		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
 		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
@@ -250,7 +247,10 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 				}
 				
 				
-				service.insert(param);
+				service.insert(param)
+				;
+				
+				service.insertDetail(param);
 				
 				pnVessel.fnSearch();
 				
