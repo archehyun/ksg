@@ -13,7 +13,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 import com.ksg.view.comp.table.KSGTablePanel;
 
@@ -135,9 +134,7 @@ public class KSGPageTablePanel extends KSGTablePanel{
 	{
 		
 		JButton but = new JButton(title);
-		but.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		but.setBackground(Color.white);
-		but.setForeground(Color.lightGray.darker());
+		
 		but.setActionCommand(command);
 		return but;
 	}
