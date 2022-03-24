@@ -52,7 +52,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
  * @변경이력 :
 
- * @프로그램 설명 : 선사 정보 관리
+ * @프로그램 설명 : 선사 정보 관리 화면
 
  */
 public class PnCompany extends PnBase implements ActionListener{
@@ -69,17 +69,15 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private JTextField txfSearch;
 
-	private JLabel lblTable;
-	
-	
+	private JLabel lblTable;	
 
 	private KSGPageTablePanel tableH;
 
-	private String[] fieldName = {"company_name","company_abbr","agent_name", "agent_abbr","contents"};
+	//private String[] fieldName = {"company_name","company_abbr","agent_name", "agent_abbr","contents"};
 
 	private String query;
 
-	private String orderby;
+	//private String orderby;
 	
 	CompanyServiceImpl companyService = new CompanyServiceImpl();
 
@@ -297,9 +295,6 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	}
 
-//	public void updateTable() {
-//		searchData();
-//	}
 
 	class MyTableColumnModelListener implements TableColumnModelListener {
 		JTable table;

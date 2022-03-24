@@ -16,7 +16,6 @@ import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -25,7 +24,7 @@ import com.ksg.domain.Code;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.base.BaseInfoUI;
-import com.ksg.workbench.base.code.comp.PnCode;
+
 import com.ksg.workbench.base.dialog.BaseInfoDialog;
 
 /**
@@ -44,7 +43,7 @@ public class InsertCodeInfodialog extends BaseInfoDialog {
 	private JTextField txtKorCode;
 	private JTextField txfField;
 	
-	private PnCode baseCode;
+	
 	
 	
 	
@@ -81,10 +80,7 @@ public class InsertCodeInfodialog extends BaseInfoDialog {
 		
 	}
 
-	public InsertCodeInfodialog(BaseInfoUI base, String string,PnCode code) {
-		this(base,string);
-		this.baseCode = code;
-	}
+
 
 	public void createAndUpdateUI() {
 		this.setModal(true);
@@ -140,7 +136,7 @@ public class InsertCodeInfodialog extends BaseInfoDialog {
 				op.setCode_name_kor(txtKorCode.getText());
 				
 				baseService.insertCode(op);
-				baseCode.updateCodeTable(title);
+				
 				JOptionPane.showMessageDialog(this, "추가 했습니다.");
 				close();
 				

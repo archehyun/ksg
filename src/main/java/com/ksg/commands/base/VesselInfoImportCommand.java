@@ -95,27 +95,27 @@ public class VesselInfoImportCommand extends ImportCommand {
 				current++;
 			}
 		}
-		catch (SQLException e1) 
+		catch (RuntimeException e1) 
 		{
 			e1.printStackTrace();
-
-			// 동일한 항목이 있을 경우
-			if(e1.getErrorCode()==2627)
-			{
-				try 
-				{
-					service.update(param);
-					//baseService.update(insertParameter);
-				} catch (SQLException e2) 
-				{
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-			}
-			else
-			{
-				logger.error(e1.getErrorCode()+":"+e1.getMessage()+" : "+insertParameter.toInfoString());
-			}
+//
+//			// 동일한 항목이 있을 경우
+//			if(e1.getErrorCode()==2627)
+//			{
+//				try 
+//				{
+//					service.update(param);
+//					//baseService.update(insertParameter);
+//				} catch (SQLException e2) 
+//				{
+//					// TODO Auto-generated catch block
+//					e2.printStackTrace();
+//				}
+//			}
+//			else
+//			{
+//				logger.error(e1.getErrorCode()+":"+e1.getMessage()+" : "+insertParameter.toInfoString());
+//			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

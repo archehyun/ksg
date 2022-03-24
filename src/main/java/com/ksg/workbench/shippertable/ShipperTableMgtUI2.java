@@ -446,6 +446,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		tableH.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		tableH.initComp();
+		
+		tableH.setPageCountIndex(6);
+		
 		tableH.addPageActionListener(new PageAction(tableH, shipperTableService));
 		
 		tableH.setName("tableH");

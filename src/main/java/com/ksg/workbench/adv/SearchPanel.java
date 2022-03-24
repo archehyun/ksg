@@ -88,6 +88,21 @@ import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.SearchTable;
 
+/**
+
+  * @FileName : SearchPanel.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 20. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 광고정보관리 -> 광고 입력 -> 광고정보 조회 화면
+
+  */
 public class SearchPanel extends KSGPanel implements ActionListener{
 
 	public boolean 		isPageSearch=true;
@@ -207,8 +222,6 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 
 		tableService = new TableServiceImpl();
 
-
-
 		_tblSheetNameList = new JTable();
 
 		comp = new KSGCompboBox2("vessel",KSGCompboBox2.TYPE1);
@@ -313,31 +326,23 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		JScrollPane jScrollPane = new JScrollPane(listTable);
 		jScrollPane.getViewport().setBackground(Color.white);
 		pnTableInfo.add(jScrollPane,BorderLayout.CENTER);
-
-		//tabbedPane.addTab("테이블 목록", buildTableInfo());
 		
 		mainTab.addTab("테이블 정보",pnTableInfo);
-		
-		//mainTab.addTab("결과", advListPanel);
-
-		
-
-		//tabbedPane.addTab("History", pnPropety);
 
 		add(buildSearchOption(),BorderLayout.NORTH);
 
 		add(mainTab,BorderLayout.CENTER);
 	}
 	
-	private KSGPanel buildTableInfo()	
-	{
-		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-		searchTable = new SearchTable();
-		pnMain.add(new JScrollPane(searchTable));
-		
-		return pnMain;
-		
-	}
+//	private KSGPanel buildTableInfo()	
+//	{
+//		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+//		searchTable = new SearchTable();
+//		pnMain.add(new JScrollPane(searchTable));
+//		
+//		return pnMain;
+//		
+//	}
 
 
 	/**

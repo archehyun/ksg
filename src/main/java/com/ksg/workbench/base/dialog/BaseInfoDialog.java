@@ -34,6 +34,11 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
 public abstract class BaseInfoDialog extends KSGDialog implements ActionListener{
 	
 	
+	protected static String INSERT_ACTION = "추가";
+	protected static String UPDATE_ACTION = "저장";
+	protected static String CANCEL_ACTION = "취소";
+	
+	
 	protected JLabel lblTitle;
 
 	protected String titleInfo;

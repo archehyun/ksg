@@ -1,16 +1,19 @@
 package com.ksg.workbench.common.comp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 import com.ksg.view.comp.table.KSGTablePanel;
 
@@ -72,6 +75,11 @@ public class KSGPageTablePanel extends KSGTablePanel{
 		
 		
 	}
+	
+	public void setPageCountIndex(int index)
+	{
+		cbxPageCount.setSelectedIndex(index);
+	}
 
 
 	/**
@@ -93,22 +101,23 @@ public class KSGPageTablePanel extends KSGTablePanel{
 		cbxPageCount.addItem("500");
 		cbxPageCount.addItem("1000");
 		cbxPageCount.addItem("2000");
+		cbxPageCount.addItem("5000");
 
-		butFirst = new JButton("<<");
-		butFirst.setActionCommand("First");
-		butFw = new JButton("<");
-		butFw.setActionCommand("Forword");
+		butFirst = createButton("<<", "First");		
+		
+		butFw = createButton("<", "Forword");
 
 		txfPage = new JTextField(2);
 		txfPage.setEditable(false);
 
 		txfPage.setText("1");
 
-		butBw = new JButton(">");
-		butBw.setActionCommand("Next");
+		butBw = createButton(">", "Next"); 
+		
+		
+		butBw .setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-		butEnd = new JButton(">>");
-		butEnd.setActionCommand("Last");
+		butEnd = createButton(">>", "Last");
 
 		pnMain.add(butFirst);
 		pnMain.add(butFw);
@@ -120,6 +129,17 @@ public class KSGPageTablePanel extends KSGTablePanel{
 		pnMain.add(cbxPageCount);
 		//pnMain.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		return pnMain;
+	}
+	
+	private JButton createButton(String title, String command)
+	{
+		
+		JButton but = new JButton(title);
+		but.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		but.setBackground(Color.white);
+		but.setForeground(Color.lightGray.darker());
+		but.setActionCommand(command);
+		return but;
 	}
 
 	@Override

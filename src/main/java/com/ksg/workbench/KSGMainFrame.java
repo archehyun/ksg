@@ -214,8 +214,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				KSGMainFrame.this.setResizable(true);
 
-				KSGMainFrame.this.setDefaultLookAndFeelDecorated(true);			
-				
+				KSGMainFrame.this.setDefaultLookAndFeelDecorated(true);		
 				
 				KSGMainFrame.this.setMinimumSize(new Dimension(1300,800));
 				
@@ -285,7 +284,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 		this.setVisible(false);
 		
-		modelManager.frame=this;
+		
 		
 		logger.debug("create frame end");
 

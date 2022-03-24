@@ -39,9 +39,11 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.UpdateAreaInfodialog;
+import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 
@@ -72,7 +74,7 @@ public class PnArea extends PnBase implements ActionListener{
 
 	private JLabel lblTable,lblTotal;
 	
-	KSGAbstractTable tableH;
+	KSGTablePanel tableH;
 
 	private String columName[] = {"코드","지역명","지역코드"};
 	
@@ -82,21 +84,22 @@ public class PnArea extends PnBase implements ActionListener{
 
 
 	public PnArea(BaseInfoUI baseInfoUI) {
-		super(baseInfoUI);		
+		super(baseInfoUI);
+		
+		this.addComponentListener(this);
 		this.add(buildCenter());	
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		searchData();		
 	}
 
 	private KSGPanel buildCenter()
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
-		tableH = new KSGAbstractTable();
+		tableH = new KSGTablePanel("지역 정보");
 		tableH.addMouseListener(new TableSelectListner());
 		
-		pnMain.add(new JScrollPane(tableH));
 		
+		//  TODO 컬럼 정렬
 		KSGTableColumn columns[] = new KSGTableColumn[3];
 
 		columns[0] = new KSGTableColumn();
@@ -115,11 +118,16 @@ public class PnArea extends PnBase implements ActionListener{
 		columns[2].size = 75;
 
 		tableH.setColumnName(columns);
+		
+		
+		
 		tableH.initComp();
-		tableH.getParent().setBackground(Color.white);
+		tableH.setShowControl(true);
+		tableH.addContorlListener(this);
+		
 		
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
-		pnMain.add(buildButton(),BorderLayout.SOUTH);
+		pnMain.add(tableH);
 		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 		
@@ -181,22 +189,7 @@ public class PnArea extends PnBase implements ActionListener{
 		pnInfo.add(pnCount,BorderLayout.WEST);
 		return pnInfo;
 	}
-	private JPanel buildButton()
-	{
-		JPanel pnButtom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JPanel pnButtomRight = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JButton butDel = new JButton("삭제");
 
-		JButton butNew = new JButton("신규");
-		pnButtomRight.setBorder(BorderFactory.createEtchedBorder());		
-		butDel.addActionListener(this);
-		butNew.addActionListener(this);
-
-		pnButtomRight.add(butNew);
-		pnButtomRight.add(butDel);
-		pnButtom.add(pnButtomRight);
-		return pnButtom;
-	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command =e.getActionCommand();
@@ -204,7 +197,7 @@ public class PnArea extends PnBase implements ActionListener{
 		{
 			fnSearch();
 		}
-		else if(command.equals("삭제"))
+		else if(command.equals(KSGPageTablePanel.DELETE))
 		{
 			
 			
@@ -230,7 +223,7 @@ public class PnArea extends PnBase implements ActionListener{
 				}
 			}
 		}
-		else if(command.equals("신규"))
+		else if(command.equals(KSGPageTablePanel.INSERT))
 		{
 			KSGDialog dialog = new UpdateAreaInfodialog(UpdateAreaInfodialog.INSERT);
 			dialog.createAndUpdateUI();
@@ -241,22 +234,8 @@ public class PnArea extends PnBase implements ActionListener{
 		}
 
 	}
-	public void updateTable(String query)
-	{
-		//searchData(query);
-	}
-	
-	private void searchData()
-	{
-		try {
-			List li = areaDAO.selectAreaList(null);
-			tableH.setResultData(li);
-			lblTotal.setText(li.size()+" ");
-		} catch (SQLException ee) {
-			// TODO Auto-generated catch block
-			ee.printStackTrace();
-		}	
-	}
+
+
 
 	class TableSelectListner extends MouseAdapter
 	{
@@ -282,11 +261,7 @@ public class PnArea extends PnBase implements ActionListener{
 		}
 	}
 
-	public void updateTable() {
-		
-		searchData();
-		
-	}
+
 	class MyTableModelListener implements TableModelListener {
 		JTable table;
 
@@ -332,40 +307,40 @@ public class PnArea extends PnBase implements ActionListener{
 		}
 	}
 
-	public void initTable() {
-		model = new KSGTableModel();
-
-		for(int i=0;i<columName.length;i++)
-		{
-			model.addColumn(columName[i]);
-		}
-		
-		tblTable.setModel(model);
-		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		TableColumnModel colmodel = tblTable.getColumnModel();
-		TableColumn areacol;
-
-		for(int i=0;i<colmodel.getColumnCount();i++)
-		{
-			TableColumn namecol = colmodel.getColumn(i);
-
-			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
-			if(i==1)
-			{
-				renderer.setHorizontalAlignment(SwingConstants.LEFT);
-			}
-			else
-			{
-				renderer.setHorizontalAlignment(SwingConstants.CENTER);
-			}
-			namecol.setCellRenderer(renderer);	
-		}
-		areacol = colmodel.getColumn(1);
-		areacol.setPreferredWidth(400);
-		areacol = colmodel.getColumn(2);
-		areacol.setPreferredWidth(100);
-		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	}
+//	public void initTable() {
+//		model = new KSGTableModel();
+//
+//		for(int i=0;i<columName.length;i++)
+//		{
+//			model.addColumn(columName[i]);
+//		}
+//		
+//		tblTable.setModel(model);
+//		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+//		TableColumnModel colmodel = tblTable.getColumnModel();
+//		TableColumn areacol;
+//
+//		for(int i=0;i<colmodel.getColumnCount();i++)
+//		{
+//			TableColumn namecol = colmodel.getColumn(i);
+//
+//			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
+//			if(i==1)
+//			{
+//				renderer.setHorizontalAlignment(SwingConstants.LEFT);
+//			}
+//			else
+//			{
+//				renderer.setHorizontalAlignment(SwingConstants.CENTER);
+//			}
+//			namecol.setCellRenderer(renderer);	
+//		}
+//		areacol = colmodel.getColumn(1);
+//		areacol.setPreferredWidth(400);
+//		areacol = colmodel.getColumn(2);
+//		areacol.setPreferredWidth(100);
+//		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//	}
 
 	@Override
 	public void fnSearch() {

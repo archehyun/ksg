@@ -3,9 +3,6 @@ package com.ksg.view.comp.table;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -14,7 +11,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;

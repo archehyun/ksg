@@ -14,25 +14,22 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.AreaInfo;
 import com.ksg.service.impl.AreaServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -43,7 +40,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
  *
  */
 @SuppressWarnings("serial")
-public class UpdateAreaInfodialog extends KSGDialog implements ActionListener{
+public class UpdateAreaInfodialog extends BaseInfoDialog implements ActionListener{
 	
 	
 //	Area
@@ -58,15 +55,14 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener{
 	String title;
 	
 	AreaInfo selectedInfo;
-	private JButton butOK;
-	private JButton butCancel;
+
 	AreaServiceImpl areaService = new AreaServiceImpl();
 	private JLabel lblTitleInfo;
 	public UpdateAreaInfodialog(int type) {
 		super();
 		title = "지역 정보 관리";
 		this.type = type;
-
+		this.addComponentListener(this);
 	}
 
 	public UpdateAreaInfodialog(int type,HashMap<String, Object> param) {
@@ -74,24 +70,22 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener{
 		this.param = param;
 	}
 
+	private KSGPanel buildCenter()
+	{	
 
-	public void createAndUpdateUI() {
-		this.setModal(true);
-		this.setTitle(title);
-
-		this.addComponentListener(this);
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+		pnCenter.setBackground(Color.white);
 		txfAreaName = new JTextField(21);
 		txfAreaCode = new JTextField(5);
 		txfAreaBookCode = new JTextField(5);
 		lblInfo = new JLabel("",JLabel.RIGHT);
-		JPanel pnName = new JPanel();
+		KSGPanel pnName = new KSGPanel();
 		pnName.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblAreaName = new JLabel("지역명");
 		lblAreaName.setPreferredSize(new Dimension(80,25));
 		pnName.add(lblAreaName);
 		pnName.add(txfAreaName);
-		JPanel pnCode = new JPanel();
+		KSGPanel pnCode = new KSGPanel();
 		pnCode.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblAreaCode = new JLabel("지역코드");
 		lblAreaCode.setPreferredSize(new Dimension(80,25));
@@ -102,51 +96,33 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener{
 		lblAreaBookCode.setPreferredSize(new Dimension(100,25));
 		pnCode.add(lblAreaBookCode);
 		pnCode.add(txfAreaBookCode);
-
-		JPanel pnS = new JPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-
-		JPanel pnControl =  new JPanel();
-		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		butOK = new JButton("저장");
-		butCancel = new JButton("취소");
-		
-		butOK.addActionListener(this);
-		butCancel.addActionListener(this);
-
-		pnControl.add(butOK);
-		pnControl.add(butCancel);
-
-		JPanel pnTitle = new JPanel();
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnTitle.setBackground(Color.white);
-		lblTitleInfo = new JLabel("지역정보 수정");
-		lblTitleInfo.setFont(new Font("돋음",0,16));
-		pnTitle.add(lblTitleInfo);
-
-
-		JPanel pnInfo = new JPanel();
+		KSGPanel pnInfo = new KSGPanel();
 		pnInfo.setLayout( new FlowLayout(FlowLayout.LEFT));
 		pnInfo.add(lblInfo);
 
 		pnCenter.add(pnName);
 		pnCenter.add(pnCode);
 		pnCenter.add(pnInfo);
-		pnCenter.add(pnS);
-		pnCenter.add(pnControl);
+	
+	
+		
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		pnMain.add(pnCenter);
+		return pnMain;
+	}
+	public void createAndUpdateUI() {
+		this.setModal(true);
+		
+		
+		
+		this.setTitle(title);
 
-		JPanel left = new JPanel();
-		left.setPreferredSize(new Dimension(15,0));
-		JPanel right = new JPanel();
-		right.setPreferredSize(new Dimension(15,0));
 
-		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
-		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
-		this.getContentPane().add(left,BorderLayout.WEST);
-		this.getContentPane().add(right,BorderLayout.EAST);
+		this.getContentPane().add(buildTitle("지역정보관리"),BorderLayout.NORTH);
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		
 		this.pack();
 		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);		
 		this.setResizable(false);
@@ -293,13 +269,13 @@ public class UpdateAreaInfodialog extends KSGDialog implements ActionListener{
 		switch (type) {
 		case UPDATE:
 
-			lblTitleInfo.setText("지역정보 수정");
+			
 			butOK.setActionCommand("수정");
 
 			break;
 		case INSERT:
 
-			lblTitleInfo.setText("지역정보 추가");
+			
 			butOK.setActionCommand("추가");
 
 			break;

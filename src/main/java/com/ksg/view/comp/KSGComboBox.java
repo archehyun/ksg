@@ -1,8 +1,11 @@
 package com.ksg.view.comp;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 
 import com.ksg.service.impl.CodeServiceImpl;
@@ -17,6 +20,11 @@ public class KSGComboBox extends JComboBox<KSGTableColumn>{
 	public KSGComboBox()
 	{
 		service = new CodeServiceImpl();
+		
+		
+		
+		
+		
 	}
 
 	public KSGComboBox(String codeType)

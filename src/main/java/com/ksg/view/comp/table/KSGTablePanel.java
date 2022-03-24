@@ -16,7 +16,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.model.TableModel;
@@ -150,9 +149,13 @@ public class KSGTablePanel extends KSGPanel{
 		BoldLabel lblTitle = new BoldLabel(title + " 총");
 		
 		butInsert = new JButton("추가");
+		butInsert.setBackground(Color.DARK_GRAY.brighter());
+		butInsert.setForeground(Color.white);
 		
 		
 		butDelete = new JButton("삭제");
+		butDelete.setBackground(Color.LIGHT_GRAY);
+		butDelete.setForeground(Color.white);
 		//butUpdate = new JButton("수정");
 		
 		

@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -34,19 +35,19 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private CompanyServiceImpl companyService;
-	
+
 	private JTextField txfCompany_name; // 선사명
-	
+
 	private JTextField txfCompany_abbr; // 선사 약어
-	
+
 	private JTextField txfAgent_name;// 에이전트명
-	
+
 	private JTextField txfAgent_abbr;// 에이전트 약어
-	
+
 	private JTextArea txaContents;// 비고
-	
+
 	private int type;
 
 
@@ -58,7 +59,7 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		super();
 
 		companyService = new CompanyServiceImpl();
-		
+
 		this.addComponentListener(this);
 
 		this.type = type;
@@ -79,7 +80,7 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 	}
 
-	
+
 
 	public UpdateCompanyInfoDialog(int type, HashMap<String, Object> company)
 	{
@@ -138,22 +139,27 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			param.put("contents", txaContents.getText());
 			param.put("base_company_abbr", txfCompany_abbr.getText());
 
-
 			try {
 				companyService.insert(param);
-
-
 				result = SUCCESS;
 
 				JOptionPane.showMessageDialog(null,"추가했습니다.");
 
+
+			}catch(AlreadyExistException ee)
+
+			{
+				JOptionPane.showMessageDialog(this, "존재하는 선사명입니다");
+
+
+
+			}
+			finally {
 				this.setVisible(false);
 				this.dispose();
-
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			}
+
+
 
 		}
 
@@ -163,9 +169,9 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		this.setModal(true);
 
 		this.getContentPane().add(buildTitle("Add a Company Field"),BorderLayout.NORTH);
-		
+
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-		
+
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 
 		this.pack();
@@ -174,22 +180,22 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		this.setVisible(true);
 
 	}
-	
 
 
-	
+
+
 	public KSGPanel buildCenter()
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-		
-		
+
+
 		txfCompany_name = new JTextField(20);
 		txfCompany_abbr = new JTextField(20);
 		txfAgent_name = new JTextField(20);
 		txfAgent_abbr = new JTextField(20);
 		txaContents = new JTextArea(8,32);
 		txaContents.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		
+
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);		
 		pnCenter.add( createFormItem(txfCompany_name,"선사명"));
 		pnCenter.add( createFormItem(txfCompany_abbr,"선사명 약어"));
@@ -197,16 +203,16 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		pnCenter.add(createFormItem(txfAgent_abbr,"에이전트 약어"));
 		pnCenter.add(createFormItem(txaContents,"비고"));
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-		
-		
-		
+
+
+
 		pnMain.add(pnCenter);
-		
+
 		return pnMain;
 	}
 
 
-	
+
 
 	@Override
 	public void componentShown(ComponentEvent e) {
@@ -238,5 +244,5 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 	}
 
-	
+
 }

@@ -79,7 +79,6 @@ import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 
 

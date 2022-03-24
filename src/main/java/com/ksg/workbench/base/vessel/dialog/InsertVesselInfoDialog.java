@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
@@ -247,8 +248,7 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 				}
 				
 				
-				service.insert(param)
-				;
+				service.insert(param);
 				
 				service.insertDetail(param);
 				
@@ -262,24 +262,14 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 				
 				JOptionPane.showMessageDialog(this, "추가했습니다.");				
 
-			} catch (SQLException e1) 
-			{
-				if(e1.getErrorCode()==2627)
-				{					
+			} 
+			catch(AlreadyExistException ee)
 
-					JOptionPane.showMessageDialog(this, "동일한 선박명이 있습니다.");
-					
-					
-				}
-				else if(e1.getErrorCode()==8152)
-				{
-					JOptionPane.showMessageDialog(this, "9자리까지 입력 할수 있습니다.");	
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
-					e1.printStackTrace();
-				}
+			{
+				JOptionPane.showMessageDialog(this, "존재하는 선박명입니다");
+
+
+
 			}
 		}else
 		{

@@ -38,21 +38,23 @@ public abstract class PnBase extends KSGPanel implements ComponentListener{
 	/**
 	 * 
 	 */
-	protected HashMap<String, String> arrangeMap;
+	//protected HashMap<String, String> arrangeMap;
 	
+	
+	// 초기 데이터 표시 여부
 	protected boolean isShowData=true;	
 	
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	
-	protected ArrayList<String> currentColumnNameList;
+	//protected ArrayList<String> currentColumnNameList;
 	
-	protected KSGTableModel model;
+	//protected KSGTableModel model;
 	
-	protected JTable	tblTable;
+	//protected JTable	tblTable;
 	
-	protected int searchTotalSize;
+	//protected int searchTotalSize;
 	
-	protected int totalSize;
+	//protected int totalSize;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -69,33 +71,33 @@ public abstract class PnBase extends KSGPanel implements ComponentListener{
 		this.baseInfoUI = baseInfoUI;
 		
 		//order by를 위한 칼럼 목록 생성		
-		arrangeMap = new HashMap<String, String>();
+		//arrangeMap = new HashMap<String, String>();
 		
 		// 칼럼 순서 정보를 저장하기 위한 클래스 생성
-		currentColumnNameList = new ArrayList<String>();		
+	//	currentColumnNameList = new ArrayList<String>();		
 		
 		this.setLayout(new BorderLayout());		
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.gray));
 	}
 	
-	public JScrollPane createTablePanel()
-	{
-		tblTable = new JTable();
-		
-		JScrollPane jScrollPane = new JScrollPane(tblTable);
-		
-		jScrollPane.getViewport().setBackground(Color.white);
-		
-		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		
-		tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
-		
-		tblTable.setGridColor(Color.lightGray);	
-	
-		
-		return jScrollPane;
-	}
+//	public JScrollPane createTablePanel()
+//	{
+//		tblTable = new JTable();
+//		
+//		JScrollPane jScrollPane = new JScrollPane(tblTable);
+//		
+//		jScrollPane.getViewport().setBackground(Color.white);
+//		
+//		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//		
+//		tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
+//		
+//		tblTable.setGridColor(Color.lightGray);	
+//	
+//		
+//		return jScrollPane;
+//	}
 	
 	protected KSGPanel buildTitleIcon(String title)
 	{

@@ -46,7 +46,7 @@ import com.ksg.workbench.base.dialog.CommonCodeInsertPop;
 
   */
 @SuppressWarnings("serial")
-public class PnCommonCode extends PnBase implements ActionListener, ComponentListener{
+public class PnCommonCode extends PnBase implements ActionListener{
 	
 	JTextField txfCodeName;
 	

@@ -375,7 +375,7 @@ public class PnNormalByTree extends PnSchedule{
 		cbxNormalInOut = new KSGComboBox("inOutType");
 		cbxNormalInOut.initComp();
 
-		cbxNormalSearch = new JComboBox<KSGTableColumn>();
+		cbxNormalSearch = new KSGComboBox();
 		cbxNormalSearch.addItem(new KSGTableColumn("", "전체"));
 		cbxNormalSearch.addItem(new KSGTableColumn("table_id", "테이블 ID"));
 		cbxNormalSearch.addItem(new KSGTableColumn("company_abbr", "선사명"));
@@ -392,12 +392,15 @@ public class PnNormalByTree extends PnSchedule{
 		JLabel lblFromPort = new JLabel("출발항");		
 		JTextField txfFromPort = new JTextField(5);
 		txfFromPort.setEditable(false);
-		JButton butSearchFromPort = new JButton("검색");
-		JLabel lblToPort = new JLabel("도착항항");
+		JButton butSearchFromPort = new JButton("검색");		
+		butSearchFromPort.setActionCommand("SEARCH_FROM_PORT");
+		butSearchFromPort.addActionListener(this);
+		JLabel lblToPort = new JLabel("도착항");
 		JTextField txfToPort = new JTextField(5);
 		txfToPort.setEditable(false);
 		JButton butSearchToPort = new JButton("검색");
-		
+		butSearchToPort.setActionCommand("SEARCH_TO_PORT");
+		butSearchToPort.addActionListener(this);
 		KSGPanel pnPortSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnPortSearch.add(lblFromPort);
 		pnPortSearch.add(txfFromPort);

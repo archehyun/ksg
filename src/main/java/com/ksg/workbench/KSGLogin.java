@@ -17,6 +17,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
@@ -64,7 +66,7 @@ import com.ksg.service.impl.MemberServiceImpl;
   * @프로그램 설명 :
 
   */
-public class KSGLogin extends JDialog {
+public class KSGLogin extends JDialog implements ComponentListener{
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	/**
 	 * 
@@ -74,12 +76,15 @@ public class KSGLogin extends JDialog {
 	private JTextField txfID, txfPassword;
 	
 	private MemberService service;
+	
 	private JProgressBar bar;
+	
 	private JPanel pnProgress;
 	
 	private JPanel pnMain;
 	
 	private Properties properties = new Properties();
+	
 	private Properties db_properties = new Properties();
 	private String url,db;
 	
@@ -119,6 +124,8 @@ public class KSGLogin extends JDialog {
 	}
 
 	private void createAndUpdateUI() {
+		
+		this.addComponentListener(this);
 
 		bar = new JProgressBar();
 		
@@ -145,6 +152,10 @@ public class KSGLogin extends JDialog {
 
 		ViewUtil.center(this, true);
 		this.setVisible(true);
+		
+		
+		
+
 
 
 	}
@@ -266,6 +277,34 @@ public class KSGLogin extends JDialog {
 			
 			return;
 		}
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		bar.setIndeterminate(true);
+		pnMain.setVisible(false);
+		pnProgress.setVisible(true);
+		System.out.println("frame:"+KSGModelManager.getInstance().frame);
+		((KSGMainFrame) KSGModelManager.getInstance().frame).completeCardLayout();
+
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

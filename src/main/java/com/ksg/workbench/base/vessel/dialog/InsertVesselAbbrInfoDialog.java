@@ -123,16 +123,8 @@ public class InsertVesselAbbrInfoDialog extends BaseInfoDialog{
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(this, e1.getMessage());
 			}
-			catch (SQLException e1) {
-				if(e1.getErrorCode()==2627)
-				{
-					JOptionPane.showMessageDialog(this, "선박명이 존재합니다.");
-					e1.printStackTrace();
-				}else
-				{
-					JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
-					e1.printStackTrace();
-				}
+			catch (RuntimeException e1) {
+				e1.printStackTrace();
 			}
 		}else
 		{

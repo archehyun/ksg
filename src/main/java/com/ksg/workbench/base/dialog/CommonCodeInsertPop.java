@@ -160,8 +160,6 @@ public class CommonCodeInsertPop extends BasePop implements ActionListener{
 				JOptionPane.showMessageDialog(this, e1.getMessage());
 				
 			}
-			
-			
 		}
 		
 	}

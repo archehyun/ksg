@@ -10,16 +10,19 @@
  *******************************************************************************/
 package com.ksg;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.net.ServerSocket;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.ColorUIResource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.PropertiManager;
 import com.ksg.workbench.KSGLogin;
 import com.ksg.workbench.KSGMainFrame;
@@ -64,10 +67,26 @@ public class App
 			logger.info("PROGRAM START");
 			logger.info("DB Connected..");
 
+			
 
+			//UIManager.put("Button.background", new ColorUIResource(Color.DARK_GRAY));
+			//UIManager.put("Button.forground", new ColorUIResource(Color.white));
+			
 			try {
 				UIManager.setLookAndFeel(
 						UIManager.getSystemLookAndFeelClassName());
+				
+//				for (Map.Entry<Object, Object> entry : javax.swing.UIManager.getDefaults().entrySet()) {
+//				    Object key = entry.getKey();
+//				    Object value = javax.swing.UIManager.get(key);
+//				    if (value != null && value instanceof javax.swing.plaf.FontUIResource) {
+//				        javax.swing.plaf.FontUIResource fr=(javax.swing.plaf.FontUIResource)value;
+//				        javax.swing.plaf.FontUIResource f = new javax.swing.plaf.FontUIResource("µ¸À½Ã¼", fr.getStyle(), 12);
+//				        javax.swing.UIManager.put(key, f);
+//				    }
+//				}
+	 
+				 
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (InstantiationException e) {
@@ -78,11 +97,14 @@ public class App
 				e.printStackTrace();
 			}
 		
-
-			KSGLogin login = new KSGLogin();
+			UIManager.put("ComboBox.background", new ColorUIResource(Color.white));
 			
+			KSGLogin login = new KSGLogin();		
 
 			KSGMainFrame frame = new KSGMainFrame(login);
+			
+			KSGModelManager.getInstance().frame=frame;
+			
 			frame.createAndUpdateUI();
 
 

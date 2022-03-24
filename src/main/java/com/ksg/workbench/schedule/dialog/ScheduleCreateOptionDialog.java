@@ -372,11 +372,11 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 
 				}
 				catch (DateFormattException e1) {
-					// TODO Auto-generated catch block
+					
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
 					return ;
 				}catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
+					
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
 					return ;
 				}

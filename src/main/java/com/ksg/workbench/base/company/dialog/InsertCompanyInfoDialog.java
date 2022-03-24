@@ -26,7 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.CompanyService;
@@ -36,24 +35,38 @@ import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.BaseInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
+
 /**
- * 선박정보 추가 다이어그램
- * @author 박창현
- *
- */
+
+  * @FileName : InsertCompanyInfoDialog.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 18. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 선박정보 추가 다이어그램
+
+  */
 public class InsertCompanyInfoDialog extends BaseInfoDialog{
 	/**
 	 * 
 	 */
+	
+	
 	private static final long serialVersionUID = 1L;
+	public static final int UPDATE=1;
+	public static  final int INSERT=0;
+	private int type;
 	private JTextField txfCompany_name;
 	private JTextField txfCompany_abbr;
 	private JTextField txfAgent_name;
 	private JTextField txfAgent_abbr;
 	private JTextArea txaContents;
-	public static final int UPDATE=1;
-	public static  final int INSERT=0;
-	private int type;
+	
 	private JLabel lblTitle;
 	private String titleInfo;
 	private String title;

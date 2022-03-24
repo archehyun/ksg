@@ -59,6 +59,7 @@ public class InsertAreaInfodialog extends BaseInfoDialog implements ActionListen
 		this(infoUI);
 		title = "Area 정보 수정";
 		selectedInfo= info;
+		//TO-DO
 	}
 
 
