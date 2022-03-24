@@ -209,7 +209,7 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 			}});
 		KSGPanel pnSub = new KSGPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) pnSub.getLayout();
-		pnSub.add(txfDate);
+		
 		pnInfo.add(pnSub,BorderLayout.EAST);
 		JCheckBox box = new KSGCheckBox("월요일");
 		box.setFont(new Font("굴림", Font.PLAIN, 12));
@@ -224,22 +224,11 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 				}
 			}
 		});
+		
+		
+		
 
-		pnSub.add(box);
-
-		/*
-		JCheckBox chckbxNewCheckBox = new JCheckBox("인디자인체크");
-		chckbxNewCheckBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		chckbxNewCheckBox.setAction(action);
-		pnSub.add(chckbxNewCheckBox);
-		 */
-		//---------------
-		//int inD_flag;
-		//inD_flag=1;
+	
 		//-----------------
 		JCheckBox chckbxNewCheckBox = new KSGCheckBox("인디자인체크");
 
@@ -263,6 +252,14 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 		}
 				);
 		//				chckbxNewCheckBox.setAction(action);
+		
+		
+		lblDate = new JLabel(KSGDateUtil.format(new Date()));
+		
+		pnSub.add(new JLabel("출력날짜 : "));
+		pnSub.add(lblDate);
+		pnSub.add(txfDate);
+		pnSub.add(box);
 		pnSub.add(chckbxNewCheckBox);
 
 		JButton butExport = new JButton("파일출력",new ImageIcon("images/export.gif"));		
@@ -483,6 +480,8 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 			}
 			private void updateViewByTree(TreePath path) {
 				String selectedCompany = path.getLastPathComponent().toString();
+				
+				logger.info("tree select:{},{}",selectedCompany, path.getPathCount());
 				switch (path.getPathCount()) {
 				case 1: // root 선택시
 					lblCompany.setText("");
@@ -514,6 +513,8 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 					selectedPage=Integer.parseInt(page);
 					selectCompany=com;
 					selectDate=lblDate.getText();
+					logger.info("select date:{}",selectDate);
+					
 					try{
 						if(cbxAgent.isSelected())
 						{
@@ -556,11 +557,7 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 
 							}
 						}
-						/*String agent = _tableService.getTableAgentByPage(selectedPage);
-							CreateXTGCommand command = new CreateXTGCommand(com,agent,lblDate.getText(),false,"");
-							command.execute();
-							///logger.debug("command:"+command.result);
-							dataF.setText( command.result);*/
+						
 					}catch (Exception e) {
 						e.printStackTrace();
 					}
