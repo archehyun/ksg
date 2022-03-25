@@ -141,8 +141,6 @@ public class KSGPageTablePanel extends KSGTablePanel{
 
 	@Override
 	public void setResultData(HashMap<String, Object> resultMap) {
-		
-		
 
 		super.setResultData(resultMap);
 

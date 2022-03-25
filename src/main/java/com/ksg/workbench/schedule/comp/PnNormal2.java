@@ -65,15 +65,12 @@ public class PnNormal2 extends PnSchedule{
 		add(buildSearch(),BorderLayout.NORTH);
 		
 		add(buildCenter());
-		
 	
 	}
 	
 	public KSGPanel buildCenter()
 	{
-		tableH = new KSGPageTablePanel("스케줄 목록");
-		
-		
+		tableH = new KSGPageTablePanel("스케줄 목록");		
 		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
 		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID",100));
 		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",100));
@@ -87,6 +84,8 @@ public class PnNormal2 extends PnSchedule{
 		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
 		
 		tableH.initComp();
+		
+		tableH.setPageCountIndex(6);
 		
 		tableH.addActionListener(new PageAction(tableH,scheduleService));
 		

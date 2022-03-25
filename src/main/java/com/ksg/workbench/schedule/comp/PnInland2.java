@@ -86,6 +86,8 @@ public class PnInland2 extends PnSchedule{
 		
 		tableH.initComp();
 		
+		tableH.setPageCountIndex(6);
+		
 		tableH.addActionListener(new PageAction(tableH,scheduleService));
 		
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());

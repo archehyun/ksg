@@ -61,7 +61,10 @@ public class JTreeTable extends JTable {
     setSelectionModel(selectionWrapper.getListSelectionModel());
 
     // Install the tree editor renderer and editor.
-    setDefaultRenderer(TreeTableModel.class, tree);
+    setDefaultRenderer(TreeTableModel.class, tree);   
+    
+    this.getColumnModel().getColumn(0).setPreferredWidth(400);;
+    
     setDefaultEditor(TreeTableModel.class, new TreeTableCellEditor());
 
     // No grid.
@@ -80,6 +83,7 @@ public class JTreeTable extends JTable {
     {
     	setRowHeight(25);	
     }
+    
     }
 
     /**
@@ -147,16 +151,20 @@ public class JTreeTable extends JTable {
         // Make the tree's cell renderer use the table's cell selection
         // colors.
         TreeCellRenderer tcr = getCellRenderer();
+        
         if (tcr instanceof DefaultTreeCellRenderer) {
         DefaultTreeCellRenderer dtcr = ((DefaultTreeCellRenderer)tcr);
         // For 1.1 uncomment this, 1.2 has a bug that will cause an
         // exception to be thrown if the border selection color is
         // null.
         // dtcr.setBorderSelectionColor(null);
+        
+        
         dtcr.setTextSelectionColor(UIManager.getColor
                        ("Table.selectionForeground"));
         dtcr.setBackgroundSelectionColor(UIManager.getColor
                         ("Table.selectionBackground"));
+        
         }
     }
 
@@ -198,7 +206,9 @@ public class JTreeTable extends JTable {
                                boolean isSelected,
                                boolean hasFocus,
                                int row, int column) {
-        if(isSelected)
+        
+    	
+    	if(isSelected)
         setBackground(table.getSelectionBackground());
         else
         setBackground(table.getBackground());

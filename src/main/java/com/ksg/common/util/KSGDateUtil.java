@@ -980,6 +980,10 @@ public class KSGDateUtil {
 		// TODO Auto-generated method stub
 		return new SimpleDateFormat("M/d");
 	}
+	public static int isBigger(String dateOne, String dateTwo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 
 
