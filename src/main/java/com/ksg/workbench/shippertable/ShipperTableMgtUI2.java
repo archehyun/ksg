@@ -1652,9 +1652,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		if(!date.equals(""))
 		{
-			String fomattedDate;
+			
 			try {
-				fomattedDate = KSGDateUtil.toDate3(date).toString();
+				String	fomattedDate = KSGDateUtil.toDate3(date).toString();
 				searchParam.setDate_isusse(fomattedDate);
 			} catch (DateFormattException e) {
 				// TODO Auto-generated catch block

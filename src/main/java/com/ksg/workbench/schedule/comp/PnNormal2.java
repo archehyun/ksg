@@ -103,6 +103,7 @@ public class PnNormal2 extends PnSchedule{
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		cbxNormalInOut = new KSGComboBox("inOutType");
+		cbxNormalInOut.addItem(new KSGTableColumn("","ÀüÃ¼"));
 		cbxNormalInOut.initComp();
 
 		cbxNormalSearch = new JComboBox<KSGTableColumn>();
