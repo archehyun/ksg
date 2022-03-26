@@ -18,17 +18,25 @@
    
   
    
-	<logger level="INFO" name="java.sql.Connection"  additivity="false"/>
+	<logger name="java.sql.Connection" level="DEBUG" additivity="false">
+            <appender-ref ref="console" />
+    </logger>
+
 
 
    
    <logger level="INFO" name="java.sql.Statement"/>    
    
-   
+   <Logger name="java.sql" level="DEBUG" additivity="false">
+            <AppenderRef ref="console" />
+   </Logger>
         
    
-
-  <Root level="DEBUG">
+  <Logger name="egovLogger" level="DEBUG" additivity="false">
+   <AppenderRef ref="console"/>
+   <AppenderRef ref="file"/>
+  </Logger>
+  <Root level="INFO">
    <AppenderRef ref="console"/>
   </Root>
  </Loggers>

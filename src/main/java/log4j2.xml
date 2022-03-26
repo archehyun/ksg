@@ -14,18 +14,21 @@
  <!-- Logger 설정 -->
  <Loggers>
  
-   <Logger level="DEBUG" name="com.ibatis.common.jdbc.SimpleDataSource"/>
+   <Logger level="INFO" name="com.ibatis.common.jdbc.SimpleDataSource"/>
    
-   <logger level="DEBUG" name="java.sql.Connection" />
+  
    
-   <logger level="DEBUG" name="java.sql.Statement"/>    
+	<logger level="INFO" name="java.sql.Connection"  additivity="false"/>
+
+
+   
+   <logger level="INFO" name="java.sql.Statement"/>    
+   
+   
         
    
-  <Logger name="egovLogger" level="DEBUG" additivity="false">
-   <AppenderRef ref="console"/>
-   <AppenderRef ref="file"/>
-  </Logger>
-  <Root level="INFO">
+
+  <Root level="DEBUG">
    <AppenderRef ref="console"/>
   </Root>
  </Loggers>
