@@ -114,7 +114,7 @@
 		
 		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY table_id) 
 		
-		AS ROWNUM, * FROM TB_SCHEDULE_INFO
+		AS ROWNUM, * FROM $TABLE_NAME$
 		WITH (NOLOCK) 
 		<include refid="LIKE_WHERE"></include>
 		 ) T 
@@ -122,6 +122,8 @@
 		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
 				
 </select>
+
+
 
 	<select id="selectScheduleList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		select * from TB_SCHEDULE_INFO
@@ -168,6 +170,9 @@
 	
 	<select id="selectScheduleDateList" resultClass="java.util.HashMap" >
 		select date_issue, gubun, count(*) cnt from TB_SCHEDULE_INFO group by date_issue,gubun
+	</select>
+	<select id="selectInlandScheduleDateList" resultClass="java.util.HashMap" >
+		select date_issue, gubun, count(*) cnt from TB_INLAND_SCHEDULE_INFO group by date_issue,gubun
 	</select>
 	
 	<select id="selectInlandList" resultClass="com.ksg.domain.ScheduleData" parameterClass="com.ksg.domain.ScheduleData">

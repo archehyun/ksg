@@ -11,6 +11,13 @@ public abstract class PnSchedule extends KSGPanel implements ActionListener{
 	
 	protected String input_date="";
 	
+	protected String gubun;
+	
+	public void setGubun(String gubun)
+	{
+		this.gubun = gubun;
+	}
+	
 	public void setInput_date(String input_date) {
 		this.input_date = input_date;
 	}

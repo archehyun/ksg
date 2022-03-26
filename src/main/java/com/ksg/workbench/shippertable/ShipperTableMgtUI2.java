@@ -21,6 +21,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -857,7 +859,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		txfCompany.setEditable(false);
 
-		txfDate = new JTextField(8);
+		txfDate = new HintTextField("2000.1.1",8);
 
 		txfDate.setEditable(false);
 
@@ -893,7 +895,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		lblDateSearch.setFont(new Font("¸¼Àº°íµñ", Font.BOLD, 12));
 
-		txfDateSearch = new JTextField(10);
+		txfDateSearch = new HintTextField("2000.1.1",10);
 
 //		txfDateSearch.addKeyListener(new KeyAdapter(){
 //
@@ -1650,15 +1652,18 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		String date=txfDateSearch.getText();
 
-		if(!date.equals(""))
+		if(!date.equals("2000.1.1"))
 		{
 			
 			try {
 				String	fomattedDate = KSGDateUtil.toDate3(date).toString();
-				searchParam.setDate_isusse(fomattedDate);
+				
+				System.out.println(fomattedDate);
+				
+				
+				searchParamHash.put("date_isusse",fomattedDate);
 			} catch (DateFormattException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e.getMessage()+ ": ÀÔ·Â Çü½Ä(2000.1.1) ÀÌ Æ²·È½À´Ï´Ù.");
 			}
 
 		}
@@ -2084,6 +2089,88 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			return false;
 		}
 	}
+	
+	public class HintTextField extends JTextField {  
+
+		  
+
+		  Font gainFont = new Font("Tahoma", Font.PLAIN, 11);  
+
+		  Font lostFont = new Font("Tahoma", Font.ITALIC, 11);  
+
+		  
+
+		  public HintTextField(final String hint, int count) {  
+			  super(count);
+		  
+
+		    setText(hint);  
+
+		    setFont(lostFont);  
+
+		    setForeground(Color.GRAY);  
+
+		  
+
+		    this.addFocusListener(new FocusAdapter() {  
+
+		  
+
+		      @Override  
+
+		      public void focusGained(FocusEvent e) {  
+
+		        if (getText().equals(hint)) {  
+
+		          setText("");  
+
+		          setFont(gainFont);  
+
+		        } else {  
+
+		          setText(getText());  
+
+		          setFont(gainFont);  
+
+		        }  
+
+		      }  
+
+		  
+
+		      @Override  
+
+		      public void focusLost(FocusEvent e) {  
+
+		        if (getText().equals(hint)|| getText().length()==0) {  
+
+		          setText(hint);  
+
+		          setFont(lostFont);  
+
+		          setForeground(Color.GRAY);  
+
+		        } else {  
+
+		          setText(getText());  
+
+		          setFont(gainFont);  
+
+		          setForeground(Color.BLACK);  
+
+		        }  
+
+		      }  
+
+
+
+		    });  
+
+		  
+
+		  }  
+
+		}  
 
 
 

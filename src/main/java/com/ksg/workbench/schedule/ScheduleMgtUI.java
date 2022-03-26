@@ -291,6 +291,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 				pnConsole2.setInput_date(inputdate);
 				pnInland2.setInput_date(inputdate);
 				pnNomalByTree.setInput_date(inputdate);
+				pnNomalByTree.setGubun(gubun);
 				
 				if(gubun.equals(ShippersTable.GUBUN_CONSOLE)||gubun.equals(ShippersTable.GUBUN_NORMAL))
 				{
@@ -300,6 +301,12 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 				}else
 				{
 					pnOption.setVisible(false);
+				}
+				
+				// pnNomalByTree
+				if(tabPane.getSelectedIndex()==3)
+				{
+					pnNomalByTree.fnSearch();
 				}
 
 //				if(gubun.equals(ShippersTable.GUBUN_NORMAL))
@@ -510,14 +517,19 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		}
 
 
-		Iterator<ScheduleData> iter = scheduleDateList.iterator();
-		Iterator<ScheduleData> inlnadIter = inlandScheduleDateList.iterator();
-
-		while(inlnadIter.hasNext())
-		{
-			ScheduleData item = inlnadIter.next();
-			defaultTableModel.addRow(new Object[]{item.getGubun(),item.getDate_issue()});
-		}
+//		Iterator<ScheduleData> iter = scheduleDateList.iterator();
+//		while(iter.hasNext())
+//		{
+//			ScheduleData item = iter.next();
+//			defaultTableModel.addRow(new Object[]{item.getGubun(),item.getDate_issue()});
+//		}
+//		Iterator<ScheduleData> inlnadIter = inlandScheduleDateList.iterator();
+//
+//		while(inlnadIter.hasNext())
+//		{
+//			ScheduleData item = inlnadIter.next();
+//			defaultTableModel.addRow(new Object[]{item.getGubun(),item.getDate_issue()});
+//		}
 		
 		List li = scheduleService.selectScheduleDateList();
 		tblScheduleDateList.setResultData(li);

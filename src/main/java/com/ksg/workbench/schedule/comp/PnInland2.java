@@ -166,7 +166,7 @@ public class PnInland2 extends PnSchedule{
 			{
 				param.put("date_issue", input_date);
 			}
-			
+			param.put("TABLE_NAME", "TB_INLAND_SCHEDULE_INFO");
 			
 			int page_size = tableH.getPageSize();
 			

@@ -226,6 +226,12 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectInlandList",data);
 	}
+	
+	public List selectInlandScheduleDateList() throws SQLException {
+		// TODO Auto-generated method stub
+		return sqlMap.queryForList("schedule.selectInlandScheduleDateList");
+	}
+	
 	public List getInlandScheduleDateList() throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectInlandScheduleDateList");

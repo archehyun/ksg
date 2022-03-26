@@ -165,7 +165,7 @@ public class PnNormal2 extends PnSchedule{
 			{
 				param.put("date_issue", input_date);
 			}
-			
+			param.put("TABLE_NAME", "TB_SCHEDULE_INFO");
 			
 			int page_size = tableH.getPageSize();
 			

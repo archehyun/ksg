@@ -174,6 +174,8 @@ public class PnConsole2 extends PnSchedule{
 				param.put("date_issue", input_date);
 			}
 			
+			param.put("TABLE_NAME", "TB_SCHEDULE_INFO");
+			
 			int page_size = tableH.getPageSize();
 			
 			param.put("PAGE_SIZE", page_size);
