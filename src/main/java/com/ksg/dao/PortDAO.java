@@ -27,4 +27,5 @@ public interface PortDAO {
 	public Object isnert(HashMap<String, Object> param) throws SQLException;
 	
 	public Object selectListByPage(HashMap<String, Object> param)throws SQLException;
+	public List<Map<String, Object>> selectListByLike(Map<String, Object> param)throws SQLException;
 }

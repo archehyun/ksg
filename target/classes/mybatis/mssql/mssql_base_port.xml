@@ -57,6 +57,10 @@
 		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
 				
 	</select>
+	<select id="selectPortListByLike" resultClass="java.util.HashMap">
+		select * FROM TB_PORT
+		<include refid="LIKE_WHERE"></include>
+	</select>
 	
 	<select id="selectPort" resultClass="java.util.HashMap">
 		select * from TB_PORT

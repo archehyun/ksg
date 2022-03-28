@@ -62,4 +62,11 @@ public class PortDAOImpl extends AbstractDAO implements PortDAO{
 	}
 	
 
+	@Override
+	public List<Map<String, Object>> selectListByLike(Map<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList(this.namespace+".selectPortListByLike", param);
+	}
+	
+
 }

@@ -54,6 +54,19 @@ public class PortServiceImpl implements PortService{
 		return resultMap;
 
 	}
+	
+	public Map<String, Object> selectListByLike(Map<String, Object> param) throws SQLException
+	{
+			logger.debug("param:{}", param);
+		
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		resultMap.put("total", portDAO.selectCount(param));
+		
+		resultMap.put("master", portDAO.selectListByLike(param));
+		
+		return resultMap;
+	}
 
 	public int deletePortAbbr(HashMap<String, Object> param) throws SQLException {
 		logger.debug("param:{}", param);

@@ -77,6 +77,10 @@ public class PnNormalByTree extends PnSchedule{
 
 	private SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
 
+	private JTextField txfToPort;
+
+	private JTextField txfFromPort;
+
 	public PnNormalByTree() {
 
 		super();
@@ -516,21 +520,19 @@ public class PnNormalByTree extends PnSchedule{
 		cbxNormalSearch.addItem(new KSGTableColumn("agent", "에이전트"));
 		cbxNormalSearch.addItem(new KSGTableColumn("vessel", "선박명"));
 		cbxNormalSearch.addItem(new KSGTableColumn("voyage_num", "항차명"));
-		cbxNormalSearch.addItem(new KSGTableColumn("n_voyage_num", "항차번호"));
-		cbxNormalSearch.addItem(new KSGTableColumn("fromPort", "출발항"));
-		cbxNormalSearch.addItem(new KSGTableColumn("port", "도착항"));
+		cbxNormalSearch.addItem(new KSGTableColumn("n_voyage_num", "항차번호"));		
 		cbxNormalSearch.addItem(new KSGTableColumn("DateF", "출발일"));
 		cbxNormalSearch.addItem(new KSGTableColumn("DateT", "도착일"));
 
 
 		JLabel lblFromPort = new JLabel("출발항");		
-		JTextField txfFromPort = new JTextField(5);
+		txfFromPort = new JTextField(10);
 		txfFromPort.setEditable(false);
 		JButton butSearchFromPort = new JButton("검색");		
 		butSearchFromPort.setActionCommand("SEARCH_FROM_PORT");
 		butSearchFromPort.addActionListener(this);
 		JLabel lblToPort = new JLabel("도착항");
-		JTextField txfToPort = new JTextField(5);
+		txfToPort = new JTextField(10);
 		txfToPort.setEditable(false);
 		JButton butSearchToPort = new JButton("검색");
 		butSearchToPort.setActionCommand("SEARCH_TO_PORT");
@@ -580,6 +582,7 @@ public class PnNormalByTree extends PnSchedule{
 			String searchOption  = txfNoramlSearch.getText();
 
 			KSGTableColumn col = (KSGTableColumn)cbxNormalInOut.getSelectedItem();
+			
 			param.put("inOutType", col.columnField);
 
 
@@ -592,6 +595,14 @@ public class PnNormalByTree extends PnSchedule{
 
 					param.put(item.columnField, searchOption);
 				}
+			}
+			
+			if(!"".equals(txfFromPort.getText())){
+				param.put("fromPort", txfFromPort.getText());
+			}
+			
+			if(!"".equals(txfToPort.getText())){
+				param.put("port", txfToPort.getText());
 			}
 
 			if(input_date!=null||!input_date.equals(""))
@@ -620,8 +631,6 @@ public class PnNormalByTree extends PnSchedule{
 			{	
 				
 				treeTableModel.setRoot(getOutboundTreeNode(master));
-
-
 			}
 			else
 			{
@@ -665,10 +674,16 @@ public class PnNormalByTree extends PnSchedule{
 			SearchPortDialog portDialog = new SearchPortDialog();
 
 			portDialog.createAndUpdateUI();
+			
+			txfFromPort.setText(portDialog.result);
 		}
 		else if(command.equals("SEARCH_TO_PORT"))
 		{
+			SearchPortDialog portDialog = new SearchPortDialog();
 
+			portDialog.createAndUpdateUI();
+			
+			txfToPort.setText(portDialog.result);
 		}		
 	}
 

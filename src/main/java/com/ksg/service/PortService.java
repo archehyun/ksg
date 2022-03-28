@@ -8,6 +8,7 @@ import java.util.Map;
 public interface PortService extends PageService{
 	
 	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
+	public Map<String, Object> selectListByLike(Map<String, Object> commandMap) throws SQLException;
 	
 	public List<Map<String, Object>> selectPortAbbrList(HashMap<String, Object> commandMap) throws SQLException;
 	
