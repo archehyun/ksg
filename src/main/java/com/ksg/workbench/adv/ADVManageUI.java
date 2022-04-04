@@ -100,8 +100,6 @@ import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 @SuppressWarnings("unchecked")
 public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 {	
-
-	
 	private static final Logger logger = LoggerFactory.getLogger(ADVManageUI.class);
 	
 	private static int _tableViewCount = 10;
@@ -179,6 +177,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		super();
 
 		this.title="광고정보 입력";
+		
 		this.borderColor = new Color(179,195,207);
 
 		Properties properties = new Properties();
@@ -188,8 +187,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		tableService = new TableServiceImpl();
 
 		_advService = new ADVServiceImpl();
-
-
 
 		createAndUpdateUI();
 	}

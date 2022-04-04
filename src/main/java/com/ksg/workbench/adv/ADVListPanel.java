@@ -125,7 +125,6 @@ public class ADVListPanel extends KSGPanel implements ActionListener, MouseWheel
 	
 	private String selectedCompany;
 	
-	
 	private SearchPanel searchPanel;
 	
 	JProgressBar progressBar;
@@ -145,8 +144,36 @@ public class ADVListPanel extends KSGPanel implements ActionListener, MouseWheel
 		
 		shipperTableService = new ShipperTableServiceImpl();
 		
-		setLayout(new BorderLayout());
+		createAndUpdateUI();
+		
+	
+	}
+	
+	private KSGPanel createCenter()
+	{
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		
+		pane.setBackground(Color.white);
 
+		//TODO 설정 파일 오류 확인
+		/* 2014.11.3 오류 발생 주석 처리
+		 *
+		 */
+		//pane.setDividerLocation(Integer.parseInt((propertis.getProperty("errorDividerLoction"))));
+		
+		
+		KSGPanel pnTableList = createPnTableList();
+
+		pane.setTopComponent(pnTableList);
+		
+		pnMain.add(pane);
+		
+		return pnMain;
+	}
+	
+	private KSGPanel createNorth()
+	{
 		KSGPanel pnNorth = new KSGPanel(new BorderLayout());
 		
 		JLabel lblTableCountlbl =new JLabel("검색된 테이블 수 : ");
@@ -180,23 +207,19 @@ public class ADVListPanel extends KSGPanel implements ActionListener, MouseWheel
 		pnNorth.add(pnNorthLeft,BorderLayout.WEST);
 
 		pnNorth.add(pnNorthRight,BorderLayout.EAST);
-
-		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		
-		pane.setBackground(Color.white);
-
-		//TODO 설정 파일 오류 확인
-		/* 2014.11.3 오류 발생 주석 처리
-		 *
-		 */
-		//pane.setDividerLocation(Integer.parseInt((propertis.getProperty("errorDividerLoction"))));
-		KSGPanel pnTableList = createPnTableList();
-
-		pane.setTopComponent(pnTableList);
+		return pnNorth;
 		
-		add(pane);
+	}
+	
+	
+	public void createAndUpdateUI()
+	{
+		setLayout(new BorderLayout());		
 		
-		add(pnNorth,BorderLayout.NORTH);
+		add(createCenter());
+		
+		add(createNorth(),BorderLayout.NORTH);
 		
 		add(buildSouthPn(),BorderLayout.SOUTH);
 	}
@@ -247,6 +270,7 @@ public class ADVListPanel extends KSGPanel implements ActionListener, MouseWheel
 		if(command.equals("다시 불러오기"))
 		{
 			initInfo();
+			
 			if(selectedInput.equals("File"))
 			{
 				this.searchPanel.searchXLS();

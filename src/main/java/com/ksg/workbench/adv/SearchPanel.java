@@ -213,7 +213,9 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 	public void setAdvListPanel(ADVListPanel advListPanel) {
 		this.advListPanel = advListPanel;
 	}
+	
 	ADVManageUI manageUI;
+	
 	public SearchPanel(ADVManageUI manageUI) {
 		
 		this.manageUI = manageUI;
@@ -261,8 +263,6 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		pnSubControl2.setLayout(new FlowLayout(FlowLayout.LEADING));
 
 		txfTableCount.setText(_tableViewCount+"");
-
-
 
 		tblError = new KSGTableImpl(KSGTableImpl.TABLE_TYPE_ERROR);
 
