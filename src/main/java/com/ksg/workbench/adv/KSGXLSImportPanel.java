@@ -151,9 +151,9 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 	private KSGXMLTable tblADV;
 
-	//private PortTable tblPort;
+	private PortTable tblPort;
 	
-	private SearchedPortTable tblPort;
+	//private SearchedPortTable tblPort;
 
 	private JTextArea txaADV;
 
@@ -486,8 +486,8 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		);
 		txaADV = new JTextArea();
 		litVessel =new VesselListComp(this);
-//		tblPort = new PortTable(txaADV, this);
-		tblPort = new SearchedPortTable();
+		tblPort = new PortTable(txaADV, this);
+//		tblPort = new SearchedPortTable();
 		tblPort.setToolTipText("기본: 검정색, 신규 항구:노란색, 위치가  다른 항구:빨간색,");
 		JPanel pnLeft = new JPanel();
 		JSplitPane tpPortAndVessel = new JSplitPane();
@@ -759,8 +759,8 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 			lblVesselCount.setText(lblVesselCount.getText()+"(확인 필요)");
 		}			
 		
-		tblPort.setModel(xlstableinfo.getPortElement(), this.getTable_id());
-//		tblPort.setModel(xlstableinfo.getPortElement());
+//		tblPort.setModel(xlstableinfo.getPortElement(), this.getTable_id());
+		tblPort.setModel(xlstableinfo.getPortElement());
 
 		this.table_id = xlstableinfo.getTable_id();
 		

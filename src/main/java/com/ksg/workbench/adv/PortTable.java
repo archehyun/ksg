@@ -36,6 +36,7 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
+import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.adv.dialog.AddPortDialog;
 
@@ -56,45 +57,45 @@ public class PortTable extends JTable implements ActionListener
 	 *
 	 */
 
-	class ColoredTableCellRenderer extends DefaultTableCellRenderer {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public void setValue(Object value) {
-			
-			
-			if (value instanceof PortTableInfo) {
-				PortTableInfo cvalue = (PortTableInfo) value;
-				switch (cvalue.getType()) {
-				case PortTableInfo.TYPE_NOMAL:
-					setForeground(Color.black);
-					setBackground(Color.white);
-					break;
-				case PortTableInfo.TYPE_NEW_PORT:
-					setForeground(Color.yellow);
-					setBackground(Color.lightGray);
-					break;
-				case PortTableInfo.TYPE_RED:
-					setForeground(Color.red);
-					break;
-				case PortTableInfo.TYPE_BLUE:
-					setForeground(Color.white);
-					setBackground(Color.blue);
-					break;
-
-				default:
-					break;
-				}
-
-				setText(cvalue.toString());
-			} else
-			{	
-				super.setValue(value);
-			}
-		}
-	}
+//	class ColoredTableCellRenderer extends DefaultTableCellRenderer {
+//		/**
+//		 * 
+//		 */
+//		private static final long serialVersionUID = 1L;
+//
+//		public void setValue(Object value) {
+//			
+//			
+//			if (value instanceof PortTableInfo) {
+//				PortTableInfo cvalue = (PortTableInfo) value;
+//				switch (cvalue.getType()) {
+//				case PortTableInfo.TYPE_NOMAL:
+//					setForeground(Color.black);
+//					setBackground(Color.white);
+//					break;
+//				case PortTableInfo.TYPE_NEW_PORT:
+//					setForeground(Color.yellow);
+//					setBackground(Color.lightGray);
+//					break;
+//				case PortTableInfo.TYPE_RED:
+//					setForeground(Color.red);
+//					break;
+//				case PortTableInfo.TYPE_BLUE:
+//					setForeground(Color.white);
+//					setBackground(Color.blue);
+//					break;
+//
+//				default:
+//					break;
+//				}
+//
+//				setText(cvalue.toString());
+//			} else
+//			{	
+//				super.setValue(value);
+//			}
+//		}
+//	}
 	
 	/**
 	 * @author 박창현
@@ -183,6 +184,8 @@ public class PortTable extends JTable implements ActionListener
 	
 	private TableService tableService; // table service
 	
+	private CodeServiceImpl codeServiceImpl;
+	
 	private AddPortDialog addPortDialog;
 
 	private KSGXLSImportPanel base;
@@ -201,7 +204,7 @@ public class PortTable extends JTable implements ActionListener
 		DAOManager manager = DAOManager.getInstance();
 		tableService=new TableServiceImpl();
 		baseService  = manager.createBaseService();
-		
+		codeServiceImpl = new CodeServiceImpl();
 		tableModel = new PortTableModel();
 		
 		this.setRowHeight(25);
@@ -218,7 +221,9 @@ public class PortTable extends JTable implements ActionListener
 			return;
 		
 		selectedPort = this.getValueAt(row, 1).toString();
+		
 		String command = comm.getActionCommand();
+		
 		if(command.equals("항구 검색"))
 		{
 			SearchPortCommand  portCommand = new SearchPortCommand(selectedPort);
@@ -258,6 +263,8 @@ public class PortTable extends JTable implements ActionListener
 				e.printStackTrace();
 			}
 			tableModel.setValueAt(info_code, row, 2);
+			
+			
 			System.out.println("info_code:"+info);
 			//PortTable.this.setValueAt(info_code, row, 2);
 			
@@ -445,8 +452,7 @@ public class PortTable extends JTable implements ActionListener
 		Vector<PortTableInfo> itemList = new Vector<PortTableInfo>();
 
 		List port_list=port_array.getChildren("port1");
-
-		logger.debug("port lsit:"+port_array+",size:"+port_list.size());
+		
 		for(int i=0;i< port_list.size();i++)
 		{
 			Element port_info = (Element) port_list.get(i);
@@ -507,33 +513,32 @@ public class PortTable extends JTable implements ActionListener
 		}
 
 	}
-/*	*//**
-	 * @param port_array
-	 *//*
-	public void setModel2(Element port_array)
-	{
-		
-		try {
-			
-			// 신규 항구 정보 생성
-			Vector<PortTableInfo> itemList= makeNewList(port_array);
-						
-			// 항구 정보 검증
-			tableModel=createAndvalidateTableModel(itemList);
-			
-						
-			// 테이블 정보 생성
-			this.setModel(tableModel);
-
-			updateTableColumnView();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
-		
-	}*/
+//	//**	 @param port_array
+//	//*
+//	public void setModel2(Element port_array)
+//	{
+//		
+//		try {
+//			
+//			// 신규 항구 정보 생성
+//			Vector<PortTableInfo> itemList= makeNewList(port_array);
+//						
+//			// 항구 정보 검증
+//			tableModel=createAndvalidateTableModel(itemList);
+//			
+//						
+//			// 테이블 정보 생성
+//			this.setModel(tableModel);
+//
+//			updateTableColumnView();
+//			
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//			
+//		
+//	}
 	private void updateTableColumnView() {
 		TableColumnModel colmodel = this.getColumnModel();
 
@@ -541,9 +546,9 @@ public class PortTable extends JTable implements ActionListener
 		{
 			TableColumn namecol = colmodel.getColumn(i);
 			if(i==0)
-				namecol.setMaxWidth(25);
-			if(i==2)
 				namecol.setMaxWidth(35);
+			if(i==2)
+				namecol.setMaxWidth(45);
 
 			DefaultTableCellRenderer renderer = new ColoredTableCellRenderer2();
 			namecol.setCellRenderer(renderer);
@@ -841,15 +846,21 @@ public class PortTable extends JTable implements ActionListener
 		private static final long serialVersionUID = 1L;
 
 		final public ColumnData m_columns[] = {
-				new ColumnData("Index", 60, JLabel.LEFT),
-				new ColumnData("Port", 60, JLabel.RIGHT),
-				new ColumnData("Code", 80, JLabel.RIGHT)
+				new ColumnData("순서", 60, JLabel.LEFT),
+				new ColumnData("항구명", 60, JLabel.RIGHT),
+				new ColumnData("구분", 80, JLabel.RIGHT)
 		};
 
 		protected Vector<PortTableInfo> data;
 
 		public void setData(Vector<PortTableInfo> data) {
 			this.data = data;
+		}
+		
+		
+		
+		public String getColumnName(int col) {
+		    return m_columns[col].m_title;
 		}
 		
 		public Vector<PortTableInfo> getData()
@@ -934,8 +945,13 @@ public class PortTable extends JTable implements ActionListener
 				Code op = new Code();
 
 				op.setCode_type("port_check");
+				
+				
 				op.setCode_field(info.getPort_name());
+				
+				
 				PortTableInfo info_code = new PortTableInfo(info.getArea_code());
+				
 				info_code.setArea_code(info.getArea_code());
 
 				try {
