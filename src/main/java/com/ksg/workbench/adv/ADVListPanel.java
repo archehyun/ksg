@@ -55,6 +55,7 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.PageInfoCheckBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.KSGMainFrame;
+import com.ksg.workbench.adv.PortTable.PortTableInfo;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.AddAdvDialog;
 import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
@@ -803,7 +804,7 @@ public class ADVListPanel extends KSGPanel implements ActionListener, MouseWheel
 			{
 				HashMap<String, Object> item = (HashMap<String, Object>) portList.get(j);
 				String area_code = (String) item.get("area_code");
-				//PortTableInfo port=(PortTableInfo) portList.get(j);
+
 
 				if(area_code==null)
 					continue;

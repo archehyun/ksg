@@ -44,7 +44,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -72,6 +72,7 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.service.TableService;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGXMLTable;
 import com.ksg.workbench.adv.comp.VesselListComp;
@@ -83,7 +84,7 @@ import com.ksg.workbench.adv.xls.XLSTableInfo;
  * @author 박창현
  * 엑셀에서 가져오 테이블에 대한 정보 표시
  */
-public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionListener{
+public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionListener{
 
 	private static final String ACTION_COMMAND_XML = "XML";
 
@@ -137,7 +138,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 	protected Logger logger = LogManager.getLogger(this.getClass());
 
-	private JPanel pnCard,pnDivider;
+	private KSGPanel pnCard,pnDivider;
 
 	private KSGPropertis propertis = KSGPropertis.getIntance();
 
@@ -151,9 +152,9 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 	private KSGXMLTable tblADV;
 
-	private PortTable tblPort;
+//	private PortTable tblPort;
 	
-	//private SearchedPortTable tblPort;
+	private SearchedPortTable tblPort;
 
 	private JTextArea txaADV;
 
@@ -167,7 +168,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 	private JSplitPane pnMain;
 
-	private JPanel pnCenter;
+	private KSGPanel pnCenter;
 
 	private JScrollPane jScrollPane;
 
@@ -202,7 +203,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 			
 			dialog.setModal(true);
 			
-			JPanel pnMain = new JPanel(new BorderLayout());
+			KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
 			JTextArea area = new JTextArea();
 			
@@ -240,7 +241,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 	 */
 	public Component addForm(String label,Component comp)
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lbllabel = new JLabel(label);
 		lbllabel.setFont(KSGModelManager.getInstance().defaultFont);
@@ -252,10 +253,10 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 	/**
 	 * @return
 	 */
-	public JPanel buildControlPn()
+	public KSGPanel buildControlPn()
 	{
-		JPanel pnCenterControl = new JPanel(new BorderLayout());
-		pnCard = new JPanel();
+		KSGPanel pnCenterControl = new KSGPanel(new BorderLayout());
+		pnCard = new KSGPanel();
 		
 
 		//JButton butReload = new JButton("다시 불러오기");
@@ -286,11 +287,11 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		butXML.setActionCommand(ACTION_COMMAND_XML);
 		butXML.addActionListener(this);
 
-		JPanel pnCenterControlRight = new JPanel();
+		KSGPanel pnCenterControlRight = new KSGPanel();
 		pnCenterControlRight.add(butShowText);
 		//pnCenterControlRight.add(butReload);
 		pnCenterControlRight.add(butXML);
-		JPanel pnCenterControlLeft = new JPanel();
+		KSGPanel pnCenterControlLeft = new KSGPanel();
 
 		
 		JButton butInfo = new JButton(ACTION_COMMAND_TABLE_INFO_SEARCH);
@@ -304,9 +305,9 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		pnCenterControl.add(pnCenterControlLeft,BorderLayout.WEST);
 		return pnCenterControl;
 	}
-	private JPanel buildInfo() {
-		JPanel pnPortVesselCount = new JPanel(new BorderLayout());
-		JPanel pnPortCount = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	private KSGPanel buildInfo() {
+		KSGPanel pnPortVesselCount = new KSGPanel(new BorderLayout());
+		KSGPanel pnPortCount = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnPortCount.add(new JLabel("항구수 : "));
 		txfPortCount = new JTextField(5);
 		txfPortCount.addKeyListener(new MYKeyApater());
@@ -318,13 +319,13 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		pnPortCount.add(txfVesselCount);
 
 
-		JPanel pnVesselCount = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnVesselCount = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		Box bb = Box.createVerticalBox();
 		bb.add(pnPortCount);	
 		bb.add(pnVesselCount);
 
-		JPanel pnIsUnder = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnIsUnder = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		cbxUnderPort = new JCheckBox("하위 항구");
 		cbxUnderPortAction = new ActionListener(){
@@ -338,7 +339,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		pnIsUnder.add(cbxUnderPort);
 		bb.add(pnIsUnder);
 
-		JPanel pnIsVoyage= new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnIsVoyage= new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		cbxVoyage = new JCheckBox("Voyage 항목 생략 됨");
 		voyageActioon = new ActionListener(){
@@ -353,7 +354,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		pnIsVoyage.add(cbxVoyage);
 		bb.add(pnIsVoyage);
 
-		JPanel pnKeyType= new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnKeyType= new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		JComboBox cbbKey =new JComboBox();
 		cbbKey.addItem("VESSEL");
@@ -388,7 +389,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		pnKeyType.add(cbbKey);
 
 		bb.add(pnKeyType);
-		pnDivider = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnDivider = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnDivider.setVisible(false);
 		cbxVesselVoyage = new JCheckBox("KeywordOption");
 		cbxVesselVoyage.setVisible(false);
@@ -445,7 +446,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 		pnPortVesselCount.add(bb,BorderLayout.NORTH);
 
-		JPanel pncontrl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pncontrl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton butApply = new JButton("적용");
 		butApply.addActionListener(new ActionListener(){
 
@@ -486,16 +487,16 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		);
 		txaADV = new JTextArea();
 		litVessel =new VesselListComp(this);
-		tblPort = new PortTable(txaADV, this);
-//		tblPort = new SearchedPortTable();
+//		tblPort = new PortTable(txaADV, this);
+		tblPort = new SearchedPortTable();
 		tblPort.setToolTipText("기본: 검정색, 신규 항구:노란색, 위치가  다른 항구:빨간색,");
-		JPanel pnLeft = new JPanel();
+		KSGPanel pnLeft = new KSGPanel();
 		JSplitPane tpPortAndVessel = new JSplitPane();
-		JPanel pnPort = new JPanel();
-		JPanel pnVessel = new JPanel();
-		pnCenter = new JPanel(new BorderLayout());
+		KSGPanel pnPort = new KSGPanel();
+		KSGPanel pnVessel = new KSGPanel();
+		pnCenter = new KSGPanel(new BorderLayout());
 
-		JPanel pnCenterControl = buildControlPn();
+		KSGPanel pnCenterControl = buildControlPn();
 
 		pnPort.setLayout(new BorderLayout());
 
@@ -524,17 +525,17 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 
 		cardLayout = new CardLayout();
 		pnCard.setLayout( cardLayout);
-		JPanel pnCardText = new JPanel();
+		KSGPanel pnCardText = new KSGPanel();
 
 		pnCardText.setLayout( new BorderLayout());
 		pnCardText.add(new JScrollPane(txaADV),BorderLayout.CENTER);
 
-		JPanel pnData = new JPanel(new BorderLayout());
+		KSGPanel pnData = new KSGPanel(new BorderLayout());
 		JTabbedPane tapPN = new JTabbedPane();
 		jScrollPane = new JScrollPane(tblADV);
 		pnData.add(jScrollPane,BorderLayout.CENTER);
 
-		JPanel pnDataNorth = new JPanel(new FlowLayout(FlowLayout.LEADING));
+		KSGPanel pnDataNorth = new KSGPanel(new FlowLayout(FlowLayout.LEADING));
 		pnDataNorth.setPreferredSize(new Dimension(0,35));
 
 		pnDataNorth.add(new JLabel("테이블 아이디 : "));
@@ -565,7 +566,7 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 		txfOther = new JTextField(8);
 		txfOther.setHorizontalAlignment(JTextField.RIGHT);
 
-		JPanel pnInfo = new JPanel();
+		KSGPanel pnInfo = new KSGPanel();
 		pnInfo.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		pnTableOption.add(addForm("페이지 : ", txfPage));
@@ -759,8 +760,8 @@ public class KSGXLSImportPanel extends JPanel implements KSGObserver, ActionList
 			lblVesselCount.setText(lblVesselCount.getText()+"(확인 필요)");
 		}			
 		
-//		tblPort.setModel(xlstableinfo.getPortElement(), this.getTable_id());
-		tblPort.setModel(xlstableinfo.getPortElement());
+		tblPort.setModel(xlstableinfo.getPortElement(), this.getTable_id());
+//		tblPort.setModel(xlstableinfo.getPortElement());
 
 		this.table_id = xlstableinfo.getTable_id();
 		

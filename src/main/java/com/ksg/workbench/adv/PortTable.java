@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -35,8 +36,10 @@ import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
 import com.ksg.service.BaseService;
+import com.ksg.service.PortService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.CodeServiceImpl;
+import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.adv.dialog.AddPortDialog;
 
@@ -57,45 +60,45 @@ public class PortTable extends JTable implements ActionListener
 	 *
 	 */
 
-//	class ColoredTableCellRenderer extends DefaultTableCellRenderer {
-//		/**
-//		 * 
-//		 */
-//		private static final long serialVersionUID = 1L;
-//
-//		public void setValue(Object value) {
-//			
-//			
-//			if (value instanceof PortTableInfo) {
-//				PortTableInfo cvalue = (PortTableInfo) value;
-//				switch (cvalue.getType()) {
-//				case PortTableInfo.TYPE_NOMAL:
-//					setForeground(Color.black);
-//					setBackground(Color.white);
-//					break;
-//				case PortTableInfo.TYPE_NEW_PORT:
-//					setForeground(Color.yellow);
-//					setBackground(Color.lightGray);
-//					break;
-//				case PortTableInfo.TYPE_RED:
-//					setForeground(Color.red);
-//					break;
-//				case PortTableInfo.TYPE_BLUE:
-//					setForeground(Color.white);
-//					setBackground(Color.blue);
-//					break;
-//
-//				default:
-//					break;
-//				}
-//
-//				setText(cvalue.toString());
-//			} else
-//			{	
-//				super.setValue(value);
-//			}
-//		}
-//	}
+	class ColoredTableCellRenderer extends DefaultTableCellRenderer {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public void setValue(Object value) {
+			
+			
+			if (value instanceof PortTableInfo) {
+				PortTableInfo cvalue = (PortTableInfo) value;
+				switch (cvalue.getType()) {
+				case PortTableInfo.TYPE_NOMAL:
+					setForeground(Color.black);
+					setBackground(Color.white);
+					break;
+				case PortTableInfo.TYPE_NEW_PORT:
+					setForeground(Color.yellow);
+					setBackground(Color.lightGray);
+					break;
+				case PortTableInfo.TYPE_RED:
+					setForeground(Color.red);
+					break;
+				case PortTableInfo.TYPE_BLUE:
+					setForeground(Color.white);
+					setBackground(Color.blue);
+					break;
+
+				default:
+					break;
+				}
+
+				setText(cvalue.toString());
+			} else
+			{	
+				super.setValue(value);
+			}
+		}
+	}
 	
 	/**
 	 * @author 박창현
@@ -182,9 +185,11 @@ public class PortTable extends JTable implements ActionListener
 	
 	private BaseService baseService; // base service
 	
-	private TableService tableService; // table service
-	
 	private CodeServiceImpl codeServiceImpl;
+	
+	private PortService portService;
+	
+	private TableService tableService; // table service
 	
 	private AddPortDialog addPortDialog;
 
@@ -196,6 +201,8 @@ public class PortTable extends JTable implements ActionListener
 	
 	private JMenuItem menuPortAdd, menuPortExceptionAdd, menuPortExceptionDel, menuPortSearch;
 	
+	//private DefaultTableModel portTableModel;
+	
 	private PortTableModel tableModel;
 
 	private String selectedPort;
@@ -206,6 +213,8 @@ public class PortTable extends JTable implements ActionListener
 		baseService  = manager.createBaseService();
 		codeServiceImpl = new CodeServiceImpl();
 		tableModel = new PortTableModel();
+		
+		portService = new PortServiceImpl();
 		
 		this.setRowHeight(25);
 		this.base =base; 
@@ -246,27 +255,32 @@ public class PortTable extends JTable implements ActionListener
 
 			PortTable.this.setValueAt(info, row, 1);
 
-			Code op = new Code();
-
-			op.setCode_type("port_check");
-			
-			op.setCode_field(ii.getPort_name());
+//			Code op = new Code();
+//
+//			op.setCode_type("port_check");
+//			
+//			op.setCode_field(ii.getPort_name());
 			
 			PortTableInfo info_code = new PortTableInfo(ii.getArea_code());
 			
 			info_code.setArea_code(ii.getArea_code());
 
 			try {
-				info_code.setType(baseService.getCodeInfo(op)==null?PortTableInfo.TYPE_NOMAL:PortTableInfo.TYPE_BLUE);
+				
+				HashMap<String, Object> param = new HashMap<String, Object>();
+				
+				param.put("code_type", "port_check");
+				param.put("code_field", ii.getPort_name());
+				
+				
+				info_code.setType(codeServiceImpl.selectCodeD(param)==null?PortTableInfo.TYPE_NOMAL:PortTableInfo.TYPE_BLUE);
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			tableModel.setValueAt(info_code, row, 2);
 			
-			
-			System.out.println("info_code:"+info);
-			//PortTable.this.setValueAt(info_code, row, 2);
 			
 			PortTable.this.setModel(tableModel);
 			
@@ -325,13 +339,16 @@ public class PortTable extends JTable implements ActionListener
 		String table_area_code=null;
 
 		port_name=port_name.replace("\n", " ");
+		
+		HashMap<String, Object> param = new HashMap<String, Object>();
+		param.put("port_name", port_name);
 
-		PortInfo info=baseService.getPortInfoByPortName(port_name);
+		HashMap<String, Object> info=(HashMap<String, Object>) portService.selectPort(param);
 
 		if(info!=null)
 		{
-			table_port_name = info.getPort_name();
-			table_area_code = info.getArea_code();
+			table_port_name = (String) info.get("port_name");
+			table_area_code = (String) info.get("area_code");
 		}
 		else
 		{
@@ -452,6 +469,7 @@ public class PortTable extends JTable implements ActionListener
 		Vector<PortTableInfo> itemList = new Vector<PortTableInfo>();
 
 		List port_list=port_array.getChildren("port1");
+
 		
 		for(int i=0;i< port_list.size();i++)
 		{
@@ -460,7 +478,7 @@ public class PortTable extends JTable implements ActionListener
 			boolean multi =Boolean.valueOf(port_info.getAttributeValue("multi"));
 			int index = Integer.parseInt(port_info.getAttributeValue("index"));
 			String port_name =port_info.getAttributeValue("field");
-			logger.debug("port name:"+port_name);
+			
 			if(multi)
 			{
 				List sub_port_list = port_info.getChildren("sub_port");
@@ -492,8 +510,7 @@ public class PortTable extends JTable implements ActionListener
 			Vector<PortTableInfo> data= makeNewList(port_array);
 			
 			// search base port list
-			List basePortList= tableService.getParentPortList(base.getTable_id());
-			
+			List basePortList= tableService.getParentPortList(base.getTable_id());			
 			
 			tableModel.setData(data);
 						
@@ -513,32 +530,33 @@ public class PortTable extends JTable implements ActionListener
 		}
 
 	}
-//	//**	 @param port_array
-//	//*
-//	public void setModel2(Element port_array)
-//	{
-//		
-//		try {
-//			
-//			// 신규 항구 정보 생성
-//			Vector<PortTableInfo> itemList= makeNewList(port_array);
-//						
-//			// 항구 정보 검증
-//			tableModel=createAndvalidateTableModel(itemList);
-//			
-//						
-//			// 테이블 정보 생성
-//			this.setModel(tableModel);
-//
-//			updateTableColumnView();
-//			
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//			
-//		
-//	}
+/*	*//**
+	 * @param port_array
+	 *//*
+	public void setModel2(Element port_array)
+	{
+		
+		try {
+			
+			// 신규 항구 정보 생성
+			Vector<PortTableInfo> itemList= makeNewList(port_array);
+						
+			// 항구 정보 검증
+			tableModel=createAndvalidateTableModel(itemList);
+			
+						
+			// 테이블 정보 생성
+			this.setModel(tableModel);
+
+			updateTableColumnView();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		
+	}*/
 	private void updateTableColumnView() {
 		TableColumnModel colmodel = this.getColumnModel();
 
@@ -546,9 +564,9 @@ public class PortTable extends JTable implements ActionListener
 		{
 			TableColumn namecol = colmodel.getColumn(i);
 			if(i==0)
-				namecol.setMaxWidth(35);
+				namecol.setMaxWidth(25);
 			if(i==2)
-				namecol.setMaxWidth(45);
+				namecol.setMaxWidth(35);
 
 			DefaultTableCellRenderer renderer = new ColoredTableCellRenderer2();
 			namecol.setCellRenderer(renderer);
@@ -846,21 +864,15 @@ public class PortTable extends JTable implements ActionListener
 		private static final long serialVersionUID = 1L;
 
 		final public ColumnData m_columns[] = {
-				new ColumnData("순서", 60, JLabel.LEFT),
-				new ColumnData("항구명", 60, JLabel.RIGHT),
-				new ColumnData("구분", 80, JLabel.RIGHT)
+				new ColumnData("Index", 60, JLabel.LEFT),
+				new ColumnData("Port", 60, JLabel.RIGHT),
+				new ColumnData("Code", 80, JLabel.RIGHT)
 		};
 
 		protected Vector<PortTableInfo> data;
 
 		public void setData(Vector<PortTableInfo> data) {
 			this.data = data;
-		}
-		
-		
-		
-		public String getColumnName(int col) {
-		    return m_columns[col].m_title;
 		}
 		
 		public Vector<PortTableInfo> getData()
@@ -942,25 +954,23 @@ public class PortTable extends JTable implements ActionListener
 					info.setType(PortTableInfo.TYPE_NEW_PORT);
 				}
 				
-				Code op = new Code();
 
-				op.setCode_type("port_check");
 				
+				HashMap<String, Object> param = new HashMap<String, Object>();
 				
-				op.setCode_field(info.getPort_name());
+				param.put("code_type", "port_check");
+				param.put("code_field", info.getPort_name());
 				
 				
 				PortTableInfo info_code = new PortTableInfo(info.getArea_code());
-				
 				info_code.setArea_code(info.getArea_code());
 
 				try {
-					info_code.setCheckType(baseService.getCodeInfo(op)==null?PortTableInfo.TYPE_NOMAL:PortTableInfo.TYPE_BLUE);
+					info_code.setCheckType(codeServiceImpl.selectCodeD(param)==null?PortTableInfo.TYPE_NOMAL:PortTableInfo.TYPE_BLUE);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 			}
 		}
 

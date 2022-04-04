@@ -145,7 +145,7 @@ public class KSGAbstractTable extends JTable{
 		for (int i = 0; i < colmodel.getColumnCount(); i++) {
 			
 			
-			DefaultTableCellRenderer cellRenderer = new KSGTableCellRenderer();
+			DefaultTableCellRenderer cellRenderer = getCellRenderer();
 			TableColumn namecol = colmodel.getColumn(i);
 
 			namecol.setCellRenderer(cellRenderer);

@@ -15,6 +15,8 @@ public interface PortService extends PageService{
 	
 	public Object selectPortAbbr(HashMap<String, Object> param) throws SQLException;
 	
+	public Object selectPort(HashMap<String, Object> param) throws SQLException;
+	
 	public int update(HashMap<String, Object> param) throws SQLException;	
 
 	public int delete(HashMap<String, Object> param) throws SQLException;

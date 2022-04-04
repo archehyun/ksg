@@ -308,14 +308,14 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 			boolean isNew=true;
 			
 			String new_port = (String) newInfo.get("port_name");
-			
+			System.out.print("new_port:"+new_port);
 			
 			for(int j=0;j<baseList.size();j++)
 			{
 				HashMap<String, Object> baseInfo= baseList.get(j);
 				
 				String port_name = (String) baseInfo.get("port_name");
-				
+				System.out.print(" port:"+port_name);
 				if(new_port.equals(port_name))
 				{
 					isNew=false;
@@ -341,6 +341,7 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 			// ½Å±Ô
 			if(isNew)					
 			{
+				System.out.println("new:"+new_port);
 				newInfo.put("type", TYPE_NEW_PORT);
 			}		
 		}

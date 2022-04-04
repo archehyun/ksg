@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ksg.dao.impl.CodeDAOImpl;
-import com.ksg.domain.PortInfo;
 
 /**
 
@@ -59,9 +58,13 @@ public class CodeServiceImpl {
 		return resultMap;
 
 	}
-	public Object selectCodeD(Map<String, Object> param) throws SQLException {
+	public Object selectCodeH(Map<String, Object> param) throws SQLException {
 		logger.info("param:{}"+param);
 		return codeDAO.select(param);
+	}
+	public Object selectCodeD(Map<String, Object> param) throws SQLException {
+		logger.info("param:{}"+param);
+		return codeDAO.selectDetail(param);
 	}
 
 	public Object insertCodeH(HashMap<String, Object> param) throws SQLException{

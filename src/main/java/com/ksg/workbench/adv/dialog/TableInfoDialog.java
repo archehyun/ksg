@@ -20,7 +20,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -30,6 +29,8 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.view.comp.KSGCheckBox;
+import com.ksg.view.comp.KSGRadioButton;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.KSGXLSImportPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
@@ -50,19 +51,19 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 	private JTextField txfVesselCount;
 	private JLabel lblVesselCount;
 	private JLabel lblPortCount;
-	private JCheckBox cbxUnderPort;
+	private KSGCheckBox cbxUnderPort,cbxVoyage;
 	private JComboBox cbxDivider;
 	private JComboBox cbxCount;
 	private JLabel lblCount;
-	private JCheckBox cbxVoyage;
+	
 	private String port_type[]={"구분없음","슬래쉬(/)","도트(.)","괄호(())"};
 	private JComboBox cbbKey;
 	private ButtonGroup bg;
-	private JRadioButton rbGroups[];
+	private KSGRadioButton rbGroups[];
 	KSGXLSImportPanel base;
 	private ShippersTable shippersTable;
 	private Table_Property table_Property;
-	private JCheckBox cbxETD_ETA;
+	private KSGCheckBox cbxETD_ETA;
 	private JTextField txfInboundIn;
 	private JTextField txfInboundOut;
 	private JTextField txfOutboundIn;
@@ -170,9 +171,9 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		KSGPanel pnTableOption = new KSGPanel(new GridLayout(0,1));
 		pnTableOption.setBorder(BorderFactory.createTitledBorder("테이블 옵션"));
 
-		cbxUnderPort = new JCheckBox("하위 항구 존재");
-		cbxVoyage = new JCheckBox("Voyage 항목 생략 됨");
-		cbxETD_ETA = new JCheckBox("ETA/ETD 적용");
+		cbxUnderPort = new KSGCheckBox("하위 항구 존재");
+		cbxVoyage = new KSGCheckBox("Voyage 항목 생략 됨");
+		cbxETD_ETA = new KSGCheckBox("ETA/ETD 적용");
 		cbxDivider = new JComboBox();
 		cbxDivider.setPreferredSize(new Dimension(80,20));
 
@@ -251,10 +252,10 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		KSGPanel pnPortOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		bg = new ButtonGroup();
 		Vector butList = new Vector();
-		rbGroups = new JRadioButton[port_type.length];
+		rbGroups = new KSGRadioButton[port_type.length];
 		for(int i=0;i<port_type.length;i++)
 		{
-			rbGroups[i] = new JRadioButton(port_type[i]);
+			rbGroups[i] = new KSGRadioButton(port_type[i]);
 			pnPortOption.add(rbGroups[i]);
 			bg.add(rbGroups[i]);
 		}
@@ -268,6 +269,7 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		pnMain.add(pnList);
 
 		pnMain.add(pnList);
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		return pnMain;
 	}
 	
