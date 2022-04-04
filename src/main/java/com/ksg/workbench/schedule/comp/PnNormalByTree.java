@@ -447,8 +447,6 @@ public class PnNormalByTree extends PnSchedule{
 			
 		}
 		
-		
-		
 		// 스케줄 추가
 		// 정렬
 		return nodeList;
@@ -635,8 +633,6 @@ public class PnNormalByTree extends PnSchedule{
 			else
 			{
 				treeTableModel.setRoot(getOutboundTreeNode(master));
-
-
 			}
 
 

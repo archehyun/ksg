@@ -368,19 +368,12 @@ public class PnPort extends PnBase implements ActionListener{
 
 	}
 
-
-
-
-
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals("°Ë»ö"))
 		{
 			this.fnSearch();
-			
-			
 		}
 		else if(command.equals(KSGTablePanel.INSERT))
 		{

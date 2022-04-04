@@ -17,10 +17,7 @@ import java.util.Map;
 
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
-public interface ScheduleService extends PageService{
-	
-	
-	
+public interface ScheduleService extends PageService{	
 	
 
 	public static final String INBOUND = "I";
