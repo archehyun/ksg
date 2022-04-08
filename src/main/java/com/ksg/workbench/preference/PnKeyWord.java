@@ -29,18 +29,21 @@ import com.ksg.domain.KeyWordInfo;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
 
-public class PnKeyWord extends JPanel implements ActionListener,PreferencePn {
+public class PnKeyWord extends PnOption {
 	private JList listKeyword;
+	
 	String selectedKeyword="vessel";
+	
 	private Font defaultfont;
-
-	PreferenceDialog preferenceDialog;
+	
 	BaseService baseService;
+	
 	private KSGPropertis propertis = KSGPropertis.getIntance();
+	
 	private JComboBox cbxKeyword;
 	public PnKeyWord(PreferenceDialog preferenceDialog) {
+		super(preferenceDialog);
 		
-		this.preferenceDialog=preferenceDialog;
 		this.setName("Keyword형식");
 		listKeyword = new JList();
 		baseService = new BaseServiceImpl();
@@ -106,6 +109,7 @@ public class PnKeyWord extends JPanel implements ActionListener,PreferencePn {
 	
 
 		public void actionPerformed(ActionEvent arg0) {
+			
 			final JDialog dialog =  new JDialog(preferenceDialog);
 			dialog.setTitle("Vessel&Voy Keyword 옵션" );
 			JPanel pnControl = new JPanel();

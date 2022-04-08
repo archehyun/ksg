@@ -23,7 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -36,6 +36,7 @@ import com.ksg.commands.SearchSheetNameCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.view.comp.FileInfo;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
 
@@ -43,7 +44,7 @@ import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
  * @author 박창현
  *
  */
-public class NewSearchOptionPn extends JPanel{
+public class NewSearchOptionPn extends KSGPanel{
 
 	/**
 	 * 
@@ -136,11 +137,11 @@ public class NewSearchOptionPn extends JPanel{
 		lblSearch.setText("검색 형식 : ");
 		
 		
-		JPanel pnP1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnP1 = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnP1.add(lblSearch);
 		pnP1.add(cbxSearchType);
 		
-		JPanel pnSelectType = new JPanel();
+		KSGPanel pnSelectType = new KSGPanel();
 		pnSelectType.setLayout(new FlowLayout(FlowLayout.LEFT));
 		cbxSelectedInput = new JComboBox();
 		cbxSelectedInput.addItem("File");
@@ -161,7 +162,7 @@ public class NewSearchOptionPn extends JPanel{
 		pnSelectType.add(cbxSelectedInput);
 		
 		
-		JPanel pnImportBut = new JPanel(new GridLayout(0,1));
+		KSGPanel pnImportBut = new KSGPanel(new GridLayout(0,1));
 
 		JButton butImportFile = new JButton("\n불러오기(V)",new ImageIcon("images/importxls.gif"));
 		butImportFile.setMnemonic(KeyEvent.VK_V);
@@ -184,9 +185,9 @@ public class NewSearchOptionPn extends JPanel{
 		pnImportBut.add(butImportFile);
 		pnImportBut.add(butSheetSelect);
 		
-		JPanel pnKeyType = new JPanel(new GridLayout(0,1));
+		KSGPanel pnKeyType = new KSGPanel(new GridLayout(0,1));
 
-		JPanel pnType = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnType = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		bgKeyword = new ButtonGroup();
 		
@@ -205,7 +206,7 @@ public class NewSearchOptionPn extends JPanel{
 		
 
 		
-		JPanel pnSelectInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnSelectInfo = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnSelectInfo.add(buildFileListPn());
 		pnSelectInfo.add(pnType);
 		
@@ -222,8 +223,8 @@ public class NewSearchOptionPn extends JPanel{
 		
 		
 	}
-	private JPanel buildFileListPn() {
-		JPanel pnSubControlInfo1 = new JPanel();
+	private KSGPanel buildFileListPn() {
+		KSGPanel pnSubControlInfo1 = new KSGPanel();
 		pnSubControlInfo1.setLayout(new FlowLayout(FlowLayout.LEADING));
 
 		JLabel lblFileName = new JLabel("파일 명 : ");
@@ -243,7 +244,7 @@ public class NewSearchOptionPn extends JPanel{
 
 		});
 
-		JPanel pnButList = new JPanel();
+		KSGPanel pnButList = new KSGPanel();
 		pnButList.setPreferredSize(new Dimension(275,25));
 		pnButList.setLayout(new GridLayout(1,0));
 
@@ -280,7 +281,7 @@ public class NewSearchOptionPn extends JPanel{
 //		butDown.setFont(defaultFont);
 		pnButList.add(butDown);
 
-		JPanel pnFile = new JPanel();
+		KSGPanel pnFile = new KSGPanel();
 		pnFile.setLayout(new BorderLayout());
 		fileLi = new JList();
 		fileLi.setComponentPopupMenu(createXLSListPopup());

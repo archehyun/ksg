@@ -11,6 +11,7 @@
 package com.ksg.workbench.shippertable.comp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTable;
@@ -34,11 +34,13 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ShippersTable;
+import com.ksg.service.ADVService;
+import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.KSGViewParameter;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI;
+import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.dialog.ManageTablePortPop;
 import com.ksg.workbench.shippertable.dialog.ManageVesselDialog;
 
@@ -63,26 +65,22 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 	private ShippersTable selectedTable;
 
-	private ShipperTableMgtUI base;
+	private ShipperTableAbstractMgtUI base;
 
 	private JTextField txfImportDate;
 
 	public JTable _tblVesselTable;	
 
 	private ManageVesselDialog vesseldialog;
-	
-	private TableService tableService;
 
-	public KSGADVTablePanel(ShipperTableMgtUI base) {
+	private ADVService _advService;
+
+	public KSGADVTablePanel(ShipperTableAbstractMgtUI base) {
 		this.base=base;
 
 		daoManager =DAOManager.getInstance();
 
-		_advService= daoManager.createADVService();
-
-		_baseSearvice = daoManager.createBaseService();
-
-		tableService = new TableServiceImpl();
+		_advService= daoManager.createADVService();		
 
 		this.createAndUpdateUI();
 	}
@@ -93,24 +91,19 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		if(command.equals("항구 관리"))
 		{
-			/*KSGDialog dialog = new ManagePortDialog(KSGModelManager.getInstance().selectedTable_id,base);
-			dialog.createAndUpdateUI();
-			int result = dialog.OPTION;
-			if(result == ManagePortDialog.UPDATE_OPTION)
-			{
-				SearchADVCommand advCommand = new SearchADVCommand(this);
-				advCommand.execute();
-				this.updateUI();
-			}*/
 
-
-			ManageTablePortPop pop = new ManageTablePortPop(KSGModelManager.getInstance().selectedTable_id);
+			ManageTablePortPop pop = new ManageTablePortPop(tblADVTable.getTableID());
 
 			pop.showPop();
 
 			if(pop.RESLULT==ManageTablePortPop.OK)
 			{
-				base.searchADVTable();
+				try {
+					base.searchADVTable();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 
 		}
@@ -139,11 +132,11 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		JScrollPane jScrollPane = new JScrollPane(tblADVTable);
 
-		JPanel pnCenter = new JPanel();
+		KSGPanel pnCenter = new KSGPanel();
 		pnCenter.setLayout(new BorderLayout());
 		pnCenter.add(jScrollPane);
 
-		JPanel pnADVControl = new JPanel();
+		KSGPanel pnADVControl = new KSGPanel();
 		pnADVControl.setLayout(new BorderLayout());
 
 		JButton butPortList = new JButton("항구 관리(P)");
@@ -160,6 +153,9 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 		butDel.addActionListener(this);
 
 		JSlider slider = new JSlider(JSlider.HORIZONTAL, 50, 150, 75);
+		
+		slider.setBackground(Color.white);
+		
 		slider.addChangeListener(new ChangeListener(){
 
 			public void stateChanged(ChangeEvent item) {
@@ -176,7 +172,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		slider.setLabelTable(slider.createStandardLabels(15));
 
-		JPanel pn1 = new JPanel();
+		KSGPanel pn1 = new KSGPanel();
 		pn1.add(butPortList);
 		pn1.add(butVesselList);
 		pn1.add(butDel);
@@ -185,12 +181,13 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		pnADVControl.add(pn1,BorderLayout.WEST);
 
-		JPanel pn2 = new JPanel();
+		KSGPanel pn2 = new KSGPanel();
 		JLabel lblDate = new JLabel(" 입력날짜 : ");
 
 		txfImportDate = new JTextField(8);
 		txfImportDate.setText(KSGDateUtil.format(KSGDateUtil.nextMonday(new Date())));
 		JCheckBox cbxImportDate = new JCheckBox("월요일",true);
+		cbxImportDate.setBackground(Color.white);
 		cbxImportDate.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) 
@@ -228,9 +225,13 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 		butCancel.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				
+				
 				try 
 				{
+					logger.info("START");
 					base.showTableList();
+					logger.info("END");
 				} catch (SQLException e1)
 				{
 

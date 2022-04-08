@@ -11,7 +11,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.impl.TableServiceImpl;
@@ -29,7 +30,7 @@ public class SearchTable extends KSGTable
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	private ShippersTable searchParam;	
 
@@ -58,7 +59,7 @@ public class SearchTable extends KSGTable
 
 		updateColumModel();
 
-		logger.info("init table");
+		logger.debug("init table");
 
 		updateUI();
 

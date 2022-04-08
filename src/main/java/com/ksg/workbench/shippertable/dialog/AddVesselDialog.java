@@ -27,6 +27,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
+import com.ksg.service.BaseService;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 
@@ -42,6 +43,7 @@ public class AddVesselDialog extends KSGDialog {
 	private JCheckBox box;
 	private JComboBox cbxType;
 	DefaultTableModel vesselModel;
+	private BaseService baseService;
 	public AddVesselDialog(KSGADVTablePanel main,JTable table,int row,Object value) {
 		this(main,table,row,0,value);
 

@@ -12,8 +12,10 @@ import com.ibatis.sqlmap.client.SqlMapClient;
  *
  */
 public abstract class AbstractDAO {
-	
+
 	protected SqlMapClient sqlMap;
+	
+	protected String namespace;
 
 
 	public AbstractDAO() {
@@ -40,8 +42,12 @@ public abstract class AbstractDAO {
 
 	public Object insert(String queryId, Object params) throws SQLException {
 		
-		return sqlMap.insert(queryId, params);
+		Object result = sqlMap.insert(queryId,params);
+
+		return result;
 	}
+
+
 
 	public Object update(String queryId, Object params) throws SQLException {
 		return sqlMap.update(queryId, params);

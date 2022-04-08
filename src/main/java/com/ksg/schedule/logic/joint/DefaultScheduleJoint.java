@@ -5,7 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.dao.DAOManager;
@@ -30,6 +31,7 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 public abstract class DefaultScheduleJoint implements ScheduleJoint{
 	
 	
+	
 	protected ScheduleData data;
 	
 	public ScheduleManager scheduleManager = ScheduleManager.getInstance();
@@ -46,7 +48,7 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 	protected SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
 
-	protected String fileName;
+	protected String fileName, portFileName;
 	
 	protected String fileLocation;
 
@@ -62,7 +64,7 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 	protected ADVService advService;
 
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	protected Thread thread;
 

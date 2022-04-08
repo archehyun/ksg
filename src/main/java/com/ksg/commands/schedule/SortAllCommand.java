@@ -2,12 +2,12 @@ package com.ksg.commands.schedule;
 
 import java.io.IOException;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.task.SortAllTask;
 import com.ksg.domain.ShippersTable;
 
-public class SortAllCommand implements KSGCommand {
-	private int result=KSGCommand.PROCESS;
+public class SortAllCommand implements IFCommand {
+	private int result=IFCommand.PROCESS;
 	
 	ShippersTable op;
 	

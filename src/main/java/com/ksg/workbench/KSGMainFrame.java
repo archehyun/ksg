@@ -42,14 +42,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildXMLInboundCommand;
 import com.ksg.commands.schedule.BuildXMLOutboundCommand;
 import com.ksg.commands.schedule.BuildXMLRouteScheduleCommand;
@@ -60,8 +60,6 @@ import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.dialog.SearchADVCountDialog;
-import com.ksg.common.view.dialog.WebScheduleCreateDialog;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.service.ScheduleService;
@@ -69,13 +67,16 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.ADVManageUI;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.dialog.SearchADVCountDialog;
+import com.ksg.workbench.common.comp.dialog.WebScheduleCreateDialog;
 import com.ksg.workbench.preference.PreferenceDialog;
 import com.ksg.workbench.print.PrintADVUI;
 import com.ksg.workbench.schedule.ScheduleMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI;
+import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
 
 /**
@@ -122,13 +123,13 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 	private KSGModelManager modelManager = KSGModelManager.getInstance();
 
-	protected Logger logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	private CardLayout cardLayout= new CardLayout();
 	
 	ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
 
-	private JPanel pnCenter,pnSearch,pnPrintADV,pnSchedule;
+	private KSGPanel pnCenter,pnSearch,pnPrintADV,pnSchedule;
 	
 	private BaseInfoUI pnBaseInfo;
 
@@ -191,7 +192,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				pnBaseInfo 	= new BaseInfoUI();
 				
-				pnSearch 	= new ShipperTableMgtUI();
+				pnSearch 	= new ShipperTableMgtUI2();
 				
 				pnPrintADV 	= new PrintADVUI();
 				
@@ -213,7 +214,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				KSGMainFrame.this.setResizable(true);
 
-				KSGMainFrame.this.setDefaultLookAndFeelDecorated(true);
+				KSGMainFrame.this.setDefaultLookAndFeelDecorated(true);		
 				
 				KSGMainFrame.this.setMinimumSize(new Dimension(1300,800));
 				
@@ -225,7 +226,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				login.setVisible(false);
 				
-				login.dispose();
+				login.dispose();				
 				
 				KSGMainFrame.this.setVisible(true);
 				
@@ -238,12 +239,18 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		}.start();
 	}
 
-	private Component buildCenter() 
+	private KSGPanel buildCenter() 
 	{
-		pnCenter = new JPanel();
+		KSGPanel pnMain = new KSGPanel(new BorderLayout(0,10));  
+				
+		
+		pnCenter = new KSGPanel();
 		pnCenter.setLayout(cardLayout);
+		
+		pnMain.add(pnCenter);
+		pnMain.add(buildButtom(),BorderLayout.SOUTH);
 
-		return pnCenter;
+		return pnMain;
 	}
 	//화면 초기화
 	/**
@@ -254,9 +261,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		
 		logger.debug("create frame start");
 
-		scheduleService= new ScheduleServiceImpl();
-
-		JPanel pnButtom = buildButtom();
+		scheduleService= new ScheduleServiceImpl();	
 		
 		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -266,13 +271,12 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		this.setIconImage(img);		
 
 		this.setJMenuBar(crateMenuBar());
+		
+		this.setLayout(new BorderLayout(0,5 ));
 
 		this.getContentPane().add(buildToolBar(),BorderLayout.NORTH);
 		
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-		
-		this.getContentPane().add(pnButtom,BorderLayout.SOUTH);
-
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -280,17 +284,17 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 		this.setVisible(false);
 		
-		modelManager.frame=this;
+		
 		
 		logger.debug("create frame end");
 
 	}
 
-	private JPanel buildButtom() {
+	private KSGPanel buildButtom() {
 		
 		int inst = 10;
 
-		JPanel pnButtom = new JPanel();
+		KSGPanel pnButtom = new KSGPanel();
 
 		pnButtom.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
@@ -308,13 +312,13 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		
 		pnButtom.add(workprocess);
 		
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 
 		pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 		
 		pnMain.setLayout(new BorderLayout());
 		
-		JPanel pnLeft = new JPanel();
+		KSGPanel pnLeft = new KSGPanel();
 		
 		pnLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
@@ -332,7 +336,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	}
 
 	private Component buildVersion() {
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new FlowLayout());
 		JLabel lbl = new JLabel("v2010_04_06_01");
 		return pnMain;
@@ -422,7 +426,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	 * 메뉴바 생성
 	 * @return
 	 */
-	private KSGCommand scheduleCommand;
+	private IFCommand scheduleCommand;
 	protected JDialog optionDialog;
 	private LookAheadTextField txfDate;
 	private JMenuBar crateMenuBar() 
@@ -593,10 +597,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		optionDialog = new JDialog(KSGModelManager.getInstance().frame);
 		optionDialog.setModal(true);
 		optionDialog.setTitle("Sorting");
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 
 
-		JPanel pnInput = new JPanel();
+		KSGPanel pnInput = new KSGPanel();
 		pnInput.setLayout( new FlowLayout(FlowLayout.LEADING));
 
 		StringArrayLookAhead lookAhead = new StringArrayLookAhead(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
@@ -619,10 +623,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		pnInput.add(txfDate);
 		pnInput.add(cbxMondya);
 
-		JPanel pnOption = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnOption.setVisible(false);
 
-		JPanel pnControl = new JPanel();
+		KSGPanel pnControl = new KSGPanel();
 
 		JButton butOk = new JButton("확인");
 		butOk.addActionListener(new ActionListener(){
@@ -657,7 +661,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 
 		Box box = Box.createVerticalBox();
-		JPanel pn1 = new JPanel();
+		KSGPanel pn1 = new KSGPanel();
 		pn1.setLayout(new FlowLayout(FlowLayout.LEADING));
 		pn1.add(new JLabel("Sort 할 날짜를 입력 하세요"));
 		box.add(pn1);
@@ -782,10 +786,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				optionDialog = new JDialog(KSGModelManager.getInstance().frame);
 				optionDialog.setModal(true);
 				optionDialog.setTitle("스케줄 생성");
-				JPanel pnMain = new JPanel();
+				KSGPanel pnMain = new KSGPanel();
 
 
-				JPanel pnInput = new JPanel();
+				KSGPanel pnInput = new KSGPanel();
 				pnInput.setLayout( new FlowLayout(FlowLayout.LEADING));
 
 				StringArrayLookAhead lookAhead = new StringArrayLookAhead(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
@@ -808,11 +812,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				pnInput.add(cbxMondya);
 
-				JPanel pnOption = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				KSGPanel pnOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 				
 				pnOption.setVisible(false);
 				
-				JPanel pnControl = new JPanel();
+				KSGPanel pnControl = new KSGPanel();
 
 				JButton butOk = new JButton("확인");
 				butOk.addActionListener(new ActionListener(){
@@ -840,7 +844,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				pnControl.add(butCancel);
 
 				Box box = Box.createVerticalBox();
-				JPanel pn1 = new JPanel();
+				KSGPanel pn1 = new KSGPanel();
 				pn1.setLayout(new FlowLayout(FlowLayout.LEADING));
 				pn1.add(new JLabel("Sort 할 날짜를 입력 하세요"));
 				box.add(pn1);
@@ -990,10 +994,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				optionDialog = new JDialog(KSGModelManager.getInstance().frame);
 				optionDialog.setModal(true);
 				optionDialog.setTitle("스케줄 생성");
-				JPanel pnMain = new JPanel();
+				KSGPanel pnMain = new KSGPanel();
 
 
-				JPanel pnInput = new JPanel();
+				KSGPanel pnInput = new KSGPanel();
 				pnInput.setLayout( new FlowLayout(FlowLayout.LEADING));
 
 				StringArrayLookAhead lookAhead = new StringArrayLookAhead(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
@@ -1017,11 +1021,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 				pnInput.add(cbxMondya);
 
-				JPanel pnOption = new JPanel(new FlowLayout(FlowLayout.LEFT));
+				KSGPanel pnOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 				
 				pnOption.setVisible(false);
 
-				JPanel pnControl = new JPanel();
+				KSGPanel pnControl = new KSGPanel();
 
 				JButton butOk = new JButton("확인");
 				
@@ -1050,7 +1054,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				pnControl.add(butCancel);
 
 				Box box = Box.createVerticalBox();
-				JPanel pn1 = new JPanel();
+				KSGPanel pn1 = new KSGPanel();
 				pn1.setLayout(new FlowLayout(FlowLayout.LEADING));
 				pn1.add(new JLabel("Sort 할 날짜를 입력 하세요"));
 				box.add(pn1);

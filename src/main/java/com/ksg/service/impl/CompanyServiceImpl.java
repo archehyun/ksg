@@ -4,59 +4,108 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.impl.CompanyDAOImpl;
 import com.ksg.service.CompanyService;
 
 /**
 
-  * @FileName : CompanyServiceImpl.java
+ * @FileName : CompanyServiceImpl.java
 
-  * @Project : KSG2
+ * @Project : KSG2
 
-  * @Date : 2021. 11. 25. 
+ * @Date : 2021. 11. 25. 
 
-  * @작성자 : pch
+ * @작성자 : pch
 
-  * @변경이력 :
+ * @변경이력 :
 
-  * @프로그램 설명 :
+ * @프로그램 설명 :
 
-  */
+ */
 public class CompanyServiceImpl implements CompanyService{ 
-	
+
 	CompanyDAOImpl companyDAO;
-	
+
+	protected Logger logger = LogManager.getLogger(this.getClass());
+
 	public CompanyServiceImpl() {
 		companyDAO = new CompanyDAOImpl();
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException {
-		
+	public Map<String, Object> selectList(Map<String, Object> param) throws SQLException {
+
+
+
+		logger.info("param:{}", param);
+
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		
-		resultMap.put("total", companyDAO.selectCompanyCount(commandMap));
-		
-		resultMap.put("master", companyDAO.selectCompanyList(commandMap));
-		
+
+		resultMap.put("total", companyDAO.selectCount(param));
+
+		resultMap.put("master", companyDAO.selectCompanyList(param));
+
 		return resultMap;
 
 	}
 
 	public int update(HashMap<String, Object> param) throws SQLException{
-		return companyDAO.updateCompany(param);
-		
+		logger.info("param:{}", param);
+		return companyDAO.update(param);
+
 	}
 
 	public int delete(HashMap<String, Object> param) throws SQLException{
-		// TODO Auto-generated method stub
+		logger.info("param:{}", param);
 		return companyDAO.deleteCompany(param);
 	}
 
-	public void insert(HashMap<String, Object> param) throws SQLException{
+	public void insert(HashMap<String, Object> param) throws RuntimeException{
+		logger.info("param:{}", param);
+
+		try
+		{
+			companyDAO.insert(param);
+
+
+		} catch (SQLException e1) {
+			if(e1.getErrorCode()==2627)
+			{
+
+				throw new AlreadyExistException();
+
+
+			}else
+			{
+				
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public int getCompanyCount() {
 		// TODO Auto-generated method stub
-		
-		companyDAO.insertCompany(param);
+		return 0;
+	}
+
+	@Override
+	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		resultMap.put("total", companyDAO.selectCount(param));
+
+		resultMap.put("master", companyDAO.selectListByPage(param));
+
+		resultMap.put("PAGE_NO", 1);
+
+		return resultMap;
 	}
 
 }

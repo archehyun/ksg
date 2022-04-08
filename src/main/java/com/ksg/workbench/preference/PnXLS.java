@@ -17,16 +17,17 @@ import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
 
-public class PnXLS extends JPanel implements ActionListener,PreferencePn{
+public class PnXLS extends PnOption{
 	
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	private JComboBox cbbUnderPort;
 	private JComboBox cboUpDown;
 	private JCheckBox cbxDoubleLine;
@@ -47,10 +48,12 @@ public class PnXLS extends JPanel implements ActionListener,PreferencePn{
 	private JRadioButton radioButSlash;
 	private JRadioButton radioButGyu;
 	private JRadioButton radioButDot;
-	public PnXLS(final PreferenceDialog preferenceDialog) 
+	public PnXLS(PreferenceDialog preferenceDialog) 
 	{
+		super(preferenceDialog);
+		
 		this.setName("¿¢¼¿ÀÔ·Â¿É¼Ç");
-		this.preferenceDialog=preferenceDialog;
+		
 		initComponent();
 		
 		Box pnMain =Box.createVerticalBox();

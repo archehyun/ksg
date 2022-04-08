@@ -20,7 +20,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 
-public class DelTableCommand implements KSGCommand {
+public class DelTableCommand extends AbstractCommand {
 	
 	private KSGModelManager 	manager = KSGModelManager.getInstance();
 	private TableService 		tableService;

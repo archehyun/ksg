@@ -6,7 +6,9 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.JDOMException;
 
 import com.ksg.commands.schedule.XML_INFO;
@@ -28,7 +30,7 @@ public abstract class SimpleTask implements ScheduleTask{
 	protected HashMap<String, String> portMap;
 	protected String fileName;
 	protected ScheduleBuildMessageDialog di;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public SimpleTask() {
 		baseService 	= DAOManager.getInstance().createBaseService();
 		scheduleService	= DAOManager.getInstance().createScheduleService();

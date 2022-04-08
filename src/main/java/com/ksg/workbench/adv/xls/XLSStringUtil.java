@@ -5,7 +5,8 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -20,7 +21,7 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
  */
 public class XLSStringUtil {
 	
-	private Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d");
 	

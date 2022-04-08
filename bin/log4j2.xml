@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+ 
+ <!-- Appender, Layout 설정 -->
+ <Appenders>
+  <Console name="console" target="SYSTEM_OUT">
+   <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] %p - %C{1}.%M(%L) | %m%n"/>
+  </Console>
+  <File name="file" fileName="./log/ksglog2.log" append="false">
+   <PatternLayout pattern="%d %5p [%c] %m%n"/>
+  </File>
+ </Appenders>
+ 
+ <!-- Logger 설정 -->
+ <Loggers>
+ 
+   <Logger level="INFO" name="com.ibatis.common.jdbc.SimpleDataSource"/>
+   
+  
+   
+	<logger name="java.sql.Connection" level="DEBUG" additivity="false">
+            <appender-ref ref="console" />
+    </logger>
+
+
+
+   
+   <logger level="INFO" name="java.sql.Statement"/>    
+   
+   <Logger name="java.sql" level="DEBUG" additivity="false">
+            <AppenderRef ref="console" />
+   </Logger>
+        
+   
+  <Logger name="egovLogger" level="DEBUG" additivity="false">
+   <AppenderRef ref="console"/>
+   <AppenderRef ref="file"/>
+  </Logger>
+  <Root level="INFO">
+   <AppenderRef ref="console"/>
+  </Root>
+ </Loggers>
+ 
+</Configuration>

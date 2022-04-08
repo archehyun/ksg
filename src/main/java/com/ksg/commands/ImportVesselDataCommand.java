@@ -7,7 +7,7 @@ import com.ksg.commands.schedule.task.ImportVesselDataTask;
 
 
 @Deprecated
-public class ImportVesselDataCommand implements KSGCommand
+public class ImportVesselDataCommand extends AbstractCommand
 {
 	
 	File fileName;
@@ -16,7 +16,7 @@ public class ImportVesselDataCommand implements KSGCommand
 		System.out.println("선박정보 추가 시작");
 		
 	}
-	private int result=KSGCommand.PROCESS;
+	private int result=IFCommand.PROCESS;
 	public int execute() 
 	{
 		SwingWorker worker = new SwingWorker() {

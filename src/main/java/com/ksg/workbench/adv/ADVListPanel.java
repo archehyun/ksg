@@ -29,7 +29,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -37,7 +36,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.commands.xls.ImportXLSFileCommand;
 import com.ksg.commands.xls.ImportXLSFileCommandByXML;
@@ -52,6 +52,7 @@ import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.PageInfoCheckBox;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.KSGMainFrame;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.AddAdvDialog;
@@ -63,11 +64,11 @@ import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
  * @author 박창현
  *
  */
-public class ADVListPanel extends JPanel implements ActionListener, MouseWheelListener{
+public class ADVListPanel extends KSGPanel implements ActionListener, MouseWheelListener{
 	
 	private static final int UNIT_INCREMENT = 15;
 	
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	private JTable			_tblSheetNameList;
 	
@@ -105,7 +106,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	
 	private int totalTableCount;
 	
-	private JPanel pnTableList;
+	private KSGPanel pnTableList;
 	
 	private String			selectedInput="File";
 	
@@ -122,7 +123,6 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	private JTextField _txfPage;
 	
 	private String selectedCompany;
-	
 	
 	private SearchPanel searchPanel;
 	
@@ -143,9 +143,37 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		
 		shipperTableService = new ShipperTableServiceImpl();
 		
-		setLayout(new BorderLayout());
+		createAndUpdateUI();
+		
+	
+	}
+	
+	private KSGPanel createCenter()
+	{
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		
+		pane.setBackground(Color.white);
 
-		JPanel pnNorth = new JPanel(new BorderLayout());
+		//TODO 설정 파일 오류 확인
+		/* 2014.11.3 오류 발생 주석 처리
+		 *
+		 */
+		//pane.setDividerLocation(Integer.parseInt((propertis.getProperty("errorDividerLoction"))));
+		
+		
+		KSGPanel pnTableList = createPnTableList();
+
+		pane.setTopComponent(pnTableList);
+		
+		pnMain.add(pane);
+		
+		return pnMain;
+	}
+	
+	private KSGPanel createNorth()
+	{
+		KSGPanel pnNorth = new KSGPanel(new BorderLayout());
 		
 		JLabel lblTableCountlbl =new JLabel("검색된 테이블 수 : ");
 
@@ -161,9 +189,9 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		
 		butReLoad.addActionListener(this);
 
-		JPanel pnNorthLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnNorthLeft = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
-		JPanel pnNorthRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnNorthRight = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		lblSearchedTableCount = new JLabel();
 
@@ -178,40 +206,36 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		pnNorth.add(pnNorthLeft,BorderLayout.WEST);
 
 		pnNorth.add(pnNorthRight,BorderLayout.EAST);
-
-		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		
-		pane.setBackground(Color.white);
-
-		//TODO 설정 파일 오류 확인
-		/* 2014.11.3 오류 발생 주석 처리
-		 *
-		 */
-		//pane.setDividerLocation(Integer.parseInt((propertis.getProperty("errorDividerLoction"))));
-		JPanel pnTableList = createPnTableList();
-
-		pane.setTopComponent(pnTableList);
+		return pnNorth;
 		
-		add(pane);
+	}
+	
+	
+	public void createAndUpdateUI()
+	{
+		setLayout(new BorderLayout());		
 		
-		add(pnNorth,BorderLayout.NORTH);
+		add(createCenter());
+		
+		add(createNorth(),BorderLayout.NORTH);
 		
 		add(buildSouthPn(),BorderLayout.SOUTH);
 	}
 	/**
 	 * @return
 	 */
-	private JPanel createPnTableList() {
+	private KSGPanel createPnTableList() {
 		
-		JPanel pnTableListMain = new JPanel();
+		KSGPanel pnTableListMain = new KSGPanel();
 		
 		pnTableListMain.setLayout(new BorderLayout());
 
-		pnTableList = new JPanel();
+		pnTableList = new KSGPanel();
 		
 		pnTableList.setLayout(new BoxLayout(pnTableList, BoxLayout.Y_AXIS));
 
-		JPanel pnTableListControl = new JPanel();
+		KSGPanel pnTableListControl = new KSGPanel();
 		
 		butPre = new JButton("이전");
 		
@@ -245,6 +269,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		if(command.equals("다시 불러오기"))
 		{
 			initInfo();
+			
 			if(selectedInput.equals("File"))
 			{
 				this.searchPanel.searchXLS();
@@ -582,10 +607,10 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 	 */
 	private Component buildSouthPn() {
 
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 
-		JPanel paRight = new JPanel();
+		KSGPanel paRight = new KSGPanel();
 		paRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		JButton butADD = new JButton("광고불러오기",new ImageIcon("images/importxls.gif"));
@@ -597,6 +622,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			public void actionPerformed(ActionEvent e) {
 
 				AddAdvDialog dialog = new AddAdvDialog(null,true,ADVListPanel.this);
+				dialog.createAndUpdateUI();
 
 			}});
 		JButton butSave = new JButton("광고정보저장",new ImageIcon("images/save.gif"));
@@ -705,7 +731,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 		paRight.add(butSave);
 		paRight.add(butCancel);
 
-		JPanel pnLeft =new JPanel();
+		KSGPanel pnLeft =new KSGPanel();
 		pnLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JButton button = new JButton("설정 보기");
 		button.setVisible(false);
@@ -776,7 +802,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			{
 				HashMap<String, Object> item = (HashMap<String, Object>) portList.get(j);
 				String area_code = (String) item.get("area_code");
-				//PortTableInfo port=(PortTableInfo) portList.get(j);
+
 
 				if(area_code==null)
 					continue;
@@ -848,6 +874,7 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 			commandMap.put("master", portList);
 			
 			System.out.println("tableid:"+xlsPn.getTable_id());
+			
 			shipperTableService.saveShipperPort(commandMap);
 			
 			
@@ -865,17 +892,12 @@ public class ADVListPanel extends JPanel implements ActionListener, MouseWheelLi
 				tablePort.setParent_port(port.getPort_name());
 				tableService.insertPortList(tablePort);
 			}*/
-		}catch(SQLException e)
+		}catch(Exception e)
 		{
 
-			if(e.getErrorCode()==2627)
-			{
-				e.printStackTrace();
-			}else
-			{
-				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e.getMessage());
-				e.printStackTrace();
-			}
+		
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e.getMessage());
 		}
 	}
 	

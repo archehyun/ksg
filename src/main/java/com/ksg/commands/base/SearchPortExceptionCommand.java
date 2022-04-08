@@ -2,12 +2,12 @@ package com.ksg.commands.base;
 
 import java.sql.SQLException;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
 
-public class SearchPortExceptionCommand implements KSGCommand {
+public class SearchPortExceptionCommand implements IFCommand {
 
 	String portName;
 	private BaseService baseService;

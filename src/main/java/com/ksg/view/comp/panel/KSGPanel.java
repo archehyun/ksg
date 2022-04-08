@@ -17,21 +17,18 @@ import java.awt.LayoutManager;
 
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.KSGPropertis;
-import com.ksg.dao.impl.BaseDAOManager;
-import com.ksg.service.ADVService;
-import com.ksg.service.BaseService;
-import com.ksg.service.TableService;
+import com.ksg.view.comp.KSGViewUtil;
 
 /**
  * @author 박창현
  *
  */
-public class KSGPanel extends JPanel implements KSGObserver {
+public class KSGPanel extends JPanel {
 	/**
 	 * 
 	 */
@@ -39,48 +36,46 @@ public class KSGPanel extends JPanel implements KSGObserver {
 	
 	protected KSGModelManager 	manager = KSGModelManager.getInstance();
 	
-	protected Logger 			logger = Logger.getLogger(getClass());
-	
-	protected ADVService	 		_advService;
-	
-	protected TableService 		tableService;  // 테이블 서비스 객체
-	
-	protected BaseService _baseSearvice;
-	
-	protected BaseDAOManager baseDaoService;
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	protected KSGPropertis 	propertis = KSGPropertis.getIntance();
+	
+	protected KSGViewUtil viewPropeties = KSGViewUtil.getInstance();
 	
 	public void createAndUpdateUI()
 	{
 		
 	}
 	
-	public Component createMargin()
-	{
-		return createMargin(15);
-	}
-	public Component createMargin(int w)
-	{
-		JPanel pn =  new JPanel();
-		pn.setPreferredSize(new Dimension(w,0));
-		return pn;
-	}
+
+	
+	Color background=Color.white;
+	
 	
 	public KSGPanel()
 	{
 		super();
-		this.setBackground(Color.white);
+		this.setDoubleBuffered(true);
+	
+		try {
+		background=getColor(viewPropeties.getProperty("panel.background"));
+		}catch(Exception e)
+		
+		{
+			background = Color.white;
+		}
+		this.setBackground(background);
 	}
 	public KSGPanel(LayoutManager layout) {
-		super(layout);
-		this.setBackground(Color.white);
+		this();
+		
+		this.setLayout(layout);		
 	}
 
-	@Override
-	public void update(KSGModelManager manager) {
-		// TODO Auto-generated method stub
-		
+    private Color getColor(String param)
+	{
+		String index[] = param.split(",");
+		return new Color(Integer.parseInt(index[0].trim()),Integer.parseInt(index[1].trim()), Integer.parseInt(index[2].trim()));
 	}
 	
 	

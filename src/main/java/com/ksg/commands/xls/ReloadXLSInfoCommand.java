@@ -1,10 +1,10 @@
 package com.ksg.commands.xls;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.workbench.adv.xls.XLSTableInfoMemento;
 
-public class ReloadXLSInfoCommand implements KSGCommand {
+public class ReloadXLSInfoCommand implements IFCommand {
 
 	KSGModelManager manager = KSGModelManager.getInstance();
 	public int result;

@@ -10,27 +10,21 @@
  *******************************************************************************/
 package com.ksg.dao.impl;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ksg.common.dao.SqlMapManager;
+import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.TableDAO;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
-public class TableDAOImpl implements TableDAO{
-	SqlMapClient sqlMap;
+public class TableDAOImpl extends AbstractDAO implements TableDAO{
+	
 	public TableDAOImpl() {
-		try {
-			sqlMap = SqlMapManager.getSqlMapInstance();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		super();
 	}
 
 
@@ -384,6 +378,31 @@ public class TableDAOImpl implements TableDAO{
 		return sqlMap.update("Table.updateTableDateByTableIDs", table);
 	}
 
+
+	@Override
+	public Object selectListByPage(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("shippertable.selectShipperTableListByPage", param);
+	}
+
+	@Override
+	public Object selectCount(Map<String, Object> commandMap) throws SQLException{
+		return  (Integer) selectOne("shippertable.selectCount", commandMap);
+	}
+
+
+	@Override
+	public Object selectCount(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return  (Integer) selectOne("shippertable.selectCount", param);
+	}
+
+
+	@Override
+	public int delete(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 
 

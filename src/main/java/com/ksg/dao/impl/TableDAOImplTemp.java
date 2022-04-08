@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.SqlMapManager;
@@ -383,6 +384,35 @@ public class TableDAOImplTemp implements TableDAO{
 	public Table_Property getTableProperty(Table_Property param) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public Object selectListByPage(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	
+	@Override
+	public Object selectCount(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Object selectCount(Map<String, Object> commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public int delete(Map<String, Object> param) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

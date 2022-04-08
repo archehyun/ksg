@@ -10,11 +10,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.ksg.common.exception.PortNullException;
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.SortUtil;
 import com.ksg.domain.ScheduleData;
-import com.ksg.schedule.logic.PortNullException;
 import com.ksg.schedule.logic.ScheduleBuild;
-import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.joint.outbound.FromPortGroup;
 import com.ksg.schedule.logic.joint.outbound.PrintItem;
 import com.ksg.schedule.logic.joint.outbound.ToPortGroup;
@@ -285,7 +285,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 					{
 						FromPortGroup fromPortGroup =toPortgroup.get(fromPortArray[i]);						
 
-						fw.write(buildFromXTG(i, fromPortGroup.getFromPortName()));
+						
 
 						String[] vesselArray = fromPortGroup.keySet().toArray(new String[fromPortGroup.keySet().size()]);
 
@@ -307,7 +307,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 
 						for(int y=0;y<vesselArrays.length;y++)
 						{
-							ArrayList<PrintItem> li = vesselArrays[y].getVesselList();
+							ArrayList<PrintItem> li = vesselArrays[y].getJointedVesselList();
 
 							Iterator<PrintItem> iterator = li.iterator();
 							while(iterator.hasNext())
@@ -315,6 +315,10 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 								printList.add(iterator.next());
 							}
 						}
+						
+						// 스케줄이 있을때 출발항 표시
+						if(printList.size()>0)
+						fw.write(buildFromXTG(i, fromPortGroup.getFromPortName()));
 
 						// 출발일로 정렬
 						PrintItem pr[]= new PrintItem[printList.size()];

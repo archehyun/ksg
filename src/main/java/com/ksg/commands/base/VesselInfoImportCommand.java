@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.HashMap;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -14,13 +15,19 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.domain.Vessel;
+import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 
 public class VesselInfoImportCommand extends ImportCommand {
 
 
 	Vessel insertParameter=null;
+	
+	HashMap<String, Object> param;
+	
+	VesselService service = new VesselServiceImpl();
 
 	public VesselInfoImportCommand(File xlsfile) throws FileNotFoundException, IOException {
 		super();
@@ -43,10 +50,12 @@ public class VesselInfoImportCommand extends ImportCommand {
 
 	public int execute()
 	{
+		
+		
 		try{
 
 			this.message = sheet.getLastRowNum()+"개 선박정보 가져오는중";
-
+			
 
 			for(int i=1;i<=sheet.getLastRowNum();i++)
 			{
@@ -69,30 +78,44 @@ public class VesselInfoImportCommand extends ImportCommand {
 				insertParameter.setInput_date(cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
 
 				logger.info("xls insert:"+insertParameter.toInfoString());
-				baseService.insertVessel(insertParameter);
+				
+				param = new HashMap<String, Object>();
+				
+				param.put("vessel_name", cell0.getStringCellValue());
+				param.put("vessel_abbr", cell1.getStringCellValue());
+				param.put("vessel_type", cell2.getStringCellValue());
+				param.put("vessel_use", this.getVesselUse(cell3));
+				param.put("vessel_company", cell4.getStringCellValue());
+				param.put("vessel_mmsi", cell5.getStringCellValue());
+				param.put("input_date", cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
+				
+				
+				service.insert(param);
+				//baseService.insertVessel(insertParameter);
 				current++;
 			}
 		}
-		catch (SQLException e1) 
+		catch (RuntimeException e1) 
 		{
 			e1.printStackTrace();
-
-			// 동일한 항목이 있을 경우
-			if(e1.getErrorCode()==2627)
-			{
-				try 
-				{
-					baseService.update(insertParameter);
-				} catch (SQLException e2) 
-				{
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-			}
-			else
-			{
-				logger.error(e1.getErrorCode()+":"+e1.getMessage()+" : "+insertParameter.toInfoString());
-			}
+//
+//			// 동일한 항목이 있을 경우
+//			if(e1.getErrorCode()==2627)
+//			{
+//				try 
+//				{
+//					service.update(param);
+//					//baseService.update(insertParameter);
+//				} catch (SQLException e2) 
+//				{
+//					// TODO Auto-generated catch block
+//					e2.printStackTrace();
+//				}
+//			}
+//			else
+//			{
+//				logger.error(e1.getErrorCode()+":"+e1.getMessage()+" : "+insertParameter.toInfoString());
+//			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -102,7 +125,7 @@ public class VesselInfoImportCommand extends ImportCommand {
 			isdone=true;
 		}
 
-		return KSGCommand.RESULT_SUCCESS;
+		return IFCommand.RESULT_SUCCESS;
 	}
 	private int getVesselUse(Cell vesselUseCell)
 	{

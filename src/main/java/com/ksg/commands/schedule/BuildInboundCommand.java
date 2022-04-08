@@ -26,7 +26,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.PortInfo;
@@ -37,7 +37,7 @@ import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
-public class BuildInboundCommand implements KSGCommand {
+public class BuildInboundCommand implements IFCommand {
 	private static final String TAG_SIZE = "<$z7f$>";
 	private ScheduleService scheduleService;
 	private BaseService baseService;
@@ -106,8 +106,14 @@ public class BuildInboundCommand implements KSGCommand {
 						continue;
 					}
 				}
+				
+				
+				
 				// 항구이름으로 Inbound 스케줄 조회 
 				List inScheduleList = scheduleService.getInboundScheduleList(port);
+				
+				
+				
 				Iterator sIter = inScheduleList.iterator();
 
 				while(sIter.hasNext())

@@ -16,7 +16,8 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -45,7 +46,7 @@ public class InboundTask extends SimpleTask{
 					TAG_VERSION3,
 					TAG_VERSION6;
 	private HashMap<String, String> portMap;
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private ScheduleBuildMessageDialog di;
 	public InboundTask() {
 

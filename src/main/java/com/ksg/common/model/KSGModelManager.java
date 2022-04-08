@@ -17,7 +17,8 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
@@ -30,7 +31,7 @@ public class KSGModelManager
 	
 	public static boolean isProcess=true;
 	public static final int ADV_ROW_H = 40;
-	protected Logger logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public Vector<KSGObserver> observers;
 	public JFrame frame;
 	

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
@@ -22,24 +21,26 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
+import com.ksg.view.comp.panel.KSGPanel;
 
-public class PnCheckPort extends JPanel implements ActionListener,PreferencePn{
+public class PnCheckPort extends PnOption{
 
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private PreferenceDialog preferenceDialog;
+	
 	private JList listKeyword;
+	
 	private BaseService baseService;
 
 	public PnCheckPort(PreferenceDialog preferenceDialog) {
-		this.preferenceDialog=preferenceDialog;
+		super(preferenceDialog);
 		this.setName("확인 항구명 목록");
 		listKeyword = new JList();
 		baseService =DAOManager.getInstance().createBaseService();
-		JPanel pnKeyWordTypeOption = new JPanel();
+		KSGPanel pnKeyWordTypeOption = new KSGPanel();
 		pnKeyWordTypeOption.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnKeyWordTypeOption.add(new JLabel("광고정보 입력시에 확인하는 항구명을 입력하십시요 "));
 		

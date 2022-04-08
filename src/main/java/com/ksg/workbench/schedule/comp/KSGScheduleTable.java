@@ -23,7 +23,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ScheduleData;
@@ -78,9 +79,9 @@ public abstract class KSGScheduleTable extends JTable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public KSGScheduleTable(String name) {
-		logger.info(name+"테이블 생성");
+		logger.debug(name+"테이블 생성");
 		scheduleService = new ScheduleServiceImpl();
 	}
 	protected JPopupMenu createPopupMenu() {

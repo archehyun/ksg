@@ -2,20 +2,22 @@ package com.ksg.commands.base;
 
 import java.text.SimpleDateFormat;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.LongTask;
 import com.ksg.dao.impl.AdvDAOImpl;
 import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.dao.impl.TableDAOImplTemp;
 
-public abstract class ImportCommand implements KSGCommand, LongTask{
+public abstract class ImportCommand implements IFCommand, LongTask{
 	
 	protected SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	protected String message;
 	protected int lengthOfTask;
 	protected int current;	

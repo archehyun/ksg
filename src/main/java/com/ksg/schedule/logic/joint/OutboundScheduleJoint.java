@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -21,6 +21,8 @@ import org.jdom.output.XMLOutputter;
 
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.dao.DAOManager;
+import com.ksg.common.exception.PortNullException;
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.StringCompare;
 import com.ksg.domain.Code;
@@ -28,10 +30,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
-import com.ksg.schedule.logic.PortNullException;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.VesselNullException;
 
 /**
  * @deprecated
@@ -41,7 +41,7 @@ import com.ksg.schedule.logic.VesselNullException;
 public class OutboundScheduleJoint extends DefaultScheduleJoint{
 
 	XTGManager xtgmanager = new XTGManager();
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	private String fromPort[];
 	int fromPortCount;
 	private String 	BOLD_TAG_F,
@@ -51,8 +51,6 @@ public class OutboundScheduleJoint extends DefaultScheduleJoint{
 	TAG_VERSION3,
 	TAG_VERSION4,
 	TAG_VERSION5;
-	
-	ScheduleManager scheduleManager = ScheduleManager.getInstance();
 
 	DAOManager manager =DAOManager.getInstance();
 

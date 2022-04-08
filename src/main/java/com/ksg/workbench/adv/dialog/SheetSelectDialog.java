@@ -10,15 +10,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -41,8 +43,32 @@ public class SheetSelectDialog extends KSGDialog {
 		this.setTitle("Sheet 선택");
 		this.setModal(true);
 
-		JPanel pnControl = new JPanel();
-		pnControl.setLayout(new BorderLayout());
+		
+		this.add(buildCenter());
+		this.add(buildControl(),BorderLayout.SOUTH);
+		this.add(this.buildTitle(),BorderLayout.NORTH);
+		
+
+		this.setSize(400, 300);
+		ViewUtil.center(this, false);
+		this.setVisible(true);
+		
+	}
+	
+	private KSGPanel buildCenter()
+	{
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		pnMain.add(new JScrollPane(_tblSheetNameList));
+		_tblSheetNameList.getParent().setBackground(Color.white);
+		return pnMain;
+	}
+	
+	private KSGPanel buildControl()
+	{
+		
+		KSGPanel pnControl = new KSGPanel(new BorderLayout());
+		
 
 		JButton butOK = new JButton("확인");
 		butOK.addActionListener(new ActionListener(){
@@ -88,13 +114,14 @@ public class SheetSelectDialog extends KSGDialog {
 				_tblSheetNameList.updateUI();
 			}});
 		butDown.setFont(defaultFont);
-		JPanel pnRight = new JPanel();
+		KSGPanel pnRight = new KSGPanel();
 		pnRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		pnRight.add(butUp);
 		pnRight.add(butDown);
 		pnRight.add(butOK);
 		pnControl.add(pnRight,BorderLayout.EAST);
 		JCheckBox cbxtotal = new JCheckBox("전체선택");
+		cbxtotal.setBackground(Color.white);
 		cbxtotal.addItemListener(new ItemListener() {
 
 			public void itemStateChanged(ItemEvent e) {
@@ -127,18 +154,12 @@ public class SheetSelectDialog extends KSGDialog {
 
 		});
 		pnControl.add(cbxtotal,BorderLayout.WEST);
-		this.add(new JScrollPane(_tblSheetNameList));
-		this.add(pnControl,BorderLayout.SOUTH);
-		this.add(this.buildTitle(),BorderLayout.NORTH);
-		this.add(KSGDialog.createMargin(),BorderLayout.WEST);
-		this.add(KSGDialog.createMargin(),BorderLayout.EAST);
-		this.setSize(400, 300);
-		ViewUtil.center(this, false);
-		this.setVisible(true);
+
+		return pnControl;
 		
 	}
 	private Component buildTitle() {
-		JPanel panel = new JPanel();
+		KSGPanel panel = new KSGPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblTitle1 = new JLabel("불러올 엑셀 Sheet를 선택하십시요\n");
 		panel.add(lblTitle1);

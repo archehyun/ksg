@@ -15,7 +15,8 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.dao.AdvDAO;
@@ -26,7 +27,7 @@ import com.ksg.service.ADVService;
 @SuppressWarnings("unchecked")
 public class ADVServiceImpl implements ADVService{
 
-	Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private AdvDAO advDAO;
 	public ADVServiceImpl() {
 		advDAO = new AdvDAOImpl();

@@ -5,11 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.ksg.dao.impl.AreaDAOImpl;
 
 public class AreaServiceImpl {
 	
 	AreaDAOImpl areaDAO;
+	
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public AreaServiceImpl() {
 		areaDAO = new AreaDAOImpl();

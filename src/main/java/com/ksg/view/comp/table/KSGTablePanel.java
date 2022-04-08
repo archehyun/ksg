@@ -12,23 +12,42 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.table.model.TableModel;
 
+ 
+
+
+/**
+
+  * @FileName : KSGTablePanel.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 29. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 @SuppressWarnings("serial")
-public class KSGTablePanel extends KSGPanel{
-	
-	
+public class KSGTablePanel extends KSGPanel{ 
 	public static final String INSERT="insert";
+	
 	public static final String DELETE="delete";
+	
 	public static final String UPDATE="update";
 	
 	
-	private int total;
+	protected int total;
 
 	private KSGAbstractTable table;
 
@@ -40,9 +59,8 @@ public class KSGTablePanel extends KSGPanel{
 
 	private JButton butInsert;
 
-	private JButton butDelete;
-
-	private JButton butUpdate;
+	private JButton butDelete;	
+	
 	private KSGPanel pnControl;
 
 	public void setShowControl(boolean showControl) {
@@ -60,10 +78,28 @@ public class KSGTablePanel extends KSGPanel{
 		this.setLayout(new BorderLayout(5,5));
 
 		table = new KSGAbstractTable();
+		
+		table.setGridColor(Color.lightGray);
 
 		this.add(new JScrollPane(table));
 
 		table.getParent().setBackground(Color.white);
+	}
+	
+	public KSGTablePanel(TableModel model) {
+
+		super();
+		
+		this.setLayout(new BorderLayout(5,5));
+
+		table = new KSGAbstractTable(model);
+		
+		table.setGridColor(Color.lightGray);
+
+		this.add(new JScrollPane(table));
+
+		table.getParent().setBackground(Color.white);
+		
 	}
 
 	public KSGTablePanel(String title) {
@@ -73,6 +109,20 @@ public class KSGTablePanel extends KSGPanel{
 		this.add(createTitle(), BorderLayout.NORTH);
 		
 	}
+	
+	public KSGTablePanel(String title, TableModel model) {
+
+		this(model);
+		this.title = title;
+		this.add(createTitle(), BorderLayout.NORTH);
+		
+	}
+	
+	public void setSelectionMode(int SINGLE_SELECTION)
+	{
+		table.setSelectionMode(SINGLE_SELECTION);
+	}
+	
 	
 	public void setAutoResizeMode(int mode)
 	{
@@ -99,19 +149,27 @@ public class KSGTablePanel extends KSGPanel{
 		BoldLabel lblTitle = new BoldLabel(title + " 총");
 		
 		butInsert = new JButton("추가");
+		
+		
+		
 		butDelete = new JButton("삭제");
-		butUpdate = new JButton("수정");
+		
+		//butUpdate = new JButton("수정");
+		
+		
+		//butInsert.setBackground(Color.BLUE);
+		//butInsert.setForeground(Color.white);
 		
 		butInsert.setActionCommand(INSERT);
 		butDelete.setActionCommand(DELETE);
-		butUpdate.setActionCommand(UPDATE);
+		//butUpdate.setActionCommand(UPDATE);
 		
 		lblTotalCount = new JLabel("0");
 		lblTotalCount.setForeground(Color.red);
 		
 		
 		pnControl.add(butInsert);
-		pnControl.add(butUpdate);
+		//pnControl.add(butUpdate);
 		pnControl.add(butDelete);
 		
 		pnTitle.add(lblTitle);
@@ -168,7 +226,7 @@ public class KSGTablePanel extends KSGPanel{
 	{
 		butDelete.addActionListener(l);
 		butInsert.addActionListener(l);
-		butUpdate.addActionListener(l);
+		//butUpdate.addActionListener(l);
 	}
 
 	public void addColumn(KSGTableColumn ksgTableColumn) {
@@ -177,12 +235,10 @@ public class KSGTablePanel extends KSGPanel{
 	}
 
 	public Object getValueAt(int rowIndex, String columnField) {
-		// TODO Auto-generated method stub
 		return table.getValueAt(rowIndex, columnField);
 	}
 
 	public Object getValueAt(int rowIndex) {
-		// TODO Auto-generated method stub
 		return table.getValueAt(rowIndex);
 	}
 
@@ -196,6 +252,7 @@ public class KSGTablePanel extends KSGPanel{
 		
 		
 		if(lblTotalCount!=null)
+			
 		lblTotalCount.setText(String.valueOf(master.size())+"/"+total);
 	}
 
@@ -203,22 +260,31 @@ public class KSGTablePanel extends KSGPanel{
 		table.changeSelection(rowIndex, columnIndex, toggle, extend);
 		
 	}
+	public void setComponentPopupMenu(JPopupMenu popup) 
+	{
+		super.setComponentPopupMenu(popup);
+		table.setComponentPopupMenu(popup);
+	}
+
 	
 	public void  clearResult()
 	{
 		table.clearReslult();
 	}
 
-	@Override
-	public void update(KSGModelManager manager) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void createAndUpdateUI() {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public int[] getSelectedRows() {
+		// TODO Auto-generated method stub
+		return table.getSelectedRows();
+	}
+	
+	
+	
 
 }
