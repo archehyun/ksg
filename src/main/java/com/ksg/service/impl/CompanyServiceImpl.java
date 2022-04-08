@@ -4,8 +4,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JOptionPane;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +41,7 @@ public class CompanyServiceImpl implements CompanyService{
 
 
 
-		logger.info("param:{}", param);
+		logger.debug("param:{}", param);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -56,18 +54,18 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	public int update(HashMap<String, Object> param) throws SQLException{
-		logger.info("param:{}", param);
+		logger.debug("param:{}", param);
 		return companyDAO.update(param);
 
 	}
 
 	public int delete(HashMap<String, Object> param) throws SQLException{
-		logger.info("param:{}", param);
+		logger.debug("param:{}", param);
 		return companyDAO.deleteCompany(param);
 	}
 
 	public void insert(HashMap<String, Object> param) throws RuntimeException{
-		logger.info("param:{}", param);
+		logger.debug("param:{}", param);
 
 		try
 		{
@@ -97,6 +95,9 @@ public class CompanyServiceImpl implements CompanyService{
 
 	@Override
 	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+		
+		logger.debug("param:{}", param);
+		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("total", companyDAO.selectCount(param));

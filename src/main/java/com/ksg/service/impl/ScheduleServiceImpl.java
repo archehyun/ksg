@@ -245,6 +245,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 		
 	}
 	public HashMap<String, Object> selectScheduleList(HashMap<String, Object> commandMap) throws SQLException {
+		
+		logger.debug("param:{}", commandMap);
+		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
 		resultMap.put("total", schduleDAO.selectCount(commandMap));
@@ -259,13 +262,17 @@ public class ScheduleServiceImpl implements ScheduleService{
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectScheduledAreaList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
+		
+		logger.debug("param:{}", commandMap);
+		
 		return advScheduleDAO.selectScheduledAreaList(commandMap);
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException {
+		
+		logger.debug("param:{}", commandMap);
 		
 		List<Map<String, Object>> areaList = selectScheduledAreaList(commandMap);
 		
@@ -344,6 +351,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 	@Override
 	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException {
+		
+		logger.debug("param:{}", param);
+		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
 		resultMap.put("total", schduleDAO.selectCount(param));
@@ -355,6 +365,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 	@Override
 	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+		
+		logger.debug("param:{}", param);
+		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
 		resultMap.put("total", schduleDAO.selectCount(param));
@@ -366,6 +379,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 	@Override
 	public HashMap<String, Object> selectGroupList(HashMap<String, Object> param) throws SQLException {
+		
+		logger.debug("param:{}", param);
+		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
 		List list=schduleDAO.selectList(param);
@@ -379,6 +395,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public HashMap<String, Object> selectScheduleGroupList(HashMap<String, Object> param) throws SQLException {
 		
+		logger.debug("param:{}", param);
 		
 		String inOutType  = (String) param.get("inOutType");
 		
