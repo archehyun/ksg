@@ -10,17 +10,34 @@
  *******************************************************************************/
 package com.ksg.adv.logic.poi;
 
+
 /**
- * @author Administrator
- *
- */
+
+  * @FileName : XLSData.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 6. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class XLSData 
 {
-	String data="";
-	int start;
-	int row;
-	int col;
-	int index;
+	private String data="";
+	
+	private int start;
+	
+	private int row;
+	
+	private int col;
+	
+	private int index;
+	
 	private String[][] dataArray;
 	public String getData() {
 		return data;

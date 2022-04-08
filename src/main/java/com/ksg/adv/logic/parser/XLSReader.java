@@ -31,10 +31,22 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.adv.comp.ADVTableNotMatchException;
 import com.ksg.workbench.adv.xls.XLSTableInfo;
 
+
 /**
- * @author Administrator
- *
- */
+
+  * @FileName : XLSReader.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 6. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public abstract class XLSReader {
 	
 	protected List preData;

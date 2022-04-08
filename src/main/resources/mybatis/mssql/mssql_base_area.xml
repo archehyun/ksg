@@ -80,5 +80,12 @@
 <!-- ********************************************* -->	
 
 
+	<select id="selectAreaCodeListGroupByAreaCode" resultClass="string">
+	select area_code from TB_AREA group by area_code	
+	</select>
+	<select id="selectAreaListGroupByAreaName" resultClass="string">
+	select area_name from TB_AREA group by area_name	
+	</select>
+
 				
 </sqlMap>

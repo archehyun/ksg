@@ -28,7 +28,7 @@
          <!--<param name="ConversionPattern"
                 value="%5p-%m%n"/>-->
              <param name="ConversionPattern"
-                value="%p - %C{1}.%M(%L) | %m%n"/>
+                value="[%d{yyyy-MM-dd HH:mm:ss}] %p - %C{1}.%M(%L) | %m%n"/>
         </layout>
     </appender>
     <appender name="CONSOLE2" class="org.apache.log4j.ConsoleAppender">

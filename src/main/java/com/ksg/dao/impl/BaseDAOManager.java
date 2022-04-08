@@ -53,10 +53,10 @@ public class BaseDAOManager
 		
 	}
 
-	//delete
-	public int deleteArea(String data) throws SQLException {
-		return areaDAOImpl.delete(data);		
-	}
+//	//delete
+//	public int deleteArea(String data) throws SQLException {
+//		return areaDAOImpl.delete(data);		
+//	}
 	public int deleteCompany(String company) throws SQLException {
 		return companyDAOImpl.delete(company);
 	}
@@ -88,26 +88,26 @@ public class BaseDAOManager
 	}
 	
 
-	public int getAreaCount() throws SQLException {
-		return areaDAOImpl.getCount();
-	}
+//	public int getAreaCount() throws SQLException {
+//		return areaDAOImpl.getCount();
+//	}
 
-	public List getAreaGroupList() throws SQLException {
-		return areaDAOImpl.getAreaGroupList();
-	}
+//	public List getAreaGroupList() throws SQLException {
+//		return areaDAOImpl.getAreaGroupList();
+//	}
 
-	public List getAreaInfoList(AreaInfo info) throws SQLException {
-		
-		return areaDAOImpl.getAreaInfoList(info);
-	}
+//	public List getAreaInfoList(AreaInfo info) throws SQLException {
+//		
+//		return areaDAOImpl.getAreaInfoList(info);
+//	}
 
-	public List getAreaListGroupByAreaCode() throws SQLException {
-		return sqlMap.queryForList("BASE_AREA.selectAreaCodeListGroupByAreaCode");
-	}
+//	public List getAreaListGroupByAreaCode() throws SQLException {
+//		return sqlMap.queryForList("BASE_AREA.selectAreaCodeListGroupByAreaCode");
+//	}
 
-	public List getAreaListGroupByAreaName() throws SQLException {
-		return areaDAOImpl.getAreaListGroupByAreaName();
-	}
+//	public List getAreaListGroupByAreaName() throws SQLException {
+//		return areaDAOImpl.getAreaListGroupByAreaName();
+//	}
 
 	public List getArrangedAreaInfoList(String orderBy) throws SQLException {
 
@@ -180,9 +180,9 @@ public class BaseDAOManager
 		return (Company) sqlMap.queryForObject("BASE_COMPANY.selectCompanyInfo",company_abbr);
 	}
 
-	public List getCompanyList() throws SQLException {
-		return companyDAOImpl.getCompanyList();
-	}
+//	public List getCompanyList() throws SQLException {
+//		return companyDAOImpl.getCompanyList();
+//	}
 
 	public List getCompanyList(Company company) throws SQLException {
 		return companyDAOImpl.getCompanyList(company);

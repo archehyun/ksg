@@ -23,12 +23,16 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
 import com.ksg.service.TableService;
+
+
 @SuppressWarnings("unchecked")
+
 public class TableServiceImpl implements TableService{
 	
 	protected Logger 			logger = Logger.getLogger(getClass());
 	
 	private TableDAO tableDAO;
+	
 	public TableServiceImpl() {
 		tableDAO = new TableDAOImpl();
 	}

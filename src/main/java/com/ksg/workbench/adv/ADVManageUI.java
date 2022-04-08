@@ -64,7 +64,7 @@ import javax.swing.tree.TreePath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ksg.commands.SearchPortCommand;
+
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.TablePort;
@@ -726,21 +726,21 @@ public class ADVManageUI extends KSGPanel implements ActionListener
 		this.add(pnMain,BorderLayout.CENTER);
 	}
 
-	private JPopupMenu createErrorPopupMenu() {
-		JPopupMenu errorPopupMenu = new JPopupMenu();
-		JMenuItem menu1 = new JMenuItem("포트검색");
-		menu1.addActionListener(new ActionListener(){
-
-
-			public void actionPerformed(ActionEvent e) 
-			{
-				SearchPortCommand  portCommand = new SearchPortCommand();
-				portCommand.execute();
-
-			}});
-		errorPopupMenu.add(menu1);
-		return errorPopupMenu;
-	}
+//	private JPopupMenu createErrorPopupMenu() {
+//		JPopupMenu errorPopupMenu = new JPopupMenu();
+//		JMenuItem menu1 = new JMenuItem("포트검색");
+//		menu1.addActionListener(new ActionListener(){
+//
+//
+//			public void actionPerformed(ActionEvent e) 
+//			{
+//				SearchPortCommand  portCommand = new SearchPortCommand();
+//				portCommand.execute();
+//
+//			}});
+//		errorPopupMenu.add(menu1);
+//		return errorPopupMenu;
+//	}
 
 	/**
 	 * @return

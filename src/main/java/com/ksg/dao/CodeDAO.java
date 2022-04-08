@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
+import com.ksg.domain.PortInfo;
 
 /**
 
@@ -68,6 +69,11 @@ public class CodeDAO extends AbstractDAO{
 	public Object deleteCodeD(HashMap<String, Object> param) throws SQLException {
 		return delete("code.deleteCodeD",param);
 	}
+	
+	public PortInfo getPortInfoAbbrByPortName(String port) throws SQLException {
+	return (PortInfo) sqlMap.queryForObject("Base.selectPortInfoAbbrByPortName",port);
+}
+
 
 
 

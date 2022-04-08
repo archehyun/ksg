@@ -38,6 +38,18 @@ public class AreaServiceImpl {
 		
 	}
 	
+	public List getAreaListGroupByAreaName() throws SQLException {
+		return areaDAO.getAreaListGroupBy("area");
+	}
+
+
+	public List getAreaListGroupByAreaCode() throws SQLException{
+		// TODO Auto-generated method stub
+		return areaDAO.getAreaListGroupBy("code");
+	}
+
+
+	
 	
 
 }
