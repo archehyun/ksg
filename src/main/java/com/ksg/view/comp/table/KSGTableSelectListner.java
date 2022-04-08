@@ -18,9 +18,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ADVData;
+import com.ksg.service.ADVService;
 import com.ksg.view.comp.table.model.KSGTableModel;
 
 public class KSGTableSelectListner  extends MouseAdapter{

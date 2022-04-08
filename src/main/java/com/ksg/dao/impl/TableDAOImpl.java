@@ -17,12 +17,11 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.SqlMapManager;
+import com.ksg.dao.TableDAO;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
-import com.ksg.shippertable.dao.TableDAO;
-@Deprecated
 public class TableDAOImpl implements TableDAO{
 	SqlMapClient sqlMap;
 	public TableDAOImpl() {
@@ -39,10 +38,7 @@ public class TableDAOImpl implements TableDAO{
 		return sqlMap.delete("Table.deleteTable",table);
 
 	}
-	public List selectTableList() throws SQLException
-	{
-		return sqlMap.queryForList("Table.selectAllTableList");
-	}
+
 
 	public ShippersTable insertTableInfo(ShippersTable table) throws SQLException {
 		return (ShippersTable) sqlMap.insert("Table.insertTableInfo",table);
@@ -315,6 +311,7 @@ public class TableDAOImpl implements TableDAO{
 
 
 	public List getTableList(ShippersTable table) throws SQLException {
+		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.selectTableList",table);
 	}
 
@@ -324,9 +321,9 @@ public class TableDAOImpl implements TableDAO{
 		return sqlMap.update("Table.updateTableDateAll", table);
 	}
 	
-	public Table_Property getTableProperty(String table_id) throws SQLException {
+	public Table_Property getTableProperty(Table_Property param) throws SQLException {
 		// TODO Auto-generated method stub
-		return (Table_Property) sqlMap.queryForObject("TABLEProperty.selectTABLEProperty",table_id);
+		return (Table_Property) sqlMap.queryForObject("TABLEProperty.selectTABLEProperty",param);
 	}
 
 
@@ -361,6 +358,12 @@ public class TableDAOImpl implements TableDAO{
 	}
 
 
+	public List selectTableInfo() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	public List selectTableColumnList(String table) throws SQLException {
 		
 		return sqlMap.queryForList("Table.selectTableColumnList",table);
@@ -373,16 +376,12 @@ public class TableDAOImpl implements TableDAO{
 		
 		return li;
 	}
-	public int updateTableDateByTableIDs(ShippersTable table) throws SQLException {
-		
-		return sqlMap.update("Table.updateTableDateByTableIDs", table);
-	}
 
 
 	@Override
-	public Table_Property getTableProperty(Table_Property param) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public int updateTableDateByTableIDs(ShippersTable table) throws SQLException {
+		
+		return sqlMap.update("Table.updateTableDateByTableIDs", table);
 	}
 
 

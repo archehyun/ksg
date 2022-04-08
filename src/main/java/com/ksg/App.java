@@ -58,16 +58,16 @@ public class App
 			logger.info("PROGRAM START");
 			logger.info("DB Connected..");
 
-			if(new File("ksg.jar").isFile())
-			{
-				
-				logger.debug("load jar file");
-				JarFile file = new JarFile("ksg.jar");
-				JarEntry en = file.getJarEntry("db.properties");
-				InputStream input=file.getInputStream(en);
-				Properties pp = new Properties();
-				pp.load(input);
-			}
+//			if(new File("ksg.jar").isFile())
+//			{
+//				
+//				logger.debug("load jar file");
+//				JarFile file = new JarFile("ksg.jar");
+//				JarEntry en = file.getJarEntry("db.properties");
+//				InputStream input=file.getInputStream(en);
+//				Properties pp = new Properties();
+//				pp.load(input);
+//			}
 			try {
 				UIManager.setLookAndFeel(
 						UIManager.getSystemLookAndFeelClassName());

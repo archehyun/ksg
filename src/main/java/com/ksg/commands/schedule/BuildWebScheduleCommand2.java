@@ -20,14 +20,14 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 import com.ksg.commands.KSGCommand;
-import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.print.logic.quark.v1.XTGManager;
-import com.ksg.schedule.ScheduleService;
-import com.ksg.schedule.ScheduleServiceImpl;
+import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleService;
+import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.ScheduleServiceImpl;
 
 public class BuildWebScheduleCommand2 implements KSGCommand {
 	private BaseService baseService;

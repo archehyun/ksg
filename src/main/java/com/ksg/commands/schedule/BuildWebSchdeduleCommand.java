@@ -29,22 +29,23 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.task.WebScheduleTask;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.print.logic.quark.v1.XTGManager;
-import com.ksg.schedule.ScheduleService;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleService;
+import com.ksg.service.TableService;
+import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 @SuppressWarnings("unchecked")
 public class BuildWebSchdeduleCommand implements KSGCommand 
 {
@@ -87,7 +88,7 @@ public class BuildWebSchdeduleCommand implements KSGCommand
 	HashMap<String, Vector> map;
 	private int scheduleID;
 	public BuildWebSchdeduleCommand(ScheduleBuildMessageDialog ob) {
-		tableService = DAOManager.getInstance().createTableService();
+		tableService = new TableServiceImpl();
 		scheduleService = DAOManager.getInstance().createScheduleService();
 		advService = DAOManager.getInstance().createADVService();
 		baseService = DAOManager.getInstance().createBaseService();

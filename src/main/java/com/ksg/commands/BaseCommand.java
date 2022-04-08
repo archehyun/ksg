@@ -2,7 +2,7 @@ package com.ksg.commands;
 
 import javax.swing.JTable;
 
-import com.ksg.dao.impl.BaseService;
+import com.ksg.service.BaseService;
 
 public abstract class BaseCommand implements KSGCommand{
 	protected int totalSize;

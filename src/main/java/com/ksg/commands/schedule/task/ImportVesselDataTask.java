@@ -20,9 +20,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import com.ksg.commands.LongTask;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.service.BaseService;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 public class ImportVesselDataTask implements LongTask{
 

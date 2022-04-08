@@ -4,8 +4,8 @@ import java.sql.SQLException;
 
 import com.ksg.commands.KSGCommand;
 import com.ksg.common.dao.DAOManager;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Code;
+import com.ksg.service.BaseService;
 
 public class SearchPortExceptionCommand implements KSGCommand {
 

@@ -56,13 +56,7 @@ import com.ksg.schedule.logic.route.PortScheduleInfo;
   */
 public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 
-	private static final String OUTBOUND = "O";
-	
-	private static final String RUSSIA = "Russia";
-	
-	private static final String JAPAN = "Japan";
-	
-	private static final String CHINA = "China";
+
 	
 	ScheduleManager scheduleManager = ScheduleManager.getInstance();
 	/**
@@ -114,9 +108,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 
 	}
 	
-	public static final int ORDER_BY_DATE=1;
 
-	public static final int ORDER_BY_VESSEL=2;
 
 	private String fileName="world_print_new_date2.txt";
 
@@ -194,10 +186,14 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 				ScheduleData searchOp = new ScheduleData();
 				searchOp.setInOutType(OUTBOUND);
 				searchOp.setArea_name(area);
+				
 				List<ScheduleData> outboundScheduleListByArea =scheduleService.getScheduleList(searchOp);
+				
+				logger.info("AREA:"+area+", scheduleSize:"+outboundScheduleListByArea.size());
 
 				GroupArea group = new GroupArea(area, op, orderByType);
 				Iterator<ScheduleData> scheduleIter =outboundScheduleListByArea.iterator();
+				
 				while(scheduleIter.hasNext())
 				{
 					try {
@@ -345,7 +341,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 				return true;
 			}
 			else
-			{
+			{	
 				return false;
 			}
 		}

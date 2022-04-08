@@ -5,6 +5,8 @@ import java.io.File;
 import com.ksg.commands.schedule.SwingWorker;
 import com.ksg.commands.schedule.task.ImportVesselDataTask;
 
+
+@Deprecated
 public class ImportVesselDataCommand implements KSGCommand
 {
 	

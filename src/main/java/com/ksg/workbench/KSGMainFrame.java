@@ -49,13 +49,12 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.view.ADVManageUI;
-import com.ksg.base.view.BaseInfoUI;
 import com.ksg.commands.KSGCommand;
 import com.ksg.commands.schedule.BuildXMLInboundCommand;
 import com.ksg.commands.schedule.BuildXMLOutboundCommand;
 import com.ksg.commands.schedule.BuildXMLRouteScheduleCommand;
 import com.ksg.common.dao.DAOManager;
+import com.ksg.common.model.Configure;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.DateFormattException;
@@ -64,17 +63,19 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.common.view.dialog.SearchADVCountDialog;
 import com.ksg.common.view.dialog.WebScheduleCreateDialog;
 import com.ksg.domain.ShippersTable;
-import com.ksg.print.view.PrintADVUI;
-import com.ksg.schedule.ScheduleService;
-import com.ksg.schedule.ScheduleServiceImpl;
 import com.ksg.schedule.ScheduleServiceManager;
-import com.ksg.schedule.view.ScheduleMgtUI;
-import com.ksg.shippertable.service.TableService;
-import com.ksg.shippertable.view.ShipperTableMgtUI;
+import com.ksg.service.ScheduleService;
+import com.ksg.service.TableService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
-import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.workbench.adv.ADVManageUI;
+import com.ksg.workbench.base.BaseInfoUI;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.preference.PreferenceDialog;
+import com.ksg.workbench.print.PrintADVUI;
+import com.ksg.workbench.schedule.ScheduleMgtUI;
+import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 
 
 /**
@@ -163,9 +164,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	
 	private BuildActionListenr buildActionListenr = new BuildActionListenr();
 	
+	Configure config = Configure .getInstance();
+	
 	public KSGMainFrame(KSGLogin login) 
-	{
-		
+	{	
 		this.setName(NAME);
 	
 		manager = KSGModelManager.getInstance();
@@ -234,7 +236,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			}
 
 		}.start();
-
 	}
 
 	private Component buildCenter() 
@@ -317,7 +318,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		
 		pnLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		JLabel label = new JLabel(KSGModelManager.getInstance().version);
+		JLabel label = new JLabel("DB : "+config.getProperty("mssql.db"));
 		
 		label.setFont(KSGModelManager.getInstance().defaultFont);
 		

@@ -6,12 +6,14 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ADVData;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.TableService;
 
+
+@Deprecated
 public class InsertADVCommand implements KSGCommand{
 	private ADVService 		service;
 	private DAOManager manager =DAOManager.getInstance();

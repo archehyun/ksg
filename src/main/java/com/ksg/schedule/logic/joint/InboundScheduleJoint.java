@@ -417,12 +417,12 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 		private String arrangeCompany(String major_company,
 				Vector<String> companyList) {
 
-			Vector<String> new_company = new Vector<String>();
+			Vector<String> new_companys = new Vector<String>();
 			for(int i=0;i<companyList.size();i++)
 			{
 				if(major_company.compareToIgnoreCase(companyList.get(i))!=0)
 				{
-					new_company.add(companyList.get(i));
+					new_companys.add(companyList.get(i));
 				}
 			}
 			
@@ -431,9 +431,9 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 			 * 수정내용 '대표선사,' 표시 수정
 			 * 
 			 */
-			if(new_company.size()>0)
+			if(new_companys.size()>0)
 			{
-				return major_company+","+arrangeCompany(new_company);	
+				return major_company+","+arrangeCompany(new_companys);	
 			}
 			else
 			{
@@ -650,8 +650,8 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 
 						if(ScheduleBuildUtil.getNumericVoyage(addVoyage)==Onedata.getNumericVoayge())
 						{
-							logger.info("3일 이내 추가"+OneVessel+","+OnedateF+","+AddDateF);
-							logger.info("3일 이내 추가 Voyage"+addVoyage+","+Onedata.getVoyage());
+							logger.debug("3일 이내 추가"+OneVessel+","+OnedateF+","+AddDateF);
+							logger.debug("3일 이내 추가 Voyage"+addVoyage+","+Onedata.getVoyage());
 
 							VoaygeVector voyageVector = new VoaygeVector();
 							voyageVector.setVoyage(data.getAttributeValue(XML_INFO.XML_TAG_VOYAGE));
@@ -662,7 +662,7 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 
 							voyageVector.add(data);
 							voyageVectorMap.remove(keyItem);
-							logger.info("key 삭제:"+keyItem+","+addVoyage+","+Onedata.getNumericVoayge());
+							logger.debug("key 삭제:"+keyItem+","+addVoyage+","+Onedata.getNumericVoayge());
 
 
 							String newKey = createKey(AddVessel,KSGDateUtil.biggerDate(OnedateF, AddDateF), ScheduleBuildUtil.getNumericVoyage(addVoyage));
@@ -1104,7 +1104,7 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 		}
 	}
 	public int execute() throws Exception {
-		logger.info("make inbound source start");
+		logger.info("START");
 
 		try
 		{
@@ -1124,7 +1124,7 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 				try{
 
 					// 항구명 검색
-					logger.info(" from port 항구 검색: "+fromPort);
+					logger.debug(" from port 항구 검색: "+fromPort);
 					
 					if(fromPort.equals("BUSAN"))
 					{
@@ -1185,8 +1185,8 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 			}
 
 			createXMLFile(document);
-
-			logger.info("inbound build time : "+(System.currentTimeMillis()-startTime));
+			logger.info("END("+(System.currentTimeMillis()-startTime)+"s)");
+			
 
 		}
 		catch(PortNullException e)
@@ -1198,7 +1198,4 @@ public class InboundScheduleJoint extends DefaultScheduleJoint{
 		return ScheduleJoint.SUCCESS;
 
 	}
-
-
-
 }

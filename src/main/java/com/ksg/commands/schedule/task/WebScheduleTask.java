@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 
 import org.jdom.JDOMException;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -33,10 +32,12 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.print.logic.quark.v1.XTGManager;
-import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
-import com.ksg.shippertable.service.TableService;
+import com.ksg.service.ADVService;
+import com.ksg.service.ScheduleService;
+import com.ksg.service.TableService;
+import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 public class WebScheduleTask extends SimpleTask{
 	public static final int RESULT_SUCCESS=0;
@@ -81,7 +82,7 @@ public class WebScheduleTask extends SimpleTask{
 	private Vector errorlist;
 	public WebScheduleTask() {
 		errorlist= new Vector();
-		tableService = DAOManager.getInstance().createTableService();
+		tableService = new TableServiceImpl();
 		scheduleService = DAOManager.getInstance().createScheduleService();
 		advService = DAOManager.getInstance().createADVService();
 		baseService = DAOManager.getInstance().createBaseService();

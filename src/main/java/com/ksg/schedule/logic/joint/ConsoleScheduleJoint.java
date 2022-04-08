@@ -17,6 +17,7 @@ import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.SortUtil;
 import com.ksg.domain.Code;
+import com.ksg.domain.ScheduleType;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
@@ -207,7 +208,7 @@ public class ConsoleScheduleJoint extends DefaultScheduleJoint{
 		 */
 		private String toStringAgentInfoByTag(String comapny_abbr, String d_time, String c_time,String console_info, int console_print_type) throws ArrayIndexOutOfBoundsException,NumberFormatException		
 		{
-			return TAG_BODY_AGENT+"\t"+comapny_abbr+"\t"+getClosingTime(d_time)+"\t"+getClosingTime(c_time)+"\t"+(console_print_type==ShippersTable.CONSOLE_PAGE?"[Page] ":"")+console_info+TAG_BODY_AGENT_CLOSE;
+			return TAG_BODY_AGENT+"\t"+comapny_abbr+"\t"+getClosingTime(d_time)+"\t"+getClosingTime(c_time)+"\t"+(console_print_type==ScheduleType.CONSOLE_PAGE?"[Page] ":"")+console_info+TAG_BODY_AGENT_CLOSE;
 		}
 
 		/**
@@ -225,7 +226,7 @@ public class ConsoleScheduleJoint extends DefaultScheduleJoint{
 					buffer.append(this.toStringAgentInfoByTag(	data.getCompany_abbr(),
 							data.getD_time(),
 							data.getC_time(),
-							op.getConsole_print_type()==ShippersTable.CONSOLE_PAGE?data.getConsole_page():data.getConsole_cfs(),
+							op.getConsole_print_type()==ScheduleType.CONSOLE_PAGE?data.getConsole_page():data.getConsole_cfs(),
 									op.getConsole_print_type())+"\r\n");
 				}catch(ArrayIndexOutOfBoundsException e)
 				{
@@ -365,9 +366,12 @@ public class ConsoleScheduleJoint extends DefaultScheduleJoint{
 
 			dateIssue = Calendar.getInstance();
 
-			dateIssue.setTime(dateIssueformat.parse(op.getDate_issue()));
-
-			scheduleli = scheduleService.getConsoleScheduleList(op);
+			dateIssue.setTime(dateIssueformat.parse(op.getDate_issue()));			
+			
+			op.setGubun("console");
+			
+			
+			scheduleli = scheduleService.getScheduleList(op);
 
 		} catch (Exception e) {
 			e.printStackTrace();

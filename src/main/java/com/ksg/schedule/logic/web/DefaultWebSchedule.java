@@ -23,7 +23,6 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import com.ksg.adv.service.ADVService;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -35,7 +34,6 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.ScheduleService;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.PortNullException;
 import com.ksg.schedule.logic.ScheduleJoint;
@@ -43,7 +41,9 @@ import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
 import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.service.ADVService;
+import com.ksg.service.ScheduleService;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
  * @author archehyun

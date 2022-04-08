@@ -19,11 +19,11 @@ import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.view.dialog.ProcessDialog;
-import com.ksg.adv.view.xls.XLSTableInfoMemento;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.KSGHashMap;
+import com.ksg.workbench.adv.dialog.ProcessDialog;
+import com.ksg.workbench.adv.xls.XLSTableInfoMemento;
 @SuppressWarnings("unchecked")
 public class KSGModelManager 
 {

@@ -36,7 +36,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
 
@@ -57,22 +57,22 @@ public class RouteScheduleJointV2 extends RouteAbstractScheduleJoint {
 	
 	final int BACK =1;
 
-	XTGManager xtgmanager = new XTGManager();
+	private XTGManager xtgmanager = new XTGManager();
 	
 	private static final String WORLD_SOURCE_XML = "world_source.xml";
 
 	DAOManager manager =DAOManager.getInstance();
 
-	ScheduleBuildMessageDialog di;
+	private ScheduleBuildMessageDialog di;
 
 	private int UP_SIZE,DOWN_SIZE;
 
 	public RouteScheduleJointV2(ShippersTable op) throws SQLException {
 		super();
+		this.op=op;		
 		map = new HashMap<String, MiniSchedule>();
 		logger.info("op date:"+op.getDate_isusse());
 
-		this.op=op;
 	}
 
 	public void initTag(){

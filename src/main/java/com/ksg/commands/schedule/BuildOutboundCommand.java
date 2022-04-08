@@ -27,14 +27,14 @@ import com.ksg.commands.KSGCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.dao.impl.BaseService;
-import com.ksg.dao.impl.BaseServiceImpl;
 import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.print.logic.quark.v1.XTGManager;
-import com.ksg.schedule.ScheduleService;
-import com.ksg.schedule.ScheduleServiceImpl;
+import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleService;
+import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.ScheduleServiceImpl;
 
 public class BuildOutboundCommand implements KSGCommand {
 	private JTextArea area2;

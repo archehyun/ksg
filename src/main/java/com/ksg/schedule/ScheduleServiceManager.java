@@ -36,8 +36,8 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.build.CreateNormalSchdeduleCommandNew;
-import com.ksg.schedule.view.dialog.ScheduleBuildMessageDialog;
-import com.ksg.schedule.view.dialog.ScheduleCreateOptionDialog;
+import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
+import com.ksg.workbench.schedule.dialog.ScheduleCreateOptionDialog;
 
 /**
  * @author ¹ÚÃ¢Çö

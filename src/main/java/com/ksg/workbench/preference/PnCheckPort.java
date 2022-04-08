@@ -20,8 +20,8 @@ import javax.swing.JScrollPane;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.dao.impl.BaseService;
 import com.ksg.domain.Code;
+import com.ksg.service.BaseService;
 
 public class PnCheckPort extends JPanel implements ActionListener,PreferencePn{
 

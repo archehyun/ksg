@@ -17,10 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ksg.base.service.AreaDAOImpl;
-import com.ksg.base.service.CompanyDAOImpl;
-import com.ksg.base.service.PortDAOImpl;
-import com.ksg.base.service.VesselDAOImpl;
 import com.ksg.common.dao.SqlMapManager;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Code;
@@ -33,22 +29,22 @@ import com.ksg.domain.Vessel;
 @SuppressWarnings("unchecked")
 public class BaseDAOManager
 {
-	AreaDAOImpl areaDAOImpl;
+	AreaDAOImpl2 areaDAOImpl;
 	
-	private CompanyDAOImpl companyDAOImpl;
+	private CompanyDAOImpl2 companyDAOImpl;
 	private SqlMapClient sqlMap;
-	private VesselDAOImpl vesselDAOImpl;
-	private PortDAOImpl portDAOImpl;
+	private VesselDAOImpl2 vesselDAOImpl;
+	private PortDAOImpl2 portDAOImpl;
 	public BaseDAOManager() {
 		try {
 			sqlMap = SqlMapManager.getSqlMapInstance();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		areaDAOImpl =new AreaDAOImpl();
-		vesselDAOImpl = new VesselDAOImpl();
-		companyDAOImpl = new CompanyDAOImpl();
-		portDAOImpl = new PortDAOImpl();
+		areaDAOImpl =new AreaDAOImpl2();
+		vesselDAOImpl = new VesselDAOImpl2();
+		companyDAOImpl = new CompanyDAOImpl2();
+		portDAOImpl = new PortDAOImpl2();
 	}	
 
 	

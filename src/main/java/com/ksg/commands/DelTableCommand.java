@@ -17,19 +17,19 @@ import javax.swing.JOptionPane;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ShippersTable;
-import com.ksg.shippertable.service.TableService;
-import com.ksg.shippertable.service.impl.TableServiceImpl;
+import com.ksg.service.TableService;
+import com.ksg.service.impl.TableServiceImpl;
 
 public class DelTableCommand implements KSGCommand {
 	
 	private KSGModelManager 	manager = KSGModelManager.getInstance();
-	private TableService 		_tableService;
+	private TableService 		tableService;
 	ShippersTable table;
 	JComponent comp;
 	public DelTableCommand(ShippersTable table,JComponent comp) {
 		this.table = table;
 		this.comp = comp;
-		_tableService = new TableServiceImpl();
+		tableService = new TableServiceImpl();
 		
 	}
 
@@ -46,7 +46,7 @@ public class DelTableCommand implements KSGCommand {
 		if(j==JOptionPane.YES_OPTION)
 		{
 			try {
-				_tableService.deleteTable(table);
+				tableService.delete(table);
 				manager.execute(comp.getName());
 				return RESULT_SUCCESS;
 			} catch (SQLException e) {

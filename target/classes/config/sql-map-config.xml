@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE sqlMapConfig PUBLIC
+  "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+  "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<properties resource="config/db.properties"/>
+	<settings enhancementEnabled="true" useStatementNamespaces="true" />	
+	 <transactionManager type="JDBC">
+		<dataSource type="SIMPLE">
+		<property name="JDBC.Driver" value="${mssql.driver}"/>
+		<property name="JDBC.Username" value="${mssql.id}"/>
+
+		<property name="JDBC.Password" value="${mssql.password}"/>		
+		<property name="JDBC.ConnectionURL" value="${mssql.url}"/>
+		<property name="Pool.MaximumActiveConnections" value="10"/>
+		<property name="Pool.MaximumIdleConnections" value="5"/>
+		<property name="Pool.MaximumCheckoutTime" value="120000"/>
+		<property name="Pool.TimeToWait" value="10000"/>
+		<property name="Pool.PingQuery" value="select * from dual"/>
+		<property name="Pool.PingEnabled" value="true"/>
+		<property name="Pool.PingConnectionOlderThan" value="0"/>
+		<property name="Pool.PingConnectionNotUsedFor" value="0"/>
+
+		</dataSource>
+	</transactionManager>
+	
+	
+	
+	<!-- new mapper -->
+	
+	<sqlMap resource="mybatis/mssql/mssql_base_area.xml" />
+	<sqlMap resource="mybatis/mssql/mssql_base_port.xml" />
+	<sqlMap resource="mybatis/mssql/mssql_base_company.xml" />
+	<sqlMap resource="mybatis/mssql/mssql_base_vessel.xml" />
+	<sqlMap resource="mybatis/mssql/mssql_common_code.xml" />
+	<sqlMap resource="mybatis/mssql/mssql_shippertable.xml" />
+	<sqlMap resource="mybatis/mssql/mssql_schedule.xml" />
+	
+	<sqlMap resource="mybatis/Table.xml" />
+
+	<sqlMap resource="mybatis/Adv.xml" />
+	<sqlMap resource="mybatis/Base.xml" />
+	<sqlMap resource="mybatis/BASE_AREA.xml" />
+	<sqlMap resource="mybatis/BASE_VESSEL.xml" />
+	<sqlMap resource="mybatis/BASE_PORT.xml" />
+	<sqlMap resource="mybatis/BASE_COMPANY.xml" />
+	
+	<sqlMap resource="mybatis/Member.xml" />
+	<sqlMap resource="mybatis/Schedule.xml" />
+	<sqlMap resource="mybatis/TABLEProperty.xml" />
+	
+	
+	
+</sqlMapConfig>

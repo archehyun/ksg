@@ -23,9 +23,9 @@ import javax.swing.JRadioButton;
 
 import org.apache.log4j.Logger;
 
-import com.ksg.adv.view.dialog.AddAdvDialog;
-import com.ksg.adv.view.xls.XLSManagerImpl;
 import com.ksg.common.model.KSGModelManager;
+import com.ksg.workbench.adv.dialog.AddAdvDialog;
+import com.ksg.workbench.adv.xls.XLSManagerImpl;
 
 public class SelectOptionDialog extends JDialog implements ActionListener{
 	

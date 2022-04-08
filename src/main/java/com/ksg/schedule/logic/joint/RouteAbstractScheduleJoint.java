@@ -39,6 +39,18 @@ public abstract class RouteAbstractScheduleJoint extends DefaultScheduleJoint{
 	protected String INCODE_KEY="";
 	
 	protected ShippersTable op;
+	
+	public static final int ORDER_BY_DATE=1;
+	
+	public static final int ORDER_BY_VESSEL=2;
+	
+	public static final String OUTBOUND = "O";
+	
+	public static final String RUSSIA = "Russia";
+	
+	public static final String JAPAN = "Japan";
+	
+	public static final String CHINA = "China";
 
 	public RouteAbstractScheduleJoint() throws SQLException {
 		super();

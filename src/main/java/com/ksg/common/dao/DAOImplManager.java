@@ -1,6 +1,6 @@
 package com.ksg.common.dao;
 
-import com.ksg.adv.dao.AdvDAOImpl;
+import com.ksg.dao.impl.AdvDAOImpl;
 import com.ksg.dao.impl.BaseDAOManager;
 
 public class DAOImplManager {
