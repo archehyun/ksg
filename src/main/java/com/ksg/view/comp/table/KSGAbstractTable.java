@@ -2,20 +2,22 @@ package com.ksg.view.comp.table;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.awt.Font;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
+
+import com.ksg.view.comp.KSGViewUtil;
+import com.ksg.view.comp.table.model.TableModel;
 
 /**
 
@@ -45,11 +47,59 @@ public class KSGAbstractTable extends JTable{
 	private TableModel model;
 	
 	DefaultTableCellRenderer renderer;
+	
+	
+	KSGViewUtil propeties = KSGViewUtil.getInstance();
+	
+	private int HEADER_HEIGHT;
+	
+	private int ROW_HEIGHT;
+	
+	private int FONT_SIZE;
+	
+	private static Color GRID_COLOR;
 
 	public KSGAbstractTable() {
 
-
 		model = new TableModel();
+		
+        HEADER_HEIGHT=Integer.parseInt(propeties.getProperty("table.header.height"));
+
+		ROW_HEIGHT=Integer.parseInt(propeties.getProperty("table.row.height"));
+		
+		GRID_COLOR = getColor(propeties.getProperty("table.girdcolor"));
+		
+		FONT_SIZE = Integer.parseInt(propeties.getProperty("table.font.size"));
+		
+		
+		this.setGridColor(GRID_COLOR);
+		
+		this.setRowHeight(ROW_HEIGHT);
+		
+		this.setFontSize(FONT_SIZE);
+
+		// 컬럼 리사이징 오프
+		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+		// 정렬 기능 추가
+		setRowSorter(new TableRowSorter<TableModel>(model));
+		
+		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	}
+	
+	private void setFontSize(int size)
+	{
+		Font currentFont=this.getFont();
+		this.setFont(new Font(currentFont.getName(),currentFont.getStyle(), size));
+		
+	}
+	
+	public KSGAbstractTable(TableModel model) {
+
+
+		this.model = model;
+		
 
 		// 컬럼 리사이징 오프
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -79,6 +129,12 @@ public class KSGAbstractTable extends JTable{
 	public void setColumnName(KSGTableColumn columnNames[]) {
 		this.model.setColumns(columnNames);
 	}
+	
+    private Color getColor(String param)
+	{
+		String index[] = param.split(",");
+		return new Color(Integer.parseInt(index[0].trim()),Integer.parseInt(index[1].trim()), Integer.parseInt(index[2].trim()));
+	}
 
 	public void initComp() {
 		super.setModel(model);
@@ -87,13 +143,17 @@ public class KSGAbstractTable extends JTable{
 
 
 		for (int i = 0; i < colmodel.getColumnCount(); i++) {
+			
+			
+			DefaultTableCellRenderer cellRenderer = getCellRenderer();
 			TableColumn namecol = colmodel.getColumn(i);
 
-			namecol.setCellRenderer(getCellRenderer());
+			namecol.setCellRenderer(cellRenderer);
 			
 			KSGTableColumn col = model.getColumn(i);
 
-			renderer.setHorizontalAlignment(SwingConstants.CENTER);
+			cellRenderer.setHorizontalAlignment(col.ALIGNMENT);
+			
 
 			if(col.maxSize!=0)
 			{
@@ -110,16 +170,14 @@ public class KSGAbstractTable extends JTable{
 				namecol.setPreferredWidth(col.size);
 			}
 		}
-		this.setRowHeight(30);
 		
-		
+		this.setRowHeight(30);		
 
 		DefaultTableCellRenderer renderer =  
 				(DefaultTableCellRenderer)this.getTableHeader().getDefaultRenderer();
 		renderer.setHorizontalAlignment(SwingConstants.CENTER);
 		this.getTableHeader().setDefaultRenderer(renderer);
-
-
+				
 
 	}
 
@@ -154,135 +212,7 @@ public class KSGAbstractTable extends JTable{
 		model.clearResult();
 	}
 
-	/**
 
-	 * @FileName : KSGTable.java
-
-	 * @Date : 2021. 2. 26. 
-
-	 * @작성자 : 박창현
-
-	 * @변경이력 :
-
-	 * @프로그램 설명 : 사용자 정의 테이블 모델
-
-	 */
-	class TableModel extends AbstractTableModel {
-
-
-		@SuppressWarnings("rawtypes")
-		private List data;
-
-		private List<KSGTableColumn> columnNames;
-
-
-		public TableModel() {
-			columnNames = new LinkedList<KSGTableColumn>();
-		}
-
-		public List getData() {
-			return data;
-		}
-
-		public void addColumn(KSGTableColumn column) {
-
-			columnNames.add(column);
-
-		}
-
-		public KSGTableColumn getColumn(int col) {
-			return columnNames.get(col);
-		}
-
-		public void setData(List data) {
-			this.data = data;
-		}
-
-		@Override
-		public String getColumnName(int index) {
-
-			KSGTableColumn column = columnNames.get(index);
-
-
-			return column.columnName;
-		}
-
-		public void setColumns(KSGTableColumn columns[]) {
-
-			columnNames = Arrays.asList(columns);
-		}
-
-		/**
-		 * 데이터 초기화
-		 */
-		public void clearResult() {
-
-			if (data != null) {
-				data.clear();
-				updateUI();
-			}
-		}
-
-		@Override
-		public int getRowCount() {
-			if (data == null)
-				return 0;
-
-			return data.size();
-		}
-
-		@Override
-		public int getColumnCount() {
-
-			if (columnNames == null)
-				return 0;
-
-			return columnNames.size();
-		}
-
-		public Object getValueAt(int rowIndex) {
-
-			try {
-
-				return data.get(rowIndex);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		@Override
-		public Object getValueAt(int rowIndex, int columnIndex) {
-
-			try {
-				HashMap<String, Object> item = (HashMap<String, Object>) data.get(rowIndex);
-
-				KSGTableColumn colum =columnNames.get(columnIndex);
-
-				Object obj = item.get(colum.columnField);
-
-				return colum.getValue(obj);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-		public Object getValueAt(int rowIndex, String columnField) {
-
-			try {
-
-				HashMap<String, Object> item = (HashMap<String, Object>) data.get(rowIndex);
-
-				return item.get(columnField);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-
-	}
 
 	/**
 
@@ -300,6 +230,12 @@ public class KSGAbstractTable extends JTable{
 
 	 */
 	class KSGTableCellRenderer extends DefaultTableCellRenderer {
+		
+		int leftPadding = 10;
+		
+		int rightPadding = 10;
+		
+		Border padding = BorderFactory.createEmptyBorder(0, leftPadding, 0, rightPadding);
 
 		/**
 		 *
@@ -324,7 +260,7 @@ public class KSGAbstractTable extends JTable{
 					foreground = Color.black;
 				}
 			}
-
+			setBorder(BorderFactory.createCompoundBorder(getBorder(), padding));
 			renderer.setForeground(foreground);
 			renderer.setBackground(background);
 

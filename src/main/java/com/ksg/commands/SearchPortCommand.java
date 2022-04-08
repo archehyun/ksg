@@ -37,19 +37,17 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
-
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.PortInfo;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.workbench.base.dialog.InsertPortAbbrInfoDialog;
-import com.ksg.workbench.base.dialog.InsertPortInfoDialog;
+import com.ksg.workbench.base.port.dialog.InsertPortAbbrInfoDialog;
+import com.ksg.workbench.base.port.dialog.InsertPortInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
-public class SearchPortCommand implements KSGCommand, ActionListener {
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+public class SearchPortCommand extends AbstractCommand implements ActionListener {
+	
 	private BaseService baseService;
 	KSGModelManager manager = KSGModelManager.getInstance();
 	private JDialog dialog;

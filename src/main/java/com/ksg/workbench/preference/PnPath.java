@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.Box;
@@ -15,25 +14,22 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
-
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 
-public class PnPath extends JPanel implements PreferencePn,ActionListener{
+public class PnPath extends PnOption{
 	private JTextField txfXLSFolder;
 	private JTextField txfSaveFolder;
-	private Font defaultfont;
-	PreferenceDialog preferenceDialog;
+	private Font defaultfont;	
 	private JButton butSearcFold;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	private KSGPropertis propertis = KSGPropertis.getIntance();
 	public PnPath(PreferenceDialog preferenceDialog) {
+		super(preferenceDialog);
 		this.setName("경로지정");
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
-
 		Box box = new Box(BoxLayout.Y_AXIS);
-		this.preferenceDialog = preferenceDialog; 
+		 
 		txfXLSFolder = new JTextField(30);
 		txfSaveFolder = new JTextField(25);
 		butSearcFold = new JButton("찾기");

@@ -20,13 +20,23 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.ScheduleBuild;
 
+
 /**
- * 2014-11-20 업데이트
- * @author 박창현
- * 정렬 순서 : 국내항-중간기항지
- * 
- *
- */
+
+  * @FileName : InlnandScheduleJoint.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 17. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+  * 
+
+  * @프로그램 설명 :
+
+  */
 public class InlnandScheduleJoint extends DefaultScheduleJoint{
 	private String TAG_VERSION;
 	private String TAG_DOCUMENT_INFO_1;
@@ -84,7 +94,7 @@ public class InlnandScheduleJoint extends DefaultScheduleJoint{
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("M/d"); 
 
-	private String fileName,portFileName;
+	
 	
 	private FileWriter fw;
 	
@@ -233,7 +243,7 @@ public class InlnandScheduleJoint extends DefaultScheduleJoint{
 		 * @param vessel 		선박명
 		 * @param inland_date 	기항일자
 		 * @param agent 		에이전트
-		 * @param dateT			도착일
+		 * @param dateT		 	도착일
 		 * @return
 		 */
 		private String toStringAgentInfoByTag(String dateF, String vessel, String inland_date,String agent, String dateT)		
@@ -353,6 +363,7 @@ public class InlnandScheduleJoint extends DefaultScheduleJoint{
 		try{
 			// 콜솔 스케줄 조회
 			List<ScheduleData> scheduleli = scheduleService.getInlandScheduleList(option);
+			
 			logger.info("내류운송 스케줄 조회:"+scheduleli.size()+"건");
 
 

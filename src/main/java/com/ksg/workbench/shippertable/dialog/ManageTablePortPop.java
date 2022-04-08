@@ -21,17 +21,17 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
 
@@ -48,7 +48,7 @@ import com.ksg.view.comp.table.KSGTablePanel;
 
  */
 @SuppressWarnings("serial")
-public class ManageTablePortPop extends JDialog implements ActionListener{
+public class ManageTablePortPop extends KSGDialog implements ActionListener{
 
 	private static final String ACTION_UP = "UP";
 	private static final String ACTION_DOWN = "DOWN";
@@ -62,9 +62,7 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 
 	private JTextField txfSelectedPortName;
 
-	private JTextField txfIndex;
-
-	private JTextField txfPortName;
+	private JTextField txfIndex;	
 
 	public int RESLULT=2;
 
@@ -97,15 +95,12 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 
 	private PortIndexChangeAction indexChangeAction = new PortIndexChangeAction();
 
-	private PortSelectionEventHandler portSelectionEventHandler = new PortSelectionEventHandler();
-
-	private JLabel lblSearch;
+	private PortSelectionEventHandler portSelectionEventHandler = new PortSelectionEventHandler();	
 
 	private JButton butCancel;
 
-
-
 	public ManageTablePortPop(String tableId) {
+		super();
 
 		this.setModal(true);
 
@@ -128,6 +123,7 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 			@Override
 			public void componentShown(ComponentEvent e) {
 				HashMap<String, Object> param = new HashMap<String, Object>();
+				
 
 				param.put("port_type", "P");
 
@@ -168,9 +164,9 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 
 	}
 
-	private JPanel createCenter()
+	private KSGPanel createCenter()
 	{
-		JPanel pnMain = new JPanel(new BorderLayout(5,5));
+		KSGPanel pnMain = new KSGPanel(new BorderLayout(5,5));
 
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
@@ -202,9 +198,9 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 	/** 버튼 목록 표시 패널 생성
 	 * @return
 	 */
-	private JPanel createCenterEast()
+	private KSGPanel createCenterEast()
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		butUp = new JButton("▲");		
 		butDown = new JButton("▼");		
 		butInsert = new JButton("추가");
@@ -266,9 +262,9 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 		return pnMain;
 	}
 
-	private JPanel createCenterNorth()
+	private KSGPanel createCenterNorth()
 	{
-		JPanel pnMain = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		txfIndex = new JTextField(2);
 
@@ -279,14 +275,14 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 		return pnMain;
 	}
 
-	private JPanel createTitle()
+	private KSGPanel createTitle()
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		return pnMain;
 	}
-	private JPanel createControl()
+	private KSGPanel createControl()
 	{
-		JPanel pnMain = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		butSave = new JButton("저장 및 닫기");
 		butCancel = new JButton("취소");
@@ -323,20 +319,30 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 			// check ports
 
 			// save ports info
+			
+			try {
 
 			HashMap<String, Object> commandMap = new HashMap<String, Object>();
 
 			commandMap.put("table_id", tableId);
 
 			commandMap.put("master", master);
+			
 
 			shipperTableService.saveShipperPort(commandMap);
 
 			RESLULT=OK;
 
-			this.setVisible(false);
+			}catch(Exception ee)
+			{
+				ee.printStackTrace();
+				
+				JOptionPane.showMessageDialog(ManageTablePortPop.this, ee.getMessage());
+			}finally {
+				this.setVisible(false);
 
-			this.dispose();
+				this.dispose();
+			}
 		}
 
 		else if(command.equals(ACTION_INSERT))
@@ -726,6 +732,12 @@ public class ManageTablePortPop extends JDialog implements ActionListener{
 
 		}
 
+	}
+
+	@Override
+	public void createAndUpdateUI() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

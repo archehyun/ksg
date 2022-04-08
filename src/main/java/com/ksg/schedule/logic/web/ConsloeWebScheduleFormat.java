@@ -4,11 +4,22 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 
+
 /**
- * 콘솔 광고 정보를 웹용 스케줄로 변환
- * @author archehyun
- *
- */
+
+  * @FileName : ConsloeWebScheduleFormat.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 18. 
+
+  * @작성자 : 박창현
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 콘솔 광고 정보를 웹용 스케줄로 변환
+
+  */
 public class ConsloeWebScheduleFormat extends WebScheduleFormat  implements IFWebScheduleFormat{
 
 	/**

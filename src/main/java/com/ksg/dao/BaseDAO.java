@@ -22,6 +22,8 @@ import com.ksg.domain.KeyWordInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
 
+
+@Deprecated
 public interface BaseDAO {
 	/**
 	 * @param type

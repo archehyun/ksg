@@ -18,6 +18,10 @@ import javax.swing.table.TableColumn;
 @SuppressWarnings("serial")
 public class KSGTableColumn extends TableColumn{
 	
+	
+	
+	public int ALIGNMENT=0;
+	
 	public int size = 0;
 	
 	public int minSize = 0;
@@ -39,9 +43,15 @@ public class KSGTableColumn extends TableColumn{
 	}
 
 	public KSGTableColumn(String columnField, String columnName, int size) {
-		this.columnField = columnField;
-		this.columnName = columnName;
+		this(columnField, columnName);
+		
 		this.size = size;
+	}
+	
+	public KSGTableColumn(String columnField, String columnName, int size, int alignment) {
+		this(columnField, columnName, size);
+		
+		this.ALIGNMENT = alignment;
 	}
 	
 	public Object getValue(Object obj)

@@ -17,7 +17,8 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
@@ -37,7 +38,7 @@ public class DataInput {
 	String id;
 	BaseService baseService;
 	private PortInfo t;
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public DataInput(String filename) {
 		this.filename=filename;
 	}

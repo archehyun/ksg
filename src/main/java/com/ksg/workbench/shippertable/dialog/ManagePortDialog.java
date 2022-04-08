@@ -40,17 +40,17 @@ import javax.swing.ListCellRenderer;
 import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 
+import com.ksg.common.exception.PortNullException;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.dialog.PortSearchDialog;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
-import com.ksg.schedule.logic.PortNullException;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI;
+import com.ksg.workbench.common.comp.dialog.PortSearchDialog;
+import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 
 /**
  * 
@@ -101,7 +101,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 	private PortListTable tblPortList; // 항목 목록 테이블
 
-	private ShipperTableMgtUI base;
+	private ShipperTableAbstractMgtUI base;
 
 	private JCheckBox cbxDeleteAll;
 
@@ -118,13 +118,17 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	private JTextField 	txflblPortName;
 	
 	private JTextField 	txfUpdatePortName;
+	
+	private BaseServiceImpl baseService;
 	/**
 	 * @param table_id 테이블 아이디
 	 * @param baseUI
 	 */
-	public ManagePortDialog(String table_id,ShipperTableMgtUI baseUI) 
+	public ManagePortDialog(String table_id,ShipperTableAbstractMgtUI baseUI) 
 	{	
 		super();
+		
+		baseService = new BaseServiceImpl();
 
 		this.base =baseUI;
 
@@ -135,6 +139,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		portIndexController = new PortIndexController();
 
 	}
+	
+	
 	public void createAndUpdateUI() {
 
 
@@ -225,6 +231,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		txfUpdatePortName.addKeyListener(new KeyAdapter(){
 
+
+			
 
 			public void keyReleased(KeyEvent arg0) {
 				super.keyReleased(arg0);

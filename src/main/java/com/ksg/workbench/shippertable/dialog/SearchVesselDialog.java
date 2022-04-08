@@ -8,11 +8,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
@@ -36,9 +37,11 @@ public class SearchVesselDialog extends KSGDialog{
 	public String result=null;
 	public String resultAbbr=null;
 
-	private List vesselli;
+	private List<HashMap<String, Object>> vesselli;
 	
 	private JTable vesselTable;// 검색된 선박 목룍 표시
+	
+	private JTable vesselDetail;// 검색된 선박 목룍 표시
 	
 	private JButton butOk;
 	
@@ -46,12 +49,9 @@ public class SearchVesselDialog extends KSGDialog{
 	{
 		this.vesselli=vesselli;
 	}
-
-	public void createAndUpdateUI() {
-		this.setModal(true);
-		setTitle("선박 선택");
-		JPanel pnMain= new JPanel();
-		this.getContentPane().add(pnMain); 
+	
+	private KSGPanel buildCenter()
+	{	
 		vesselTable = new JTable();
 		// 단일 선택
 		vesselTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -66,7 +66,6 @@ public class SearchVesselDialog extends KSGDialog{
 					setResult(table);
 					close();
 				}
-
 			}
 		});
 		vesselTable.addKeyListener(new KeyListener() {
@@ -98,18 +97,48 @@ public class SearchVesselDialog extends KSGDialog{
 		};
 		model.addColumn("선박 명");
 		model.addColumn("선박 명 약어");
-
-		for(int i=0;i<vesselli.size();i++)
+		
+		for(HashMap<String, Object> item:vesselli)
 		{
-			Vessel v=(Vessel) vesselli.get(i);
-			model.addRow(new Object[]{v.getVessel_name(),v.getVessel_abbr()});
+			model.addRow(new Object[]{item.get("vessel_name"),item.get("vessel_abbr")});
 		}
+
+//		for(int i=0;i<vesselli.size();i++)
+//		{
+//			
+//			Vessel v=(Vessel) vesselli.get(i);
+//			model.addRow(new Object[]{v.getVessel_name(),v.getVessel_abbr()});
+//		}
 		vesselTable.setModel(model);
 		vesselTable.changeSelection(0, 0, false, false);
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		pnMain.add(new JScrollPane(vesselTable));
+		return pnMain;
+		
+	}
 
-		getContentPane().add(new JScrollPane(vesselTable));
-		JPanel pnContorl = new JPanel();
+	public void createAndUpdateUI() {
+		this.setModal(true);
+		
+		setTitle("선박 선택");		
+		
+		getContentPane().add(buildCenter());
+		
+		getContentPane().add(buildControl(),BorderLayout.SOUTH);
+
+		setSize(new Dimension(300,300));
+		
+		ViewUtil.center(this, false);
+		
+		this.setVisible(true);
+	}
+	private KSGPanel buildControl()
+	{
+		KSGPanel pnContorl = new KSGPanel();
+		
 		butOk = new JButton("확인");
+		
 		butOk.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -129,14 +158,8 @@ public class SearchVesselDialog extends KSGDialog{
 		});
 		pnContorl.add(butOk);
 		pnContorl.add(butCancel);
-
-		getContentPane().add(pnContorl,BorderLayout.SOUTH);
-
-		setSize(new Dimension(300,300));
-		ViewUtil.center(this, false);
-		this.setVisible(true);
+		return pnContorl;
 	}
-	
 
 	private void setResult(final JTable jTable) {
 		int row=jTable.getSelectedRow();

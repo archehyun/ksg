@@ -18,7 +18,7 @@ import org.jdom.JDOMException;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.commands.schedule.task.SimpleTask;
 import com.ksg.common.dao.DAOManager;
@@ -775,7 +775,7 @@ public class OutboundTask extends SimpleTask{
 						logger.info("set major-company:"+searchedVessel.getVessel_company());
 					}
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
 
@@ -1197,7 +1197,7 @@ public class OutboundTask extends SimpleTask{
 		}
 	}
 	
-	private int result=KSGCommand.PROCESS;
+	private int result=IFCommand.PROCESS;
 
 
 	public int getLengthOfTask() {

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="member">
+	<select id="selectMember" resultClass="com.ksg.domain.Member">
+		select * from TB_MEMBER where member_id=#member_id#
+	</select>
+	
+	<select id="selectList" resultClass="java.util.HashMap">
+		select * from TB_MEMBER
+	</select>
+	
+		
+	<select id="selectMemberListByPage" resultClass="java.util.HashMap">
+		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY member_name) 
+		
+		AS ROWNUM, * FROM TB_MEMBER
+		WITH (NOLOCK) 
+		
+		 ) T 
+
+		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
+	</select>
+	
+	<select id="select" parameterClass="java.util.HashMap" resultClass="com.ksg.domain.Member">
+		select * from TB_MEMBER where member_id=#member_id#
+	</select>
+	
+		<insert id="insertMember" parameterClass="java.util.HashMap">
+		insert into TB_MEMBER(
+			member_id,
+			member_name,
+			member_password
+			
+		
+		)values
+		(
+			#member_id#,
+			#member_name#,
+			#member_password#		
+			
+			
+			
+		);
+	</insert>
+	
+	<delete id="deleteMember" parameterClass="java.util.HashMap">
+		delete from TB_MEMBER where member_id=#member_id#
+	</delete>
+</sqlMap>

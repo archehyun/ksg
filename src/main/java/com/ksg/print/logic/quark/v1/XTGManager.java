@@ -22,7 +22,8 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.util.KSGPropertis;
 
@@ -30,7 +31,7 @@ import com.ksg.common.util.KSGPropertis;
 public class XTGManager {
 	XTGDoc doc;
 	FileChannel channel = null;
-	protected Logger logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private String INCODE_KEY;
 
 	public XTGPage createDefaultPage() {

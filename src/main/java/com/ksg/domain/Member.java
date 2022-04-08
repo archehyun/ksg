@@ -39,6 +39,7 @@ public class Member {
 	}
 	public boolean isMatchPassword(String pw) 
 	{
+		System.out.println("pw:"+pw+", this:"+this.getMember_password());
 		if(pw.equals(this.getMember_password()))
 			return true;
 		return false;

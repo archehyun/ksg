@@ -4,8 +4,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ksg.dao.CodeDAO;
-import com.ksg.domain.PortInfo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.ksg.dao.impl.CodeDAOImpl;
 
 /**
 
@@ -22,67 +24,74 @@ import com.ksg.domain.PortInfo;
   */
 public class CodeServiceImpl {
 	
-	CodeDAO codeDAO;
+	CodeDAOImpl codeDAO;
+	
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public CodeServiceImpl() {
-		codeDAO = new CodeDAO();
+		codeDAO = new CodeDAOImpl();
 	}
 	
-	public Map<String, Object> selectCodeHList(Map<String, Object> commandMap) throws SQLException {
+	public Map<String, Object> selectCodeHList(Map<String, Object> param) throws SQLException {
+		
+		logger.info("param:{}"+param);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", codeDAO.selectCodeHCount(commandMap));
+		resultMap.put("total", codeDAO.selectCount(param));
 		
-		resultMap.put("master", codeDAO.selectCodeHList(commandMap));
+		resultMap.put("master", codeDAO.selectList(param));
 		
 		return resultMap;
 
 	}
 	
-	public Map<String, Object> selectCodeDList(Map<String, Object> commandMap) throws SQLException {
+	public Map<String, Object> selectCodeDList(Map<String, Object> param) throws SQLException {
+		logger.info("param:{}"+param);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
-		resultMap.put("total", codeDAO.selectCodeCount(commandMap));
+		resultMap.put("total", codeDAO.selectDetailCount(param));
 		
-		resultMap.put("master", codeDAO.selectCodeDList(commandMap));
+		resultMap.put("master", codeDAO.selectDetailList(param));
 		
 		return resultMap;
 
 	}
-	public Object selectCodeD(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
-		return codeDAO.selectCodeD(commandMap);
+	public Object selectCodeH(Map<String, Object> param) throws SQLException {
+		logger.info("param:{}"+param);
+		return codeDAO.select(param);
+	}
+	public Object selectCodeD(Map<String, Object> param) throws SQLException {
+		logger.info("param:{}"+param);
+		return codeDAO.selectDetail(param);
 	}
 
 	public Object insertCodeH(HashMap<String, Object> param) throws SQLException{
-		return codeDAO.insertCodeH(param);
+		logger.info("param:{}"+param);
+		return codeDAO.insert(param);
 		
 	}
 
 	public Object updateCodeH(HashMap<String, Object> param) throws SQLException{
-		return codeDAO.updateCodeH(param);
+		logger.info("param:{}"+param);
+		return codeDAO.update(param);
 		
 	}
 
 	public Object deleteCodeH(HashMap<String, Object> param)throws SQLException {
-		return codeDAO.deleteCodeH(param);
+		return codeDAO.delete(param);
 		
 	}
 
 	public Object insertCodeD(HashMap<String, Object> param) throws SQLException {
-		return codeDAO.insertCodeD(param);
+		return codeDAO.insertDetail(param);
 		
 	}
 
 	public Object deleteCodeD(HashMap<String, Object> param) throws SQLException {
-		return codeDAO.deleteCodeD(param);
+		return codeDAO.deleteDetail(param);
 		
-	}
-	
-	public PortInfo getPortInfoAbbrByPortName(String port) throws SQLException {
-		return codeDAO.getPortInfoAbbrByPortName(port);
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 IBM Corporation and others.
+O * Copyright (c) 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,12 @@
 package com.ksg.service.impl;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ksg.dao.TableDAO;
 import com.ksg.dao.impl.TableDAOImpl;
@@ -29,7 +31,7 @@ import com.ksg.service.TableService;
 
 public class TableServiceImpl implements TableService{
 	
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	private TableDAO tableDAO;
 	

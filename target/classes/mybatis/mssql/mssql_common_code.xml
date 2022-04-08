@@ -28,7 +28,7 @@
 	
 	<dynamic prepend="where">
 		<isNotNull property="CD_NM" prepend="and">
-						CD_NM like '%CD_NM%'
+						CD_NM like '%$CD_NM$%'
 		</isNotNull>
 	</dynamic>
 	

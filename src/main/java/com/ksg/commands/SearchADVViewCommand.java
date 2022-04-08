@@ -30,7 +30,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
 import org.jdom.JDOMException;
 
 import com.ksg.common.dao.DAOManager;
@@ -42,7 +41,7 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.table.model.KSGTableModel;
 
-public class SearchADVViewCommand implements KSGCommand {
+public class SearchADVViewCommand extends AbstractCommand{
 
 	private int ADV_ROW_H=40;
 	private List portLi;
@@ -51,7 +50,7 @@ public class SearchADVViewCommand implements KSGCommand {
 	public static final int EXIST_ADV=1;
 	public static final int NO_HAVE_ADV=-1;
 	private String table_id;
-	protected Logger 			logger = Logger.getLogger(getClass());
+	
 	DAOManager daomanager=DAOManager.getInstance();
 	private ADVService	 		_advservice;;
 	private TableService tableService;

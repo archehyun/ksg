@@ -587,11 +587,7 @@ public class WorldTreeDialog extends KSGPanel {
 			return returnValue;
 		}
 	}
-	@Override
-	public void update(KSGModelManager manager) {
-		// TODO Auto-generated method stub
 
-	}
 
 
 }

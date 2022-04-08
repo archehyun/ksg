@@ -4,7 +4,8 @@ import java.sql.SQLException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -31,7 +32,7 @@ public class XLSPortManager {
 
 	private boolean isETA_ETD=false;
 	
-	private Logger logger = Logger.getLogger(this.getClass());	
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	private KSGPropertis propertis = KSGPropertis.getIntance();
 	

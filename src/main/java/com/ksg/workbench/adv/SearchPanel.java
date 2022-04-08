@@ -37,7 +37,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -56,7 +55,8 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.adv.logic.model.SheetInfo;
 import com.ksg.commands.ImportTextCommand;
@@ -72,8 +72,10 @@ import com.ksg.domain.Table_Property;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.FileInfo;
-import com.ksg.view.comp.KSGCompboBox;
+import com.ksg.view.comp.KSGCheckBox;
+import com.ksg.view.comp.KSGCompboBox2;
 import com.ksg.view.comp.PageInfoCheckBox;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableImpl;
 import com.ksg.workbench.KSGViewParameter;
@@ -86,7 +88,22 @@ import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.SearchTable;
 
-public class SearchPanel extends JPanel implements ActionListener{
+/**
+
+  * @FileName : SearchPanel.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 20. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 광고정보관리 -> 광고 입력 -> 광고정보 조회 화면
+
+  */
+public class SearchPanel extends KSGPanel implements ActionListener{
 
 	public boolean 		isPageSearch=true;
 
@@ -134,7 +151,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		return selectedCompany;
 	}
 
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	/**
 	 * 
 	 */
@@ -147,13 +164,13 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	private JTable _tblSheetNameList;// 선택된 엑셀 파일의 쉬트 이름 목록
 
-	private KSGCompboBox comp;
+	private KSGCompboBox2 comp;
 
 	private JTextField txfTableCount;
 
 	private JComboBox cbxSearchType;
 
-	private JPanel pnSubSearch, pnSubSelect, pnTableInfo;
+	private KSGPanel pnSubSearch, pnSubSelect, pnTableInfo;
 
 	private CardLayout selectLay2;
 
@@ -196,7 +213,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 	public void setAdvListPanel(ADVListPanel advListPanel) {
 		this.advListPanel = advListPanel;
 	}
+	
 	ADVManageUI manageUI;
+	
 	public SearchPanel(ADVManageUI manageUI) {
 		
 		this.manageUI = manageUI;
@@ -205,11 +224,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		tableService = new TableServiceImpl();
 
-
-
 		_tblSheetNameList = new JTable();
 
-		comp = new KSGCompboBox("vessel",KSGCompboBox.TYPE1);
+		comp = new KSGCompboBox2("vessel",KSGCompboBox2.TYPE1);
 
 		txfTableCount = new JTextField(2);
 
@@ -241,13 +258,11 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		JLabel lblPage = new JLabel("페이지 : ");
 
-		JPanel pnSubControl2 = new JPanel();
+		KSGPanel pnSubControl2 = new KSGPanel();
 
 		pnSubControl2.setLayout(new FlowLayout(FlowLayout.LEADING));
 
 		txfTableCount.setText(_tableViewCount+"");
-
-
 
 		tblError = new KSGTableImpl(KSGTableImpl.TABLE_TYPE_ERROR);
 
@@ -259,7 +274,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		mainTab = new JTabbedPane();
 
-		JPanel pnPropety = new JPanel();
+		KSGPanel pnPropety = new KSGPanel();
 		
 		pnPropety.setLayout(new BorderLayout());
 		
@@ -267,7 +282,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		pnPropety.add(new JScrollPane(tblPropertyTable));
 
-		pnTableInfo =new JPanel();
+		pnTableInfo =new KSGPanel();
 		
 		listTable = new ShipperTableListTable();
 		
@@ -311,38 +326,30 @@ public class SearchPanel extends JPanel implements ActionListener{
 		JScrollPane jScrollPane = new JScrollPane(listTable);
 		jScrollPane.getViewport().setBackground(Color.white);
 		pnTableInfo.add(jScrollPane,BorderLayout.CENTER);
-
-		//tabbedPane.addTab("테이블 목록", buildTableInfo());
 		
 		mainTab.addTab("테이블 정보",pnTableInfo);
-		
-		//mainTab.addTab("결과", advListPanel);
-
-		
-
-		//tabbedPane.addTab("History", pnPropety);
 
 		add(buildSearchOption(),BorderLayout.NORTH);
 
 		add(mainTab,BorderLayout.CENTER);
 	}
 	
-	private JPanel buildTableInfo()	
-	{
-		JPanel pnMain = new JPanel(new BorderLayout());
-		searchTable = new SearchTable();
-		pnMain.add(new JScrollPane(searchTable));
-		
-		return pnMain;
-		
-	}
+//	private KSGPanel buildTableInfo()	
+//	{
+//		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+//		searchTable = new SearchTable();
+//		pnMain.add(new JScrollPane(searchTable));
+//		
+//		return pnMain;
+//		
+//	}
 
 
 	/**
 	 * @return
 	 */
-	private JPanel buildFileListPn() {
-		JPanel pnMain = new JPanel(new BorderLayout());
+	private KSGPanel buildFileListPn() {
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
 		JLabel lblFileName = new JLabel("파일 명: ");
 
@@ -359,7 +366,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		});
 
-		JPanel pnButList = new JPanel();
+		KSGPanel pnButList = new KSGPanel();
 		pnButList.setPreferredSize(new Dimension(275,25));
 		pnButList.setLayout(new GridLayout(1,0));
 
@@ -394,7 +401,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		});
 		pnButList.add(butDown);
 
-		JPanel pnFile = new JPanel();
+		KSGPanel pnFile = new KSGPanel();
 		pnFile.setLayout(new BorderLayout());
 		fileLi = new JList();
 		fileLi.setComponentPopupMenu(createXLSListPopup());
@@ -426,7 +433,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		pnFile.add(pnButList,BorderLayout.SOUTH);
 
 		pnMain.add(pnFile);
-		JPanel pnBut = new JPanel(new BorderLayout());
+		KSGPanel pnBut = new KSGPanel(new BorderLayout());
 		pnMain.setBorder(BorderFactory.createTitledBorder("파일 목록"));
 		return pnMain;
 	}
@@ -435,7 +442,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 	/**
 	 * @return
 	 */
-	private JPanel buildPageList()
+	private KSGPanel buildPageList()
 	{
 		return new PageListPanel();
 	}
@@ -443,10 +450,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 	/**
 	 * @return
 	 */
-	private JPanel buildFileSelectPn() {
-		JPanel pnMain = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	private KSGPanel buildFileSelectPn() {
+		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
-		pnSubSelect = new JPanel();		
+		pnSubSelect = new KSGPanel();		
 		selectLay = new CardLayout();		
 		pnSubSelect.setLayout(selectLay);		
 		pnSubSelect.add(buildFileListPn(),"File");		
@@ -461,12 +468,12 @@ public class SearchPanel extends JPanel implements ActionListener{
 	/**
 	 * @return
 	 */
-	private JPanel buildKeyType()	
+	private KSGPanel buildKeyType()	
 	{
-		JPanel pnKeyTypeMain = new JPanel(new BorderLayout());
+		KSGPanel pnKeyTypeMain = new KSGPanel(new BorderLayout());
 
-		pnKeyTypeMain.setAlignmentY(JPanel.TOP_ALIGNMENT);
-		JPanel pnKeyType = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnKeyTypeMain.setAlignmentY(KSGPanel.TOP_ALIGNMENT);
+		KSGPanel pnKeyType = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		JLabel lblKeyWord = new JLabel("키워드 형식: ");
 		lblKeyWord.setHorizontalAlignment(JLabel.RIGHT);
@@ -474,10 +481,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 		lblKeyWord.setFont(lblFont);
 
 
-		//	JPanel pnSelectType = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		//	KSGPanel pnSelectType = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 
-		JPanel pnInputType = new JPanel();
+		KSGPanel pnInputType = new KSGPanel();
 		pnInputType.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		pnKeyType.add(lblKeyWord);
@@ -495,12 +502,12 @@ public class SearchPanel extends JPanel implements ActionListener{
 	 */
 	private JComponent buildSearchOption()
 	{
-		JPanel pnMain= new JPanel(new BorderLayout());
+		KSGPanel pnMain= new KSGPanel(new BorderLayout());
 
 		// 검색 형식 : 페이지, 선사
-		JPanel pnSearchType = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnSearchType = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
-		pnSubSearch = new JPanel();		
+		pnSubSearch = new KSGPanel();		
 		selectLay2 = new CardLayout();		
 		pnSubSearch.setLayout(selectLay2);
 		pnSubSearch.add( buildCompanyInfoByCompany(),SEARCH_TYPE_COMPANY);
@@ -519,7 +526,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 		GridLayout gridLayout = new GridLayout(0,1);
 
-		JPanel pnSearchTypeMain = new JPanel(gridLayout);
+		KSGPanel pnSearchTypeMain = new KSGPanel(gridLayout);
 
 		//	pnSearchType.setBorder(BorderFactory.createEtchedBorder());
 		
@@ -528,7 +535,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		lblInputType.setHorizontalAlignment(JLabel.RIGHT);
 		lblInputType.setFont(lblFont);
 		
-		JCheckBox cbkCheck = new JCheckBox("동일 선사 추가 선택",isSamePageSelect);
+		JCheckBox cbkCheck = new KSGCheckBox("동일 선사 추가 선택",isSamePageSelect);
 		cbkCheck.addChangeListener(new ChangeListener(){
 
 			public void stateChanged(ChangeEvent e) {
@@ -536,7 +543,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 				isSamePageSelect=box.isSelected();
 			}});
-		JPanel pnType2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnType2 = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		pnType2.add(lblInputType);		
 		pnType2.add(cbxSelectedInput);
@@ -562,7 +569,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 
 
-		JPanel pnImportBut = new JPanel( new BorderLayout());
+		KSGPanel pnImportBut = new KSGPanel( new BorderLayout());
 
 		JButton butSheetSelect = new JButton("Sheet 선택");
 		butSheetSelect.setVisible(false);
@@ -573,7 +580,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		butCancel.setVisible(false);
 		butCancel.addActionListener(this);
 		
-		JPanel pnSeachs =  new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnSeachs =  new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 			
 		
 		JButton butImportFile = new JButton("\n불러오기(V)");
@@ -761,8 +768,8 @@ public class SearchPanel extends JPanel implements ActionListener{
 		errorPopupMenu.add(menu1);
 		return errorPopupMenu;
 	}
-	private JPanel buildTextSelectPn() {
-		JPanel  pnMain = new JPanel();
+	private KSGPanel buildTextSelectPn() {
+		KSGPanel  pnMain = new KSGPanel();
 		pnMain.setLayout(new FlowLayout(FlowLayout.LEFT));
 		TitledBorder fileInfoBorder = BorderFactory.createTitledBorder("Text 입력");
 		//pnMain.setBorder(fileInfoBorder);
@@ -774,7 +781,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 				final JDialog inputTextdialog = new JDialog(KSGModelManager.getInstance().frame);
 				inputTextdialog.setTitle("텍스트 입력");
 				final JTextArea area = new JTextArea();
-				JPanel pnControl = new JPanel();
+				KSGPanel pnControl = new KSGPanel();
 				pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 				JButton butOK = new JButton("확인");
 				butOK.addActionListener(new ActionListener() {
@@ -899,9 +906,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 
 	private Component buildCompanyInfoByCompany()
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout( new FlowLayout(FlowLayout.LEFT));
-		//JPanel pnSubPage = new JPanel(); 
+		//KSGPanel pnSubPage = new KSGPanel(); 
 		TitledBorder pageBoder = BorderFactory.createTitledBorder("페이지 선택(2)");
 		//pnSubPage.setBorder(pageBoder);
 		//pnSubPage.setLayout(new BorderLayout());
@@ -910,7 +917,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		JLabel lblSelectedpage = new JLabel("");
 
 
-		JPanel pnPageInfo = new JPanel(new BorderLayout());
+		KSGPanel pnPageInfo = new KSGPanel(new BorderLayout());
 		pnPageInfo.add(lblSelectedpage,BorderLayout.SOUTH);
 		JCheckBox cbx = new JCheckBox("동일 선사 추가 선택",isSamePageSelect);
 		cbx.addChangeListener(new ChangeListener(){
@@ -978,9 +985,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 	}
 
 	private Component buildCompanyInfoByPage() {
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout( new FlowLayout(FlowLayout.LEFT));
-		JPanel pnSubPage = new JPanel(); 
+		KSGPanel pnSubPage = new KSGPanel(); 
 		TitledBorder pageBoder = BorderFactory.createTitledBorder("선사 선택");
 		//pnSubPage.setBorder(pageBoder);
 		pnSubPage.setLayout(new BorderLayout());
@@ -1026,7 +1033,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 			}});
 		pageContorl.add(butDown);
 
-		JPanel pnPageInfo = new JPanel();
+		KSGPanel pnPageInfo = new KSGPanel();
 
 		txfPCompany.setBorder(BorderFactory.createEmptyBorder());
 
@@ -1066,7 +1073,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		pnSubPage.add(pnPageInfo,BorderLayout.WEST);
 		//pnSubPage.add(pageContorl,BorderLayout.EAST);
 
-		JPanel pnSubControl1= new JPanel();
+		KSGPanel pnSubControl1= new KSGPanel();
 		pnSubControl1.setLayout(new FlowLayout(FlowLayout.LEADING));
 
 		JLabel lblCompany = new JLabel("페이지 : ");
@@ -1507,7 +1514,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 	 * @author archehyun
 	 *
 	 */
-	class PageListPanel extends JPanel implements ActionListener
+	class PageListPanel extends KSGPanel implements ActionListener
 	{
 		public PageListPanel() {
 			this.setLayout(new BorderLayout());

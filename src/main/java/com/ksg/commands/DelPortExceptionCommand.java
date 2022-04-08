@@ -9,7 +9,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
 
-public class DelPortExceptionCommand implements KSGCommand {
+public class DelPortExceptionCommand extends AbstractCommand{
 
 	String portName;
 	private BaseService baseService;
@@ -33,10 +33,10 @@ public class DelPortExceptionCommand implements KSGCommand {
 				e.printStackTrace();
 			}
 			
-			return KSGCommand.RESULT_SUCCESS;	
+			return IFCommand.RESULT_SUCCESS;	
 		}else
 		{
-			return KSGCommand.RESULT_FAILE;
+			return IFCommand.RESULT_FAILE;
 		}
 		
 	}

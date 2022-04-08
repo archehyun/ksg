@@ -1,9 +1,9 @@
 package com.ksg.commands.schedule;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.LongTask;
 
-public class SortInboundCommnad implements KSGCommand, LongTask {
+public class SortInboundCommnad implements IFCommand, LongTask {
 
 	public int execute() {
 		// TODO Auto-generated method stub

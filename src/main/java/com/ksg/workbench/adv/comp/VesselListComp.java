@@ -18,7 +18,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Element;
 
 import com.ksg.common.dao.DAOManager;
@@ -89,7 +90,7 @@ public class VesselListComp extends JList{
 	private BaseService baseService;
 	//	private JTextArea txaADV;
 	KSGXLSImportPanel base;
-	protected Logger logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private int vesselSize;
 	public VesselListComp(KSGXLSImportPanel base) {
 

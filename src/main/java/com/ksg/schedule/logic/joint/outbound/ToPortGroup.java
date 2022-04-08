@@ -3,11 +3,11 @@ package com.ksg.schedule.logic.joint.outbound;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import com.ksg.common.exception.PortNullException;
+import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
-import com.ksg.schedule.logic.PortNullException;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.VesselNullException;
 import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
 
 /**

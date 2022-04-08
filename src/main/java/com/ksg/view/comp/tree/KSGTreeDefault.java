@@ -36,7 +36,7 @@ import com.ksg.service.impl.TableServiceImpl;
  *
  */
 @SuppressWarnings("unchecked")
-public class KSGTreeDefault extends KSGTree implements KSGObserver{
+public class KSGTreeDefault extends KSGTree{
 
 	class CharNode extends DefaultMutableTreeNode
 	{
@@ -149,7 +149,6 @@ public class KSGTreeDefault extends KSGTree implements KSGObserver{
 		
 		tableService  =new TableServiceImpl();
 		
-		manager.addObservers(this);
 
 	}
 	private void addCharNode(ShippersTable company) {
@@ -208,7 +207,7 @@ public class KSGTreeDefault extends KSGTree implements KSGObserver{
 		this.groupBy=groupBy;
 
 	}
-	public void update(KSGModelManager manager) {
+	public void update() {
 
 		try {
 			pageGroupList = new Vector();

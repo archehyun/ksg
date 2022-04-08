@@ -23,6 +23,7 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
+import com.ksg.service.BaseService;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.AdvertiseTable;
 
@@ -34,6 +35,7 @@ public class AddVesselDialog extends KSGDialog {
 	Object value;
 	private JCheckBox box;
 	private JComboBox cbxType;
+	private BaseService baseService;
 	
 	public AddVesselDialog(Object value) {
 		this.value=value;

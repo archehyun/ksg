@@ -4,16 +4,17 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.workbench.adv.comp.ADVTableNotMatchException;
 import com.ksg.workbench.adv.xls.XLSManagerImpl;
 
-public class ImportXLSFileNewCommand implements KSGCommand {
+public class ImportXLSFileNewCommand implements IFCommand {
 
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private Vector tableInfoList;
 	private Vector sheetList;
 	private XLSManagerImpl xlsmanager = XLSManagerImpl.getInstance();

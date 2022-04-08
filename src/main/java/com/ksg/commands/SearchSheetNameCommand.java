@@ -9,7 +9,7 @@ import com.ksg.adv.logic.model.SheetInfo;
 import com.ksg.view.comp.FileInfo;
 import com.ksg.workbench.adv.xls.XLSManagerImpl;
 
-public class SearchSheetNameCommand implements KSGCommand {
+public class SearchSheetNameCommand implements IFCommand {
 	DefaultListModel filemodel;
 	FileInfo fileInfo;
 	public List<SheetInfo> sheetNameList;
