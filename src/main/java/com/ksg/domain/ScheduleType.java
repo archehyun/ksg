@@ -14,6 +14,7 @@ public class ScheduleType {
 	public static final String GUBUN_TS 		= "TS";
 	
 	public static final int CONSOLE_CFS=1;	
+	
 	public static final int CONSOLE_PAGE=0;
 
 }
