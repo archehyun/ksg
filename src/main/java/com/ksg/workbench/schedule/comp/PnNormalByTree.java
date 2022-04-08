@@ -460,7 +460,9 @@ public class PnNormalByTree extends PnSchedule{
 		HashMap<String, Object> param = new HashMap<String, Object>();
 
 		try {
-			param.put("gubun", gubun);			
+			param.put("gubun", gubun);
+			
+			//test
 
 			String searchOption  = txfNoramlSearch.getText();
 
