@@ -5,12 +5,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.schedule.ScheduleMgtUI;
 
 /**
 
@@ -27,7 +32,7 @@ import com.ksg.view.comp.panel.KSGPanel;
   * @프로그램 설명 :
 
   */
-public class AbstractMgtUI extends KSGPanel{
+public abstract class AbstractMgtUI extends KSGPanel implements ComponentListener{
 	
 	protected String title;
 	
@@ -71,5 +76,33 @@ public class AbstractMgtUI extends KSGPanel{
 
 		return pnTitleMain;
 	}
+	
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+		
+	}
+
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		
+		
+	}
+
 
 }

@@ -4,6 +4,7 @@ package com.ksg.view.comp.treetable;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import java.util.Enumeration;
 import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
@@ -46,9 +49,15 @@ public class JTreeTable extends JTable {
 	/** A subclass of JTree. */
 	protected TreeTableCellRenderer tree;
 	TreeTableModel treeTableModel;
+	Image changePortImg;
+	Image changeShipImg;
 	public JTreeTable(TreeTableModel treeTableModel) {
 		super();
-
+		Image img = new ImageIcon("images/port.png").getImage();
+		   changePortImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		   
+			Image img2 = new ImageIcon("images/pngwing.com.png").getImage();
+			   changeShipImg = img2.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 
 
 		// Create the tree. It will be used as a renderer and editor.
@@ -144,6 +153,7 @@ public class JTreeTable extends JTable {
 
 		public TreeTableCellRenderer(TreeModel model) {
 			super(model);
+			this.setCellRenderer(new Test());
 		}
 
 		/**
@@ -163,7 +173,8 @@ public class JTreeTable extends JTable {
 				// null.
 				// dtcr.setBorderSelectionColor(null);
 
-
+				
+				
 				dtcr.setTextSelectionColor(UIManager.getColor
 						("Table.selectionForeground"));
 				dtcr.setBackgroundSelectionColor(UIManager.getColor
@@ -216,11 +227,43 @@ public class JTreeTable extends JTable {
 				setBackground(table.getSelectionBackground());
 			else
 				setBackground(table.getBackground());
+			
+			
+			
 
 			visibleRow = row;
 			return this;
 		}
+
+		
 	}
+	class Test extends JLabel implements TreeCellRenderer
+	{
+
+		@Override
+		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
+				boolean leaf, int row, boolean hasFocus) {
+			 DefaultMutableTreeNode nodo = (DefaultMutableTreeNode)value;
+			   TreeNode t = nodo.getParent();
+			   if(t!=null){
+				   
+				   
+				  if(leaf)
+				  {
+					  setIcon(new ImageIcon(changeShipImg));
+				  }
+				  else
+				  {
+					  setIcon(new ImageIcon(changePortImg));  
+				  }
+			      
+			      setText(String.valueOf(value));
+			   }
+			   return this;
+		}
+		
+	}
+
 
 
 	/**

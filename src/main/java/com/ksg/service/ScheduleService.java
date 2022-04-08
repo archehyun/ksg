@@ -197,6 +197,8 @@ public interface ScheduleService extends PageService{
 	
 	public int deleteInlnadSchedule()throws SQLException;
 	
+	public HashMap<String, Object> selectScheduleGroupList(HashMap<String, Object> param) throws SQLException;
+	
 	
 	
 	

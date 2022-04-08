@@ -350,8 +350,13 @@ public class PnPort extends PnBase implements ActionListener{
 		columns[4].size = 50;
 		
 		tableH.setColumnName(columns);
+		
 		tableH.initComp();
+		
+		tableH.setPageCountIndex(6);
+		
 		tableH.addPageActionListener(new PageAction(tableH, portService));
+		
 		tableH.setShowControl(true);
 		
 		tableH.addMouseListener(new TableSelectListner());

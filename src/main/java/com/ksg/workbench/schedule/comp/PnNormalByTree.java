@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -147,180 +146,9 @@ public class PnNormalByTree extends PnSchedule{
 		return pnMain;
 	}
 
-	//	private DefaultMutableTreeNode getInboundTreeNode(List<HashMap<String, Object>> master2) {
-	//		 DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
-	//		  
-	//		  HashMap<String, Object> areaList = new HashMap<String, Object>();
-	//		  
-	//		  Iterator<HashMap<String, Object>>iter = result.iterator();
-	//		  while(iter.hasNext())
-	//		  {
-	//			  HashMap<String, Object> item = iter.next();
-	//			  
-	//			  String area_name=(String) item.get("area_name");
-	//			  
-	//			  String fromPort = (String) item.get("fromPort");
-	//			  
-	//			  if(areaList.containsKey(area_name))
-	//			  {
-	//				  HashMap<String, Object> fromPorts =(HashMap<String, Object>) areaList.get(area_name);
-	//				  
-	//				  if(fromPorts.containsKey(fromPort))					  
-	//				  {
-	//					  List list =(List) fromPorts.get(fromPort);
-	//					  
-	//					  list.add(item);  
-	//				  }
-	//				  else
-	//				  {
-	//					  // 신규 출발항 리스트 생성
-	//					  ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String,Object>>();
-	//					  scheduleList.add(item);
-	//					  
-	//					  // 신규 출발항 정보 생성
-	//					  
-	//					  fromPorts.put(fromPort, scheduleList);
-	//					  
-	//					  					  
-	//					  
-	//				  }
-	//				  
-	//			  }
-	//			  else
-	//			  {
-	//				  ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String,Object>>();
-	//				  scheduleList.add(item);
-	//				  HashMap<String, Object> newFromPorts = new HashMap<String, Object>();
-	//				  newFromPorts.put(fromPort, scheduleList);
-	//				  
-	//	
-	//				  areaList.put(area_name, newFromPorts);
-	//			  }
-	//		  }
-	//		  
-	//		  Iterator keyList= areaList.keySet().iterator();
-	//		  
-	//		  while(keyList.hasNext())
-	//		  {
-	//			  String key = (String) keyList.next();
-	//			  HashMap<String, Object> items =  (HashMap<String, Object>) areaList.get(key);
-	//			  DefaultMutableTreeNode area = new DefaultMutableTreeNode(key);
-	//			  
-	//			  Iterator fromPortIter = items.keySet().iterator();
-	//			  while(fromPortIter.hasNext())
-	//			  {
-	//				  String fromPortKey = (String) fromPortIter.next();
-	//				  
-	//				  DefaultMutableTreeNode fromPort = new DefaultMutableTreeNode(fromPortKey);
-	//				  
-	//				  area.add(fromPort);
-	//				  
-	//				  List<HashMap<String, Object>> schedule = (List) items.get(fromPortKey);
-	//				  for(HashMap<String, Object> item:schedule)
-	//				  {
-	//					  fromPort.add( new DefaultMutableTreeNode(new TreeTableNode(item)));
-	//				  }
-	//				  
-	//			  }
-	//			  
-	//			 
-	//			  
-	//			  root.add(area);
-	//			  
-	//		  }
-	//		  
-	//		  return root;
-	//	}
-
-	private HashMap<String, Object> getScheduleGroup(List result)
-	{
-		HashMap<String, Object> areaList = new HashMap<String, Object>();
-
-		Iterator<HashMap<String, Object>>iter = result.iterator();
-		while(iter.hasNext())
-		{
-			HashMap<String, Object> item = iter.next();
-
-			String area_name=(String) item.get("area_name");
-
-			String toPort = (String) item.get("port");
-
-			String fromPort = (String) item.get("fromPort");
-
-			//String vesselName = (String) item.get("vessel_name");
-
-			if(areaList.containsKey(area_name))
-			{  
-				//해당 지역의 도착항 목록
-				HashMap<String, Object> toPorts =(HashMap<String, Object>) areaList.get(area_name);
-
-				//출발항 있을 경우
-				if(toPorts.containsKey(toPort))					  
-				{   
-					//도착항 목록
-					HashMap<String, Object> fromPorts =(HashMap<String, Object>) toPorts.get(toPort);
-
-					// 도착항 있을 경우
-					if(fromPorts.containsKey(fromPort))					  
-					{
-						List list =(List) fromPorts.get(fromPort); 
-						list.add(item);
-
-						// 출발일 기준으로 정렬
-						Collections.sort(list, new AscendingFromDate() );
-					}
-					// 도착항 없을 경우
-					else
-					{
-						ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String,Object>>();
-						scheduleList.add(item);
-
-						fromPorts.put(fromPort, scheduleList);
-					}
-					// 스케줄 목록
 
 
-					// 해당 도착항의 선박 목록
 
-
-				}
-				// 출발항 없을 경우
-				else
-				{
-					// 신규 스케줄 리스트 생성
-					ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String,Object>>();
-					scheduleList.add(item);
-
-					HashMap<String, Object> newFromPorts = new HashMap<String, Object>();
-					newFromPorts.put(fromPort, scheduleList);
-
-
-					// 신규 도착항 정보 생성
-
-					toPorts.put(toPort, newFromPorts);
-
-				}
-
-			}
-			else
-			{
-				ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String,Object>>();
-				scheduleList.add(item);
-
-
-				HashMap<String, Object> newFromPorts = new HashMap<String, Object>();
-				newFromPorts.put(fromPort, scheduleList);
-
-				HashMap<String, Object> newToPorts = new HashMap<String, Object>();
-
-				newToPorts.put(toPort, newFromPorts);
-
-				areaList.put(area_name, newToPorts);
-			}
-		}
-		return areaList;
-		
-	}
 	/**
 	 * 
 	 * 스케줄 리스트를 기준으로 트리 노드 생성
@@ -328,10 +156,8 @@ public class PnNormalByTree extends PnSchedule{
 	 * @param result
 	 * @return
 	 */
-	private DefaultMutableTreeNode getOutboundTreeNode(List result) {
-
-
-		HashMap<String, Object> areaList = getScheduleGroup(result);		
+	private DefaultMutableTreeNode getOutboundTreeNode(HashMap<String, Object> areaList) {
+		
 		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
 
@@ -608,45 +434,25 @@ public class PnNormalByTree extends PnSchedule{
 			{
 				param.put("date_issue", input_date);
 			}
-			int page_size = tableH.getPageSize();
-
-			param.put("PAGE_SIZE", page_size);
-
-			param.put("PAGE_NO", 1);
 
 			logger.info("param:"+param);
 
-			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectList(param);			
-
-			result.put("PAGE_NO", 1);
-
-			tableH.setResultData(result);
-
-			master = (List) result.get("master");
-
+			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectScheduleGroupList(param);
 
 			if(col.columnField.equals("I"))
 			{	
 				
-				treeTableModel.setRoot(getOutboundTreeNode(master));
+				treeTableModel.setRoot(getOutboundTreeNode(result));
 			}
 			else
 			{
-				treeTableModel.setRoot(getOutboundTreeNode(master));
+				treeTableModel.setRoot(getOutboundTreeNode(result));
 			}
 
 
 			table.setTreeExpandedState(true);
 			table.updateUI();
 
-			if(master.size()==0)
-			{
-
-			}
-			else
-			{
-				tableH.changeSelection(0,0,false,false);
-			}
 
 		}
 		catch (Exception e) {

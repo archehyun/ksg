@@ -29,7 +29,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -55,7 +54,6 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.PageInfoCheckBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.KSGMainFrame;
-import com.ksg.workbench.adv.PortTable.PortTableInfo;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.AddAdvDialog;
 import com.ksg.workbench.adv.dialog.AdjestADVListDialog;

@@ -141,7 +141,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		tableH.setColumnName(columns);
 		tableH.initComp();
-		
+		tableH.setPageCountIndex(6);
 		tableH.addActionListener(new PageAction(tableH, companyService));
 		
 

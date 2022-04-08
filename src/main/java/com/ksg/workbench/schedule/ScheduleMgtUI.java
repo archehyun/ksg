@@ -26,7 +26,6 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -128,13 +127,13 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 	
 	private JButton butBuild;
 	
-	SimpleDateFormat fromDateformat = new SimpleDateFormat("yy-mm-ss");
+	private SimpleDateFormat fromDateformat = new SimpleDateFormat("yy-mm-ss");
 	
-	SimpleDateFormat toDateformat = new SimpleDateFormat("yyyy.mm.ss");
+	private SimpleDateFormat toDateformat = new SimpleDateFormat("yyyy.mm.ss");
 	
-	SimpleDateFormat optionformat = new SimpleDateFormat("yyyy/mm/ss");
+	private SimpleDateFormat optionformat = new SimpleDateFormat("yyyy/mm/ss");
 	
-	SimpleDateFormat consoleDateformat = new SimpleDateFormat("yyyy-mm-ss");
+	private SimpleDateFormat consoleDateformat = new SimpleDateFormat("yyyy-mm-ss");
 
 	private KSGPanel pnConsoleOption;
 
@@ -166,7 +165,9 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		this.addComponentListener(this);
 		
 		this.title = "스케줄정보 관리";
+		
 		this.borderColor = new Color(255,100,100);
+		
 		createAndUpdateUI();
 	}
 	
@@ -190,9 +191,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		this.add(pnCenter,BorderLayout.CENTER);
 		
 		this.add(pnNorth,BorderLayout.NORTH);		
-		
-
-		
 
 	}
 
@@ -308,19 +306,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 				{
 					pnNomalByTree.fnSearch();
 				}
-
-//				if(gubun.equals(ShippersTable.GUBUN_NORMAL))
-//				{
-//					tabPane.setSelectedIndex(0);
-//
-//				}else if(gubun.equals(ShippersTable.GUBUN_CONSOLE))
-//				{
-//					tabPane.setSelectedIndex(1);
-//				}
-//				else if(gubun.equals(ShippersTable.GUBUN_INLAND))
-//				{
-//					tabPane.setSelectedIndex(2);
-//				}
 			}
 		});
 		pnTblScheduleDateList.add(new JLabel("스케줄 생성 일자"),BorderLayout.NORTH);
@@ -328,8 +313,8 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		tblScheduleDateList.getParent().setBackground(Color.white);
 		pnConsoleOption = new KSGPanel(new FlowLayout(FlowLayout.LEADING));
 		pnConsoleOption.setBorder(BorderFactory.createTitledBorder("출력 항목"));
-		optPage = new JRadioButton("Page",true);
-		optCFS = new JRadioButton("CFS");
+		optPage = new KSGRadioButton("Page",true);
+		optCFS = new KSGRadioButton("CFS");
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(optPage);
 		bg.add(optCFS);		
@@ -922,21 +907,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 	}
 
-
-	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 	@Override
 	public void componentShown(ComponentEvent e) {
 		try {
@@ -946,13 +916,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			JOptionPane.showMessageDialog(ScheduleMgtUI.this, ee.getMessage());
 			ee.printStackTrace();
 		}
-		
-	}
-
-
-	@Override
-	public void componentHidden(ComponentEvent e) {
-		
 		
 	}
 

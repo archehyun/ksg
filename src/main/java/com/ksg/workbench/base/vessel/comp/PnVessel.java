@@ -193,6 +193,8 @@ public class PnVessel extends PnBase implements ActionListener {
 		tableH.setColumnName(columns);
 
 		tableH.initComp();
+		
+		tableH.setPageCountIndex(6);
 
 		tableH.addMouseListener(new TableSelectListner());
 
