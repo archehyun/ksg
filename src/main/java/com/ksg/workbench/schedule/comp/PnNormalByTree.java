@@ -431,9 +431,6 @@ public class PnNormalByTree extends PnSchedule{
 		pnPortSearch.add(txfToPort);
 		pnPortSearch.add(butSearchToPort);
 
-
-
-
 		txfNoramlSearch = new JTextField(15);
 		JButton butSearch = new JButton("°Ë»ö");
 		butSearch.addActionListener(this);

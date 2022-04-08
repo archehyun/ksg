@@ -34,7 +34,7 @@ public class CodeServiceImpl {
 	
 	public Map<String, Object> selectCodeHList(Map<String, Object> param) throws SQLException {
 		
-		logger.info("param:{}"+param);
+		logger.debug("param:{}"+param);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -47,7 +47,7 @@ public class CodeServiceImpl {
 	}
 	
 	public Map<String, Object> selectCodeDList(Map<String, Object> param) throws SQLException {
-		logger.info("param:{}"+param);
+		logger.debug("param:{}"+param);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		
@@ -59,37 +59,40 @@ public class CodeServiceImpl {
 
 	}
 	public Object selectCodeH(Map<String, Object> param) throws SQLException {
-		logger.info("param:{}"+param);
+		logger.debug("param:{}"+param);
 		return codeDAO.select(param);
 	}
 	public Object selectCodeD(Map<String, Object> param) throws SQLException {
-		logger.info("param:{}"+param);
+		logger.debug("param:{}"+param);
 		return codeDAO.selectDetail(param);
 	}
 
 	public Object insertCodeH(HashMap<String, Object> param) throws SQLException{
-		logger.info("param:{}"+param);
+		logger.debug("param:{}"+param);
 		return codeDAO.insert(param);
 		
 	}
 
 	public Object updateCodeH(HashMap<String, Object> param) throws SQLException{
-		logger.info("param:{}"+param);
+		logger.debug("param:{}"+param);
 		return codeDAO.update(param);
 		
 	}
 
 	public Object deleteCodeH(HashMap<String, Object> param)throws SQLException {
+		logger.debug("param:{}"+param);
 		return codeDAO.delete(param);
 		
 	}
 
 	public Object insertCodeD(HashMap<String, Object> param) throws SQLException {
+		logger.debug("param:{}"+param);
 		return codeDAO.insertDetail(param);
 		
 	}
 
 	public Object deleteCodeD(HashMap<String, Object> param) throws SQLException {
+		logger.debug("param:{}"+param);
 		return codeDAO.deleteDetail(param);
 		
 	}
