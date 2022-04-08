@@ -800,11 +800,11 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 					java.util.Date d = fromDateformat.parse(selectedDate);
 
 					ScheduleData op = new ScheduleData();
+					op.setDate_issue(selectedDate);
 					
 					// 콘솔 스케줄 생성
 					if(gubun.equals(ShippersTable.GUBUN_CONSOLE))
-					{
-						op.setDate_issue(selectedDate);
+					{	
 
 						op.setConsole_print_type(optPage.isSelected()?ScheduleType.CONSOLE_PAGE:ScheduleType.CONSOLE_CFS);
 
@@ -818,8 +818,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 					
 					// 인랜드 스케줄
 					else if(gubun.equals(ShippersTable.GUBUN_INLAND))
-					{
-						op.setDate_issue(selectedDate);
+					{	
 						
 						new SortInlandCommnad(op).execute();
 					}

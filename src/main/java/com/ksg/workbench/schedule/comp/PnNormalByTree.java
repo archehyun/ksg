@@ -146,7 +146,69 @@ public class PnNormalByTree extends PnSchedule{
 		return pnMain;
 	}
 
+	private DefaultMutableTreeNode getInboundTreeNode(HashMap<String, Object> areaList) {
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
 
+		Iterator areaListIter= areaList.keySet().iterator();
+		while(areaListIter.hasNext())
+		{
+			
+			
+			String strArea = (String) areaListIter.next();
+			HashMap<String, Object> fromPortItems =  (HashMap<String, Object>) areaList.get(strArea);
+			
+			DefaultMutableTreeNode area = new DefaultMutableTreeNode(strArea);
+
+			// 출발항 정렬
+			Object[] mapkey = fromPortItems.keySet().toArray();
+			
+			for (Object fromPortKey : mapkey)
+			{
+				// 요소조회
+				HashMap<String, Object> fromPortitems =  (HashMap<String, Object>) fromPortItems.get(fromPortKey);
+
+
+				//tree 노드 생성
+				DefaultMutableTreeNode fromPort = new DefaultMutableTreeNode(fromPortKey);
+
+				// 도착항 정렬
+				List<Entry<String, Object>> list_entries = new ArrayList<Entry<String, Object>>(fromPortitems.entrySet());
+
+
+				// 도착항 목록
+				Iterator toPortIter = fromPortitems.keySet().iterator();
+
+				while(toPortIter.hasNext())
+				{				  
+
+					String toPortKey = (String) toPortIter.next();
+
+					DefaultMutableTreeNode toPort = new DefaultMutableTreeNode(toPortKey);
+
+					List<HashMap<String, Object>> schedule = (List) fromPortitems.get(toPortKey);
+					
+					
+					ArrayList<DefaultMutableTreeNode> jointSchedule = createJoinedScheduleNode(schedule);
+
+
+					for(DefaultMutableTreeNode scheduleNode:jointSchedule)
+					{
+						fromPort.add(scheduleNode );
+					}
+
+					// 출발항 그룹에 추가
+					fromPort.add(toPort);
+				}
+
+				area.add(fromPort);				  
+			}
+
+			root.add(area);
+		}
+		
+		return root;
+		
+	}
 
 
 	/**
@@ -442,7 +504,7 @@ public class PnNormalByTree extends PnSchedule{
 			if(col.columnField.equals("I"))
 			{	
 				
-				treeTableModel.setRoot(getOutboundTreeNode(result));
+				treeTableModel.setRoot(getInboundTreeNode(result));
 			}
 			else
 			{

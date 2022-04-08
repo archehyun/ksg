@@ -380,6 +380,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 	public HashMap<String, Object> selectScheduleGroupList(HashMap<String, Object> param) throws SQLException {
 		
 		
+		String inOutType  = (String) param.get("inOutType");
+		
 		HashMap<String, Object> result = (HashMap<String, Object>) selectList(param);
 		
 		List<HashMap<String, Object>> master = (List) result.get("master");
@@ -394,9 +396,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 			String area_name=(String) item.get("area_name");
 
-			String toPort = (String) item.get("port");
+			String toPort = (String) item.get(inOutType.equals("O")?"port":"fromPort");
 
-			String fromPort = (String) item.get("fromPort");
+			String fromPort = (String) item.get(inOutType.equals("O")?"fromPort":"port");
 
 			//String vesselName = (String) item.get("vessel_name");
 
