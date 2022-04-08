@@ -437,9 +437,6 @@ public class PnNormalByTree extends PnSchedule{
 		txfNoramlSearch = new JTextField(15);
 		JButton butSearch = new JButton("검색");
 		butSearch.addActionListener(this);
-		//butSearch.setActionCommand("Normal 검색");
-
-
 
 		pnNormalSearchCenter.add(new JLabel("구분:"));
 		pnNormalSearchCenter.add(cbxNormalInOut);
