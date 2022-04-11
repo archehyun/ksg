@@ -1695,7 +1695,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			}
 			else
 			{
-				tableH.changeSelection(0,0,false,false);
+				//tableH.changeSelection(0,0,false,false);
+				txfSearchInput.requestFocus();
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -1708,9 +1709,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	}
 
 
-	//	public void searchByOption() throws SQLException {
-	//		searchByOption(orderParam);
-	//	}
 
 	private void selectGubun(ShippersTable searchParam, int gubunIndex )
 	{
