@@ -87,7 +87,9 @@ public class PnNormal2 extends PnSchedule{
 		tableH.addActionListener(new PageAction(tableH,scheduleService));
 		
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
+		
 		pnMain.add(tableH);
 		
 		return pnMain;

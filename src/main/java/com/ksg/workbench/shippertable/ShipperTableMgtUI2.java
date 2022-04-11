@@ -406,6 +406,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		logger.info("seleted page:"+searchParam);
 
 		//updateView();
+		fnSearch();
 
 		pnADVInfo.setVisible(false);		
 

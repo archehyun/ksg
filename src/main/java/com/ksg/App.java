@@ -106,6 +106,8 @@ public class App
 			KSGModelManager.getInstance().frame=frame;
 			
 			frame.createAndUpdateUI();
+			
+			frame.completeCardLayout();
 
 
 		}catch(Exception e)

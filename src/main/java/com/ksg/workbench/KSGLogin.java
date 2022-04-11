@@ -41,8 +41,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ibatis.common.resources.Resources;
-import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ksg.common.dao.SqlMapManager;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.model.Configure;
 import com.ksg.common.model.KSGModelManager;
@@ -297,7 +295,7 @@ public class KSGLogin extends JDialog implements ComponentListener{
 		pnMain.setVisible(false);
 		pnProgress.setVisible(true);
 		System.out.println("frame:"+KSGModelManager.getInstance().frame);
-		((KSGMainFrame) KSGModelManager.getInstance().frame).completeCardLayout();
+		
 
 	}
 

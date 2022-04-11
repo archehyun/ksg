@@ -49,15 +49,10 @@ public class JTreeTable extends JTable {
 	/** A subclass of JTree. */
 	protected TreeTableCellRenderer tree;
 	TreeTableModel treeTableModel;
-	Image changePortImg;
-	Image changeShipImg;
+
 	public JTreeTable(TreeTableModel treeTableModel) {
 		super();
-		Image img = new ImageIcon("images/port.png").getImage();
-		   changePortImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
-		   
-			Image img2 = new ImageIcon("images/pngwing.com.png").getImage();
-			   changeShipImg = img2.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+
 
 
 		// Create the tree. It will be used as a renderer and editor.
@@ -97,6 +92,11 @@ public class JTreeTable extends JTable {
 			setRowHeight(25);	
 		}
 
+	}
+	
+	public void setCellRenderer(TreeCellRenderer renderer)
+	{
+		tree.setCellRenderer(renderer);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class JTreeTable extends JTable {
 
 		public TreeTableCellRenderer(TreeModel model) {
 			super(model);
-			this.setCellRenderer(new Test());
+			
 		}
 
 		/**
@@ -237,32 +237,7 @@ public class JTreeTable extends JTable {
 
 		
 	}
-	class Test extends JLabel implements TreeCellRenderer
-	{
 
-		@Override
-		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
-				boolean leaf, int row, boolean hasFocus) {
-			 DefaultMutableTreeNode nodo = (DefaultMutableTreeNode)value;
-			   TreeNode t = nodo.getParent();
-			   if(t!=null){
-				   
-				   
-				  if(leaf)
-				  {
-					  setIcon(new ImageIcon(changeShipImg));
-				  }
-				  else
-				  {
-					  setIcon(new ImageIcon(changePortImg));  
-				  }
-			      
-			      setText(String.valueOf(value));
-			   }
-			   return this;
-		}
-		
-	}
 
 
 
