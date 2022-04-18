@@ -1681,12 +1681,10 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 			tableH.requestFocus();
 
-
-			txfSearchInput.setText("");
+			//txfSearchInput.setText("");
 
 			if(master.size()==0)
 			{
-
 				/*lblArea.setText("");
 				lblAreaCode.setText("");
 				lblPationality.setText("");
@@ -1702,9 +1700,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-
 
 	}
 
