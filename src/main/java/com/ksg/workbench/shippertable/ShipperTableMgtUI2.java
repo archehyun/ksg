@@ -977,8 +977,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 
 		cbxGubun = new KSGComboBox("tableType");
+		cbxGubun.setShowTotal(true);
 
-		cbxGubun.addItem(new KSGTableColumn("","ÀüÃ¼"));
 
 		cbxGubun.initComp();
 
@@ -1681,7 +1681,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 			tableH.requestFocus();
 
-			//txfSearchInput.setText("");
+			txfSearchInput.setText("");
 
 			if(master.size()==0)
 			{
@@ -2100,9 +2100,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 			setFont(lostFont);  
 
-			setForeground(Color.GRAY);  
-
-
+			setForeground(Color.GRAY);
 
 			this.addFocusListener(new FocusAdapter() {  
 

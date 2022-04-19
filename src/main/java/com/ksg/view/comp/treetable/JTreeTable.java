@@ -32,6 +32,8 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import com.ksg.workbench.common.comp.treetable.node.ScheduleTreeNode;
+
 
 
 /**
@@ -45,7 +47,17 @@ import javax.swing.tree.TreePath;
  * @author Scott Violet
  */
 public class JTreeTable extends JTable {
-	private static final int SHOW_PATH_COUNT = 5;
+	
+	private static final int SHOW_PATH_COUNT = 4;
+	
+	
+	private int showPathCount=4;
+	
+	public void setShowPathCount(int showPathcount)
+	{
+		this.showPathCount = showPathcount;
+	}
+	
 	/** A subclass of JTree. */
 	protected TreeTableCellRenderer tree;
 	TreeTableModel treeTableModel;
@@ -444,8 +456,10 @@ public class JTreeTable extends JTable {
 		}
 
 		TreePath path = new TreePath(node.getPath());
-		if (expanded) {			
-			if(path.getPathCount()<SHOW_PATH_COUNT)
+		if (expanded) {
+			
+			if(path.getPathCount()<showPathCount)
+				
 			tree.expandPath(path);
 		} else {
 			tree.collapsePath(path);

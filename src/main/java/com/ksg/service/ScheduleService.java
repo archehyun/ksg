@@ -199,6 +199,12 @@ public interface ScheduleService extends PageService{
 	
 	public HashMap<String, Object> selectScheduleGroupList(HashMap<String, Object> param) throws SQLException;
 	
+	public HashMap<String, Object> selectInboundScheduleGroupList(HashMap<String, Object> param) throws SQLException;
+
+	HashMap<String, Object> selectInboundScheduleGroupList2(HashMap<String, Object> param) throws SQLException;
+
+	
+	
 	
 	
 	
