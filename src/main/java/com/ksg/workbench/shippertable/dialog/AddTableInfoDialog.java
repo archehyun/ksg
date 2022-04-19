@@ -249,7 +249,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 			service.insert(param);
 			this.result=SUCCESS;
 			
-			((ShipperTableMgtUI2)this.searchUI).fnSearch();
+			((ShipperTableMgtUI2)this.searchUI).fnUpdate();
 		} catch (AlreadyExistException e) {
 			JOptionPane.showMessageDialog(this, "동일한 ID가 존재합니다.");
 			

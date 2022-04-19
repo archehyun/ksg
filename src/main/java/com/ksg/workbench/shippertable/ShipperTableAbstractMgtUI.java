@@ -42,4 +42,21 @@ public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements
 
 	}
 
+	@Deprecated
+	public void updateSubTable() throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Deprecated
+	public void searchByOption() throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void fnUpdate() {
+		
+		
+	}
+
 }
