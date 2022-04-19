@@ -69,6 +69,7 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
+import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 import com.ksg.workbench.shippertable.dialog.UpdateTableInOutDialog;
 
 /**
@@ -89,7 +90,7 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 					int result = saveAction();
 					if(result==1)
 					{
-						searchUI.searchByOption();
+						//searchUI.searchByOption();
 						searchUI.fnUpdate();
 						lblSaveInfo.setText("저장 되었습니다.");
 
@@ -203,18 +204,29 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		this.baseService = DAOManager.getInstance().createBaseService();
 		createAndUpdteUI();
 	}
-	public UpdateTablePanel(ShippersTable table) {
-		this();
-		if(table!=null)
-			this.setShipperTableData(table);
-	}
-
+//	public UpdateTablePanel(ShippersTable table) {
+//		this();
+//		if(table!=null)
+//			this.setShipperTableData(table);
+//	}
+//	public UpdateTablePanel(ShipperTableMgtUI searchUI, ShippersTable table) {
+//		this();
+//		this.searchUI=searchUI;
+//		if(table!=null)
+//			this.setShipperTableData(table);
+//	}
+//	
+//	public UpdateTablePanel(ShipperTableAbstractMgtUI searchUI, ShippersTable table) {
+//		this();
+//		//this.searchUI=searchUI;
+//		if(table!=null)
+//			this.setShipperTableData(table);
+//	}
 	
-	public UpdateTablePanel(ShipperTableAbstractMgtUI searchUI, ShippersTable table) {
+	public UpdateTablePanel(ShipperTableAbstractMgtUI searchUI) {
 		this();
-		this.searchUI=searchUI;
-		if(table!=null)
-			this.setShipperTableData(table);
+		this.searchUI =searchUI;
+		
 	}
 	private void createAndUpdteUI()
 	{

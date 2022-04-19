@@ -607,7 +607,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		pnSouth.add(pnRightControl, BorderLayout.EAST);
 		pnSouth.add(pnLeftControl, BorderLayout.WEST);
 
-		pnUpdateTable = new UpdateTablePanel(this,null);
+		pnUpdateTable = new UpdateTablePanel(this);
 		pnUpdateTable.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		pnUpdateTable.setVisible(false);
 		pnUpdateTable.setMinimumSize(new Dimension(200,0));
@@ -1495,7 +1495,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		if(cbxGubun.getSelectedIndex()>0)
 		{
 			KSGTableColumn item=(KSGTableColumn) cbxGubun.getSelectedItem();
-			searchParamHash.put("gubun", item.columnField);
+			searchParamHash.put("gubun", item.columnName);
 
 		}
 

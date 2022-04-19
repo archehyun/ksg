@@ -68,6 +68,7 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
 /**
@@ -90,7 +91,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 	private String company_abbr;
 	private KSGModelManager manager = KSGModelManager.getInstance();
-	JComponent searchUI;
+	ShipperTableAbstractMgtUI searchUI;
 	private ShippersTable searchOp;
 	ShippersTable selectedTable;
 	private JTextArea txaCommon;
@@ -136,12 +137,12 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		service = new ShipperTableServiceImpl();
 	}
 
-	public AddTableInfoDialog(JComponent parent) {
+	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent) {
 
 		this();
 		this.searchUI=parent;		
 	}
-	public AddTableInfoDialog(JComponent prent, ShippersTable selectedCompany) {
+	public AddTableInfoDialog(ShipperTableAbstractMgtUI prent, ShippersTable selectedCompany) {
 
 		this();
 		this.searchUI=prent;	
@@ -149,7 +150,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		this.setSelectedCompany(selectedCompany);
 
 	}
-	public AddTableInfoDialog(JComponent parent, String selectedCompany) {
+	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent, String selectedCompany) {
 
 		this();
 		this.searchUI=parent;		
@@ -158,14 +159,14 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 	}
 	HashMap<String, Object> param;
-	public AddTableInfoDialog(JComponent parent, HashMap<String, Object> param) {
+	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent, HashMap<String, Object> param) {
 		this();
 		this.searchUI = parent;
 		this.param = param;
 
 	}
 
-	private void saveAction() 
+	private void saveAction() throws Exception
 	{
 
 
@@ -215,7 +216,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		int othercell			= Integer.parseInt(txfOther.getText());
 		String console_cfs		= txaConsoleCFS.getText();
 		String console_page		= txfConsolePage.getText();
-		String gubun			= ((KSGTableColumn) cbxGubun.getSelectedItem()).columnField;
+		String gubun			= ((KSGTableColumn) cbxGubun.getSelectedItem()).columnName;
 		int c_time				= Integer.parseInt(txfCtime.getText());
 		int d_time				= Integer.parseInt(txfDtime.getText());
 		String inland_indexs	= txfInland.getText();
@@ -244,19 +245,14 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		param.put("c_time",  c_time);
 		param.put("d_time",  d_time);
 		param.put("inland_indexs",  inland_indexs);
-		
-		try {
-			service.insert(param);
-			this.result=SUCCESS;
-			
-			((ShipperTableMgtUI2)this.searchUI).fnUpdate();
-		} catch (AlreadyExistException e) {
-			JOptionPane.showMessageDialog(this, "동일한 ID가 존재합니다.");
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+
+		service.insert(param);
+
+
+
+
+
 
 	}
 
@@ -297,75 +293,97 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 			//try{
 
-				if(txfTableID.getText().length()<=0)
-				{
-					JOptionPane.showMessageDialog(null, "테이블 ID를 지정하세요");
-					return;
-				}
+			if(txfTableID.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(null, "테이블 ID를 지정하세요");
+				return;
+			}
 
-				if(txfPage.getText().length()<=0)
-				{
-					JOptionPane.showMessageDialog(null, "Page를 지정하세요");
-					return;
-				}
-				if(txfIndex.getText().length()<=0)
-				{
-					JOptionPane.showMessageDialog(null, "Index를 지정하세요");
-					return;
-				}
-				if(txfCompany.getText().length()<=0)
-				{
-					JOptionPane.showMessageDialog(null, "선사를 지정하세요");
-					return;
-				}
+			if(txfPage.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(null, "Page를 지정하세요");
+				return;
+			}
+			if(txfIndex.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(null, "Index를 지정하세요");
+				return;
+			}
+			if(txfCompany.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(null, "선사를 지정하세요");
+				return;
+			}
 
-				if(txfPortCount.getText().length()<=0)
-				{
-					JOptionPane.showMessageDialog(null, "항구수를 지정하세요");
-					return;
-				}
-				if(txfVesselCount.getText().length()<=0)
-				{
-					JOptionPane.showMessageDialog(null, "선박수를 지정하세요");
-					return;
-				}
-				if(txfCompany.getText().length()<=0)
-				{
-					JOptionPane.showMessageDialog(null, "선사를 지정하세요");
-					return;
-				}
-//				try {
-//					Company info=baseService.getCompanyInfo(txfCompany.getText());
-//
-//					if(info==null)
-//					{
-//						JOptionPane.showMessageDialog(null, "정확한 선사정보를 입력하십시요");
-//						return;
-//					}
-//				} catch (SQLException e1) {
-//					e1.printStackTrace();
-//				}
+			if(txfPortCount.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(null, "항구수를 지정하세요");
+				return;
+			}
+			if(txfVesselCount.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(null, "선박수를 지정하세요");
+				return;
+			}
+			if(txfCompany.getText().length()<=0)
+			{
+				JOptionPane.showMessageDialog(null, "선사를 지정하세요");
+				return;
+			}
+
+
+			try {
 				saveAction();
+				
+				
 				this.setVisible(false);
 				this.dispose();
+				
+				searchUI.fnUpdate();
+			}
 
-//			}catch(NumberFormatException es)
-//			{
-//				JOptionPane.showMessageDialog(AddTableInfoDialog.this,"숫자 입력이 잘못 되었습니다.");
-//				return;
-//			}
-//			catch (SQLException e1) {
-//
-//				if(e1.getErrorCode()==2627)
-//				{
-//					JOptionPane.showMessageDialog(null, "동일한 테이블 ID가 존재합니다.");	
-//				}else
-//				{
-//					JOptionPane.showMessageDialog(null,"error:"+e1.getMessage());
-//				}
-//
-//				e1.printStackTrace();
-//			}
+			catch (AlreadyExistException e1) {
+				JOptionPane.showMessageDialog(null, "동일한 테이블 ID가 존재합니다.");	
+
+
+			}
+
+			catch(Exception e1)
+			{
+				JOptionPane.showMessageDialog(this, e1.getMessage());
+				e1.printStackTrace();
+
+			}
+			//				try {
+			//					Company info=baseService.getCompanyInfo(txfCompany.getText());
+			//
+			//					if(info==null)
+			//					{
+			//						JOptionPane.showMessageDialog(null, "정확한 선사정보를 입력하십시요");
+			//						return;
+			//					}
+			//				} catch (SQLException e1) {
+			//					e1.printStackTrace();
+			//				}
+
+
+			//			}catch(NumberFormatException es)
+			//			{
+			//				JOptionPane.showMessageDialog(AddTableInfoDialog.this,"숫자 입력이 잘못 되었습니다.");
+			//				return;
+			//			}
+			//			catch (SQLException e1) {
+			//
+			//				if(e1.getErrorCode()==2627)
+			//				{
+			//					JOptionPane.showMessageDialog(null, "동일한 테이블 ID가 존재합니다.");	
+			//				}else
+			//				{
+			//					JOptionPane.showMessageDialog(null,"error:"+e1.getMessage());
+			//				}
+			//
+			//				e1.printStackTrace();
+			//			}
 		}
 
 	}
@@ -386,7 +404,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 
 			public void actionPerformed(ActionEvent e) {
-				
+
 				AddTableInfoDialog.this.setVisible(false);
 				AddTableInfoDialog.this.dispose();
 
@@ -979,7 +997,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	private void initParam() {
 
 
-		
+
 		if(param!=null)
 		{
 			txfTitle.setText(String.valueOf( param.get("title")));
