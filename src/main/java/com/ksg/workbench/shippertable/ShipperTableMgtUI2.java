@@ -465,17 +465,17 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()== KeyEvent.VK_ENTER)
 				{
-//					final JTable table = (JTable) e.getSource();
-//					int row = table.getSelectedRow();
-//					if(row==-1)
-//						return;
-//					final int page =(Integer)table.getValueAt(row, 0);					
-//
-//					searchADVTable();
-//
-//					pnADVInfo.setVisible(true);
-//
-//					tableLayout.show(pnTable, advTablePanel.getName());
+					//					final JTable table = (JTable) e.getSource();
+					//					int row = table.getSelectedRow();
+					//					if(row==-1)
+					//						return;
+					//					final int page =(Integer)table.getValueAt(row, 0);					
+					//
+					//					searchADVTable();
+					//
+					//					pnADVInfo.setVisible(true);
+					//
+					//					tableLayout.show(pnTable, advTablePanel.getName());
 				}
 
 			}
@@ -487,13 +487,13 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 					if(arg0.getKeyCode()== KeyEvent.VK_ENTER)
 					{
 
-//						logger.debug("releas " +arg0.getKeyCode()+table.getSelectedColumn());
-//
-//
-//						int row = table.getSelectedRow();
-//
-//						if(row==-1)
-//							return;
+						//						logger.debug("releas " +arg0.getKeyCode()+table.getSelectedColumn());
+						//
+						//
+						//						int row = table.getSelectedRow();
+						//
+						//						if(row==-1)
+						//							return;
 
 						//					try {
 						//						KSGDateUtil.toDate2(String.valueOf(tblSearchTable.getValueAt(row, 2)));
@@ -511,33 +511,33 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 						//						return;
 						//					}
 
-//						String table_id = String.valueOf(table.getValueAt(row, 3));
-//						String date = String.valueOf(table.getValueAt(row, 2));
-//
-//						HashMap<String, Object> param = new HashMap<String, Object>();
-//
-//						param.put("table_id", table_id);
-//
-//						param.put("date_isusse", date);
-//
-//						shipperTableService.update(param);
-//
-//						//tableService.updateTableDate(table_id,date);
-//
-//						_advService.updateDateADVData(table_id, date);
-//
-//						switch (depth) {
-//						case DEPTH_SUB:
-//							_searchedList= tableService.getTableListByPage(startpage,endpage);	
-//							searchSubTable();
-//							break;
-//						case DEPTH_PAGE:
-//							//	updateSubTable();	
-//							break;
-//
-//						default:
-//							break;
-//						}
+						//						String table_id = String.valueOf(table.getValueAt(row, 3));
+						//						String date = String.valueOf(table.getValueAt(row, 2));
+						//
+						//						HashMap<String, Object> param = new HashMap<String, Object>();
+						//
+						//						param.put("table_id", table_id);
+						//
+						//						param.put("date_isusse", date);
+						//
+						//						shipperTableService.update(param);
+						//
+						//						//tableService.updateTableDate(table_id,date);
+						//
+						//						_advService.updateDateADVData(table_id, date);
+						//
+						//						switch (depth) {
+						//						case DEPTH_SUB:
+						//							_searchedList= tableService.getTableListByPage(startpage,endpage);	
+						//							searchSubTable();
+						//							break;
+						//						case DEPTH_PAGE:
+						//							//	updateSubTable();	
+						//							break;
+						//
+						//						default:
+						//							break;
+						//						}
 
 
 					}
@@ -607,7 +607,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		pnSouth.add(pnRightControl, BorderLayout.EAST);
 		pnSouth.add(pnLeftControl, BorderLayout.WEST);
 
-		pnUpdateTable = new UpdateTablePanel(this,null);
+		pnUpdateTable = new UpdateTablePanel(this);
 		pnUpdateTable.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		pnUpdateTable.setVisible(false);
 		pnUpdateTable.setMinimumSize(new Dimension(200,0));
@@ -639,9 +639,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		pnShipperInfo.add(createPnSearchInfo(),BorderLayout.NORTH);
 
-		KSGPanel pnMain = new KSGPanel();
-
-		pnMain.setLayout( new BorderLayout());
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());		
 
 		pnMain.add(pnShipperInfo,BorderLayout.CENTER);
 
@@ -977,8 +975,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 
 		cbxGubun = new KSGComboBox("tableType");
+		cbxGubun.setShowTotal(true);
 
-		cbxGubun.addItem(new KSGTableColumn("","전체"));
 
 		cbxGubun.initComp();
 
@@ -1248,7 +1246,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			if(result>0)
 			{
 				JOptionPane.showMessageDialog(this, param.get("table_id")+ "를 삭제 했습니다.");
-				fnSearch();
+				fnUpdate();
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -1304,58 +1302,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			logger.debug("option result1 "+j);
 		}
 	}
-	//	//TODO 수정 예정..전체 선택시 오류 발생
-	//	/**
-	//	 * @return
-	//	 */
-	//	private ShippersTable getShipperTableBySelectedTable2() {
-	//		int row=tblSearchTable.getSelectedRow();
-	//		try{
-	//			if(row!=-1)
-	//			{
-	//				ShippersTable shippersTable = new ShippersTable();
-	//
-	//				shippersTable.setTable_id((String) tblSearchTable.getValueAt(row, 3));//
-	//				manager.selectedDate = (String) tblSearchTable.getValueAt(row, 2);
-	//				shippersTable.setCompany_abbr((String) tblSearchTable.getValueAt(row, 6));
-	//
-	//				return shippersTable;
-	//			}else
-	//			{
-	//				return null;
-	//			}
-	//		}catch(Exception e)
-	//		{
-	//			JOptionPane.showMessageDialog(null, "error:"+currentTable.getName()+", "+e.getMessage());
-	//			return null;
-	//		}
-	//	}
-
-	/**
-	 * @return
-	 */
-	//	private ShippersTable getShipperTableBySelectedTable() {
-	//		int row=tblSearchTable.getSelectedRow();
-	//		try{
-	//			if(row!=-1)
-	//			{
-	//				ShippersTable shippersTable = new ShippersTable();
-	//
-	//				shippersTable.setTable_id((String) tblSearchTable.getValueAt(row, 3));//
-	//				manager.selectedDate = (String) tblSearchTable.getValueAt(row, 2);
-	//				shippersTable.setCompany_abbr((String) tblSearchTable.getValueAt(row, 6));
-	//
-	//				return shippersTable;
-	//			}else
-	//			{
-	//				return null;
-	//			}
-	//		}catch(Exception e)
-	//		{
-	//			JOptionPane.showMessageDialog(null, "error:"+currentTable.getName()+", "+e.getMessage());
-	//			return null;
-	//		}
-	//	}
+	
 	/**
 	 * @param selectedCompany
 	 */
@@ -1407,28 +1354,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		}
 	}
 
-	//	/**
-	//	 * @param selectedCompany
-	//	 * @throws SQLException
-	//	 */
-	//	private void selectPage(String selectedCompany) throws SQLException {
-	//
-	//		depth =DEPTH_PAGE; 
-	//
-	//		initNotify(selectedCompany);
-	//
-	//		manager.selectedDate=null;
-	//
-	//		updateSubTable();
-	//
-	//		delMenu.setEnabled(true);
-	//
-	//		tableLayout.show(pnTable, tblSearchTable.getName());
-	//
-	//		txfDate.setText("");
-	//
-	//		txfTable_id.setText("");
-	//	}
+	
 
 	/**
 	 * @param selectedCompany
@@ -1450,63 +1376,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		//lblCount.setText(String.valueOf(tblSearchTable.getRowCount()));
 		tableLayout.show(pnTable, tableH.getName());
 	}
-	//	/**
-	//	 * @param selectedCompany
-	//	 * @throws SQLException
-	//	 */
-	//	private void selectSub(String selectedCompany) throws SQLException {
-	//		depth =DEPTH_SUB; 
-	//		txfDate.setText("");
-	//		txfCompany.setText("");
-	//		txfPage.setText("");
-	//		txfTable_id.setText("");
-	//		manager.selectedCompany=null;
-	//		manager.selectedDate=null;
-	//
-	//		StringTokenizer st = new StringTokenizer(selectedCompany,"~");
-	//		if(st.countTokens()==2)
-	//		{
-	//
-	//			startpage = Integer.parseInt(st.nextToken());
-	//			endpage = Integer.parseInt(st.nextToken());
-	//			_searchedList= tableService.getTableListByPage(startpage,endpage);
-	//
-	//			txfCount.setText(String.valueOf(_searchedList.size()));
-	//			lblCount.setText(String.valueOf(_searchedList.size()));
-	//			logger.debug("searchedList:"+_searchedList.size());
-	//
-	//		}else
-	//		{
-	//			txfCount.setText(String.valueOf(0));				
-	//		}
-	//		lblCompany.setText("선사번호 : "+selectedCompany);
-	//		searchSubTable();
-	//		tableLayout.show(pnTable, tblSearchTable.getName());
-	//		delMenu.setEnabled(false);
-	//	}
-
-	//	/* (non-Javadoc)
-	//	 * @see com.ksg.model.KSGObserver#update(com.ksg.model.KSGModelManager)
-	//	 */
-	//	public void update(KSGModelManager manager) {
-	//
-	//		logger.info("update Table");
-	//		try {
-	//			manager.execute(tree2.getName());
-	//			if(manager.selectedCompany==null)			
-	//			{
-	//				tree2.setSelectionPath(tree2.getPathForRow(0));
-	//			}
-	//			manager.execute(tblSearchTable.getName());
-	//			updateSubTable();
-	//
-	//		} catch (SQLException e) {
-	//
-	//			e.printStackTrace();
-	//			logger.error(e.getErrorCode()+","+e.getMessage());
-	//		}
-	//
-	//	}
+	
 
 
 	private void updateADVTable(String table_id) {
@@ -1528,38 +1398,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 
 	}
-	//	/**
-	//	 * 
-	//	 */
-	//	private void updatePortAction()
-	//	{
-	//		selectedshippersTable = this.getShipperTableBySelectedTable();
-	//
-	//
-	//		int row =tableH.getSelectedRow();
-	//		if(row<0)return;
-	//
-	//		HashMap<String, Object> param = (HashMap<String, Object>) tableH.getValueAt(row);
-	//		ManagePortDialog dialog = new ManagePortDialog(String.valueOf(param.get("table_id")),this);
-	//		dialog.createAndUpdateUI();
-	//
-	//
-	//	}
-	//	/**
-	//	 * @throws SQLException
-	//	 */
-	//	public void updateSubTable( ) throws SQLException {
-	//
-	//
-	//		if(manager.selectedCompany==null)
-	//			return;
-	//
-	//		logger.info("updateSubTable:"+manager.selectedCompany+","+manager.selectedPage);
-	//
-	//		searchByOption(orderParam);
-	//
-	//
-	//	}
+	
 	/**
 	 * @param selectedCompany
 	 * @param selectedPage
@@ -1623,6 +1462,28 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	}
 
+	public void fnUpdate()
+	{
+		try {
+			int page_size = tableH.getPageSize();
+
+			searchParamHash.put("PAGE_SIZE", page_size);
+
+			searchParamHash.put("PAGE_NO", 1);
+
+			logger.info("param:"+searchParamHash);
+
+			HashMap<String, Object> result = (HashMap<String, Object>) shipperTableService.selectListByPage(searchParamHash);
+
+			result.put("PAGE_NO", 1);
+
+			tableH.setResultData(result);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public void fnSearch()
 	{
 		logger.info("START");
@@ -1634,7 +1495,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		if(cbxGubun.getSelectedIndex()>0)
 		{
 			KSGTableColumn item=(KSGTableColumn) cbxGubun.getSelectedItem();
-			searchParamHash.put("gubun", item.columnField);
+			searchParamHash.put("gubun", item.columnName);
 
 		}
 
@@ -1681,7 +1542,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 			tableH.requestFocus();
 
-			//txfSearchInput.setText("");
+			txfSearchInput.setText("");
 
 			if(master.size()==0)
 			{
@@ -2100,9 +1961,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 			setFont(lostFont);  
 
-			setForeground(Color.GRAY);  
-
-
+			setForeground(Color.GRAY);
 
 			this.addFocusListener(new FocusAdapter() {  
 
@@ -2152,10 +2011,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 					}  
 
-				}  
-
-
-
+				}
 			});  
 
 

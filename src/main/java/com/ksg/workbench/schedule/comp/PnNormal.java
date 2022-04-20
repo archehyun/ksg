@@ -11,14 +11,12 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-
 import javax.swing.JTextField;
 
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.service.impl.ScheduleServiceLogic;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
@@ -40,7 +38,7 @@ public class PnNormal extends KSGPanel implements ActionListener{
 
 	private JComboBox cbxNormalInOut;
 	
-	private ScheduleServiceLogic scheduleService;
+	
 	
 	private ScheduleService service;
 	
@@ -56,7 +54,7 @@ public class PnNormal extends KSGPanel implements ActionListener{
 		super(new BorderLayout());
 		
 
-		scheduleService = new ScheduleServiceLogic();
+		
 		service = new ScheduleServiceImpl();
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));

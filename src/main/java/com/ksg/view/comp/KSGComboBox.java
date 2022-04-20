@@ -29,6 +29,14 @@ public class KSGComboBox extends JComboBox<KSGTableColumn>{
 
 	CodeServiceImpl service;
 	
+	private boolean isShowTotal = false;
+	
+	
+	
+	public void setShowTotal(boolean isShowTotal) {
+		this.isShowTotal = isShowTotal;
+	}
+
 	public KSGComboBox()
 	{
 		service = new CodeServiceImpl();
@@ -49,10 +57,12 @@ public class KSGComboBox extends JComboBox<KSGTableColumn>{
 		HashMap<String, Object> param = new HashMap<String, Object>();
 
 		try {
-
+			this.removeAllItems();
 			param.put("code_type", codeType);
 			HashMap<String,Object> resullt = (HashMap<String, Object>) service.selectCodeDList(param);
 			List<HashMap<String,Object> > li = (List<HashMap<String, Object>>) resullt.get("master");
+			
+			if(isShowTotal) 			addItem(new KSGTableColumn("","ÀüÃ¼"));
 			
 			for(HashMap<String, Object> item:li)
 			{

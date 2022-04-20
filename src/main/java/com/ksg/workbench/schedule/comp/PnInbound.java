@@ -75,6 +75,8 @@ public class PnInbound extends KSGPanel implements ActionListener{
 		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
 		
 		
+		//TO-DO 페이지 수 표시 오류 수정
+		
 		
 		tableH.initComp();
 		tableH.addActionListener(new PageAction(tableH, scheduleService));
@@ -109,10 +111,10 @@ public class PnInbound extends KSGPanel implements ActionListener{
 
 
 		txfNoramlSearch = new JTextField(15);
+		
 		JButton butSearch = new JButton("검색");
+		
 		butSearch.addActionListener(this);
-		//butSearch.setActionCommand("Normal 검색");
-
 
 		pnNormalSearchCenter.add(new JLabel("구분:"));
 		pnNormalSearchCenter.add(cbxNormalInOut);

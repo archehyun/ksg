@@ -9,7 +9,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.service.impl.ScheduleServiceLogic;
 
 /**
 

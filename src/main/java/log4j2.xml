@@ -28,7 +28,7 @@
         
    
 
-  <Root level="INFO">
+  <Root level="DEBUG">
    <AppenderRef ref="console"/>
   </Root>
  </Loggers>

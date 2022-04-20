@@ -40,7 +40,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -68,8 +67,7 @@ import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
+import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.dialog.UpdateTableInOutDialog;
 
 /**
@@ -89,8 +87,8 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 				{
 					int result = saveAction();
 					if(result==1)
-					{
-						searchUI.searchByOption();
+					{	
+						searchUI.fnUpdate();
 						lblSaveInfo.setText("저장 되었습니다.");
 
 					}
@@ -152,7 +150,7 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		}
 	}
 	protected Logger logger = LogManager.getLogger(this.getClass());
-	//private Font defaultFont = new Font("돋음",0,10);
+	
 	private static final long serialVersionUID = 1L;
 	
 	private ADVService 	advService;
@@ -180,7 +178,7 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 	private JTextField txfOhterCount;
 
 
-	private ShipperTableMgtUI searchUI;
+	private ShipperTableAbstractMgtUI searchUI;
 
 	private JLabel lblSaveInfo;
 	private EnterKeyListener enterKeyListener;
@@ -203,23 +201,29 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		this.baseService = DAOManager.getInstance().createBaseService();
 		createAndUpdteUI();
 	}
-	public UpdateTablePanel(ShippersTable table) {
-		this();
-		if(table!=null)
-			this.setShipperTableData(table);
-	}
-	public UpdateTablePanel(ShipperTableMgtUI searchUI, ShippersTable table) {
-		this();
-		this.searchUI=searchUI;
-		if(table!=null)
-			this.setShipperTableData(table);
-	}
+//	public UpdateTablePanel(ShippersTable table) {
+//		this();
+//		if(table!=null)
+//			this.setShipperTableData(table);
+//	}
+//	public UpdateTablePanel(ShipperTableMgtUI searchUI, ShippersTable table) {
+//		this();
+//		this.searchUI=searchUI;
+//		if(table!=null)
+//			this.setShipperTableData(table);
+//	}
+//	
+//	public UpdateTablePanel(ShipperTableAbstractMgtUI searchUI, ShippersTable table) {
+//		this();
+//		//this.searchUI=searchUI;
+//		if(table!=null)
+//			this.setShipperTableData(table);
+//	}
 	
-	public UpdateTablePanel(ShipperTableMgtUI2 searchUI, ShippersTable table) {
+	public UpdateTablePanel(ShipperTableAbstractMgtUI searchUI) {
 		this();
-		//this.searchUI=searchUI;
-		if(table!=null)
-			this.setShipperTableData(table);
+		this.searchUI =searchUI;
+		
 	}
 	private void createAndUpdteUI()
 	{

@@ -567,7 +567,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 		pnSouth.add(pnRightControl, BorderLayout.EAST);
 		pnSouth.add(pnLeftControl, BorderLayout.WEST);
 
-		pnUpdateTable = new UpdateTablePanel(this,null);
+		pnUpdateTable = new UpdateTablePanel(this);
 		pnUpdateTable.setBorder(BorderFactory.createEtchedBorder());
 		pnUpdateTable.setVisible(false);
 		pnUpdateTable.setMinimumSize(new Dimension(200,0));
@@ -1535,6 +1535,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 	/**
 	 * @throws SQLException
 	 */
+	@Override
 	public void updateSubTable( ) throws SQLException {
 
 
@@ -1611,6 +1612,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 	}
 
 
+	@Override
 	public void searchByOption() throws SQLException {
 		searchByOption(orderParam);
 	}

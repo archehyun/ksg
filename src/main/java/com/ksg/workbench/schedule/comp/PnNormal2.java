@@ -16,62 +16,66 @@ import javax.swing.JTextField;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.common.comp.KSGPageTablePanel;
-import com.ksg.workbench.common.comp.button.PageAction;
+import com.ksg.view.comp.table.KSGTablePanel;
 
 
 /**
 
-  * @FileName : PnOutbound.java
+ * @FileName : PnOutbound.java
 
-  * @Project : KSG2
+ * @Project : KSG2
 
-  * @Date : 2022. 3. 7. 
+ * @Date : 2022. 3. 7. 
 
-  * @작성자 : 박창현
+ * @작성자 : 박창현
 
-  * @변경이력 :
+ * @변경이력 :
 
-  * @프로그램 설명 :
+ * @프로그램 설명 :
 
-  */
+ */
 public class PnNormal2 extends PnSchedule{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private KSGPageTablePanel tableH;
-	
-	
+
+	private KSGTablePanel tableH;
+
 	private List<HashMap<String, Object>> master;
 
 	private KSGComboBox cbxNormalInOut;
 
 	private JComboBox<KSGTableColumn> cbxNormalSearch;
 
-	private JTextField txfNoramlSearch;	
-	
+	private JTextField txfNoramlSearch;
+
+	private HashMap<String, Object> searchParam;
+
+//	private PageAction pageAction;	
+
 	public PnNormal2() {
-		
+
 		super();		
 		
+		
+		
 		this.setLayout(new BorderLayout());
-		
+
 		add(buildSearch(),BorderLayout.NORTH);
-		
+
 		add(buildCenter());
-	
+
 	}
-	
+
 	public KSGPanel buildCenter()
 	{
-		tableH = new KSGPageTablePanel("스케줄 목록");		
+		tableH = new KSGTablePanel("스케줄 목록");		
 		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
 		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID",100));
-		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",100));
-		tableH.addColumn(new KSGTableColumn("agent", "에이전트",100));
+		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",150));
+		tableH.addColumn(new KSGTableColumn("agent", "에이전트",150));
 		tableH.addColumn(new KSGTableColumn("vessel", "선박명",200));
 		tableH.addColumn(new KSGTableColumn("date_issue", "출력일자",100));
 		tableH.addColumn(new KSGTableColumn("voyage_num", "항차번호"));
@@ -79,30 +83,34 @@ public class PnNormal2 extends PnSchedule{
 		tableH.addColumn(new KSGTableColumn("DateF", "출발일", 90));
 		tableH.addColumn(new KSGTableColumn("DateT", "도착일", 90));
 		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
-		
+
 		tableH.initComp();
-		
-		tableH.setPageCountIndex(6);
-		
-		tableH.addActionListener(new PageAction(tableH,scheduleService));
-		
+
+//		tableH.setPageCountIndex(6);
+//
+//		pageAction = new PageAction(tableH,scheduleService);
+//		
+//		
+//		
+//		tableH.addActionListener(pageAction);
+
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-		
+
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
-		
+
 		pnMain.add(tableH);
-		
+
 		return pnMain;
 	}
-	
-	
-	
+
+
+
 	public KSGPanel buildSearch()
 	{
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		cbxNormalInOut = new KSGComboBox("inOutType");
-		cbxNormalInOut.addItem(new KSGTableColumn("","전체"));
+		cbxNormalInOut.setShowTotal(true);		
 		cbxNormalInOut.initComp();
 
 		cbxNormalSearch = new JComboBox<KSGTableColumn>();
@@ -122,7 +130,7 @@ public class PnNormal2 extends PnSchedule{
 		txfNoramlSearch = new JTextField(15);
 		JButton butSearch = new JButton("검색");
 		butSearch.addActionListener(this);
-		//butSearch.setActionCommand("Normal 검색");
+		
 
 
 		pnNormalSearchCenter.add(new JLabel("구분:"));
@@ -133,61 +141,62 @@ public class PnNormal2 extends PnSchedule{
 		pnNormalSearchCenter.add(butSearch);
 
 		pnNormalSearchMain.add(pnNormalSearchCenter);
-		
+
 		return pnNormalSearchMain;
-		
+
 	}
 	public void fnSearch()
 	{
-		HashMap<String, Object> param = new HashMap<String, Object>();
-		
 		try {
-			param.put("gubun", "Normal");			
-			
+			searchParam = new HashMap<String, Object>();
+			searchParam.put("gubun", "Normal");			
+
 			String searchOption  = txfNoramlSearch.getText();
-			
+
 			if(cbxNormalInOut.getSelectedIndex()>0) {
 				KSGTableColumn col = (KSGTableColumn)cbxNormalInOut.getSelectedItem();
-				param.put("inOutType", col.columnField);
-				
+				searchParam.put("inOutType", col.columnField);
+
 			}
-			
+
 			if(cbxNormalSearch.getSelectedIndex()>0) {
-				
+
 				KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
 				if(!searchOption.equals(""))
-				param.put(item.columnField, searchOption);
+					searchParam.put(item.columnField, searchOption);
 			}
-			
+
 			if(input_date!=null||!input_date.equals(""))
-				
+
 			{
-				param.put("date_issue", input_date);
+				searchParam.put("date_issue", input_date);
 			}
-			param.put("TABLE_NAME", "TB_SCHEDULE_INFO");
-			
-			int page_size = tableH.getPageSize();
-			
-			param.put("PAGE_SIZE", page_size);
-			
-			param.put("PAGE_NO", 1);
-			
-			logger.info("param:"+param);
-			
-			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectListByPage(param);			
-			
+			searchParam.put("TABLE_NAME", "TB_SCHEDULE_INFO");
+
+//			int page_size = tableH.getPageSize();
+//
+//			searchParam.put("PAGE_SIZE", page_size);
+
+			searchParam.put("PAGE_NO", 1);
+
+			logger.info("param:"+searchParam);
+
+			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectList(searchParam);			
+
 			result.put("PAGE_NO", 1);
-			
+
 			tableH.setResultData(result);
 
 			master = (List) result.get("master");
 
 			if(master.size()==0)
 			{
-				
+
 			}
 			else
 			{
+				
+//				pageAction.setSearchPram(searchParam);
 				tableH.changeSelection(0,0,false,false);
 			}
 
@@ -200,12 +209,12 @@ public class PnNormal2 extends PnSchedule{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		
+
 		if(command.equals("검색"))
 		{
 			fnSearch();
 		}
-		
+
 	}
 
 }

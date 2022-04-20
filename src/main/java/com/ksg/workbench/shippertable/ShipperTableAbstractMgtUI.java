@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 
+@SuppressWarnings("serial")
 public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements ComponentListener{
 	
 	
@@ -23,23 +24,20 @@ public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements
 	public abstract  void setPortCount(int count);
 	
 	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void componentResized(ComponentEvent e) {}
 	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void componentMoved(ComponentEvent e) {}
 	@Override
-	public void componentShown(ComponentEvent e) {
-		//fnSearch();
-	}
+	public void componentShown(ComponentEvent e) {}
 	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
+	public void componentHidden(ComponentEvent e) {}
 
-	}
+	@Deprecated
+	public void updateSubTable() throws SQLException {}
+
+	@Deprecated
+	public void searchByOption() throws SQLException {}
+
+	public void fnUpdate() {}
 
 }

@@ -185,6 +185,7 @@ public interface SchduleDAO {
 	
 	
 	public List<Map<String, Object>> selectList(HashMap<String, Object> param) throws SQLException;
+	public List<Map<String, Object>> selectInlnadList(HashMap<String, Object> param) throws SQLException;
 	
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
 	

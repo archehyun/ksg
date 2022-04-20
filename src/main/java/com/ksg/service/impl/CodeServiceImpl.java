@@ -2,7 +2,9 @@ package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,6 +59,23 @@ public class CodeServiceImpl {
 		
 		return resultMap;
 
+	}
+	
+	public HashMap<String, Object> selectInboundPortMap() throws SQLException
+	{
+		HashMap<String, Object> param = new HashMap<String, Object>();
+		param.put("code_type", "inPort");
+		
+		List<Map<String, Object>> list =codeDAO.selectDetailList(param);
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		for (Map<String, Object> item : list) {
+		    result.put(String.valueOf(item.get("code_field")), item.get("code_name"));
+		}
+		
+		
+		
+		return result;
 	}
 	public Object selectCodeH(Map<String, Object> param) throws SQLException {
 		logger.debug("param:{}"+param);
