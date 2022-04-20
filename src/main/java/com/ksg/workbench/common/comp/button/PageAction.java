@@ -8,6 +8,7 @@ import com.ksg.workbench.common.comp.KSGPageTablePanel;
 
 public class PageAction extends AbstractPageAction
 {
+	HashMap<String, Object> commandMap;
 	
 	private PageService pageService;
 	
@@ -20,6 +21,8 @@ public class PageAction extends AbstractPageAction
 	}
 	
 	
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -29,7 +32,8 @@ public class PageAction extends AbstractPageAction
 
 		int page_size = tableH.getPageSize();
 
-		HashMap<String, Object> commandMap = new HashMap<String, Object>();
+		if(commandMap == null) commandMap = new HashMap<String, Object>();
+		
 		commandMap.put("PAGE_SIZE", page_size);
 
 		if (command.equals("Next")) {
@@ -61,7 +65,7 @@ public class PageAction extends AbstractPageAction
 		}
 
 		try {
-//			commandMap.put("selectID", selectID);
+			
 			HashMap<String, Object> resultMap = (HashMap<String, Object>) pageService.selectListByPage(commandMap);
 			resultMap.put("PAGE_NO", commandMap.get("PAGE_NO"));
 
@@ -69,6 +73,11 @@ public class PageAction extends AbstractPageAction
 		} catch (Exception ee) {
 			ee.printStackTrace();
 		}
+	}
+
+	public void setSearchPram(HashMap<String, Object> searchParam) {
+		this.commandMap = searchParam;
+		
 	}
 	
 }

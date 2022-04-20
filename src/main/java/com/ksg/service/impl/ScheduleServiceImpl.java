@@ -257,6 +257,20 @@ public class ScheduleServiceImpl implements ScheduleService{
 		return resultMap;
 
 	}
+	
+	public HashMap<String, Object> selectInlandScheduleList(HashMap<String, Object> commandMap) throws SQLException {
+
+		logger.debug("param:{}", commandMap);
+
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		resultMap.put("total", schduleDAO.selectCount(commandMap));
+
+		resultMap.put("master", schduleDAO.selectInlnadList(commandMap));
+
+		return resultMap;
+
+	}
 
 
 

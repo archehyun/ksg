@@ -175,7 +175,7 @@
 		select date_issue, gubun, count(*) cnt from TB_INLAND_SCHEDULE_INFO group by date_issue,gubun
 	</select>
 	
-	<select id="selectInlandList" resultClass="com.ksg.domain.ScheduleData" parameterClass="com.ksg.domain.ScheduleData">
+	<select id="selectInlandList" resultClass="java.util.HashMap">
 	select * from TB_INLAND_SCHEDULE_INFO where gubun='inland'
 				<isNotNull property="table_id" prepend="and">
 					table_id=#table_id#

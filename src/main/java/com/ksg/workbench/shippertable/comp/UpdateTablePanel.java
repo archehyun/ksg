@@ -68,8 +68,6 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 import com.ksg.workbench.shippertable.dialog.UpdateTableInOutDialog;
 
 /**
@@ -89,8 +87,7 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 				{
 					int result = saveAction();
 					if(result==1)
-					{
-						//searchUI.searchByOption();
+					{	
 						searchUI.fnUpdate();
 						lblSaveInfo.setText("저장 되었습니다.");
 

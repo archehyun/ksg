@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 
@@ -42,9 +43,9 @@ public class PnInland2 extends PnSchedule{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private KSGPageTablePanel tableH;
+	private KSGTablePanel tableH;
 	
-	
+	private HashMap<String, Object> searchParam;
 	
 	private List<HashMap<String, Object>> master;
 
@@ -52,11 +53,15 @@ public class PnInland2 extends PnSchedule{
 
 	private JComboBox<KSGTableColumn> cbxNormalSearch;
 
-	private JTextField txfNoramlSearch;	
+	private JTextField txfNoramlSearch;
+
+	private PageAction pageAction;	
 	
 	public PnInland2() {
 		
 		super();		
+		
+		searchParam = new HashMap<String, Object>();
 		
 		this.setLayout(new BorderLayout());
 		
@@ -69,13 +74,13 @@ public class PnInland2 extends PnSchedule{
 	
 	public KSGPanel buildCenter()
 	{
-		tableH = new KSGPageTablePanel("스케줄 목록");
+		tableH = new KSGTablePanel("스케줄 목록");
 		
 		
 		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
 		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID",100));
-		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",100));
-		tableH.addColumn(new KSGTableColumn("agent", "에이전트",100));
+		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",150));
+		tableH.addColumn(new KSGTableColumn("agent", "에이전트",150));
 		tableH.addColumn(new KSGTableColumn("vessel", "선박명",200));
 		tableH.addColumn(new KSGTableColumn("date_issue", "출력일자",100));
 		tableH.addColumn(new KSGTableColumn("voyage_num", "항차번호"));
@@ -83,12 +88,17 @@ public class PnInland2 extends PnSchedule{
 		tableH.addColumn(new KSGTableColumn("DateF", "출발일", 90));
 		tableH.addColumn(new KSGTableColumn("DateT", "도착일", 90));
 		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
+		tableH.addColumn(new KSGTableColumn("inland_port", "경유항",200));
+		tableH.addColumn(new KSGTableColumn("inland_date", "경유일",90));
 		
 		tableH.initComp();
 		
-		tableH.setPageCountIndex(6);
+		//TO-DO 페이지 수 표시 오류 수정
 		
-		tableH.addActionListener(new PageAction(tableH,scheduleService));
+//		tableH.setPageCountIndex(6);
+		
+//		pageAction = new PageAction(tableH,scheduleService);
+//		tableH.addActionListener(pageAction);
 		
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
@@ -104,7 +114,8 @@ public class PnInland2 extends PnSchedule{
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		cbxNormalInOut = new KSGComboBox("inOutType");
-		cbxNormalInOut.addItem(new KSGTableColumn("","전체"));
+		cbxNormalInOut.setShowTotal(true);
+		
 		cbxNormalInOut.initComp();
 
 		cbxNormalSearch = new JComboBox<KSGTableColumn>();
@@ -141,16 +152,17 @@ public class PnInland2 extends PnSchedule{
 	}
 	public void fnSearch()
 	{
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		
 		
 		try {
-			param.put("gubun", "Inland");			
+			
+			//searchParam.put("gubun", "Inland");			
 			
 			String searchOption  = txfNoramlSearch.getText();
 			
 			if(cbxNormalInOut.getSelectedIndex()>0) {
 				KSGTableColumn col = (KSGTableColumn)cbxNormalInOut.getSelectedItem();
-				param.put("inOutType", col.columnField);
+				searchParam.put("inOutType", col.columnField);
 				
 			}
 			
@@ -158,25 +170,25 @@ public class PnInland2 extends PnSchedule{
 				
 				KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
 				if(!searchOption.equals(""))
-				param.put(item.columnField, searchOption);
+				searchParam.put(item.columnField, searchOption);
 			}
 			
 			if(input_date!=null||!input_date.equals(""))
 				
 			{
-				param.put("date_issue", input_date);
+				searchParam.put("date_issue", input_date);
 			}
-			param.put("TABLE_NAME", "TB_INLAND_SCHEDULE_INFO");
+			searchParam.put("TABLE_NAME", "TB_INLAND_SCHEDULE_INFO");
 			
-			int page_size = tableH.getPageSize();
+//			int page_size = tableH.getPageSize();
 			
-			param.put("PAGE_SIZE", page_size);
+//			searchParam.put("PAGE_SIZE", page_size);
 			
-			param.put("PAGE_NO", 1);
+			searchParam.put("PAGE_NO", 1);
 			
-			logger.info("param:"+param);
+			logger.info("param:"+searchParam);
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectListByPage(param);			
+			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectInlandScheduleList(searchParam);			
 			
 			result.put("PAGE_NO", 1);
 			
@@ -190,6 +202,7 @@ public class PnInland2 extends PnSchedule{
 			}
 			else
 			{
+//				pageAction.setSearchPram(searchParam);
 				tableH.changeSelection(0,0,false,false);
 			}
 
