@@ -75,7 +75,12 @@
     <artifactId>mssql-jdbc</artifactId>
     <version>9.2.0.jre8</version>
 </dependency>
-    	
+    	<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.20</version>
+			<optional>true</optional>
+		</dependency>
   
 
 		<dependency>
