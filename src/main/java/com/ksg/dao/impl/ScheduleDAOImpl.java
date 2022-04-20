@@ -258,7 +258,7 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	}
 	@Override
 	public List selectListByPage(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return selectList("schedule.selectScheduleListByPage", param);
 	}
 	@Override
@@ -272,7 +272,7 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	}
 	@Override
 	public List<Map<String, Object>> selectInlnadList(HashMap<String, Object> param) throws SQLException {
-		return sqlMap.queryForList("schedule.selectInlandList");
+		return sqlMap.queryForList("schedule.selectInlandList",param);
 	}
 
 	
