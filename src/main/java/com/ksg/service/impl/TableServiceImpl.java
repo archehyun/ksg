@@ -275,7 +275,13 @@ public class TableServiceImpl implements TableService{
 	}
 
 	public void insertTableProperty(Table_Property propertis) throws SQLException {
+		
+		try {
 		tableDAO.insertTableProperty(propertis);
+		}catch(SQLException e)
+		{
+			
+		}
 	}
 
 	public void updateTableProperty(Table_Property property)

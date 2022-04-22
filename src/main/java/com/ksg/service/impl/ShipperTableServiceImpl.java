@@ -12,9 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.TableDAO;
 import com.ksg.dao.impl.ShipperTableDAOImpl;
-import com.ksg.domain.ShippersTable;
 import com.ksg.service.ShipperTableService;
-import com.ksg.workbench.adv.PortTable.PortTableInfo;
 
 /**
 
@@ -33,7 +31,7 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 
 
-	private TableDAO tableDAO;
+	//private TableDAO tableDAO;
 
 	private ShipperTableDAOImpl shipperTableDao;
 

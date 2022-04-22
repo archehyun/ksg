@@ -714,7 +714,7 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 
 	public void update(KSGModelManager manager) {
 		
-		logger.info("start:"+this.getTableIndex());
+		logger.info("start:{}",this.getTableIndex());
 		
 		if(manager.selectedInput.equals("File"))
 		{

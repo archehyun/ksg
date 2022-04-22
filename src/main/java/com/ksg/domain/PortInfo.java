@@ -20,21 +20,21 @@ import lombok.Data;
 public class PortInfo extends BaseInfo {
 	
 	private String port_name;			// 항구명
-	private String port_nationality;	//나라
-	private String port_area;			// 지역
-	private String area_code;			// 지역 코드
 	
+	private String port_nationality;	//나라
+	
+	private String port_area;			// 지역
+	
+	private String area_code;			// 지역 코드	
 	
 	private String base_port_name;
+	
 	private String base_port_abbr;	
+	
 	private String port_code;
 	
 	private int port_book_code;
 	
-	
-	
-
-
 	private String port_abbr;
 	
 	public String toString()

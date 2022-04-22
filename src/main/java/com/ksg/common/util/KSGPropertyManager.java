@@ -12,6 +12,7 @@ import com.ksg.domain.Table_Property;
 public class KSGPropertyManager {
 
 	List<Table_Property> propertyList;
+	
 	private static KSGPropertyManager manager;
 
 	private KSGPropertyManager()
@@ -19,6 +20,7 @@ public class KSGPropertyManager {
 		try {
 			sqlMap = SqlMapManager.getSqlMapInstance();
 			this.propertyList=this.getKSGTableProperty();
+			System.out.println("test");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -48,6 +50,8 @@ public class KSGPropertyManager {
 		}
 		return null;
 	}
+	
+	//TO-DO ¼öÁ¤
 	private List getKSGTableProperty() throws SQLException{ 
 		return (List) sqlMap.queryForList("TABLEProperty.selectTABLEProperty");
 	}
@@ -62,10 +66,6 @@ public class KSGPropertyManager {
 	public void insert(Table_Property property) throws SQLException {
 		
 			sqlMap.insert("TABLEProperty.insertTableProperty",property);
-
-
-		
-		
 	}
 	public void init()
 	{
