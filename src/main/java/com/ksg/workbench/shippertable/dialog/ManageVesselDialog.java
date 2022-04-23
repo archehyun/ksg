@@ -22,7 +22,6 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 
 /**
  * 

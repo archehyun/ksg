@@ -43,13 +43,21 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private JList portLi;
+	
 	private String company_abbr;
+	
 	private int page;
+	
 	private int t_index;
+	
 	private String table_id;
+	
 	Font defaultfont;
+	
 	private JTextField txfPort;
+	
 	private BaseServiceImpl baseService;
 
 	public ADDADVDialog(String table_id,int page, int t_index,String company_abbr) {

@@ -15,8 +15,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.dao.AdvDAO;
@@ -24,10 +23,14 @@ import com.ksg.dao.impl.AdvDAOImpl;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("unchecked")
 public class ADVServiceImpl implements ADVService{
 
-	protected Logger logger = LogManager.getLogger(this.getClass());
+	
 	private AdvDAO advDAO;
 	public ADVServiceImpl() {
 		advDAO = new AdvDAOImpl();
@@ -54,11 +57,11 @@ public class ADVServiceImpl implements ADVService{
 	
 	public String[][] createADVTableModel(String data) 
 	{
-		logger.debug("data:\n"+data);
+		log.debug("data:\n"+data);
 		
 //		StringTokenizer st = new StringTokenizer(data,"\n\n");
 		String words[] = data.split(ADVData.ROW_DIVIDER);
-//		logger.debug("data row:"+st.countTokens());
+//		log.debug("data row:"+st.countTokens());
 		String[][] a = new String[words.length][];
 		for(int i=0;i<a.length;i++)
 		{
