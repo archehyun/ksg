@@ -6,13 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.TableDAO;
 import com.ksg.dao.impl.ShipperTableDAOImpl;
 import com.ksg.service.ShipperTableService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
 
@@ -27,15 +28,13 @@ import com.ksg.service.ShipperTableService;
  * @프로그램 설명 :
 
  */
+@Slf4j
 public class ShipperTableServiceImpl implements ShipperTableService{
 
 
-
-	//private TableDAO tableDAO;
-
 	private ShipperTableDAOImpl shipperTableDao;
 
-	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
 	public ShipperTableServiceImpl() {
 		shipperTableDao = new ShipperTableDAOImpl();
@@ -43,7 +42,7 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 	public Map<String, Object> selectList(Map<String, Object> param)
 	{
-		logger.info("param:{}",param);
+		log.info("param:{}",param);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		try {
@@ -65,7 +64,7 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> selectPortList(Map<String, Object> param) {
-		logger.info("param:{}",param);
+		log.info("param:{}",param);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		try {
@@ -85,20 +84,20 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 	public void deleteShipperPortList(HashMap<String, Object> param) throws SQLException
 	{
-		logger.info("param:{}",param);
+		log.info("param:{}",param);
 		shipperTableDao.deleteShipperPortList(param);
 	}
 
 	public void insertShipperPort(HashMap<String, Object> param) throws SQLException
 	{
-		logger.info("param:{}",param);
+		log.info("param:{}",param);
 		shipperTableDao.insertShipperPort(param);
 
 	}
 
 	public void saveShipperPort(HashMap<String, Object> param) throws Exception{
 
-		logger.info("param:{}",param);
+		log.info("param:{}",param);
 
 		deleteShipperPortList(param);	
 
@@ -120,7 +119,7 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 	@Override
 	public int delete(Map<String, Object> param) throws Exception {
-		logger.info("param:{}",param);
+		log.info("param:{}",param);
 		return shipperTableDao.delete(param);
 	}
 
@@ -132,7 +131,7 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 	
 	@Override
 	public int updateTableDateByTableIDs(List table,String updateDate) throws SQLException {
-		logger.info("update by "+updateDate+", "+table);
+		log.info("update by "+updateDate+", "+table);
 		Iterator<HashMap<String, Object>> iter = table.iterator();
 		int count=0;
 		while(iter.hasNext())
@@ -154,12 +153,12 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 	@Override
 	public void insert(Map<String, Object> param) throws Exception{
-		logger.info("param:{}",param);
+		log.info("param:{}",param);
 		try {
 			
 		Object result=	shipperTableDao.insert(param);
 		
-		logger.info("reslult:{}",result);
+		log.info("reslult:{}",result);
 			
 		} catch (SQLException e) {
 			if(e.getErrorCode()==2627)

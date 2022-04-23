@@ -4,12 +4,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.impl.CompanyDAOImpl;
 import com.ksg.service.CompanyService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
 
@@ -26,11 +27,10 @@ import com.ksg.service.CompanyService;
  * @프로그램 설명 :
 
  */
+@Slf4j
 public class CompanyServiceImpl implements CompanyService{ 
 
 	CompanyDAOImpl companyDAO;
-
-	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	public CompanyServiceImpl() {
 		companyDAO = new CompanyDAOImpl();
@@ -41,7 +41,7 @@ public class CompanyServiceImpl implements CompanyService{
 
 
 
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -54,18 +54,18 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	public int update(HashMap<String, Object> param) throws SQLException{
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 		return companyDAO.update(param);
 
 	}
 
 	public int delete(HashMap<String, Object> param) throws SQLException{
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 		return companyDAO.deleteCompany(param);
 	}
 
 	public void insert(HashMap<String, Object> param) throws RuntimeException{
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 
 		try
 		{
@@ -96,7 +96,7 @@ public class CompanyServiceImpl implements CompanyService{
 	@Override
 	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
 		
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
