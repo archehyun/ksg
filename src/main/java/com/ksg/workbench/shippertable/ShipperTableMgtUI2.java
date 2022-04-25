@@ -403,9 +403,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	 */
 	public void showTableList() throws SQLException {
 
-		logger.info("seleted page:"+searchParam);
+		logger.info("seleted page:"+searchParamHash);
 
-		//updateView();
+		
 		fnSearch();
 
 		pnADVInfo.setVisible(false);		
@@ -911,6 +911,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
+				searchParamHash = new HashMap<String, Object>();
 				fnSearch();
 			}
 		});
@@ -1489,7 +1490,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		logger.info("START");
 
 		String param=txfSearchInput.getText();
-
+		
+		if(searchParamHash ==null)
 		searchParamHash = new HashMap<String, Object>();
 
 		if(cbxGubun.getSelectedIndex()>0)

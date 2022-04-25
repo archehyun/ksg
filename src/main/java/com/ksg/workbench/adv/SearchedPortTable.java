@@ -315,7 +315,7 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 				HashMap<String, Object> baseInfo= baseList.get(j);
 				
 				String port_name = (String) baseInfo.get("port_name");
-				System.out.print(" port:"+port_name);
+				
 				if(new_port.equals(port_name))
 				{
 					isNew=false;
