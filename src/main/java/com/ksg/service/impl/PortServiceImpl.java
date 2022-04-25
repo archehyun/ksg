@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.PortDAO;
 import com.ksg.dao.impl.PortDAOImpl;
 import com.ksg.service.PortService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
 
@@ -28,11 +28,12 @@ import com.ksg.service.PortService;
  * @프로그램 설명 :
 
  */
+@Slf4j
 public class PortServiceImpl implements PortService{
 
 	PortDAO portDAO;
 
-	protected Logger logger = LogManager.getLogger(this.getClass());
+	
 
 	public PortServiceImpl() {
 		portDAO = new PortDAOImpl();
@@ -41,7 +42,7 @@ public class PortServiceImpl implements PortService{
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> selectList(Map<String, Object> param) throws SQLException {
 
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -55,7 +56,7 @@ public class PortServiceImpl implements PortService{
 
 	public Map<String, Object> selectListByLike(Map<String, Object> param) throws SQLException
 	{
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -67,13 +68,13 @@ public class PortServiceImpl implements PortService{
 	}
 
 	public int deletePortAbbr(HashMap<String, Object> param) throws SQLException {
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 		return portDAO.deleteDetail(param);
 	}
 
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> selectPort(HashMap<String, Object> param) throws SQLException {
-		logger.info("param:{}", param);
+		log.info("param:{}", param);
 
 		HashMap<String,Object> resultMap=(HashMap<String, Object>) portDAO.select( param);
 
@@ -86,7 +87,7 @@ public class PortServiceImpl implements PortService{
 	}
 
 	public int update(HashMap<String, Object> param) throws SQLException {
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 		return portDAO.update(param);
 
 	}
@@ -96,7 +97,7 @@ public class PortServiceImpl implements PortService{
 
 		try {
 
-			logger.debug("param:{}", param);
+			log.debug("param:{}", param);
 			return portDAO.isnert(param);
 		}
 		catch (SQLException e1) {
@@ -117,26 +118,26 @@ public class PortServiceImpl implements PortService{
 	}
 
 	public int delete(HashMap<String, Object> param) throws SQLException {
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 		return portDAO.delete(param);
 	}
 
 	@Override
 	public Object selectPortAbbr(HashMap<String, Object> param) throws SQLException {
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 		return portDAO.selectDetail(param);
 	}
 
 	@Override
 	public List<Map<String, Object>> selectPortAbbrList(HashMap<String, Object> param) throws SQLException {
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 		return portDAO.selectDetailList(param);
 	}
 
 	@Override
 	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
 
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("total", portDAO.selectCount(param));

@@ -4,12 +4,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.impl.VesselDAOImpl;
 import com.ksg.service.VesselService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
 
@@ -26,9 +27,10 @@ import com.ksg.service.VesselService;
  * @프로그램 설명 :
 
  */
+@Slf4j
 public class VesselServiceImpl implements VesselService{
 
-	protected Logger logger = LogManager.getLogger(this.getClass());
+	
 
 	VesselDAOImpl vesselDAO;
 
@@ -40,7 +42,7 @@ public class VesselServiceImpl implements VesselService{
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> selectList(Map<String, Object> commandMap) throws SQLException {
 
-		logger.debug("param:"+commandMap);
+		log.debug("param:"+commandMap);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -54,7 +56,7 @@ public class VesselServiceImpl implements VesselService{
 
 	public Map<String, Object> selectDetailList(HashMap<String, Object> commandMap) throws SQLException {
 
-		logger.info("param:"+commandMap);
+		log.info("param:"+commandMap);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -76,7 +78,7 @@ public class VesselServiceImpl implements VesselService{
 
 	public void insert(HashMap<String, Object> param) throws RuntimeException {
 
-		logger.debug("param:"+param);
+		log.debug("param:"+param);
 		try
 		{
 			vesselDAO.insert(param);
@@ -105,7 +107,7 @@ public class VesselServiceImpl implements VesselService{
 
 	@Override
 	public HashMap<String, Object> selectDetailList(Map<String, Object> param) throws SQLException {
-		logger.debug("param:"+param);
+		log.debug("param:"+param);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("master",vesselDAO.selectDetailList((HashMap<String, Object>) param));
@@ -114,17 +116,17 @@ public class VesselServiceImpl implements VesselService{
 
 	@Override
 	public Object update(HashMap<String, Object> param) throws SQLException {
-		logger.info("param:{}", param);
+		log.info("param:{}", param);
 		Object result = vesselDAO.update(param);;
 
-		logger.debug("result:{}:",param);
+		log.debug("result:{}:",param);
 		return result;
 	}
 
 	@Override
 	public void insertDetail(HashMap<String, Object> param) throws RuntimeException {
 
-		logger.info("param:{}", param);
+		log.info("param:{}", param);
 		try {
 			vesselDAO.insertDetail( param);
 
@@ -160,7 +162,7 @@ public class VesselServiceImpl implements VesselService{
 
 	@Override
 	public HashMap<String, Object> selectDetailListByLike(Map<String, Object> param) throws SQLException {
-		logger.debug("param:"+param);
+		log.debug("param:"+param);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("master",vesselDAO.selectDetailListByLike((HashMap<String, Object>) param));

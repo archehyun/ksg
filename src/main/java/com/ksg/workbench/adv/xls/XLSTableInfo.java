@@ -19,7 +19,6 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import com.ksg.adv.logic.model.TableLocation;
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.KSGPropertis;

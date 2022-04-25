@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
@@ -33,6 +32,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.KSGHashMap;
 import com.ksg.service.ScheduleService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
 
@@ -49,6 +50,7 @@ import com.ksg.service.ScheduleService;
  * @프로그램 설명 :
 
  */
+@Slf4j
 @SuppressWarnings("unchecked")
 public class ScheduleServiceImpl implements ScheduleService{
 
@@ -58,7 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 	private ADVScheduleDAO advScheduleDAO;
 
-	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 
 	KSGModelManager manager = KSGModelManager.getInstance();
 
@@ -179,7 +181,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 
 	public List getScheduleList(ScheduleData param) throws SQLException {
-		logger.info("param:{}",param);
+		log.info("param:{}",param);
 		return schduleDAO.getScheduleList(param);
 	}
 
@@ -246,7 +248,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 	public HashMap<String, Object> selectScheduleList(HashMap<String, Object> commandMap) throws SQLException {
 
-		logger.debug("param:{}", commandMap);
+		log.debug("param:{}", commandMap);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -260,7 +262,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	
 	public HashMap<String, Object> selectInlandScheduleList(HashMap<String, Object> commandMap) throws SQLException {
 
-		logger.debug("param:{}", commandMap);
+		log.debug("param:{}", commandMap);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -277,7 +279,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectScheduledAreaList(Map<String, Object> commandMap) throws SQLException {
 
-		logger.debug("param:{}", commandMap);
+		log.debug("param:{}", commandMap);
 
 		return advScheduleDAO.selectScheduledAreaList(commandMap);
 	}
@@ -286,7 +288,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException {
 
-		logger.debug("param:{}", commandMap);
+		log.debug("param:{}", commandMap);
 
 		List<Map<String, Object>> areaList = selectScheduledAreaList(commandMap);
 
@@ -366,7 +368,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException {
 
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -380,7 +382,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
 
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -394,7 +396,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public HashMap<String, Object> selectGroupList(HashMap<String, Object> param) throws SQLException {
 
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -409,7 +411,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public HashMap<String, Object> selectScheduleGroupList(HashMap<String, Object> param) throws SQLException {
 
-		logger.debug("param:{}", param);
+		log.debug("param:{}", param);
 
 		String inOutType  = (String) param.get("inOutType");
 
