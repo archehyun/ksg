@@ -210,9 +210,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	private JToggleButton butEdit; //
 
-	private boolean 			close=true;
-
-	private String orderParam;
+	private boolean 			close=true;	
 
 	private JMenuItem delMenu;
 
@@ -224,17 +222,13 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	private final int DEPTH_SUB=2; //
 
-	private UpdateShipperTableDateDialog updateAllDateDialog; //날짜 일괄 수정 창
-
-	private int endpage;	
+	private UpdateShipperTableDateDialog updateAllDateDialog; //날짜 일괄 수정 창		
 
 	public KSGTableSelectListner listner;
 
 	public List 				_searchedList, selectedList;
 
-	private JSplitPane spMain;
-
-	private int startpage;
+	private JSplitPane spMain;	
 
 	private CardLayout 			tableLayout;
 
@@ -254,7 +248,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	private JMenuItem itemDateUpdate;
 
-	private ShipperTableService shipperTableService = new ShipperTableServiceImpl();
+	private ShipperTableService shipperTableService;
 
 	private ADVServiceImpl _advService;
 
@@ -270,6 +264,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		tableService = new TableServiceImpl();
 
 		_advService= new ADVServiceImpl();
+		
+		shipperTableService = new ShipperTableServiceImpl();
 
 		this.addComponentListener(this);
 
@@ -387,12 +383,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			updateAllDateDialog = new UpdateShipperTableDateDialog(selectedList, this);
 			if(updateAllDateDialog.result==1)
 			{
-				//				try {
-				//					//updateView(searchParam);
-				//				} catch (SQLException e1) {
-				//					// TODO Auto-generated catch block
-				//					e1.printStackTrace();
-				//				}
+				
 			}
 		}
 	}
@@ -1596,103 +1587,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 
 
-	//	/**
-	//	 * 구분에 의한 조회
-	//	 * @throws SQLException
-	//	 */
-	//	private void searchByGubun() throws SQLException
-	//	{
-	//		logger.info("search:");
-	//
-	//		int gubunIndex = cbbGubun.getSelectedIndex();
-	//
-	//		this.searchParam = new ShippersTable();
-	//
-	//		selectGubun(searchParam, gubunIndex);
-	//
-	//		tblSearchTable.setSearchParam(searchParam);
-	//
-	//		currentTable= tblSearchTable;
-	//
-	//		tableLayout.show(pnTable, tblSearchTable.getName());
-	//
-	//		lblCount.setText(String.valueOf(tblSearchTable.getRowCount()));
-	//	}
-	//
-	//
-	//	private void searchByOption(String param) throws SQLException
-	//	{
-	//		logger.info("search param:"+param);
-	//
-	//		orderParam = param;
-	//
-	//		searchParam = new ShippersTable();
-	//
-	//		try {
-	//
-	//			selectOption(param, cbbOption.getSelectedIndex());
-	//
-	//
-	//			selectGubun(searchParam, cbbGubun.getSelectedIndex());
-	//
-	//			String date=txfDateSearch.getText();
-	//
-	//			if(!date.equals(""))
-	//			{
-	//				String fomattedDate = KSGDateUtil.toDate3(date).toString();
-	//				searchParam.setDate_isusse(fomattedDate);
-	//			}
-	//
-	//			updateView(searchParam);
-	//
-	//		} catch (NoSuchElementException e) {
-	//			// TODO Auto-generated catch block
-	//			e.printStackTrace();
-	//		}
-	//		catch (NumberFormatException e) {
-	//
-	//			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e.getMessage()+" 숫자를 입력하십시요");
-	//		}
-	//		catch(DateFormattException e)
-	//		{
-	//			e.printStackTrace();
-	//			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e.getMessage()+ ": 입력 형식(2000.1.1) 이 틀렸습니다.");
-	//
-	//		} finally
-	//		{
-	//			txfDateSearch.setText("");
-	//
-	//			txfSearchInput.setText("");
-	//
-	//			txfPageSearchInput.setText("");
-	//
-	//			txfPageIndexSearchInput.setText("");
-	//		}
-	//	}
-	//	public void updateView() throws SQLException
-	//	{
-	//
-	//		logger.info("param:{}", searchParam);
-	//		if(searchParam==null)
-	//			return;
-	//		updateView(searchParam);
-	//	}
-
-
-
-	//	private void updateView(ShippersTable searchParam) throws SQLException
-	//	{
-	//		logger.debug("searhParam:"+searchParam);
-	//		tblSearchTable.setSearchParam(searchParam);
-	//
-	//		tblSearchTable.retrive();
-	//
-	//		currentTable= tblSearchTable;
-	//
-	//		lblCount.setText(String.valueOf(tblSearchTable.getRowCount()));
-	//
-	//		tableLayout.show(pnTable, tblSearchTable.getName());	
-	//	}
 	/**
 	 * @param param
 	 * @param index
@@ -2011,19 +1905,11 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 						setForeground(Color.BLACK);  
 
-					}  
-
+					}
 				}
-			});  
-
-
-
-		}  
-
+			});
+		}
 	}  
-
-
-
 }
 
 

@@ -100,6 +100,7 @@ import com.ksg.workbench.shippertable.dialog.ManagePortDialog;
  * @author archehyun
  * @설명 광고 정보 조회 화면
  */
+@Deprecated
 @SuppressWarnings("unchecked")
 public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements ActionListener
 {	
