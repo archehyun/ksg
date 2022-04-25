@@ -215,7 +215,7 @@ public class BaseInfoUI extends AbstractMgtUI{
 		addBasePanel(pnMain,new PnCompany(this),	STRING_COMPANY_INFO);
 		addBasePanel(pnMain,new PnPort(this),		STRING_PORT_INFO);
 		//addBasePanel(pnMain,new PnPortAbbr(this),	STRING_PORT_ABBR);
-		addBasePanel(pnMain,new PnMember(this),	"사용자");
+		//addBasePanel(pnMain,new PnMember(this),	"사용자");
 
 		return pnMain;
 	}
@@ -239,8 +239,6 @@ public class BaseInfoUI extends AbstractMgtUI{
 
 		List master = (List) resultMap.get("master");
 		
-		
-		
 	
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16.png"),null,"기초정보"));
 
@@ -251,16 +249,11 @@ public class BaseInfoUI extends AbstractMgtUI{
 		Iterator<HashMap> iter2 =master.iterator();
 
 		DefaultMutableTreeNode commonCode = new DefaultMutableTreeNode(STRING_COMMONCODE_INFO);
-		DefaultMutableTreeNode memberCode = new DefaultMutableTreeNode("사용자");
+	
 
 
 		code.add(commonCode);
-		code.add(memberCode);
 
-		/*code.add(codeConType);
-		code.add(codeInboundPort);
-		code.add(codeInboundPortOrder);*/
-		
 		while(iter2.hasNext())
 		{
 			HashMap<String, Object> d =iter2.next(); 
@@ -268,13 +261,6 @@ public class BaseInfoUI extends AbstractMgtUI{
 			table.add(sub);
 		}
 
-
-//		while(iter1.hasNext())
-//		{
-//			Code d =iter1.next(); 
-//			DefaultMutableTreeNode sub = new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16_2.png"),null,d.getCode_name_kor()));
-//			table.add(sub);
-//		}
 
 		root.add(code);
 		root.add(table);
