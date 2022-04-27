@@ -57,7 +57,7 @@ public class App
 
 	private ServerSocket serverSocket;
 
-	KSGMainFrame frame;
+	private KSGMainFrame frame;
 
 
 
