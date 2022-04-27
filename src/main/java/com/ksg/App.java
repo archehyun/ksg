@@ -19,13 +19,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.ColorUIResource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.PropertiManager;
 import com.ksg.workbench.KSGLogin;
 import com.ksg.workbench.KSGMainFrame;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -43,9 +42,9 @@ import com.ksg.workbench.KSGMainFrame;
   * @프로그램 설명 : 메인 클래스
 
   */
+@Slf4j
 public class App 
 {
-	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	PropertiManager manager = PropertiManager.getInstance();
 
@@ -57,15 +56,15 @@ public class App
 
 	private ServerSocket serverSocket;
 
-	private KSGMainFrame frame;
+	//private KSGMainFrame frame;
 
 
 
 	public void start() {
 		try{
 	
-			logger.info("PROGRAM START");
-			logger.info("DB Connected..");
+			log.info("PROGRAM START");
+			log.info("DB Connected..");
 
 			
 
@@ -112,7 +111,7 @@ public class App
 
 		}catch(Exception e)
 		{
-			logger.error(e.getMessage());
+			log.error(e.getMessage());
 			e.printStackTrace();
 
 		}
