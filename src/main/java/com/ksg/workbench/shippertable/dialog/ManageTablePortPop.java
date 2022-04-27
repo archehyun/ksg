@@ -8,6 +8,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
@@ -72,7 +73,7 @@ public class ManageTablePortPop extends KSGDialog implements ActionListener{
 
 	private HashMap<String, Object> result;
 
-	ShipperTableServiceImpl shipperTableService;
+	private ShipperTableServiceImpl shipperTableService;
 
 	public static final String ACTION_SAVE="¿˙¿Â";
 
@@ -690,7 +691,7 @@ public class ManageTablePortPop extends KSGDialog implements ActionListener{
 
 	}
 
-	class PortSelectionEventHandler implements MouseListener{
+	class PortSelectionEventHandler extends MouseAdapter{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -707,31 +708,6 @@ public class ManageTablePortPop extends KSGDialog implements ActionListener{
 			}
 
 		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
 	}
 
 	@Override

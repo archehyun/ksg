@@ -169,7 +169,10 @@
 	</select>
 	
 	<select id="selectScheduleDateList" resultClass="java.util.HashMap" >
-		select date_issue, gubun, count(*) cnt from TB_SCHEDULE_INFO group by date_issue,gubun
+		select date_issue, gubun, count(case when inOutType='I' then 1 end) cnt_i, 
+		count(case when inOutType='O' then 1 end) cnt_o 
+		
+		from TB_SCHEDULE_INFO group by date_issue,gubun
 	</select>
 	<select id="selectInlandScheduleDateList" resultClass="java.util.HashMap" >
 		select date_issue, gubun, count(*) cnt from TB_INLAND_SCHEDULE_INFO group by date_issue,gubun

@@ -436,6 +436,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		tableH.addColumn(new KSGTableColumn("in_to_port", "Inbound 도착항",110, SwingConstants.LEFT ));
 		tableH.addColumn(new KSGTableColumn("out_port", "Outbound 출발항", 110, SwingConstants.LEFT ));
 		tableH.addColumn(new KSGTableColumn("out_to_port", "Outbound 도착항",110, SwingConstants.LEFT ));
+		
+		//TODO 컬럼 가운데 정렬
 
 		tableH.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 

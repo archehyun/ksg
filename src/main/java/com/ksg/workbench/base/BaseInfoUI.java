@@ -39,7 +39,6 @@ import com.ksg.workbench.base.company.PnCompany;
 import com.ksg.workbench.base.port.PnPort;
 import com.ksg.workbench.base.vessel.comp.PnVessel;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
-import com.ksg.workbench.member.comp.PnMember;
 
 /**
 
@@ -236,13 +235,12 @@ public class BaseInfoUI extends AbstractMgtUI{
 		
 		HashMap<String, Object> resultMap=(HashMap<String, Object>) codeService.selectCodeDList(param);
 		
-
 		List master = (List) resultMap.get("master");
-		
 	
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16.png"),null,"기초정보"));
 
 		DefaultMutableTreeNode code = new DefaultMutableTreeNode(STRING_CODE_INFO);
+		
 		DefaultMutableTreeNode table = new DefaultMutableTreeNode("기초 정보");
 
 		

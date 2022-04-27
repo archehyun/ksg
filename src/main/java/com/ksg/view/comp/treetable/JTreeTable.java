@@ -81,9 +81,10 @@ public class JTreeTable extends JTable {
 		setSelectionModel(selectionWrapper.getListSelectionModel());
 
 		// Install the tree editor renderer and editor.
-		setDefaultRenderer(TreeTableModel.class, tree);   
-
-		this.getColumnModel().getColumn(0).setPreferredWidth(400);;
+		setDefaultRenderer(TreeTableModel.class, tree);
+		
+		udpateColumn();
+		
 
 		setDefaultEditor(TreeTableModel.class, new TreeTableCellEditor());
 
@@ -104,6 +105,17 @@ public class JTreeTable extends JTable {
 			setRowHeight(25);	
 		}
 
+	}
+	
+	private void udpateColumn()
+	{
+		int col=this.getColumnCount();
+		this.getColumnModel().getColumn(0).setPreferredWidth(400);;
+		for(int i=1;i<col;i++)
+		{
+			this.getColumnModel().getColumn(i).setPreferredWidth(100);;
+		}
+		
 	}
 	
 	public void setCellRenderer(TreeCellRenderer renderer)
