@@ -18,6 +18,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -75,7 +77,7 @@ import com.ksg.workbench.shippertable.dialog.UpdateTableInOutDialog;
  * @설명 테이블 정보 관리 패널
  *
  */
-public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusListener{
+public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusListener, ComponentListener{
 
 
 	class EnterKeyListener extends KeyAdapter
@@ -199,27 +201,11 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		this.advService = DAOManager.getInstance().createADVService();
 		this.tableService= new TableServiceImpl();
 		this.baseService = DAOManager.getInstance().createBaseService();
+		
+		this.addComponentListener(this);
 		createAndUpdteUI();
 	}
-//	public UpdateTablePanel(ShippersTable table) {
-//		this();
-//		if(table!=null)
-//			this.setShipperTableData(table);
-//	}
-//	public UpdateTablePanel(ShipperTableMgtUI searchUI, ShippersTable table) {
-//		this();
-//		this.searchUI=searchUI;
-//		if(table!=null)
-//			this.setShipperTableData(table);
-//	}
-//	
-//	public UpdateTablePanel(ShipperTableAbstractMgtUI searchUI, ShippersTable table) {
-//		this();
-//		//this.searchUI=searchUI;
-//		if(table!=null)
-//			this.setShipperTableData(table);
-//	}
-	
+
 	public UpdateTablePanel(ShipperTableAbstractMgtUI searchUI) {
 		this();
 		this.searchUI =searchUI;
@@ -1109,6 +1095,30 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 	}
 	public void setPortCount(int count) {
 		txfPortCount.setText(String.valueOf(count));
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

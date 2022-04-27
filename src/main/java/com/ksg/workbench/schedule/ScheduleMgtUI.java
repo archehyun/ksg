@@ -266,7 +266,8 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		
 		tblScheduleDateList.addColumn(new KSGTableColumn("date_issue","생성일자",120));
 		
-		tblScheduleDateList.addColumn(new KSGTableColumn("cnt","건수"));
+		tblScheduleDateList.addColumn(new KSGTableColumn("cnt_i","I"));
+		tblScheduleDateList.addColumn(new KSGTableColumn("cnt_o","O"));
 		
 		tblScheduleDateList.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 		
@@ -406,7 +407,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnLeftMenu.add(pnTableDateModel,BorderLayout.NORTH);
 		pnLeftMenu.add(pnTblScheduleDateList);
 		
-		pnLeftMenu.setPreferredSize(new Dimension(230,0));
+		pnLeftMenu.setPreferredSize(new Dimension(280,0));
 		
 		pnLeftMenu.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		
@@ -502,21 +503,10 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		}
 
 
-//		Iterator<ScheduleData> iter = scheduleDateList.iterator();
-//		while(iter.hasNext())
-//		{
-//			ScheduleData item = iter.next();
-//			defaultTableModel.addRow(new Object[]{item.getGubun(),item.getDate_issue()});
-//		}
-//		Iterator<ScheduleData> inlnadIter = inlandScheduleDateList.iterator();
-//
-//		while(inlnadIter.hasNext())
-//		{
-//			ScheduleData item = inlnadIter.next();
-//			defaultTableModel.addRow(new Object[]{item.getGubun(),item.getDate_issue()});
-//		}
+
 		
 		List li = scheduleService.selectScheduleDateList();
+		
 		tblScheduleDateList.setResultData(li);
 		
 		

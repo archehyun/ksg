@@ -186,7 +186,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 
 	public List selectScheduleDateList() throws SQLException {
+		
 		List li1 = schduleDAO.selectScheduleDateList();
+		
 		List li2 = schduleDAO.selectInlandScheduleDateList();
 
 		li1.addAll(li2);
