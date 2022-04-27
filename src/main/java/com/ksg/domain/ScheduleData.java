@@ -15,12 +15,15 @@ import java.util.StringTokenizer;
 
 import com.ksg.common.util.KSGDateUtil;
 
+import lombok.Data;
+
 
 
 /**
  * @author 박창현
  *
  */
+@Data
 public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	private String agent; // 에이전트
 	private String area_code; // 지역 코드
@@ -68,15 +71,7 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	private String bookPage="";// 지면 페이지
 	private String majorCompany="";// 지면 페이지
 	private String orderby;
-	public String getOrderby() {
-		return orderby;
-	}
-	public void setOrderby(String orderby) {
-		this.orderby = orderby;
-	}
-	public String getBookPage() {
-		return bookPage;
-	}
+
 	public void setBookPage(String bookPage) {
 		if(bookPage==null)
 		{
@@ -100,49 +95,7 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 			return -1;
 		}
 	}
-	public String getAgent() {
-		return agent;
-	}
-	public String getArea_code() {
-		return area_code;
-	}
-	public String getArea_name() {
-		return area_name;
-	}
-	public String getArrivalDate() {
-		return arrivalDate;
-	}
-	public String getC_time() {
-		return c_time;
-	}
-	public String getCommon_shipping() {
-		return common_shipping;
-	}
-	public String getCompany_abbr() {
-		return company_abbr;
-	}
-	public String getConsole_cfs() {
-		return console_cfs;
-	}
-	public String getConsole_page() {
-		return console_page;
-	}
-	public int getConsole_print_type() {
-		return console_print_type;
-	}
-	public String getD_time() {
-		return d_time;
-	}
-	public String getData() {
-		return data;
-	}
-	public String getDate_issue() {
-		return date_issue;
-	}
-	public String getDateF() {
-
-		return DateF;
-	}
+	
 	public String getDateF2() {
 
 		try {
@@ -153,14 +106,7 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 
 		}
 	}
-	public String getDateFBack()
-	{
-		return dateFBack;
-	}
-	public String getDateT() {
 
-		return DateT;
-	}
 	public String getDateT2() {
 
 		try 
@@ -175,80 +121,6 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 		}
 	}
 	
-	public String getDateTBack()
-	{
-		return dateTBack;
-	}
-	public String getDepartDate() {
-		return departDate;
-	}
-	public String getDeparture() {
-		return departure;
-	}
-	public String getDesination() {
-		return desination;
-	}
-	public int getForSch() {
-		return forSch;
-	}
-	public String getFromAreaCode() {
-		return fromAreaCode;
-	}
-	public String getFromPort() {
-		return fromPort;
-	}
-	public String getGubun() {
-		return gubun;
-	}
-	public String getInland_date() {
-		return inland_date;
-	}
-
-	public String getInland_port() {
-		return inland_port;
-	}
-	public String getInOutType() {
-		return InOutType;
-	}
-	public int getN_voyage_num() {
-		return n_voyage_num;
-	}
-	public int getNtop() {
-		return ntop;
-	}
-	public String getPort() {
-		return port;
-	}
-	public String getTable_id() {
-		return table_id;
-	}
-	public String getTs() {
-		return TS;
-	}
-	public String getTS() {
-		return TS;
-	}
-	public String getTs_date() {
-		return ts_date;
-	}
-	public String getTs_port() {
-		return ts_port;
-	}
-	public String getTs_vessel() {
-		return ts_vessel;
-	}
-	public String getTs_voyage_num() {
-		return ts_voyage_num;
-	}
-	public String getVessel() {
-		return vessel;
-	}
-	public String getVessel_type() {
-		return vessel_type;
-	}
-	public String getVoyage_num() {
-		return voyage_num;
-	}
 	public int getIntVoyage_num() {
 		return this.getNumericVoyage(voyage_num);
 	}
@@ -278,50 +150,9 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 
 		return result;
 	}
-	public void setAgent(String agent) {
-		this.agent = agent;
-	}
-	public void setArea_code(String area_code) {
-		this.area_code = area_code;
-	}
-	public void setArea_name(String areaName) {
-		area_name = areaName;
-	}
-	public void setArrivalDate(String arrivalDate) {
-		this.arrivalDate = arrivalDate;
-	}
+	
+	
 
-	public void setC_time(String c_time) {
-		this.c_time = c_time;
-	}
-
-	public void setCommon_shipping(String common_shipping) {
-		this.common_shipping = common_shipping;
-	}
-	public void setCompany_abbr(String company_abbr) {
-		this.company_abbr = company_abbr;
-	}
-	public void setConsole_cfs(String console_cfs) {
-		this.console_cfs = console_cfs;
-	}
-	public void setConsole_page(String console_page) {
-		this.console_page = console_page;
-	}
-	public void setConsole_print_type(int console_print_type) {
-		this.console_print_type = console_print_type;
-	}
-	public void setD_time(String d_time) {
-		this.d_time = d_time;
-	}
-
-	public void setData(String data) {
-		this.data = data;
-	}
-
-
-	public void setDate_issue(String dateIssue) {
-		date_issue = dateIssue;
-	}
 	public void setDateF(String dateF) 
 	{
 		
@@ -338,105 +169,18 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 		}
 		
 	}
-	public void setDateFBack(String dateF)
-	{
-		this.dateFBack=dateF;
-	}
-	public void setDateT(String dateT) {
-		DateT = dateT;
-	}
-	public void setDateTBack(String dateT)
-	{
-		this.dateTBack=dateT;
-	}
-	public void setDepartDate(String departDate) {
-		this.departDate = departDate;
-	}
-	public void setDesination(String desination) {
-		this.desination = desination;
-	}
-
-	public void setForSch(int forSch) {
-		this.forSch = forSch;
-	}
-	public void setFromAreaCode(String toAreaCode) {
-		this.fromAreaCode = toAreaCode;
-	}
-public void setFromPort(String fromPort) {
-		this.fromPort = fromPort;
-	}
-	public void setGubun(String gubun) {
-		this.gubun = gubun;
-	}
-	public void setInland_date(String inland_date) {
-		this.inland_date = inland_date;
-	}
-	public void setInland_port(String inland_port) {
-		this.inland_port = inland_port;
-	}
-	public void setInOutType(String InOutType) {
-		this.InOutType = InOutType;
-	}
-	public void setN_voyage_num(int nVoyageNum) {
-		n_voyage_num = nVoyageNum;
-	}
-	public void setNtop(int ntop) {
-		this.ntop = ntop;
-	}
-	public void setPort(String port) {
-		this.port = port;
-	}
+	
+	
 	public void setScheduleID(int page) {
 		this.page=page;
 	}
-	public void setTable_id(String table_id) {
-		this.table_id = table_id;
-	}
-	public void setTs(String ts) {
-		this.TS = ts;
-	}
-	public void setTS(String ts) {
-		TS = ts;
-	}
-	public void setTs_date(String tsDate) {
-		ts_date = tsDate;
-	}
-	public void setTs_port(String tsPort) {
-		ts_port = tsPort;
-	}
-	public void setTs_vessel(String tsVessel) {
-		ts_vessel = tsVessel;
-	}
-	public void setTs_voyage_num(String tsVoyageNum) {
-		ts_voyage_num = tsVoyageNum;
-	}
-	public void setVessel(String vessel) {
-		this.vessel = vessel;
-	}
-
-	public void setVessel_type(String vesselType) {
-		vessel_type = vesselType;
-	}
-	public void setVoyage_num(String voyage_num) {
-		this.voyage_num = voyage_num;
-	}
+	
 
 	public String toInlandScheduleString()
 	{
 		return "["+this.getTable_id()+","+this.getDateF()+","+this.getFromPort()+","+this.getPort()+","+this.getDateT()+","+this.getInland_port()+"]";
 	}
-	public String getVessel_mmsi() {
-		return vessel_mmsi;
-	}
-	public void setVessel_mmsi(String vessel_mmsi) {
-		this.vessel_mmsi = vessel_mmsi;
-	}
-	public String getInland_date_back() {
-		return inland_date_back;
-	}
-	public void setInland_date_back(String inland_date_back) {
-		this.inland_date_back = inland_date_back;
-	}
+	
 	public String toRouteDesc()
 	{
 		String dateT="";
@@ -528,7 +272,7 @@ public void setFromPort(String fromPort) {
 		+(this.getTs_voyage_num()==null?"":this.getTs_voyage_num())+"\t"
 		+this.getCompany_abbr()+"\t"
 		+this.getAgent()+"\t"
-		+(this.getTs()==null?"":this.getTs())+"\t"
+		+(this.getTS()==null?"":this.getTS())+"\t"
 		+this.toRouteDesc()+"\t\t"
 		+(this.getTs_date()=="-"?"":dateTS);
 	}
@@ -555,14 +299,7 @@ public void setFromPort(String fromPort) {
 		this.getPort()+this.getDateT()+this.getDateT()+this.getVessel()+this.getVoyage_num()+this.getCompany_abbr()
 		;
 	}
-	private String operator;
-	public void setOperator(String operator) {
-		this.operator = operator;
-	}
-	public String getOperator() {
-		// TODO Auto-generated method stub
-		return operator;
-	}
+	
 	@Override
 	public String toInfoString() {
 		// TODO Auto-generated method stub

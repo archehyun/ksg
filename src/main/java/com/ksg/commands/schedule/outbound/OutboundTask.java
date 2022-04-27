@@ -1070,7 +1070,7 @@ public class OutboundTask extends SimpleTask{
 					while(sIterator.hasNext())
 					{
 						ScheduleData oneData = sIterator.next();
-						if(oneData.getTs().equals("TS"))
+						if(oneData.getTS().equals("TS"))
 						{
 							fromPort2.setAttribute(XML_INFO.XML_TAG_TS,"true");
 						}	
@@ -1100,7 +1100,7 @@ public class OutboundTask extends SimpleTask{
 						{	
 							MyElement tsVessel = new MyElement(XML_INFO.XML_TAG_TS_VESSEL);
 							vessel.addContent(tsVessel);
-							tsVessel.setAttribute(XML_INFO.XML_TAG_TS_PORT,oneData.getTs());
+							tsVessel.setAttribute(XML_INFO.XML_TAG_TS_PORT,oneData.getTS());
 							tsVessel.setAttribute(XML_INFO.XML_TAG_TS_VESSELNAME,oneData.getTs_vessel());
 							tsVessel.setAttribute(XML_INFO.XML_TAG_TS_DATE,oneData.getTs_date());
 						}
