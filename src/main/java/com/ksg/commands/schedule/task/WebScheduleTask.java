@@ -698,7 +698,7 @@ public class WebScheduleTask extends SimpleTask{
 				tablePort.setTable_id(table.getTable_id());
 				TablePort info;
 				info = (TablePort) tableService.getTablePort(tablePort);
-				scheduledata.setTs(info.getPort_name());
+				scheduledata.setTS(info.getPort_name());
 
 				String date[][]=null;
 				try {

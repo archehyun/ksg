@@ -10,29 +10,18 @@
  *******************************************************************************/
 package com.ksg.domain;
 
+import lombok.Data;
+
 /**
  * @author ¹ÚÃ¢Çö
  *
  */
+@Data
 public abstract class BaseInfo {
 	
-	protected String updatetime;
+	protected String updatetime;	
 	
-	public String getUpdatetime() {
-		return updatetime;
-	}
 
-	public void setUpdatetime(String updatetime) {
-		this.updatetime = updatetime;
-	}
-
-	public String getUpdateUser() {
-		return updateUser;
-	}
-
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
 	protected String updateUser;
 
 	protected String searchKeyword;
@@ -40,28 +29,6 @@ public abstract class BaseInfo {
 	protected String orderBy;
 	
 	protected String orderby;
-	public String getOrderby() {
-		return orderby;
-	}
-
-	public void setOrderby(String orderby) {
-		this.orderby = orderby;
-	}
-
-	public String getOrderBy() {
-		return orderBy;
-	}
-
-	public void setOrderBy(String orderBy) {
-		this.orderBy = orderBy;
-	}
-
-	public String getSearchKeyword() {
-		return searchKeyword;
-	}
-
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
-	}
+	
 	public abstract String toInfoString();
 }

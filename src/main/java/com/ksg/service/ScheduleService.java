@@ -154,11 +154,11 @@ public interface ScheduleService extends PageService{
 	 */
 	public List selectScheduleDateList()throws SQLException;
 	
-	public int getScheduleTotalCount()throws SQLException;
+	//public int getScheduleTotalCount()throws SQLException;
 	
-	public int getScheduleNTopCount(ScheduleData data)throws SQLException;
+	//public int getScheduleNTopCount(ScheduleData data)throws SQLException;
 	
-	public List getScheduleListNTop(ScheduleData data) throws SQLException;
+	//public List getScheduleListNTop(ScheduleData data) throws SQLException;
 
 	
 	/**콘솔 스케줄 조회 

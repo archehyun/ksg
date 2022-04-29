@@ -165,7 +165,7 @@ public class NormalScheduleTable extends KSGScheduleTable{
 					data.getPort(),
 					data.getGubun(),
 					data.getPort(),
-					data.getTs(),
+					data.getTS(),
 					data.getTs_vessel(),
 					data.getCommon_shipping(),
 					data.getArea_code()

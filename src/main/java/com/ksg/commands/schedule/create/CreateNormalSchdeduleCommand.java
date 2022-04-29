@@ -334,7 +334,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 				//tablePort.setPort_index(table.getDirection());
 				tablePort.setTable_id(table.getTable_id());
 				TablePort info = getTablePort(tablePort);
-				scheduledata.setTs(info.getPort_name());
+				scheduledata.setTS(info.getPort_name());
 
 
 				String date[][]=null;
