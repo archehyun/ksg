@@ -58,9 +58,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 	private Vector<KSGHashMap> ksgHashMapList;
 
-	private ADVScheduleDAO advScheduleDAO;
-
-	
+	private ADVScheduleDAO advScheduleDAO;	
 
 	KSGModelManager manager = KSGModelManager.getInstance();
 
@@ -70,6 +68,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 		advScheduleDAO = new ADVScheduleDAO();
 	}
 
+	@Override
 	public List getInboundPortList() throws SQLException{
 		return schduleDAO.getInboundPortList();
 	}
@@ -196,10 +195,10 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 
 
-	public int getScheduleTotalCount() throws SQLException {
-		// TODO Auto-generated method stub
-		return schduleDAO.getScheduleTotalCount();
-	}
+//	public int getScheduleTotalCount() throws SQLException {
+//		// TODO Auto-generated method stub
+//		return schduleDAO.getScheduleTotalCount();
+//	}
 
 	public int getScheduleNTopCount(ScheduleData data) throws SQLException {
 		// TODO Auto-generated method stub
@@ -449,7 +448,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 					HashMap<String, Object> fromPorts =(HashMap<String, Object>) toPorts.get(toPort);
 
 					// 도착항 있을 경우
-					if(fromPorts.containsKey(fromPort))					  
+					if(fromPorts.containsKey(fromPort))
 					{
 						List list =(List) fromPorts.get(fromPort); 
 						list.add(item);
@@ -756,12 +755,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 				areaList.put(area_name, newFromPorts);
 				
 			}
-
-			
 		}
-
-
-
 
 		return areaList;
 	}
