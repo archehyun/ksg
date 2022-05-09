@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 /**DAO 추상 클래스
@@ -15,12 +17,16 @@ public abstract class AbstractDAO {
 
 	protected SqlMapClient sqlMap;
 	
+	protected SqlSession sesson;
+	
 	protected String namespace;
 
 
 	public AbstractDAO() {
 		try {
 			sqlMap = SqlMapManager.getSqlMapInstance();
+			
+			sesson = SqlMapManager.getSqlSession();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -30,6 +36,8 @@ public abstract class AbstractDAO {
 	public List selectList(String queryId, Object param) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList(queryId, param);
+		
+		//return sesson.selectList(queryId, param);
 
 	}
 
