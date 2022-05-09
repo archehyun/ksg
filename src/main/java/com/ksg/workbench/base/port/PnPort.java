@@ -47,6 +47,8 @@ import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
 
@@ -61,6 +63,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
   * @프로그램 설명 :항구 정보 관리 화면
 
   */
+@Slf4j
 public class PnPort extends PnBase implements ActionListener{
 
 	/**
@@ -172,10 +175,6 @@ public class PnPort extends PnBase implements ActionListener{
 		butNewAbbr.addActionListener(this);
 		butDelAbbr.addActionListener(this);
 
-		
-		//pnButtomRight.add(butNewAbbr);
-		
-		//pnButtomRight.add(butDelAbbr);
 		pnButtom.add(pnButtomRight);
 		return pnButtom;
 	}
@@ -538,6 +537,8 @@ public class PnPort extends PnBase implements ActionListener{
 
 	@Override
 	public void fnSearch() {
+		
+		
 		HashMap<String, Object> param = new HashMap<String, Object>();
 		
 		if(cbxAreaCode.getSelectedIndex()>0)
@@ -577,7 +578,8 @@ public class PnPort extends PnBase implements ActionListener{
 			
 			param.put("PAGE_NO", 1);
 			
-			logger.info("param:"+param);
+			
+			log.info("param:"+param);
 			
 			HashMap<String, Object> result = (HashMap<String, Object>) portService.selectListByPage(param);
 			

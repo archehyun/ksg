@@ -42,6 +42,8 @@ import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
 
@@ -55,6 +57,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
  * @프로그램 설명 : 선사 정보 관리 화면
 
  */
+@Slf4j
 public class PnCompany extends PnBase implements ActionListener{
 
 	/**
@@ -95,7 +98,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private JComponent buildCenter()
 	{
-		logger.debug("화면 초기화");
+		log.debug("화면 초기화");
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());	
 
 		KSGTableColumn columns[] = new KSGTableColumn[5];
@@ -149,7 +152,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 		
-		logger.debug("화면 초기화 종료");
+		log.debug("화면 초기화 종료");
 		return pnMain;
 
 	}
@@ -328,7 +331,7 @@ public class PnCompany extends PnBase implements ActionListener{
 	@Override
 	public void fnSearch() {
 
-		logger.debug("start");
+		log.debug("start");
 		
 		HashMap<String, Object> param = new HashMap<String, Object>();
 
@@ -357,7 +360,7 @@ public class PnCompany extends PnBase implements ActionListener{
 		
 		try {
 			
-			logger.info("param:"+param);
+			log.info("param:"+param);
 			
 			int page_size = tableH.getPageSize();
 			

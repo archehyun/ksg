@@ -7,8 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -16,16 +14,12 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.view.comp.table.model.KSGTableModel;
-import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.base.BaseInfoUI;
 
 /**
@@ -44,18 +38,8 @@ public abstract class PnBase extends KSGPanel implements ComponentListener{
 	// 초기 데이터 표시 여부
 	protected boolean isShowData=true;	
 	
-	protected Logger logger = LogManager.getLogger(this.getClass());
-	
-	//protected ArrayList<String> currentColumnNameList;
-	
-	//protected KSGTableModel model;
-	
-	//protected JTable	tblTable;
-	
-	//protected int searchTotalSize;
-	
-	//protected int totalSize;
-	
+	//protected Logger logger = LogManager.getLogger(this.getClass());	
+
 	private static final long serialVersionUID = 1L;
 	
 	DAOImplManager daoImplManager = DAOImplManager.getInstance();
@@ -68,36 +52,15 @@ public abstract class PnBase extends KSGPanel implements ComponentListener{
 	
 	
 	public PnBase(BaseInfoUI baseInfoUI) {
+		
 		this.baseInfoUI = baseInfoUI;
-		
-		//order by를 위한 칼럼 목록 생성		
-		//arrangeMap = new HashMap<String, String>();
-		
-		// 칼럼 순서 정보를 저장하기 위한 클래스 생성
-	//	currentColumnNameList = new ArrayList<String>();		
 		
 		this.setLayout(new BorderLayout());		
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.gray));
 	}
 	
-//	public JScrollPane createTablePanel()
-//	{
-//		tblTable = new JTable();
-//		
-//		JScrollPane jScrollPane = new JScrollPane(tblTable);
-//		
-//		jScrollPane.getViewport().setBackground(Color.white);
-//		
-//		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-//		
-//		tblTable.setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
-//		
-//		tblTable.setGridColor(Color.lightGray);	
-//	
-//		
-//		return jScrollPane;
-//	}
+
 	
 	protected KSGPanel buildTitleIcon(String title)
 	{
