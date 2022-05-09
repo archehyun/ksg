@@ -61,6 +61,8 @@ import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
 
@@ -75,6 +77,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
  * @프로그램 설명 : 선박 관리 화면
 
  */
+@Slf4j
 public class PnVessel extends PnBase implements ActionListener {
 
 	private static final String STRING_ALL_DELETE 		= "전체 선박 데이터 삭제";
@@ -459,7 +462,7 @@ public class PnVessel extends PnBase implements ActionListener {
 	 * 
 	 */
 	private void insertAction() {
-		logger.debug("insert");
+		log.debug("insert");
 		KSGDialog dialog = new InsertVesselInfoDialog(this);
 		dialog.createAndUpdateUI();
 
@@ -562,7 +565,7 @@ public class PnVessel extends PnBase implements ActionListener {
 
 			param.put("PAGE_NO", 1);
 
-			logger.info("param:{}",param);
+			log.info("param:{}",param);
 
 
 			HashMap<String, Object> result = (HashMap<String, Object>) vesselService.selectListByPage(param);			
