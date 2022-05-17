@@ -46,5 +46,19 @@ public class AreaDAOImpl extends AbstractDAO{
 		insert("area.insertArea",param);
 		
 	}
+	
+	public List getAreaListGroupBy(String groupBy) throws SQLException {
+		
+		if(groupBy.equals("area"))
+		{
+			return sqlMap.queryForList("area.selectAreaListGroupByAreaName");	
+		}
+		else
+			
+		{
+			return sqlMap.queryForList("area.selectAreaCodeListGroupByAreaCode");
+		}
+		
+	}
 
 }

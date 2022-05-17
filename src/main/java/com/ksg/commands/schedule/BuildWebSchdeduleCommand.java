@@ -26,10 +26,11 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.JDOMException;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.task.WebScheduleTask;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -47,7 +48,7 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 @SuppressWarnings("unchecked")
-public class BuildWebSchdeduleCommand implements KSGCommand 
+public class BuildWebSchdeduleCommand implements IFCommand 
 {
 	private static final String TS = "TS";
 	XTGManager manager = new XTGManager();
@@ -58,7 +59,7 @@ public class BuildWebSchdeduleCommand implements KSGCommand
 
 	private String[][] arrayDatas;
 	private BaseService baseService;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	String outPortData;
 	String outToPortData;
 	private String[] portData;
@@ -116,7 +117,7 @@ public class BuildWebSchdeduleCommand implements KSGCommand
 
 	}
 
-	private int result=KSGCommand.PROCESS;
+	private int result=IFCommand.PROCESS;
 	public int execute() {
 		
 			
@@ -246,7 +247,7 @@ public class BuildWebSchdeduleCommand implements KSGCommand
 				tablePort.setTable_id(table.getTable_id());
 				TablePort info;
 				info = (TablePort) tableService.getTablePort(tablePort);
-				scheduledata.setTs(info.getPort_name());
+				scheduledata.setTS(info.getPort_name());
 
 				String date[][]=null;
 				try {

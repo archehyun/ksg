@@ -377,8 +377,7 @@ public class UpdateTableInfoDialog extends KSGDialog implements ActionListener,F
 		this.getContentPane().add(buildInfo(), BorderLayout.NORTH);
 		this.getContentPane().add(pnMain, BorderLayout.CENTER);
 		this.getContentPane().add(buildButtom(), BorderLayout.SOUTH);
-		this.getContentPane().add(createMargin(), BorderLayout.EAST);
-		this.getContentPane().add(createMargin(), BorderLayout.WEST);
+		
 		this.setSize(375, 700);
 		ViewUtil.center(this, false);
 		this.setShipperTableData(tableData);

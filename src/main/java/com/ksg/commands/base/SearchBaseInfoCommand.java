@@ -27,7 +27,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Company;
@@ -38,7 +38,7 @@ import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.model.KSGTableModel;
 
-public class SearchBaseInfoCommand implements KSGCommand {
+public class SearchBaseInfoCommand implements IFCommand {
 
 	
 	SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");

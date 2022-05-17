@@ -11,18 +11,17 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.service.impl.ScheduleServiceLogic;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
 
-public class PnNormal extends JPanel implements ActionListener{
+public class PnNormal extends KSGPanel implements ActionListener{
 
 	/**
 	 * 
@@ -39,7 +38,7 @@ public class PnNormal extends JPanel implements ActionListener{
 
 	private JComboBox cbxNormalInOut;
 	
-	private ScheduleServiceLogic scheduleService;
+	
 	
 	private ScheduleService service;
 	
@@ -52,12 +51,13 @@ public class PnNormal extends JPanel implements ActionListener{
 	@SuppressWarnings("rawtypes")
 	public PnNormal() {
 		
-		this.setLayout(new BorderLayout());
+		super(new BorderLayout());
+		
 
-		scheduleService = new ScheduleServiceLogic();
+		
 		service = new ScheduleServiceImpl();
-		JPanel pnNormalSearchMain = new JPanel(new BorderLayout());
-		JPanel pnNormalSearchCenter = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
+		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		cbxNormalInOut = new JComboBox();
 		cbxNormalInOut.addItem("전체");
 		cbxNormalInOut.addItem("Inbound");
@@ -95,7 +95,7 @@ public class PnNormal extends JPanel implements ActionListener{
 
 
 
-		JPanel pnNomalSearchEast =new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnNomalSearchEast =new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		lblNormalCount = new JLabel();
 		lblNormalCount.setText("0");
 		pnNomalSearchEast.add(lblNormalCount);
@@ -110,15 +110,15 @@ public class PnNormal extends JPanel implements ActionListener{
 		tableH = new KSGTablePanel("스케줄 목록");
 		
 		tableH.addColumn(new KSGTableColumn("InOutType", "I/O"));
-		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID"));
-		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명"));
-		tableH.addColumn(new KSGTableColumn("agent", "에이전트"));
+		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID",150));
+		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",150));
+		tableH.addColumn(new KSGTableColumn("agent", "에이전트",150));
 		tableH.addColumn(new KSGTableColumn("vessel", "선박명",200));
-		tableH.addColumn(new KSGTableColumn("date_issue", "출력일자"));
+		tableH.addColumn(new KSGTableColumn("date_issue", "출력일자",100));
 		tableH.addColumn(new KSGTableColumn("voyage_num", "항차번호"));
 		tableH.addColumn(new KSGTableColumn("fromPort", "출발항"));
-		tableH.addColumn(new KSGTableColumn("DateF", "출발일"));
-		tableH.addColumn(new KSGTableColumn("DateT", "도착일"));
+		tableH.addColumn(new KSGTableColumn("DateF", "출발일", 90));
+		tableH.addColumn(new KSGTableColumn("DateT", "도착일", 90));
 		tableH.addColumn(new KSGTableColumn("port", "도착항"));
 		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
 		
@@ -137,8 +137,6 @@ public class PnNormal extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 		HashMap<String, Object> param = new HashMap<String, Object>();
-		
-		
 		
 		try {
 			
@@ -203,47 +201,6 @@ public class PnNormal extends JPanel implements ActionListener{
 		}
 
 
-		
-		/*switch (cbxNormalSearch.getSelectedIndex()) {
-		// case 0: 전체
-		case 1: // 테이블 아이디
-			data.setTable_id(searchOption);	
-			break;
-		case 2: // 선사명
-			data.setCompany_abbr(searchOption);	
-			break;					
-		case 3: // 에이전트
-			data.setAgent(searchOption);	
-			break;
-		case 4: // 선박 명
-			data.setVessel(searchOption);	
-			break;					
-		case 5: // Voyage번호
-			data.setVoyage_num(searchOption);	
-			break;
-		case 6: // 출발항
-			data.setFromPort(searchOption);	
-			break;
-		case 7: // 출발일
-			data.setDateF(searchOption);	
-			break;
-		case 8: // 도착일
-			data.setDateT(searchOption);	
-			break;
-		case 9: // 도착항
-			data.setPort(searchOption);	
-			break;					
-		default:
-			break;
-		}*/
-
-
-		/*try {
-			lblNormalCount.setText(String.valueOf(_tblNormalScheduleList.updateTable(data)));
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
 		
 	}
 

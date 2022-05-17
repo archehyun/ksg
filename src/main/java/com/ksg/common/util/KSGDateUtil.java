@@ -30,15 +30,15 @@ import com.ksg.schedule.logic.web.VesselDateNotMatchException;
  *
  */
 public class KSGDateUtil {
-	
-	
+
+
 	private static String datePattern = "(\\d{1,2})/(\\d{1,2})";
 	private static String datePattern1 = "(\\d{1,2})/(\\d{1,2})-(\\d{1,2})/(\\d{1,2})";
 	private static String datePattern1_1 = "(\\d{1,2})/(\\d{1,2})-(\\d{1,2})/(\\d{1,2})\\w+";
 	private static String datePattern1_2 = "(\\d{1,2}).(\\d{1,2})/(\\d{1,2}).(\\d{1,2})";
 	private static String datePattern2 = "(\\d{1,2})/(\\d{1,2})-(\\d{1,2})";
 	private static String datePattern2_1 = "(\\d{1,2})/(\\d{1,2})-(\\d{1,2})\\w+";
-	
+
 	public final static long SECOND_MILLIS = 1000;
 	public final static long MINUTE_MILLIS = SECOND_MILLIS*60;
 	public final static long HOUR_MILLIS = MINUTE_MILLIS*60;
@@ -55,20 +55,20 @@ public class KSGDateUtil {
 	public final static int TIME_TYPE_3=3;
 	public final static int TIME_TYPE_4=4;
 	public final static int TIME_TYPE_ERROR=0;
-	
+
 	public final static int FORWARD =0;
 	public final static int BACK =1;
-	
+
 
 	private static String pattenList[][]=
-	{{"\\d{4}/\\d{1,2}/\\d{1,2}","yyyy/MM/dd"},
-		{"\\d{4}.\\d{1,2}.\\d{1,2}","yyyy.M.d"},
-		{"\\d{1,2}/\\d{1,2}","M/d"},
-		{"\\d{4}-\\d{1,2}-\\d{1,2}","yyyy-MM-dd"}};
+		{{"\\d{4}/\\d{1,2}/\\d{1,2}","yyyy/MM/dd"},
+				{"\\d{4}.\\d{1,2}.\\d{1,2}","yyyy.M.d"},
+				{"\\d{1,2}/\\d{1,2}","M/d"},
+				{"\\d{4}-\\d{1,2}-\\d{1,2}","yyyy-MM-dd"}};
 	private static String strYear;
 
 	public static final int TYPE=0;
-	
+
 	public static String format(Date date)
 	{
 		return dateFormat.format(date);
@@ -118,7 +118,7 @@ public class KSGDateUtil {
 		}
 		return c.getTime();
 	}
-	
+
 	/**
 	 * @param value
 	 * @param type
@@ -184,7 +184,7 @@ public class KSGDateUtil {
 		return new java.sql.Date( dateFormat.parse( value.toString() ).getTime() );
 	}
 
-	
+
 
 	/**
 	 * @param value
@@ -194,7 +194,7 @@ public class KSGDateUtil {
 	 */
 	public static java.sql.Date toDate3( Object value ) throws  DateFormattException
 	{
-		
+
 		try
 		{
 			if(!KSGDateUtil.isDashFomatt((String) value)) throw  new DateFormattException((String) value);
@@ -220,7 +220,7 @@ public class KSGDateUtil {
 		{
 			throw new DateFormattException((String) value);
 		}
-		
+
 	}
 
 	//"yyyy/MM/dd"
@@ -291,13 +291,13 @@ public class KSGDateUtil {
 					Calendar calendar =Calendar.getInstance();
 					int year =Integer.parseInt(strYear);
 					calendar.set(Calendar.YEAR,year );
-					
+
 					SimpleDateFormat ormat = new SimpleDateFormat("MM");
 					String month = ormat.format(dashdateFormat.parse( value).getTime());
 					ormat.applyPattern("dd");
 					String day = ormat.format(dashdateFormat.parse( value).getTime());
-					
-					
+
+
 					return  new java.sql.Date(dateFormat.parse(strYear+"-"+month+"-"+day).getTime() );
 				}catch(Exception e)
 				{
@@ -305,8 +305,8 @@ public class KSGDateUtil {
 				}
 			}else if( TYPE==TIME_TYPE_1)
 			{
-			
-				
+
+
 			}
 
 			return  new java.sql.Date(dashdateFormat.parse( value).getTime() );	
@@ -316,9 +316,9 @@ public class KSGDateUtil {
 			throw new  ParseException(value, 0);
 		}	
 	}
-	
-	
-	
+
+
+
 	/**
 	 * @param value
 	 * @return
@@ -348,7 +348,7 @@ public class KSGDateUtil {
 					Calendar calendar =Calendar.getInstance();
 					int year =Integer.parseInt(strYear);
 					calendar.set(Calendar.YEAR,year );
-					
+
 					java.sql.Date t = new java.sql.Date( dashdateFormat.parse( value).getTime() );
 					SimpleDateFormat ormat = new SimpleDateFormat("M");
 
@@ -367,7 +367,7 @@ public class KSGDateUtil {
 					Calendar calendar =Calendar.getInstance();
 					int year =Integer.parseInt(strYear);
 					calendar.set(Calendar.YEAR,year );
-					
+
 					java.sql.Date t = new java.sql.Date( dashdateFormat.parse( value).getTime() );
 					SimpleDateFormat ormat = new SimpleDateFormat("M");
 
@@ -400,8 +400,8 @@ public class KSGDateUtil {
 		int day = cal.get( Calendar.DAY_OF_MONTH );
 
 		return "" + year
-		+ "-" + month
-		+ "-" + day;
+				+ "-" + month
+				+ "-" + day;
 	}
 	public static int searchMatchType(String date)
 	{
@@ -419,10 +419,16 @@ public class KSGDateUtil {
 		return date.matches(datePattern);
 	}
 	public static boolean isThreeDayUnder(String onedate, String twodate) {
-		
+
 		return isDayUnder(3, onedate, twodate);
 	}
-	
+	public static int dayDiff(String earlierDate, String laterDate){
+		try {
+			return daysDiff(KSGDateUtil.toDate4(earlierDate), KSGDateUtil.toDate4(laterDate));
+		} catch (ParseException e) {
+			throw new RuntimeException(e.getMessage()+"earlierDate:"+earlierDate+", laterDate:"+laterDate);
+		}
+	}
 	public static boolean isDayUnder(int day,String onedate, String twodate) {
 
 		try {
@@ -531,7 +537,7 @@ public class KSGDateUtil {
 			return date;
 		}
 	}
-	
+
 	public static int selectYear(int currentMonth, int targetMonth,int currentYear )
 	{
 		int gapMonth = currentMonth -targetMonth;
@@ -561,7 +567,7 @@ public class KSGDateUtil {
 			}
 		}
 	}
-	
+
 	public static String rowerDate(String onedate, String twodate) {
 		int oneTMonth =getMonth(onedate);
 		int twoTMonth =getMonth(twodate);
@@ -591,7 +597,7 @@ public class KSGDateUtil {
 		int twoTMonth =getMonth(twodate);
 		int oneTDay =getDay(onedate);
 		int twoTDay =getDay(twodate);
-		
+
 		if(oneTMonth>twoTMonth)
 		{
 			return onedate;
@@ -619,7 +625,7 @@ public class KSGDateUtil {
 			throw new RuntimeException(e.getMessage()+"date:"+date);
 		}
 	}
-	
+
 	/**
 	 * @see µÞ³¯Â¥ ¼±ÅÃ
 	 * @param date
@@ -629,8 +635,8 @@ public class KSGDateUtil {
 	public static int[] getETD(String date)
 			throws NotSupportedDateTypeException {
 		int monthAndDay[] = new int[2];
-		
-		
+
+
 		//"(\\d{1,2})/(\\d{1,2})";
 		if(date.matches(datePattern))
 		{
@@ -653,7 +659,7 @@ public class KSGDateUtil {
 			matcher.lookingAt();
 
 
-/*			monthF=Integer.valueOf(matcher.group(3));
+			/*			monthF=Integer.valueOf(matcher.group(3));
 			dayF=Integer.valueOf(matcher.group(4));*/
 			monthAndDay[0]=Integer.valueOf(matcher.group(3));
 			monthAndDay[1]=Integer.valueOf(matcher.group(4));
@@ -666,7 +672,7 @@ public class KSGDateUtil {
 			Pattern patt = Pattern.compile(datePattern1_1);
 			Matcher matcher = patt.matcher(date);			
 			matcher.lookingAt();
-/*			monthF=Integer.valueOf(matcher.group(3));
+			/*			monthF=Integer.valueOf(matcher.group(3));
 			dayF=Integer.valueOf(matcher.group(4));*/
 			monthAndDay[0]=Integer.valueOf(matcher.group(3));
 			monthAndDay[1]=Integer.valueOf(matcher.group(4));
@@ -679,7 +685,7 @@ public class KSGDateUtil {
 			matcher.lookingAt();
 
 
-/*			monthF=Integer.valueOf(matcher.group(3));
+			/*			monthF=Integer.valueOf(matcher.group(3));
 			dayF=Integer.valueOf(matcher.group(4));*/
 			monthAndDay[0]=Integer.valueOf(matcher.group(3));
 			monthAndDay[1]=Integer.valueOf(matcher.group(4));
@@ -690,7 +696,7 @@ public class KSGDateUtil {
 			Pattern patt = Pattern.compile(datePattern2);
 			Matcher matcher = patt.matcher(date);			
 			matcher.lookingAt();
-/*			monthF=Integer.valueOf(matcher.group(1));
+			/*			monthF=Integer.valueOf(matcher.group(1));
 			dayF=Integer.valueOf(matcher.group(3));*/
 			monthAndDay[0]=Integer.valueOf(matcher.group(1));
 			monthAndDay[1]=Integer.valueOf(matcher.group(3));
@@ -702,7 +708,7 @@ public class KSGDateUtil {
 			Pattern patt = Pattern.compile(datePattern2_1);
 			Matcher matcher = patt.matcher(date);			
 			matcher.lookingAt();
-/*			monthF=Integer.valueOf(matcher.group(1));
+			/*			monthF=Integer.valueOf(matcher.group(1));
 			dayF=Integer.valueOf(matcher.group(3));*/
 			monthAndDay[0]=Integer.valueOf(matcher.group(1));
 			monthAndDay[1]=Integer.valueOf(matcher.group(3));
@@ -721,8 +727,8 @@ public class KSGDateUtil {
 	public static int[] getETA(String date)
 			throws NotSupportedDateTypeException {
 		int monthAndDay[] = new int[2];
-		
-		
+
+
 		//"(\\d{1,2})/(\\d{1,2})";
 		if(date.matches(datePattern))
 		{
@@ -745,7 +751,7 @@ public class KSGDateUtil {
 			matcher.lookingAt();
 
 
-/*			monthF=Integer.valueOf(matcher.group(3));
+			/*			monthF=Integer.valueOf(matcher.group(3));
 			dayF=Integer.valueOf(matcher.group(4));*/
 			monthAndDay[0]=Integer.valueOf(matcher.group(1));
 			monthAndDay[1]=Integer.valueOf(matcher.group(2));
@@ -758,7 +764,7 @@ public class KSGDateUtil {
 			Pattern patt = Pattern.compile(datePattern1_1);
 			Matcher matcher = patt.matcher(date);			
 			matcher.lookingAt();
-/*			monthF=Integer.valueOf(matcher.group(3));
+			/*			monthF=Integer.valueOf(matcher.group(3));
 			dayF=Integer.valueOf(matcher.group(4));*/
 			monthAndDay[0]=Integer.valueOf(matcher.group(1));
 			monthAndDay[1]=Integer.valueOf(matcher.group(2));
@@ -771,7 +777,7 @@ public class KSGDateUtil {
 			matcher.lookingAt();
 
 
-/*			monthF=Integer.valueOf(matcher.group(3));
+			/*			monthF=Integer.valueOf(matcher.group(3));
 			dayF=Integer.valueOf(matcher.group(4));*/
 			monthAndDay[0]=Integer.valueOf(matcher.group(1));
 			monthAndDay[1]=Integer.valueOf(matcher.group(2));
@@ -782,7 +788,7 @@ public class KSGDateUtil {
 			Pattern patt = Pattern.compile(datePattern2);
 			Matcher matcher = patt.matcher(date);			
 			matcher.lookingAt();
-/*			monthF=Integer.valueOf(matcher.group(1));
+			/*			monthF=Integer.valueOf(matcher.group(1));
 			dayF=Integer.valueOf(matcher.group(3));*/
 			monthAndDay[0]=Integer.valueOf(matcher.group(1));
 			monthAndDay[1]=Integer.valueOf(matcher.group(2));
@@ -794,7 +800,7 @@ public class KSGDateUtil {
 			Pattern patt = Pattern.compile(datePattern2_1);
 			Matcher matcher = patt.matcher(date);			
 			matcher.lookingAt();
-/*			monthF=Integer.valueOf(matcher.group(1));
+			/*			monthF=Integer.valueOf(matcher.group(1));
 			dayF=Integer.valueOf(matcher.group(3));*/
 			monthAndDay[0]=Integer.valueOf(matcher.group(1));
 			monthAndDay[1]=Integer.valueOf(matcher.group(2));
@@ -804,7 +810,7 @@ public class KSGDateUtil {
 		}
 		return monthAndDay;
 	}
-	
+
 	/**
 	 * @param dateF
 	 * @return
@@ -889,11 +895,11 @@ public class KSGDateUtil {
 
 	}
 	public static String[] adjestDateYear(String dateF, String dateT, String inOutBoundType, int currentMonth, String currentYear) throws NotSupportedDateTypeException{
-		
+
 		dateT = dateT.replace(" ", "");
-		
+
 		dateF = dateF.replace(" ", "");
-		
+
 		int monthAndDayF[]=KSGDateUtil.getETD(dateF);
 		int monthAndDayT[]=KSGDateUtil.getETA(dateT);
 
@@ -928,11 +934,11 @@ public class KSGDateUtil {
 		return dd;
 	}
 	public static String[] adjestDateYear2(String dateF, String dateT, String inOutBoundType, int currentMonth, String currentYear) throws NotSupportedDateTypeException{
-		
+
 		dateT = dateT.replace(" ", "");
-		
+
 		dateF = dateF.replace(" ", "");
-		
+
 		int monthAndDayF[]=KSGDateUtil.getETA(dateF);
 		int monthAndDayT[]=KSGDateUtil.getETD(dateT);
 
@@ -974,7 +980,11 @@ public class KSGDateUtil {
 		// TODO Auto-generated method stub
 		return new SimpleDateFormat("M/d");
 	}
-	
+	public static int isBigger(String dateOne, String dateTwo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 
 }

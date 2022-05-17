@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
@@ -19,17 +20,18 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertyManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.view.comp.KSGCheckBox;
+import com.ksg.view.comp.KSGRadioButton;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.KSGXLSImportPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
@@ -49,53 +51,67 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 	private JTextField txfVesselCount;
 	private JLabel lblVesselCount;
 	private JLabel lblPortCount;
-	private JCheckBox cbxUnderPort;
+	private KSGCheckBox cbxUnderPort,cbxVoyage;
 	private JComboBox cbxDivider;
 	private JComboBox cbxCount;
 	private JLabel lblCount;
-	private JCheckBox cbxVoyage;
+	
 	private String port_type[]={"구분없음","슬래쉬(/)","도트(.)","괄호(())"};
 	private JComboBox cbbKey;
 	private ButtonGroup bg;
-	private JRadioButton rbGroups[];
+	private KSGRadioButton rbGroups[];
 	KSGXLSImportPanel base;
 	private ShippersTable shippersTable;
 	private Table_Property table_Property;
-	private JCheckBox cbxETD_ETA;
+	private KSGCheckBox cbxETD_ETA;
 	private JTextField txfInboundIn;
 	private JTextField txfInboundOut;
 	private JTextField txfOutboundIn;
 	private JTextField txfOutboundOut;
 	public TableInfoDialog(KSGXLSImportPanel base) {
-		try{
-			this.base=base;
-			
-			this.table_id =base.getTable_id();
-			
-			tableService = new TableServiceImpl();
-			
-			shippersTable = tableService.getTableById(table_id);
-			
-			table_Property = tableService.getTableProperty(table_id);
-			
-			logger.info("tableinfo : "+table_id+","+table_Property);
-			
-		}
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
+
+		this.base=base;
+
+		this.table_id =base.getTable_id();
+
+		tableService = new TableServiceImpl();
+
+		this.addComponentListener(this);
+
+
+
+
 	}
 
 	public void createAndUpdateUI() {
+		
+		
 		this.setModal(true);
-		this.setTitle("테이블 정보 및 옵션");
+		
+		this.setTitle("테이블 정보 및 옵션");		
 
-		JPanel pnMain = new JPanel(new BorderLayout());
+		getContentPane().add(buildCenter());
+		
+		
+		getContentPane().add(buildControl(),BorderLayout.SOUTH);
+	
+
+		ViewUtil.center(this,true);
+		
+		
+		this.setResizable(false);
+
+		setVisible(true);
+
+	}
+	
+	private KSGPanel buildCenter()
+	{
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
 		Box pnList =Box.createVerticalBox();
 
-		JPanel pn0 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pn0 = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel label0 = new JLabel("테이블 아이디");
 		JTextField txfTable_id = new JTextField(15);
 		txfTable_id.setEditable(false);
@@ -104,7 +120,7 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		txfTable_id.setText(table_id);
 
 		Box pnTableInfoBack= Box.createVerticalBox();
-		JPanel pnVesselAndPortCount = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnVesselAndPortCount = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnTableInfoBack.setBorder(BorderFactory.createTitledBorder("테이블 정보"));
 		lblPortCount = new JLabel("항구수");
 		txfPortCount = new JTextField(3);						
@@ -117,10 +133,10 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		pnVesselAndPortCount.add(lblVesselCount);
 		pnVesselAndPortCount.add(txfVesselCount);
 
-		JPanel pnInboundIn = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JPanel pnInboundOut = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JPanel pnOutboundIn = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JPanel pnOutboundOut = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnInboundIn = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnInboundOut = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnOutboundIn = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnOutboundOut = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		txfInboundIn = new JTextField(20);
 		txfInboundOut = new JTextField(20);
@@ -144,20 +160,20 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 
 
 		pnTableInfoBack.add(pnInboundIn);
-		
+
 		pnTableInfoBack.add(pnInboundOut);
-		
+
 		pnTableInfoBack.add(pnOutboundIn);
-		
+
 		pnTableInfoBack.add(pnOutboundOut);
 
 
-		JPanel pnTableOption = new JPanel(new GridLayout(0,1));
+		KSGPanel pnTableOption = new KSGPanel(new GridLayout(0,1));
 		pnTableOption.setBorder(BorderFactory.createTitledBorder("테이블 옵션"));
 
-		cbxUnderPort = new JCheckBox("하위 항구 존재");
-		cbxVoyage = new JCheckBox("Voyage 항목 생략 됨");
-		cbxETD_ETA = new JCheckBox("ETA/ETD 적용");
+		cbxUnderPort = new KSGCheckBox("하위 항구 존재");
+		cbxVoyage = new KSGCheckBox("Voyage 항목 생략 됨");
+		cbxETD_ETA = new KSGCheckBox("ETA/ETD 적용");
 		cbxDivider = new JComboBox();
 		cbxDivider.setPreferredSize(new Dimension(80,20));
 
@@ -201,9 +217,9 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		cbxCount.addItem(2);
 		cbxCount.addItem(3);
 
-		JPanel pnUnderPort = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JPanel pnDivider= new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JPanel pnKeyword= new JPanel(new FlowLayout(FlowLayout.LEFT));		
+		KSGPanel pnUnderPort = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnDivider= new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnKeyword= new KSGPanel(new FlowLayout(FlowLayout.LEFT));		
 
 		pnUnderPort.add(cbxUnderPort);
 		pnUnderPort.add(cbxVoyage);
@@ -211,7 +227,7 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		JLabel label = new JLabel("구분자");
 		label.setPreferredSize(new Dimension(100, 20));
 		pnDivider.add(label);
-		
+
 		label.setVisible(false);
 		pnDivider.add(cbxDivider);
 		pnDivider.add(lblCount);
@@ -224,22 +240,22 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 
 
 		pnTableOption.add(pnUnderPort);
-		
+
 		pnTableOption.add(pnKeyword);
 
 		pnTableOption.add(pnDivider);
 
 		JLabel lblPortdivider = new JLabel("항구 구분");
-		
+
 		pnTableOption.add(lblPortdivider);
 
-		JPanel pnPortOption = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnPortOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		bg = new ButtonGroup();
 		Vector butList = new Vector();
-		rbGroups = new JRadioButton[port_type.length];
+		rbGroups = new KSGRadioButton[port_type.length];
 		for(int i=0;i<port_type.length;i++)
 		{
-			rbGroups[i] = new JRadioButton(port_type[i]);
+			rbGroups[i] = new KSGRadioButton(port_type[i]);
 			pnPortOption.add(rbGroups[i]);
 			bg.add(rbGroups[i]);
 		}
@@ -253,9 +269,13 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		pnMain.add(pnList);
 
 		pnMain.add(pnList);
-
-
-		JPanel pnControl =new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		return pnMain;
+	}
+	
+	private KSGPanel buildControl()
+	{
+		KSGPanel pnControl =new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		JButton butApply = new JButton("적용(A)");
 		butApply.setActionCommand("적용");
@@ -268,80 +288,7 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 		butClose.setMnemonic(KeyEvent.VK_C);
 		butClose.addActionListener(this);
 		pnControl.add(butClose);
-
-		getContentPane().add(pnMain);
-		getContentPane().add(pnControl,BorderLayout.SOUTH);
-		getContentPane().add(KSGDialog.createMargin(),BorderLayout.WEST);
-		getContentPane().add(KSGDialog.createMargin(),BorderLayout.EAST);
-
-
-		// 값 할당
-
-		if(table_Property.getVoyage()==0)
-
-		{
-			cbxVoyage.setSelected(false);
-		}
-		else
-		{
-			cbxVoyage.setSelected(true);
-		}
-		if(table_Property.getEta()==0)
-
-		{
-			cbxETD_ETA.setSelected(false);
-		}
-		else
-		{
-			cbxETD_ETA.setSelected(true);
-		}
-		txfPortCount.setText(String.valueOf(shippersTable.getPort_col()));
-		txfVesselCount.setText(String.valueOf(shippersTable.getVsl_row()));
-
-		if(table_Property.getVesselvoydivider().equals("/"))
-		{
-			cbxDivider.setSelectedIndex(0);
-		}else if(table_Property.getVesselvoydivider().equals(" "))
-		{
-			cbxDivider.setSelectedIndex(1);
-		}
-		else if(table_Property.getVesselvoydivider().equals("\n"))
-		{
-			cbxDivider.setSelectedIndex(2);
-		}
-
-		if(table_Property.getUnder_port()==0)
-		{
-			cbxUnderPort.setSelected(false);	
-		}else
-		{
-			cbxUnderPort.setSelected(true);
-		}
-
-		cbbKey.setSelectedIndex(table_Property.getTable_type()-1);
-
-		if(cbbKey.getSelectedIndex()==2)
-		{
-			cbxDivider.setVisible(true);
-		}else
-		{
-			cbxDivider.setVisible(false);
-		}
-
-		cbxCount.setSelectedIndex(table_Property.getVesselvoycount()-1);
-		txfInboundIn.setText(shippersTable.getIn_port().trim());
-		txfInboundOut.setText(shippersTable.getIn_to_port().trim());
-		txfOutboundIn.setText(shippersTable.getOut_port().trim());
-		txfOutboundOut.setText(shippersTable.getOut_to_port().trim());
-
-
-		bg.setSelected(rbGroups[table_Property.getPort_type()].getModel(),true);			
-
-		ViewUtil.center(this,true);
-		this.setResizable(false);
-
-		setVisible(true);
-
+		return pnControl;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -437,14 +384,14 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 
 				tableService.update(table);
 				tableService.updateTableProperty(property);
-				
+
 				KSGPropertyManager.getInstance().init();
 
 				base.update(KSGModelManager.getInstance());
 				base.updateUI();
 				setVisible(false);
 				dispose();
-			
+
 
 			} catch (SQLException e1) 
 			{
@@ -459,6 +406,85 @@ public class TableInfoDialog extends KSGDialog implements ActionListener
 
 		}
 
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+		try{
+			shippersTable = tableService.getTableById(table_id);
+
+			table_Property = tableService.getTableProperty(table_id);
+			
+
+			// 값 할당
+
+			if(table_Property.getVoyage()==0)
+
+			{
+				cbxVoyage.setSelected(false);
+			}
+			else
+			{
+				cbxVoyage.setSelected(true);
+			}
+			if(table_Property.getEta()==0)
+
+			{
+				cbxETD_ETA.setSelected(false);
+			}
+			else
+			{
+				cbxETD_ETA.setSelected(true);
+			}
+			txfPortCount.setText(String.valueOf(shippersTable.getPort_col()));
+			txfVesselCount.setText(String.valueOf(shippersTable.getVsl_row()));
+
+			if(table_Property.getVesselvoydivider().equals("/"))
+			{
+				cbxDivider.setSelectedIndex(0);
+			}else if(table_Property.getVesselvoydivider().equals(" "))
+			{
+				cbxDivider.setSelectedIndex(1);
+			}
+			else if(table_Property.getVesselvoydivider().equals("\n"))
+			{
+				cbxDivider.setSelectedIndex(2);
+			}
+
+			if(table_Property.getUnder_port()==0)
+			{
+				cbxUnderPort.setSelected(false);	
+			}else
+			{
+				cbxUnderPort.setSelected(true);
+			}
+
+			cbbKey.setSelectedIndex(table_Property.getTable_type()-1);
+
+			if(cbbKey.getSelectedIndex()==2)
+			{
+				cbxDivider.setVisible(true);
+			}else
+			{
+				cbxDivider.setVisible(false);
+			}
+
+			cbxCount.setSelectedIndex(table_Property.getVesselvoycount()-1);
+			txfInboundIn.setText(shippersTable.getIn_port().trim());
+			txfInboundOut.setText(shippersTable.getIn_to_port().trim());
+			txfOutboundIn.setText(shippersTable.getOut_port().trim());
+			txfOutboundOut.setText(shippersTable.getOut_to_port().trim());
+
+
+			bg.setSelected(rbGroups[table_Property.getPort_type()].getModel(),true);		
+
+			logger.info("tableinfo : "+table_id+","+table_Property);
+		}
+		catch (Exception ee) 
+		{
+			ee.printStackTrace();
+		}
 	}
 
 }

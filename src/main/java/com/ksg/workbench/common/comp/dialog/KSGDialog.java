@@ -20,20 +20,30 @@ import java.awt.event.ComponentListener;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
-import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
-import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.base.BaseInfoUI;
 
 /**
- * @author 박창현
- *
- */
+
+  * @FileName : KSGDialog.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 12. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 다이얼로그 추상 클래스
+
+  */
 public abstract class KSGDialog extends JDialog implements ComponentListener{
 	/**
 	 * 
@@ -52,8 +62,6 @@ public abstract class KSGDialog extends JDialog implements ComponentListener{
 	
 	public static final int FAILE=1;
 	
-	protected BaseService baseService;
-	
 	protected ADVService 	advservice;
 	
 	protected TableService tableService;
@@ -61,34 +69,26 @@ public abstract class KSGDialog extends JDialog implements ComponentListener{
 	protected ShippersTable selectedTable;
 	
 	public static final int UPDATE=1;
+	
 	public static final int INSERT=0;
 	
 	protected int type;
 	
 	protected Font defaultFont = new Font("돋음",0,10);
 	
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public KSGDialog() {
+		
 		super(KSGModelManager.getInstance().frame);
 		
-		baseService = new BaseServiceImpl();
 	}
 	public KSGDialog(Dialog arg0)
 	{
 		super(arg0);
 	}
-	public abstract void createAndUpdateUI();
-	public void createAndUpdateUI(Component compo)
-	{
-		
-	}
-	public static Component createMargin()
-	{
-		JPanel pn =  new JPanel();
-		pn.setPreferredSize(new Dimension(15,0));
-		return pn;
-	}
+	public abstract void createAndUpdateUI();	
+	
 	public static Component createMargin(int w, int h)
 	{
 		JPanel pn =  new JPanel();

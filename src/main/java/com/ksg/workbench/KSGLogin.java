@@ -17,12 +17,13 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.io.Reader;
 import java.util.Properties;
 
 import javax.swing.ImageIcon;
@@ -36,39 +37,52 @@ import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ibatis.common.resources.Resources;
-import com.ibatis.sqlmap.client.SqlMapClient;
-import com.ksg.common.dao.SqlMapManager;
+import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.model.Configure;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.domain.Member;
 import com.ksg.service.MemberService;
 import com.ksg.service.impl.MemberServiceImpl;
 
-import java.io.Reader;
 
+/**
 
-public class KSGLogin extends JDialog {
-	protected Logger logger = Logger.getLogger(getClass());
+  * @FileName : KSGLogin.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 3. 9. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
+public class KSGLogin extends JDialog implements ComponentListener{
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7969440705693961226L;
 	
-	private KSGMainFrame mainFrame;
-	
 	private JTextField txfID, txfPassword;
 	
 	private MemberService service;
+	
 	private JProgressBar bar;
+	
 	private JPanel pnProgress;
-	private JPanel pnCenter;
+	
 	private JPanel pnMain;
-	private SqlMapClient sqlMap;
+	
 	private Properties properties = new Properties();
+	
 	private Properties db_properties = new Properties();
 	private String url,db;
 	
@@ -80,7 +94,9 @@ public class KSGLogin extends JDialog {
 			config = Configure.getInstance();
 			String resource = "config/db.properties";
 			Reader reader = Resources.getResourceAsReader(resource);
-			properties.load(new FileInputStream("ksg.properties"));
+			
+			
+			properties.load(Resources.getResourceAsReader("config/ksg.properties"));
 			db_properties.load(reader);			
 
 			url = config.getProperty("mssql.ip");
@@ -92,28 +108,25 @@ public class KSGLogin extends JDialog {
 			db = (String) db_properties.get("mssql.db");
 		} 
 		catch (FileNotFoundException e) 
-		{			
+		{
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			System.exit(1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		try {
-			sqlMap=SqlMapManager.getSqlMapInstance();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.err.println(e.getMessage());
-		}
+		
 		service = new MemberServiceImpl();
 		createAndUpdateUI();
 	}
 
 	private void createAndUpdateUI() {
+		
+		this.addComponentListener(this);
 
 		bar = new JProgressBar();
-		pnCenter = new JPanel();
+		
 		JLabel label = new JLabel();
 		label.setIcon(new ImageIcon("images/loginlogo2.png"));
 
@@ -137,6 +150,10 @@ public class KSGLogin extends JDialog {
 
 		ViewUtil.center(this, true);
 		this.setVisible(true);
+		
+		
+		
+
 
 
 	}
@@ -146,9 +163,7 @@ public class KSGLogin extends JDialog {
 		pnMain.setLayout(new GridLayout(0,1));
 
 		txfID = new JTextField(20);
-		txfPassword = new JPasswordField(20);
-		txfID.setText("test");
-		txfPassword.setText("test");
+		txfPassword = new JPasswordField(20);	
 
 		txfPassword.addKeyListener(new KeyAdapter(){
 
@@ -183,7 +198,6 @@ public class KSGLogin extends JDialog {
 		pnControl.add(butOK);
 		pnControl.add(butCancel);
 
-		//pnMain.add(createItem("DB Server : ", new JLabel(url+":"+db)));
 		pnMain.add(createItem("사용자 이름 : ", txfID));
 		pnMain.add(createItem("암호 : ", txfPassword));
 		JPanel pnControlMain = new JPanel(new BorderLayout());
@@ -228,14 +242,8 @@ public class KSGLogin extends JDialog {
 			return;
 		}
 		try {
-			Member member = service.selectMember(id);
-			if(member==null)
-			{
-				JOptionPane.showMessageDialog(KSGLogin.this, id+":정보가 존재하지 않습니다.");
-				logger.error("no exist id");
-				return;
-			}
-			if(member.isMatchPassword(pw))
+
+			if(service.login(id, pw))
 			{
 				logger.info("login...");
 				bar.setIndeterminate(true);
@@ -252,14 +260,49 @@ public class KSGLogin extends JDialog {
 
 				return;
 			}
-		} catch (SQLException e1) {
-
-			JOptionPane.showMessageDialog(null, "Database에 연결할수 없습니다. \n\n\t이유 : "+e1.getMessage());
-			logger.error("do not connected database");
-
-
-			e1.printStackTrace();
 		}
+		
+		catch (ResourceNotFoundException e1) {
+
+			JOptionPane.showMessageDialog(KSGLogin.this, id+":id가 존재하지 않습니다.");
+			logger.error("no exist id");
+			return;
+		}
+		
+		catch (Exception e1) {
+			e1.getStackTrace();
+			JOptionPane.showMessageDialog(KSGLogin.this, "error:"+e1.getMessage());
+			
+			return;
+		}
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		bar.setIndeterminate(true);
+		pnMain.setVisible(false);
+		pnProgress.setVisible(true);
+		System.out.println("frame:"+KSGModelManager.getInstance().frame);
+		
+
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

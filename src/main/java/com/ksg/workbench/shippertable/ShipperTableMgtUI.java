@@ -14,6 +14,7 @@ package com.ksg.workbench.shippertable;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -39,6 +40,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -47,9 +49,10 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -59,6 +62,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JTree;
+import javax.swing.ListCellRenderer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
@@ -77,7 +81,9 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.service.ShipperTableService;
 import com.ksg.service.impl.ADVServiceImpl;
+import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.CurvedBorder;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -88,14 +94,15 @@ import com.ksg.workbench.base.dialog.UpdateTableInfoDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 import com.ksg.workbench.shippertable.comp.SearchTable;
 import com.ksg.workbench.shippertable.comp.UpdateTablePanel;
-import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
+import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 import com.ksg.workbench.shippertable.dialog.ManagePortDialog;
 /**
  * @author archehyun
  * @설명 광고 정보 조회 화면
  */
+@Deprecated
 @SuppressWarnings("unchecked")
-public class ShipperTableMgtUI extends KSGPanel implements ActionListener
+public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements ActionListener
 {	
 	private static final String ACTION_SEARCH = "조회";
 
@@ -164,7 +171,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 	private static KSGTreeDefault tree2;
 
-	private JPanel 				pnADVInfo, pnleftMenu, pnShipperInfo,pnTable;	
+	private KSGPanel 				pnADVInfo, pnleftMenu, pnShipperInfo,pnTable;	
 
 	private Box 				pnSearchInfoMain;
 
@@ -184,7 +191,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 	private JTextField 			txfPageIndexSearchInput;
 
-	private AddTableInfoDialog addTableInfoDialog;
+	private AddTableInfoDialog_temp addTableInfoDialog;
 
 	private UpdateTableInfoDialog 	dialog = null;
 
@@ -239,6 +246,12 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	private JLabel lblCompany,lblCount,lblDivision, lblPage, lblIndex, lblItem, lblDateSearch;
 
 	private JMenuItem itemDateUpdate;
+	
+	private ShipperTableService shipperTableService = new ShipperTableServiceImpl();
+
+	private ADVServiceImpl _advService;
+
+	private TableServiceImpl tableService;
 
 	public ShipperTableMgtUI() 
 	{
@@ -275,7 +288,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		{
 			JDialog dialog = new JDialog();
 
-			JPanel pnMain = new JPanel();
+			KSGPanel pnMain = new KSGPanel();
 
 			final JTextField txfSearchInput = new JTextField(15);			
 
@@ -291,7 +304,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 						tblSearchTable.setSearchParam(shippersTable);
 						tblSearchTable.retrive();
 						_searchedList = tblSearchTable.getSearchedList();
-						logger.info(_searchedList.size());
+						
 					} catch (SQLException e1) {
 						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e1.getMessage());
 						e1.printStackTrace();
@@ -319,7 +332,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 			if(addTableInfoDialog==null||!addTableInfoDialog.isVisible())
 			{
-				addTableInfoDialog = new AddTableInfoDialog(this,selectedshippersTable);
+				addTableInfoDialog = new AddTableInfoDialog_temp(this,selectedshippersTable);
 				addTableInfoDialog.createAndUpdateUI();
 			}
 
@@ -401,13 +414,13 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	/**
 	 * @return
 	 */
-	private JPanel buildCenter() 
+	private KSGPanel buildCenter() 
 	{
-		pnShipperInfo = new JPanel();
+		pnShipperInfo = new KSGPanel();
 
 		pnShipperInfo.setLayout(new BorderLayout());
 
-		pnTable = new JPanel();
+		pnTable = new KSGPanel();
 
 		tableLayout = new CardLayout();
 
@@ -517,9 +530,9 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		pnTable.add(advTablePanel,advTablePanel.getName());
 
-		JPanel pnSlideShow = cteateSlideShowPn();
+		KSGPanel pnSlideShow = cteateSlideShowPn();
 
-		JPanel pnSouth = new JPanel(new BorderLayout());
+		KSGPanel pnSouth = new KSGPanel(new BorderLayout());
 
 		butEdit = new JToggleButton("편집(E)",new ImageIcon("images/editClose.gif"));
 		butEdit.setMnemonic(KeyEvent.VK_E);
@@ -541,11 +554,11 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		butCreateADV.addActionListener(this);
 
 
-		JPanel pnRightControl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnRightControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		pnRightControl.add(butEdit);
 
-		JPanel pnLeftControl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnLeftControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		JButton butUpdateDate = new JButton(ACTION_UPDATE_DATE);
 		butUpdateDate.setVisible(false);
@@ -555,19 +568,19 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		pnSouth.add(pnRightControl, BorderLayout.EAST);
 		pnSouth.add(pnLeftControl, BorderLayout.WEST);
 
-		pnUpdateTable = new UpdateTablePanel(this,null);
+		pnUpdateTable = new UpdateTablePanel(this);
 		pnUpdateTable.setBorder(BorderFactory.createEtchedBorder());
 		pnUpdateTable.setVisible(false);
 		pnUpdateTable.setMinimumSize(new Dimension(200,0));
 		pnUpdateTable.setMaximumSize(new Dimension(300,0));
 
 
-		JPanel pnTableMain = new JPanel();
+		KSGPanel pnTableMain = new KSGPanel();
 		pnTableMain.setLayout(new BorderLayout());
 
-		JPanel pnTableMainLeft = new JPanel();
+		KSGPanel pnTableMainLeft = new KSGPanel();
 		pnTableMainLeft.setPreferredSize(new Dimension(15,0));
-		JPanel pnTableMainRight = new JPanel();
+		KSGPanel pnTableMainRight = new KSGPanel();
 		pnTableMainRight.setPreferredSize(new Dimension(15,0));
 		pnTableMain.add(pnTableMainLeft,BorderLayout.WEST);
 		pnTableMain.add(pnTableMainRight,BorderLayout.EAST);
@@ -588,7 +601,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		pnShipperInfo.add(createPnSearchInfo(),BorderLayout.NORTH);
 
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 
 		pnMain.setLayout( new BorderLayout());
 
@@ -608,11 +621,11 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	/**
 	 * @return
 	 */
-	private JPanel buildLeftMenu() 
+	private KSGPanel buildLeftMenu() 
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 
-		JPanel pnSearch =  new JPanel();
+		KSGPanel pnSearch =  new KSGPanel();
 
 		pnSearch.setLayout( new BorderLayout());
 
@@ -622,7 +635,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		pnMain.add(new JScrollPane(_treeMenu),BorderLayout.CENTER);
 		pnMain.setPreferredSize(new Dimension(_LEFT_SIZE,100));
-		JPanel panel = new JPanel();
+		KSGPanel panel = new KSGPanel();
 		ButtonGroup group = new ButtonGroup();
 
 
@@ -673,7 +686,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 			panel.add(butDelTable);
 
 
-			JPanel pnTitle = new JPanel();
+			KSGPanel pnTitle = new KSGPanel();
 			pnTitle.setBackground(new Color(88,141,250));
 
 
@@ -690,7 +703,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 			pnMain.add(pnSearch,BorderLayout.NORTH);
 			pnMain.add(panel,BorderLayout.SOUTH);
 
-			JPanel pnArrow = new JPanel();
+			KSGPanel pnArrow = new KSGPanel();
 			JButton butA = new JButton("");
 			pnArrow.setPreferredSize(new Dimension(15,0));
 			pnArrow.add(butA);
@@ -724,19 +737,19 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 	public void createAndUpdateUI() {
 
-		logger.info("init searchUI start");
+		logger.debug("init searchUI start");
 
 		this.setName("SearchUI");
 
 		keyAdapter = new SearchOptionKeyAdapter();
 
-		this.manager.addObservers(this);
+		
 
 		popupMenu = createPopupMenu();
 
-		JPanel pnTitleMain = new JPanel(new BorderLayout());
+		KSGPanel pnTitleMain = new KSGPanel(new BorderLayout());
 
-		JPanel pnTitle = new JPanel();
+		KSGPanel pnTitle = new KSGPanel();
 
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEADING));
 
@@ -753,15 +766,15 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		pnTitle.setBorder(new CurvedBorder(8,new Color(91,152,185)));
 		pnTitleMain.add(pnTitle);
-		JPanel pnTitleBouttom = new JPanel();
+		KSGPanel pnTitleBouttom = new KSGPanel();
 		pnTitleBouttom.setPreferredSize(new Dimension(0,15));
 		pnTitleMain.add(pnTitleBouttom,BorderLayout.SOUTH);
 
 		this.setLayout(new BorderLayout());
 		this.add(buildCenter(),BorderLayout.CENTER);	
 		this.add(pnTitleMain,BorderLayout.NORTH);
-		this.add(this.createMargin(10),BorderLayout.WEST);
-		logger.info("init searchUI end");
+		
+		logger.debug("init searchUI end");
 
 
 	}
@@ -772,10 +785,10 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	 * 설명:
 	 * @returnSD
 	 */
-	private JPanel createPnSearchInfo() {
+	private KSGPanel createPnSearchInfo() {
 		pnSearchInfoMain = new Box(BoxLayout.Y_AXIS);
 
-		pnADVInfo = new JPanel();
+		pnADVInfo = new KSGPanel();
 		pnADVInfo.setLayout(new FlowLayout(FlowLayout.LEADING));
 
 		txfOutboundIn = new JTextField(8);
@@ -787,26 +800,38 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		txfOutboundOut.setEditable(false);
 		txfInboundIn.setEditable(false);
 		txfInboundOut.setEditable(false);
+		
+		txfOutboundIn.setBackground(Color.white);
+		txfOutboundOut.setBackground(Color.white);
+		txfInboundIn.setBackground(Color.white);
+		txfInboundOut.setBackground(Color.white);
+		
+		
 
-		JPanel pnTableInfo = new JPanel();
+		KSGPanel pnTableInfo = new KSGPanel();
 		pnTableInfo.setLayout(new BorderLayout());
 
 		txfPage = new JTextField(10);
 		txfPage.setEditable(false);
 		txfPage.setBorder(BorderFactory.createEtchedBorder());
+		txfPage.setBackground(Color.white);
 
 
 		txfPageSearchInput = new JTextField(4);
 
 		txfPageSearchInput.addKeyListener(keyAdapter);
+		
+		txfPageSearchInput.setBackground(Color.white);
 
 		txfPageIndexSearchInput = new JTextField(4);
 
 		txfPageIndexSearchInput.addKeyListener(keyAdapter);
+		txfPageIndexSearchInput.setBackground(Color.white);
 
 		txfTable_id = new JTextField(14);
 		txfTable_id.setEditable(false);
 		txfTable_id.setBorder(BorderFactory.createEtchedBorder());
+		txfTable_id.setBackground(Color.white);
 
 		txfCompany = new JTextField(10);
 
@@ -828,11 +853,11 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		Box bo = new Box(BoxLayout.Y_AXIS);
 
-		JPanel pnMain1 = new JPanel();
+		KSGPanel pnMain1 = new KSGPanel();
 
 		pnMain1.setLayout(new BorderLayout());
 
-		JPanel pnLogo = new JPanel();
+		KSGPanel pnLogo = new KSGPanel();
 
 		pnLogo.setLayout( new FlowLayout(FlowLayout.LEFT));
 
@@ -840,7 +865,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		pnLogo.add(lblCompany);
 
-		JPanel pnSearchMain = new JPanel();
+		KSGPanel pnSearchMain = new KSGPanel();
 
 		pnSearchMain.setLayout(new BorderLayout());
 
@@ -889,6 +914,10 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		});
 
 		cbbOption = new JComboBox();
+		
+		
+		
+		cbbOption.setBackground(Color.white);
 
 		cbbOption.addItem("페이지");
 		cbbOption.addItem("테이블ID");
@@ -940,12 +969,19 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 			}});
 
 		cbbGubun = new JComboBox();
+		
+		
+		
+		
 		cbbGubun.addItem("전체");
 		cbbGubun.addItem(ShippersTable.GUBUN_NORMAL);
 		cbbGubun.addItem(ShippersTable.GUBUN_NNN);
 		cbbGubun.addItem(ShippersTable.GUBUN_TS);
 		cbbGubun.addItem(ShippersTable.GUBUN_CONSOLE);
 		cbbGubun.addItem(ShippersTable.GUBUN_INLAND);
+		cbbGubun.setBackground(Color.white);
+		
+		
 		cbbGubun.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) 
@@ -960,7 +996,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 			}
 		});		
 
-		JPanel pnSearchMainDown = new JPanel();
+		KSGPanel pnSearchMainDown = new KSGPanel();
 		pnSearchMainDown.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		lblDivision = new JLabel("테이블 구분: ");
@@ -977,10 +1013,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		pnSearchMainDown.add(lblDivision);
 		pnSearchMainDown.add(cbbGubun);		
-		/*pnSearchMainDown.add(lblPage);
-		pnSearchMainDown.add(txfPageSearchInput);		
-		pnSearchMainDown.add(lblIndex);
-		pnSearchMainDown.add(txfPageIndexSearchInput);	*/	
+
 		pnSearchMainDown.add(lblItem);
 		pnSearchMainDown.add(cbbOption);
 		pnSearchMainDown.add(txfSearchInput);
@@ -994,7 +1027,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		pnMain1.add(pnSearchMain);
 
 		bo.add(pnMain1);
-		JPanel pnLeft = new JPanel();
+		KSGPanel pnLeft = new KSGPanel();
 		pnLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel label = new JLabel("페이지 : ",new  ImageIcon("images/buticon.png"),JLabel.LEFT);
 		label.setForeground(Color.blue.brighter());
@@ -1009,7 +1042,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		pnLeft.add(lbl);
 		pnLeft.add(txfTable_id);
 
-		JPanel pnright = new JPanel();
+		KSGPanel pnright = new KSGPanel();
 		pnright.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		lblCount = new JLabel();
 		lblCount.setForeground(new Color(171,126,111));
@@ -1036,10 +1069,10 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		pnSearchInfoMain.add(bo);
 
-		JPanel pnS = new JPanel();
+		KSGPanel pnS = new KSGPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
+		KSGPanel pnS1 = new KSGPanel();
 		pnS1.setPreferredSize(new Dimension(0,15));
 		pnSearchInfoMain.add(pnS);
 		pnSearchInfoMain.add(pnS1);
@@ -1047,10 +1080,9 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 		pnADVInfo.setVisible(false);
 
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout( new BorderLayout());
-		pnMain.add(this.createMargin(),BorderLayout.WEST);
-		pnMain.add(this.createMargin(),BorderLayout.EAST);
+		
 		pnMain.add(pnSearchInfoMain,BorderLayout.CENTER);
 		return pnMain;
 	}
@@ -1106,8 +1138,8 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	/**
 	 * @return
 	 */
-	private JPanel createSearchPanel() {
-		JPanel pnSearchByCompany = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	private KSGPanel createSearchPanel() {
+		KSGPanel pnSearchByCompany = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		return pnSearchByCompany;
 	}
@@ -1161,7 +1193,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 		itemTable.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				AddTableInfoDialog addTableInfoDialog = new AddTableInfoDialog(ShipperTableMgtUI.this,manager.selectedCompany);
+				AddTableInfoDialog_temp addTableInfoDialog = new AddTableInfoDialog_temp(ShipperTableMgtUI.this,manager.selectedCompany);
 				addTableInfoDialog.createAndUpdateUI();
 			}});
 		delMenu = new JMenuItem("테이블 삭제");
@@ -1183,8 +1215,8 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	 *  좌측 슬라이드 버튼 작성
 	 * @return
 	 */
-	private JPanel cteateSlideShowPn() {
-		JPanel pn = new JPanel();
+	private KSGPanel cteateSlideShowPn() {
+		KSGPanel pn = new KSGPanel();
 		pn.setLayout(new BorderLayout());
 		pn.setPreferredSize(new Dimension(25,0));
 		final JButton button = new JButton(new ImageIcon("images/right_arrow_.gif"));
@@ -1338,7 +1370,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	 * @param colum
 	 * @throws SQLException
 	 */
-	public void searchSubTable() throws SQLException {
+	private void searchSubTable() throws SQLException {
 
 		if(_searchedList!=null)
 		{
@@ -1504,6 +1536,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	/**
 	 * @throws SQLException
 	 */
+	@Override
 	public void updateSubTable( ) throws SQLException {
 
 
@@ -1580,6 +1613,7 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 	}
 
 
+	@Override
 	public void searchByOption() throws SQLException {
 		searchByOption(orderParam);
 	}
@@ -1783,8 +1817,8 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 				}
 			});
 
-			JPanel pnMain = new JPanel();
-			JPanel pnControl = new JPanel();
+			KSGPanel pnMain = new KSGPanel();
+			KSGPanel pnControl = new KSGPanel();
 			pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			JButton butOk = new JButton("확인");
 			butOk.addActionListener(this);
@@ -1876,6 +1910,21 @@ public class ShipperTableMgtUI extends KSGPanel implements ActionListener
 
 
 		}
+	}
+	class ColorComboBoxListCellRenderer implements ListCellRenderer
+	{
+		 protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+		@Override
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
+			JLabel renderer = (JLabel) defaultRenderer
+			          .getListCellRendererComponent(list, value, index,
+			              isSelected, cellHasFocus);
+			
+			renderer.setBackground(Color.white);
+			return renderer;
+		}
+		
 	}
 
 }

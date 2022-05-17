@@ -20,6 +20,7 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.AbstractCellEditor;
@@ -29,7 +30,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -47,7 +48,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.IllegalDataException;
@@ -57,7 +59,7 @@ import org.jdom.output.XMLOutputter;
 
 import com.ksg.adv.logic.xml.KSGXMLManager;
 import com.ksg.commands.InsertADVCommand;
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
@@ -68,9 +70,12 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
+import com.ksg.service.VesselService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.service.impl.VesselServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.shippertable.dialog.SearchAndInsertVesselDialog;
@@ -86,7 +91,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	private SelectionListener listener;
 
@@ -109,6 +114,8 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 	protected BaseService baseService;
 
 	private ADVService advservice;
+	
+	private VesselService vesselService;
 
 	private DAOManager daomanager;
 
@@ -156,6 +163,8 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		baseService = new BaseServiceImpl();
 
 		tableService = new TableServiceImpl();
+		
+		vesselService = new VesselServiceImpl();
 	}
 	public void setVesselModel(DefaultTableModel vesselModel) {
 		this.vesselModel = vesselModel;
@@ -426,7 +435,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		
 		logger.debug("input date : "+KSGDateUtil.toDate2(inputDate)+",company_abbr:"+dd.getCompany_abbr());
 		
-		KSGCommand insert = new InsertADVCommand(dd);
+		IFCommand insert = new InsertADVCommand(dd);
 		insert.execute();
 
 
@@ -496,17 +505,33 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 				return;
 			Vessel  op = new Vessel();
 			op.setVessel_name(String.valueOf(value));
+			
+			
 
-			List li=baseService.getVesselAbbrInfoByPatten(String.valueOf(value)+"%");
+			//List li=baseService.getVesselAbbrInfoByPatten(String.valueOf(value)+"%");
+			
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			param.put("vessel_name", value);
+			
+			HashMap<String, Object> resultMap= vesselService.selectDetailListByLike(param);
+			
+			List li = (List) resultMap.get("master");
+			
+			
 			if(li.size()==1)
 			{
-				Vessel vessel = (Vessel) li.get(0);
-				String obj = vessel.getVessel_abbr().toUpperCase();
+				HashMap<String, Object> vessel = (HashMap<String, Object>) li.get(0);
+				
+				
+				String obj = ((String)vessel.get("vessel_name")).toUpperCase();
+				
+				
+				
 
-				setValue(obj, selectedVesselrow, col)	;
+				setValue(obj, selectedVesselrow, col);
 				vesselModel.setRowCount(vesselModel.getRowCount()+1);
-				vesselModel.setValueAt(vessel.getVessel_name(), selectedVesselrow, 0);
-				vesselModel.setValueAt(vessel.getVessel_abbr(), selectedVesselrow, 1);
+				vesselModel.setValueAt(vessel.get("vessel_name"), selectedVesselrow, 0);
+				vesselModel.setValueAt(vessel.get("vessel_abbr"), selectedVesselrow, 1);
 				return;
 
 
@@ -518,7 +543,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 				if(searchVesselDialog.result!=null)
 				{
-					setValue(searchVesselDialog.resultAbbr, selectedVesselrow, col);
+					setValue(searchVesselDialog.result, selectedVesselrow, col);
 
 					vesselModel.setRowCount(vesselModel.getRowCount()+1);
 					vesselModel.setValueAt(searchVesselDialog.result, selectedVesselrow, 0);
@@ -773,7 +798,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 				Object value, boolean isSelected, boolean hasFocus, int row,
 				int column) {
 			Component text;
-			JPanel panel = new JPanel();
+			KSGPanel panel = new KSGPanel();
 			panel.setLayout(new BorderLayout());
 			if (textRenderer != null) {
 				text = textRenderer.getTableCellRendererComponent(table, value,
@@ -794,7 +819,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 	 * @author archehyun
 	 *
 	 */
-	class MultiLineHeaderRenderer extends JPanel implements TableCellRenderer {
+	class MultiLineHeaderRenderer extends KSGPanel implements TableCellRenderer {
 
 		/**
 		 * 
@@ -833,7 +858,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		JPanel jPanel;
+		KSGPanel delCellPanel;
 		int row;
 		private JButton jButton;
 		public ADVButtonCellRenderer(int row) {
@@ -841,10 +866,10 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			this.row = row;
 		}
 		public ADVButtonCellRenderer() {
-			jPanel = new JPanel();
-			jPanel.setBorder(BorderFactory.createEmptyBorder());
-			jPanel.setBackground(Color.white);
-			jPanel.setPreferredSize(new Dimension(100,45));
+			delCellPanel = new KSGPanel();
+			delCellPanel.setBorder(BorderFactory.createEmptyBorder());
+			delCellPanel.setBackground(Color.white);
+			delCellPanel.setPreferredSize(new Dimension(100,45));
 			jButton = new JButton("Del");
 
 
@@ -875,14 +900,14 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 					}
 				}
 			});
-			jPanel.add(jButton);
+			delCellPanel.add(jButton);
 		}
 
 		public Component getTableCellEditorComponent(JTable table,
 				Object value, boolean isSelected, int row, int column) 
 		{
 
-			return jPanel;
+			return delCellPanel;
 		}
 
 		public Object getCellEditorValue() {
@@ -895,14 +920,14 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 			if(isSelected)
 			{
-				jPanel.setBackground(table.getSelectionBackground());
-				jPanel.setForeground(table.getSelectionForeground());
+				delCellPanel.setBackground(table.getSelectionBackground());
+				delCellPanel.setForeground(table.getSelectionForeground());
 			}else
 			{
-				jPanel.setBackground(table.getBackground());
-				jPanel.setForeground(table.getForeground());
+				delCellPanel.setBackground(table.getBackground());
+				delCellPanel.setForeground(table.getForeground());
 			}
-			return jPanel;
+			return delCellPanel;
 		}
 	}
 	class IndexedColum
@@ -1178,5 +1203,9 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			}
 
 		}
+	}
+	public String getTableID() {
+		// TODO Auto-generated method stub
+		return shippersTableInfo.getTable_id();
 	}
 }

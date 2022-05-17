@@ -60,18 +60,27 @@ public class InlnandTask extends SimpleTask{
 			portFileName= KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION)+"/"+"inland_port.txt";
 			
 			initTag();
+			
 			di = new ScheduleBuildMessageDialog (this);
-			di.setMessage("Console");
+			
+			di.setMessage("Inland");
+			
 			di.createAndUpdateUI();
 
 			makeSchedule();
+			
 			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "생성 완료");
+			
 		} catch (Exception e) {
+			
 			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "생성 실패");
+			
 			e.printStackTrace();
 		}
 		finally
 		{
+			
+//			di.end();
 			done=true;
 			di.setVisible(false);
 			di.dispose();
@@ -111,7 +120,7 @@ public class InlnandTask extends SimpleTask{
 		 */
 		lengthOfTask = scheduleli.size();
 
-		logger.debug("내류운송 스케줄 그룹화:"+lengthOfTask+"건");
+		logger.info("내류운송 스케줄 그룹화 : {}건",lengthOfTask);
 
 		for(int i=0;i<scheduleli.size();i++)
 		{
@@ -140,7 +149,7 @@ public class InlnandTask extends SimpleTask{
 
 
 		// 태그 정보 출력
-		fw.write(TAG_VERSION+"\r\n"+TAG_DOCUMENT_INFO_1+"\r\n"+TAG_DOCUMENT_INFO_2+"\r\n");		
+		fw.write(TAG_VERSION+"\r\n"+TAG_DOCUMENT_INFO_1+"\r\n"+TAG_DOCUMENT_INFO_2+"\r\n");
 
 		String[] toPortkeyArray = toPortGroupList.keySet().toArray(new String[toPortGroupList.keySet().size()]);
 
@@ -186,6 +195,8 @@ public class InlnandTask extends SimpleTask{
 		// 파일 닫기
 		fw.close();
 		portFw.close();
+		
+		logger.info("내륙운송 스케줄 생성 종료");
 	}
 
 	/**

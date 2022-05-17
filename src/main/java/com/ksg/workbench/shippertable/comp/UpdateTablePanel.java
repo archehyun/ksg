@@ -18,6 +18,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -25,6 +27,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -39,7 +42,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -52,7 +54,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
@@ -65,7 +68,8 @@ import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.dialog.UpdateTableInOutDialog;
 
 /**
@@ -73,7 +77,7 @@ import com.ksg.workbench.shippertable.dialog.UpdateTableInOutDialog;
  * @설명 테이블 정보 관리 패널
  *
  */
-public class UpdateTablePanel extends JPanel implements ActionListener,FocusListener{
+public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusListener, ComponentListener{
 
 
 	class EnterKeyListener extends KeyAdapter
@@ -85,8 +89,8 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 				{
 					int result = saveAction();
 					if(result==1)
-					{
-						searchUI.searchByOption();
+					{	
+						searchUI.fnUpdate();
 						lblSaveInfo.setText("저장 되었습니다.");
 
 					}
@@ -147,10 +151,10 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 			}
 		}
 	}
-	protected Logger 			logger = Logger.getLogger(getClass());
-	//private Font defaultFont = new Font("돋음",0,10);
+	protected Logger logger = LogManager.getLogger(this.getClass());
+	
 	private static final long serialVersionUID = 1L;
-	//private JComponent 	parent;
+	
 	private ADVService 	advService;
 	private TableService tableService;
 	private KSGModelManager modelManager = KSGModelManager.getInstance();
@@ -176,7 +180,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 	private JTextField txfOhterCount;
 
 
-	private ShipperTableMgtUI searchUI;
+	private ShipperTableAbstractMgtUI searchUI;
 
 	private JLabel lblSaveInfo;
 	private EnterKeyListener enterKeyListener;
@@ -187,28 +191,25 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 	private JTextField txfDtime;
 	private JTextField txfInland;
 	private JTextField txfCtime;
-	private JPanel pnClosingTime;
+	private KSGPanel pnClosingTime;
 	private JRadioButton optPage;
 	private JRadioButton optCFS;
 	private JTabbedPane tabPaneInfo;
-	private JPanel pnInland;
+	private KSGPanel pnInland;
 	public UpdateTablePanel() {
 		enterKeyListener = new EnterKeyListener();
 		this.advService = DAOManager.getInstance().createADVService();
 		this.tableService= new TableServiceImpl();
 		this.baseService = DAOManager.getInstance().createBaseService();
+		
+		this.addComponentListener(this);
 		createAndUpdteUI();
 	}
-	public UpdateTablePanel(ShippersTable table) {
+
+	public UpdateTablePanel(ShipperTableAbstractMgtUI searchUI) {
 		this();
-		if(table!=null)
-			this.setShipperTableData(table);
-	}
-	public UpdateTablePanel(ShipperTableMgtUI searchUI, ShippersTable table) {
-		this();
-		this.searchUI=searchUI;
-		if(table!=null)
-			this.setShipperTableData(table);
+		this.searchUI =searchUI;
+		
 	}
 	private void createAndUpdteUI()
 	{
@@ -337,7 +338,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 
 		Box pnMain = new Box(BoxLayout.Y_AXIS);
 
-		JPanel pnTable = new JPanel();
+		KSGPanel pnTable = new KSGPanel();
 		GridLayout gridLayout = new GridLayout(0,1);
 		gridLayout.setVgap(10);
 		pnTable.setLayout(gridLayout);
@@ -345,7 +346,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 		pnTable.setBorder(boderTable);
 		
 		
-		JPanel pnCompanySearch = new JPanel(new BorderLayout());
+		KSGPanel pnCompanySearch = new KSGPanel(new BorderLayout());
 		pnCompanySearch.add(txfCompany_Abbr);
 		JButton button = new JButton("검색");
 		pnCompanySearch.add(button,BorderLayout.EAST);
@@ -370,7 +371,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 					}
 
 					dialog.setTitle("Company Selection");
-					JPanel pnMain = new JPanel();
+					KSGPanel pnMain = new KSGPanel();
 					pnMain.setLayout( new BorderLayout());
 					final JTree tree = new JTree(root);
 					tree.addMouseListener(new MouseAdapter() {
@@ -405,7 +406,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 
 
 					pnMain.add(new JScrollPane(tree),BorderLayout.CENTER);
-					JPanel pnSubPnControl = new JPanel();
+					KSGPanel pnSubPnControl = new KSGPanel();
 					pnSubPnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 					JButton butOK = new JButton("OK");
 
@@ -447,7 +448,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 						}});
 					pnSubPnControl.add(butCancel);
 					butCancel.setPreferredSize(new Dimension(80,28));
-					JPanel pnTitleInfo = new JPanel();
+					KSGPanel pnTitleInfo = new KSGPanel();
 					pnTitleInfo.setLayout(new FlowLayout(FlowLayout.LEFT));
 					pnTitleInfo.add(new JLabel("Chose the Company"));
 					pnMain.add(pnTitleInfo,BorderLayout.NORTH);
@@ -488,16 +489,16 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 
 		Box pnBound = Box.createVerticalBox();
 
-		JPanel pnOutBound = createPnOutBound(gridLayout);
+		KSGPanel pnOutBound = createPnOutBound(gridLayout);
 
-		JPanel pnInBound = createPnInBound(gridLayout);
+		KSGPanel pnInBound = createPnInBound(gridLayout);
 
 		pnBound.add( pnOutBound);
 		pnBound.add( pnInBound);
 
 		pnMain.add(pnBound);
 
-		pnClosingTime = new JPanel(new BorderLayout());		
+		pnClosingTime = new KSGPanel(new BorderLayout());		
 		TitledBorder boderOther = BorderFactory.createTitledBorder("Closing Time Index");
 		pnClosingTime.setBorder(boderOther);
 
@@ -509,7 +510,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 
 
 
-		pnInland = new JPanel(new BorderLayout());		
+		pnInland = new KSGPanel(new BorderLayout());		
 		TitledBorder boderInland = BorderFactory.createTitledBorder("내륙 기항지 지정");
 		pnInland.setBorder(boderInland);
 
@@ -520,17 +521,17 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 		pnInland.add(bxInland);
 
 		tabPaneInfo = new JTabbedPane();
-		JPanel pnS1 = new JPanel();
+		KSGPanel pnS1 = new KSGPanel();
 
 		pnS1.setLayout(new BorderLayout());
-		JPanel pnS2 = new JPanel();	
+		KSGPanel pnS2 = new KSGPanel();	
 		pnS2.setLayout(new BorderLayout());
 
 
 		pnS1.add(new JScrollPane(txaCommon),BorderLayout.CENTER);
 		pnS2.add(new JScrollPane(txaQuark),BorderLayout.CENTER);
 
-		JPanel pnConsole = buildConsolePn();
+		KSGPanel pnConsole = buildConsolePn();
 
 		tabPaneInfo.addTab("공동배선", pnS1);
 		tabPaneInfo.addTab("Format", pnS2);
@@ -544,6 +545,11 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 		txfTable_id.setEditable(false);
 		Box pnMain1 = new Box(BoxLayout.Y_AXIS);		
 		pnMain1.add(pnMain);
+		
+		
+		
+		
+		
 		this.add(pnMain,BorderLayout.NORTH);
 		this.add(tabPaneInfo,BorderLayout.CENTER);
 		this.add(buildButtom(),BorderLayout.SOUTH);
@@ -552,7 +558,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 	/**@ 콘솔 정보 저장 화면
 	 * @return
 	 */
-	private JPanel buildConsolePn() {
+	private KSGPanel buildConsolePn() {
 
 		optPage = new JRadioButton("Page",true);
 		optCFS = new JRadioButton("CFS");
@@ -560,19 +566,19 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 		bgConsole.add(optPage);
 		bgConsole.add(optCFS);
 
-		JPanel pnConsole = new JPanel();	
+		KSGPanel pnConsole = new KSGPanel();	
 		pnConsole.setLayout(new BorderLayout());
 
-		JPanel pnConsolePage = new JPanel(new BorderLayout());
+		KSGPanel pnConsolePage = new KSGPanel(new BorderLayout());
 		pnConsolePage.add(new JLabel("Page 정보"),BorderLayout.NORTH);
 		pnConsolePage.add(txfConsolePage);
 
-		JPanel pnConsoleCFS = new JPanel(new BorderLayout());
+		KSGPanel pnConsoleCFS = new KSGPanel(new BorderLayout());
 		pnConsoleCFS.add(new JLabel("CFS 정보"), BorderLayout.NORTH);
 		pnConsoleCFS.add(new JScrollPane(txaConsoleCFS));
 
 
-		JPanel pnConsolePrintType = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnConsolePrintType = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnConsolePrintType.add(new JLabel("콘솔 정보 저장 시 저장 버튼을 눌러 주십시요"));
 
 		pnConsole.add(pnConsoleCFS);
@@ -580,23 +586,23 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 		pnConsole.add(pnConsolePrintType,BorderLayout.SOUTH);
 		return pnConsole;
 	}
-	private JPanel createPnInBound(GridLayout gridLayout) {
-		JPanel pnInBound = new JPanel();
+	private KSGPanel createPnInBound(GridLayout gridLayout) {
+		KSGPanel pnInBound = new KSGPanel();
 		pnInBound.setLayout(gridLayout);
 		pnInBound.add(createForm("국내항 : ", txfInPort));
 		pnInBound.add(createForm("외국항 : ", txfInToPort));
 		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수입항 등록");
 		pnInBound.setBorder(createTitledBorder);
 
-		JPanel pnInBoundSub = new JPanel();
+		KSGPanel pnInBoundSub = new KSGPanel();
 		pnInBoundSub.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		JButton butUpdateInbound = new JButton("등록/수정");
 		butUpdateInbound.addActionListener(this);
 
 		return pnInBound;
 	}
-	private JPanel createPnOutBound(GridLayout gridLayout) {
-		JPanel pnOutBound = new JPanel();
+	private KSGPanel createPnOutBound(GridLayout gridLayout) {
+		KSGPanel pnOutBound = new KSGPanel();
 		pnOutBound.setLayout(gridLayout);
 
 		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수출항 등록");
@@ -605,7 +611,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 
 		pnOutBound.add(createForm("국내항: ", txfOutPort));
 		pnOutBound.add(createForm("외국항: ", txfOutToPort));
-		JPanel pnOutboundSub = new JPanel();
+		KSGPanel pnOutboundSub = new KSGPanel();
 		pnOutboundSub.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		JButton butUpdate = new JButton("등록/수정");
 		butUpdate.addActionListener(this);
@@ -699,28 +705,28 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 		}
 
 	}
-	private JPanel createForm(String label,Component comp)
+	private KSGPanel createForm(String label,Component comp)
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 		JLabel label2 = new JLabel(label,JLabel.RIGHT);
 		label2.setPreferredSize(new Dimension(90,20));
 		pnMain.add(label2,BorderLayout.WEST);
-		JPanel pnComp = new JPanel();
+		KSGPanel pnComp = new KSGPanel();
 		pnComp.setLayout(new BorderLayout());
 		pnComp.add(comp);
 		pnMain.add(pnComp,BorderLayout.CENTER);
 		return pnMain; 
 
 	}
-	private JPanel createForm(String label,Component comp,int size)
+	private KSGPanel createForm(String label,Component comp,int size)
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 		JLabel lblTitle = new JLabel(label,JLabel.RIGHT);
 		lblTitle.setPreferredSize(new Dimension(size,20));
 		pnMain.add(lblTitle,BorderLayout.WEST);
-		JPanel pnComp = new JPanel();
+		KSGPanel pnComp = new KSGPanel();
 		pnComp.setLayout(new BorderLayout());
 		pnComp.add(comp);
 		pnMain.add(pnComp,BorderLayout.CENTER);
@@ -730,7 +736,7 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 
 	public Component buildButtom()
 	{
-		JPanel pnButtom = new JPanel();
+		KSGPanel pnButtom = new KSGPanel();
 		pnButtom.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 
@@ -749,6 +755,94 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 
 		try {
 			shippersTable = tableService.getTableById(tableData.getTable_id());
+			txfTable_id.setText(shippersTable.getTable_id());
+			txaQuark.setText(shippersTable.getQuark_format());
+			txfAgent.setText(shippersTable.getAgent());
+			txfGubun.setText(shippersTable.getGubun());
+			txfTitle.setText(shippersTable.getTitle());
+
+			TablePort tablePort = new TablePort();
+			tablePort.setTable_id(shippersTable.getTable_id());
+			List li=tableService.getTablePortList(tablePort);
+
+
+			txfPortCount.setText(String.valueOf(shippersTable.getPort_col()));
+
+			if(li.size()!=shippersTable.getPort_col())
+			{
+				txfPortCount.setForeground(Color.red);
+				
+			}else
+			{
+				txfPortCount.setForeground(Color.black);
+			}
+
+			txfVesselCount.setText(String.valueOf(shippersTable.getVsl_row()));
+			txfCompany_Abbr.setText(shippersTable.getCompany_abbr());
+			
+			
+			txfPage.setText(String.valueOf(shippersTable.getPage()));
+			txfBookPage.setText(shippersTable.getBookPage());
+			txfIndex.setText(String.valueOf(shippersTable.getTable_index()));
+			
+			
+			txaCommon.setText(shippersTable.getCommon_shipping());
+			txfInPort.setText(shippersTable.getIn_port());
+			txfInToPort.setText(shippersTable.getIn_to_port());
+			txfOutPort.setText(shippersTable.getOut_port());
+			txfOutToPort.setText(shippersTable.getOut_to_port());
+			txfOhterCount.setText(String.valueOf(shippersTable.getOthercell()));
+			txfCtime.setText(String.valueOf(shippersTable.getC_time()));
+			txfDtime.setText(String.valueOf(shippersTable.getD_time()));
+			txfInland.setText(shippersTable.getInland_indexs());
+			cbxGubun.setSelectedItem(shippersTable.getGubun());
+
+			if(shippersTable.getGubun().equals(ShippersTable.GUBUN_CONSOLE))
+			{
+				tabPaneInfo.setSelectedIndex(2);// 콘솔 탭 선택	
+			}else
+			{
+				tabPaneInfo.setSelectedIndex(0);//공동 배선 탭 선택
+			}
+
+
+			txaConsoleCFS.setText(shippersTable.getConsole_cfs());
+			txfConsolePage.setText(shippersTable.getConsole_page());
+
+
+
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+
+	}
+	
+	public void setShipperTableData(HashMap<String, Object> param) {
+		
+		txfTable_id.setText(String.valueOf(param.get("table_id")));
+		txaQuark.setText(String.valueOf(param.get("quark_format")));
+		txfAgent.setText(String.valueOf(param.get("agent")));
+		txfGubun.setText(String.valueOf(param.get("gubun")));
+		txfTitle.setText(String.valueOf(param.get("title")));
+		txfPortCount.setText(String.valueOf(param.get("port_col")));
+		txfVesselCount.setText(String.valueOf(param.get("vsl_row")));
+		txfCompany_Abbr.setText(String.valueOf(param.get("company_abbr")));	
+		
+		txfPage.setText(String.valueOf(param.get("page")));
+		txfBookPage.setText(String.valueOf(param.get("bookPage")));
+		txfIndex.setText(String.valueOf(param.get("index")));
+		txaConsoleCFS.setText(String.valueOf(param.get("cfs")));
+		txfConsolePage.setText(String.valueOf(param.get("console_page")));
+		
+		
+	}
+	
+	
+	public void setShipperTableData(String table_id) {
+
+
+		try {
+			shippersTable = tableService.getTableById(table_id);
 			txfTable_id.setText(shippersTable.getTable_id());
 			txaQuark.setText(shippersTable.getQuark_format());
 			txfAgent.setText(shippersTable.getAgent());
@@ -1001,6 +1095,30 @@ public class UpdateTablePanel extends JPanel implements ActionListener,FocusList
 	}
 	public void setPortCount(int count) {
 		txfPortCount.setText(String.valueOf(count));
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

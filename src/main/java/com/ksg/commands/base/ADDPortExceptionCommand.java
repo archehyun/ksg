@@ -4,20 +4,22 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
 
-import com.ksg.commands.KSGCommand;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.ksg.commands.IFCommand;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
 
-public class ADDPortExceptionCommand implements KSGCommand {
+public class ADDPortExceptionCommand implements IFCommand {
 	
 	
 	String portName;
 	private BaseService baseService;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public ADDPortExceptionCommand(String portName) {
 		baseService = DAOManager.getInstance().createBaseService();
 		
@@ -40,7 +42,7 @@ public class ADDPortExceptionCommand implements KSGCommand {
 			try {
 				baseService.insertCode(code_info);
 				
-				return KSGCommand.RESULT_SUCCESS;
+				return IFCommand.RESULT_SUCCESS;
 
 			} catch (SQLException e1) {
 				if(e1.getErrorCode()==2627)
@@ -55,7 +57,7 @@ public class ADDPortExceptionCommand implements KSGCommand {
 			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "예외항구명를 입력하세요");
 		}
 		
-		return  KSGCommand.RESULT_FAILE;
+		return  IFCommand.RESULT_FAILE;
 	}
 
 }

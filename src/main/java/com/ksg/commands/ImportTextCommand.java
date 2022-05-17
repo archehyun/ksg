@@ -15,7 +15,8 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
@@ -23,7 +24,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 
-public class ImportTextCommand implements KSGCommand{
+public class ImportTextCommand extends AbstractCommand{
 	String d;
 	private boolean emptyCheck;
 	String isUnderPort="";
@@ -31,7 +32,7 @@ public class ImportTextCommand implements KSGCommand{
 	public String bothKeyWord[];
 	private KSGPropertis propertis = KSGPropertis.getIntance();
 	public String vesselKeyWord[];
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	
 	private Boolean isDoubleKey;
 	private String upDown;
 	private TableService tableService;

@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.Vector;
 
-import oracle.jdbc.pool.OracleDataSource;
+
 public class ConnectionManager 
 {
 	private String url, password, dbid, driver, dbtype;
@@ -51,25 +51,25 @@ public class ConnectionManager
 		return manager;
 	}
 
-	public void initConPool() throws SQLException
-	{
-		try
-		{
-			initConnectionInfo();
-			for(int i=0;i<this.maxConnetion;i++)
-			{
-				buffer.add(this.getConnectionInstance());
-			}		
-		}
-		catch (FileNotFoundException e) 
-		{
-			throw new RuntimeException("Can't find db.properties="+e.getMessage());
-		}
-		catch (ClassNotFoundException e) 
-		{
-			throw new RuntimeException("Can't find jdbc.jar="+e.getMessage());
-		}
-	}
+//	public void initConPool() throws SQLException
+//	{
+//		try
+//		{
+//			initConnectionInfo();
+//			for(int i=0;i<this.maxConnetion;i++)
+//			{
+//				buffer.add(this.getConnectionInstance());
+//			}		
+//		}
+//		catch (FileNotFoundException e) 
+//		{
+//			throw new RuntimeException("Can't find db.properties="+e.getMessage());
+//		}
+//		catch (ClassNotFoundException e) 
+//		{
+//			throw new RuntimeException("Can't find jdbc.jar="+e.getMessage());
+//		}
+//	}
 
 
 	public synchronized  Connection getConnPool()
@@ -94,20 +94,20 @@ public class ConnectionManager
 		this.notifyAll();
 	}
 
-	public Connection getConnectionInstance() throws SQLException, ClassNotFoundException
-	{
-
-		Class.forName(driver);
-		if(dbtype.equals("orcle"))
-		{			
-			return new OracleDataSource().getConnection(dbid, password);
-		}else
-	
-		{
-			return DriverManager.getConnection(url,dbid,password);
-		}
-		
-	}
+//	public Connection getConnectionInstance() throws SQLException, ClassNotFoundException
+//	{
+//
+//		Class.forName(driver);
+//		if(dbtype.equals("orcle"))
+//		{			
+//			return new OracleDataSource().getConnection(dbid, password);
+//		}else
+//	
+//		{
+//			return DriverManager.getConnection(url,dbid,password);
+//		}
+//		
+//	}
 	
 	// 컨넥션 정보 초기화
 	private void initConnectionInfo() throws FileNotFoundException

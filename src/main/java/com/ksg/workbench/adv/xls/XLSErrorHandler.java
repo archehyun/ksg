@@ -13,7 +13,8 @@ package com.ksg.workbench.adv.xls;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.domain.KSGError;
 import com.ksg.service.ADVService;
@@ -23,7 +24,7 @@ public class XLSErrorHandler
 {
 	private ADVService service;
 	private Vector errorList;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public XLSErrorHandler() {
 		service		 	= new ADVServiceImpl();
 		errorList = new Vector();

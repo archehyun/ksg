@@ -10,12 +10,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import com.ksg.commands.BaseCommand;
+import com.ksg.commands.AbstractCommand;
 import com.ksg.domain.PortInfo;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.view.comp.table.model.KSGTableModel;
 
-public class SearchPort_AbbrCommand extends BaseCommand {
+public class SearchPort_AbbrCommand extends AbstractCommand {
 	private String col_port_abbr[] = {"항구명","추가"};
 	private String[] colums=null;
 	private int table_type;

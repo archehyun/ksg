@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
@@ -36,7 +36,7 @@ import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
-public class BuildOutboundCommand implements KSGCommand {
+public class BuildOutboundCommand implements IFCommand {
 	private JTextArea area2;
 	private ScheduleService scheduleService;
 	private BaseService baseService;

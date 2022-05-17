@@ -29,6 +29,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ksg.commands.LongTask;
 import com.ksg.common.model.KSGModelManager;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 public class ScheduleBuildMessageDialog extends KSGDialog{
@@ -79,13 +80,9 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 		
 
 	}
-
-
-	public void createAndUpdateUI() {
-
-		JPanel pnMain = new JPanel();
-		
-		pnMain.setLayout(new BorderLayout());
+	private KSGPanel buildCenter()
+	{
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());		
 		
 		this.setTitle("스케줄 파일 생성");
 		
@@ -164,7 +161,15 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 
 		pnMain.setOpaque(true); 
 		
-		this.setContentPane(pnMain);
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		
+		return pnMain;
+	}
+
+	public void createAndUpdateUI() {
+		
+		
+		this.setContentPane(buildCenter());
 		
 		this.setSize(400, 150);
 		

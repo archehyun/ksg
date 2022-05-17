@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -31,10 +33,22 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.adv.comp.ADVTableNotMatchException;
 import com.ksg.workbench.adv.xls.XLSTableInfo;
 
+
 /**
- * @author Administrator
- *
- */
+
+  * @FileName : XLSReader.java
+
+  * @Project : KSG2
+
+  * @Date : 2021. 12. 6. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public abstract class XLSReader {
 	
 	protected List preData;
@@ -78,7 +92,7 @@ public abstract class XLSReader {
 		baseService =manager.createBaseService();
 		service = manager.createADVService();
 	}
-	protected Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	/**
 	 * @param sheetName
 	 * @param xlsFile

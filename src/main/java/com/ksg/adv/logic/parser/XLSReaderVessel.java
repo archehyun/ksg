@@ -53,9 +53,13 @@ public class XLSReaderVessel extends XLSReader{
 		super();
 
 		propertis.reLoad();
+		
 		isUnderPort = (String)propertis.getValues(KSGPropertis.PROPERTIES_UNDERPORT).toString();
+		
 		hasVoy = Boolean.parseBoolean(propertis.getValues(KSGPropertis.PROPERTIES_VOY).toString());
+		
 		this.emptyCheck=Boolean.parseBoolean((String)propertis.getValues("emptyCheck"));
+		
 		vesselKeyWord = keyWordManager.getVesselKeyWord();
 		
 		voyKeyWord = keyWordManager.getVoyageKeyWord();

@@ -271,7 +271,7 @@ public class RouteTaskNewDate extends DefaultRouteTask{
 						newList.add(get(key));
 					}
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			}

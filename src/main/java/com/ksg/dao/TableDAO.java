@@ -12,6 +12,7 @@ package com.ksg.dao;
 
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -258,7 +259,6 @@ public interface TableDAO {
 
 	public void updateTablePortIndex2(TablePort port)throws SQLException;
 
-
 	public List getScheduleTableListByDate(ShippersTable data)throws SQLException;
 
 	public void updateTablePortCount(String table_id,int portcount)throws SQLException;
@@ -266,10 +266,15 @@ public interface TableDAO {
 	public void updateTableVesselCount(String table_id,int vesselcount)throws SQLException;
 
 	public List getTableList(ShippersTable table)throws SQLException;
+	
 	public Table_Property getTableProperty(Table_Property param)throws SQLException;
+	
 	public List getTableListByAgent(ShippersTable table)throws SQLException;
+	
 	public String getTableAgentByPage(int psge)throws SQLException;
+	
 	public int getPortCount(String tableId)throws SQLException;
+	
 	public int updateTablePortName(TablePort port)throws SQLException;
 	
 	public List getTableDateList()throws SQLException;
@@ -279,6 +284,14 @@ public interface TableDAO {
 	public List selectSystemDataList(String table_name) throws SQLException;
 	
 	public int updateTableDateByTableIDs(ShippersTable table) throws SQLException;
+
+	public Object selectListByPage(HashMap<String, Object> param) throws SQLException;
+
+	public Object selectCount(Map<String, Object> commandMap) throws SQLException;
+
+	Object selectCount(HashMap<String, Object> param) throws SQLException;
+
+	public int delete(Map<String, Object> param);
 	
 
 }

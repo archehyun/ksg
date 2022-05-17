@@ -11,7 +11,8 @@ import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.view.comp.PageInfoCheckBox;
@@ -22,7 +23,7 @@ public class PageCellRenderer extends JCheckBox implements ActionListener,ListCe
 	 */
 	private static final long serialVersionUID = 1L;
 	private Font defaultFont;
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	public PageCellRenderer() {
 		setOpaque(true);
 		defaultFont = KSGModelManager.getInstance().defaultFont;

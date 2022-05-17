@@ -14,15 +14,8 @@
 
 <sqlMap namespace="company">
 
-
-<!-- *** Port *** -->
-	
-
-<!-- select -->
-
-	<select id="selectCompanyList" resultClass="java.util.HashMap">
-		select * from TB_COMPANY
-		<dynamic prepend="where">
+<sql id="WHERE">
+			<dynamic prepend="where">
 		    <isNotNull property="company_name" prepend="and">
 		        company_name like '%$company_name$%'
 		    </isNotNull>
@@ -35,15 +28,47 @@
 		    <isNotNull property="agent_abbr" prepend="and">
 		        agent_abbr like '%$agent_abbr$%'
 		    </isNotNull>
-  
 		</dynamic>
+
+</sql>
+
+
+<!-- *** Port *** -->
+	
+
+<!-- select -->
+
+	<select id="selectCompanyList" resultClass="com.ksg.domain.Company">
+		select * from TB_COMPANY
+		<include refid="WHERE"></include>
+	</select>
+	
+	<select id="selectCompany" resultClass="com.ksg.domain.Company">
+		select * from TB_COMPANY
+		WHERE 
+			company_name = #company_name# and
+			company_abbr = #company_abbr# 
+		
+	</select>
+	
+	
+	
+	<select id="selectCompanyListByPage" resultClass="java.util.HashMap">
+		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY company_name) 
+		
+		AS ROWNUM, * FROM TB_COMPANY
+		WITH (NOLOCK) 
+		<include refid="WHERE"></include>
+		 ) T 
+
+		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
 	</select>
 	
 		
 
 <!-- insert -->
 
-	<insert id="insertCompany" parameterClass="java.util.HashMap">
+	<insert id="insertCompany" parameterClass="com.ksg.domain.Company">
 		insert into TB_COMPANY(
 			company_name,
 			agent_name,

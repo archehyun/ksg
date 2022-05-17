@@ -15,7 +15,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.SqlMapManager;
@@ -31,7 +32,7 @@ import com.ksg.domain.Vessel;
 public class BaseDAOImpl2 implements BaseDAO
 {
 	
-	protected Logger logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	private SqlMapClient sqlMap;
 

@@ -21,12 +21,13 @@ import javax.swing.table.TableColumnModel;
 
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.view.comp.panel.KSGPanel;
 
 /**
  * @author archehyun
  * inland 스케줄 생성 정보 조회
  */
-public class PnInland extends JPanel implements ActionListener{
+public class PnInland extends KSGPanel implements ActionListener{
 	private InlandScheduleTable _tblInlandScheduleList;
 	private JComboBox cbxInlandInOut;
 	private JComboBox cbxInlandSearch;
@@ -35,7 +36,7 @@ public class PnInland extends JPanel implements ActionListener{
 
 	public PnInland()
 	{		
-		this.setLayout(new BorderLayout());
+		super(new BorderLayout());
 		_tblInlandScheduleList = new InlandScheduleTable();
 		
 		JPanel pnInlandSearchMain = new JPanel(new BorderLayout());

@@ -1,12 +1,12 @@
 package com.ksg.commands.schedule;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.task.InlnandTask;
 import com.ksg.domain.ScheduleData;
 
-public class SortInlandCommnad implements KSGCommand {
+public class SortInlandCommnad implements IFCommand {
 
-private int result=KSGCommand.PROCESS;
+private int result=IFCommand.PROCESS;
 	
 	ScheduleData op;
 	

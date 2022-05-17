@@ -28,7 +28,6 @@ import javax.swing.border.TitledBorder;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.common.view.dialog.PortSearchDialog;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
@@ -37,19 +36,29 @@ import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.dialog.PortSearchDialog;
 
 public class ADDADVDialog extends KSGDialog implements ActionListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private JList portLi;
+	
 	private String company_abbr;
+	
 	private int page;
+	
 	private int t_index;
+	
 	private String table_id;
+	
 	Font defaultfont;
+	
 	private JTextField txfPort;
+	
+	private BaseServiceImpl baseService;
 
 	public ADDADVDialog(String table_id,int page, int t_index,String company_abbr) {
 		super();
@@ -343,8 +352,7 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 		pnControl.add(pnRight,BorderLayout.EAST);
 		this.getContentPane().add(pnControl,BorderLayout.SOUTH);
 		this.getContentPane().add(pnMain,BorderLayout.CENTER);
-		this.getContentPane().add(createMargin(),BorderLayout.WEST);
-		this.getContentPane().add(createMargin(),BorderLayout.EAST);
+		
 		this.setSize(600,350);
 		ViewUtil.center(this, true);
 		this.setVisible(true);

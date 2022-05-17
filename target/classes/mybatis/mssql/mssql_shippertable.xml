@@ -14,6 +14,145 @@
 
 <sqlMap namespace="shippertable">
 
+<sql id="WHERE">
+		<dynamic prepend="where">
+		<isNotEmpty prepend="and" property="table_id">
+		table_id = #table_id#
+		</isNotEmpty>
+		<isGreaterThan prepend="and" property="page" compareValue="-1">
+		page = #page#
+		</isGreaterThan>
+		<isGreaterThan prepend="and" property="table_index" compareValue="-1">
+		table_index = #table_index#
+		</isGreaterThan>
+		<isNotEmpty prepend="and" property="company_abbr">
+		company_abbr = #company_abbr#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="title">
+		title = #title#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="agent">
+		agent = #agent#
+		</isNotNull>
+		<isNotNull prepend="and" property="gubun">
+		gubun = #gubun#
+		</isNotNull>
+		<isNotNull prepend="and" property="date_isusse">
+			 date_isusse=#date_isusse#
+		</isNotNull>
+		
+		
+		</dynamic>
+	
+
+</sql>
+
+
+
+	<sql id="TableList">
+	SELECT 
+		table_id
+		,table_index
+		,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
+		,vsl_row
+		,title
+		,out_port
+		,common_shipping
+		,company_abbr
+		,TS
+		,company_name
+		,gubun
+		,page
+		,agent
+		,quark_format
+		,port_col
+		,out_to_port
+		,in_to_port
+		,in_port
+		,othercell
+		,console_cfs
+		,d_time
+		,c_time
+		,console_page
+		,inland_indexs
+		,bookPage
+	FROM TB_TABLE_INFO
+	</sql>
+	<select id="selectList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+		<include refid="TableList"/>
+		
+		<dynamic prepend="where">
+		<isNotEmpty prepend="and" property="table_id">
+		table_id = #table_id#
+		</isNotEmpty>
+		<isGreaterThan prepend="and" property="page" compareValue="-1">
+		page = #page#
+		</isGreaterThan>
+		<isGreaterThan prepend="and" property="table_index" compareValue="-1">
+		table_index = #table_index#
+		</isGreaterThan>
+		<isNotEmpty prepend="and" property="company_abbr">
+		company_abbr = #company_abbr#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="title">
+		title = #title#
+		</isNotEmpty>
+		<isNotNull prepend="and" property="agent">
+		agent = #agent#
+		</isNotNull>
+		<isNotNull prepend="and" property="gubun">
+		gubun = #gubun#
+		</isNotNull>
+		<isNotNull prepend="and" property="date_isusse">
+			 date_isusse=#date_isusse#
+		</isNotNull>
+		
+		
+		</dynamic>
+	order by page, table_index 
+	</select>
+
+	<select id="selectShipperTableListByPage" resultClass="java.util.HashMap">
+		SELECT ROWNUM 
+		
+				,table_id
+				,table_index
+				,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
+				,vsl_row
+				,title
+				,out_port
+				,common_shipping
+				,company_abbr
+				,TS
+				,company_name
+				,gubun
+				,page
+				,agent
+				,quark_format
+				,port_col
+				,out_to_port
+				,in_to_port
+				,in_port
+				,othercell
+				,console_cfs
+				,d_time
+				,c_time
+				,console_page
+				,inland_indexs
+				,bookPage
+		
+		
+		FROM ( SELECT ROW_NUMBER() OVER (ORDER BY page, table_index) 
+		
+		AS ROWNUM, * FROM TB_TABLE_INFO
+		WITH (NOLOCK) 
+		<include refid="WHERE"></include>
+		 ) T 
+
+		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
+		
+	</select>
+
 	<select id="selectPortList" resultClass="java.util.HashMap">
 		select * from TB_TABLE_PORTLIST
 		
@@ -29,6 +168,175 @@
 			 
 		order by port_index
 	</select>
+	
+	
+	<insert id="insert" parameterClass="java.util.HashMap">
+		insert TB_TABLE_INFO(
+			table_id,
+			port_col,
+			vsl_row,
+			othercell,
+			company_abbr,
+			page,
+			bookPage,
+			table_index,
+			out_port,
+			out_to_port,
+			in_port,
+			in_to_port,
+			agent,		
+			title,
+			quark_format,
+			common_shipping,
+			gubun,
+			console_cfs,
+			d_time,
+			c_time,		
+			console_page,
+			inland_indexs,
+			date_isusse
+		)
+		 values(
+			#table_id#,
+			#port_col#,
+			#vsl_row#,
+			#othercell#,
+			#company_abbr#,
+			#page#,
+			#bookPage#,
+			#table_index#,
+			#out_port#,
+			#out_to_port#,
+			#in_port#,
+			#in_to_port#,
+			#agent#,
+			#title#,		
+			#quark_format#,				
+			#common_shipping#,
+			#gubun#,
+			#console_cfs#,
+			#d_time#,
+			#c_time#,		
+			#console_page#,
+			#inland_indexs#,
+			CONVERT(date,GETDATE())
+		)
+	</insert>
+	<delete id="deleteTableInfo" parameterClass="com.ksg.domain.ShippersTable">
+		DELETE FROM TB_TABLE_INFO 
+		WHERE 
+			table_index=#table_index# and 
+			company_abbr=#company_abbr# and 
+			table_id=#table_id#
+	</delete>
+	
+	<delete id="delete" parameterClass="java.util.HashMap">
+		DELETE FROM TB_TABLE_INFO 
+		WHERE 
+			table_index=#table_index# and 
+			company_abbr=#company_abbr# and 
+			table_id=#table_id#
+	</delete>
+	
+	<update id="update" parameterClass="java.util.HashMap">
+		update TB_TABLE_INFO set
+		table_id=#table_id#
+		<isNotEqual compareValue="-1" prepend="," property="port_col">
+		port_col=#port_col#
+		</isNotEqual>
+		<isNotEqual compareValue="-1" prepend="," property="vsl_row">
+		vsl_row=#vsl_row#
+		</isNotEqual>
+		<isNotEqual compareValue="-1" prepend="," property="othercell">
+		othercell=#othercell#				
+		</isNotEqual>
+		
+		<isNotEqual compareValue="-1" prepend="," property="page">
+		page=#page#
+		</isNotEqual>
+		<isNotNull prepend="," property="bookPage">
+		bookPage=#bookPage#		
+		</isNotNull>		
+		<isNotNull prepend="," property="quark_format">
+		quark_format=#quark_format#		
+		</isNotNull>		 
+		<isNotEmpty prepend="," property="title">
+		title=#title#		
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="company_abbr">
+		company_abbr=#company_abbr#		
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="agent">
+		agent=#agent#		
+		</isNotEmpty> 
+		<isNotEqual compareValue="-1" prepend="," property="table_index">
+		table_index=#table_index#		
+		</isNotEqual>
+		<isNotEmpty prepend="," property="company_name">
+		company_name=#company_name#				
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="common_shipping">
+		common_shipping=#common_shipping#				
+		</isNotEmpty>
+		
+		<isNotNull prepend="," property="out_to_port">
+		out_to_port=#out_to_port#				
+		</isNotNull>		
+		
+		<isNotNull prepend="," property="in_to_port">
+		in_to_port=#in_to_port#
+		</isNotNull>
+		
+		<isNotNull prepend="," property="out_port">
+		out_port=#out_port#
+		</isNotNull>		
+		
+		<isNotNull prepend="," property="in_port">
+		in_port=#in_port#
+		</isNotNull>
+		
+		<isNotEmpty prepend="," property="gubun">
+		gubun=#gubun#				
+		</isNotEmpty>
+		
+		<isEmpty prepend="," property="gubun">
+		gubun=#gubun#				
+		</isEmpty>
+
+		
+		
+		<isNotNull prepend="," property="console_cfs">
+		console_cfs=#console_cfs#
+		</isNotNull>
+		<isNotNull prepend="," property="console_page">
+		console_page=#console_page#
+		</isNotNull>
+		<isNotNull prepend="," property="inland_indexs">					
+		inland_indexs=#inland_indexs#
+		</isNotNull>
+		<isNotEqual compareValue="-1" prepend="," property="c_time">
+		c_time=#c_time#
+		</isNotEqual>
+		<isNotEqual compareValue="-1" prepend="," property="d_time">
+		d_time=#d_time#
+		</isNotEqual>
+		
+		<isNotEqual  prepend="," property="date_isusse">
+		date_isusse=#date_isusse#
+		</isNotEqual>		
+		
+		where table_id=#table_id#
+	</update>
+	
+	
+	<update id="updateDate" parameterClass="java.util.HashMap">
+		update TB_TABLE_INFO set
+		
+		date_isusse=#date_isusse#
+
+		where table_id=#table_id#
+	</update>
+
 
 	
 
@@ -54,6 +362,12 @@
 		delete from TB_TABLE_PORTLIST where table_id = #table_id#
 
 	</delete>
+	
+	<!-- count -->
+
+	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
+		select count(*) from TB_TABLE_INFO	
+	</select>
 	
 
 </sqlMap>

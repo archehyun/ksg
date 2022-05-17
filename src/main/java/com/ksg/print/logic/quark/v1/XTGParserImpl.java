@@ -17,13 +17,16 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 
 
 public class XTGParserImpl implements XTGPaser{
 	private String tablePrefix;
 	private String pagePrefix;
-	protected Logger logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	public XTGParserImpl() {
 		logger.debug("파서 생성");

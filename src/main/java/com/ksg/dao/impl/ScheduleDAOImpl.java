@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.SchduleDAO;
 import com.ksg.domain.PortInfo;
@@ -48,7 +47,7 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return (ScheduleData) sqlMap.insert("Schedule.insertInlandSchedule", data);
 	}
 	public int deleteSchedule() throws SQLException {
-		return sqlMap.delete("Schedule.deleteSchedule");
+		return sqlMap.delete("schedule.deleteSchedule");
 	}
 
 	public List getScheduleListOrderBy(String inOutType) throws SQLException {
@@ -59,15 +58,7 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return 0;
 	}
 
-	public List getPortListBySchedule(String inOutType) throws SQLException {
-		if(inOutType.equals("I"))
-		{
-			return sqlMap.queryForList("Schedule.selectPort_nameListByInbound");
-		}else
-		{
-			return sqlMap.queryForList("Schedule.selectPort_nameListByOutbound");
-		}		
-	}	
+
 
 	public List getScheduleListByPort(String port) throws SQLException {
 		return sqlMap.queryForList("Schedule.selectScheduleList",port);
@@ -202,9 +193,7 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return sqlMap.queryForList("Schedule.selectScheduleListNTop",data);
 	}
 
-	public List getScheduleDateList() throws SQLException {
-		return sqlMap.queryForList("Schedule.selectScheduleDateList");
-	}
+
 
 	public int getScheduleTotalCount() throws SQLException {
 		return (Integer) sqlMap.queryForObject("Schedule.selectScheduleTotalCount");
@@ -215,14 +204,11 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return (Integer) sqlMap.queryForObject("Schedule.getScheduleNTopCount",data);
 	}
 
-	public List getOutboundFromPortTSList(String port) throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlMap.queryForList("Schedule.selectOutboundFromPortTSList",port);
-	}
+
 
 	public List<ScheduleData> getConsoleScheduleList(String port,
 			String fromPort) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		ScheduleData data = new ScheduleData();
 		data.setPort(port);
 		data.setFromPort(fromPort);
@@ -240,19 +226,26 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectInlandList",data);
 	}
+	
+	public List selectInlandScheduleDateList() throws SQLException {
+		// TODO Auto-generated method stub
+		return sqlMap.queryForList("schedule.selectInlandScheduleDateList");
+	}
+	
 	public List getInlandScheduleDateList() throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectInlandScheduleDateList");
 	}
 	public int deleteInlandSchedule() throws SQLException {
 		// TODO Auto-generated method stub
-		return sqlMap.delete("Schedule.deleteInlnadSchedule");
+		return sqlMap.delete("schedule.deleteInlnadSchedule");
 	}
 	@Override
 	public List<String> getOutboundAreaList() throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectOutboundAreaList");
 	}
+	
 	@Override
 	public List selectList(HashMap<String, Object> param) throws SQLException{
 		
@@ -262,6 +255,24 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	@Override
 	public int selectCount(Map<String, Object> commandMap) throws SQLException{
 		return  (Integer) selectOne("schedule.selectCount", commandMap);
+	}
+	@Override
+	public List selectListByPage(HashMap<String, Object> param) throws SQLException {
+		
+		return selectList("schedule.selectScheduleListByPage", param);
+	}
+	@Override
+	public Object insertSchedule(HashMap<String, Object> param) throws SQLException {
+		// TODO Auto-generated method stub
+		return insert("schedule.insertSchedule",param);
+	}
+	
+	public List selectScheduleDateList() throws SQLException {
+		return sqlMap.queryForList("schedule.selectScheduleDateList");
+	}
+	@Override
+	public List<Map<String, Object>> selectInlnadList(HashMap<String, Object> param) throws SQLException {
+		return sqlMap.queryForList("schedule.selectInlandList",param);
 	}
 
 	

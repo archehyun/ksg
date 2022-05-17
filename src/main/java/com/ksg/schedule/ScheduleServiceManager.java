@@ -22,9 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import com.ksg.commands.KSGCommand;
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildInboundCommand;
 import com.ksg.commands.schedule.BuildWebSchdeduleCommand;
 import com.ksg.commands.schedule.BuildXMLOutboundCommand;
@@ -50,7 +51,7 @@ public class ScheduleServiceManager {
 
 	public static final int WEB=1;
 	
-	protected Logger 		logger = Logger.getLogger(this.getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	private static ScheduleServiceManager serviceManager;
 	private Timer timer;
 	private JProgressBar bar =new JProgressBar();
@@ -213,7 +214,7 @@ public class ScheduleServiceManager {
 					
 					ScheduleManager.getInstance().init();
 					
-					KSGCommand command=null;
+					IFCommand command=null;
 					
 					switch (scheduleType) {
 					case NOMAL:

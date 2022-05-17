@@ -1,8 +1,11 @@
 package com.ksg.commands.schedule;
 
-import org.apache.log4j.Logger;
 
-import com.ksg.commands.KSGCommand;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.route.RouteTaskDate;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.ShippersTable;
@@ -11,7 +14,7 @@ import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
-public class BuildXMLRouteScheduleCommand implements KSGCommand {
+public class BuildXMLRouteScheduleCommand implements IFCommand {
 
 	XTGManager xtgmanager = new XTGManager();
 	private static final String WORLD_SOURCE_XML = "world_source.xml";
@@ -19,7 +22,7 @@ public class BuildXMLRouteScheduleCommand implements KSGCommand {
 	private BaseService baseService;
 	DAOManager manager =DAOManager.getInstance();
 
-	protected Logger 			logger = Logger.getLogger(getClass());
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	ScheduleBuildMessageDialog di;
 
 
@@ -33,7 +36,7 @@ public class BuildXMLRouteScheduleCommand implements KSGCommand {
 		this.op=op;
 	}
 	
-	private int result=KSGCommand.PROCESS;
+	private int result=IFCommand.PROCESS;
 	public int execute() 
 	{
 		/*try {
