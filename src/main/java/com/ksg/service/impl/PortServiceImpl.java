@@ -29,13 +29,14 @@ import lombok.extern.slf4j.Slf4j;
 
  */
 @Slf4j
-public class PortServiceImpl implements PortService{
+public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 
 	PortDAO portDAO;
 
 	
 
 	public PortServiceImpl() {
+		super();
 		portDAO = new PortDAOImpl();
 	}
 

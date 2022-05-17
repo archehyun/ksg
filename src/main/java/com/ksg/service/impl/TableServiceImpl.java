@@ -26,16 +26,18 @@ import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
 import com.ksg.service.TableService;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @SuppressWarnings("unchecked")
 
-public class TableServiceImpl implements TableService{
-	
-	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+@Slf4j
+public class TableServiceImpl extends AbstractServiceImpl implements TableService{
 	
 	private TableDAO tableDAO;
 	
 	public TableServiceImpl() {
+		super();
 		tableDAO = new TableDAOImpl();
 	}
 	
@@ -359,7 +361,7 @@ public class TableServiceImpl implements TableService{
 
 	@Override
 	public int updateTableDateByTableIDs(List table,String updateDate) throws SQLException {
-		logger.info("update by "+updateDate+", "+table);
+			
 		Iterator<ShippersTable> iter = table.iterator();
 		int count=0;
 		while(iter.hasNext())

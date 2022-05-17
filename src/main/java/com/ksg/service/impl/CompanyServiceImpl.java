@@ -31,15 +31,18 @@ import lombok.extern.slf4j.Slf4j;
 
  */
 @Slf4j
-public class CompanyServiceImpl implements CompanyService{
+public class CompanyServiceImpl extends AbstractServiceImpl implements CompanyService{
 
 	protected ObjectMapper objectMapper;
 
-	CompanyDAOImpl companyDAO;
+	private CompanyDAOImpl companyDAO;
 
 	public CompanyServiceImpl() {
+		
+		super();
+		
 		companyDAO = new CompanyDAOImpl();
-		objectMapper = new ObjectMapper();
+		
 	}
 
 	@SuppressWarnings("unchecked")

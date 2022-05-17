@@ -23,12 +23,14 @@ import lombok.extern.slf4j.Slf4j;
 
   */
 @Slf4j
-public class CodeServiceImpl {
+public class CodeServiceImpl extends AbstractServiceImpl{
 	
 	CodeDAOImpl codeDAO;
 	
 	
 	public CodeServiceImpl() {
+		
+		super();
 		codeDAO = new CodeDAOImpl();
 	}
 	

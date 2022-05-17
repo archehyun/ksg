@@ -52,7 +52,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @SuppressWarnings("unchecked")
-public class ScheduleServiceImpl implements ScheduleService{
+public class ScheduleServiceImpl extends AbstractServiceImpl implements ScheduleService{
 
 	private SchduleDAO schduleDAO;
 
@@ -64,6 +64,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 
 
 	public ScheduleServiceImpl() {
+		
+		super();
 		schduleDAO = new ScheduleDAOImpl();
 		advScheduleDAO = new ADVScheduleDAO();
 	}

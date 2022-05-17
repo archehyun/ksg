@@ -10,13 +10,14 @@ import org.apache.logging.log4j.Logger;
 
 import com.ksg.dao.impl.AreaDAOImpl;
 
-public class AreaServiceImpl {
+public class AreaServiceImpl extends AbstractServiceImpl {
 	
 	AreaDAOImpl areaDAO;
 	
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public AreaServiceImpl() {
+		super();
 		areaDAO = new AreaDAOImpl();
 	}
 	

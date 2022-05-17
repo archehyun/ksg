@@ -28,14 +28,14 @@ import lombok.extern.slf4j.Slf4j;
 
  */
 @Slf4j
-public class VesselServiceImpl implements VesselService{
+public class VesselServiceImpl extends AbstractServiceImpl implements VesselService{
 
 	
 
 	VesselDAOImpl vesselDAO;
 
 	public VesselServiceImpl() {
-
+		super();
 		vesselDAO = new VesselDAOImpl();
 	}
 

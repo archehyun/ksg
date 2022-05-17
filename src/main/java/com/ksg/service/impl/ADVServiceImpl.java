@@ -28,11 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SuppressWarnings("unchecked")
-public class ADVServiceImpl implements ADVService{
+public class ADVServiceImpl extends AbstractServiceImpl implements ADVService{
 
 	
 	private AdvDAO advDAO;
 	public ADVServiceImpl() {
+		super();
 		advDAO = new AdvDAOImpl();
 	}
 	

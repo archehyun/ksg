@@ -26,13 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 
  */
 @Slf4j
-public class ShipperTableServiceImpl implements ShipperTableService{
+public class ShipperTableServiceImpl extends AbstractServiceImpl implements ShipperTableService{
 
 
 	private ShipperTableDAOImpl shipperTableDao;
 
 	public ShipperTableServiceImpl() {
-		
+		super();
 		shipperTableDao = new ShipperTableDAOImpl();
 	}
 
