@@ -197,11 +197,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	}
 
 
-//	public int getScheduleTotalCount() throws SQLException {
-//		// TODO Auto-generated method stub
-//		return schduleDAO.getScheduleTotalCount();
-//	}
-
 	public int getScheduleNTopCount(ScheduleData data) throws SQLException {
 		// TODO Auto-generated method stub
 		return schduleDAO.getScheduleNTopCount(data);

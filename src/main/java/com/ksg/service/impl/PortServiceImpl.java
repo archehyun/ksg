@@ -9,6 +9,7 @@ import java.util.Map;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.PortDAO;
 import com.ksg.dao.impl.PortDAOImpl;
+import com.ksg.domain.PortInfo;
 import com.ksg.service.PortService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 
-	PortDAO portDAO;
-
-	
+	private PortDAO portDAO;	
 
 	public PortServiceImpl() {
 		super();
@@ -146,6 +145,12 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 		resultMap.put("master", portDAO.selectListByPage(param));
 
 		return resultMap;
+	}
+
+	@Override
+	public PortInfo select(Map<String, Object> commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -71,7 +71,7 @@ public class PnPort extends PnBase implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private JLabel lblTotal,lblTable;
+	//private JLabel lblTotal,lblTable;
 
 	private JComboBox cbxPortArea,cbxAreaCode,cbxField;
 
@@ -94,8 +94,8 @@ public class PnPort extends PnBase implements ActionListener{
 	private JLabel lblPationality;
 
 	public PnPort(BaseInfoUI baseInfoUI) {
-		super(baseInfoUI);
 		
+		super(baseInfoUI);
 		
 		this.addComponentListener(this);
 		
