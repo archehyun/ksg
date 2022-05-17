@@ -81,14 +81,16 @@ public class VesselServiceImpl implements VesselService{
 		log.debug("param:"+param);
 		try
 		{
+			
+			
+			
 			vesselDAO.insert(param);
-
 
 		} catch (SQLException e1) {
 			if(e1.getErrorCode()==2627)
 			{
 
-				throw new AlreadyExistException();
+				throw new AlreadyExistException("existr");
 
 
 			}else
@@ -134,7 +136,7 @@ public class VesselServiceImpl implements VesselService{
 			if(e1.getErrorCode()==2627)
 			{
 
-				throw new AlreadyExistException();
+				throw new AlreadyExistException("exist");
 
 
 			}else

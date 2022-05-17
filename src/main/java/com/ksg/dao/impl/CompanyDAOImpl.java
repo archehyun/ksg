@@ -1,12 +1,15 @@
 package com.ksg.dao.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.CompanyDAO;
+import com.ksg.domain.Company;
+
 
 /**
 
@@ -28,11 +31,11 @@ public class CompanyDAOImpl extends AbstractDAO implements CompanyDAO{
 		this.namespace = "company";
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> selectCompanyList(Map<String, Object> commandMap) throws SQLException {
-		return selectList(namespace+".selectCompanyList", commandMap);
-
-	}
+//	@SuppressWarnings("unchecked")
+//	public List<Map<String, Object>> selectCompanyList(Map<String, Object> commandMap) throws SQLException {
+//		return selectList(namespace+".selectCompanyList", commandMap);
+//
+//	}
 
 	public int deleteCompany(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete(namespace+".deleteCompany", param);
@@ -50,14 +53,16 @@ public class CompanyDAOImpl extends AbstractDAO implements CompanyDAO{
 	}
 	
 	@Override
-	public Object insert(HashMap<String, Object> param) throws SQLException{
+	public Object insert(Company param) throws SQLException{
 		
 		return insert(namespace+".insertCompany",param);
 	}
 
 
 	@Override
-	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException {
+	public List<Company> selectList(Company commandMap) throws SQLException {
+		
+		
 		return selectList(namespace+".selectCompanyList", commandMap);
 
 	}
@@ -72,6 +77,12 @@ public class CompanyDAOImpl extends AbstractDAO implements CompanyDAO{
 	public List selectListByPage(HashMap<String, Object> param) throws SQLException{
 		
 		return selectList(namespace+".selectCompanyListByPage", param);
+	}
+
+	@Override
+	public Company select(Company param) throws SQLException {
+		// TODO Auto-generated method stub
+		return (Company) selectOne(namespace+".selectCompany", param);
 	}
 
 }

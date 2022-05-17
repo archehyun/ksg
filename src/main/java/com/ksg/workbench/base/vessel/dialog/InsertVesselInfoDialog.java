@@ -264,11 +264,14 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 
 			} 
 			catch(AlreadyExistException ee)
-
 			{
 				JOptionPane.showMessageDialog(this, "존재하는 선박명입니다");
 
-
+			}
+			
+			catch(Exception ee)
+			{
+				JOptionPane.showMessageDialog(this, ee.getMessage());
 
 			}
 		}else

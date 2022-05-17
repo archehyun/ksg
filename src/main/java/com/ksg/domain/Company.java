@@ -10,7 +10,11 @@
  *******************************************************************************/
 package com.ksg.domain;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 
@@ -20,7 +24,10 @@ import lombok.Data;
  * @author archehyun
  * 
  */
-@Data
+
+@NoArgsConstructor @AllArgsConstructor
+@Builder
+@Getter @Setter
 public class Company extends BaseInfo{
 	
 	private int table_id;			// Å×ÀÌºí ID

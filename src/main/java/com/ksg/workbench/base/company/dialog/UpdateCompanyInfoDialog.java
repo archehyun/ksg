@@ -144,21 +144,20 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 				result = SUCCESS;
 
 				JOptionPane.showMessageDialog(null,"추가했습니다.");
+				this.setVisible(false);
+				this.dispose();
 
 
 			}catch(AlreadyExistException ee)
-
 			{
 				JOptionPane.showMessageDialog(this, "존재하는 선사명입니다");
 
-
-
 			}
-			finally {
-				this.setVisible(false);
-				this.dispose();
+			catch(Exception ee)
+			{
+				ee.printStackTrace();
+				JOptionPane.showMessageDialog(this, ee.getMessage());
 			}
-
 
 
 		}
