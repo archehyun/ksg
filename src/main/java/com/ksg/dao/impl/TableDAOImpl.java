@@ -364,11 +364,9 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 	}
 	
 	public List selectSystemDataList(String table_name)  throws SQLException 
-	{
-		List li = sqlMap.queryForList("Table.selectSystemData"+table_name);
+	{	
 		
-		
-		return li;
+		return sqlMap.queryForList("Table.selectSystemData"+table_name);
 	}
 
 

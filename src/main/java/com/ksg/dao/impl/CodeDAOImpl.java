@@ -54,7 +54,7 @@ public class CodeDAOImpl extends AbstractDAO implements CodeDAO{
 	}
 	
 	@Override
-	public Object selectCount(Map<String, Object> commandMap)throws SQLException {
+	public int selectCount(Map<String, Object> commandMap)throws SQLException {
 		return  (Integer) selectOne(namespace+".selectCountH", commandMap);
 	}
 

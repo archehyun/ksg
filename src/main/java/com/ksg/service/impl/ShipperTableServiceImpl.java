@@ -6,10 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
-
 import com.ksg.common.exception.AlreadyExistException;
-import com.ksg.dao.TableDAO;
 import com.ksg.dao.impl.ShipperTableDAOImpl;
 import com.ksg.service.ShipperTableService;
 
@@ -34,9 +31,8 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 	private ShipperTableDAOImpl shipperTableDao;
 
-
-
 	public ShipperTableServiceImpl() {
+		
 		shipperTableDao = new ShipperTableDAOImpl();
 	}
 
@@ -163,7 +159,7 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 		} catch (SQLException e) {
 			if(e.getErrorCode()==2627)
 			{
-				throw new AlreadyExistException();
+				throw new AlreadyExistException("exist");
 			}
 		}
 		

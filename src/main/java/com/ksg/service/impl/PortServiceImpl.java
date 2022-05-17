@@ -104,7 +104,7 @@ public class PortServiceImpl implements PortService{
 
 			if(e1.getErrorCode()==2627)
 			{
-				throw new AlreadyExistException();
+				throw new AlreadyExistException("exist");
 
 			}else
 			{

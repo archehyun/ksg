@@ -113,18 +113,13 @@ public class InsertCompanyInfoDialog extends BaseInfoDialog{
 				this.setVisible(false);
 				this.dispose();
 				this.result=KSGDialog.SUCCESS;
-			} catch (SQLException e1) {
-				if(e1.getErrorCode()==2627)
-				{
-					
-					JOptionPane.showMessageDialog(this, "선사명이 존재합니다.");
-					
-
-				}else
-				{
-					JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
-					e1.printStackTrace();
-				}
+			} catch (Exception e1) {
+				
+				e1.printStackTrace();
+				
+				JOptionPane.showMessageDialog(this, e1.getMessage()+","+e1.getMessage());
+				
+				
 			}
 
 		}else if(command.equals("취소"))

@@ -35,11 +35,11 @@ import javax.swing.event.TableColumnModelListener;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.comp.PnBase;
 import com.ksg.workbench.base.company.dialog.UpdateCompanyInfoDialog;
 import com.ksg.workbench.common.comp.KSGPageTablePanel;
-import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 import lombok.extern.slf4j.Slf4j;
@@ -74,13 +74,9 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private JLabel lblTable;	
 
-	private KSGPageTablePanel tableH;
-
-	//private String[] fieldName = {"company_name","company_abbr","agent_name", "agent_abbr","contents"};
+	private KSGTablePanel tableH;
 
 	private String query;
-
-	//private String orderby;
 	
 	CompanyServiceImpl companyService = new CompanyServiceImpl();
 
@@ -133,7 +129,7 @@ public class PnCompany extends PnBase implements ActionListener{
 		columns[4].size = 300;
 		
 		
-		tableH = new KSGPageTablePanel("선사목록");
+		tableH = new KSGTablePanel("선사목록");
 
 		tableH.addMouseListener(new TableSelectListner());
 		
@@ -144,8 +140,8 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		tableH.setColumnName(columns);
 		tableH.initComp();
-		tableH.setPageCountIndex(6);
-		tableH.addActionListener(new PageAction(tableH, companyService));
+//		tableH.setPageCountIndex(6);
+//		tableH.addActionListener(new PageAction(tableH, companyService));
 		
 
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
@@ -361,14 +357,9 @@ public class PnCompany extends PnBase implements ActionListener{
 		try {
 			
 			log.info("param:"+param);
+
 			
-			int page_size = tableH.getPageSize();
-			
-			param.put("PAGE_SIZE", page_size);
-			
-			param.put("PAGE_NO", 1);
-			
-			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectListByPage(param);
+			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectList(param);
 			
 			result.put("PAGE_NO", 1);
 
@@ -378,20 +369,17 @@ public class PnCompany extends PnBase implements ActionListener{
 
 			if(master.size()==0)
 			{
-				/*lblArea.setText("");
-				lblAreaCode.setText("");
-				lblPationality.setText("");
-				lblPortName.setText("");
-				tableD.clearReslult();*/
+				
 			}
 			else
 			{
 				tableH.changeSelection(0,0,false,false);
 			}
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
+		
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
 		
 	}

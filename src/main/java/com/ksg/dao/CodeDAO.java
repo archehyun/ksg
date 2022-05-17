@@ -17,7 +17,7 @@ public interface CodeDAO {
 	
 	public int selectDetailCount(Map<String, Object> commandMap) throws SQLException;
 	
-	public Object selectCount(Map<String, Object> commandMap)throws SQLException ;
+	public int selectCount(Map<String, Object> commandMap)throws SQLException ;
 
 	public Object insert(HashMap<String, Object> param) throws SQLException;
 	
@@ -28,7 +28,6 @@ public interface CodeDAO {
 	public Object delete(HashMap<String, Object> param) throws SQLException;
 
 	public Object deleteDetail(HashMap<String, Object> param) throws SQLException ;
-
 	
 
 }

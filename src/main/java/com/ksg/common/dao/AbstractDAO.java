@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 /**DAO 추상 클래스
@@ -20,13 +21,16 @@ public abstract class AbstractDAO {
 	protected SqlSession sesson;
 	
 	protected String namespace;
-
+	
+	
+	
 
 	public AbstractDAO() {
 		try {
 			sqlMap = SqlMapManager.getSqlMapInstance();
 			
 			sesson = SqlMapManager.getSqlSession();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

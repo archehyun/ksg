@@ -38,9 +38,17 @@
 
 <!-- select -->
 
-	<select id="selectCompanyList" resultClass="java.util.HashMap">
+	<select id="selectCompanyList" resultClass="com.ksg.domain.Company">
 		select * from TB_COMPANY
 		<include refid="WHERE"></include>
+	</select>
+	
+	<select id="selectCompany" resultClass="com.ksg.domain.Company">
+		select * from TB_COMPANY
+		WHERE 
+			company_name = #company_name# and
+			company_abbr = #company_abbr# 
+		
 	</select>
 	
 	
@@ -60,7 +68,7 @@
 
 <!-- insert -->
 
-	<insert id="insertCompany" parameterClass="java.util.HashMap">
+	<insert id="insertCompany" parameterClass="com.ksg.domain.Company">
 		insert into TB_COMPANY(
 			company_name,
 			agent_name,
