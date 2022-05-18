@@ -177,4 +177,13 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 		return resultMap;
 	}
 
+	
+
+	@Override
+	public List getPortList(String table_id) throws SQLException {
+		// TODO Auto-generated method stub
+		return shipperTableDao.getPortList(table_id);
+	}
+
+
 }

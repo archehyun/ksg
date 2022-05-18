@@ -20,8 +20,8 @@ public class PortDAOImplTest {
 	public void testSelectListMapOfStringObject() throws SQLException {
 		
 		
-		List li=portDao.selectList(null);
-		System.out.println(li);
+//		List li=portDao.selectList(null);
+//		System.out.println(li);
 	}
 	
 }

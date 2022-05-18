@@ -40,9 +40,12 @@ public abstract class AbstractDAO {
 	public List selectList(String queryId, Object param) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList(queryId, param);
-		
-		//return sesson.selectList(queryId, param);
-
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public List selectList(String queryId) throws SQLException {
+		// TODO Auto-generated method stub
+		return sqlMap.queryForList(queryId);
 	}
 
 	@SuppressWarnings("rawtypes")

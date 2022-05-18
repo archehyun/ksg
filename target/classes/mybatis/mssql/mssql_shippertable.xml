@@ -369,5 +369,10 @@
 		select count(*) from TB_TABLE_INFO	
 	</select>
 	
+	
+	
+	<select id="getPortList" resultClass="com.ksg.domain.TablePort">
+		select * from TB_TABLE_PORTLIST where table_id=#table_id#
+	 </select>	
 
 </sqlMap>

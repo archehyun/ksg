@@ -24,7 +24,6 @@ import org.jdom.output.XMLOutputter;
 
 import com.ksg.commands.schedule.ScheduleSortData;
 import com.ksg.commands.schedule.XML_INFO;
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.StringCompare;
@@ -60,9 +59,6 @@ public class RouteScheduleJointV2 extends RouteAbstractScheduleJoint {
 	private XTGManager xtgmanager = new XTGManager();
 	
 	private static final String WORLD_SOURCE_XML = "world_source.xml";
-
-	//DAOManager manager =DAOManager.getInstance();
-
 	private ScheduleBuildMessageDialog di;
 
 	private int UP_SIZE,DOWN_SIZE;

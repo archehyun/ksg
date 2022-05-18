@@ -20,6 +20,12 @@ public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 		return selectList("shippertable.selectPortList", commandMap);
 
 	}
+	
+	public List<Map<String, Object>> selectPortPrentList(Map<String, Object> commandMap) throws SQLException {
+		// 
+		return selectList("shippertable.selectPortList", commandMap);
+
+	}
 
 	public void insertShipperPort(HashMap<String, Object> commandMap) throws SQLException {
 		insert("shippertable.insertShipperPort", commandMap);
@@ -75,5 +81,13 @@ public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 	public Object selectListByPage(HashMap<String, Object> param) throws SQLException {
 		return selectList("shippertable.selectShipperTableListByPage", param);
 	}
+
+
+	public List getPortList(String table_id) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("shippertable.getPortList", table_id);
+	}
+
+
 
 }

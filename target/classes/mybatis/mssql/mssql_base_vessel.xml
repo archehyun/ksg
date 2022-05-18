@@ -70,6 +70,12 @@
 </sql>
 <!-- select -->
 
+	<select id="selectAll" resultClass="com.ksg.domain.Vessel">
+		select * FROM TB_VESSEL
+		
+	</select>
+
+
 	<select id="selectVesselList" resultClass="java.util.HashMap">
 	
 	<include refid="SELECT"></include> 

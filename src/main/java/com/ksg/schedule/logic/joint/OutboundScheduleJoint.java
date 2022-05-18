@@ -11,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -31,7 +30,6 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.ScheduleBuild;
-import com.ksg.schedule.logic.ScheduleManager;
 
 /**
  * @deprecated

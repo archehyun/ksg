@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.PortDAO;
@@ -138,6 +138,7 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
 
 		log.debug("param:{}", param);
+		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("total", portDAO.selectCount(param));
@@ -151,6 +152,15 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	public PortInfo select(Map<String, Object> commandMap) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Map<String, String> selectAll() throws SQLException {
+		List<PortInfo> li = portDAO.selectAll(); 
+		
+		Map<String, String> map = li.stream().collect(Collectors.toMap(PortInfo::getPort_name, PortInfo::getPort_name));
+		
+		return map;
 	}
 
 

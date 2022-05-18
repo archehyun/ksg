@@ -36,9 +36,16 @@
 
 </sql>
 
+
+
 	
 
 <!-- select -->
+
+	<select id="selectAll" resultClass="com.ksg.domain.PortInfo">
+		select * FROM TB_PORT
+		
+	</select>
 
 	<select id="selectPortList" resultClass="java.util.HashMap">
 		select *, (SELECT COUNT(*) FROM TB_PORT_ABBR ABBR WHERE ABBR.port_name=TBL.port_name) ABBR_COUNT from TB_PORT TBL

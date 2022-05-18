@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ksg.domain.Vessel;
+
 public interface VesselDAO {
 	
 	
@@ -29,6 +31,8 @@ public interface VesselDAO {
 	public Object update(HashMap<String, Object> param) throws SQLException ;
 
 	public Object updateDetail(HashMap<String, Object> param) throws SQLException ;
+	
+	public List<Vessel> selectAll() throws SQLException;
 	
 	
 

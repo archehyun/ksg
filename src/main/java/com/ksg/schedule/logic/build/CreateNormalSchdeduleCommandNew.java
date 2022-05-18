@@ -762,14 +762,14 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 	/**
 	 * @param table
 	 * @param vslIndex
-	 * @param ports
-	 * @param outPort
+	 * @param fromPorts
+	 * @param toPorts
 	 * @param InOutBoundType
 	 * @throws ArrayIndexOutOfBoundsException
 	 */
-	private void makeSchedule(ShippersTable table, int vslIndex, int[]ports, int[]outPort,String InOutBoundType,ADVData adv)
+	private void makeSchedule(ShippersTable table, int vslIndex, int[]fromPorts, int[]toPorts,String InOutBoundType,ADVData adv)
 			throws ArrayIndexOutOfBoundsException,NullPointerException, ParseException,VesselNullException{
-		if(ports==null||outPort==null)
+		if(fromPorts==null||toPorts==null)
 		{			
 			return;
 		}
@@ -796,20 +796,20 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 
 			logger.debug("MakeSchedule "+InOutBoundType+ " start:"+table.getTable_id()+","+table.getPage());
 			
-			logger.info("table info:"+table.getTable_id()+", vessel name:"+vesselName+","+ports.length+","+outPort.length);
+			logger.info("table info:"+table.getTable_id()+", vessel name:"+vesselName+","+fromPorts.length+","+toPorts.length);
 
-			boolean isOutBusanAndNewBusan=isBusanAndNewBusan(ports, outPort,TYPE_INBOUND);
+			boolean isOutFromBusanAndNewBusan=isBusanAndNewBusan(fromPorts, toPorts,TYPE_INBOUND);
 			
-			boolean isOutToBusanAndNewBusan=isBusanAndNewBusan(ports, outPort,TYPE_OUTBOUND);
+			boolean isOutToBusanAndNewBusan=isBusanAndNewBusan(fromPorts, toPorts,TYPE_OUTBOUND);
 
-			for(int fromPortCount=0;fromPortCount<ports.length;fromPortCount++)
+			for(int fromPortCount=0;fromPortCount<fromPorts.length;fromPortCount++)
 			{
-				int outPortIndex =ports[fromPortCount];
+				int outPortIndex =fromPorts[fromPortCount];
 
 				// 외국항
-				for(int toPortCount=0;toPortCount<outPort.length;toPortCount++)
+				for(int toPortCount=0;toPortCount<toPorts.length;toPortCount++)
 				{
-					int outToPortIndex = outPort[toPortCount];
+					int outToPortIndex = toPorts[toPortCount];
 
 					TablePort _outport = this.getPort(portDataArray, outPortIndex);
 					
@@ -935,7 +935,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 								}
 								
 								// inbound 스케줄
-								if(InOutBoundType.equals(ScheduleService.INBOUND)&&isOutBusanAndNewBusan)
+								if(InOutBoundType.equals(ScheduleService.INBOUND)&&isOutFromBusanAndNewBusan)
 								{									
 									if(toPort.equals(BUSAN)&&isOutNewBusanPortScheduleAdd)
 									{
@@ -982,13 +982,13 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 	/**
 	 * @날짜 2015-10-01
 	 * @설명 스케줄에 부산항과 부산신항이 동시에 존재하는지 판단, 부산항 : BUSAN, 부산신항 : BUSAN NEW
-	 * @param ports
-	 * @param outPort
+	 * @param fromPorts
+	 * @param toPort
 	 * @return
 	 * @throws SQLException
 	 * 
 	 */
-	private boolean isBusanAndNewBusan(int[] ports, int[] outPort, int type)
+	private boolean isBusanAndNewBusan(int[] fromPorts, int[] toPort, int type)
 	throws SQLException {
 		
 		isExitOutOldPort=false;
@@ -996,12 +996,12 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 		isExitOutToOldPort=false;
 		isExitOutToNewPort=false;
 		// 항구확인
-		for(int fromPortCount=0;fromPortCount<ports.length;fromPortCount++)
+		for(int fromPortCount=0;fromPortCount<fromPorts.length;fromPortCount++)
 		{
-			int outPortIndex =ports[fromPortCount];
-			for(int toPortCount=0;toPortCount<outPort.length;toPortCount++)
+			int outPortIndex =fromPorts[fromPortCount];
+			for(int toPortCount=0;toPortCount<toPort.length;toPortCount++)
 			{
-				int outToPortIndex = outPort[toPortCount];
+				int outToPortIndex = toPort[toPortCount];
 				TablePort _outport = this.getPort(portDataArray, outPortIndex);
 				TablePort _outtoport = this.getPort(portDataArray, outToPortIndex);
 

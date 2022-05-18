@@ -43,13 +43,7 @@ public interface ScheduleService extends PageService{
 	 * @throws SQLException
 	 */
 	public List getInboundScheduleList(String port)							throws SQLException;
-	/**
-	 * @param port
-	 * @param toPort
-	 * @return
-	 * @throws SQLException
-	 */
-	//public List getInboundScheduleList(String port, String toPort)			throws SQLException;
+
 	/**
 	 * @param port
 	 * @param vessel
@@ -57,12 +51,7 @@ public interface ScheduleService extends PageService{
 	 * @throws SQLException
 	 */
 	public List getInboundScheduleListByVessel(String port, String vessel)	throws SQLException;
-	/**
-	 * @param port
-	 * @return
-	 * @throws SQLException
-	 */
-	//public List getInboundtoPortList(String port)							throws SQLException;
+
 	/**
 	 * @param port
 	 * @return
@@ -109,8 +98,7 @@ public interface ScheduleService extends PageService{
 	 * @return
 	 * @throws SQLException
 	 */
-	@Deprecated
-	public List getTableAndADVList()										throws SQLException;
+	
 	/**
 	 * @param data
 	 * @return
@@ -145,7 +133,7 @@ public interface ScheduleService extends PageService{
 	public List getScheduleListByVesselVoy(String vessel, String voy)throws SQLException;
 	public List getScheduleListByToFrom(String areaCode, String areaCode2,
 			String InOut, int forSch)throws SQLException;
-	//public List getScheduleList(String date)throws SQLException;
+	
 	public List<ScheduleData> getScheduleList(ScheduleData data)throws SQLException;
 	public List getScheduleListGroupByCompany(String searchDate)throws SQLException;
 	/**
@@ -153,13 +141,6 @@ public interface ScheduleService extends PageService{
 	 * @throws SQLException
 	 */
 	public List selectScheduleDateList()throws SQLException;
-	
-	//public int getScheduleTotalCount()throws SQLException;
-	
-	//public int getScheduleNTopCount(ScheduleData data)throws SQLException;
-	
-	//public List getScheduleListNTop(ScheduleData data) throws SQLException;
-
 	
 	/**콘솔 스케줄 조회 
 	 * @param data ScheduleData 클래스
@@ -174,9 +155,6 @@ public interface ScheduleService extends PageService{
 	
 	@Deprecated
 	public List getInlandScheduleDateList()throws SQLException;
-	
-	
-	
 	
 	@Deprecated
 	public List<ScheduleData> getOutboundScheduleList(ScheduleData op)throws SQLException;
@@ -194,7 +172,6 @@ public interface ScheduleService extends PageService{
 	
 	public HashMap<String, Object> selectGroupList(HashMap<String, Object> param) throws SQLException;
 	
-	
 	public int deleteInlnadSchedule()throws SQLException;
 	
 	public HashMap<String, Object> selectScheduleGroupList(HashMap<String, Object> param) throws SQLException;
@@ -203,15 +180,7 @@ public interface ScheduleService extends PageService{
 
 	HashMap<String, Object> selectInboundScheduleGroupList2(HashMap<String, Object> param) throws SQLException;
 	
-	public HashMap<String, Object> selectInlandScheduleList(HashMap<String, Object> commandMap) throws SQLException; 
-
-	
-	
-	
-	
-	
-
-
+	public HashMap<String, Object> selectInlandScheduleList(HashMap<String, Object> commandMap) throws SQLException;
 }
 
 

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.PortDAO;
+import com.ksg.domain.PortInfo;
 
 public class PortDAOImpl extends AbstractDAO implements PortDAO{
 	public PortDAOImpl() {
@@ -66,6 +67,12 @@ public class PortDAOImpl extends AbstractDAO implements PortDAO{
 	public List<Map<String, Object>> selectListByLike(Map<String, Object> param) throws SQLException {
 		// TODO Auto-generated method stub
 		return selectList(this.namespace+".selectPortListByLike", param);
+	}
+
+	@Override
+	public List<PortInfo> selectAll() throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList(this.namespace+".selectAll");
 	}
 	
 

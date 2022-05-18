@@ -11,7 +11,6 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -83,11 +82,11 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 		errorlist= new Vector();
 
 		process =0;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-		SimpleDateFormat sdf1 = new SimpleDateFormat("MM");
+		SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+		SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
 
-		currentYear = sdf.format(new Date());
-		currentMonth = Integer.valueOf(sdf1.format(new Date()));
+		currentYear = sdfYear.format(new Date());
+		currentMonth = Integer.valueOf(sdfMonth.format(new Date()));
 
 		portList = 		baseService.getPortInfoList();
 		portAbbrList = 	baseService.getPort_AbbrList();

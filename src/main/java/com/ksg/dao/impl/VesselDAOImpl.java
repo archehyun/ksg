@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.VesselDAO;
+import com.ksg.domain.PortInfo;
+import com.ksg.domain.Vessel;
 
 /**
 
@@ -27,6 +29,7 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	 */
 	public VesselDAOImpl() {
 		super();
+		this.namespace = "vessel";
 	}
 	
 	@Override
@@ -83,6 +86,13 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	public List<Map<String, Object>> selectDetailListByLike(HashMap<String, Object> commandMap) throws SQLException {
 		// TODO Auto-generated method stub
 		return selectList("vessel.selectVesselAbbrListByLike", commandMap);
+	}
+
+	
+	@Override
+	public List<Vessel> selectAll() throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList(this.namespace+".selectAll");
 	}
 
 

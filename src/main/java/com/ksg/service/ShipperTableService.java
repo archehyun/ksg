@@ -16,4 +16,8 @@ public interface ShipperTableService extends PageService{
 
 	int updateTableDateByTableIDs(List table, String updateDate) throws SQLException;
 
+	public List getPortList(String table_id) throws SQLException;
+
+
+
 }

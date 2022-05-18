@@ -2,12 +2,14 @@ package com.ksg.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-
+import java.util.stream.Collectors;
 
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.impl.VesselDAOImpl;
+import com.ksg.domain.PortInfo;
+import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -169,5 +171,14 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 
 		resultMap.put("master",vesselDAO.selectDetailListByLike((HashMap<String, Object>) param));
 		return resultMap;
+	}
+
+	@Override
+	public Map<String, String> selectAll() throws SQLException {
+		List<Vessel> li = vesselDAO.selectAll(); 
+		
+		Map<String, String> map = li.stream().collect(Collectors.toMap(Vessel::getVessel_name, Vessel::getVessel_name));
+		
+		return map;
 	}
 }

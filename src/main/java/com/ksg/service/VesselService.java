@@ -25,5 +25,8 @@ public interface VesselService extends PageService{
 	
 	public void insertDetail(HashMap<String, Object> param) throws RuntimeException;
 
+	public Map<String, String> selectAll()throws SQLException;
+
+
 
 }
