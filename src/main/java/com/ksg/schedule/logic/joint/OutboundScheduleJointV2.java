@@ -235,7 +235,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 
 			String toPort=null;
 
-			//도창항구명 기준으로 스케줄 생성
+			//도착항구명 기준으로 스케줄 생성
 			while(toPortIter.hasNext())
 			{
 				try{

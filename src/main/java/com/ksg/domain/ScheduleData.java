@@ -15,7 +15,13 @@ import java.util.StringTokenizer;
 
 import com.ksg.common.util.KSGDateUtil;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 
@@ -23,7 +29,9 @@ import lombok.Data;
  * @author 박창현
  *
  */
-@Data
+@NoArgsConstructor @AllArgsConstructor
+@Builder
+@Getter @Setter
 public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	private String agent; // 에이전트
 	private String area_code; // 지역 코드

@@ -274,6 +274,11 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	public List<Map<String, Object>> selectInlnadList(HashMap<String, Object> param) throws SQLException {
 		return sqlMap.queryForList("schedule.selectInlandList",param);
 	}
+	@Override
+	public List<ScheduleData> selectScheduleLisByCondition(ScheduleData param) throws SQLException {
+		
+		return sqlMap.queryForList("schedule.selectScheduleListByCondition",param);
+	}
 
 	
 

@@ -6,10 +6,9 @@ import com.ksg.schedule.execute.build.impl.InlnadScheduleBuild;
 import com.ksg.schedule.execute.build.impl.NormalScheduleBuild;
 import com.ksg.schedule.execute.joint.impl.InboundScheduleJoint;
 import com.ksg.schedule.execute.joint.impl.OutboundScheduleJoint;
+import com.ksg.schedule.execute.joint.impl.RouteScheduleJoint;
 
 public class ScheduleFactory {
-	
-
 	
 	public static Executeable createNormalScheduleBuild(String date_isusse)
 	{
@@ -26,15 +25,21 @@ public class ScheduleFactory {
 		return new ExecuteableSchedule(new ConsoleScheduleBuild());
 	}
 	
-	public static Executeable createInboundScheduleJoint()
+	public static Executeable createInboundScheduleJoint(String date_isusse)
 	{
-		return new ExecuteableSchedule(new InboundScheduleJoint());
+		return new ExecuteableSchedule(new InboundScheduleJoint(date_isusse));
 	}
 	
-	public static Executeable createOutboundScheduleJoint()
+	public static Executeable createOutboundScheduleJoint(String date_isusse)
 	{
-		return new ExecuteableSchedule(new OutboundScheduleJoint());
+		return new ExecuteableSchedule(new OutboundScheduleJoint(date_isusse));
 	}
+
+	public static Executeable createRoputeScheduleJoint(String date_isusse) {
+		return new ExecuteableSchedule(new RouteScheduleJoint(date_isusse));
+	}
+
+	
 	
 
 }

@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-
-
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.dao.SchduleDAO;
@@ -32,6 +30,7 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.KSGHashMap;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleServiceV2;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,7 +51,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @SuppressWarnings("unchecked")
-public class ScheduleServiceImpl extends AbstractServiceImpl implements ScheduleService{
+public class ScheduleServiceImpl extends AbstractServiceImpl implements ScheduleService, ScheduleServiceV2{
 
 	private SchduleDAO schduleDAO;
 
@@ -61,7 +60,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	private ADVScheduleDAO advScheduleDAO;	
 
 	KSGModelManager manager = KSGModelManager.getInstance();
-
 
 	public ScheduleServiceImpl() {
 		
@@ -399,10 +397,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		List list=schduleDAO.selectList(param);
-
-
-
-
+		
 		return null;
 	}
 
@@ -755,6 +750,51 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		}
 
 		return areaList;
+	}
+
+	@Override
+	public List<HashMap<String, Object>> selecteScheduleListMapByCondition(HashMap<String, Object> param) {
+		
+		log.debug("param:{}", param);
+		
+		ScheduleData schedule = ScheduleData.builder()
+				.date_issue((String) param.get("date_issue"))
+				.InOutType((String) param.get("inOutType"))
+				.gubun((String) param.get("gubun"))
+				.build();
+		
+		ArrayList<HashMap<String, Object>> map = new ArrayList<HashMap<String, Object>>();
+		try {
+			List<ScheduleData> li = schduleDAO.selectScheduleLisByCondition(schedule);
+			
+			
+			for(ScheduleData item:li)
+			{	
+				map.add((HashMap<String, Object>) objectMapper.convertValue(item, Map.class));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return map;
+	}
+	
+	
+	@Override
+	public List<ScheduleData> selecteScheduleListByCondition(HashMap<String, Object> param) throws SQLException {
+		
+		log.debug("param:{}", param);
+		
+		ScheduleData schedule = ScheduleData.builder()
+				.date_issue((String) param.get("date_issue"))
+				.InOutType((String) param.get("inOutType"))
+				.gubun((String) param.get("gubun"))
+				.build();
+		
+
+		
+		return  schduleDAO.selectScheduleLisByCondition(schedule);
 	}
 
 }

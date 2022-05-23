@@ -198,7 +198,10 @@ public interface SchduleDAO {
 	public ScheduleData insertScheduleData(ScheduleData data)				throws SQLException;
 	
 	public int deleteSchedule()												throws SQLException;
-	public List selectInlandScheduleDateList()throws SQLException;;
+	
+	public List selectInlandScheduleDateList()throws SQLException;
+	
+	public List<ScheduleData> selectScheduleLisByCondition(ScheduleData schedule) throws SQLException;
 	
 	
 }

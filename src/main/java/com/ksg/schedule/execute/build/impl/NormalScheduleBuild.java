@@ -11,7 +11,6 @@ import org.jdom.JDOMException;
 
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.domain.ADVData;
-import com.ksg.domain.PortInfo;
 import com.ksg.domain.TablePort;
 import com.ksg.schedule.execute.build.BuildSchedule;
 import com.ksg.schedule.execute.util.ScheduleDateUtil;
@@ -264,10 +263,7 @@ public class NormalScheduleBuild extends BuildSchedule{
 		for(int fromPortIndex=0;fromPortIndex<fromPortIndexs.length;fromPortIndex++)
 		{	
 			for(int toPortIndex=0;toPortIndex<toPortIndexs.length;toPortIndex++)
-			{
-				
-
-				System.out.println(portArray.length+","+ fromPortIndexs[fromPortIndex]+","+toPortIndexs[toPortIndex] );
+			{	
 				TablePort searchOldFromPort = portArray[fromPortIndexs[fromPortIndex]-1];
 				TablePort searchNewFromPort = portArray[fromPortIndexs[fromPortIndex]-1];
 				

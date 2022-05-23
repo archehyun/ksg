@@ -95,8 +95,13 @@
     
     
     <logger name="com.ksg.schedule">
-        <level value="info"/>	
+        <level value="DEBUG"/>	
     </logger>
+    
+        
+     <logger name="com.ksg.service">
+        <level value="DEBUG"/>	
+    </logger> 
     
      <logger name="com.ksg.base">
         <level value="info"/>	
