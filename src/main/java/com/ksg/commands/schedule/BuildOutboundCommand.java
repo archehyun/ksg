@@ -32,14 +32,18 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.service.BaseService;
+import com.ksg.service.CompanyService;
 import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
 public class BuildOutboundCommand implements IFCommand {
 	private JTextArea area2;
 	private ScheduleService scheduleService;
 	private BaseService baseService;
+	
+	private CompanyService companyService;
 	private String TAG_0=" ";
 	private String TAG_1=" ";
 	private String TAG_2=" ";
@@ -47,6 +51,7 @@ public class BuildOutboundCommand implements IFCommand {
 	private XTGManager xtgManager;
 	public BuildOutboundCommand() {
 		scheduleService = new ScheduleServiceImpl();
+		companyService = new CompanyServiceImpl();
 		baseService = new BaseServiceImpl();
 		xtgManager = new XTGManager();
 	}
@@ -106,7 +111,8 @@ public class BuildOutboundCommand implements IFCommand {
 
 						String dateF=oneData.getDateF();
 						String dateT=oneData.getDateT();
-						Company agent=baseService.getCompanyInfo(oneData.getCompany_abbr());
+//						Company agent=baseService.getCompanyInfo(oneData.getCompany_abbr());
+						Company agent=companyService.select(oneData.getCompany_abbr());
 						List schedueList_2 = scheduleService.getOutboundScheduleList(port, fromPort);
 						String company_abbr=oneData.getCompany_abbr();
 						for(int i=0;i<schedueList_2.size();i++)

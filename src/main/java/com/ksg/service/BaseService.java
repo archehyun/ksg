@@ -88,7 +88,7 @@ public interface BaseService {
 	public int getCompanyCount()throws SQLException;
 	
 	//company
-	public Company getCompanyInfo(String company_abbr)throws SQLException;
+	//public Company getCompanyInfo(String company_abbr)throws SQLException;
 	
 	public List getCompanyList()throws SQLException;
 	

@@ -83,10 +83,10 @@ public class BaseServiceImpl implements BaseService
 		
 	}
 
-	public Company getCompanyInfo(String company_abbr) throws SQLException {
-		// TODO Auto-generated method stub
-		return baseDAO.getCompanyInfo(company_abbr);
-	}
+//	public Company getCompanyInfo(String company_abbr) throws SQLException {
+//		// TODO Auto-generated method stub
+//		return baseDAO.getCompanyInfo(company_abbr);
+//	}
 
 	public List getPortInfoList() throws SQLException{
 		return baseDAO.getPortInfoList();

@@ -66,7 +66,9 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
+import com.ksg.service.CompanyService;
 import com.ksg.service.TableService;
+import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
@@ -185,7 +187,7 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 	private JLabel lblSaveInfo;
 	private EnterKeyListener enterKeyListener;
 	private BaseService baseService;
-
+	private CompanyService companyService;
 	private JComboBox cbxGubun;
 	private JTextArea txaConsoleCFS;
 	private JTextField txfDtime;
@@ -201,7 +203,7 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		this.advService = DAOManager.getInstance().createADVService();
 		this.tableService= new TableServiceImpl();
 		this.baseService = DAOManager.getInstance().createBaseService();
-		
+		companyService = new CompanyServiceImpl();
 		this.addComponentListener(this);
 		createAndUpdteUI();
 	}
@@ -421,7 +423,9 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 								String company=path.getLastPathComponent().toString();
 								try {
 									
-									Company companyInfo=baseService.getCompanyInfo(company);									
+//									Company companyInfo=baseService.getCompanyInfo(company);
+									
+									Company companyInfo =companyService.select(company);
 									txfCompany_Abbr.setText(companyInfo.getCompany_abbr());
 									txfAgent.setText(companyInfo.getAgent_abbr());
 									
