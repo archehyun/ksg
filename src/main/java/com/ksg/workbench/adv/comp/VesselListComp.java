@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,6 +16,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
 
@@ -24,9 +26,12 @@ import org.jdom.Element;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.Vessel;
-import com.ksg.service.BaseService;
+import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.adv.KSGXLSImportPanel;
 import com.ksg.workbench.adv.dialog.SearchVesselDialog;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
@@ -34,6 +39,7 @@ import com.ksg.workbench.adv.dialog.SearchVesselDialog;
  * @author 박창현
  *
  */
+@Slf4j
 public class VesselListComp extends JList{
 	/**
 	 * 
@@ -87,27 +93,30 @@ public class VesselListComp extends JList{
 	}
 
 
-	private BaseService baseService;
+	//private BaseService baseService;
 	//	private JTextArea txaADV;
 	KSGXLSImportPanel base;
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	private int vesselSize;
+	
+	private VesselService vesselService;
 	public VesselListComp(KSGXLSImportPanel base) {
 
 		this.base = base;
 		//		this.txaADV=txaADV;
-		this.setFixedCellHeight(15);
-		this.setCellRenderer(new ComplexCellRenderer());	
+		this.setFixedCellHeight(20);
+		this.setCellRenderer(new ComplexCellRenderer());
 		this.setComponentPopupMenu(createVesselPopup());
-		DAOManager manager = DAOManager.getInstance();
-		baseService = manager.createBaseService();
+		
+		//baseService = manager.createBaseService();
+		
+		vesselService = new VesselServiceImpl();
 	}
 	private JPopupMenu createVesselPopup() 
 	{
 		JPopupMenu menu = new JPopupMenu();
 		JMenuItem menuItem = new JMenuItem("검색");
 		menuItem.addActionListener(new ActionListener(){
-
 
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -135,11 +144,15 @@ public class VesselListComp extends JList{
 	}
 	Element vesselElement;
 	public void setModel(Element vesselElement) {
+		log.info("vessel list init start");
 		DefaultListModel vesselListModel = new DefaultListModel();
+		
 		this.vesselElement=vesselElement;
 
 		List vessel_list=vesselElement.getChildren("vessel");
+		
 		this.vesselSize=vessel_list.size();
+		
 		try {
 			for(int i=0;i< vessel_list.size();i++)
 			{
@@ -147,14 +160,25 @@ public class VesselListComp extends JList{
 				Element port_info = (Element) vessel_list.get(i);
 				String vesselName=port_info.getAttributeValue("name");
 
-				Vessel op = new Vessel();
-				op.setVessel_abbr(vesselName);
-				List v =baseService.getVesselList(op);
+//				Vessel op = new Vessel();
+//				
+//				op.setVessel_abbr(vesselName);
+				
+				//List v =baseService.getVesselList(op);
+				
+				HashMap<String, Object> param = new HashMap<String, Object>();
+				
+				param.put("vessel_name", vesselName);
+				
+				
+				HashMap<String, Object> result = vesselService.selectDetailList(param);
+				
+				List v=(List) result.get("master");
 
 				VesselInfo info = new VesselInfo();
+				
 				if(v.size()==0)
 				{
-
 					info.setExist(false);
 					info.setMulti(false);
 					info.vesselName=vesselName;	
@@ -162,32 +186,38 @@ public class VesselListComp extends JList{
 
 				}else if(v.size()==1)
 				{
-					Vessel  item = (Vessel) v.get(0);
+					//Vessel  item = (Vessel) v.get(0);
+					
+					HashMap<String, Object> item = (HashMap<String, Object>) v.get(0);
+					
+					String newVesselName = (String) item.get("vessel_name");
+				
 					info.setMulti(false);
 					info.setExist(true);
-					info.vesselName=item.getVessel_name();
-					base.updateVesseFulllName(i, item.getVessel_name());
+					info.vesselName=newVesselName;
+					base.updateVesseFulllName(i, newVesselName);
 				}
 				else if(v.size()>1)
 				{
-					Vessel  item = (Vessel) v.get(0);
+					HashMap<String, Object> item = (HashMap<String, Object>) v.get(0);
+					
+					String newVesselName = (String) item.get("vessel_name");
 					info.setMulti(true);
 					info.setExist(true);
-					info.vesselName=item.getVessel_name();
-					base.updateVesseFulllName(i, item.getVessel_name());
+					info.vesselName=newVesselName;
+					base.updateVesseFulllName(i, newVesselName);
 				}
 				vesselListModel.addElement(info);
 			}
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.err.println("error");
+			JOptionPane.showMessageDialog(this, e.getMessage());	
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		this.setModel(vesselListModel);
+		
+		log.info("vessel list init end");
 	}
 	public Vector<VesselInfo> getNullVesselList() {
 		Vector<VesselInfo> list = new Vector<VesselInfo>();
@@ -199,14 +229,14 @@ public class VesselListComp extends JList{
 				String vesselName =litinfo.vesselName;
 				Vessel op = new Vessel();
 				op.setVessel_name(vesselName);
-				Vessel v1 =baseService.getVesselAbbrInfo(vesselName);
+				Vessel v1 =vesselService.selectDetail(vesselName);
 				VesselInfo info = new VesselInfo();
 
 				if(v1==null)
 				{
 					logger.error("null vessel:"+vesselName);
 					info.setExist(false);
-					info.vesselName=vesselName;			
+					info.vesselName=vesselName;
 					list.add(info);
 
 				}			

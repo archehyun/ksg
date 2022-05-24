@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -19,9 +20,12 @@ import javax.swing.table.DefaultTableModel;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
-import com.ksg.service.BaseService;
+import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
@@ -29,22 +33,32 @@ import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
  * @author ¹ÚÃ¢Çö
  *
  */
+@Slf4j
 public class ManageVesselDialog extends KSGDialog implements ActionListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	String table_id;
-	ShipperTableAbstractMgtUI base;
-	JTable _tblVesselList;
-	DefaultTableModel model;
-	private BaseService baseService;
+
+	private String table_id;
+
+	private ShipperTableAbstractMgtUI base;
+
+	private JTable _tblVesselList;
+
+	private DefaultTableModel model;
+
+	//	private BaseService baseService;
+
+	VesselService vesselService;
 	public ManageVesselDialog(String selectedTableId, ShipperTableAbstractMgtUI base) {
 		this.base =base;
 		this.table_id=selectedTableId;
 		DAOManager manager = DAOManager.getInstance();
 		tableService = manager.createTableService();
-		baseService = manager.createBaseService();
+		//		baseService = manager.createBaseService();
+
+		vesselService = new VesselServiceImpl();
 	}
 
 
@@ -132,21 +146,31 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 			String vesselAbbr = (String) _tblVesselList.getValueAt(row, 1);
 			try {
 
-				Vessel info = new Vessel();
-				info.setVessel_abbr(vesselAbbr);
-				List li=baseService.getVesselAbbrList(info);
+//				Vessel info = new Vessel();
+//				info.setVessel_abbr(vesselAbbr);
+
+
+				//List li=baseService.getVesselAbbrList(info);
+				
+				HashMap<String, Object> param = new HashMap<String, Object>();
+				
+				param.put("vessel_name", vesselAbbr);
+
+				log.info("Param:{}",param);
+				
+				HashMap<String, Object> result =  vesselService.selectDetailListByLike(param);
+				
+				SearchVesselDialog searchVesselDialog = new SearchVesselDialog((List) result.get("master"));
+				
+				searchVesselDialog.createAndUpdateUI();
+
+
+				if(searchVesselDialog.result!=null)
 				{
-					SearchVesselDialog searchVesselDialog = new SearchVesselDialog(li);
-					searchVesselDialog.createAndUpdateUI();
 
-
-					if(searchVesselDialog.result!=null)
-					{
-
-						model.setValueAt(searchVesselDialog.result, row, 0);
-					}
-
+					model.setValueAt(searchVesselDialog.result, row, 0);
 				}
+
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

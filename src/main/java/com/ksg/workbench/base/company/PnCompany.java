@@ -176,7 +176,8 @@ public class PnCompany extends PnBase implements ActionListener{
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER)
+				
+				if(e.getKeyChar()==KeyEvent.VK_ENTER)
 				{
 					fnSearch();
 				}

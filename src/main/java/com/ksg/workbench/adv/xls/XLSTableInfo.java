@@ -584,6 +584,7 @@ public class XLSTableInfo extends TableLocation{
 				p.setCompany_abbr(this.getTableInfo().getCompany_abbr());
 				p.setPort_type(0);
 				tableService.insertTableProperty(p);
+				property = p;
 
 			}else
 			{
@@ -683,8 +684,6 @@ public class XLSTableInfo extends TableLocation{
 	{
 		this.xlsLocation.setTableType(tableType);
 		this.tableType = tableType;
-
-
 	}
 
 

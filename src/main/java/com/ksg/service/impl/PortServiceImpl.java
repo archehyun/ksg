@@ -40,6 +40,7 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	}
 
 	@SuppressWarnings("unchecked")
+	
 	public Map<String, Object> selectList(Map<String, Object> param) throws SQLException {
 
 		log.debug("param:{}", param);
@@ -111,11 +112,28 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 				throw new SQLException(e1.getMessage());
 			}
 		}
-
-
-
-
 	}
+	
+	@Override
+	public Object insert(PortInfo param) throws Exception {
+		try {
+
+			log.debug("param:{}", param);
+			return portDAO.isnert(param);
+		}
+		catch (SQLException e1) {
+
+			if(e1.getErrorCode()==2627)
+			{
+				throw new AlreadyExistException("exist");
+
+			}else
+			{
+				throw new SQLException(e1.getMessage());
+			}
+		}
+	}
+
 
 	public int delete(HashMap<String, Object> param) throws SQLException {
 		log.debug("param:{}", param);
@@ -162,6 +180,7 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 		
 		return map;
 	}
+
 
 
 

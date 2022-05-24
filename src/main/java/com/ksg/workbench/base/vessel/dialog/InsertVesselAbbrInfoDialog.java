@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -123,8 +124,10 @@ public class InsertVesselAbbrInfoDialog extends BaseInfoDialog{
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(this, e1.getMessage());
 			}
-			catch (RuntimeException e1) {
-				e1.printStackTrace();
+			
+			catch(AlreadyExistException e1)
+			{
+				JOptionPane.showMessageDialog(this, "존재하는 선박명입니다.");
 			}
 		}else
 		{

@@ -124,7 +124,7 @@ public class PnPort extends PnBase implements ActionListener{
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
-					//searchData();
+					fnSearch();
 				}
 			}
 		});

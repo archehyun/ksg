@@ -1,6 +1,7 @@
 package com.ksg.workbench.shippertable.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -113,6 +115,7 @@ public class SearchVesselDialog extends KSGDialog{
 		vesselTable.changeSelection(0, 0, false, false);
 		
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5,7,5,7));
 		pnMain.add(new JScrollPane(vesselTable));
 		return pnMain;
 		
@@ -158,7 +161,16 @@ public class SearchVesselDialog extends KSGDialog{
 		});
 		pnContorl.add(butOk);
 		pnContorl.add(butCancel);
-		return pnContorl;
+		
+		KSGPanel pnLine = new KSGPanel();
+		pnLine.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		pnLine.setPreferredSize(new Dimension(0,1));		
+		
+		KSGPanel pnMain =  new KSGPanel(new BorderLayout());
+		pnMain.add(pnContorl);
+		pnMain.add(pnLine,BorderLayout.NORTH);		
+		
+		return pnMain;
 	}
 
 	private void setResult(final JTable jTable) {

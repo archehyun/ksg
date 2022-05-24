@@ -248,9 +248,7 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 				}
 				
 				
-				service.insert(param);
-				
-				service.insertDetail(param);
+				service.insert(param);				
 				
 				pnVessel.fnSearch();
 				
@@ -271,6 +269,7 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 			
 			catch(Exception ee)
 			{
+				ee.printStackTrace();
 				JOptionPane.showMessageDialog(this, ee.getMessage());
 
 			}

@@ -4,11 +4,19 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import java.util.stream.Collectors;
 
+
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.ksg.common.exception.AlreadyExistException;
+import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.dao.impl.VesselDAOImpl;
-import com.ksg.domain.PortInfo;
+
+
+
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 
@@ -26,15 +34,18 @@ import lombok.extern.slf4j.Slf4j;
 
  * @변경이력 :
 
- * @프로그램 설명 :
+ * @프로그램 설명 : 선박, 선박 약어
 
  */
 @Slf4j
 public class VesselServiceImpl extends AbstractServiceImpl implements VesselService{
 
 	
+	
+	protected ObjectMapper objectMapper;
 
-	VesselDAOImpl vesselDAO;
+
+	private VesselDAOImpl vesselDAO;
 
 	public VesselServiceImpl() {
 		super();
@@ -44,7 +55,7 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> selectList(Map<String, Object> commandMap) throws SQLException {
 
-		log.debug("param:"+commandMap);
+		log.info("param:"+commandMap);
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
@@ -74,7 +85,10 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	}
 
 	public int delete(HashMap<String, Object> pram) throws SQLException {
-		return vesselDAO.delete(pram);
+		
+		int result=vesselDAO.delete(pram);
+		vesselDAO.deleteDetail(pram);
+		return result;
 
 	}
 
@@ -82,19 +96,25 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 
 		log.debug("param:"+param);
 		try
-		{
-			
-			
-			
-			vesselDAO.insert(param);
+		{	
+			Vessel vessel = new Vessel();
+			vessel.setVessel_name(String.valueOf(param.get("vessel_name")));
+			vessel.setVessel_company(String.valueOf(param.get("vessel_company")));
+			vessel.setVessel_mmsi(String.valueOf(param.get("vessel_mmsi")));
+			vessel.
+			setVessel_use( (Integer) param.get("vessel_use"));
+			vessel.setVessel_type(String.valueOf(param.get("vessel_type")));
+			vessel.setVessel_abbr(String.valueOf(param.get("vessel_name")));
+
+			vesselDAO.insert(vessel);
+
+
+			vesselDAO.insertDetail(vessel);
 
 		} catch (SQLException e1) {
 			if(e1.getErrorCode()==2627)
 			{
-
-				throw new AlreadyExistException("existr");
-
-
+				throw new AlreadyExistException("exist");
 			}else
 			{
 
@@ -127,29 +147,7 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 		return result;
 	}
 
-	@Override
-	public void insertDetail(HashMap<String, Object> param) throws RuntimeException {
 
-		log.info("param:{}", param);
-		try {
-			vesselDAO.insertDetail( param);
-
-		} catch (SQLException e1) {
-			if(e1.getErrorCode()==2627)
-			{
-
-				throw new AlreadyExistException("exist");
-
-
-			}else
-			{
-
-				e1.printStackTrace();
-			}
-		}
-
-
-	}
 
 	@Override
 	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
@@ -174,11 +172,114 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	}
 
 	@Override
+
 	public Map<String, String> selectAll() throws SQLException {
 		List<Vessel> li = vesselDAO.selectAll(); 
 		
 		Map<String, String> map = li.stream().collect(Collectors.toMap(Vessel::getVessel_name, Vessel::getVessel_name));
 		
 		return map;
+	}
+	public Vessel selectDetail(String vessel_abbr) throws SQLException {
+		// TODO Auto-generated method stub
+		return vesselDAO.selectDetail(vessel_abbr);
+	}
+
+	@Override
+	public void insert(Vessel param) throws RuntimeException {
+		log.info("param:{}", param);
+		try {
+			vesselDAO.insert( param);			
+			param.setVessel_abbr(param.getVessel_name());
+			vesselDAO.insertDetail( param);
+
+		} catch (SQLException e1) {
+			if(e1.getErrorCode()==2627)
+			{
+				throw new AlreadyExistException("exist");
+
+			}else
+			{
+
+				e1.printStackTrace();
+			}
+		}		
+	}
+
+	@Override
+	public Object update(Vessel param) throws SQLException {
+		log.info("param:{}", param);
+		Object result = vesselDAO.update(param);;
+
+		log.debug("result:{}:",param);
+		return result;
+	}
+
+	@Override
+	public void insertDetail(Vessel param) throws RuntimeException {
+		log.info("param:{}", param);
+		try {
+
+			Vessel parent=vesselDAO.selectVessel(param);
+
+			if(parent == null)
+				throw new ResourceNotFoundException("vessel_name:"+param.getVessel_name());
+
+			vesselDAO.insertDetail(param);
+
+		} catch (SQLException e1) {
+			if(e1.getErrorCode()==2627)
+			{
+
+				throw new AlreadyExistException("exist");
+
+
+			}else
+			{
+
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void insertDetail(HashMap<String, Object> param) throws RuntimeException {
+
+		log.info("param:{}", param);
+		try {
+
+			Vessel vessel = new Vessel();
+			vessel.setVessel_name(String.valueOf(param.get("vessel_name")));
+			vessel.setVessel_abbr(String.valueOf(param.get("vessel_abbr")));
+
+			Vessel parent=vesselDAO.selectVessel(vessel);
+
+			if(parent == null)
+				throw new ResourceNotFoundException("vessel_name:"+vessel.getVessel_name());
+
+			vesselDAO.insertDetail(vessel);
+
+		} catch (SQLException e1) {
+			if(e1.getErrorCode()==2627)
+			{
+				throw new AlreadyExistException("exist");
+
+			}else
+			{
+
+				e1.printStackTrace();
+			}
+		}
+
+
+	}
+
+	@Override
+	public Vessel select(String vessel_name) throws SQLException {
+		
+		Vessel vessel = new Vessel();
+		vessel.setVessel_name(vessel_name);
+		
+		return vesselDAO.selectVessel(vessel);
 	}
 }

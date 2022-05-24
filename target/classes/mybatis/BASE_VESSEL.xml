@@ -107,7 +107,7 @@
 		<parameter property="vessel_name" jdbcType="VARCHAR"/>
 	</parameterMap>		
 	
-	<insert id="insertVessel" parameterClass="com.ksg.domain.Vessel">
+	<insert id="insertVesselV3" parameterClass="com.ksg.domain.Vessel">
 		insert into TB_VESSEL(vessel_abbr, vessel_type,vessel_name,vessel_use,vessel_company,vessel_mmsi
 		<isNotNull property="input_date" prepend=",">
 					input_date

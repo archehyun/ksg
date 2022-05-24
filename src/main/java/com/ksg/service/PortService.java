@@ -30,4 +30,6 @@ public interface PortService extends PageService{
 
 	public Object insert(HashMap<String, Object> param) throws Exception;
 
+	public Object insert(PortInfo t) throws Exception;
+
 }

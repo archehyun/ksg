@@ -12,19 +12,23 @@ import javax.swing.table.TableColumnModel;
 
 import com.ksg.commands.AbstractCommand;
 import com.ksg.domain.PortInfo;
+import com.ksg.service.VesselService;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.table.model.KSGTableModel;
 
 public class SearchPort_AbbrCommand extends AbstractCommand {
 	private String col_port_abbr[] = {"항구명","추가"};
 	private String[] colums=null;
 	private int table_type;
-	
+	VesselService vesselService;
 	public SearchPort_AbbrCommand(JTable tblTable, String quary, int search) {
 		baseService = new BaseServiceImpl();
 		this._tblTable = tblTable;
 		this.orderBy=quary;
 		this.search_type=search;
+		
+		vesselService = new VesselServiceImpl();
 	}
 	public int execute() {
 		try{
@@ -88,7 +92,7 @@ public class SearchPort_AbbrCommand extends AbstractCommand {
 			li =baseService.getArrangedPort_AbbrList(orderBy);
 			break;
 		case SearchBaseInfoCommand.SEARCH:
-			li =baseService.getSearchedPort_AbbrList(orderBy);
+			//li =baseService.getSearchedPort_AbbrList(orderBy);
 			break;
 		default:
 			break;
