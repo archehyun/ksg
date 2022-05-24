@@ -164,8 +164,6 @@ public class VesselServiceImpl implements VesselService{
 		try {
 			vesselDAO.insert( param);
 			
-			
-			
 			vesselDAO.insertDetail( param);
 
 		} catch (SQLException e1) {
