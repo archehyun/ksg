@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 import com.ksg.common.util.KSGDateUtil;
 
 import lombok.Data;
+import lombok.ToString;
 
 
 
@@ -24,6 +25,7 @@ import lombok.Data;
  *
  */
 @Data
+
 public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	private String agent; // 에이전트
 	private String area_code; // 지역 코드
@@ -215,6 +217,7 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 
 		return this.getFromPort()+"\t"+this.getDateF()+"\t"+this.getVessel()+"\t"+this.getVoyage_num()+"\t"+this.getDateT()+"\t"+this.getPort();
 	}
+	
 	public String toString()
 	{
 		return toTotalString();

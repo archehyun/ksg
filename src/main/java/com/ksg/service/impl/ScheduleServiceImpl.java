@@ -180,7 +180,9 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 
 	public List getScheduleList(ScheduleData param) throws SQLException {
-		log.info("param:{}",param);
+		
+		log.info("param:{}",param.getDate_issue());
+		
 		return schduleDAO.getScheduleList(param);
 	}
 

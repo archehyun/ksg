@@ -287,7 +287,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 
 				commonInfw.write("\r\n\r\nArea:"+group.getArea_name()+", 공동배선스케줄 수: "+commonVesselList.size()+"\r\n\r\n");
 
-				logger.error("area:"+group.getArea_name()+", 공동배선스케줄 수: "+commonVesselList.size());
+				logger.info("area:"+group.getArea_name()+", 공동배선스케줄 수: "+commonVesselList.size());
 
 				for(int commonIndex=0;commonIndex<commonVesselList.size();commonIndex++)
 				{
@@ -315,8 +315,9 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 			return ScheduleJoint.SUCCESS;
 		}catch(Exception e)
 		{
-			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			
 			return ScheduleJoint.FAILURE;
 
 		}
