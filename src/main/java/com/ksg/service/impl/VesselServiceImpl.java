@@ -270,8 +270,6 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 				e1.printStackTrace();
 			}
 		}
-
-
 	}
 
 	@Override
