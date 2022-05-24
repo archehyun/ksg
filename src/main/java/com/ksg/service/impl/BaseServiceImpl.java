@@ -194,9 +194,9 @@ public class BaseServiceImpl implements BaseService
 		
 	}
 
-	public Object insertVessel(Vessel vessel) throws SQLException {
-		return baseDAO.insertVessel(vessel);
-	}
+//	public Object insertVessel(Vessel vessel) throws SQLException {
+//		return baseDAO.insertVessel(vessel);
+//	}
 
 	public int deleteArea(String data) throws SQLException {
 		return baseDAO.deleteArea(data);
@@ -509,11 +509,12 @@ public class BaseServiceImpl implements BaseService
 		return baseDAO.getSearchedCompanyList(company);
 	}
 
-	@Override
-	public List getSearchedPort_AbbrList(PortInfo searchKeyword) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+
+	
+
+
+
 
 	
 

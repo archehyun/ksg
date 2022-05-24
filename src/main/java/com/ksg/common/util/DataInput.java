@@ -25,8 +25,12 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
+import com.ksg.service.PortService;
+import com.ksg.service.VesselService;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.service.impl.VesselServiceImpl;
 
 
 /**
@@ -39,8 +43,15 @@ public class DataInput {
 	BaseService baseService;
 	private PortInfo t;
 	protected Logger logger = LogManager.getLogger(this.getClass());
+	
+	VesselService vesselService;
+	PortService portService;
+	
 	public DataInput(String filename) {
 		this.filename=filename;
+		
+		vesselService = new VesselServiceImpl();
+		portService = new PortServiceImpl();
 	}
 	public void portStart() throws IOException, SQLException
 	{
@@ -77,21 +88,18 @@ public class DataInput {
 			try{
 				t = initPortParameter(ss);
 
-				baseService.insertPortInfo(t);
+				portService.insert(t);
 			}
-			/*catch(Exception e)
-			{
-				System.err.println(id+":"+e.getMessage()+",t:"+t);
-				
-				
-				
-			}*/
+			
 			catch(NullPointerException e)
 			{
 				nullcount++;
 			}catch(SQLException e3)
 			{
 				baseService.updatePortInfo(t);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 
@@ -298,17 +306,11 @@ public class DataInput {
 			}
 			
 			try {
-				baseService.insertVessel(info);
-			} catch (SQLException e1) {
-				if(e1.getErrorCode()==2627)
-				{
-					logger.error("중복키 오류:"+s);
-					
-				}else
-				{
-					logger.error(e1.getMessage()+":"+s);
-					e1.printStackTrace();
-				}
+				vesselService.insert(info);
+			} catch (Exception e1) {
+				
+				e1.getMessage();
+				
 				
 			}
 			/*System.out.print("[");

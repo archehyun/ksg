@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Mapper;
+import com.ksg.domain.PortInfo;
 
 
 public interface PortDAO {
@@ -29,6 +29,9 @@ public interface PortDAO {
 
 	public Object isnert(HashMap<String, Object> param) throws SQLException;
 	
+	public Object isnert(PortInfo param) throws SQLException;
+	
 	public Object selectListByPage(HashMap<String, Object> param)throws SQLException;
+	
 	public List<Map<String, Object>> selectListByLike(Map<String, Object> param)throws SQLException;
 }

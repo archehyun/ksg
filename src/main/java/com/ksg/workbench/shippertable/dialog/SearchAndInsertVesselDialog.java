@@ -2,7 +2,6 @@ package com.ksg.workbench.shippertable.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +18,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -31,10 +29,11 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
+import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.comp.VesselInfo;
 import com.ksg.workbench.adv.dialog.AddVesselDialog;
-import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.AdvertiseTable;
 
@@ -56,7 +55,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 	public static final int OK_OPTION=1;
 	public static final int CANCEL_OPTION=2;
 	public int OPTION;
-	private JPanel pnCenter;
+	private KSGPanel pnCenter;
 	private boolean isSelected=false;
 	private JButton butAdd;
 	private JButton pnAddVesselAbbr;
@@ -67,10 +66,13 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 	private DefaultTableModel vesselModel;
 	private AdvertiseTable advTable;
 	private BaseService baseService;
+	private VesselService vesselService;
 	public SearchAndInsertVesselDialog(String vesselName) {
 		super();
 		this.vesselName=vesselName;
 		baseService = DAOManager.getInstance().createBaseService();
+		vesselService = new VesselServiceImpl();
+		
 	}
 	public SearchAndInsertVesselDialog(AdvertiseTable advTable,
 			int selectedVesselrow, int col, String value,
@@ -82,6 +84,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		this.advTable = advTable;
 		this.vesselName= value;
 		baseService = DAOManager.getInstance().createBaseService();
+		vesselService = new VesselServiceImpl();
 		
 		
 	}
@@ -89,19 +92,14 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		setTitle("선박명 검색");
 		setModal(true);
 
-		JPanel pnTitle = new JPanel(new BorderLayout());
+		KSGPanel pnTitle = new KSGPanel();
 
-		JLabel lblTitle = new JLabel("검색된 선박명: "+vesselName);
-
-		JPanel pnMargin = new JPanel();
+		JLabel lblTitle = new JLabel("검색된 선박명: "+vesselName);	
 		
-		pnMargin.setPreferredSize(new Dimension(15,0));
-		
-		pnTitle.add(pnMargin,BorderLayout.WEST);
 		
 		pnTitle.add(lblTitle);
 
-		JPanel pnSearchRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnSearchRight = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		butAdd = new JButton("선박명 추가");
 		butAdd.addActionListener(new ActionListener()
 		{
@@ -155,13 +153,13 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 
 		pnTitle.add(pnSearchRight,BorderLayout.EAST);
 
-		pnCenter = new JPanel();
+		pnCenter = new KSGPanel(new BorderLayout());
 		pnCenter.setVisible(false);
-		pnCenter.setLayout(new BorderLayout());
+		pnCenter.setBorder(BorderFactory.createEmptyBorder(5,7,5,7));
 		liVessel = new JList();
 
 
-		JPanel pnSearch = new JPanel();
+	
 		JLabel lblSearch = new JLabel("선박명 검색");			
 
 		txfSearch = new JTextField(25);
@@ -197,15 +195,16 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 			}});
 
 
+		
+		KSGPanel pnSearch = new KSGPanel();
 		pnSearch.add(lblSearch);
 		pnSearch.add(txfSearch);
 
 		pnCenter.add(pnSearch,BorderLayout.NORTH);
 		pnCenter.add(new JScrollPane(liVessel));
-		pnCenter.add(KSGDialog.createMargin(0,15),BorderLayout.SOUTH);
+		//pnCenter.add(KSGDialog.createMargin(0,15),BorderLayout.SOUTH);
 
-		JPanel pnControl = new JPanel();
-		pnControl.setLayout(new BorderLayout());
+		KSGPanel pnControl = new KSGPanel();
 		
 		JButton butCancel = new JButton("닫기");
 		butCancel.addActionListener(new ActionListener(){
@@ -240,13 +239,13 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 
 			}});
 
-		JPanel pnRightControl = new JPanel();
+		KSGPanel pnRightControl = new KSGPanel();
 		pnRightControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
 		pnRightControl.add(butApply);
 		pnRightControl.add(butCancel);
 		
-		JPanel pnLeftContorl = new JPanel();
+		KSGPanel pnLeftContorl = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnAddVesselAbbr = new JButton("선박명 약어추가");
 		pnAddVesselAbbr.setVisible(false);
 		pnAddVesselAbbr.addActionListener(new ActionListener() {
@@ -323,7 +322,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 					e.printStackTrace();
 				}
 
-				baseService.insertVessel(vessel);
+				vesselService.insert(vessel);
 				advTable.setValue( vessel.getVessel_abbr().toUpperCase(), row, 0);
 				JOptionPane.showMessageDialog(null, vessel_abbr+" 추가했습니다.");
 				txfSearch.setText("");
@@ -361,7 +360,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				vessel.setVessel_abbr(te);
 //				vessel.setVessel_use(Vessel.USE);
 				try {
-					baseService.insertVessel(vessel);
+					vesselService.insert(vessel);
 //					_baseService.insertVessel_Abbr(vessel);
 					JOptionPane.showMessageDialog(null, te+" 추가했습니다.");
 					txfSearch.setText("");
@@ -390,7 +389,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 			vessel.setVessel_abbr(te);
 //			vessel.setVessel_use(Vessel.NON_USE);
 			try {
-				baseService.insertVessel(vessel);
+				vesselService.insert(vessel);
 				baseService.insertVessel_Abbr(vessel);
 				JOptionPane.showMessageDialog(null, te+" 추가했습니다.");
 				txfSearch.setText("");
@@ -422,29 +421,5 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 	    addDialog = optionPane.createDialog(frame, "선박명");
 	    addDialog.setVisible(true);
 
-
-		/*int result=JOptionPane.showConfirmDialog(null,te+"을 추가하시겠습니까?","선박명 추가",JOptionPane.OK_CANCEL_OPTION);
-		if(result == JOptionPane.YES_OPTION)
-		{
-			Vessel vessel = new Vessel();
-			vessel.setVessel_name(te);
-			vessel.setVessel_abbr(te);
-			try {
-				_baseService.insertVessel(vessel);
-				_baseService.insertVessel_Abbr(vessel);
-				JOptionPane.showMessageDialog(null, te+" 추가했습니다.");
-				txfSearch.setText("");
-			} catch (SQLException e1) 
-			{
-				if(e1.getErrorCode()==2627)// 중복키
-				{
-					JOptionPane.showMessageDialog(null, "선박명이 존재합니다.");
-				}else
-				{
-					JOptionPane.showMessageDialog(null, e1.getMessage());	
-				}
-				e1.printStackTrace();
-			}
-		}*/
 	}
 }

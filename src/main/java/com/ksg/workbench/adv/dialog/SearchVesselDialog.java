@@ -2,7 +2,6 @@ package com.ksg.workbench.adv.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,11 +14,9 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -65,14 +62,14 @@ public class SearchVesselDialog extends KSGDialog {
 	
 	private BaseService baseService;
 	
-	private VesselService service;
+	private VesselService vesselService;
 
 	public SearchVesselDialog(String vesselName) {
 		super();
 		this.vesselName=vesselName;
 		baseService = DAOManager.getInstance().createBaseService();
 		
-		service = new VesselServiceImpl();
+		vesselService = new VesselServiceImpl();
 	}
 	public void createAndUpdateUI() {
 		setTitle("선박명 검색");
@@ -329,7 +326,7 @@ public class SearchVesselDialog extends KSGDialog {
 					e.printStackTrace();
 				}
 
-				baseService.insertVessel(vessel);
+				vesselService.insert(vessel);
 				JOptionPane.showMessageDialog(null, vessel_abbr+" 추가했습니다.");
 				txfSearch.setText("");
 			} catch (SQLException e1) 

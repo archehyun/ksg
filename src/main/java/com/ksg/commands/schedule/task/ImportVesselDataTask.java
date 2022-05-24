@@ -24,6 +24,8 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
+import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 public class ImportVesselDataTask implements LongTask{
@@ -38,11 +40,13 @@ public class ImportVesselDataTask implements LongTask{
 	private int current = 0;
 
 	private BaseService service;
+	
+	VesselService vesselService;
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	private ScheduleBuildMessageDialog di;
 	public ImportVesselDataTask(File selectedFile) {
 		try {
-
+			vesselService = new VesselServiceImpl();
 			current = 0;
 			done = false;
 			canceled = false;
@@ -108,7 +112,7 @@ public class ImportVesselDataTask implements LongTask{
 				}
 				try 
 				{					
-					service.insertVessel(op);
+					vesselService.insert(op);
 				} catch (SQLException e1) 
 				{
 
@@ -117,7 +121,7 @@ public class ImportVesselDataTask implements LongTask{
 						try 
 						{
 							logger.debug("update:"+i);
-							service.updateVessel(op);
+							vesselService.update(op);
 						} catch (SQLException e2) 
 						{
 							e2.printStackTrace();

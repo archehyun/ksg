@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CodeServiceImpl {
 	
-	CodeDAOImpl codeDAO;
+	private CodeDAOImpl codeDAO;
 	
 	
 	public CodeServiceImpl() {

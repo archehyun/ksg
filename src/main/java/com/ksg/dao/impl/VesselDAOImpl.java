@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.VesselDAO;
+import com.ksg.domain.Vessel;
 
 /**
 
@@ -39,6 +40,11 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 		
 		return selectList("vessel.selectVesselAbbrList", commandMap);
 	}
+	
+	@Override
+	public List<Vessel> selectTotalList(HashMap<String, Object> commandMap) throws SQLException{		
+		return selectList("vessel.selectVesselTotalList", commandMap);
+	}
 	@Override
 	public int delete(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete("vessel.deleteVessel", param);
@@ -49,13 +55,18 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 		return (Integer) delete("vessel.deleteVesselAbbr", param);
 	}
 	
+//	@Override
+//	public Object insert(HashMap<String, Object> param) throws SQLException{		
+//		return insert("vessel.insertVessel", param);
+//	}
+//	
 	@Override
-	public Object insert(HashMap<String, Object> param) throws SQLException{		
+	public Object insert(Vessel param) throws SQLException{		
 		return insert("vessel.insertVessel", param);
 	}
 	
 	@Override
-	public Object insertDetail( Object param) throws SQLException {		
+	public Object insertDetail( Vessel param) throws SQLException {		
 		return insert("vessel.insertVesselAbbr", param);
 	}
 
@@ -67,6 +78,11 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	@Override
 	public Object update(HashMap<String, Object> param) throws SQLException {		
 		return update("vessel.updateVessel", param);
+	}
+	
+	@Override
+	public Object update(Vessel param) throws SQLException {		
+		return update("vessel.updateVesselV1", param);
 	}
 
 	public Object updateDetail(HashMap<String, Object> param) throws SQLException {		
@@ -81,14 +97,14 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 
 	@Override
 	public List<Map<String, Object>> selectDetailListByLike(HashMap<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("vessel.selectVesselAbbrListByLike", commandMap);
 	}
 
+	public Vessel selectDetail(String vessel_abbr) throws SQLException{
+		return  (Vessel) selectOne("vessel.selectVesselAbbrInfo", vessel_abbr);
+	}
 
-
-
-
-
-
+	public Vessel selectVessel(Vessel vessel) throws SQLException {
+		return  (Vessel) selectOne("vessel.selectVessel", vessel);
+	}
 }

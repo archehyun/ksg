@@ -107,6 +107,24 @@
 		);
 	</insert>
 	
+	
+	<insert id="insertPortV1" parameterClass="com.ksg.domain.PortInfo">
+		insert into TB_PORT(
+			port_area,
+			port_name,
+			port_nationality,
+			area_code
+			
+		
+		)values
+		(
+			#port_area#,
+			#port_name#,
+			#port_nationality#,
+			#area_code#
+		);
+	</insert>
+	
 <!-- update -->
 	
 	<update id="updatePort" parameterClass="java.util.HashMap">

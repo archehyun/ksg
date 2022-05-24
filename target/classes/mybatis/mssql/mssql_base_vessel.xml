@@ -40,18 +40,16 @@
 
 <sql id="SELECT">
 
-		select vessel_abbr
-		,vessel_name
+		select 
+		vessel_name
 		,vessel_use
 		,vessel_type
 		,vessel_mmsi
 		,vessel_company
 		,CONVERT(VARCHAR, input_date, 23) AS input_date		
-		 from TB_VESSEL		 
+		 from TB_VESSEL_H
 		<dynamic prepend="where">
-			<isNotNull property="vessel_abbr" prepend="and">
-						vessel_abbr like '%$vessel_abbr$%'
-			</isNotNull>
+
 			<isNotNull property="vessel_name" prepend="and">
 						vessel_name like '%$vessel_name$%'
 			</isNotNull>
@@ -73,6 +71,19 @@
 	<select id="selectVesselList" resultClass="java.util.HashMap">
 	
 	<include refid="SELECT"></include> 
+	</select>
+	
+	
+	<select id="selectVessel" resultClass="com.ksg.domain.Vessel">
+		SELECT * FROM TB_VESSEL_H
+		WHERE vessel_name =#vessel_name#
+	</select>
+	
+	
+	<select id="selectVesselTotalList" resultClass="com.ksg.domain.Vessel">
+		SELECT *,B.vessel_abbr 
+		FROM TB_VESSEL_H A, TB_VESSEL_ABBR B 
+		WHERE A.vessel_name = B.vessel_name AND vessel_name =#vessel_name#		 
 	</select>
 	
 	<select id="selectVesselListByPage" resultClass="java.util.HashMap">
@@ -97,10 +108,13 @@
 		
 		where vessel_name =#vessel_name#
 		
-		
 	</select>
 	
-		<select id="selectVesselAbbrListByLike" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+	<select id="selectVesselAbbrInfo" resultClass="com.ksg.domain.Vessel">
+		select vessel_abbr from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr# group by vessel_abbr
+	</select>
+	
+	<select id="selectVesselAbbrListByLike" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		select * from TB_VESSEL_ABBR
 		
 		where vessel_name like '%$vessel_name$%'
@@ -141,7 +155,7 @@
 		);
 	</insert>
 	
-	<insert id="insertVessel" parameterClass="java.util.HashMap">
+	<insert id="insertVesselv2" parameterClass="java.util.HashMap">
 		insert into TB_VESSEL_H(			
 			vessel_name,
 			vessel_use,
@@ -171,7 +185,53 @@
 		);
 	</insert>
 	
-		<insert id="insertVesselAbbr" parameterClass="java.util.HashMap">
+		<insert id="insertVessel" parameterClass="com.ksg.domain.Vessel">
+		insert into TB_VESSEL_H(			
+			vessel_name,
+			vessel_use,
+			vessel_mmsi,
+			vessel_type,
+			vessel_company,
+			input_date
+		
+		)values
+		(
+			
+			#vessel_name#,
+			#vessel_use#,
+			#vessel_mmsi#,
+			#vessel_type#,
+			#vessel_company#,
+			
+			<isNotNull property="input_date">
+		        #input_date#
+		    </isNotNull>		    
+		    <isNull property="input_date">
+		        getdate()
+		    </isNull>
+			
+			
+			
+		);
+	</insert>
+	
+	<insert id="insertVesselAbbr" parameterClass="com.ksg.domain.Vessel">
+		insert into TB_VESSEL_ABBR(			
+			vessel_name,
+			vessel_abbr,			
+			
+			input_date
+		
+		)values
+		(
+			
+			#vessel_name#,
+			#vessel_abbr#,
+			getdate()
+		);
+	</insert>
+	
+		<insert id="insertVesselAbbrV22" parameterClass="java.util.HashMap">
 		insert into TB_VESSEL_ABBR(			
 			vessel_name,
 			vessel_abbr,			
@@ -198,6 +258,15 @@
 			,vessel_mmsi=#vessel_mmsi#  
 		WHERE vessel_name=#vessel_name#
 	</update>
+	
+	<update id="updateVesselV1" parameterClass="java.util.HashMap">
+		UPDATE TB_VESSEL_H 
+		SET vessel_type=#vessel_type# 
+			,vessel_use=#vessel_use#
+			,vessel_company=#vessel_company#
+			,vessel_mmsi=#vessel_mmsi#  
+		WHERE vessel_name=#vessel_name#
+	</update>
 
 
 <!-- delete -->
@@ -207,7 +276,12 @@
 	</delete>
 	
 	<delete id="deleteVesselAbbr" parameterClass="java.util.HashMap">
-		delete from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr# and vessel_name= #vessel_name#
+		delete from TB_VESSEL_ABBR where vessel_name= #vessel_name#
+		
+		<isNotNull property="vessel_abbr">
+			and vessel_abbr=#vessel_abbr# 
+		</isNotNull> 
+		
 	</delete>
 	
 	

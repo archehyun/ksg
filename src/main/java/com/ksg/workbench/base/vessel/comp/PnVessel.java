@@ -9,6 +9,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -239,7 +241,21 @@ public class PnVessel extends PnBase implements ActionListener {
 		cbxField.addItem(new KSGTableColumn("vessel_company",STRING_VESSEL_COMPANY));		
 		cbxField.addItem(new KSGTableColumn("input_date",STRING_INPUTDATE));
 
-		txfSearch = new JTextField(15);		
+		txfSearch = new JTextField(15);
+		
+		txfSearch.addKeyListener(new KeyAdapter() {
+
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				if(e.getKeyChar()==KeyEvent.VK_ENTER)
+				{
+					fnSearch();
+				}
+			}
+		});
+		
 
 
 		JButton butUpSearch = new JButton(STRING_SEARCH);
@@ -502,8 +518,11 @@ public class PnVessel extends PnBase implements ActionListener {
 		if(result==JOptionPane.OK_OPTION)
 		{	
 			try {
-
-				vesselService.delete(item);
+				HashMap<String, Object> param = new HashMap<String, Object>();
+				param.put("vessel_name", vessel_name);
+				
+				log.info("del param:{}", param);
+				vesselService.delete(param);
 
 				JOptionPane.showMessageDialog(this, "삭제되었습니다.");
 

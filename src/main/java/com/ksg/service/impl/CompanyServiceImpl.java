@@ -35,7 +35,7 @@ public class CompanyServiceImpl implements CompanyService{
 
 	protected ObjectMapper objectMapper;
 
-	CompanyDAOImpl companyDAO;
+	private CompanyDAOImpl companyDAO;
 
 	public CompanyServiceImpl() {
 		companyDAO = new CompanyDAOImpl();

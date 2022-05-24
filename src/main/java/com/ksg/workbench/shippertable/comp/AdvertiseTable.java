@@ -511,6 +511,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			//List li=baseService.getVesselAbbrInfoByPatten(String.valueOf(value)+"%");
 			
 			HashMap<String, Object> param = new HashMap<String, Object>();
+			
 			param.put("vessel_name", value);
 			
 			HashMap<String, Object> resultMap= vesselService.selectDetailListByLike(param);
@@ -524,9 +525,6 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 				
 				
 				String obj = ((String)vessel.get("vessel_name")).toUpperCase();
-				
-				
-				
 
 				setValue(obj, selectedVesselrow, col);
 				vesselModel.setRowCount(vesselModel.getRowCount()+1);
@@ -1140,7 +1138,8 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 					String vessel_abbr =String.valueOf(table.getValueAt(row,0));
 
 					//선박약어 기준
-					Vessel result=baseService.getVesselAbbrInfo(vessel_abbr);
+//					Vessel result=baseService.getVesselAbbrInfo(vessel_abbr);
+					Vessel result = vesselService.selectDetail(vessel_abbr);
 
 					if(result==null)
 						foreground = Color.RED;

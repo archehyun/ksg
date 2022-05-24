@@ -299,7 +299,11 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 			KSGPanel pnMain = new KSGPanel();
 
-			final JTextField txfSearchInput = new JTextField(15);			
+			final JTextField txfSearchInput = new JTextField(15);
+			
+
+
+			
 
 			JLabel lblSearchPage = new JLabel("Page : ");
 			JButton butSubmit = new JButton("°Ë»ö",new ImageIcon("images/buticon.gif"));

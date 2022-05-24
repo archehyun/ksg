@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ksg.domain.PortInfo;
+
 public interface PortService extends PageService{
 	
 	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
@@ -22,5 +24,7 @@ public interface PortService extends PageService{
 	public int delete(HashMap<String, Object> param) throws SQLException;
 
 	public Object insert(HashMap<String, Object> param) throws Exception;
+
+	public Object insert(PortInfo t) throws Exception;
 
 }

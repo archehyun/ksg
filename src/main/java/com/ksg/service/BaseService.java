@@ -75,7 +75,8 @@ public interface BaseService {
 	
 	public List getBaseInfo(String type) throws SQLException;
 	
-	public List<Code> getCodeInfoList(Code code_info) throws SQLException;
+	public List<Code> getCodeInfoList(Code code_info) throws SQLException;	
+	
 	public Code getCodeInfo(Code code_info) throws SQLException;
 	
 	public List getCodeInfo(String type) throws SQLException;
@@ -119,11 +120,7 @@ public interface BaseService {
 	//area
 	public List getSearchedAreaList(String orderBy) throws SQLException;
 	
-	public List getSearchedCompanyList(String searchKeyword) throws SQLException;
-	
-	public List getSearchedPort_AbbrList(String searchKeyword) throws SQLException ;
-	
-	public List getSearchedPort_AbbrList(PortInfo searchKeyword) throws SQLException ;
+	public List getSearchedCompanyList(String searchKeyword) throws SQLException;	
 	
 	public List getSearchedPortList(String searchKeyword) throws SQLException ;
 	
@@ -150,15 +147,15 @@ public interface BaseService {
 	
 	public void insertCode(Code code_info)throws SQLException;
 	
-	public void insertCompany(Company info)throws SQLException;
+	//public void insertCompany(Company info)throws SQLException;
 
 	public void insertKeyword(KeyWordInfo insert)throws SQLException;
 
 	public void insertPort_Abbr(PortInfo info)throws SQLException;
 	
-	public void insertPortInfo(PortInfo info)throws SQLException;
+	//public void insertPortInfo(PortInfo info)throws SQLException;
 	
-	public Object insertVessel(Vessel vessel)throws SQLException;
+	
 	
 	public boolean isExitPort(String string)throws SQLException;
 	
@@ -169,13 +166,13 @@ public interface BaseService {
 	public void updatePortAbbr(PortInfo t)throws SQLException;
 	public void updateCode(Code code)throws SQLException;
 	public PortInfo getPortInfoAbbrByPortName(String portName)throws SQLException;
-	public void updateVessel(Vessel vessel)throws SQLException;
+	//public void updateVessel(Vessel vessel)throws SQLException;
 	public List getAreaInfoList(AreaInfo info)throws SQLException;
 	public void insertVessel_Abbr(Vessel vesselAbbr) throws SQLException ;
 	public int getVesselAbbrCount()throws SQLException;
 	public List getArrangedVesselAbbrList(String orderBy)throws SQLException;
 	public List getSearchedVesselAbbrList(String orderBy)throws SQLException;
-	public Vessel getVesselAbbrInfo(String vesselName)throws SQLException;
+	//public Vessel getVesselAbbrInfo(String vesselName)throws SQLException;
 	public List getVessel_AbbrList(String vesselName)throws SQLException;
 	public List getVesselAbbrList(Vessel info)throws SQLException;
 	public int deleteVesselAbbr(Vessel op)throws SQLException;

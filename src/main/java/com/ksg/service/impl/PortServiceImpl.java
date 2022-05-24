@@ -9,6 +9,7 @@ import java.util.Map;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.dao.PortDAO;
 import com.ksg.dao.impl.PortDAOImpl;
+import com.ksg.domain.PortInfo;
 import com.ksg.service.PortService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,15 +32,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PortServiceImpl implements PortService{
 
-	PortDAO portDAO;
-
-	
+	private PortDAO portDAO;	
 
 	public PortServiceImpl() {
 		portDAO = new PortDAOImpl();
 	}
 
 	@SuppressWarnings("unchecked")
+	
 	public Map<String, Object> selectList(Map<String, Object> param) throws SQLException {
 
 		log.debug("param:{}", param);
@@ -111,11 +111,28 @@ public class PortServiceImpl implements PortService{
 				throw new SQLException(e1.getMessage());
 			}
 		}
-
-
-
-
 	}
+	
+	@Override
+	public Object insert(PortInfo param) throws Exception {
+		try {
+
+			log.debug("param:{}", param);
+			return portDAO.isnert(param);
+		}
+		catch (SQLException e1) {
+
+			if(e1.getErrorCode()==2627)
+			{
+				throw new AlreadyExistException("exist");
+
+			}else
+			{
+				throw new SQLException(e1.getMessage());
+			}
+		}
+	}
+
 
 	public int delete(HashMap<String, Object> param) throws SQLException {
 		log.debug("param:{}", param);
@@ -146,6 +163,7 @@ public class PortServiceImpl implements PortService{
 
 		return resultMap;
 	}
+
 
 
 

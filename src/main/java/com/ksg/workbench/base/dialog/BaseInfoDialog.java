@@ -76,7 +76,7 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	
 	protected KSGPanel buildControl()
 	{
-		KSGPanel pnMain =  new KSGPanel(new BorderLayout());
+		
 		KSGPanel pnControl =  new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		
 
@@ -89,16 +89,13 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		pnControl.add(butCancel);
 		
 		
-		KSGPanel pnS = new KSGPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		KSGPanel pnS1 = new KSGPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
+		KSGPanel pnLine = new KSGPanel();
+		pnLine.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		pnLine.setPreferredSize(new Dimension(0,1));		
 		
+		KSGPanel pnMain =  new KSGPanel(new BorderLayout());
 		pnMain.add(pnControl);
-		pnMain.add(pnS,BorderLayout.NORTH);
-		
-		
+		pnMain.add(pnLine,BorderLayout.NORTH);		
 		
 		
 		return pnMain;

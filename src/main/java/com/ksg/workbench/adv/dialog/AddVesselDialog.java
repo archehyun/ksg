@@ -16,7 +16,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -71,15 +70,9 @@ public class AddVesselDialog extends KSGDialog {
 
 	public void createAndUpdateUI() {
 
-		
-		
-
 		this.setTitle("선박명 추가");
+		
 		this.setModal(true);
-
-
-	
-
 
 		this.getContentPane().add(buildCenter());
 
@@ -176,7 +169,7 @@ public class AddVesselDialog extends KSGDialog {
 				vessel.setVessel_type(con.getTypeField());
 
 				try {
-					baseService.insertVessel(vessel);
+					vesselService.insert(vessel);
 
 					if(advTable!=null)
 					{
@@ -193,12 +186,7 @@ public class AddVesselDialog extends KSGDialog {
 
 				} catch (SQLException e1) 
 				{
-					if(e1.getErrorCode()==2627)
-					{
-						JOptionPane.showMessageDialog(AddVesselDialog.this, "동일한 선박명이 존재합니다.");
-						return;
-					}
-					else if(e1.getErrorCode()==8152)
+					if(e1.getErrorCode()==8152)
 					{
 						JOptionPane.showMessageDialog(AddVesselDialog.this, "9자리까지 입력 할수 있습니다.");	
 					}
@@ -208,6 +196,10 @@ public class AddVesselDialog extends KSGDialog {
 						logger.debug(e1.getMessage());
 						e1.printStackTrace();	
 					}
+				}catch(Exception e1)
+				{
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(AddVesselDialog.this, e1.getMessage());
 				}
 			}});
 		JButton butCancel = new JButton("취소");

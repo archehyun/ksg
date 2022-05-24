@@ -12,14 +12,20 @@ package com.ksg.domain;
 
 import java.util.Date;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 선박 정보
  * @author 박창현
  *
  */
-@Data
+@NoArgsConstructor @AllArgsConstructor
+@Builder
+@Getter @Setter
 public class Vessel extends BaseInfo{
 
 	public static final int NON_USE=1;

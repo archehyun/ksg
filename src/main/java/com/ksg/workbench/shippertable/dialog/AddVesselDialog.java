@@ -28,6 +28,8 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
+import com.ksg.service.VesselService;
+import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 
@@ -44,6 +46,8 @@ public class AddVesselDialog extends KSGDialog {
 	private JComboBox cbxType;
 	DefaultTableModel vesselModel;
 	private BaseService baseService;
+	
+	VesselService vesselService;
 	public AddVesselDialog(KSGADVTablePanel main,JTable table,int row,Object value) {
 		this(main,table,row,0,value);
 
@@ -56,6 +60,8 @@ public class AddVesselDialog extends KSGDialog {
 		this.col1=col;
 		daoManager =DAOManager.getInstance();
 		baseService = daoManager.createBaseService();
+		
+		vesselService = new VesselServiceImpl();
 		
 
 	}
@@ -172,7 +178,7 @@ public class AddVesselDialog extends KSGDialog {
 				vessel.setVessel_type(con.getTypeField());
 				
 				try {
-					baseService.insertVessel(vessel);
+					vesselService.insert(vessel);
 					
 					
 					JOptionPane.showMessageDialog(null, "선박명: "+vessel.getVessel_name()+"이(가) 추가 되었습니다.");
