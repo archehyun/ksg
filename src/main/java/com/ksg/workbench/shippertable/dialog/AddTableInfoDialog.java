@@ -60,9 +60,11 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Company;
 import com.ksg.domain.ShippersTable;
+import com.ksg.service.CompanyService;
 import com.ksg.service.ShipperTableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
@@ -126,13 +128,16 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	private JTextField txfInland;
 	private ShipperTableService service;
 	private BaseServiceImpl baseService;
+	
+	private CompanyService companyService;
 
 	public AddTableInfoDialog() {
 		super();
 		advservice= new ADVServiceImpl();
 		tableService = new TableServiceImpl();
 		baseService = new BaseServiceImpl();
-
+		
+		companyService = new CompanyServiceImpl();
 
 		service = new ShipperTableServiceImpl();
 	}
@@ -537,8 +542,10 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 								String company=path.getLastPathComponent().toString();
 								try {
-									baseService = new BaseServiceImpl();
-									Company companyInfo=baseService.getCompanyInfo(company);
+									
+//									Company companyInfo=baseService.getCompanyInfo(company);
+									
+									Company companyInfo=companyService.select(company);
 									setTableIndex(companyInfo.getCompany_abbr());
 									txfCompany.setText(companyInfo.getCompany_abbr());
 									txfAgent.setText(companyInfo.getAgent_abbr());

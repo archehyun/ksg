@@ -199,17 +199,17 @@ public class AddTableInfoDialog_temp extends KSGDialog implements ActionListener
 					JOptionPane.showMessageDialog(null, "선사를 지정하세요");
 					return;
 				}
-				try {
-					Company info=baseService.getCompanyInfo(txfCompany.getText());
-
-					if(info==null)
-					{
-						JOptionPane.showMessageDialog(null, "정확한 선사정보를 입력하십시요");
-						return;
-					}
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
+//				try {
+//					Company info=baseService.getCompanyInfo(txfCompany.getText());
+//
+//					if(info==null)
+//					{
+//						JOptionPane.showMessageDialog(null, "정확한 선사정보를 입력하십시요");
+//						return;
+//					}
+//				} catch (SQLException e1) {
+//					e1.printStackTrace();
+//				}
 
 				shippersTable.setTable_id(txfTableID.getText());
 				shippersTable.setPage(Integer.parseInt(txfPage.getText()));
@@ -414,17 +414,17 @@ public class AddTableInfoDialog_temp extends KSGDialog implements ActionListener
 							{
 
 								String company=path.getLastPathComponent().toString();
-								try {
-									baseService = new BaseServiceImpl();
-									Company companyInfo=baseService.getCompanyInfo(company);
-									setTableIndex(companyInfo.getCompany_abbr());
-									txfCompany.setText(companyInfo.getCompany_abbr());
-									txfAgent.setText(companyInfo.getAgent_abbr());
-									txaCommon.setText(companyInfo.getCompany_abbr());
-								} catch (SQLException e1) {
-									JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
-									e1.printStackTrace();
-								}
+//								try {
+//									baseService = new BaseServiceImpl();
+//									//Company companyInfo=baseService.getCompanyInfo(company);
+//									setTableIndex(companyInfo.getCompany_abbr());
+//									txfCompany.setText(companyInfo.getCompany_abbr());
+//									txfAgent.setText(companyInfo.getAgent_abbr());
+//									txaCommon.setText(companyInfo.getCompany_abbr());
+//								} catch (SQLException e1) {
+//									JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
+//									e1.printStackTrace();
+//								}
 							}
 
 							dialog.setVisible(false);

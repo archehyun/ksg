@@ -19,9 +19,13 @@ import com.ksg.common.util.KSGDateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+<<<<<<< HEAD
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+=======
+import lombok.ToString;
+>>>>>>> branch 'develope' of https://github.com/archehyun/ksg.git
 
 
 
@@ -29,9 +33,14 @@ import lombok.Setter;
  * @author 박창현
  *
  */
+<<<<<<< HEAD
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Getter @Setter
+=======
+@Data
+
+>>>>>>> branch 'develope' of https://github.com/archehyun/ksg.git
 public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	private String agent; // 에이전트
 	private String area_code; // 지역 코드
@@ -223,6 +232,7 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 
 		return this.getFromPort()+"\t"+this.getDateF()+"\t"+this.getVessel()+"\t"+this.getVoyage_num()+"\t"+this.getDateT()+"\t"+this.getPort();
 	}
+	
 	public String toString()
 	{
 		return toTotalString();

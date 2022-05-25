@@ -34,14 +34,20 @@ import lombok.extern.slf4j.Slf4j;
 
  * @변경이력 :
 
- * @프로그램 설명 : 선박, 선박 약어
+ * @프로그램 설명 : 선박, 선박 약어 관리
 
  */
 @Slf4j
+<<<<<<< HEAD
 public class VesselServiceImpl extends AbstractServiceImpl implements VesselService{
 
 	
 	
+=======
+public class VesselServiceImpl implements VesselService{
+
+
+>>>>>>> branch 'develope' of https://github.com/archehyun/ksg.git
 	protected ObjectMapper objectMapper;
 
 
@@ -85,42 +91,30 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	}
 
 	public int delete(HashMap<String, Object> pram) throws SQLException {
-		
+
 		int result=vesselDAO.delete(pram);
 		vesselDAO.deleteDetail(pram);
 		return result;
 
 	}
 
+	/**
+	 *선박명 등록
+	 *선박 약어 등록
+	 */
 	public void insert(HashMap<String, Object> param) throws RuntimeException {
 
 		log.debug("param:"+param);
-		try
-		{	
-			Vessel vessel = new Vessel();
-			vessel.setVessel_name(String.valueOf(param.get("vessel_name")));
-			vessel.setVessel_company(String.valueOf(param.get("vessel_company")));
-			vessel.setVessel_mmsi(String.valueOf(param.get("vessel_mmsi")));
-			vessel.
-			setVessel_use( (Integer) param.get("vessel_use"));
-			vessel.setVessel_type(String.valueOf(param.get("vessel_type")));
-			vessel.setVessel_abbr(String.valueOf(param.get("vessel_name")));
 
-			vesselDAO.insert(vessel);
-
-
-			vesselDAO.insertDetail(vessel);
-
-		} catch (SQLException e1) {
-			if(e1.getErrorCode()==2627)
-			{
-				throw new AlreadyExistException("exist");
-			}else
-			{
-
-				e1.printStackTrace();
-			}
-		}
+		Vessel vessel = new Vessel();
+		vessel.setVessel_name(String.valueOf(param.get("vessel_name")));
+		vessel.setVessel_company(String.valueOf(param.get("vessel_company")));
+		vessel.setVessel_mmsi(String.valueOf(param.get("vessel_mmsi")));
+		vessel.
+		setVessel_use( (Integer) param.get("vessel_use"));
+		vessel.setVessel_type(String.valueOf(param.get("vessel_type")));
+		vessel.setVessel_abbr(String.valueOf(param.get("vessel_name")));
+		this.insert(vessel);
 
 	}
 
@@ -132,15 +126,18 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	@Override
 	public HashMap<String, Object> selectDetailList(Map<String, Object> param) throws SQLException {
 		log.debug("param:"+param);
+		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("master",vesselDAO.selectDetailList((HashMap<String, Object>) param));
+		
 		return resultMap;
 	}
 
 	@Override
 	public Object update(HashMap<String, Object> param) throws SQLException {
 		log.info("param:{}", param);
+		
 		Object result = vesselDAO.update(param);;
 
 		log.debug("result:{}:",param);
@@ -181,7 +178,7 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 		return map;
 	}
 	public Vessel selectDetail(String vessel_abbr) throws SQLException {
-		// TODO Auto-generated method stub
+
 		return vesselDAO.selectDetail(vessel_abbr);
 	}
 
@@ -189,8 +186,8 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	public void insert(Vessel param) throws RuntimeException {
 		log.info("param:{}", param);
 		try {
-			vesselDAO.insert( param);			
-			param.setVessel_abbr(param.getVessel_name());
+			vesselDAO.insert( param);
+			
 			vesselDAO.insertDetail( param);
 
 		} catch (SQLException e1) {
@@ -274,10 +271,10 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 
 	@Override
 	public Vessel select(String vessel_name) throws SQLException {
-		
+
 		Vessel vessel = new Vessel();
 		vessel.setVessel_name(vessel_name);
-		
+
 		return vesselDAO.selectVessel(vessel);
 	}
 }

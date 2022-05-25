@@ -3,6 +3,7 @@ package com.ksg.workbench.shippertable.dialog;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
@@ -30,6 +31,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
+import com.ksg.view.comp.KSGComboBox;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 
@@ -43,9 +45,9 @@ public class AddVesselDialog extends KSGDialog {
 	private Object value;
 	private KSGADVTablePanel main;
 	private JCheckBox box;
-	private JComboBox cbxType;
+	private KSGComboBox cbxType;
 	DefaultTableModel vesselModel;
-	private BaseService baseService;
+//	private BaseService baseService;
 	
 	VesselService vesselService;
 	public AddVesselDialog(KSGADVTablePanel main,JTable table,int row,Object value) {
@@ -53,14 +55,15 @@ public class AddVesselDialog extends KSGDialog {
 
 	}
 	public AddVesselDialog(KSGADVTablePanel main,JTable table,int row,int col,Object value) {
+		super();
 		this.main = main;
 		this.row1=row;
 		this.table =table;
 		this.value=value;
 		this.col1=col;
 		daoManager =DAOManager.getInstance();
-		baseService = daoManager.createBaseService();
-		
+//		baseService = daoManager.createBaseService();
+		this.addComponentListener(this);
 		vesselService = new VesselServiceImpl();
 		
 
@@ -76,7 +79,7 @@ public class AddVesselDialog extends KSGDialog {
 		this.value=value;
 		this.col1=col;
 		daoManager =DAOManager.getInstance();
-		baseService = daoManager.createBaseService();
+//		baseService = daoManager.createBaseService();
 		this.vesselModel = vesselModel;
 		
 	}
@@ -85,34 +88,34 @@ public class AddVesselDialog extends KSGDialog {
 		di.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent e) {table.setValueAt(null, row1, col1);}
 		});
-		cbxType = new JComboBox();
-		Code code = new Code();
-		code.setCode_name_kor("컨테이너 타입");
-		try {
-			List li=	baseService.getSubCodeInfo(code);
-			
-			DefaultComboBoxModel boxModel = new DefaultComboBoxModel();
-			
-			Iterator iter = li.iterator();
-			
-			while(iter.hasNext())
-			{
-				Code code2=(Code) iter.next();
-				
-				ConType conType = new ConType();
-				conType.setTypeField(code2.getCode_field());
-				conType.setTypeName(code2.getCode_name());
-				boxModel.addElement(conType);
-				
-			}
-			
-			
-			cbxType.setModel(boxModel);
-
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		cbxType = new KSGComboBox("conType");
+//		Code code = new Code();
+//		code.setCode_name_kor("컨테이너 타입");
+//		try {
+//			List li=	baseService.getSubCodeInfo(code);
+//			
+//			DefaultComboBoxModel boxModel = new DefaultComboBoxModel();
+//			
+//			Iterator iter = li.iterator();
+//			
+//			while(iter.hasNext())
+//			{
+//				Code code2=(Code) iter.next();
+//				
+//				ConType conType = new ConType();
+//				conType.setTypeField(code2.getCode_field());
+//				conType.setTypeName(code2.getCode_name());
+//				boxModel.addElement(conType);
+//				
+//			}
+//			
+//			
+//			cbxType.setModel(boxModel);
+//
+//
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 
 		di.setTitle("선박명 추가");
 		di.setModal(true);
@@ -248,6 +251,10 @@ public class AddVesselDialog extends KSGDialog {
 		
 		
 	}
-
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		cbxType.initComp();
+	}
 
 }

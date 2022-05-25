@@ -142,4 +142,13 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 		return resultMap;
 	}
 
+	@Override
+	public Company select(String company) throws SQLException {
+		
+		log.debug("param:{}",company);
+		
+		Company param  = Company.builder().company_name(company).build();
+		return companyDAO.select(param);
+	}
+
 }
