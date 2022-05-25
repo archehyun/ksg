@@ -24,7 +24,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom.Element;
 
-import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
@@ -92,11 +91,10 @@ public class VesselListComp extends JList{
 		}
 	}
 
-
-	//private BaseService baseService;
-	//	private JTextArea txaADV;
-	KSGXLSImportPanel base;
-	protected Logger logger = LogManager.getLogger(this.getClass());
+	private KSGXLSImportPanel base;
+	
+	
+	
 	private int vesselSize;
 	
 	private VesselService vesselService;
@@ -107,7 +105,7 @@ public class VesselListComp extends JList{
 		this.setFixedCellHeight(20);
 		this.setCellRenderer(new ComplexCellRenderer());
 		this.setComponentPopupMenu(createVesselPopup());
-		
+		this.setToolTipText("Red : 없는 선박, Blue : 선박 약어 다수존재");
 		//baseService = manager.createBaseService();
 		
 		vesselService = new VesselServiceImpl();
@@ -234,7 +232,7 @@ public class VesselListComp extends JList{
 
 				if(v1==null)
 				{
-					logger.error("null vessel:"+vesselName);
+					log.error("null vessel:"+vesselName);
 					info.setExist(false);
 					info.vesselName=vesselName;
 					list.add(info);
