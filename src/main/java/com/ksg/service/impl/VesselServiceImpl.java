@@ -38,16 +38,10 @@ import lombok.extern.slf4j.Slf4j;
 
  */
 @Slf4j
-<<<<<<< HEAD
-public class VesselServiceImpl extends AbstractServiceImpl implements VesselService{
-
-	
-	
-=======
 public class VesselServiceImpl implements VesselService{
 
 
->>>>>>> branch 'develope' of https://github.com/archehyun/ksg.git
+
 	protected ObjectMapper objectMapper;
 
 
