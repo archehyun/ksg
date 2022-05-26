@@ -8,7 +8,7 @@ import com.ksg.domain.Company;
 
 public interface CompanyService extends PageService{
 	
-	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
+	public Map<String, Object> selectListByCondition(Map<String, Object> commandMap) throws SQLException;
 	
 	public int update(HashMap<String, Object> param) throws SQLException;	
 

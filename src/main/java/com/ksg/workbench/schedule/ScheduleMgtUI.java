@@ -278,7 +278,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		tblScheduleDateList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				// TODO Auto-generated method stub
 				super.mouseClicked(arg0);
 				int row=tblScheduleDateList.getSelectedRow();
 				if(row==-1)
@@ -458,13 +457,18 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		
 		
 		pnNormal2 = new PnNormal2();
-		tabPane.add(pnNormal2, "NORMAL");
+		
 		pnConsole2 = new PnConsole2();
-		tabPane.add(pnConsole2, "CONSOLE");		
+				
 		pnInland2 = new PnInland2();
-		tabPane.add(pnInland2, "INLAND");
+		
 		pnNomalByTree = new PnNormalByTree();
+		
+		tabPane.add(pnNormal2, "NORMAL");
+		tabPane.add(pnConsole2, "CONSOLE");
+		tabPane.add(pnInland2, "INLAND");
 		tabPane.add(pnNomalByTree, "TreeTable");
+		
 		
 		
 		pnMain.add(tabPane);
@@ -781,13 +785,13 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 					}
 					
 					//备盒
-					String gubun = (String) tblScheduleDateList.getValueAt(selectedRow, 0);
+					String gubun 		= (String) tblScheduleDateList.getValueAt(selectedRow, 0);
 					
 					//胶纳临 积己老
 					String selectedDate = (String) tblScheduleDateList.getValueAt(selectedRow, 1);
 
 					
-					java.util.Date d = fromDateformat.parse(selectedDate);
+					java.util.Date d 	= fromDateformat.parse(selectedDate);
 
 					ScheduleData op = new ScheduleData();
 					op.setDate_issue(selectedDate);

@@ -9,6 +9,22 @@ import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 
+/**
+
+  * @FileName : PnSchedule.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 5. 25. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
+@SuppressWarnings("serial")
 public abstract class PnSchedule extends KSGPanel implements ActionListener, ComponentListener{
 	
 	
@@ -36,27 +52,16 @@ public abstract class PnSchedule extends KSGPanel implements ActionListener, Com
 	}
 	
 	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentResized(ComponentEvent e) {}
 
 	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentMoved(ComponentEvent e) {}
 
 	@Override
-	public void componentShown(ComponentEvent e) {
-		
-	}
+	public void componentShown(ComponentEvent e) {}
 
 	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentHidden(ComponentEvent e) {}
 
 
 }

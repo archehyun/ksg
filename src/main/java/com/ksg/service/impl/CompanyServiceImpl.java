@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.exception.UnhandledException;
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.CompanyDAOImpl;
 import com.ksg.domain.Company;
 import com.ksg.service.CompanyService;
@@ -38,17 +39,15 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 	private CompanyDAOImpl companyDAO;
 
 	public CompanyServiceImpl() {
-		
+
 		super();
-		
+		objectMapper = new ObjectMapper();
 		companyDAO = new CompanyDAOImpl();
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> selectList(Map<String, Object> param) throws SQLException {
-
-
+	public CommandMap selectListByCondition(Map<String, Object> param) throws SQLException {
 
 		log.info("param:{}", param);
 
@@ -61,15 +60,16 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 
 		List<Company> li=companyDAO.selectList(searchParam);
 
-		ArrayList<HashMap<String, Object>> map = new ArrayList<HashMap<String, Object>>();
+		ArrayList<CommandMap> map = new ArrayList<CommandMap>();
+
+		log.info(objectMapper.toString());
 
 		for(Company item:li)
 		{	
-			map.add((HashMap<String, Object>) objectMapper.convertValue(item, Map.class));
+			map.add((CommandMap) objectMapper.convertValue(item, CommandMap.class));
 		}
 
-
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", companyDAO.selectCount(param));
 
@@ -103,19 +103,19 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 					.contents(param.get("contents")!=null?String.valueOf(param.get("contents")):null)
 
 					.build();
-			
-			
-			
+
+
+
 			Company exist = companyDAO.select(searchParam);
-			
+
 			if(exist != null) throw new AlreadyExistException("exist ");
-					
-					
+
+
 			companyDAO.insert(searchParam) ;
 
 
 		} catch (SQLException e1) {
-			
+
 			throw new UnhandledException(e1.getMessage());
 		}
 	}
@@ -127,11 +127,11 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 	}
 
 	@Override
-	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+	public CommandMap selectListByPage(HashMap<String, Object> param) throws SQLException {
 
 		log.debug("param:{}", param);
 
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", companyDAO.selectCount(param));
 
@@ -144,9 +144,9 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 
 	@Override
 	public Company select(String company) throws SQLException {
-		
+
 		log.debug("param:{}",company);
-		
+
 		Company param  = Company.builder().company_name(company).build();
 		return companyDAO.select(param);
 	}

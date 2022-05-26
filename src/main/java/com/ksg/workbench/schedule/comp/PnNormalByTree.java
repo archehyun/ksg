@@ -84,8 +84,6 @@ public class PnNormalByTree extends PnSchedule {
 
 	private JTextField txfFromPort;
 	
-	
-	
 	private HashMap<String, Object> inboundCodeMap;
 
 	public PnNormalByTree() {
@@ -102,29 +100,10 @@ public class PnNormalByTree extends PnSchedule {
 
 		add(buildCenter());
 
-
 	}
 
 	public KSGPanel buildCenter()
 	{
-//		tableH = new KSGPageTablePanel("스케줄 목록");		
-//
-//		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
-//		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID",100));
-//		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",100));
-//		tableH.addColumn(new KSGTableColumn("agent", "에이전트",100));
-//		tableH.addColumn(new KSGTableColumn("vessel", "선박명",200));
-//		tableH.addColumn(new KSGTableColumn("date_issue", "출력일자",100));
-//		tableH.addColumn(new KSGTableColumn("voyage_num", "항차번호"));
-//		tableH.addColumn(new KSGTableColumn("fromPort", "출발항",200));
-//		tableH.addColumn(new KSGTableColumn("DateF", "출발일", 90));
-//		tableH.addColumn(new KSGTableColumn("DateT", "도착일", 90));
-//		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
-//
-//		tableH.initComp();
-//
-//		tableH.addActionListener(new PageAction(tableH,scheduleService));
-
 
 		treeTableModel = new ScheduleTreeTableModel();
 
@@ -144,8 +123,7 @@ public class PnNormalByTree extends PnSchedule {
 		table = new KSGTreeTable(treeTableModel );
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-
+		
 		// 4번.
 		JScrollPane treeTableScrollPane = new JScrollPane();
 		treeTableScrollPane.setViewportView(table);
@@ -326,15 +304,13 @@ public class PnNormalByTree extends PnSchedule {
 			for (Object fromPortKey : mapkey)
 			{
 				// 요소조회
-				HashMap<String, Object> fromPortitems =  (HashMap<String, Object>) fromPortItems.get(fromPortKey);
-
+				HashMap<String, Object> fromPortitems 	=  (HashMap<String, Object>) fromPortItems.get(fromPortKey);
 
 				//tree 노드 생성
-				DefaultMutableTreeNode fromPort = new PortTreeNode((String)fromPortKey, "test");
+				DefaultMutableTreeNode fromPort 		= new PortTreeNode((String)fromPortKey, "test");
 
 				// 도착항 정렬
 				List<Entry<String, Object>> list_entries = new ArrayList<Entry<String, Object>>(fromPortitems.entrySet());
-
 
 				// 도착항 목록
 				Iterator toPortIter = fromPortitems.keySet().iterator();
@@ -614,10 +590,10 @@ public class PnNormalByTree extends PnSchedule {
 	public KSGPanel buildSearch()
 	{
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
-		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		cbxNormalInOut = new KSGComboBox("inOutType");
 		
-
+		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		cbxNormalInOut = new KSGComboBox("inOutType");
 		cbxNormalSearch = new KSGComboBox();
 		cbxNormalSearch.addItem(new KSGTableColumn("", "전체"));
 		cbxNormalSearch.addItem(new KSGTableColumn("table_id", "테이블 ID"));
@@ -659,11 +635,12 @@ public class PnNormalByTree extends PnSchedule {
 
 		pnNormalSearchCenter.add(pnPortSearch);
 
-
-
 		pnNormalSearchCenter.add(new JLabel("항목:"));
+		
 		pnNormalSearchCenter.add(cbxNormalSearch);
+		
 		pnNormalSearchCenter.add(txfNoramlSearch);
+		
 		pnNormalSearchCenter.add(butSearch);
 
 		pnNormalSearchMain.add(pnNormalSearchCenter);
@@ -677,8 +654,6 @@ public class PnNormalByTree extends PnSchedule {
 
 		try {
 			param.put("gubun", gubun);
-
-			//test
 
 			String searchOption  = txfNoramlSearch.getText();
 
@@ -719,14 +694,18 @@ public class PnNormalByTree extends PnSchedule {
 			if(col.columnField.equals("I"))
 			{	
 				table.setShowPathCount(4);
+
 				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectInboundScheduleGroupList2(param);
+				
 				treeTableModel.setRoot(getInboundTreeNode3(result));
 			}
 			// outbound 호출시
 			else
 			{
-				table.setShowPathCount(5);
+				table.setShowPathCount(5);		
+				
 				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectScheduleGroupList(param);
+				
 				treeTableModel.setRoot(getOutboundTreeNode(result));
 			}
 
@@ -953,6 +932,21 @@ public class PnNormalByTree extends PnSchedule {
 		
 	}
 	
+	/**
+	
+	  * @FileName : PnNormalByTree.java
+	
+	  * @Project : KSG2
+	
+	  * @Date : 2022. 5. 25. 
+	
+	  * @작성자 : pch
+	
+	  * @변경이력 :
+	
+	  * @프로그램 설명 :
+	
+	  */
 	class GroupTreeNode extends DefaultMutableTreeNode
 	{
 		

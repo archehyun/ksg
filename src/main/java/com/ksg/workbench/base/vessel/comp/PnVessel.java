@@ -360,10 +360,11 @@ public class PnVessel extends PnBase implements ActionListener {
 
 				fnSearchDetail((String)item.get("vessel_name"));
 
-			}catch (SQLException e1) {
-				// TODO Auto-generated catch block
+			}catch (Exception e1) {
+				
 				e1.printStackTrace();
-				JOptionPane.showMessageDialog(null, e1.getMessage());
+				
+				JOptionPane.showMessageDialog(PnVessel.this, e1.getMessage());
 
 			}
 		}
@@ -411,7 +412,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		}
 
 
-
+		// TODO VESSEL EXPORT ¼öÁ¤
 		VesselInfoExportCommand command = new VesselInfoExportCommand(fileName);
 		command.execute();
 

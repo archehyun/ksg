@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.exception.ResourceNotFoundException;
+import com.ksg.common.exception.UnhandledException;
 import com.ksg.dao.impl.VesselDAOImpl;
 
 
@@ -84,6 +85,10 @@ public class VesselServiceImpl implements VesselService{
 
 	}
 
+	/**
+	 *
+	 */
+	@Override
 	public int delete(HashMap<String, Object> pram) throws SQLException {
 
 		int result=vesselDAO.delete(pram);
@@ -111,9 +116,18 @@ public class VesselServiceImpl implements VesselService{
 		this.insert(vessel);
 
 	}
-
-	public Object deleteDetail(HashMap<String, Object> param) throws SQLException {
-		return  vesselDAO.deleteDetail(param);
+	@Override
+	public Object deleteDetail(HashMap<String, Object> param) throws RuntimeException  {
+		log.debug("param:{}", param);
+		Object obj =null;
+		try {
+			
+			obj = vesselDAO.deleteDetail(param);
+		}catch(SQLException e1)
+		{
+			throw new UnhandledException(e1.getMessage());
+		}
+		return  obj;
 
 	}
 

@@ -126,7 +126,7 @@ public class SearchPortDialog extends KSGDialog implements ActionListener{
 						tableD.setResultData(li);
 						
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
 					}
 				}
@@ -234,7 +234,7 @@ public class SearchPortDialog extends KSGDialog implements ActionListener{
 		{
 			param.put("port_name", input);
 		}
-		HashMap<String, Object> result = (HashMap<String, Object>)service.selectListByLike(param);
+		HashMap<String, Object> result = (HashMap<String, Object>)service.selectListByCondition(param);
 		tableH.setResultData((List) result.get("master"));
 		}catch(Exception e)
 		{

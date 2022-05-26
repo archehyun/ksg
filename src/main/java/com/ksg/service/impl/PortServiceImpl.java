@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.ksg.common.exception.AlreadyExistException;
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.PortDAO;
 import com.ksg.dao.impl.PortDAOImpl;
 import com.ksg.domain.PortInfo;
@@ -40,12 +41,11 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	}
 
 	@SuppressWarnings("unchecked")
-	
-	public Map<String, Object> selectList(Map<String, Object> param) throws SQLException {
+	public CommandMap selectList(Map<String, Object> param) throws SQLException {
 
 		log.debug("param:{}", param);
 
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", portDAO.selectCount(param));
 
@@ -55,11 +55,11 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 
 	}
 
-	public Map<String, Object> selectListByLike(Map<String, Object> param) throws SQLException
+	public CommandMap selectListByCondition(Map<String, Object> param) throws SQLException
 	{
 		log.debug("param:{}", param);
 
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", portDAO.selectCount(param));
 
@@ -90,11 +90,9 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	public int update(HashMap<String, Object> param) throws SQLException {
 		log.debug("param:{}", param);
 		return portDAO.update(param);
-
 	}
 
 	public Object insert(HashMap<String, Object> param) throws Exception {
-
 
 		try {
 
@@ -153,11 +151,11 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	}
 
 	@Override
-	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+	public CommandMap selectListByPage(HashMap<String, Object> param) throws SQLException {
 
 		log.debug("param:{}", param);
 		
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", portDAO.selectCount(param));
 
@@ -174,6 +172,7 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 
 	@Override
 	public Map<String, String> selectAll() throws SQLException {
+		
 		List<PortInfo> li = portDAO.selectAll(); 
 		
 		Map<String, String> map = li.stream().collect(Collectors.toMap(PortInfo::getPort_name, PortInfo::getPort_name));

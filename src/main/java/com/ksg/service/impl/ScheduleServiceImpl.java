@@ -403,6 +403,12 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		return null;
 	}
 
+	/**
+	 *지역
+	 *----도착항
+	 *--------출발항
+	 *------------선박
+	 */
 	@Override
 	public HashMap<String, Object> selectScheduleGroupList(HashMap<String, Object> param) throws SQLException {
 
@@ -474,7 +480,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 					HashMap<String, Object> newFromPorts = new HashMap<String, Object>();
 					newFromPorts.put(fromPort, scheduleList);
-
 
 					// 신규 도착항 정보 생성
 

@@ -360,7 +360,7 @@ public class PnCompany extends PnBase implements ActionListener{
 			log.info("param:"+param);
 
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectList(param);
+			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectListByCondition(param);
 			
 			result.put("PAGE_NO", 1);
 

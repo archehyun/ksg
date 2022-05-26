@@ -26,7 +26,7 @@ public interface VesselService extends PageService{
 
 	public int delete(HashMap<String, Object> param) throws SQLException;
 	
-	public Object deleteDetail(HashMap<String, Object> param) throws SQLException;
+	public Object deleteDetail(HashMap<String, Object> param) throws RuntimeException;
 
 	public void insert(HashMap<String, Object> param) throws RuntimeException;
 	
