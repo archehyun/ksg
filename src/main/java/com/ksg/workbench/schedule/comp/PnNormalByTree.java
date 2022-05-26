@@ -28,7 +28,10 @@ import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.schedule.execute.formater.InboundJointedFormatter;
+import com.ksg.schedule.execute.formater.JointFormatter;
 import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
@@ -158,7 +161,6 @@ public class PnNormalByTree extends PnSchedule {
 				// 요소조회
 				HashMap<String, Object> fromPortitems =  (HashMap<String, Object>) fromPortItems.get(fromPortKey);
 
-
 				//tree 노드 생성
 				DefaultMutableTreeNode fromPort = new DefaultMutableTreeNode(fromPortKey);
 
@@ -170,8 +172,7 @@ public class PnNormalByTree extends PnSchedule {
 				Iterator toPortIter = fromPortitems.keySet().iterator();
 
 				while(toPortIter.hasNext())
-				{				  
-
+				{
 					String toPortKey = (String) toPortIter.next();
 
 					DefaultMutableTreeNode toPort = new DefaultMutableTreeNode(toPortKey);
@@ -179,7 +180,7 @@ public class PnNormalByTree extends PnSchedule {
 					List<HashMap<String, Object>> schedule = (List) fromPortitems.get(toPortKey);
 
 
-					ArrayList<DefaultMutableTreeNode> jointSchedule = createJoinedScheduleNode(schedule);
+					ArrayList<DefaultMutableTreeNode> jointSchedule = createOutboundJoinedScheduleNode(schedule);
 
 
 					for(DefaultMutableTreeNode scheduleNode:jointSchedule)
@@ -201,7 +202,17 @@ public class PnNormalByTree extends PnSchedule {
 
 	}
 
-	private DefaultMutableTreeNode getInboundTreeNode3(HashMap<String, Object> areaList) {
+	/**
+	 * 지역
+	 * ----출발항(외국항)
+	 * --------선박
+	 * ------------도착항(국내항)
+	 * 
+	 * 
+	 * @param areaList
+	 * @return
+	 */
+	private DefaultMutableTreeNode getInboundTreeNode(HashMap<String, Object> areaList) {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
 		Iterator areaListIter= areaList.keySet().iterator();
 
@@ -285,7 +296,7 @@ public class PnNormalByTree extends PnSchedule {
 	 * @param areaList
 	 * @return
 	 */
-	private DefaultMutableTreeNode getInboundTreeNode(HashMap<String, Object> areaList) {
+	private DefaultMutableTreeNode getInboundTreeNode1(HashMap<String, Object> areaList) {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
 
 		Iterator areaListIter= areaList.keySet().iterator();
@@ -393,7 +404,7 @@ public class PnNormalByTree extends PnSchedule {
 
 					List<HashMap<String, Object>> schedule = (List) fromPortitems.get(fromPortKey);
 
-					ArrayList<DefaultMutableTreeNode> jointSchedule = createJoinedScheduleNode(schedule);
+					ArrayList<DefaultMutableTreeNode> jointSchedule = createOutboundJoinedScheduleNode(schedule);
 
 
 					for(DefaultMutableTreeNode scheduleNode:jointSchedule)
@@ -477,7 +488,7 @@ public class PnNormalByTree extends PnSchedule {
 	 * @param schedule
 	 * @return
 	 */
-	private ArrayList<DefaultMutableTreeNode> createJoinedScheduleNode(List<HashMap<String, Object>> schedule)
+	private ArrayList<DefaultMutableTreeNode> createOutboundJoinedScheduleNode(List<HashMap<String, Object>> schedule)
 	{
 		HashMap<String, Object> scheduleList = new HashMap<String, Object>();
 		// 항차 번호, 선박명이 같은 목록 조회
@@ -650,7 +661,7 @@ public class PnNormalByTree extends PnSchedule {
 	}
 	public void fnSearch()
 	{
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 
 		try {
 			param.put("gubun", gubun);
@@ -695,16 +706,16 @@ public class PnNormalByTree extends PnSchedule {
 			{	
 				table.setShowPathCount(4);
 
-				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectInboundScheduleGroupList2(param);
+				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectInboundScheduleGroupList(param);
 				
-				treeTableModel.setRoot(getInboundTreeNode3(result));
+				treeTableModel.setRoot(getInboundTreeNode(result));
 			}
 			// outbound 호출시
 			else
 			{
 				table.setShowPathCount(5);		
 				
-				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectScheduleGroupList(param);
+				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectOutboundScheduleGroupList(param);
 				
 				treeTableModel.setRoot(getOutboundTreeNode(result));
 			}
@@ -875,62 +886,7 @@ public class PnNormalByTree extends PnSchedule {
 		}
 	}
 	
-	abstract class  JointFormatter	
-	{
-		String nodeName;
-		
-		ArrayList<HashMap<String, Object>> scheduleList;
-		
-		public void setNodeName(String nodeName)
-		{
-			this.nodeName=nodeName;
-		}
-		public String getNodeName()
-		{
-			return nodeName;
-		}
-		public  void setSchedule(ArrayList<HashMap<String, Object>> scheduleList)
-		{
-			this. scheduleList = scheduleList;
-		}
-		
-		public abstract String getFormattedString();
-	}
-	
-	
-	class InboundJointedFormatter extends JointFormatter
-	{
-		@Override
-		public String getFormattedString() {
-			try {
-				HashMap<String,Object> item = scheduleList.get(0);
-				String	fromDate 	= outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateF"))));
-				String toDate 		= outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateT"))));
-				String company 		= String.valueOf(item.get("company_abbr"));
-				String fromPort 	= String.valueOf(item.get("fromPort"));
-				String toPort 		= String.valueOf(item.get("port"));
-				return fromDate+"  "+getNodeName() + "  ("+company+")  "  +getFormattedToPorts();
-			}catch(Exception e)
-			{
-				e.printStackTrace();
-				return "error";
-			}
-		}
-		
-		private String getFormattedToPorts() throws ParseException
-		{
-			StringBuffer strPots= new StringBuffer();
-			
-			for(HashMap<String, Object>item: scheduleList)
-			{
-				String portCode = (String) inboundCodeMap.get(item.get("port"));
-				String toDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateT"))));
-				strPots.append("["+portCode+"]"+toDate);
-			}
-			return strPots.toString();
-		}
-		
-	}
+
 	
 	/**
 	
@@ -980,5 +936,4 @@ public class PnNormalByTree extends PnSchedule {
 			return jointedFormatter==null?nodeName:jointedFormatter.getFormattedString();
 		}
 	}
-	
 }

@@ -227,6 +227,8 @@ public class OutboundScheduleJoint extends JointSchedule{
 		}
 
 	}
+	
+	
 	class TagedPrintSchedule extends NormalPrintSchedule
 	{
 		public TagedPrintSchedule(ScheduleList scheduelList) throws IOException  {

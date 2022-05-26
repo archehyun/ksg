@@ -191,7 +191,7 @@ public class PnConsole2 extends PnSchedule{
 
 			logger.info("param:"+searchParam);
 
-			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectList(searchParam);			
+			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectListMap(searchParam);			
 
 			result.put("PAGE_NO", 1);
 

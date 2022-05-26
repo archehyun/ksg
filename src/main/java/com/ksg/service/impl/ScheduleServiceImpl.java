@@ -19,8 +19,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
+import java.util.Vector;import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.dao.SchduleDAO;
@@ -364,7 +366,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	}
 
 	@Override
-	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException {
+	public HashMap<String, Object> selectListMap(HashMap<String, Object> param) throws SQLException {
 
 		log.debug("param:{}", param);
 
@@ -402,6 +404,48 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		
 		return null;
 	}
+	@Override
+	public Map<String, Object> selectOutboundScheduleGroupList(CommandMap param) throws SQLException {
+		
+		log.debug("param:{}", param);
+		
+		return selectOutboundScheduleGroupList2(param);
+	}
+	
+	
+	/**
+	 *지역
+	 *----도착항
+	 *--------출발항
+	 *------------선박
+	 */
+	
+	private Map<String, Object> selectOutboundScheduleGroupList2(HashMap<String, Object> param) throws SQLException {
+		
+
+		String inOutType  = (String) param.get("inOutType");
+
+		HashMap<String, Object> result = (HashMap<String, Object>) selectListMap(param);
+
+		List<HashMap<String, Object>> master = (List) result.get("master");
+		
+		List<ScheduleData>  li = selecteScheduleListByCondition(param);
+
+		Map<String, Object> areaList =  li.stream().collect(Collectors.toMap(ScheduleData::getArea_name,
+				x -> {
+					List<ScheduleData> subList = new ArrayList<>();
+					subList.add(x);
+					return subList;
+				},
+				(left, right) -> {
+				//	left.addAll(right);
+					return left;
+				},
+				HashMap::new));
+		
+		return areaList;
+		
+	}
 
 	/**
 	 *지역
@@ -409,14 +453,14 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	 *--------출발항
 	 *------------선박
 	 */
-	@Override
-	public HashMap<String, Object> selectScheduleGroupList(HashMap<String, Object> param) throws SQLException {
+	
+	private HashMap<String, Object> selectOutboundScheduleGroupList1(HashMap<String, Object> param) throws SQLException {
 
-		log.debug("param:{}", param);
+		
 
 		String inOutType  = (String) param.get("inOutType");
 
-		HashMap<String, Object> result = (HashMap<String, Object>) selectList(param);
+		HashMap<String, Object> result = (HashMap<String, Object>) selectListMap(param);
 
 		List<HashMap<String, Object>> master = (List) result.get("master");
 
@@ -535,12 +579,17 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 	
 	
+	/** 지역
+	 *  ----출발항(외국항)
+	 *  --------선박
+	 *  -----------도착항(국내항)
+	 */
 	@Override
-	public HashMap<String, Object> selectInboundScheduleGroupList2(HashMap<String, Object> param) throws SQLException {
+	public HashMap<String, Object> selectInboundScheduleGroupList(HashMap<String, Object> param) throws SQLException {
 		
-		String inOutType  = (String) param.get("inOutType");
+		log.info("param:{}",param);
 
-		HashMap<String, Object> result = (HashMap<String, Object>) selectList(param);
+		HashMap<String, Object> result = (HashMap<String, Object>) selectListMap(param);
 
 		List<HashMap<String, Object>> master = (List) result.get("master");
 
@@ -622,7 +671,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 				
 				/*
 				 * 
-				 *  스케줄 그룹 키 : vessel&&fromDate
+				 *  스케줄 그룹 키 : vessel$$fromDate
 				 */
 
 				vessels.put(vessel+"$$"+dateF, scheduleList);
@@ -662,10 +711,9 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	 *     			value:scheduleList
 	 */
 	@Override
-	public HashMap<String, Object> selectInboundScheduleGroupList(HashMap<String, Object> param) throws SQLException {
-		String inOutType  = (String) param.get("inOutType");
+	public HashMap<String, Object> selectInboundScheduleGroupList1(HashMap<String, Object> param) throws SQLException {
 
-		HashMap<String, Object> result = (HashMap<String, Object>) selectList(param);
+		HashMap<String, Object> result = (HashMap<String, Object>) selectListMap(param);
 
 		List<HashMap<String, Object>> master = (List) result.get("master");
 

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 public interface ScheduleService extends PageService{	
@@ -168,17 +169,17 @@ public interface ScheduleService extends PageService{
 
 	List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException;
 
-	public HashMap<String, Object> selectList(HashMap<String, Object> param) throws SQLException;
+	public HashMap<String, Object> selectListMap(HashMap<String, Object> param) throws SQLException;
 	
 	public HashMap<String, Object> selectGroupList(HashMap<String, Object> param) throws SQLException;
 	
 	public int deleteInlnadSchedule()throws SQLException;
 	
-	public HashMap<String, Object> selectScheduleGroupList(HashMap<String, Object> param) throws SQLException;
+	public Map<String, Object> selectOutboundScheduleGroupList(CommandMap param) throws SQLException;
 	
-	public HashMap<String, Object> selectInboundScheduleGroupList(HashMap<String, Object> param) throws SQLException;
+	public HashMap<String, Object> selectInboundScheduleGroupList1(HashMap<String, Object> param) throws SQLException;
 
-	HashMap<String, Object> selectInboundScheduleGroupList2(HashMap<String, Object> param) throws SQLException;
+	HashMap<String, Object> selectInboundScheduleGroupList(HashMap<String, Object> param) throws SQLException;
 	
 	public HashMap<String, Object> selectInlandScheduleList(HashMap<String, Object> commandMap) throws SQLException;
 }
