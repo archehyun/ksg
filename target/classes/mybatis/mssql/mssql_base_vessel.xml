@@ -120,6 +120,10 @@
 		select vessel_abbr from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr# group by vessel_abbr
 	</select>
 	
+	<select id="selectVesselAbbr" resultClass="com.ksg.domain.Vessel">
+		select * from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr#
+	</select>
+	
 	<select id="selectVesselAbbrListByLike" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		select * from TB_VESSEL_ABBR
 		

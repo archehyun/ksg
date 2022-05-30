@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.domain.PortInfo;
+import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
 @SuppressWarnings("unchecked")
 public interface SchduleDAO {
@@ -202,6 +203,8 @@ public interface SchduleDAO {
 	public List selectInlandScheduleDateList()throws SQLException;
 	
 	public List<ScheduleData> selectScheduleLisByCondition(ScheduleData schedule) throws SQLException;
+	public List<Schedule> selectAll(Schedule schedule) throws SQLException;
+	
 	
 	
 }

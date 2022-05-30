@@ -44,6 +44,8 @@ public interface VesselService extends PageService{
 
 	public Map<String, String> selectAll()throws SQLException;
 
+	public Vessel selectDetailInfo(String vesselName) throws SQLException;
+
 
 
 }

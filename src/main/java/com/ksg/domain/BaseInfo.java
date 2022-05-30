@@ -19,8 +19,7 @@ import lombok.Data;
 @Data
 public abstract class BaseInfo {
 	
-	protected String updatetime;	
-	
+	protected String updatetime;
 
 	protected String updateUser;
 

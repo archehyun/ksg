@@ -14,9 +14,9 @@ public class VesselInfo {
 	
 	DiamondIcon icon;
 	
-	private boolean isExist;
+	private boolean isExist=true;
 	
-	private boolean isMulti;
+	private boolean isMulti=false;
 	
 	public String vesselName;
 	

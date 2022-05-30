@@ -119,4 +119,9 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	public Vessel selectVessel(Vessel vessel) throws SQLException {
 		return  (Vessel) selectOne("vessel.selectVessel", vessel);
 	}
+
+	public Vessel selectDetailInfo(String vessel_abbr) throws SQLException {
+		// TODO Auto-generated method stub
+		return  (Vessel) selectOne("vessel.selectVesselAbbr", vessel_abbr);
+	}
 }

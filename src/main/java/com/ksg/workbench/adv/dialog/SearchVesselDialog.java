@@ -24,6 +24,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.ksg.common.dao.DAOManager;
+import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
@@ -45,55 +46,55 @@ public class SearchVesselDialog extends KSGDialog {
 	public VesselInfo info;
 
 	public static final int OK_OPTION=1;
-	
+
 	public static final int CANCEL_OPTION=2;
-	
+
 	public int OPTION;
-	
+
 	private KSGPanel pnCenter;
-	
+
 	private boolean isSelected=false;
-	
+
 	private JButton butAdd;
-	
+
 	private JButton pnAddVesselAbbr;
-	
+
 	private JDialog addDialog;
-	
+
 	private BaseService baseService;
-	
+
 	private VesselService vesselService;
 
 	public SearchVesselDialog(String vesselName) {
 		super();
 		this.vesselName=vesselName;
 		baseService = DAOManager.getInstance().createBaseService();
-		
+
 		vesselService = new VesselServiceImpl();
 	}
 	public void createAndUpdateUI() {
 		setTitle("선박명 검색");
-		
+
 		setModal(true);	
-	
+
 		getContentPane().add(buildTitle(),BorderLayout.NORTH);
-		
+
 		getContentPane().add(buildCenter());
-		
+
 		getContentPane().add(buildControl(),BorderLayout.SOUTH);
 
 		pack();
 
 		ViewUtil.center(this, false);
-		
+
 		setVisible(true);
 
 	}
-	
+
 	private KSGPanel buildControl()
 	{
 		KSGPanel pnControl = new KSGPanel(new BorderLayout());
-		
+
 		JButton butOK = new JButton("적용");
 		butOK.addActionListener(new ActionListener(){
 
@@ -145,7 +146,7 @@ public class SearchVesselDialog extends KSGDialog {
 		KSGPanel pnRightControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));		
 		pnRightControl.add(butOK);
 		pnRightControl.add(butCancel);
-		
+
 		KSGPanel pnLeftContorl = new KSGPanel();
 		pnAddVesselAbbr = new JButton("선박명 약어추가");
 		pnAddVesselAbbr.setVisible(false);
@@ -163,27 +164,27 @@ public class SearchVesselDialog extends KSGDialog {
 
 			}
 		});
-		
+
 		pnLeftContorl.add(pnAddVesselAbbr);
-		
+
 		pnControl.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		pnControl.add(pnLeftContorl,BorderLayout.WEST);
 		pnControl.add(pnRightControl,BorderLayout.EAST);
 
-		
+
 		return pnControl;
 	}
-	
+
 	private KSGPanel buildTitle()
 	{
 		KSGPanel pnTitle = new KSGPanel(new BorderLayout());
 		pnTitle.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
-		
+
 		JLabel lblTitle = new JLabel("검색된 선박명: "+vesselName);		
-		
+
 		pnTitle.add(lblTitle);
-		
-		
+
+
 		JToggleButton butSearch = new JToggleButton("펼치기");
 		butSearch.addChangeListener(new ChangeListener(){
 
@@ -209,8 +210,8 @@ public class SearchVesselDialog extends KSGDialog {
 				pack();
 
 			}});
-		
-		
+
+
 		KSGPanel pnSearchRight = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		butAdd = new JButton("선박명 추가");
 		butAdd.addActionListener(new ActionListener()
@@ -238,14 +239,14 @@ public class SearchVesselDialog extends KSGDialog {
 		pnTitle.add(pnSearchRight,BorderLayout.EAST);
 		return pnTitle;
 	}
-	
+
 	private KSGPanel buildCenter()
 	{
 		pnCenter = new KSGPanel(new BorderLayout());
 		pnCenter.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		
+
 		pnCenter.setVisible(false);
-		
+
 		liVessel = new JList();
 
 
@@ -301,46 +302,44 @@ public class SearchVesselDialog extends KSGDialog {
 				Vessel vessel = new Vessel();
 				vessel.setVessel_name(vessel_name);
 				vessel.setVessel_abbr(vessel_abbr);
-				
+
 				Vessel info = new Vessel();
 				info.setVessel_name(vessel_name);
-				try {
-					List li=baseService.getVesselListGroupByName(info);
-					
-					
-					if(li.size()>0)
-					{	
-						Vessel item = (Vessel) li.get(0);
-						vessel.setVessel_type(item.getVessel_type());
-						vessel.setVessel_use(item.getVessel_use());
-						if(item.getVessel_type()==null)
-							vessel.setVessel_type("");
-						
-					}else
-					{
-						vessel.setVessel_type("");
-						vessel.setVessel_use(0);
-					}
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 
-				vesselService.insert(vessel);
-				JOptionPane.showMessageDialog(null, vessel_abbr+" 추가했습니다.");
-				txfSearch.setText("");
-			} catch (SQLException e1) 
-			{
-				if(e1.getErrorCode()==2627)// 중복키
-				{
-					JOptionPane.showMessageDialog(null, "선박명이 존재합니다.");
+				List li=baseService.getVesselListGroupByName(info);
+
+
+				if(li.size()>0)
+				{	
+					Vessel item = (Vessel) li.get(0);
+					vessel.setVessel_type(item.getVessel_type());
+					vessel.setVessel_use(item.getVessel_use());
+					if(item.getVessel_type()==null)
+						vessel.setVessel_type("");
+
 				}else
 				{
-					JOptionPane.showMessageDialog(null, e1.getMessage());	
+					vessel.setVessel_type("");
+					vessel.setVessel_use(0);
 				}
-				e1.printStackTrace();
+				vesselService.insertDetail(vessel);
+				JOptionPane.showMessageDialog(SearchVesselDialog.this, vessel_abbr+" 추가했습니다.");
+				txfSearch.setText("");
 			}
-		}
+			catch (AlreadyExistException e)
+			{
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(SearchVesselDialog.this, "선박명 약어가 존재합니다.");
+			}
+			catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+		
+		} 
+
 	}
 	private void addVesselAction(final String te)
 	{

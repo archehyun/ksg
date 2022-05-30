@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;import java.util.stream.Collector;
+import java.util.Vector;
 import java.util.stream.Collectors;
 
 import com.ksg.common.model.CommandMap;
@@ -29,6 +29,7 @@ import com.ksg.dao.SchduleDAO;
 import com.ksg.dao.impl.ADVScheduleDAO;
 import com.ksg.dao.impl.ScheduleDAOImpl;
 import com.ksg.domain.PortInfo;
+import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.KSGHashMap;
 import com.ksg.service.ScheduleService;
@@ -64,7 +65,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	KSGModelManager manager = KSGModelManager.getInstance();
 
 	public ScheduleServiceImpl() {
-		
+
 		super();
 		schduleDAO = new ScheduleDAOImpl();
 		advScheduleDAO = new ADVScheduleDAO();
@@ -182,16 +183,16 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	}
 
 	public List getScheduleList(ScheduleData param) throws SQLException {
-		
+
 		log.info("param:{}",param.getDate_issue());
-		
+
 		return schduleDAO.getScheduleList(param);
 	}
 
 	public List selectScheduleDateList() throws SQLException {
-		
+
 		List li1 = schduleDAO.selectScheduleDateList();
-		
+
 		List li2 = schduleDAO.selectInlandScheduleDateList();
 
 		li1.addAll(li2);
@@ -259,7 +260,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		return resultMap;
 
 	}
-	
+
 	public HashMap<String, Object> selectInlandScheduleList(HashMap<String, Object> commandMap) throws SQLException {
 
 		log.debug("param:{}", commandMap);
@@ -401,50 +402,41 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		List list=schduleDAO.selectList(param);
-		
+
 		return null;
 	}
 	@Override
 	public Map<String, Object> selectOutboundScheduleGroupList(CommandMap param) throws SQLException {
-		
+
 		log.debug("param:{}", param);
-		
+
 		return selectOutboundScheduleGroupList2(param);
 	}
-	
-	
+
+
 	/**
 	 *지역
 	 *----도착항
 	 *--------출발항
 	 *------------선박
 	 */
-	
+
 	private Map<String, Object> selectOutboundScheduleGroupList2(HashMap<String, Object> param) throws SQLException {
-		
 
-		String inOutType  = (String) param.get("inOutType");
-
-		HashMap<String, Object> result = (HashMap<String, Object>) selectListMap(param);
-
-		List<HashMap<String, Object>> master = (List) result.get("master");
-		
 		List<ScheduleData>  li = selecteScheduleListByCondition(param);
 
-		Map<String, Object> areaList =  li.stream().collect(Collectors.toMap(ScheduleData::getArea_name,
-				x -> {
-					List<ScheduleData> subList = new ArrayList<>();
-					subList.add(x);
-					return subList;
-				},
-				(left, right) -> {
-				//	left.addAll(right);
-					return left;
-				},
-				HashMap::new));
+		Map<String, Map<String, Map<String, List<ScheduleData>>>> areaList =  li.stream().collect(
+				Collectors.groupingBy(ScheduleData::getArea_name, // 지역
+						Collectors.groupingBy(ScheduleData::getFromPort, // 출발항
+								Collectors.groupingBy(ScheduleData::getPort))));// 도착항
 		
-		return areaList;
-		
+		HashMap<String, Object> returnValue = new HashMap<String, Object>();
+		for(String area : areaList.keySet() ) {
+			returnValue.put(area, areaList.get(area));
+		}
+
+		return returnValue;
+
 	}
 
 	/**
@@ -453,10 +445,10 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	 *--------출발항
 	 *------------선박
 	 */
-	
+
 	private HashMap<String, Object> selectOutboundScheduleGroupList1(HashMap<String, Object> param) throws SQLException {
 
-		
+
 
 		String inOutType  = (String) param.get("inOutType");
 
@@ -563,7 +555,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		} 
 	}
-	
+
 	class AscendingFromDate2 implements Comparator<HashMap<String,Object>> 
 	{ 
 		@Override 
@@ -576,8 +568,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		} 
 	}
-
-	
 	
 	/** 지역
 	 *  ----출발항(외국항)
@@ -587,6 +577,19 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	@Override
 	public HashMap<String, Object> selectInboundScheduleGroupList(HashMap<String, Object> param) throws SQLException {
 		
+		return selectInboundScheduleGroupList3(param);
+
+	}
+
+
+
+	/** 지역
+	 *  ----출발항(외국항)
+	 *  --------선박
+	 *  -----------도착항(국내항)
+	 */
+	private HashMap<String, Object> selectInboundScheduleGroupList3(HashMap<String, Object> param) throws SQLException {
+
 		log.info("param:{}",param);
 
 		HashMap<String, Object> result = (HashMap<String, Object>) selectListMap(param);
@@ -594,7 +597,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		List<HashMap<String, Object>> master = (List) result.get("master");
 
 		HashMap<String, Object> areaList = new HashMap<String, Object>();
-		
+
 		Iterator<HashMap<String, Object>>iter = master.iterator();		
 
 		while(iter.hasNext())
@@ -602,27 +605,27 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 			HashMap<String, Object> item = iter.next();
 
 			String area_name=(String) item.get("area_name");
-			
+
 			String fromPort = (String) item.get("fromPort");
 
 			String toPort = (String) item.get("port");
-			
+
 			String dateF = (String) item.get("DateF");
-			
+
 			String vessel = (String) item.get("vessel");
-			
+
 			if(areaList.containsKey(area_name))
 			{	
 				//출발항 목록
 				HashMap<String, Object> fromPorts =(HashMap<String, Object>) areaList.get(area_name);
-				
+
 				//출발항 있을 경우
 				if(fromPorts.containsKey(fromPort))					  
 				{
 					//스케줄 목록
 					HashMap<String, Object> vessels =(HashMap<String, Object>) fromPorts.get(fromPort);
-					
-					
+
+
 					//vessel 있을 경우
 					if(vessels.containsKey(vessel+"$$"+dateF))					  
 					{
@@ -635,65 +638,65 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 						scheduleList.add(item);
 						vessels.put(vessel+"$$"+dateF, scheduleList);
 					}
-					
-					
+
+
 				}
 				//출발항 없을 경우
 				else
 				{
 					HashMap<String, Object> vessels = new HashMap<String, Object>();
-					
+
 					ArrayList<HashMap<String, Object>> scheduleList  = new ArrayList<HashMap<String,Object>>();
-					
+
 					scheduleList.add(item);
-					
+
 					/*
 					 * 
 					 *  스케줄 그룹 키 : vessel$$fromDate
 					 */
 
 					vessels.put(vessel+"$$"+dateF, scheduleList);
-					
+
 					fromPorts.put(fromPort, vessels);
 				}
-				
-				
-				
+
+
+
 			}
 			else
 			{
 				//스케줄 그룹
 				HashMap<String, Object> vessels = new HashMap<String, Object>();
-				
+
 				ArrayList<HashMap<String, Object>> scheduleList  = new ArrayList<HashMap<String,Object>>();
-				
+
 				scheduleList.add(item);
-				
+
 				/*
 				 * 
 				 *  스케줄 그룹 키 : vessel$$fromDate
 				 */
 
 				vessels.put(vessel+"$$"+dateF, scheduleList);
-				
+
 				// 출발항 그룹
 				HashMap<String, Object> newFromPorts = new HashMap<String, Object>();
-				
+
 				newFromPorts.put(fromPort, vessels);	
-				
+
 				areaList.put(area_name, newFromPorts);
 			}
-			
+
 		}
-		
+
 		//정렬 및 공동 배선
-		
+
 		return areaList;
-		
-		
-		
+
+
+
 	}
-	
+
 	/*
 	 * map
 	 *    key(vessel)
@@ -720,7 +723,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		HashMap<String, Object> areaList = new HashMap<String, Object>();
 
 		Iterator<HashMap<String, Object>>iter = master.iterator();
-		
+
 		int scheduleKey=0;
 
 		while(iter.hasNext())
@@ -728,25 +731,25 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 			HashMap<String, Object> item = iter.next();
 
 			String area_name=(String) item.get("area_name");
-			
+
 			String fromPort = (String) item.get("fromPort");
 
 			String toPort = (String) item.get("port");
-			
+
 			String vessel = (String) item.get("vessel");
-			
+
 			if(areaList.containsKey(area_name))
 			{
 				//출발항 목록
 				HashMap<String, Object> fromPorts =(HashMap<String, Object>) areaList.get(area_name);
-				
+
 				//출발항 있을 경우
 				if(fromPorts.containsKey(fromPort))					  
 				{
 					//스케줄 목록
 					HashMap<String, Object> vessels =(HashMap<String, Object>) fromPorts.get(fromPort);
-					
-					
+
+
 					//vessel 있을 경우
 					if(vessels.containsKey(vessel))					  
 					{
@@ -759,48 +762,48 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 						scheduleList.add(item);
 						vessels.put(vessel+"-"+scheduleKey, scheduleList);
 					}
-					
-					
+
+
 				}
 				//출발항 없을 경우
 				else
 				{
 					HashMap<String, Object> vessels = new HashMap<String, Object>();
-					
+
 					ArrayList<HashMap<String, Object>> scheduleList  = new ArrayList<HashMap<String,Object>>();
-					
+
 					scheduleList.add(item);
-					
+
 					/*
 					 * 
 					 *  스케줄 그룹 키 : vessel-fromDate
 					 */
 
 					vessels.put(vessel+"-"+scheduleKey, scheduleList);
-					
+
 					fromPorts.put(fromPort, vessels);
 				}
 				// 
 			}
 			else
 			{	
-				
+
 				//스케줄(선박) 목록
 				ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String,Object>>();
-				
+
 				scheduleList.add(item);
-				
+
 				HashMap<String, Object> vessels = new HashMap<String, Object>();
-				
+
 				vessels.put(vessel, scheduleList);
-				
+
 				// 출발항 그룹
 				HashMap<String, Object> newFromPorts = new HashMap<String, Object>();
-				
+
 				newFromPorts.put(fromPort, vessels);	
-				
+
 				areaList.put(area_name, newFromPorts);
-				
+
 			}
 		}
 
@@ -809,20 +812,20 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 	@Override
 	public List<HashMap<String, Object>> selecteScheduleListMapByCondition(HashMap<String, Object> param) {
-		
+
 		log.debug("param:{}", param);
-		
+
 		ScheduleData schedule = ScheduleData.builder()
 				.date_issue((String) param.get("date_issue"))
 				.InOutType((String) param.get("inOutType"))
 				.gubun((String) param.get("gubun"))
 				.build();
-		
+
 		ArrayList<HashMap<String, Object>> map = new ArrayList<HashMap<String, Object>>();
 		try {
 			List<ScheduleData> li = schduleDAO.selectScheduleLisByCondition(schedule);
-			
-			
+
+
 			for(ScheduleData item:li)
 			{	
 				map.add((HashMap<String, Object>) objectMapper.convertValue(item, Map.class));
@@ -831,25 +834,39 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return map;
 	}
-	
-	
+
+
 	@Override
 	public List<ScheduleData> selecteScheduleListByCondition(HashMap<String, Object> param) throws SQLException {
-		
+
 		log.debug("param:{}", param);
-		
+
 		ScheduleData schedule = ScheduleData.builder()
 				.date_issue((String) param.get("date_issue"))
 				.InOutType((String) param.get("inOutType"))
 				.gubun((String) param.get("gubun"))
 				.build();
-		
 
-		
 		return  schduleDAO.selectScheduleLisByCondition(schedule);
+	}
+	
+	
+	@Override
+	public List<Schedule> selecteAll(HashMap<String, Object> param) throws SQLException {
+
+		log.debug("param:{}", param);
+
+		Schedule schedule = Schedule.builder()
+				.date_issue((String) param.get("date_issue"))
+				.InOutType((String) param.get("inOutType"))
+				.gubun((String) param.get("gubun"))
+				.build();
+
+
+		return  schduleDAO.selectAll(schedule);
 	}
 
 }

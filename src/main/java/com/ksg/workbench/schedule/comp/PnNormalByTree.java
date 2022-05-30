@@ -28,8 +28,11 @@ import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.domain.Schedule;
+import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.execute.formater.InboundJointedFormatter;
 import com.ksg.schedule.execute.formater.JointFormatter;
 import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
@@ -88,12 +91,16 @@ public class PnNormalByTree extends PnSchedule {
 	private JTextField txfFromPort;
 	
 	private HashMap<String, Object> inboundCodeMap;
+	
+	protected ObjectMapper objectMapper;
 
 	public PnNormalByTree() {
 
 		super();
 		
 		codeService = new CodeServiceImpl();
+		
+		objectMapper = new ObjectMapper();
 
 		this.setLayout(new BorderLayout());
 		
@@ -177,7 +184,7 @@ public class PnNormalByTree extends PnSchedule {
 
 					DefaultMutableTreeNode toPort = new DefaultMutableTreeNode(toPortKey);
 
-					List<HashMap<String, Object>> schedule = (List) fromPortitems.get(toPortKey);
+					List<ScheduleData> schedule = (List) fromPortitems.get(toPortKey);
 
 
 					ArrayList<DefaultMutableTreeNode> jointSchedule = createOutboundJoinedScheduleNode(schedule);
@@ -402,7 +409,7 @@ public class PnNormalByTree extends PnSchedule {
 
 					DefaultMutableTreeNode fromPort = new DefaultMutableTreeNode(fromPortKey);
 
-					List<HashMap<String, Object>> schedule = (List) fromPortitems.get(fromPortKey);
+					List<ScheduleData> schedule = (List) fromPortitems.get(fromPortKey);
 
 					ArrayList<DefaultMutableTreeNode> jointSchedule = createOutboundJoinedScheduleNode(schedule);
 
@@ -488,24 +495,28 @@ public class PnNormalByTree extends PnSchedule {
 	 * @param schedule
 	 * @return
 	 */
-	private ArrayList<DefaultMutableTreeNode> createOutboundJoinedScheduleNode(List<HashMap<String, Object>> schedule)
+	private ArrayList<DefaultMutableTreeNode> createOutboundJoinedScheduleNode(List<ScheduleData> schedule)
 	{
 		HashMap<String, Object> scheduleList = new HashMap<String, Object>();
 		// 항차 번호, 선박명이 같은 목록 조회
 
-		for(HashMap<String, Object> scheduleItem:schedule)
+		for(ScheduleData scheduleItem:schedule)
 		{
-			String vessel = String.valueOf( scheduleItem.get("vessel"));
-			int n_voyage = ScheduleBuildUtil.getNumericVoyage( String.valueOf(scheduleItem.get("voyage_num")));
+			
+			//convert hashMap
+			CommandMap scheduleMap=(CommandMap) objectMapper.convertValue(scheduleItem, CommandMap.class);
+			
+			String vessel = String.valueOf( scheduleMap.get("vessel"));
+			int n_voyage = ScheduleBuildUtil.getNumericVoyage( String.valueOf(scheduleMap.get("voyage_num")));
 			if(scheduleList.containsKey(vessel+"-"+n_voyage))
 			{	
 				ArrayList<HashMap<String, Object>> jointScheduleItemList = (ArrayList<HashMap<String, Object>>) scheduleList.get(vessel+"-"+n_voyage);
-				jointScheduleItemList.add(scheduleItem);
+				jointScheduleItemList.add(scheduleMap);
 			}
 			else
 			{
 				ArrayList<HashMap<String, Object>> jointScheduleItemList = new ArrayList<HashMap<String, Object>>();
-				jointScheduleItemList.add(scheduleItem);					
+				jointScheduleItemList.add(scheduleMap);					
 				scheduleList.put(vessel+"-"+n_voyage, jointScheduleItemList);
 			}
 		}
@@ -514,7 +525,9 @@ public class PnNormalByTree extends PnSchedule {
 
 		for(String strKey:scheduleList.keySet())
 		{
-			ArrayList<HashMap<String, Object>> jointScheduleItemList=(ArrayList<HashMap<String, Object>>) scheduleList.get(strKey);
+			ArrayList<CommandMap> jointScheduleItemList=(ArrayList<CommandMap>) scheduleList.get(strKey);
+			
+			
 			if(jointScheduleItemList.size()==1)
 			{
 				DefaultMutableTreeNode node = new ScheduleTreeNode(new TreeTableNode(jointScheduleItemList.get(0)));

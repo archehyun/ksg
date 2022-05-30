@@ -20,8 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jdom.Element;
 
 import com.ksg.domain.Vessel;
@@ -44,7 +42,25 @@ public class VesselListComp extends JList{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
+	/**
+
+	 * @FileName : VesselListComp.java
+
+	 * @Project : KSG2
+
+	 * @Date : 2022. 5. 30. 
+
+	 * @작성자 : pch
+
+	 * @변경이력 :
+
+	 * @프로그램 설명 : 선박명 색 표시
+
+	 */
+
+	public final Color VESSEL_MULTI = Color.blue;
+	public final Color VESSEL_NOT_EXIT = Color.red;
 	class ComplexCellRenderer implements ListCellRenderer
 	{
 		protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
@@ -56,8 +72,8 @@ public class VesselListComp extends JList{
 			String theText = null;
 
 			JLabel renderer = (JLabel) defaultRenderer
-			.getListCellRendererComponent(list, value, index, isSelected,
-					cellHasFocus);
+					.getListCellRendererComponent(list, value, index, isSelected,
+							cellHasFocus);
 
 			if (value instanceof VesselInfo) {
 				VesselInfo values = (VesselInfo) value;
@@ -67,11 +83,11 @@ public class VesselListComp extends JList{
 
 				if(!values.isExist())
 				{
-					theForeground =Color.red;
+					theForeground =VESSEL_NOT_EXIT;
 				}
 				if(values.isMulti())
 				{
-					theForeground =Color.blue;
+					theForeground =VESSEL_MULTI;
 				}
 			} else {
 				theFont = list.getFont();
@@ -92,11 +108,11 @@ public class VesselListComp extends JList{
 	}
 
 	private KSGXLSImportPanel base;
-	
-	
-	
+
+
+
 	private int vesselSize;
-	
+
 	private VesselService vesselService;
 	public VesselListComp(KSGXLSImportPanel base) {
 
@@ -107,7 +123,7 @@ public class VesselListComp extends JList{
 		this.setComponentPopupMenu(createVesselPopup());
 		this.setToolTipText("Red : 없는 선박, Blue : 선박 약어 다수존재");
 		//baseService = manager.createBaseService();
-		
+
 		vesselService = new VesselServiceImpl();
 	}
 	private JPopupMenu createVesselPopup() 
@@ -142,69 +158,80 @@ public class VesselListComp extends JList{
 	}
 	Element vesselElement;
 	public void setModel(Element vesselElement) {
+
 		log.info("vessel list init start");
+
 		DefaultListModel vesselListModel = new DefaultListModel();
-		
+
 		this.vesselElement=vesselElement;
 
 		List vessel_list=vesselElement.getChildren("vessel");
-		
+
 		this.vesselSize=vessel_list.size();
-		
+
 		try {
+
+			// 선박명, 선박명 약어 없음
+
+			// 선박명 약어으로 온 경우 선박명으로 대체
+
+
 			for(int i=0;i< vessel_list.size();i++)
 			{
 
 				Element port_info = (Element) vessel_list.get(i);
+
 				String vesselName=port_info.getAttributeValue("name");
 
-//				Vessel op = new Vessel();
-//				
-//				op.setVessel_abbr(vesselName);
-				
-				//List v =baseService.getVesselList(op);
-				
 				HashMap<String, Object> param = new HashMap<String, Object>();
-				
+
 				param.put("vessel_name", vesselName);
-				
-				
-				HashMap<String, Object> result = vesselService.selectDetailList(param);
-				
-				List v=(List) result.get("master");
+
+				Vessel itemDetail=vesselService.selectDetailInfo(vesselName);
 
 				VesselInfo info = new VesselInfo();
-				
-				if(v.size()==0)
+				//선박명이 존재 하지 않을 경우
+				// 약어일 경우
+				// 약어도 없을 경우
+
+				// 약어가 없으면 존재하지 않는 선박
+				if(itemDetail== null)
 				{
 					info.setExist(false);
 					info.setMulti(false);
-					info.vesselName=vesselName;	
+					info.vesselName=vesselName;
+				}
+				else
+				{
+					//선박명이 있는지 조회
+					Vessel itemHead=vesselService.select(vesselName);
+					// 선박명이 있으면 선박명 사용
+					if(itemHead==null)
+					{
+						info.vesselName=itemDetail.getVessel_name();
+						
+					}
+					// 없으면 약어정보의 선박명 사용
+					else
+					{
+						info.vesselName=itemHead.getVessel_name();
+					}
+
+					param.put("vessel_name", info.vesselName);
+					HashMap<String, Object> result = vesselService.selectDetailList(param);
+
+					List detailList=(List) result.get("master");
+
+					if(detailList.size()>1)
+					{
+						info.setMulti(true);
+					}
+
+					base.updateVesseFulllName(i, info.vesselName);
+
+				}			
 
 
-				}else if(v.size()==1)
-				{
-					//Vessel  item = (Vessel) v.get(0);
-					
-					HashMap<String, Object> item = (HashMap<String, Object>) v.get(0);
-					
-					String newVesselName = (String) item.get("vessel_name");
-				
-					info.setMulti(false);
-					info.setExist(true);
-					info.vesselName=newVesselName;
-					base.updateVesseFulllName(i, newVesselName);
-				}
-				else if(v.size()>1)
-				{
-					HashMap<String, Object> item = (HashMap<String, Object>) v.get(0);
-					
-					String newVesselName = (String) item.get("vessel_name");
-					info.setMulti(true);
-					info.setExist(true);
-					info.vesselName=newVesselName;
-					base.updateVesseFulllName(i, newVesselName);
-				}
 				vesselListModel.addElement(info);
 			}
 		} catch (Exception e) {
@@ -214,7 +241,7 @@ public class VesselListComp extends JList{
 
 		} 
 		this.setModel(vesselListModel);
-		
+
 		log.info("vessel list init end");
 	}
 	public Vector<VesselInfo> getNullVesselList() {

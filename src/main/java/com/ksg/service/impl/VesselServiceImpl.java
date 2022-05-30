@@ -189,6 +189,10 @@ public class VesselServiceImpl implements VesselService{
 
 		return vesselDAO.selectDetail(vessel_abbr);
 	}
+	public Vessel selectDetailInfo(String vessel_abbr) throws SQLException {
+
+		return vesselDAO.selectDetailInfo(vessel_abbr);
+	}
 
 	@Override
 	public void insert(Vessel param) throws RuntimeException {

@@ -138,6 +138,21 @@
 		</dynamic>
 	</select>
 	
+		<select id="selectAll" resultClass="com.ksg.domain.Schedule" parameterClass="com.ksg.domain.Schedule">
+		SELECT * FROM TB_SCHEDULE_INFO
+		<dynamic prepend="where">
+				<isNotNull property="gubun" prepend="and">
+					gubun=#gubun#
+				</isNotNull>
+				<isNotNull property="date_issue" prepend="and">
+					date_issue=#date_issue#
+				</isNotNull>
+				<isNotNull property="inOutType" prepend="and">
+					inOutType=#inOutType#
+				</isNotNull>
+		</dynamic>
+	</select>
+	
 	<select id="selectScheduleList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		select * from TB_SCHEDULE_INFO
 		<dynamic prepend="where">
