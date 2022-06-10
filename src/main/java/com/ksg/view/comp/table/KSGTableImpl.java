@@ -53,6 +53,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.VesselService;
+import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.KSGViewParameter;
 import com.ksg.workbench.adv.comp.ADVTableData;
@@ -197,9 +198,8 @@ public class KSGTableImpl extends KSGTable implements KeyListener{
 
 	private BaseService baseService;
 	
-	private VesselService vesselService;
+	private VesselServiceV2 vesselService;
 	
-	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	DAOManager manager;
 	

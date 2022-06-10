@@ -89,7 +89,8 @@
 	<select id="selectVesselTotalList" resultClass="com.ksg.domain.Vessel">
 		SELECT *,B.vessel_abbr 
 		FROM TB_VESSEL_H A, TB_VESSEL_ABBR B 
-		WHERE A.vessel_name = B.vessel_name AND vessel_name =#vessel_name#		 
+		WHERE A.vessel_name = B.vessel_name
+		 
 	</select>
 	
 	<select id="selectVesselListByPage" resultClass="java.util.HashMap">
@@ -111,8 +112,12 @@
 	
 	<select id="selectVesselAbbrList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		select * from TB_VESSEL_ABBR
+		<dynamic prepend="where">
+		<isNotNull property="vessel_name">
+		      vessel_name =#vessel_name#
+		    </isNotNull>
 		
-		where vessel_name =#vessel_name#
+		</dynamic>
 		
 	</select>
 	

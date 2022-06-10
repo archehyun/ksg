@@ -44,8 +44,8 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	}
 	
 	@Override
-	public List<Vessel> selectTotalList(HashMap<String, Object> commandMap) throws SQLException{		
-		return selectList("vessel.selectVesselTotalList", commandMap);
+	public List<Vessel> selectTotalList() throws SQLException{		
+		return selectList("vessel.selectVesselTotalList");
 	}
 	@Override
 	public int delete(HashMap<String, Object> param) throws SQLException {
@@ -112,7 +112,7 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 
 
 	public Vessel selectDetail(String vessel_abbr) throws SQLException{
-		return  (Vessel) selectOne("vessel.selectVesselAbbrInfo", vessel_abbr);
+		return  (Vessel) selectOne("vessel.selectVesselAbbr", vessel_abbr);
 	}
 
 

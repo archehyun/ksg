@@ -102,9 +102,6 @@ public class RouteScheduleJoint extends JointSchedule{
 			strToPorts.append(item.getPort()+" "+ getFormatedDate(item.getDateF())+" - ");	
 		}
 		
-		
-		
-		
 		System.out.println(
 					vesselName+
 					data.get(0).getVoyage_num()

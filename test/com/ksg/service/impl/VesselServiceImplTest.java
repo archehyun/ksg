@@ -9,10 +9,11 @@ import org.junit.Test;
 
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
+import com.ksg.service.VesselServiceV2;
 
 public class VesselServiceImplTest {
 
-	VesselService vesselService;
+	VesselServiceV2 vesselService;
 
 	@Before
 	public void setUp()

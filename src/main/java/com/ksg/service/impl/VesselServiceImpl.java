@@ -20,6 +20,7 @@ import com.ksg.dao.impl.VesselDAOImpl;
 
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
+import com.ksg.service.VesselServiceV2;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 
  */
 @Slf4j
-public class VesselServiceImpl implements VesselService{
+public class VesselServiceImpl implements VesselService, VesselServiceV2{
 
 
 
@@ -68,17 +69,7 @@ public class VesselServiceImpl implements VesselService{
 
 	}
 
-	public Map<String, Object> selectDetailList(HashMap<String, Object> commandMap) throws SQLException {
-
-		log.info("param:"+commandMap);
-
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-
-		//resultMap.put("total", vesselDAO.selectVesselCount(commandMap));
-
-		resultMap.put("master",vesselDAO.selectDetailList(commandMap));
-		return resultMap;
-	}
+	
 
 	public Object updateDetail(HashMap<String, Object> param) throws SQLException {
 		return vesselDAO.updateDetail(param);
@@ -288,5 +279,35 @@ public class VesselServiceImpl implements VesselService{
 		vessel.setVessel_name(vessel_name);
 
 		return vesselDAO.selectVessel(vessel);
+	}
+
+	@Override
+	public HashMap<String, Object> selectList(Vessel commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public HashMap<String, Object> selectDetailList(Vessel commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 *선박명 약어 기준으로 전체 선박 목록 반환
+	 */
+	@Override
+	public HashMap<String, Object> selectTotalList() throws SQLException {
+		
+		List<Vessel> re = vesselDAO.selectTotalList();
+		
+		HashMap<String, Object> returnMap = new HashMap<String, Object>();
+		
+		for(Vessel item:re)
+		{
+			returnMap.put(item.getVessel_abbr(), item);
+		}
+		log.debug("vessel list size:{}", returnMap.size());
+		return returnMap;
 	}
 }

@@ -23,7 +23,7 @@ import javax.swing.ListCellRenderer;
 import org.jdom.Element;
 
 import com.ksg.domain.Vessel;
-import com.ksg.service.VesselService;
+import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.adv.KSGXLSImportPanel;
 import com.ksg.workbench.adv.dialog.SearchVesselDialog;
@@ -113,7 +113,7 @@ public class VesselListComp extends JList{
 
 	private int vesselSize;
 
-	private VesselService vesselService;
+	private VesselServiceV2 vesselService;
 	public VesselListComp(KSGXLSImportPanel base) {
 
 		this.base = base;
@@ -187,7 +187,7 @@ public class VesselListComp extends JList{
 
 				param.put("vessel_name", vesselName);
 
-				Vessel itemDetail=vesselService.selectDetailInfo(vesselName);
+				Vessel itemDetail=vesselService.selectDetail(vesselName);
 
 				VesselInfo info = new VesselInfo();
 				//선박명이 존재 하지 않을 경우
