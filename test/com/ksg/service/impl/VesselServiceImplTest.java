@@ -63,16 +63,16 @@ public class VesselServiceImplTest {
 
 	@Test
 	public void testInsertDetail() {
-		Vessel item= new Vessel();
-
-		item.setVessel_name("test1");
-		item.setVessel_mmsi("test1");
-		try {
-		vesselService.insertDetail(item);
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+//		Vessel item= new Vessel();
+//
+//		item.setVessel_name("test1");
+//		item.setVessel_mmsi("test1");
+//		try {
+//		vesselService.insertDetail(item);
+//		}catch(Exception e)
+//		{
+//			e.printStackTrace();
+//		}
 	}
 
 	@Test

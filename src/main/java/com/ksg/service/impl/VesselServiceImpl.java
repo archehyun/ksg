@@ -1,23 +1,17 @@
 package com.ksg.service.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import java.util.stream.Collectors;
 
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.exception.UnhandledException;
 import com.ksg.dao.impl.VesselDAOImpl;
-
-
-
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.VesselServiceV2;
@@ -40,11 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 
  */
 @Slf4j
-public class VesselServiceImpl implements VesselService, VesselServiceV2{
-
-
-
-	protected ObjectMapper objectMapper;
+public class VesselServiceImpl extends AbstractServiceImpl implements VesselService, VesselServiceV2{
 
 
 	private VesselDAOImpl vesselDAO;
@@ -215,32 +205,44 @@ public class VesselServiceImpl implements VesselService, VesselServiceV2{
 		return result;
 	}
 
-	@Override
-	public void insertDetail(Vessel param) throws RuntimeException {
-		log.info("param:{}", param);
-		try {
-
-			Vessel parent=vesselDAO.selectVessel(param);
-
-			if(parent == null)
-				throw new ResourceNotFoundException("vessel_name:"+param.getVessel_name());
-
-			vesselDAO.insertDetail(param);
-
-		} catch (SQLException e1) {
-			if(e1.getErrorCode()==2627)
-			{
-
-				throw new AlreadyExistException("exist");
-
-
-			}else
-			{
-
-				e1.printStackTrace();
-			}
-		}
-	}
+	//TODO 다른 메소드와 통합 필요
+//	@Override
+//	public void insertDetail(Vessel param) throws RuntimeException {
+//		log.info("param:{}", param);
+//		try {
+//
+//			Vessel parent=vesselDAO.selectVessel(param);
+//
+//			if(parent == null)
+//				throw new ResourceNotFoundException("vessel_name:"+param.getVessel_name());
+//			
+//			// 선막명 약어가 기존에 다른 선박명과 같을 시에 에러 발생
+//			
+//			Vessel newParam = new Vessel();
+//			newParam.setVessel_name(param.getVessel_abbr());
+//			
+//			Vessel parentB=vesselDAO.selectVessel(param);
+//			
+//			if(parentB != null)
+//				throw new AlreadyExistException("vessel_name:"+param.getVessel_abbr());
+//			
+//
+//			vesselDAO.insertDetail(param);
+//
+//		} catch (SQLException e1) {
+//			if(e1.getErrorCode()==2627)
+//			{
+//
+//				throw new AlreadyExistException("exist");
+//
+//
+//			}else
+//			{
+//
+//				e1.printStackTrace();
+//			}
+//		}
+//	}
 
 	@Override
 	public void insertDetail(HashMap<String, Object> param) throws RuntimeException {
@@ -256,6 +258,17 @@ public class VesselServiceImpl implements VesselService, VesselServiceV2{
 
 			if(parent == null)
 				throw new ResourceNotFoundException("vessel_name:"+vessel.getVessel_name());
+			
+			
+			// 선막명 약어가 기존에 다른 선박명과 같을 시에 에러 발생
+			
+			Vessel newParam = new Vessel();
+			newParam.setVessel_name(vessel.getVessel_abbr());
+						
+			Vessel parentB=vesselDAO.selectVessel(newParam);
+						
+			if(parentB != null)
+					throw new AlreadyExistException("vessel_name:"+newParam.getVessel_name());
 
 			vesselDAO.insertDetail(vessel);
 
@@ -309,5 +322,24 @@ public class VesselServiceImpl implements VesselService, VesselServiceV2{
 		}
 		log.debug("vessel list size:{}", returnMap.size());
 		return returnMap;
+	}
+
+	@Override
+	public List<HashMap<String, Object>> selectListByLike(HashMap<String, Object> param) throws SQLException {
+		log.info("param:{}", param);
+		Vessel param2 = Vessel.builder().vessel_name((String)param.get("vessel_name")).build();
+		
+		
+		List<Vessel> li = vesselDAO.selectVesselListByLike(param2);
+		
+		ArrayList<HashMap<String, Object>> map = new ArrayList<HashMap<String, Object>>();
+		
+		for(Vessel item:li)
+		{	
+			map.add((HashMap<String, Object>) objectMapper.convertValue(item, Map.class));
+		}
+		
+		
+		return map;
 	}
 }

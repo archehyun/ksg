@@ -129,6 +129,14 @@
 		select * from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr#
 	</select>
 	
+		<select id="selectVesselListByLike" resultClass="com.ksg.domain.Vessel" parameterClass="com.ksg.domain.Vessel">
+		select * from TB_VESSEL_H
+		
+		where vessel_name like '%$vessel_name$%'
+		
+		
+	</select>	
+	
 	<select id="selectVesselAbbrListByLike" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		select * from TB_VESSEL_ABBR
 		

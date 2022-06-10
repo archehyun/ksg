@@ -2,12 +2,15 @@ package com.ksg.service;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 
 import com.ksg.domain.Vessel;
 
 public interface VesselServiceV2 extends VesselService{
 	
 	public HashMap<String, Object> selectList(Vessel commandMap) throws SQLException;
+	
+	public List selectListByLike(HashMap<String, Object> param) throws SQLException;
 	
 	public HashMap<String, Object> selectDetailList(Vessel commandMap) throws SQLException;
 	
@@ -19,8 +22,10 @@ public interface VesselServiceV2 extends VesselService{
 	
 	public void insert(Vessel param) throws SQLException;
 	
-	public void insertDetail(Vessel param) throws RuntimeException;
+//	public void insertDetail(Vessel param) throws RuntimeException;
 	
 	public Object update(Vessel op)throws SQLException;
+
+	
 
 }

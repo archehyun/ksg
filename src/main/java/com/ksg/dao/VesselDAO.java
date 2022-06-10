@@ -39,6 +39,8 @@ public interface VesselDAO {
 	
 	public List<Vessel> selectAll() throws SQLException;
 	
+	public List<Vessel> selectVesselListByLike(Vessel commandMap) throws SQLException;
+	
 	
 
 }

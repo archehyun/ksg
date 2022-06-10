@@ -24,7 +24,6 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
-import com.ksg.service.VesselService;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;

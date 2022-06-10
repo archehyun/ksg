@@ -114,6 +114,7 @@ public class VesselListComp extends JList{
 	private int vesselSize;
 
 	private VesselServiceV2 vesselService;
+	
 	public VesselListComp(KSGXLSImportPanel base) {
 
 		this.base = base;
