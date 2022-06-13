@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.domain.PortInfo;
 
 public interface PortService extends PageService{
-	
 	
 	public PortInfo select(Map<String, Object> commandMap) throws SQLException;
 	
@@ -24,12 +24,25 @@ public interface PortService extends PageService{
 	
 	public Object selectPort(HashMap<String, Object> param) throws SQLException;
 	
-	public int update(HashMap<String, Object> param) throws SQLException;	
+	
+	//--update--//
+	public int update(CommandMap param) throws SQLException;
+	
+	public int updateDetail(CommandMap param) throws SQLException;
+	
+	//--delete--//
+	public int delete(CommandMap param) throws SQLException;
+	
+	public int deleteDetail(CommandMap param) throws SQLException;
+	
+	
+	//--insert--//
 
-	public int delete(HashMap<String, Object> param) throws SQLException;
-
-	public Object insert(HashMap<String, Object> param) throws Exception;
+	public Object insert(CommandMap param) throws RuntimeException;
+	
+	public Object insertDetail(CommandMap param) throws Exception;
 
 	public Object insert(PortInfo t) throws Exception;
+
 
 }

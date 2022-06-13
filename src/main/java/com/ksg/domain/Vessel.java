@@ -30,15 +30,13 @@ public class Vessel extends BaseInfo{
 
 	public static final int NON_USE=1;
 	public static final int USE=0;
-	private String vessel_name;
-	private String vessel_abbr;
+	private String vessel_name; // 선박명 
+	private String vessel_abbr; // 선박명 약어
 	private String vessel_abbr2;
-	private String vessel_company="";
-	private int vessel_use=-1;
+	private String vessel_company="";// 선사명
+	private int vessel_use=-1; // 선박사용 유무
 	private String vessel_mmsi="";
 	private Date input_date;
-
-
 	
 	private String vessel_type;
 	private String patten;

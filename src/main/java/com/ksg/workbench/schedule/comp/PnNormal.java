@@ -38,8 +38,6 @@ public class PnNormal extends KSGPanel implements ActionListener{
 
 	private JComboBox cbxNormalInOut;
 	
-	
-	
 	private ScheduleService service;
 	
 	private List<HashMap<String, Object>> master;

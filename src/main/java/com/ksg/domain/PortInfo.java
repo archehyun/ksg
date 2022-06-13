@@ -10,13 +10,19 @@
  *******************************************************************************/
 package com.ksg.domain;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /** 항구 정보
  * @author 박창현
  *
  */
-@Data
+@NoArgsConstructor @AllArgsConstructor
+@Builder
+@Getter @Setter
 public class PortInfo extends BaseInfo {
 	
 	private String port_name;			// 항구명

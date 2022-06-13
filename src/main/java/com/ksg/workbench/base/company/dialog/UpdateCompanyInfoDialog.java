@@ -25,6 +25,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.ksg.common.exception.AlreadyExistException;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -93,7 +94,7 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		String command = e.getActionCommand();
 		if(command.equals("수정"))
 		{
-			HashMap<String, Object> param = new HashMap<String, Object>();
+			CommandMap param = new CommandMap();
 
 			param.put("company_name", txfCompany_name.getText());
 			param.put("company_abbr", txfCompany_abbr.getText());
@@ -130,7 +131,7 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		}
 		else if(command.equals("추가"))
 		{
-			HashMap<String, Object> param = new HashMap<String, Object>();
+			CommandMap param = new CommandMap();
 
 			param.put("company_name", txfCompany_name.getText());
 			param.put("company_abbr", txfCompany_abbr.getText());

@@ -112,7 +112,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 	private TableService tableService;
 
-	protected BaseService baseService;
+//	protected BaseService baseService;
 
 	private ADVService advservice;
 	
@@ -161,7 +161,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 		advservice = new ADVServiceImpl();
 
-		baseService = new BaseServiceImpl();
+//		baseService = new BaseServiceImpl();
 
 		tableService = new TableServiceImpl();
 		
@@ -711,11 +711,6 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			}
 			
 			initColumn(defaultTableModel);
-
-
-			
-			
-
 
 			defaultTableModel = manager.createDBTableModel(defaultTableModel,KSGModelManager.getInstance().selectedADVData);
 

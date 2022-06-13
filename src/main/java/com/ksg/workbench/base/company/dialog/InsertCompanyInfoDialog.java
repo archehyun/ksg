@@ -27,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.CompanyService;
 import com.ksg.service.impl.CompanyServiceImpl;
@@ -96,7 +97,7 @@ public class InsertCompanyInfoDialog extends BaseInfoDialog{
 			String agent_abbr = txfAgent_abbr.getText();
 			String contents = txaContents.getText();
 			
-			HashMap<String, Object> param = new HashMap<String, Object>();
+			CommandMap param = new CommandMap();
 			param.put("company_name",company_name);
 			param.put("company_abbr",company_abbr);
 			param.put("agent_name",agent_name);

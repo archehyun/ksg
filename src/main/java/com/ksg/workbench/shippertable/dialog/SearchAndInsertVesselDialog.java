@@ -8,13 +8,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -25,11 +25,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
-import com.ksg.common.dao.DAOManager;
+import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
-import com.ksg.service.BaseService;
-import com.ksg.service.VesselService;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -43,11 +41,11 @@ import com.ksg.workbench.shippertable.comp.AdvertiseTable;
  * @author archehyun
  *
  */
+@SuppressWarnings("serial")
 public class SearchAndInsertVesselDialog extends KSGDialog{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private JTextField txfSearch;
 	private JList liVessel;
 	private String vesselName;
@@ -66,12 +64,10 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 	private String value;
 	private DefaultTableModel vesselModel;
 	private AdvertiseTable advTable;
-	private BaseService baseService;
 	private VesselServiceV2 vesselService;
 	public SearchAndInsertVesselDialog(String vesselName) {
 		super();
 		this.vesselName=vesselName;
-		baseService = DAOManager.getInstance().createBaseService();
 		vesselService = new VesselServiceImpl();
 		
 	}
@@ -84,7 +80,6 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		this.vesselModel = vesselModel;
 		this.advTable = advTable;
 		this.vesselName= value;
-		baseService = DAOManager.getInstance().createBaseService();
 		vesselService = new VesselServiceImpl();
 		
 		
@@ -175,11 +170,22 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				{
 					try 
 					{
-						List li=baseService.getVesselInfoByPattenGroupByName(txfSearch.getText()+"%");
+						HashMap<String, Object> param = new HashMap<String, Object>();
+						
+						param.put("vessel_name", txfSearch.getText());
+						
+						List<HashMap<String, Object>> li=vesselService.selectListByLike(param);
+						
+						
+//						List li1=baseService.getVesselInfoByPattenGroupByName(txfSearch.getText()+"%");
+						
 						DefaultListModel limodel = new DefaultListModel();
-						for(int i=0;i<li.size();i++)
+						for(HashMap vesseName:li)
 						{
-							limodel.addElement(li.get(i));
+							Vessel newItem = new Vessel();
+							newItem.setVessel_name((String)vesseName.get("vessel_name"));
+							newItem.setVessel_abbr((String)vesseName.get("vessel_abbr"));
+							limodel.addElement(newItem);
 						}
 						liVessel.setModel(limodel);
 						liVessel.updateUI();
@@ -296,38 +302,28 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				
 				Vessel info = new Vessel();
 				info.setVessel_name(vessel_name);
-				try {
-					List li=baseService.getVesselListGroupByName(info);
-					
-					
-					if(li.size()>0)
-					{	
-						Vessel item = (Vessel) li.get(0);
-						vessel.setVessel_type(item.getVessel_type());
-						
-						//20121025 수정 및 추가
-						vessel.setVessel_use(item.getVessel_use());
-						if(item.getVessel_type()==null)
-							vessel.setVessel_type("");
-						
-					}else
-					{
-						vessel.setVessel_type("");
-						vessel.setVessel_use(Vessel.USE);
-					}
-					vesselModel.setRowCount(vesselModel.getRowCount()+1);
-					vesselModel.setValueAt(vessel_name, row, 0);
-					vesselModel.setValueAt(vessel_abbr, row, 1);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				HashMap<String,Object> vesselParam = new HashMap<String, Object>();
+				vesselParam.put("vessel_name", vessel_name);
+				vesselParam.put("vessel_abbr", vessel_abbr);
+
+				vesselService.insertDetail(vesselParam);
+				
+				vesselModel.setRowCount(vesselModel.getRowCount()+1);
+				vesselModel.setValueAt(vessel_name, row, 0);
+				vesselModel.setValueAt(vessel_abbr, row, 1);
 
 				vesselService.insert(vessel);
 				advTable.setValue( vessel.getVessel_abbr().toUpperCase(), row, 0);
 				JOptionPane.showMessageDialog(null, vessel_abbr+" 추가했습니다.");
 				txfSearch.setText("");
-			} catch (SQLException e1) 
+			}
+			
+			catch (AlreadyExistException e1)
+			{
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "선박명이 존재합니다.");
+			}
+			catch (SQLException e1) 
 			{
 				if(e1.getErrorCode()==2627)// 중복키
 				{
@@ -345,82 +341,5 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		AddVesselDialog addVesselDialog = new AddVesselDialog(advTable,row,col,vesselName,vesselModel);
 		addVesselDialog.createAndUpdateUI();
 	}
-	private void addVesselAction2(final String te) {
-		
-		JFrame frame = new JFrame();
-	    JOptionPane optionPane = new JOptionPane();
-	    optionPane.setMessage("선박명 추가");
-	    optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
-	    JButton butUse = new JButton("사용함");
-	    butUse.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				
-				Vessel vessel = new Vessel();
-				vessel.setVessel_name(te);
-				vessel.setVessel_abbr(te);
-//				vessel.setVessel_use(Vessel.USE);
-				try {
-					vesselService.insert(vessel);
-//					_baseService.insertVessel_Abbr(vessel);
-					JOptionPane.showMessageDialog(null, te+" 추가했습니다.");
-					txfSearch.setText("");
-				} catch (SQLException e1) 
-				{
-					if(e1.getErrorCode()==2627)// 중복키
-					{
-						JOptionPane.showMessageDialog(null, "선박명이 존재합니다.");
-					}else
-					{
-						JOptionPane.showMessageDialog(null, e1.getMessage());	
-					}
-					e1.printStackTrace();
-				}
-				
-				addDialog.setVisible(false);
-				addDialog.dispose();
-			}
-		});
 
-	    JButton butNonUse = new JButton("사용안함");
-	    butNonUse.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {Vessel vessel = new Vessel();
-			vessel.setVessel_name(te);
-			vessel.setVessel_abbr(te);
-//			vessel.setVessel_use(Vessel.NON_USE);
-			try {
-				vesselService.insert(vessel);
-				baseService.insertVessel_Abbr(vessel);
-				JOptionPane.showMessageDialog(null, te+" 추가했습니다.");
-				txfSearch.setText("");
-			} catch (SQLException e1) 
-			{
-				if(e1.getErrorCode()==2627)// 중복키
-				{
-					JOptionPane.showMessageDialog(null, "선박명이 존재합니다.");
-				}else
-				{
-					JOptionPane.showMessageDialog(null, e1.getMessage());	
-				}
-				e1.printStackTrace();
-			}
-				addDialog.setVisible(false);
-				addDialog.dispose();
-			}
-		});
-
-	    JButton butCancel = new JButton("취소");
-	    butCancel.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				addDialog.setVisible(false);
-				addDialog.dispose();
-			}
-		});
-	    optionPane.setOptions(new Object[] {butUse,butNonUse,butCancel  });
-	    addDialog = optionPane.createDialog(frame, "선박명");
-	    addDialog.setVisible(true);
-
-	}
 }

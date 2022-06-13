@@ -1,20 +1,24 @@
 package com.ksg.service.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.AreaDAOImpl;
+import com.ksg.domain.AreaInfo;
+import com.ksg.domain.ScheduleData;
 
-public class AreaServiceImpl extends AbstractServiceImpl {
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class AreaServiceImpl extends AbstractServiceImpl implements AreaService{
 	
 	AreaDAOImpl areaDAO;
 	
-	protected Logger logger = LogManager.getLogger(this.getClass());
+	
 	
 	public AreaServiceImpl() {
 		super();
@@ -52,6 +56,20 @@ public class AreaServiceImpl extends AbstractServiceImpl {
 	public List getAreaListGroupByAreaCode() throws SQLException{
 		// TODO Auto-generated method stub
 		return areaDAO.getAreaListGroupBy("code");
+	}
+
+
+	@Override
+	public List<CommandMap> selectAreaInfoList() throws SQLException {
+		
+		List<AreaInfo> re =areaDAO.selectAreaList2(new CommandMap()); 
+		ArrayList<CommandMap> map = new ArrayList<CommandMap>();
+		for(AreaInfo item:re)
+		{	
+			map.add((CommandMap) objectMapper.convertValue(item, CommandMap.class));
+		}
+		
+		return map;
 	}
 
 

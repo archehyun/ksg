@@ -6,12 +6,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGPropertis;
+import com.ksg.dao.VesselDAO;
+import com.ksg.dao.impl.VesselDAOImpl;
 import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
@@ -23,8 +22,11 @@ import com.ksg.schedule.logic.joint.InboundScheduleJoint;
 import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
 import com.ksg.schedule.logic.joint.RouteScheduleJoint;
 import com.ksg.service.BaseService;
+import com.ksg.service.VesselService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 
@@ -34,6 +36,7 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
  * @author archehyun
  *
  */
+@Slf4j
 public class ScheduleManager {
 
 	private static ScheduleManager instance;
@@ -42,9 +45,9 @@ public class ScheduleManager {
 
 	private ScheduleBuildMessageDialog di;
 
-	protected Logger logger = LogManager.getLogger(this.getClass());
-
 	protected BaseService baseService;
+	
+	protected VesselService vesselService;
 
 	protected ArrayList<PortInfo> allPortlist;
 
@@ -53,17 +56,24 @@ public class ScheduleManager {
 	protected ArrayList<Vessel> allVessellist;
 
 	private ArrayList<Company> allCompanyList;
+	
+	private VesselDAO vesselDAO;
 
 	private ScheduleManager() {
 		scheduleBuilds = new ArrayList<ScheduleJoint>();
+		
 		baseService = new BaseServiceImpl();
+		
+		vesselDAO = new VesselDAOImpl();
+		
 	}
 	public void init()
 	{
 		try {
 			allPortlist 	= (ArrayList<PortInfo>) baseService.getPortInfoList();
 			allPortAbbrlist = (ArrayList<PortInfo>) baseService.getPort_AbbrList();
-			allVessellist 	= (ArrayList<Vessel>) baseService.getVesselList(new Vessel());
+//			allVessellist 	= (ArrayList<Vessel>) baseService.getVesselList(new Vessel());
+			allVessellist 	 = (ArrayList<Vessel>) vesselDAO.selectTotalList();
 			allCompanyList 	= (ArrayList<Company>) baseService.getCompanyList();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -176,7 +186,7 @@ public class ScheduleManager {
 			}
 		}
 
-		throw new VesselNullException("vesselName null:"+vesselName);
+		throw new VesselNullException("vessel name error :"+vesselName);
 	}
 
 	/**
@@ -215,7 +225,7 @@ public class ScheduleManager {
 		{
 			public void run()
 			{
-				logger.info("스케줄 생성 시작");
+				log.info("스케줄 생성 시작");
 
 				String fileLocation =KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION);
 
@@ -224,7 +234,7 @@ public class ScheduleManager {
 				if(!file.exists())
 				{
 					file.mkdirs();
-					logger.info("폴더 생성:"+fileLocation);
+					log.info("폴더 생성:"+fileLocation);
 				}
 				
 				di = new ScheduleBuildMessageDialog();

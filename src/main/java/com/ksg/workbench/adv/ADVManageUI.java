@@ -18,6 +18,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -58,9 +59,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.TablePort;
@@ -81,6 +79,8 @@ import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
 
@@ -98,9 +98,9 @@ import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 
  */
 @SuppressWarnings("unchecked")
+@Slf4j
 public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 {	
-	private static final Logger logger = LoggerFactory.getLogger(ADVManageUI.class);
 	
 	private static int _tableViewCount = 10;
 
@@ -187,6 +187,8 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		tableService = new TableServiceImpl();
 
 		_advService = new ADVServiceImpl();
+		
+		this.addComponentListener(this);
 
 		createAndUpdateUI();
 	}
@@ -628,7 +630,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		tree1 = new KSGTreeDefault("tree1");
 		tree1.setRowHeight(25);
 		tree1.setComponentPopupMenu(createTreePopuomenu());
-		tree1.update();
+		
 
 		tree1.addTreeSelectionListener(new TreeSelectionListener(){
 
@@ -762,6 +764,12 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	public void setSelectedIndex(int index) {
 		pnTab.setSelectedIndex(index);
 
+	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+		tree1.update();
 	}
 
 	

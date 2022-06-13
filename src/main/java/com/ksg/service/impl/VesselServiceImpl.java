@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.exception.UnhandledException;
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.VesselDAOImpl;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
@@ -45,11 +45,11 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	}
 
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> selectList(Map<String, Object> commandMap) throws SQLException {
+	public CommandMap selectList(Map<String, Object> commandMap) throws SQLException {
 
 		log.info("param:"+commandMap);
 
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", vesselDAO.selectCount(commandMap));
 
@@ -70,7 +70,7 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	 *
 	 */
 	@Override
-	public int delete(HashMap<String, Object> pram) throws SQLException {
+	public Object delete(HashMap<String, Object> pram) throws SQLException {
 
 		int result=vesselDAO.delete(pram);
 		vesselDAO.deleteDetail(pram);

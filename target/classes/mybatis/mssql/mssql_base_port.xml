@@ -69,9 +69,16 @@
 		<include refid="LIKE_WHERE"></include>
 	</select>
 	
-	<select id="selectPort" resultClass="java.util.HashMap">
+	<select id="selectPort" resultClass="com.ksg.domain.PortInfo" parameterClass="com.ksg.domain.PortInfo">
 		select * from TB_PORT
 		where port_name = #port_name#
+	
+	</select>
+	
+	<select id="selectPortDetail" resultClass="com.ksg.domain.PortInfo" parameterClass="com.ksg.domain.PortInfo">
+		select * from TB_PORT_ABBR
+		where port_name = #port_name#
+		AND port_abbr= #port_abbr#
 	
 	</select>
 	
@@ -132,6 +139,16 @@
 		);
 	</insert>
 	
+	<insert id="insertPortDetailV1" parameterClass="com.ksg.domain.PortInfo">
+		insert into TB_PORT_ABBR(
+			port_name,
+			port_abbr
+		)values(
+			#port_name#,
+			#port_abbr#
+		);
+	</insert>
+	
 <!-- update -->
 	
 	<update id="updatePort" parameterClass="java.util.HashMap">
@@ -147,6 +164,34 @@
 				port_name=#base_port_name#
 			)
 	</update>
+	
+		
+	<update id="updatePortV1" parameterClass="com.ksg.domain.PortInfo">
+		update TB_PORT 
+			set 
+				port_area=#port_area#,
+				port_name=#port_name#,
+				port_nationality=#port_nationality#,
+				area_code=#area_code#
+				
+			where 
+			(
+				port_name=#base_port_name#
+			)
+	</update>
+	
+	<update id="updatePortDetailV1" parameterClass="com.ksg.domain.PortInfo">
+		update TB_PORT_ABBR 
+			set 
+				port_abbr=#port_abbr#,
+				
+			where 
+			(
+				port_name=#base_port_name#
+			)
+	</update>
+	
+	
 
 <!-- delete -->
 
@@ -155,6 +200,14 @@
 	</delete>
 	
 	<delete id="deletePortAbbr" parameterClass="java.util.HashMap">
+		delete from TB_PORT_ABBR where port_abbr=#port_abbr#
+	</delete>
+	
+	<delete id="deletePort2" parameterClass="com.ksg.domain.PortInfo">
+		delete from TB_PORT where port_name=#port_name#
+	</delete>
+	
+	<delete id="deletePortAbbr2" parameterClass="com.ksg.domain.PortInfo">
 		delete from TB_PORT_ABBR where port_abbr=#port_abbr#
 	</delete>
 	

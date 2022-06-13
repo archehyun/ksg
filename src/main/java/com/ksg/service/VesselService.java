@@ -12,19 +12,25 @@ public interface VesselService extends PageService{
 	
 	public HashMap<String, Object> selectDetailListByLike(Map<String, Object> commandMap) throws SQLException;
 	
+	public Map<String, String> selectAll()throws SQLException;
+	
+	
+	//--insert--//
 	public Object update(HashMap<String, Object> param) throws SQLException;
 	
-	public Object updateDetail(HashMap<String, Object> param) throws SQLException;
+	public Object updateDetail(HashMap<String, Object> param) throws SQLException;	
 
-	public int delete(HashMap<String, Object> param) throws SQLException;
+	//--delete--//
+	public Object delete(HashMap<String, Object> param) throws SQLException;
 	
 	public Object deleteDetail(HashMap<String, Object> param) throws RuntimeException;
 
+	//--insert--//
 	public void insert(HashMap<String, Object> param) throws RuntimeException;	
 	
 	public void insertDetail(HashMap<String, Object> param) throws RuntimeException;
 
-	public Map<String, String> selectAll()throws SQLException;
+	
 
 	
 

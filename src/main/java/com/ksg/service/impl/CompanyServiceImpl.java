@@ -79,18 +79,18 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 
 	}
 
-	public int update(HashMap<String, Object> param) throws SQLException{
+	public int update(CommandMap param) throws SQLException{
 		log.debug("param:{}", param);
 		return companyDAO.update(param);
 
 	}
 
-	public int delete(HashMap<String, Object> param) throws SQLException{
+	public int delete(CommandMap param) throws SQLException{
 		log.debug("param:{}", param);
 		return companyDAO.deleteCompany(param);
 	}
 
-	public void insert(HashMap<String, Object> param) throws RuntimeException{
+	public void insert(CommandMap param) throws RuntimeException{
 		log.debug("param:{}", param);
 
 		try
