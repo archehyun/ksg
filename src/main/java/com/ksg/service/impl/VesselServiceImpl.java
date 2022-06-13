@@ -140,8 +140,10 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("total", vesselDAO.selectCount(param));
+		
+		
 
-		resultMap.put("master", vesselDAO.selectListByPage(param));
+		resultMap.put("master", param.get("vessel_abbr")==null? vesselDAO.selectListByPage(param):vesselDAO.selectListByPage2(param));
 
 		resultMap.put("PAGE_NO", 1);
 

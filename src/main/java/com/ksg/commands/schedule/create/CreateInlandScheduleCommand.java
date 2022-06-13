@@ -22,10 +22,13 @@ import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.build.CreateScheduleCommand;
 import com.ksg.service.ScheduleService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**인랜드 스케줄 생성
  * @author archehyun
  *
  */
+@Slf4j
 public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 
 	ScheduleManager scheduleManager = ScheduleManager.getInstance();
@@ -53,14 +56,14 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 	
 	public int execute() {
 		try {
-			logger.debug("search option:"+searchOption);
+			log.debug("search option:"+searchOption);
 			List table_list = this.getTableListByOption();
-			logger.debug("table Size:"+table_list.size());
+			log.debug("table Size:"+table_list.size());
 			Iterator tableIter = table_list.iterator();
 			while(tableIter.hasNext())
 			{
 				tableData = (ShippersTable) tableIter.next();
-				logger.debug("스케줄 처리:"+tableData);
+				log.debug("스케줄 처리:"+tableData);
 				// 해당 테이블에 대한 광고정보 조회
 
 				if(isTableDataValidation(tableData))
@@ -147,7 +150,7 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 		{			
 			return;
 		}
-		logger.debug("vslIndex:"+vslIndex);
+		log.debug("vslIndex:{}",vslIndex);
 
 		try{
 			// 국내항
@@ -156,7 +159,7 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 
 			for(int outPortIndex=0;outPortIndex<ports.length;outPortIndex++)
 			{
-				logger.debug("outPortIndex:"+outPortIndex);
+				log.debug("outPortIndex:"+outPortIndex);
 				//  국내항 출발 항 인덱스 조회
 
 				// 외국항
@@ -248,7 +251,7 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 										//scheduledata.setDateTBack(scheduleDates2[1]);
 										try
 										{
-											logger.info("insert Schedule:"+scheduledata.toInlandScheduleString());
+											log.info("insert Schedule:{}",scheduledata.toInlandScheduleString());
 											scheduleService.insertInlandScheduleData(scheduledata);// DB 에 저장
 
 										}
@@ -273,7 +276,9 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 												//					update++;
 												break;
 											default:
-												logger.error("error:"+scheduledata+", id:"+scheduledata.getTable_id()+", fromPort:"+scheduledata.getFromPort());
+												
+												log.error("error:{}, id:{}, fromPort:{}",scheduledata,scheduledata.getTable_id(), scheduledata.getFromPort());
+//												log.error("error:"+scheduledata+", id:"+scheduledata.getTable_id()+", fromPort:"+scheduledata.getFromPort());
 												e.printStackTrace();
 												break;
 											}
@@ -305,7 +310,7 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 					 **/				
 
 				}
-				logger.debug("MakeSchedule end");
+				log.debug("MakeSchedule end");
 			}
 		}catch(Exception e)
 		{

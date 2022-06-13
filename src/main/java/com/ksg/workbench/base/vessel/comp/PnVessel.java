@@ -88,6 +88,7 @@ public class PnVessel extends PnBase implements ActionListener {
 	private static final String STRING_VESSEL_COMPANY 	= "대표선사";
 	private static final String STRING_VESSEL_MMSI 		= "MMSI";
 	private static final String STRING_VESSEL_NAME 		= "선박명";
+	private static final String STRING_VESSEL_ABBR 		= "선박명약어";
 	private static final String STRING_CONTAINER_TYPE 	= "컨테이너 타입";
 	private static final String STRING_ALL 				= "전체";
 	private static final String STRING_SEARCH 			= "검색";
@@ -237,6 +238,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		JLabel lbl = new JLabel("필드명 : ");
 		cbxField = new JComboBox<KSGTableColumn>();
 		cbxField.addItem(new KSGTableColumn("vessel_name",STRING_VESSEL_NAME));
+		cbxField.addItem(new KSGTableColumn("vessel_abbr",STRING_VESSEL_ABBR));
 		cbxField.addItem(new KSGTableColumn("vessel_mmsi",STRING_VESSEL_MMSI));
 		cbxField.addItem(new KSGTableColumn("vessel_company",STRING_VESSEL_COMPANY));		
 		cbxField.addItem(new KSGTableColumn("input_date",STRING_INPUTDATE));
@@ -598,6 +600,8 @@ public class PnVessel extends PnBase implements ActionListener {
 
 			if(master.size()==0)
 			{
+				
+				tableD.clearReslult();
 				/*lblArea.setText("");
 				lblAreaCode.setText("");
 				lblPationality.setText("");

@@ -97,6 +97,12 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 		return selectList("vessel.selectVesselListByPage", commandMap);
 	}
 	
+	@Override
+	public Object selectListByPage2(Map<String, Object> commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("vessel.selectVesselListByPage2", commandMap);
+	}
+	
 	
 	
 	@Override
