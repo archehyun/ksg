@@ -22,9 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildInboundCommand;
 import com.ksg.commands.schedule.BuildWebSchdeduleCommand;
@@ -40,10 +37,13 @@ import com.ksg.schedule.logic.build.CreateNormalSchdeduleCommandNew;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 import com.ksg.workbench.schedule.dialog.ScheduleCreateOptionDialog;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author ¹ÚÃ¢Çö
  *
  */
+@Slf4j
 public class ScheduleServiceManager {
 	
 	
@@ -51,10 +51,13 @@ public class ScheduleServiceManager {
 
 	public static final int WEB=1;
 	
-	protected Logger logger = LogManager.getLogger(this.getClass());
+	
 	private static ScheduleServiceManager serviceManager;
+	
 	private Timer timer;
+	
 	private JProgressBar bar =new JProgressBar();
+	
 	public static ScheduleServiceManager getInstance() {
 		if(serviceManager==null)
 			serviceManager = new ScheduleServiceManager();

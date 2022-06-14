@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.ksg.common.exception.PortNullException;
+import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGPropertis;
+import com.ksg.dao.CompanyDAO;
 import com.ksg.dao.VesselDAO;
+import com.ksg.dao.impl.CompanyDAOImpl;
 import com.ksg.dao.impl.VesselDAOImpl;
 import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
@@ -22,6 +25,7 @@ import com.ksg.schedule.logic.joint.InboundScheduleJoint;
 import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
 import com.ksg.schedule.logic.joint.RouteScheduleJoint;
 import com.ksg.service.BaseService;
+import com.ksg.service.CompanyService;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
@@ -58,6 +62,8 @@ public class ScheduleManager {
 	private ArrayList<Company> allCompanyList;
 	
 	private VesselDAO vesselDAO;
+	
+	private CompanyDAO companyDAO;
 
 	private ScheduleManager() {
 		scheduleBuilds = new ArrayList<ScheduleJoint>();
@@ -65,6 +71,7 @@ public class ScheduleManager {
 		baseService = new BaseServiceImpl();
 		
 		vesselDAO = new VesselDAOImpl();
+		companyDAO = new CompanyDAOImpl();
 		
 	}
 	public void init()
@@ -74,7 +81,7 @@ public class ScheduleManager {
 			allPortAbbrlist = (ArrayList<PortInfo>) baseService.getPort_AbbrList();
 //			allVessellist 	= (ArrayList<Vessel>) baseService.getVesselList(new Vessel());
 			allVessellist 	 = (ArrayList<Vessel>) vesselDAO.selectTotalList();
-			allCompanyList 	= (ArrayList<Company>) baseService.getCompanyList();
+			allCompanyList 	= (ArrayList<Company>) companyDAO.selectList(new Company());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -197,7 +204,7 @@ public class ScheduleManager {
 	 * @throws SQLException
 	 * @throws VesselNullException
 	 */
-	public Company searchCompany(String companyName) throws SQLException,VesselNullException {		
+	public Company searchCompany(String companyName) throws ResourceNotFoundException {		
 
 		Iterator<Company> iterator = allCompanyList.iterator();
 		while(iterator.hasNext())
@@ -212,7 +219,7 @@ public class ScheduleManager {
 			}
 		}
 
-		throw new VesselNullException("companyName null:"+companyName);
+		throw new ResourceNotFoundException("companyName null:"+companyName);
 	}
 
 
