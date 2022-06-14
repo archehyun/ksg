@@ -7,14 +7,10 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.Box;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -26,10 +22,9 @@ import javax.swing.table.DefaultTableModel;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
-import com.ksg.service.BaseService;
 import com.ksg.service.VesselService;
+import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
@@ -47,9 +42,8 @@ public class AddVesselDialog extends KSGDialog {
 	private JCheckBox box;
 	private KSGComboBox cbxType;
 	DefaultTableModel vesselModel;
-//	private BaseService baseService;
 	
-	VesselService vesselService;
+	VesselServiceV2 vesselService;
 	public AddVesselDialog(KSGADVTablePanel main,JTable table,int row,Object value) {
 		this(main,table,row,0,value);
 

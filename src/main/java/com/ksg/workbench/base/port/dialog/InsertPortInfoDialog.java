@@ -37,6 +37,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.ksg.common.exception.AlreadyExistException;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
@@ -306,7 +307,7 @@ public class InsertPortInfoDialog extends BaseInfoDialog
 			return;
 		}
 		
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 		param.put("port_name", port_name);
 		param.put("port_natinoality", port_nationality);
 		param.put("area_code", area_code);

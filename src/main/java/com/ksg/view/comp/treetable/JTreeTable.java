@@ -470,8 +470,11 @@ public class JTreeTable extends JTable {
 		TreePath path = new TreePath(node.getPath());
 		if (expanded) {
 			
+			
+			
 			if(path.getPathCount()<showPathCount)
-				
+			
+			
 			tree.expandPath(path);
 		} else {
 			tree.collapsePath(path);

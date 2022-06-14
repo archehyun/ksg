@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.management.RuntimeErrorException;
+
 import com.ksg.common.exception.AlreadyExistException;
+import com.ksg.common.exception.ResourceNotFoundException;
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.PortDAO;
 import com.ksg.dao.impl.PortDAOImpl;
 import com.ksg.domain.PortInfo;
@@ -40,12 +44,11 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	}
 
 	@SuppressWarnings("unchecked")
-	
-	public Map<String, Object> selectList(Map<String, Object> param) throws SQLException {
+	public CommandMap selectList(Map<String, Object> param) throws SQLException {
 
 		log.debug("param:{}", param);
 
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", portDAO.selectCount(param));
 
@@ -55,11 +58,11 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 
 	}
 
-	public Map<String, Object> selectListByLike(Map<String, Object> param) throws SQLException
+	public CommandMap selectListByCondition(Map<String, Object> param) throws SQLException
 	{
 		log.debug("param:{}", param);
 
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", portDAO.selectCount(param));
 
@@ -77,12 +80,20 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	public HashMap<String, Object> selectPort(HashMap<String, Object> param) throws SQLException {
 		log.info("param:{}", param);
 
-		HashMap<String,Object> resultMap=(HashMap<String, Object>) portDAO.select( param);
+		HashMap<String,Object> resultMap = null;
 
-		if(resultMap==null)
+		PortInfo result= select( param);
+
+		if(result==null)
 		{
 			resultMap = (HashMap<String, Object>) portDAO.selectDetail(param);
-		}		
+		}
+		else
+		{
+			//objectMapper.
+
+			resultMap=(HashMap<String, Object>) objectMapper.convertValue(result, Map.class);
+		}
 
 		return resultMap;
 	}
@@ -90,11 +101,9 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	public int update(HashMap<String, Object> param) throws SQLException {
 		log.debug("param:{}", param);
 		return portDAO.update(param);
-
 	}
 
 	public Object insert(HashMap<String, Object> param) throws Exception {
-
 
 		try {
 
@@ -113,13 +122,14 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 			}
 		}
 	}
-	
+
+	@Deprecated
 	@Override
 	public Object insert(PortInfo param) throws Exception {
 		try {
 
 			log.debug("param:{}", param);
-			return portDAO.isnert(param);
+			return portDAO.insert(param);
 		}
 		catch (SQLException e1) {
 
@@ -135,10 +145,7 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	}
 
 
-	public int delete(HashMap<String, Object> param) throws SQLException {
-		log.debug("param:{}", param);
-		return portDAO.delete(param);
-	}
+	
 
 	@Override
 	public Object selectPortAbbr(HashMap<String, Object> param) throws SQLException {
@@ -153,11 +160,11 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	}
 
 	@Override
-	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+	public CommandMap selectListByPage(HashMap<String, Object> param) throws SQLException {
 
 		log.debug("param:{}", param);
-		
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", portDAO.selectCount(param));
 
@@ -167,18 +174,159 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	}
 
 	@Override
-	public PortInfo select(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public PortInfo select(Map<String, Object> param) throws RuntimeException {
+
+		PortInfo item = PortInfo.builder().port_name(String.valueOf(param.get("port_name")))
+				.port_abbr(String.valueOf(param.get("port_abbr")))
+				.build();
+
+		try {
+			return portDAO.select(item);	
+		}catch(Exception e)
+		{
+			throw new RuntimeException(e.getMessage());
+		}
+
+
 	}
 
 	@Override
 	public Map<String, String> selectAll() throws SQLException {
+
 		List<PortInfo> li = portDAO.selectAll(); 
-		
+
 		Map<String, String> map = li.stream().collect(Collectors.toMap(PortInfo::getPort_name, PortInfo::getPort_name));
-		
+
 		return map;
+	}
+
+	public int delete(CommandMap param) throws RuntimeException {
+		log.debug("delete param:{}", param);
+		PortInfo item = PortInfo.builder().port_name(String.valueOf(param.get("port_name")))				
+			.build();
+		
+		try {
+			PortInfo hasItem=portDAO.select(item);
+
+			if(hasItem==null)
+				throw new ResourceNotFoundException("port_name:"+item.getPort_name());	
+			
+			log.debug("delete param2:{}", param);
+			return portDAO.delete(param);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		
+	}
+
+	@Override
+	public int deleteDetail(CommandMap param) throws RuntimeException {
+
+		log.debug("param:{}", param);
+		PortInfo item = PortInfo.builder().port_name(String.valueOf(param.get("port_name")))
+										  .port_abbr(String.valueOf(param.get("port_abbr")))
+										  .build();
+		
+		try {
+			PortInfo hasItem=portDAO.selectDetail(item);
+
+			if(hasItem!=null)
+				throw new ResourceNotFoundException("port_name:"+item.getPort_name());	
+			
+			
+			return portDAO.deleteDetail(param);
+			
+		}catch(Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+
+
+	@Override
+	public int update(CommandMap param) throws SQLException {
+
+		log.debug("param:{}", param);
+		PortInfo item = PortInfo.builder().port_name(String.valueOf(param.get("port_name")))
+										.port_area(String.valueOf(param.get("port_area")))
+										.port_nationality(String.valueOf(param.get("port_nationality")))
+										.base_port_name(String.valueOf(param.get("base_port_name")))
+										.area_code(String.valueOf(param.get("area_code")))
+									.build();
+		return portDAO.update(item);
+	}
+
+	@Override
+	public int updateDetail(CommandMap param) throws SQLException {
+
+
+		PortInfo item = PortInfo.builder().port_name(String.valueOf(param.get("port_name")))
+				.port_abbr(String.valueOf(param.get("port_abbr")))
+				.build();
+		
+		return portDAO.updateDetail(item);
+	}
+
+	@Override
+	public Object insert(CommandMap param) throws RuntimeException {
+		log.debug("param:{}", param);
+		PortInfo item = PortInfo.builder().port_name(String.valueOf(param.get("port_name")))
+				.port_abbr(String.valueOf(param.get("port_name")))
+				.port_area(String.valueOf(param.get("port_area")))
+				.area_code(String.valueOf(param.get("area_code")))
+				.port_nationality(String.valueOf(param.get("port_nationality")))
+				.build();
+
+		try {
+			PortInfo hasItem=portDAO.select(item);
+
+			if(hasItem!=null)
+				return new AlreadyExistException("port_name:"+item.getPort_name());			
+
+			portDAO.insert(item);
+
+			PortInfo hasItemDetail=portDAO.selectDetail(item);
+
+			if(hasItemDetail!=null)
+				return new AlreadyExistException("port_abbr:"+item.getPort_abbr());	
+
+			portDAO.insertDetail(item);
+
+			return null;
+
+
+		}catch(Exception e)
+		{
+			throw new RuntimeException(e.getMessage());
+		}		
+
+	}
+	@Override
+	public Object insertDetail(CommandMap param) throws RuntimeException {
+
+		log.debug("param:{}", param);
+		try {
+
+			PortInfo item = PortInfo.builder().port_name(String.valueOf(param.get("port_name")))
+					.port_abbr(String.valueOf(param.get("port_abbr")))
+
+					.build();
+
+			PortInfo hasItemDetail=portDAO.selectDetail(item);
+
+			if(hasItemDetail!=null)
+				return new AlreadyExistException("port_abbr:"+item.getPort_abbr());	
+
+			return portDAO.insertDetail(item);
+		}catch(Exception e)
+		{
+			throw new RuntimeException(e.getMessage());
+		}		
+
 	}
 
 

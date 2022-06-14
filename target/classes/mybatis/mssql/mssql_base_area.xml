@@ -32,6 +32,18 @@
 			area_name=#area_name#
 			</isNotNull>
 		</dynamic>
+	</select>
+	
+	<select id="selectAreaList2" resultClass="com.ksg.domain.AreaInfo">
+		<include refid="AreaList"/>
+		<dynamic prepend="where">
+			<isNotNull prepend="and" property="area_code">	
+			area_code=#area_code#
+			</isNotNull>
+			<isNotNull prepend="and" property="area_name">	
+			area_name=#area_name#
+			</isNotNull>
+		</dynamic>
 	</select>	
 
 <!-- insert -->

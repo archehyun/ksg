@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.exception.AlreadyExistException;
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.ShipperTableDAOImpl;
 import com.ksg.service.ShipperTableService;
 
@@ -36,11 +37,11 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 		shipperTableDao = new ShipperTableDAOImpl();
 	}
 
-	public Map<String, Object> selectList(Map<String, Object> param)
+	public CommandMap selectList(Map<String, Object> param)
 	{
 		log.info("param:{}",param);
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-
+		
+		CommandMap resultMap = new CommandMap();
 		try {
 
 			resultMap.put("total", shipperTableDao.selectCount(null));
@@ -59,9 +60,9 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> selectPortList(Map<String, Object> param) {
+	public CommandMap selectPortList(Map<String, Object> param) {
 		log.info("param:{}",param);
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		try {
 
@@ -109,8 +110,6 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 			insertShipperPort(port);			
 
 		}		
-
-
 	}
 
 	@Override
@@ -135,10 +134,12 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 			HashMap<String, Object> item = iter.next();
 			
 			HashMap<String, Object> param = new HashMap<String, Object>();
+			
 			param.put("table_id", item.get("table_id"));
 			param.put("date_isusse", updateDate);
 			
 			shipperTableDao.updateDate(param);
+			
 			count++;
 		}
 		
@@ -152,11 +153,13 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 		log.info("param:{}",param);
 		try {
 			
-		Object result=	shipperTableDao.insert(param);
-		
-		log.info("reslult:{}",result);
+			Object result=	shipperTableDao.insert(param);
 			
-		} catch (SQLException e) {
+			log.info("reslult:{}",result);
+			
+		} 
+		catch (SQLException e) 
+		{
 			if(e.getErrorCode()==2627)
 			{
 				throw new AlreadyExistException("exist");
@@ -166,9 +169,9 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 	}
 
 	@Override
-	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
+	public CommandMap selectListByPage(HashMap<String, Object> param) throws SQLException {
 	
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 		
 		resultMap.put("total", shipperTableDao.selectCount(param));
 		

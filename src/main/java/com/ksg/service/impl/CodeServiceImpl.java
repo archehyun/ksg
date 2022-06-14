@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.CodeDAOImpl;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,7 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 		
 		log.debug("param:{}"+param);
 		
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 		
 		resultMap.put("total", codeDAO.selectCount(param));
 		
@@ -48,10 +49,10 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 
 	}
 	
-	public Map<String, Object> selectCodeDList(Map<String, Object> param) throws SQLException {
+	public CommandMap selectCodeDList(Map<String, Object> param) throws SQLException {
 		log.debug("param:{}"+param);
 		
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 		
 		resultMap.put("total", codeDAO.selectDetailCount(param));
 		
@@ -61,20 +62,17 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 
 	}
 	
-	public HashMap<String, Object> selectInboundPortMap() throws SQLException
+	public CommandMap selectInboundPortMap() throws SQLException
 	{
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 		param.put("code_type", "inPort");
 		
 		List<Map<String, Object>> list =codeDAO.selectDetailList(param);
 		
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		CommandMap result = new CommandMap();
 		for (Map<String, Object> item : list) {
 		    result.put(String.valueOf(item.get("code_field")), item.get("code_name"));
 		}
-		
-		
-		
 		return result;
 	}
 	public Object selectCodeH(Map<String, Object> param) throws SQLException {

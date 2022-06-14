@@ -71,6 +71,7 @@ import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
 import com.ksg.service.VesselService;
+import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
@@ -111,11 +112,11 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 	private TableService tableService;
 
-	protected BaseService baseService;
+//	protected BaseService baseService;
 
 	private ADVService advservice;
 	
-	private VesselService vesselService;
+	private VesselServiceV2 vesselService;
 
 	private DAOManager daomanager;
 
@@ -160,7 +161,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 		advservice = new ADVServiceImpl();
 
-		baseService = new BaseServiceImpl();
+//		baseService = new BaseServiceImpl();
 
 		tableService = new TableServiceImpl();
 		
@@ -710,11 +711,6 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			}
 			
 			initColumn(defaultTableModel);
-
-
-			
-			
-
 
 			defaultTableModel = manager.createDBTableModel(defaultTableModel,KSGModelManager.getInstance().selectedADVData);
 

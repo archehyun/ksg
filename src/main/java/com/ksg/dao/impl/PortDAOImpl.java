@@ -9,6 +9,9 @@ import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.PortDAO;
 import com.ksg.domain.PortInfo;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class PortDAOImpl extends AbstractDAO implements PortDAO{
 	public PortDAOImpl() {
 		super();
@@ -27,9 +30,9 @@ public class PortDAOImpl extends AbstractDAO implements PortDAO{
 		
 	}
 	
-	public Object select(HashMap<String, Object> param) throws SQLException
+	public PortInfo select(PortInfo param) throws SQLException
 	{
-		return selectOne("port.selectPort", param);
+		return (PortInfo) selectOne("port.selectPort", param);
 	}
 	public Object selectDetail(HashMap<String, Object> param) throws SQLException
 	{
@@ -75,9 +78,46 @@ public class PortDAOImpl extends AbstractDAO implements PortDAO{
 	}
 
 	@Override
-	public Object isnert(PortInfo param) throws SQLException {
+	public Object insert(PortInfo param) throws SQLException {
 		// TODO Auto-generated method stub
 		return insert(this.namespace+".insertPortV1",param);
+	}
+	
+	@Override
+	public Object insertDetail(PortInfo param) throws SQLException {
+		// TODO Auto-generated method stub
+		return insert(this.namespace+".insertPortDetailV1",param);
+	}
+
+	@Override
+	public int update(PortInfo param) throws SQLException {
+		// TODO Auto-generated method stub
+		return (int) update(this.namespace+".updatePortV1",param);
+	}
+
+	@Override
+	public int updateDetail(PortInfo param) throws SQLException {
+		// TODO Auto-generated method stub
+		return (int) update(this.namespace+".updatePortDetailV1",param);
+	}
+
+	@Override
+	public int delete(PortInfo param) throws SQLException {
+		
+		log.debug("delete param:{}", param);
+		return (Integer) delete(this.namespace+".deletePort2", param);
+	}
+
+	@Override
+	public int deleteDetail(PortInfo param) throws SQLException {
+		// TODO Auto-generated method stub
+		return (Integer) delete(this.namespace+".deletePortAbbr2", param);
+	}
+
+	@Override
+	public PortInfo selectDetail(PortInfo param) throws SQLException {
+		// TODO Auto-generated method stub
+		return (PortInfo) selectOne("port.selectPortDetail", param);
 	}
 	
 

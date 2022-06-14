@@ -36,11 +36,14 @@ import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.build.CreateScheduleCommand;
 import com.ksg.service.ScheduleService;
 import com.ksg.view.ui.ErrorLogManager;
+
+import lombok.extern.slf4j.Slf4j;
 /**
  * @deprecated
  * @author archehyun
  *
  */
+@Slf4j
 public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 {
 	private static final String SCHEDULE_BUILD_ERROR_TXT = "schedule_build_error.txt";
@@ -83,14 +86,14 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 
 
 	private int makeBildingSchedule() {
-		logger.debug("<==start build schedule ==>");
+		log.debug("<==start build schedule ==>");
 
 		try {
 			/************ 전체 테이블 정보 조회  **********
 			 * 1. 구분이 NULL 또는 NNN이 아닌 경우를 조회
 			 * ********************************************			 
 			 */
-			logger.info("search option:"+searchOption);
+			log.info("search option:{}",searchOption);
 			this.setTime(startTime);
 			List table_list = this.getTableListByOption();
 			setMessageDialog();
@@ -171,7 +174,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 			done = true;
 			current = lengthOfTask;	
 
-			logger.info("<==build schedule end==>");
+			log.info("<==build schedule end==>");
 			this.setTime(endtime);
 			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "스케줄 생성완료 ("+(endtime-startTime)+"ms)");
 			return RESULT_SUCCESS;
@@ -261,7 +264,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 
 				portDataArray.add(port);
 			}
-			logger.debug("portarray:"+table.getTable_id()+","+portDataArray);
+			log.debug("portarray:{},{}",table.getTable_id(),portDataArray);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -313,7 +316,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 
 				if(op.getVessel_name().equals(opItem.getVessel_name()))
 				{
-					logger.error("no vessel:"+op.getVessel_name());
+					log.error("no vessel:{}",op.getVessel_name());
 					return ; 
 				}
 			}
@@ -374,7 +377,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 
 				} catch (NotSupportedDateTypeException e) 
 				{
-					logger.error("no match date:"+e.date+", id:"+scheduledata.getTable_id());
+					log.error("no match date:{}, id:{}",e.date, scheduledata.getTable_id());
 					errorlist.add(createError("No match date", scheduledata.getTable_id()+":"+scheduledata.getVessel(), e.date));
 					return;
 				}
@@ -393,7 +396,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 					checkDate(table, scheduledata);
 				} catch (NotSupportedDateTypeException e) 
 				{
-					logger.error("no match date:"+e.date+", id:"+scheduledata.getTable_id());
+					log.error("no match date:{}, id:{}",e.date,scheduledata.getTable_id());
 					errorlist.add(createError("날짜 오류", scheduledata.getTable_id(), e.date));
 					return;
 				}
@@ -402,7 +405,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 
 			if(scheduledata==null||scheduledata.getPort()==null)
 			{
-				logger.error("schedule null:"+scheduledata);
+				log.error("schedule null:{}",scheduledata);
 				errorlist.add(createError("schedule null", scheduledata.getTable_id(), ""));
 				return;
 			}
@@ -478,7 +481,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 				//					update++;
 				break;
 			default:
-				logger.error("error:"+scheduledata+", id:"+scheduledata.getTable_id()+", fromPort:"+scheduledata.getFromPort());
+				log.error("error:{}, id:{}, fromPort:{}",scheduledata,scheduledata.getTable_id(), scheduledata.getFromPort());
 				e.printStackTrace();
 				break;
 			}
@@ -540,7 +543,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 		if(field==null||field.equals("")||field.equals(" "))
 			return null;
 
-		logger.debug("table id:"+table.getTable_id()+" field:"+field);
+		log.debug("table id:{}, field:{}", table.getTable_id(),field);
 		field=field.trim();
 
 		// #을 기준으로 항구 인덱스를 구분
@@ -555,7 +558,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 			}
 			catch (NumberFormatException e) 
 			{
-				logger.error("number foramt error:"+field+",id:"+table.getTable_id());
+				log.error("number foramt error:"+field+",id:"+table.getTable_id());
 				errorlist.add(createError("인덱스 오류", table.getTable_id(), field));
 
 				continue;
@@ -619,7 +622,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 			// 국내항
 			portDataArray=getPortList(table);
 
-			logger.info("MakeSchedule start:"+table);
+			log.info("MakeSchedule start:"+table);
 			for(int fromPortCount=0;fromPortCount<ports.length;fromPortCount++)
 			{
 				int outPortIndex =ports[fromPortCount];
@@ -650,7 +653,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 							}catch(Exception e)
 							{
 								e.printStackTrace();
-								logger.error("error:"+e.getMessage()+",table id:"+table.getTable_id());
+								log.error("error:"+e.getMessage()+",table id:"+table.getTable_id());
 								throw new NotSupportedDateTypeException("", 0);
 							}
 						}
@@ -661,7 +664,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 					 **/				
 
 				}
-				logger.info("MakeSchedule end");
+				log.info("MakeSchedule end");
 			}
 		}catch(Exception e)
 		{

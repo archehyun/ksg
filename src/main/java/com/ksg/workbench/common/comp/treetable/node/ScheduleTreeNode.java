@@ -52,10 +52,11 @@ public class ScheduleTreeNode extends DefaultMutableTreeNode
 
 		try {
 
-			fromDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateF"))));
-			toDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateT"))));
+			fromDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("dateF"))));
+			toDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("dateT"))));
 		}catch(Exception e)
 		{
+			System.err.println("item:"+item);
 			e.printStackTrace();
 		}
 	}

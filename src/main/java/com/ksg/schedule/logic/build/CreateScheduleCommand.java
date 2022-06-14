@@ -35,10 +35,13 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author 박창현
  *
  */
+@Slf4j
 public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 
 
@@ -62,7 +65,6 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 	protected int total;
 	protected int result;
 	protected ShippersTable searchOption;
-	protected Logger logger = LogManager.getLogger(this.getClass());
 	protected ScheduleBuildMessageDialog processMessageDialog;
 	protected int process;
 	protected long startTime,endtime;
@@ -149,7 +151,7 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 
 		lengthOfTask=total;
 
-		logger.info("스케줄 처리용 테이블 수 : "+total);
+		log.info("스케줄 처리용 테이블 수 : "+total);
 
 		return li;
 	}
@@ -284,7 +286,7 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 	}
 
 	protected String[] adjestDateYear2(String dateF, String dateT, String inOutBoundType) throws NotSupportedDateTypeException{
-		logger.debug("dateF:"+dateF+", dateT:"+dateT+", in/out:"+inOutBoundType);
+		log.debug("dateF:"+dateF+", dateT:"+dateT+", in/out:"+inOutBoundType);
 
 		dateT = dateT.replace(" ", "");
 

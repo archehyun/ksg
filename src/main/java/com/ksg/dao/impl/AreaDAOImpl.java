@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
+import com.ksg.domain.AreaInfo;
 
 /**
 
@@ -29,6 +30,13 @@ public class AreaDAOImpl extends AbstractDAO{
 	public List<Map<String, Object>> selectAreaList(Map<String, Object> commandMap) throws SQLException {
 		// TODO Auto-generated method stub
 		return selectList("area.selectAreaList", commandMap);
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<AreaInfo> selectAreaList2(Map<String, Object> commandMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("area.selectAreaList2", commandMap);
 
 	}
 

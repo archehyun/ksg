@@ -35,9 +35,12 @@ public interface VesselDAO {
 	public Object updateDetail(HashMap<String, Object> param) throws SQLException ;
 	public Object insert(Vessel param) throws SQLException;
 	public Object insertDetail( Vessel params) throws SQLException;
-	public List<Vessel> selectTotalList(HashMap<String, Object> commandMap) throws SQLException;
+	public List<Vessel> selectTotalList() throws SQLException;
 	
 	public List<Vessel> selectAll() throws SQLException;
+	
+	public List<Vessel> selectVesselListByLike(Vessel commandMap) throws SQLException;
+	Object selectListByPage2(Map<String, Object> commandMap) throws SQLException;
 	
 	
 

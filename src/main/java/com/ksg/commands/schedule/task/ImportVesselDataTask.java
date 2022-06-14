@@ -25,6 +25,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
 import com.ksg.service.VesselService;
+import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
@@ -41,7 +42,7 @@ public class ImportVesselDataTask implements LongTask{
 
 	private BaseService service;
 	
-	VesselService vesselService;
+	VesselServiceV2 vesselService;
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	private ScheduleBuildMessageDialog di;
 	public ImportVesselDataTask(File selectedFile) {

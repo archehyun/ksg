@@ -11,26 +11,20 @@
 package com.ksg.workbench.base.port.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.PortInfo;
+import com.ksg.service.PortService;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.base.dialog.BaseInfoDialog;
@@ -50,9 +44,11 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 	private JTextField txfPortCode = new JTextField(20);
 	private String port_name,port_abbr="";
 	private BaseServiceImpl baseService;
+	private PortService portService;
 
 	public InsertPortAbbrInfoDialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
+		portService = new PortServiceImpl();
 		this.baseInfoUI=baseInfoUI;
 		
 	}

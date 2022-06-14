@@ -9,10 +9,11 @@ import org.junit.Test;
 
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
+import com.ksg.service.VesselServiceV2;
 
 public class VesselServiceImplTest {
 
-	VesselService vesselService;
+	VesselServiceV2 vesselService;
 
 	@Before
 	public void setUp()
@@ -62,16 +63,16 @@ public class VesselServiceImplTest {
 
 	@Test
 	public void testInsertDetail() {
-		Vessel item= new Vessel();
-
-		item.setVessel_name("test1");
-		item.setVessel_mmsi("test1");
-		try {
-		vesselService.insertDetail(item);
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+//		Vessel item= new Vessel();
+//
+//		item.setVessel_name("test1");
+//		item.setVessel_mmsi("test1");
+//		try {
+//		vesselService.insertDetail(item);
+//		}catch(Exception e)
+//		{
+//			e.printStackTrace();
+//		}
 	}
 
 	@Test

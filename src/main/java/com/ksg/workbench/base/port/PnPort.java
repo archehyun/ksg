@@ -32,6 +32,9 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.ksg.common.exception.ResourceNotFoundException;
+import com.ksg.common.model.CommandMap;
+import com.ksg.service.PortService;
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.label.BoldLabel;
@@ -77,7 +80,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private JTextField txfSearch;
 	
-	private PortServiceImpl portService = new PortServiceImpl();
+	private PortService portService = new PortServiceImpl();
 	
 	private AreaServiceImpl areaService = new AreaServiceImpl();
 	
@@ -417,25 +420,31 @@ public class PnPort extends PnBase implements ActionListener{
 				return;
 
 			String data = (String) tableH.getValueAt(row, 0);
-			int result=JOptionPane.showConfirmDialog(null, data+"를 삭제 하시겠습니까?", "항구 정보 삭제", JOptionPane.YES_NO_OPTION);
+			int result=JOptionPane.showConfirmDialog(PnPort.this, data+"를 삭제 하시겠습니까?", "항구 정보 삭제", JOptionPane.YES_NO_OPTION);
 			if(result==JOptionPane.OK_OPTION)
 			{						
 				try {
-					
-					HashMap<String, Object> param = new HashMap<String, Object>();
+					System.out.println("delete ");
+					CommandMap param = new CommandMap();
 					
 					param.put("port_name", data);
 					
-					int count=portService.delete(param);
+					portService.delete(param);
 					
-					if(count>0)
-					{						
-						this.fnSearch();
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					this.fnSearch();
+					
+				}
+				catch (ResourceNotFoundException e1) {
 					e1.printStackTrace();
 				}
+				catch (Exception e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(PnPort.this, e1.getMessage());
+				}
+			}
+			else
+			{
+				System.out.println("no select");
 			}
 		}
 		else if(command.equals("약어 삭제"))
@@ -448,11 +457,11 @@ public class PnPort extends PnBase implements ActionListener{
 			if(result==JOptionPane.OK_OPTION)
 			{	
 				try {
-					HashMap<String, Object> param = new HashMap<String, Object>();
+					CommandMap param = new CommandMap();
 					
 					param.put("port_abbr", data);
 					
-					int count=portService.deletePortAbbr(param);
+					int count=(int) portService.deleteDetail(param);
 					if(count>0)
 					{
 						int hrow = tableH.getSelectedRow();

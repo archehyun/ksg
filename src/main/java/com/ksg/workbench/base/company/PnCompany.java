@@ -32,6 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
@@ -222,7 +223,7 @@ public class PnCompany extends PnBase implements ActionListener{
 			if(row<0)
 				return;
 
-			HashMap<String, Object> data= (HashMap<String, Object>) tableH.getValueAt(row);
+			CommandMap data= (CommandMap) tableH.getValueAt(row);
 			
 			int result=JOptionPane.showConfirmDialog(this,data.get("company_name")+"를 삭제 하시겠습니까?", "선사 정보 삭제", JOptionPane.YES_NO_OPTION);
 			
@@ -360,7 +361,7 @@ public class PnCompany extends PnBase implements ActionListener{
 			log.info("param:"+param);
 
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectList(param);
+			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectListByCondition(param);
 			
 			result.put("PAGE_NO", 1);
 

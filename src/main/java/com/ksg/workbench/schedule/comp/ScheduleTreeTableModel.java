@@ -14,6 +14,21 @@ import com.ksg.view.comp.treetable.TreeTableNode;
 
 
 
+/**
+
+  * @FileName : ScheduleTreeTableModel.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 5. 25. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
 public class ScheduleTreeTableModel extends AbstractTreeTableModel{
 	
 	private List<KSGTableColumn> columnNames;
@@ -113,12 +128,6 @@ public class ScheduleTreeTableModel extends AbstractTreeTableModel{
   			{
   				return "";
   			}
-  			
-  			
-  			
-  			
-
-  		
   			
   		} catch (Exception e) {
   			

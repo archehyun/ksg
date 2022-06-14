@@ -17,34 +17,34 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
 import com.ksg.service.PortService;
-import com.ksg.service.VesselService;
+import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
  * @author ¹ÚÃ¢Çö
  *
  */
+@Slf4j
 public class DataInput {
 	String filename;
 	String id;
 	BaseService baseService;
 	private PortInfo t;
-	protected Logger logger = LogManager.getLogger(this.getClass());
 	
-	VesselService vesselService;
+	
+	VesselServiceV2 vesselService;
 	PortService portService;
 	
 	public DataInput(String filename) {
@@ -295,7 +295,7 @@ public class DataInput {
 			info.setVessel_abbr(st.nextToken());
 			}catch(Exception e)
 			{
-				logger.error(e.getMessage()+":"+s);
+				log.error(e.getMessage()+":"+s);
 			}
 			
 			try{

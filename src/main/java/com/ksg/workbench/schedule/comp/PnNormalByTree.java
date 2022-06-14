@@ -28,7 +28,13 @@ import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.domain.Schedule;
+import com.ksg.domain.ScheduleData;
+import com.ksg.schedule.execute.formater.InboundJointedFormatter;
+import com.ksg.schedule.execute.formater.JointFormatter;
 import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
@@ -84,15 +90,17 @@ public class PnNormalByTree extends PnSchedule {
 
 	private JTextField txfFromPort;
 	
-	
-	
 	private HashMap<String, Object> inboundCodeMap;
+	
+	protected ObjectMapper objectMapper;
 
 	public PnNormalByTree() {
 
 		super();
 		
 		codeService = new CodeServiceImpl();
+		
+		objectMapper = new ObjectMapper();
 
 		this.setLayout(new BorderLayout());
 		
@@ -102,29 +110,10 @@ public class PnNormalByTree extends PnSchedule {
 
 		add(buildCenter());
 
-
 	}
 
 	public KSGPanel buildCenter()
 	{
-//		tableH = new KSGPageTablePanel("스케줄 목록");		
-//
-//		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
-//		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID",100));
-//		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",100));
-//		tableH.addColumn(new KSGTableColumn("agent", "에이전트",100));
-//		tableH.addColumn(new KSGTableColumn("vessel", "선박명",200));
-//		tableH.addColumn(new KSGTableColumn("date_issue", "출력일자",100));
-//		tableH.addColumn(new KSGTableColumn("voyage_num", "항차번호"));
-//		tableH.addColumn(new KSGTableColumn("fromPort", "출발항",200));
-//		tableH.addColumn(new KSGTableColumn("DateF", "출발일", 90));
-//		tableH.addColumn(new KSGTableColumn("DateT", "도착일", 90));
-//		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
-//
-//		tableH.initComp();
-//
-//		tableH.addActionListener(new PageAction(tableH,scheduleService));
-
 
 		treeTableModel = new ScheduleTreeTableModel();
 
@@ -144,8 +133,7 @@ public class PnNormalByTree extends PnSchedule {
 		table = new KSGTreeTable(treeTableModel );
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-
+		
 		// 4번.
 		JScrollPane treeTableScrollPane = new JScrollPane();
 		treeTableScrollPane.setViewportView(table);
@@ -180,7 +168,6 @@ public class PnNormalByTree extends PnSchedule {
 				// 요소조회
 				HashMap<String, Object> fromPortitems =  (HashMap<String, Object>) fromPortItems.get(fromPortKey);
 
-
 				//tree 노드 생성
 				DefaultMutableTreeNode fromPort = new DefaultMutableTreeNode(fromPortKey);
 
@@ -192,16 +179,15 @@ public class PnNormalByTree extends PnSchedule {
 				Iterator toPortIter = fromPortitems.keySet().iterator();
 
 				while(toPortIter.hasNext())
-				{				  
-
+				{
 					String toPortKey = (String) toPortIter.next();
 
 					DefaultMutableTreeNode toPort = new DefaultMutableTreeNode(toPortKey);
 
-					List<HashMap<String, Object>> schedule = (List) fromPortitems.get(toPortKey);
+					List<ScheduleData> schedule = (List) fromPortitems.get(toPortKey);
 
 
-					ArrayList<DefaultMutableTreeNode> jointSchedule = createJoinedScheduleNode(schedule);
+					ArrayList<DefaultMutableTreeNode> jointSchedule = createOutboundJoinedScheduleNode(schedule);
 
 
 					for(DefaultMutableTreeNode scheduleNode:jointSchedule)
@@ -223,7 +209,17 @@ public class PnNormalByTree extends PnSchedule {
 
 	}
 
-	private DefaultMutableTreeNode getInboundTreeNode3(HashMap<String, Object> areaList) {
+	/**
+	 * 지역
+	 * ----출발항(외국항)
+	 * --------선박
+	 * ------------도착항(국내항)
+	 * 
+	 * 
+	 * @param areaList
+	 * @return
+	 */
+	private DefaultMutableTreeNode getInboundTreeNode(HashMap<String, Object> areaList) {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
 		Iterator areaListIter= areaList.keySet().iterator();
 
@@ -307,7 +303,7 @@ public class PnNormalByTree extends PnSchedule {
 	 * @param areaList
 	 * @return
 	 */
-	private DefaultMutableTreeNode getInboundTreeNode(HashMap<String, Object> areaList) {
+	private DefaultMutableTreeNode getInboundTreeNode1(HashMap<String, Object> areaList) {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
 
 		Iterator areaListIter= areaList.keySet().iterator();
@@ -326,15 +322,13 @@ public class PnNormalByTree extends PnSchedule {
 			for (Object fromPortKey : mapkey)
 			{
 				// 요소조회
-				HashMap<String, Object> fromPortitems =  (HashMap<String, Object>) fromPortItems.get(fromPortKey);
-
+				HashMap<String, Object> fromPortitems 	=  (HashMap<String, Object>) fromPortItems.get(fromPortKey);
 
 				//tree 노드 생성
-				DefaultMutableTreeNode fromPort = new PortTreeNode((String)fromPortKey, "test");
+				DefaultMutableTreeNode fromPort 		= new PortTreeNode((String)fromPortKey, "test");
 
 				// 도착항 정렬
 				List<Entry<String, Object>> list_entries = new ArrayList<Entry<String, Object>>(fromPortitems.entrySet());
-
 
 				// 도착항 목록
 				Iterator toPortIter = fromPortitems.keySet().iterator();
@@ -415,9 +409,9 @@ public class PnNormalByTree extends PnSchedule {
 
 					DefaultMutableTreeNode fromPort = new DefaultMutableTreeNode(fromPortKey);
 
-					List<HashMap<String, Object>> schedule = (List) fromPortitems.get(fromPortKey);
+					List<ScheduleData> schedule = (List) fromPortitems.get(fromPortKey);
 
-					ArrayList<DefaultMutableTreeNode> jointSchedule = createJoinedScheduleNode(schedule);
+					ArrayList<DefaultMutableTreeNode> jointSchedule = createOutboundJoinedScheduleNode(schedule);
 
 
 					for(DefaultMutableTreeNode scheduleNode:jointSchedule)
@@ -501,24 +495,28 @@ public class PnNormalByTree extends PnSchedule {
 	 * @param schedule
 	 * @return
 	 */
-	private ArrayList<DefaultMutableTreeNode> createJoinedScheduleNode(List<HashMap<String, Object>> schedule)
+	private ArrayList<DefaultMutableTreeNode> createOutboundJoinedScheduleNode(List<ScheduleData> schedule)
 	{
 		HashMap<String, Object> scheduleList = new HashMap<String, Object>();
 		// 항차 번호, 선박명이 같은 목록 조회
 
-		for(HashMap<String, Object> scheduleItem:schedule)
+		for(ScheduleData scheduleItem:schedule)
 		{
-			String vessel = String.valueOf( scheduleItem.get("vessel"));
-			int n_voyage = ScheduleBuildUtil.getNumericVoyage( String.valueOf(scheduleItem.get("voyage_num")));
+			
+			//convert hashMap
+			CommandMap scheduleMap=(CommandMap) objectMapper.convertValue(scheduleItem, CommandMap.class);
+			
+			String vessel = String.valueOf( scheduleMap.get("vessel"));
+			int n_voyage = ScheduleBuildUtil.getNumericVoyage( String.valueOf(scheduleMap.get("voyage_num")));
 			if(scheduleList.containsKey(vessel+"-"+n_voyage))
 			{	
 				ArrayList<HashMap<String, Object>> jointScheduleItemList = (ArrayList<HashMap<String, Object>>) scheduleList.get(vessel+"-"+n_voyage);
-				jointScheduleItemList.add(scheduleItem);
+				jointScheduleItemList.add(scheduleMap);
 			}
 			else
 			{
 				ArrayList<HashMap<String, Object>> jointScheduleItemList = new ArrayList<HashMap<String, Object>>();
-				jointScheduleItemList.add(scheduleItem);					
+				jointScheduleItemList.add(scheduleMap);					
 				scheduleList.put(vessel+"-"+n_voyage, jointScheduleItemList);
 			}
 		}
@@ -527,7 +525,9 @@ public class PnNormalByTree extends PnSchedule {
 
 		for(String strKey:scheduleList.keySet())
 		{
-			ArrayList<HashMap<String, Object>> jointScheduleItemList=(ArrayList<HashMap<String, Object>>) scheduleList.get(strKey);
+			ArrayList<CommandMap> jointScheduleItemList=(ArrayList<CommandMap>) scheduleList.get(strKey);
+			
+			
 			if(jointScheduleItemList.size()==1)
 			{
 				DefaultMutableTreeNode node = new ScheduleTreeNode(new TreeTableNode(jointScheduleItemList.get(0)));
@@ -614,10 +614,10 @@ public class PnNormalByTree extends PnSchedule {
 	public KSGPanel buildSearch()
 	{
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
-		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		cbxNormalInOut = new KSGComboBox("inOutType");
 		
-
+		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		cbxNormalInOut = new KSGComboBox("inOutType");
 		cbxNormalSearch = new KSGComboBox();
 		cbxNormalSearch.addItem(new KSGTableColumn("", "전체"));
 		cbxNormalSearch.addItem(new KSGTableColumn("table_id", "테이블 ID"));
@@ -659,11 +659,12 @@ public class PnNormalByTree extends PnSchedule {
 
 		pnNormalSearchCenter.add(pnPortSearch);
 
-
-
 		pnNormalSearchCenter.add(new JLabel("항목:"));
+		
 		pnNormalSearchCenter.add(cbxNormalSearch);
+		
 		pnNormalSearchCenter.add(txfNoramlSearch);
+		
 		pnNormalSearchCenter.add(butSearch);
 
 		pnNormalSearchMain.add(pnNormalSearchCenter);
@@ -673,12 +674,10 @@ public class PnNormalByTree extends PnSchedule {
 	}
 	public void fnSearch()
 	{
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 
 		try {
 			param.put("gubun", gubun);
-
-			//test
 
 			String searchOption  = txfNoramlSearch.getText();
 
@@ -719,14 +718,18 @@ public class PnNormalByTree extends PnSchedule {
 			if(col.columnField.equals("I"))
 			{	
 				table.setShowPathCount(4);
-				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectInboundScheduleGroupList2(param);
-				treeTableModel.setRoot(getInboundTreeNode3(result));
+
+				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectInboundScheduleGroupList(param);
+				
+				treeTableModel.setRoot(getInboundTreeNode(result));
 			}
 			// outbound 호출시
 			else
 			{
-				table.setShowPathCount(5);
-				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectScheduleGroupList(param);
+				table.setShowPathCount(5);		
+				
+				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectOutboundScheduleGroupList(param);
+				
 				treeTableModel.setRoot(getOutboundTreeNode(result));
 			}
 
@@ -896,63 +899,23 @@ public class PnNormalByTree extends PnSchedule {
 		}
 	}
 	
-	abstract class  JointFormatter	
-	{
-		String nodeName;
-		
-		ArrayList<HashMap<String, Object>> scheduleList;
-		
-		public void setNodeName(String nodeName)
-		{
-			this.nodeName=nodeName;
-		}
-		public String getNodeName()
-		{
-			return nodeName;
-		}
-		public  void setSchedule(ArrayList<HashMap<String, Object>> scheduleList)
-		{
-			this. scheduleList = scheduleList;
-		}
-		
-		public abstract String getFormattedString();
-	}
+
 	
+	/**
 	
-	class InboundJointedFormatter extends JointFormatter
-	{
-		@Override
-		public String getFormattedString() {
-			try {
-				HashMap<String,Object> item = scheduleList.get(0);
-				String	fromDate 	= outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateF"))));
-				String toDate 		= outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateT"))));
-				String company 		= String.valueOf(item.get("company_abbr"));
-				String fromPort 	= String.valueOf(item.get("fromPort"));
-				String toPort 		= String.valueOf(item.get("port"));
-				return fromDate+"  "+getNodeName() + "  ("+company+")  "  +getFormattedToPorts();
-			}catch(Exception e)
-			{
-				e.printStackTrace();
-				return "error";
-			}
-		}
-		
-		private String getFormattedToPorts() throws ParseException
-		{
-			StringBuffer strPots= new StringBuffer();
-			
-			for(HashMap<String, Object>item: scheduleList)
-			{
-				String portCode = (String) inboundCodeMap.get(item.get("port"));
-				String toDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateT"))));
-				strPots.append("["+portCode+"]"+toDate);
-			}
-			return strPots.toString();
-		}
-		
-	}
+	  * @FileName : PnNormalByTree.java
 	
+	  * @Project : KSG2
+	
+	  * @Date : 2022. 5. 25. 
+	
+	  * @작성자 : pch
+	
+	  * @변경이력 :
+	
+	  * @프로그램 설명 :
+	
+	  */
 	class GroupTreeNode extends DefaultMutableTreeNode
 	{
 		
@@ -986,5 +949,4 @@ public class PnNormalByTree extends PnSchedule {
 			return jointedFormatter==null?nodeName:jointedFormatter.getFormattedString();
 		}
 	}
-	
 }

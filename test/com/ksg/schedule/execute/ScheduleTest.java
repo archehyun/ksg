@@ -12,19 +12,19 @@ public class ScheduleTest {
 		schedule.execute();
 	}
 	
-	//@Test
+//	@Test
 	public void test2() {
 		Executeable schedule= ScheduleFactory.createOutboundScheduleJoint("2021-12-06");
 		schedule.execute();
 	}
 	
-//	@Test
+	@Test
 	public void test3() {
 		Executeable schedule= ScheduleFactory.createInboundScheduleJoint("2021-12-06");
 		schedule.execute();
 	}
 	
-	@Test
+//	@Test
 	public void test4() {
 		Executeable schedule= ScheduleFactory.createRoputeScheduleJoint("2021-12-06");
 		schedule.execute();

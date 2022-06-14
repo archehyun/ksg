@@ -89,7 +89,8 @@
 	<select id="selectVesselTotalList" resultClass="com.ksg.domain.Vessel">
 		SELECT *,B.vessel_abbr 
 		FROM TB_VESSEL_H A, TB_VESSEL_ABBR B 
-		WHERE A.vessel_name = B.vessel_name AND vessel_name =#vessel_name#		 
+		WHERE A.vessel_name = B.vessel_name
+		 
 	</select>
 	
 	<select id="selectVesselListByPage" resultClass="java.util.HashMap">
@@ -109,16 +110,57 @@
 		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
 	</select>
 	
+		<select id="selectVesselListByPage2" resultClass="java.util.HashMap">
+	SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY vessel_name) 
+		
+		AS ROWNUM 
+		,vessel_name
+		,vessel_use
+		,vessel_type
+		,vessel_mmsi
+		,vessel_company
+		,CONVERT(VARCHAR, input_date, 23) AS input_date
+	FROM (	
+		SELECT * FROM TB_VESSEL_H AS TBL where TBL.vessel_name in (
+			SELECT vessel_name FROM 
+  			TB_VESSEL_ABBR 
+  			WHERE vessel_abbr like '%$vessel_abbr$%'
+  			GROUP BY vessel_name
+ 			)
+ 		) AS TBL2
+	
+		 
+		) T
+
+		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
+	</select>
+	
 	<select id="selectVesselAbbrList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		select * from TB_VESSEL_ABBR
+		<dynamic prepend="where">
+		<isNotNull property="vessel_name">
+		      vessel_name =#vessel_name#
+		    </isNotNull>
 		
-		where vessel_name =#vessel_name#
+		</dynamic>
 		
 	</select>
 	
 	<select id="selectVesselAbbrInfo" resultClass="com.ksg.domain.Vessel">
 		select vessel_abbr from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr# group by vessel_abbr
 	</select>
+	
+	<select id="selectVesselAbbr" resultClass="com.ksg.domain.Vessel">
+		select * from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr#
+	</select>
+	
+		<select id="selectVesselListByLike" resultClass="com.ksg.domain.Vessel" parameterClass="com.ksg.domain.Vessel">
+		select * from TB_VESSEL_H
+		
+		where vessel_name like '%$vessel_name$%'
+		
+		
+	</select>	
 	
 	<select id="selectVesselAbbrListByLike" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		select * from TB_VESSEL_ABBR
