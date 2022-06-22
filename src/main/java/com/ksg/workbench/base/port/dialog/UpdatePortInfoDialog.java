@@ -372,7 +372,6 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 				JOptionPane.showMessageDialog(this, "항구명이 존재합니다.");
 			}
 			catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(this, e1.getMessage());
 			}

@@ -615,9 +615,10 @@ public class PnVessel extends PnBase implements ActionListener {
 
 
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
+			
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(PnVessel.this, e.getMessage());
 		}
 
 	}
