@@ -163,13 +163,13 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		this.company_abbr=selectedCompany;
 
 	}
-	HashMap<String, Object> param;
-	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent, HashMap<String, Object> param) {
-		this();
-		this.searchUI = parent;
-		this.param = param;
-
-	}
+//	HashMap<String, Object> param;
+//	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent, HashMap<String, Object> param) {
+//		this();
+//		this.searchUI = parent;
+//		this.param = param;
+//
+//	}
 
 	private void saveAction() throws Exception
 	{
@@ -997,39 +997,39 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 
 		cbxGubun.initComp();
-		initParam();
+//		initParam();
 		initSearchOp();
 
 	}
-	private void initParam() {
-
-
-
-		if(param!=null)
-		{
-			txfTitle.setText(String.valueOf( param.get("title")));
-			txfCompany.setText(String.valueOf( param.get("company_abbr")));
-			txfPage.setText(String.valueOf( param.get("page")));
-			txfBookPage.setText(String.valueOf( param.get("bookPage")));
-			txfPortCount.setText(String.valueOf( param.get("port_col")));
-			txfVesselCount.setText(String.valueOf( param.get("vsl_row")));
-			txaQuark.setText(String.valueOf( param.get("quark_format")));
-			txaCommon.setText(String.valueOf( param.get("common_shipping")));
-			txfInPort.setText(String.valueOf( param.get("in_port")));
-			txfOutPort.setText(String.valueOf( param.get("out_port")));
-			txfInToPort.setText(String.valueOf( param.get("in_to_port")));
-			txfOutToPort.setText(String.valueOf( param.get("out_to_port")));
-			txfOther.setText(String.valueOf( param.get("othercell")));
-			txfAgent.setText(String.valueOf( param.get("agent")));
-			cbxGubun.setSelectedItem(String.valueOf( param.get("gubun")));				
-			txfCtime.setText(String.valueOf( param.get("c_time")));
-			txfDtime.setText(String.valueOf( param.get("d_time")));
-			txaConsoleCFS.setText(String.valueOf( param.get("console_cfs")));
-			txfConsolePage.setText(String.valueOf( param.get("console_page")));
-			txfInland.setText(String.valueOf( param.get("inland_indexs")));
-		}
-
-	}
+//	private void initParam() {
+//
+//
+//
+//		if(param!=null)
+//		{
+//			txfTitle.setText(String.valueOf( param.get("title")));
+//			txfCompany.setText(String.valueOf( param.get("company_abbr")));
+//			txfPage.setText(String.valueOf( param.get("page")));
+//			txfBookPage.setText(String.valueOf( param.get("bookPage")));
+//			txfPortCount.setText(String.valueOf( param.get("port_col")));
+//			txfVesselCount.setText(String.valueOf( param.get("vsl_row")));
+//			txaQuark.setText(String.valueOf( param.get("quark_format")));
+//			txaCommon.setText(String.valueOf( param.get("common_shipping")));
+//			txfInPort.setText(String.valueOf( param.get("in_port")));
+//			txfOutPort.setText(String.valueOf( param.get("out_port")));
+//			txfInToPort.setText(String.valueOf( param.get("in_to_port")));
+//			txfOutToPort.setText(String.valueOf( param.get("out_to_port")));
+//			txfOther.setText(String.valueOf( param.get("othercell")));
+//			txfAgent.setText(String.valueOf( param.get("agent")));
+//			cbxGubun.setSelectedItem(String.valueOf( param.get("gubun")));				
+//			txfCtime.setText(String.valueOf( param.get("c_time")));
+//			txfDtime.setText(String.valueOf( param.get("d_time")));
+//			txaConsoleCFS.setText(String.valueOf( param.get("console_cfs")));
+//			txfConsolePage.setText(String.valueOf( param.get("console_page")));
+//			txfInland.setText(String.valueOf( param.get("inland_indexs")));
+//		}
+//
+//	}
 
 	private void initSearchOp() {
 		if(searchOp!=null)
@@ -1042,7 +1042,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 				txfPage.setText(String.valueOf(selectedTable.getPage()));
 				txfBookPage.setText(String.valueOf(selectedTable.getBookPage()));
 				txfPortCount.setText(String.valueOf(selectedTable.getPort_col()));
-				txfVesselCount.setText((String.valueOf( param.get("port_col"))));
+				txfVesselCount.setText((String.valueOf( selectedTable.getPort_col())));
 				txaQuark.setText(selectedTable.getQuark_format());
 				txaCommon.setText(selectedTable.getCommon_shipping());
 				txfInPort.setText(selectedTable.getIn_port());

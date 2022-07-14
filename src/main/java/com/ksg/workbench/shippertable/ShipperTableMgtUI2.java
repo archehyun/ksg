@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.swing.AbstractButton;
@@ -75,6 +76,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.commands.SearchSubTableCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.DateFormattException;
@@ -124,6 +126,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	private static final String ACTION_SEARCH = "조회";
 
 	private static final String ACTION_UPDATE_DATE = "입력일자 수정";
+	
+	
+	
 	/**
 	 * @author 박창현
 	 * @테이블에서의 마우스 동작
@@ -273,18 +278,28 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		this.borderColor=new Color(91,152,185);
 
-		createAndUpdateUI();
+		createAndUpdateUI(); 
 
 	}
 
 	private void insertAction()
 	{
 		int row=tableH.getSelectedRow();
-		if(row<0) return;
+		
+		ShippersTable param = null;
 
-		HashMap<String, Object> param= (HashMap<String, Object>) tableH.getValueAt(row);
+		if(row>-1)
+		{
+			HashMap<String, Object> item = (HashMap<String, Object>) tableH.getValueAt(row);
+		
 
+		
+		param = new ShippersTable();
+		param.setTable_id((String) item.get("table_id"));
+		}
+		
 		addTableInfoDialog = new AddTableInfoDialog(this,param);
+		
 		addTableInfoDialog.createAndUpdateUI();
 
 
