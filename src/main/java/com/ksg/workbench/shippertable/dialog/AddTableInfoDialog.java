@@ -17,11 +17,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.JobAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
@@ -37,8 +35,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -56,6 +52,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.ksg.common.exception.AlreadyExistException;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Company;
@@ -68,10 +65,12 @@ import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
 
@@ -88,6 +87,7 @@ import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
  * @프로그램 설명 : 신규 테이블 정보 추가
 
  */
+@Slf4j
 @SuppressWarnings("serial")
 public class AddTableInfoDialog extends KSGDialog implements ActionListener,FocusListener{
 
@@ -127,15 +127,16 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 	private JTextField txfInland;
 	private ShipperTableService service;
-	private BaseServiceImpl baseService;
+	
 	
 	private CompanyService companyService;
 
 	public AddTableInfoDialog() {
 		super();
+		
 		advservice= new ADVServiceImpl();
+		
 		tableService = new TableServiceImpl();
-		baseService = new BaseServiceImpl();
 		
 		companyService = new CompanyServiceImpl();
 
@@ -163,46 +164,9 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		this.company_abbr=selectedCompany;
 
 	}
-//	HashMap<String, Object> param;
-//	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent, HashMap<String, Object> param) {
-//		this();
-//		this.searchUI = parent;
-//		this.param = param;
-//
-//	}
 
 	private void saveAction() throws Exception
 	{
-
-
-
-		//		,table_index
-		//		,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
-		//		,vsl_row
-		//		,title
-		//		,out_port
-		//		,common_shipping
-		//		,company_abbr
-		//		,TS
-		//		,company_name
-		//		,gubun
-		//		,page
-		//		,agent
-		//		,quark_format
-		//		,port_col
-		//		,out_to_port
-		//		,in_to_port
-		//		,in_port
-		//		,othercell
-		//		,console_cfs
-		//		,d_time
-		//		,c_time
-		//		,console_page
-		//		,inland_indexs
-		//		,bookPage
-
-
-
 		String table_id 		= txfTableID.getText();
 		int page 				= Integer.parseInt(txfPage.getText());
 		String bookPage 		= txfBookPage.getText();
@@ -254,42 +218,37 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 		service.insert(param);
 
-
-
-
-
-
 	}
 
-	private void saveAction_temp() throws SQLException
-	{
-		ShippersTable shippersTable = new ShippersTable();
-		shippersTable.setTable_id(txfTableID.getText());
-		shippersTable.setPage(Integer.parseInt(txfPage.getText()));
-		shippersTable.setBookPage(txfBookPage.getText());
-		shippersTable.setTable_index(Integer.parseInt(txfIndex.getText()));
-		shippersTable.setCompany_abbr(txfCompany.getText());				
-		shippersTable.setAgent(txfAgent.getText());
-		shippersTable.setCommon_shipping(txaCommon.getText());
-		shippersTable.setQuark_format(txaQuark.getText());
-		shippersTable.setIn_port(txfInPort.getText());
-		shippersTable.setIn_to_port(txfInToPort.getText());
-		shippersTable.setOut_port(txfOutPort.getText());
-		shippersTable.setOut_to_port(txfOutToPort.getText());
-		shippersTable.setPort_col(Integer.parseInt(txfPortCount.getText()));
-		shippersTable.setVsl_row(Integer.parseInt(txfVesselCount.getText()));
-		shippersTable.setTitle(txfTitle.getText());
-		shippersTable.setOthercell(Integer.parseInt(txfOther.getText()));
-		shippersTable.setConsole_cfs(txaConsoleCFS.getText());
-		shippersTable.setConsole_page(txfConsolePage.getText());
-		shippersTable.setGubun((String) cbxGubun.getSelectedItem());
-		shippersTable.setC_time(Integer.parseInt(txfCtime.getText()));
-		shippersTable.setD_time(Integer.parseInt(txfDtime.getText()));
-		shippersTable.setInland_indexs(txfInland.getText());
-		tableService.insert(shippersTable);
-		manager.execute(searchUI.getName());
-
-	}
+//	private void saveAction_temp() throws SQLException
+//	{
+//		ShippersTable shippersTable = new ShippersTable();
+//		shippersTable.setTable_id(txfTableID.getText());
+//		shippersTable.setPage(Integer.parseInt(txfPage.getText()));
+//		shippersTable.setBookPage(txfBookPage.getText());
+//		shippersTable.setTable_index(Integer.parseInt(txfIndex.getText()));
+//		shippersTable.setCompany_abbr(txfCompany.getText());				
+//		shippersTable.setAgent(txfAgent.getText());
+//		shippersTable.setCommon_shipping(txaCommon.getText());
+//		shippersTable.setQuark_format(txaQuark.getText());
+//		shippersTable.setIn_port(txfInPort.getText());
+//		shippersTable.setIn_to_port(txfInToPort.getText());
+//		shippersTable.setOut_port(txfOutPort.getText());
+//		shippersTable.setOut_to_port(txfOutToPort.getText());
+//		shippersTable.setPort_col(Integer.parseInt(txfPortCount.getText()));
+//		shippersTable.setVsl_row(Integer.parseInt(txfVesselCount.getText()));
+//		shippersTable.setTitle(txfTitle.getText());
+//		shippersTable.setOthercell(Integer.parseInt(txfOther.getText()));
+//		shippersTable.setConsole_cfs(txaConsoleCFS.getText());
+//		shippersTable.setConsole_page(txfConsolePage.getText());
+//		shippersTable.setGubun((String) cbxGubun.getSelectedItem());
+//		shippersTable.setC_time(Integer.parseInt(txfCtime.getText()));
+//		shippersTable.setD_time(Integer.parseInt(txfDtime.getText()));
+//		shippersTable.setInland_indexs(txfInland.getText());
+//		tableService.insert(shippersTable);
+//		manager.execute(searchUI.getName());
+//
+//	}
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -359,36 +318,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 				e1.printStackTrace();
 
 			}
-			//				try {
-			//					Company info=baseService.getCompanyInfo(txfCompany.getText());
-			//
-			//					if(info==null)
-			//					{
-			//						JOptionPane.showMessageDialog(null, "정확한 선사정보를 입력하십시요");
-			//						return;
-			//					}
-			//				} catch (SQLException e1) {
-			//					e1.printStackTrace();
-			//				}
-
-
-			//			}catch(NumberFormatException es)
-			//			{
-			//				JOptionPane.showMessageDialog(AddTableInfoDialog.this,"숫자 입력이 잘못 되었습니다.");
-			//				return;
-			//			}
-			//			catch (SQLException e1) {
-			//
-			//				if(e1.getErrorCode()==2627)
-			//				{
-			//					JOptionPane.showMessageDialog(null, "동일한 테이블 ID가 존재합니다.");	
-			//				}else
-			//				{
-			//					JOptionPane.showMessageDialog(null,"error:"+e1.getMessage());
-			//				}
-			//
-			//				e1.printStackTrace();
-			//			}
+			
 		}
 
 	}
@@ -478,113 +408,140 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				final JDialog dialog = new JDialog(AddTableInfoDialog.this,true);
-
+//				final JDialog dialog = new JDialog(AddTableInfoDialog.this,true);
+//
+//				try 
+//				{
+//					CommandMap param = new CommandMap();
+//					CommandMap result= (CommandMap) companyService.selectListByCondition(param);
+//					List<CommandMap> data = (List<CommandMap>) result.get("master");
+//					DefaultMutableTreeNode root = new DefaultMutableTreeNode("전체선사:"+data.size());
+//					Iterator<CommandMap> iter =data.iterator();
+//					while(iter.hasNext())
+//					{
+//						CommandMap company = (CommandMap) iter.next();
+//						DefaultMutableTreeNode sub = new DefaultMutableTreeNode(company.get("company_name"));
+//						root.add(sub);						
+//					}
+//
+//					dialog.setTitle("선사 명 선택");
+//					KSGPanel pnMain = new KSGPanel();
+//					pnMain.setLayout( new BorderLayout());
+//					final JTree tree = new JTree(root);
+//					tree.addMouseListener(new MouseAdapter() {
+//
+//						public void mouseClicked(MouseEvent arg0) {
+//							if(arg0.getClickCount()>1)
+//							{
+//								TreePath path=tree.getSelectionPath();
+//								if(path.getPathCount()!=1)
+//								{
+//									String company=path.getLastPathComponent().toString();
+//									setTableIndex(company);										
+//									txfCompany.setText(company);
+//									txaCommon.setText(company);
+//
+//									dialog.setVisible(false);
+//									dialog.dispose();
+//								}
+//							}
+//
+//						}
+//					});
+//					tree.addTreeSelectionListener(new TreeSelectionListener(){
+//
+//						public void valueChanged(TreeSelectionEvent e) {
+//							TreePath path=e.getNewLeadSelectionPath();
+//
+//							if(path.getPathCount()!=1)
+//								System.out.println(path.getLastPathComponent());	
+//
+//						}});
+//
+//
+//					pnMain.add(new JScrollPane(tree),BorderLayout.CENTER);
+//					JPanel pnSubPnControl = new JPanel();
+//					pnSubPnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
+//					JButton butOK = new JButton("OK");
+//
+//					butOK.addActionListener(new ActionListener(){
+//
+//						public void actionPerformed(ActionEvent e) 
+//						{
+//							TreePath path=tree.getSelectionPath();
+//							if(path.getPathCount()!=1)
+//							{
+//								String company=path.getLastPathComponent().toString();
+//								try {
+//
+//									log.debug("company:{}",company);
+//									
+//									
+//									Company companyInfo=companyService.select(company);
+//									setTableIndex(companyInfo.getCompany_abbr());
+//									txfCompany.setText(companyInfo.getCompany_abbr());
+//									txfAgent.setText(companyInfo.getAgent_abbr());
+//									txaCommon.setText(companyInfo.getCompany_abbr());
+//								} catch (Exception e1) {
+//									JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
+//									e1.printStackTrace();
+//								}
+//							}
+//
+//							dialog.setVisible(false);
+//							dialog.dispose();							
+//						}});
+//					butOK.setPreferredSize(new Dimension(80,28));
+//					pnSubPnControl.add(butOK);
+//					JButton butCancel = new JButton("Cancel");
+//
+//					butCancel.addActionListener(new ActionListener(){
+//
+//						public void actionPerformed(ActionEvent e) {
+//							dialog.setVisible(false);
+//							dialog.dispose();
+//
+//						}});
+//					pnSubPnControl.add(butCancel);
+//					butCancel.setPreferredSize(new Dimension(80,28));
+//					JPanel pnTitleInfo = new JPanel();
+//					pnTitleInfo.setLayout(new FlowLayout(FlowLayout.LEFT));
+//					pnTitleInfo.add(new JLabel("Chose the Company"));
+//					pnMain.add(pnTitleInfo,BorderLayout.NORTH);
+//					pnMain.add(pnSubPnControl,BorderLayout.SOUTH);
+//					dialog.add(pnMain);					
+//					dialog.setSize(400, 400);
+//					ViewUtil.center(dialog, false);
+//					dialog.setVisible(true);
+//
+//				} catch (SQLException e1) {
+//					e1.printStackTrace();
+//				}
+				
+				SearchCompanyDialog searchCompanyDialog = new SearchCompanyDialog(AddTableInfoDialog.this);
+				
+				searchCompanyDialog.createAndUpdateUI();
+				
+				
+				
+				String company_name = searchCompanyDialog.result;
+				if(company_name == null)return;
 				try {
-					List li=advservice.getCompanyList();
 
-					DefaultMutableTreeNode root = new DefaultMutableTreeNode("전체선사:"+li.size());
-					Iterator iter =li.iterator();
-					while(iter.hasNext())
-					{
-						Company company = (Company) iter.next();
-						DefaultMutableTreeNode sub = new DefaultMutableTreeNode(company.getCompany_abbr());
-						root.add(sub);						
-					}
-
-					dialog.setTitle("Company Selection");
-					JPanel pnMain = new JPanel();
-					pnMain.setLayout( new BorderLayout());
-					final JTree tree = new JTree(root);
-					tree.addMouseListener(new MouseAdapter() {
-
-						public void mouseClicked(MouseEvent arg0) {
-							if(arg0.getClickCount()>1)
-							{
-								TreePath path=tree.getSelectionPath();
-								if(path.getPathCount()!=1)
-								{
-									String company=path.getLastPathComponent().toString();
-									setTableIndex(company);										
-									txfCompany.setText(company);
-									txaCommon.setText(company);
-
-									dialog.setVisible(false);
-									dialog.dispose();
-								}
-							}
-
-						}
-					});
-					tree.addTreeSelectionListener(new TreeSelectionListener(){
-
-						public void valueChanged(TreeSelectionEvent e) {
-							TreePath path=e.getNewLeadSelectionPath();
-
-							if(path.getPathCount()!=1)
-								System.out.println(path.getLastPathComponent());	
-
-						}});
-
-
-					pnMain.add(new JScrollPane(tree),BorderLayout.CENTER);
-					JPanel pnSubPnControl = new JPanel();
-					pnSubPnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-					JButton butOK = new JButton("OK");
-
-					butOK.addActionListener(new ActionListener(){
-
-						public void actionPerformed(ActionEvent e) 
-						{
-							TreePath path=tree.getSelectionPath();
-							if(path.getPathCount()!=1)
-							{
-
-								String company=path.getLastPathComponent().toString();
-								try {
-									
-//									Company companyInfo=baseService.getCompanyInfo(company);
-									
-									Company companyInfo=companyService.select(company);
-									setTableIndex(companyInfo.getCompany_abbr());
-									txfCompany.setText(companyInfo.getCompany_abbr());
-									txfAgent.setText(companyInfo.getAgent_abbr());
-									txaCommon.setText(companyInfo.getCompany_abbr());
-								} catch (SQLException e1) {
-									JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
-									e1.printStackTrace();
-								}
-							}
-
-							dialog.setVisible(false);
-							dialog.dispose();							
-						}});
-					butOK.setPreferredSize(new Dimension(80,28));
-					pnSubPnControl.add(butOK);
-					JButton butCancel = new JButton("Cancel");
-
-					butCancel.addActionListener(new ActionListener(){
-
-						public void actionPerformed(ActionEvent e) {
-							dialog.setVisible(false);
-							dialog.dispose();
-
-						}});
-					pnSubPnControl.add(butCancel);
-					butCancel.setPreferredSize(new Dimension(80,28));
-					JPanel pnTitleInfo = new JPanel();
-					pnTitleInfo.setLayout(new FlowLayout(FlowLayout.LEFT));
-					pnTitleInfo.add(new JLabel("Chose the Company"));
-					pnMain.add(pnTitleInfo,BorderLayout.NORTH);
-					pnMain.add(pnSubPnControl,BorderLayout.SOUTH);
-					dialog.add(pnMain);					
-					dialog.setSize(400, 400);
-					ViewUtil.center(dialog, false);
-					dialog.setVisible(true);
-
-				} catch (SQLException e1) {
+					log.debug("company_name:{}",company_name);
+					
+					
+					Company companyInfo=companyService.select(company_name);
+					setTableIndex(companyInfo.getCompany_abbr());
+					txfCompany.setText(companyInfo.getCompany_abbr());
+					txfAgent.setText(companyInfo.getAgent_abbr());
+					txaCommon.setText(companyInfo.getCompany_abbr());
+					
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
 					e1.printStackTrace();
 				}
+				
 			}});
 		pnFromCompany.add(button);
 		JPanel pnFromPortVslCount = new JPanel();
@@ -603,15 +560,8 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		pnTableInfo.add(createForm("인덱스 : ", txfIndex,50));
 
 
-
-
-
 		cbxGubun = new KSGComboBox("tableType");		
-		//		cbxGubun.addItem(ShippersTable.GUBUN_NORMAL);
-		//		cbxGubun.addItem(ShippersTable.GUBUN_CONSOLE);
-		//		cbxGubun.addItem(ShippersTable.GUBUN_INLAND);
-		//		cbxGubun.addItem(ShippersTable.GUBUN_NNN);
-		//		cbxGubun.addItem(ShippersTable.GUBUN_TS);
+
 
 		cbxGubun.addActionListener(new ActionListener() {
 
@@ -997,39 +947,10 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 
 		cbxGubun.initComp();
-//		initParam();
+		
 		initSearchOp();
 
 	}
-//	private void initParam() {
-//
-//
-//
-//		if(param!=null)
-//		{
-//			txfTitle.setText(String.valueOf( param.get("title")));
-//			txfCompany.setText(String.valueOf( param.get("company_abbr")));
-//			txfPage.setText(String.valueOf( param.get("page")));
-//			txfBookPage.setText(String.valueOf( param.get("bookPage")));
-//			txfPortCount.setText(String.valueOf( param.get("port_col")));
-//			txfVesselCount.setText(String.valueOf( param.get("vsl_row")));
-//			txaQuark.setText(String.valueOf( param.get("quark_format")));
-//			txaCommon.setText(String.valueOf( param.get("common_shipping")));
-//			txfInPort.setText(String.valueOf( param.get("in_port")));
-//			txfOutPort.setText(String.valueOf( param.get("out_port")));
-//			txfInToPort.setText(String.valueOf( param.get("in_to_port")));
-//			txfOutToPort.setText(String.valueOf( param.get("out_to_port")));
-//			txfOther.setText(String.valueOf( param.get("othercell")));
-//			txfAgent.setText(String.valueOf( param.get("agent")));
-//			cbxGubun.setSelectedItem(String.valueOf( param.get("gubun")));				
-//			txfCtime.setText(String.valueOf( param.get("c_time")));
-//			txfDtime.setText(String.valueOf( param.get("d_time")));
-//			txaConsoleCFS.setText(String.valueOf( param.get("console_cfs")));
-//			txfConsolePage.setText(String.valueOf( param.get("console_page")));
-//			txfInland.setText(String.valueOf( param.get("inland_indexs")));
-//		}
-//
-//	}
 
 	private void initSearchOp() {
 		if(searchOp!=null)

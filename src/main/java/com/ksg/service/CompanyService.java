@@ -9,6 +9,7 @@ import com.ksg.domain.Company;
 public interface CompanyService extends PageService{
 	
 	public Map<String, Object> selectListByCondition(Map<String, Object> commandMap) throws SQLException;
+	public Map<String, Object> selectListByLike(Map<String, Object> commandMap) throws SQLException;
 	
 	public int update(CommandMap param) throws SQLException;	
 

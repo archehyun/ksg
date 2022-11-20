@@ -45,6 +45,8 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 		companyDAO = new CompanyDAOImpl();
 
 	}
+	
+
 
 	@SuppressWarnings("unchecked")
 	public CommandMap selectListByCondition(Map<String, Object> param) throws SQLException {
@@ -78,6 +80,40 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 		return resultMap;
 
 	}
+	
+	@SuppressWarnings("unchecked")
+	public CommandMap selectListByLike(Map<String, Object> param) throws SQLException {
+
+		log.info("param:{}", param);
+
+		Company searchParam =Company.builder()
+				.company_name(param.get("company_name")!=null?String.valueOf(param.get("company_name")):null)
+				.agent_name(param.get("agent_name")!=null?String.valueOf(param.get("agent_name")):null)
+				.company_abbr(param.get("company_abbr")!=null?String.valueOf(param.get("company_abbr")):null)
+				.agent_abbr(param.get("agent_abbr")!=null?String.valueOf(param.get("agent_abbr")):null)
+				.build();
+
+		List<Company> li=companyDAO.selectByLike(searchParam);
+
+		ArrayList<CommandMap> map = new ArrayList<CommandMap>();
+
+		log.info(objectMapper.toString());
+
+		for(Company item:li)
+		{	
+			map.add((CommandMap) objectMapper.convertValue(item, CommandMap.class));
+		}
+
+		CommandMap resultMap = new CommandMap();
+
+		resultMap.put("total", companyDAO.selectCount(param));
+
+		resultMap.put("master", map);
+
+		return resultMap;
+
+	}
+
 
 	public int update(CommandMap param) throws SQLException{
 		log.debug("param:{}", param);

@@ -31,11 +31,6 @@ public class CompanyDAOImpl extends AbstractDAO implements CompanyDAO{
 		this.namespace = "company";
 	}
 
-//	@SuppressWarnings("unchecked")
-//	public List<Map<String, Object>> selectCompanyList(Map<String, Object> commandMap) throws SQLException {
-//		return selectList(namespace+".selectCompanyList", commandMap);
-//
-//	}
 
 	public int deleteCompany(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete(namespace+".deleteCompany", param);
@@ -83,6 +78,11 @@ public class CompanyDAOImpl extends AbstractDAO implements CompanyDAO{
 	public Company select(Company param) throws SQLException {
 		// TODO Auto-generated method stub
 		return (Company) selectOne(namespace+".selectCompany", param);
+	}
+
+	public List<Company> selectByLike(Company searchParam) throws SQLException {
+		
+		return selectList(namespace+".selectCompanyByLike", searchParam);
 	}
 
 }
