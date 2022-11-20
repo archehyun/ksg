@@ -133,7 +133,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 			 * 1. 구분이 NULL 또는 NNN이 아닌 경우를 조회
 			 * ********************************************			 
 			 */
-			log.debug("search option:"+searchOption);
+			log.info("search option:"+searchOption);
 			
 			this.setTime(startTime);
 			
@@ -803,7 +803,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 
 			log.debug("MakeSchedule "+InOutBoundType+ " start:"+table.getTable_id()+","+table.getPage());
 			
-			log.info("table info:"+table.getTable_id()+", vessel name:"+vesselName+","+fromPorts.length+","+toPorts.length);
+			log.debug("table info:"+table.getTable_id()+", vessel name:"+vesselName+","+fromPorts.length+","+toPorts.length);
 
 			boolean isOutFromBusanAndNewBusan=isBusanAndNewBusan(fromPorts, toPorts,TYPE_INBOUND);
 			

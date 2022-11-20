@@ -11,9 +11,6 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.ErrorLog;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;

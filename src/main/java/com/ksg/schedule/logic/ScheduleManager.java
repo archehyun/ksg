@@ -178,7 +178,7 @@ public class ScheduleManager {
 	 * @throws SQLException
 	 * @throws VesselNullException
 	 */
-	public Vessel searchVessel(String vesselName) throws SQLException,VesselNullException {		
+	public Vessel searchVessel(String vesselName) throws ResourceNotFoundException {		
 
 		Iterator<Vessel> iterator = allVessellist.iterator();
 		while(iterator.hasNext())
@@ -193,7 +193,7 @@ public class ScheduleManager {
 			}
 		}
 
-		throw new VesselNullException("vessel name error :"+vesselName);
+		throw new ResourceNotFoundException("vessel name error :"+vesselName);
 	}
 
 	/**

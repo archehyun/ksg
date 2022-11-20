@@ -230,8 +230,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		txfUpdatePortName = new JTextField(15);
 
 		txfUpdatePortName.addKeyListener(new KeyAdapter(){
-
-
 			
 
 			public void keyReleased(KeyEvent arg0) {

@@ -10,6 +10,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
+import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
@@ -108,8 +109,8 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 			JOptionPane.showMessageDialog(null, "스케줄 생성 완료");
 
 		}
-		catch (VesselNullException e) {
-			JOptionPane.showMessageDialog(null, "스케줄 생성 실패:선박명이 없습니다.테이블 id:"+tableData.getTable_id()+", 선박명:"+e.getVesselName() );
+		catch (ResourceNotFoundException e) {
+			JOptionPane.showMessageDialog(null, "스케줄 생성 실패:선박명이 없습니다.테이블 id:"+tableData.getTable_id()+", 선박명:"+e.getMessage());
 			e.printStackTrace();
 		}
 		catch (Exception e) {

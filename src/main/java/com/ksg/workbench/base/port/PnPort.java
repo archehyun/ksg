@@ -304,9 +304,10 @@ public class PnPort extends PnBase implements ActionListener{
 					try {
 						List li=portService.selectPortAbbrList(commandMap);
 						tableD.setResultData(li);
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
+					} catch (Exception e1) {
+						
 						e1.printStackTrace();
+						JOptionPane.showMessageDialog(PnPort.this, e1.getMessage());
 					}
 					
 				}

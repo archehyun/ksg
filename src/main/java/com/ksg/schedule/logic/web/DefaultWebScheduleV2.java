@@ -25,6 +25,7 @@ import org.jdom.input.SAXBuilder;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.exception.PortNullException;
+import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.KSGPropertis;
@@ -475,7 +476,7 @@ public class DefaultWebScheduleV2 extends DefaultScheduleJoint {
 										vslIndex);
 							}
 
-						} catch (VesselNullException e1) {
+						} catch (ResourceNotFoundException e1) {
 							logger.error("vessel name is null:"+vesselName);
 							continue;
 						}

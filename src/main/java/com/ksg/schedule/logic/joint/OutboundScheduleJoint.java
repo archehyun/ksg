@@ -21,6 +21,7 @@ import org.jdom.output.XMLOutputter;
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.exception.PortNullException;
+import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.StringCompare;
@@ -395,14 +396,11 @@ public class OutboundScheduleJoint extends DefaultScheduleJoint{
 							//*****2							xtgStringBuffer.append("<cs:><cs:6.000000>\t<ct:77 Bold Condensed>-TS  "+ts_vessel.getAttributeValue(XML_INFO.XML_TAG_TS_PORT)+"-<ct:>   "+ts_vessel.getAttributeValue(XML_INFO.XML_TAG_TS_DATE)+"   "+BOLD_TAG_F+(vesselname.equals(info.getVessel_name())?"":info.getVessel_name())+BOLD_TAG_B+"\r\n");
 							xtgStringBuffer.append(buildXTG6(ts_vessel, vesselname, info));
 						}
-					} catch (SQLException e) 
+					} catch (ResourceNotFoundException e) 
 					{
 						e.printStackTrace();
 					}
-					catch (VesselNullException e) 
-					{
-						e.printStackTrace();
-					}
+					
 					
 				}
 			}
@@ -603,14 +601,11 @@ public class OutboundScheduleJoint extends DefaultScheduleJoint{
 							/*xtgStringBuffer.append("<cs:><cs:6.000000>\t<ct:Bold Condensed>-TS  "+ts_vessel.getAttributeValue(XML_INFO.XML_TAG_TS_PORT)+"-<ct:>   "+ts_vessel.getAttributeValue(XML_INFO.XML_TAG_TS_DATE)+"   "+BOLD_TAG_F+(vesselname.equals(info.getVessel_name())?"":info.getVessel_name())+BOLD_TAG_B+"\r\n");*/
 							xtgList.add(buildXTG6(ts_vessel, vesselname, info));
 						}
-					} catch (SQLException e) 
+					} catch (ResourceNotFoundException e) 
 					{
 						e.printStackTrace();
 					}
-					catch (VesselNullException e) 
-					{
-						e.printStackTrace();
-					}
+					
 				}
 			}
 		}
@@ -744,15 +739,11 @@ public class OutboundScheduleJoint extends DefaultScheduleJoint{
 						oneData.setAttribute(XML_INFO.XML_TAG_MAJOR_COMPANY,searchedVessel.getVessel_company());
 						logger.info("set major-company:"+searchedVessel.getVessel_company());
 					}
-				} catch (SQLException e1) {
+				} catch (ResourceNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				catch (VesselNullException e) 
-				{
-					e.printStackTrace();
-				}
-
+				
 
 				for(int j=0;j<contentsize;j++)
 				{
