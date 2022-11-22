@@ -21,22 +21,31 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import com.ksg.common.util.ViewUtil;
-import com.ksg.domain.Vessel;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
+
 /**
- * 
- * 선박명 검색 화면
- * @author archehyun
- *
- */
+
+  * @FileName : SearchVesselDialog.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 11. 22. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 선박명 검색 화면
+
+  */
+@SuppressWarnings("serial")
 public class SearchVesselDialog extends KSGDialog{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	
+	
 	public String result=null;
+	
 	public String resultAbbr=null;
 
 	private List<HashMap<String, Object>> vesselli;
@@ -131,6 +140,7 @@ public class SearchVesselDialog extends KSGDialog{
 		
 		this.setVisible(true);
 	}
+	
 	private KSGPanel buildControl()
 	{
 		KSGPanel pnContorl = new KSGPanel();

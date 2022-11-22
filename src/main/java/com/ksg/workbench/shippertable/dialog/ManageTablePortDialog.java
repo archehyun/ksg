@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -21,52 +22,60 @@ import javax.swing.table.TableColumnModel;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.TablePort;
-import com.ksg.service.BaseService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
-/**테이블 항구 정보 관리 다이어그램
- * @author 박창현
- *
+
+/**
+
+ * @FileName : ManageTablePortDialog.java
+
+ * @Project : KSG2
+
+ * @Date : 2022. 11. 22. 
+
+ * @작성자 : pch
+
+ * @변경이력 :
+
+ * @프로그램 설명 : 테이블 항구 정보 관리 다이어그램
+
  */
 public class ManageTablePortDialog extends KSGDialog implements ActionListener 
 {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private JTable tblPortList;
 	private String table_id;
-	private BaseService baseService;
+
 	public ManageTablePortDialog(String table_id) {
 		this.table_id = table_id;
 		DAOManager manager = DAOManager.getInstance();
 		tableService = new TableServiceImpl();
-		baseService  = manager.createBaseService();
+		this.addComponentListener(this);
+
 	}
 
 
 	public void createAndUpdateUI() 
 	{
-		try {
-			setTitle(this.table_id+"테이블 항구 관리");
-			setModal(true);
-			JPanel pnMain = new JPanel(new BorderLayout());
-			tblPortList = new JTable();
-			pnMain.add(new JScrollPane(tblPortList));
-			
-			this.getContentPane().add(pnMain);
-			
-			getContentPane().add(buildControl(),BorderLayout.SOUTH);
 
-			updatePortTable();
-			setSize(600,450);
-			ViewUtil.center(this, false);
-			setVisible(true);
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null, "항구정보를 불러올수 없습니다.\n\n"+e.getMessage());
-			e.printStackTrace();
-		}
+		setTitle(this.table_id+"테이블 항구 관리");
+		setModal(true);
+		JPanel pnMain = new JPanel(new BorderLayout());
+		tblPortList = new JTable();
+		pnMain.add(new JScrollPane(tblPortList));
+
+		this.getContentPane().add(pnMain);
+
+
+		getContentPane().add(buildControl(),BorderLayout.SOUTH);
+
+
+		setSize(600,450);
+		ViewUtil.center(this, false);
+		setVisible(true);
+
 	}
 
 	private Component buildControl() {
@@ -74,10 +83,10 @@ public class ManageTablePortDialog extends KSGDialog implements ActionListener
 		pnMain.setLayout(new BorderLayout());
 		JPanel pnRight = new JPanel();
 		pnRight.setLayout( new FlowLayout(FlowLayout.RIGHT));
-		
+
 		JPanel pnLeft = new JPanel();		
 		pnLeft.setLayout( new FlowLayout(FlowLayout.LEFT));
-		
+
 		JButton butDel = new JButton("적용");
 
 		butDel.addActionListener(this);
@@ -116,7 +125,7 @@ public class ManageTablePortDialog extends KSGDialog implements ActionListener
 			model.setValueAt(port.getPort_index(), i, 0);
 			model.setValueAt(port.getPort_name(), i, 1);
 			model.setValueAt("일반", i, 2);
-			
+
 		}
 
 		tblPortList.setModel(model);
@@ -125,7 +134,7 @@ public class ManageTablePortDialog extends KSGDialog implements ActionListener
 		DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
 		renderer.setHorizontalAlignment(SwingConstants.CENTER);
 		col.setMaxWidth(50);
-		
+
 		col.setCellRenderer(renderer);
 		TableColumn col2=colModel.getColumn(2);
 		DefaultTableCellRenderer renderer2 = new DefaultTableCellRenderer();
@@ -140,12 +149,23 @@ public class ManageTablePortDialog extends KSGDialog implements ActionListener
 		String command = e.getActionCommand();
 		if(command.equals("적용"))
 		{
-			
+
 		}else if(command.equals("취소"))
 		{
 			this.OPTION = ManagePortDialog.CANCEL_OPTION;
 			this.setVisible(false);
 			dispose();
 		}
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		try {
+			updatePortTable();
+		} catch (SQLException ee) {
+			JOptionPane.showMessageDialog(null, "항구정보를 불러올수 없습니다.\n\n"+ee.getMessage());
+			ee.printStackTrace();
+		}
+
 	}
 }

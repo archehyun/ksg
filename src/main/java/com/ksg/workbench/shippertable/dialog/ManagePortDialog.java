@@ -12,6 +12,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -110,15 +111,15 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	PortIndexController portIndexController;
 
 	private JTextField 	txfIndex; 	// 항구 인덱스 표시
-	
+
 	private JTextField 	txfPortName;//항구명을 추가하기 위한 텍스트 필드
-	
+
 	private JTextField 	txflblIndex;
-	
+
 	private JTextField 	txflblPortName;
-	
+
 	private JTextField 	txfUpdatePortName;
-	
+
 	private BaseServiceImpl baseService;
 	/**
 	 * @param table_id 테이블 아이디
@@ -127,7 +128,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	public ManagePortDialog(String table_id,ShipperTableAbstractMgtUI baseUI) 
 	{	
 		super();
-		
+
 		baseService = new BaseServiceImpl();
 
 		this.base =baseUI;
@@ -139,39 +140,32 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		portIndexController = new PortIndexController();
 
 	}
-	
-	
+
+
 	public void createAndUpdateUI() {
 
 
-		try {
-			setTitle(this.table_id+"테이블 항구 관리");
 
-			setModal(true);
+		setTitle(this.table_id+"테이블 항구 관리");
 
-			getContentPane().add(buildCenter());
-			
-			getContentPane().add(buildControl(),BorderLayout.SOUTH);
-			
-			getContentPane().add(buildInfo(),BorderLayout.NORTH);
+		setModal(true);
 
-			this.pack();
-			
-			this.setResizable(false);
+		getContentPane().add(buildCenter());
 
-			ViewUtil.center(this, false);
-			
-			tblPortList.retrive();
+		getContentPane().add(buildControl(),BorderLayout.SOUTH);
 
-		} catch (SQLException e) {
-			
-			JOptionPane.showMessageDialog(this, e.getMessage());
-		}
+		getContentPane().add(buildInfo(),BorderLayout.NORTH);
+
+		this.pack();
+
+		this.setResizable(false);
+
+		ViewUtil.center(this, false);
 
 		setVisible(true);
 	}
-	
-	
+
+
 	/**
 	 * 화면 구성
 	 * @return
@@ -181,9 +175,9 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		JPanel pnMain = new JPanel(new BorderLayout());
 
 		txfIndex = new JTextField(3);
-		
+
 		txfIndex.setEditable(false);
-		
+
 		txfIndex.addFocusListener(new FocusListener(){
 
 			public void focusGained(FocusEvent arg0) 
@@ -230,7 +224,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		txfUpdatePortName = new JTextField(15);
 
 		txfUpdatePortName.addKeyListener(new KeyAdapter(){
-			
+
 
 			public void keyReleased(KeyEvent arg0) {
 				super.keyReleased(arg0);
@@ -318,43 +312,43 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			public void focusLost(FocusEvent arg0){}
 		});
 
-		
+
 
 		/*
 		 * 20181228 기능 추가
 		 * 버튼으로 항구의 위아래 순서를 변경하는 기능
 		 */
 		JPanel pnLeftNorthControl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		
+
 		JButton butUpdate = new JButton(ACTION_COMMAND_UPDATE);
-		
+
 		butUpdate.addActionListener(portIndexController);
-		
+
 		JButton butUp=new JButton(ACTION_COMMAND_UP);
-		
+
 		butUp.addActionListener(portIndexController);
-		
+
 		JButton butDown=new JButton(ACTION_COMMAND_DOWN);
-		
+
 		butDown.addActionListener(portIndexController);
-		
+
 		pnLeftNorthControl.add(new JLabel("순서 변경"));
-		
+
 		pnLeftNorthControl.add(butUp);
-		
+
 		pnLeftNorthControl.add(butDown);		
-		
+
 		JPanel pnMainCenter = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		
+
 		FlowLayout out=(FlowLayout) pnMainCenter.getLayout();
-		
+
 		out.setHgap(5);
-		
+
 		pnMainCenter.add(txfIndex);
-		
+
 		pnMainCenter.add(txfUpdatePortName);
 		pnMainCenter.add(butUpdate);
-		
+
 		pnMain.add(pnMainCenter);
 		pnMain.add(pnLeftNorthControl,BorderLayout.EAST);
 
@@ -449,7 +443,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 
 		pnLeft.add(pnLeftOption,BorderLayout.SOUTH);
-		
+
 		JPanel pnRight = new JPanel();
 
 		pnRight.setLayout(new BorderLayout());
@@ -543,7 +537,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				{
 					int index1=-1;
 					Object value1 = tblPortList.getValueAt(i, PORT_INDEX_COLUM);
-					
+
 					if(value1 instanceof String)
 					{
 						index1=Integer.parseInt(tblPortList.getValueAt(i, PORT_INDEX_COLUM).toString());
@@ -551,7 +545,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 					{
 						index1=(Integer)tblPortList.getValueAt(i, PORT_INDEX_COLUM);
 					}
-					
+
 					for(int j=0;j<tblPortList.getRowCount();j++)
 					{
 						int index2=-1;
@@ -633,17 +627,17 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			else if(command.equals(BUT_ACTION_SAVE))
 			{	
 				//TODO 저장시 항구 정보 유무 확인
-				
+
 				for(int i=0;i<tblPortList.getRowCount();i++)
 				{
 					String portName=(String) tblPortList.getValueAt(i, PORT_NAME_COLUM);
-					
+
 					/* 
 					 * 
 					 * 내용 : Port name validation 
 					 * date :2020.08.04
-					*/	
-					
+					 */	
+
 					try {
 						PortInfo port = baseService.getPortInfo(portName);
 						if(port==null)
@@ -656,18 +650,18 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 						e1.printStackTrace();
 					}	
 				}
-				
-				
+
+
 				tblPortList.save();
-				
+
 				updateTableInfo();
-				
+
 				this.OPTION = ManagePortDialog.CANCEL_OPTION;
-				
+
 				this.setVisible(false);
-				
+
 				dispose();
-				
+
 				base.searchADVTable();
 
 			}
@@ -732,7 +726,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 					String port_name = txfPortName.getText();
 
 					tblPortList.insertPortName(port_name);
-					
+
 					txfPortName.setText("");
 				}
 
@@ -787,14 +781,14 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				return;
 
 			String command = e.getActionCommand();
-			
+
 			if(command.equals(ACTION_COMMAND_UP))
 			{	
 				if(selectedRow==0)
 					return;
 
 				tblPortList.movePort(selectedRow,selectedRow-1);
-				
+
 				tblPortList.changeSelection(selectedRow-1, 0, false, false);
 
 			}
@@ -807,12 +801,12 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				tblPortList.movePort(selectedRow,selectedRow+1);
 
 				tblPortList.changeSelection(selectedRow+1, 0, false, false);
-				
+
 			}else if(command.equals(ACTION_COMMAND_UPDATE))
 			{
 				TablePort selectedPort = tblPortList.getSelectedPort();				
 				String portName=txfUpdatePortName.getText();
-				
+
 				/* 
 				 * 
 				 * 내용 : Port name validation 
@@ -821,12 +815,12 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				 * 
 				 * 
 				 * 
-				*/
+				 */
 				try {
 					PortInfo port = baseService.getPortInfo(portName);
 					if(port==null)
 					{
-						
+
 						/*
 						 * 내용 : 예외 항수 추가 프로세스
 						 * date : 2021.01.22
@@ -848,8 +842,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}				
-				
-				
+
+
 				selectedPort.setPort_name(portName);
 				tblPortList.updateUI();
 			}
@@ -1123,7 +1117,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				txfIndex.setText(Integer.toString(seletedPort.getPort_index()));
 				txfUpdatePortName.setText(seletedPort.getPort_name());
 			}
-			
+
 			if(e.getKeyCode()==KeyEvent.VK_ENTER)
 			{
 				int col = tblPortList.getSelectedColumn();
@@ -1134,8 +1128,8 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 				switch (col) {
 				case PORT_INDEX_COLUM:
-					
-				
+
+
 					break;
 				case PORT_NAME_COLUM:
 
@@ -1428,5 +1422,16 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				minY = y;
 		}
 
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+		try {
+			tblPortList.retrive();
+		} catch (SQLException ee) {
+
+			JOptionPane.showMessageDialog(this, ee.getMessage());
+		}
 	}
 }

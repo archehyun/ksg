@@ -151,7 +151,7 @@ public class UpdateTableInOutDialog extends KSGDialog implements ActionListener{
 			
 			pnMainLeft.add(portLists,"항구목록");
 			
-//			pnTotalNorth.add(lblPortList,BorderLayout.NORTH);
+			
 			pnMain.add(pnMainLeft);
 
 			// OutPort
@@ -237,8 +237,9 @@ public class UpdateTableInOutDialog extends KSGDialog implements ActionListener{
 
 
 	}
+	
 	private void initList(HashMap<Integer , ListData> map,JList list) {
-//		StringTokenizer stInport = new StringTokenizer(inPorts,"#");
+		
 
 		Iterator iter = map.keySet().iterator();
 
