@@ -187,4 +187,29 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 		return companyDAO.select(param);
 	}
 
+
+
+	@Override
+	public Company selectAbbr(String company_abbr) throws SQLException {
+		log.debug("param:{}",company_abbr);
+
+		Company param  = Company.builder().company_abbr(company_abbr).build();
+		return companyDAO.selectAbbr(param);
+	}
+
+
+
+	@Override
+	public Company select(CommandMap param) throws SQLException {
+		Company searchParam =Company.builder()
+				.company_name(param.get("company_name")!=null?String.valueOf(param.get("company_name")):null)
+				.agent_name(param.get("agent_name")!=null?String.valueOf(param.get("agent_name")):null)
+				.company_abbr(param.get("company_abbr")!=null?String.valueOf(param.get("company_abbr")):null)
+				.agent_abbr(param.get("agent_abbr")!=null?String.valueOf(param.get("agent_abbr")):null)
+				.contents(param.get("contents")!=null?String.valueOf(param.get("contents")):null)
+				.build();
+		
+		return companyDAO.select(searchParam);
+	}
+
 }

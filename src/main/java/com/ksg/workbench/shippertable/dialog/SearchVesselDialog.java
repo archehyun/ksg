@@ -105,12 +105,7 @@ public class SearchVesselDialog extends KSGDialog{
 			model.addRow(new Object[]{item.get("vessel_name"),item.get("vessel_abbr")});
 		}
 
-//		for(int i=0;i<vesselli.size();i++)
-//		{
-//			
-//			Vessel v=(Vessel) vesselli.get(i);
-//			model.addRow(new Object[]{v.getVessel_name(),v.getVessel_abbr()});
-//		}
+
 		vesselTable.setModel(model);
 		vesselTable.changeSelection(0, 0, false, false);
 		

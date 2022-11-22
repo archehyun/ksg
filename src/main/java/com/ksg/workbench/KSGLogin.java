@@ -294,8 +294,6 @@ public class KSGLogin extends JDialog implements ComponentListener{
 		bar.setIndeterminate(true);
 		pnMain.setVisible(false);
 		pnProgress.setVisible(true);
-		System.out.println("frame:"+KSGModelManager.getInstance().frame);
-		
 
 	}
 

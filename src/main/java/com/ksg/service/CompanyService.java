@@ -20,5 +20,7 @@ public interface CompanyService extends PageService{
 	public int getCompanyCount();
 
 	public Company select(String company) throws SQLException;
+	public Company select(CommandMap param) throws SQLException;
+	public Company selectAbbr(String company_abbr) throws SQLException;
 
 }

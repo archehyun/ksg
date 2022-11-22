@@ -76,13 +76,19 @@ public class CompanyDAOImpl extends AbstractDAO implements CompanyDAO{
 
 	@Override
 	public Company select(Company param) throws SQLException {
-		// TODO Auto-generated method stub
+		 
 		return (Company) selectOne(namespace+".selectCompany", param);
 	}
 
 	public List<Company> selectByLike(Company searchParam) throws SQLException {
 		
 		return selectList(namespace+".selectCompanyByLike", searchParam);
+	}
+
+
+	public Company selectAbbr(Company param) throws SQLException {
+		
+		return (Company) selectOne(namespace+".selectCompanyAbbr", param);
 	}
 
 }

@@ -57,19 +57,19 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 	
 	public boolean isSamePort=false;
 
-	Component main;
+	private Component main;
 
-	PortServiceImpl portService = new PortServiceImpl();
+	private PortServiceImpl portService = new PortServiceImpl();
 
-	CodeServiceImpl codeService = new CodeServiceImpl();
+	private CodeServiceImpl codeService = new CodeServiceImpl();
 
-	KSGTablePanel nTable;
+	private KSGTablePanel nTable;
 
-	KSGTablePanel tblCurrent;
+	private KSGTablePanel tblCurrent;
 
-	KSGTablePanel eTable;	
+	private KSGTablePanel eTable;	
 
-	SelectEventHandler selectEventHandler = new SelectEventHandler();
+	private SelectEventHandler selectEventHandler = new SelectEventHandler();
 
 	private JCheckBox cbxSamePort;
 	

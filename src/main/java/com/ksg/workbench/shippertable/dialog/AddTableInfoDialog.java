@@ -408,130 +408,22 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-//				final JDialog dialog = new JDialog(AddTableInfoDialog.this,true);
-//
-//				try 
-//				{
-//					CommandMap param = new CommandMap();
-//					CommandMap result= (CommandMap) companyService.selectListByCondition(param);
-//					List<CommandMap> data = (List<CommandMap>) result.get("master");
-//					DefaultMutableTreeNode root = new DefaultMutableTreeNode("전체선사:"+data.size());
-//					Iterator<CommandMap> iter =data.iterator();
-//					while(iter.hasNext())
-//					{
-//						CommandMap company = (CommandMap) iter.next();
-//						DefaultMutableTreeNode sub = new DefaultMutableTreeNode(company.get("company_name"));
-//						root.add(sub);						
-//					}
-//
-//					dialog.setTitle("선사 명 선택");
-//					KSGPanel pnMain = new KSGPanel();
-//					pnMain.setLayout( new BorderLayout());
-//					final JTree tree = new JTree(root);
-//					tree.addMouseListener(new MouseAdapter() {
-//
-//						public void mouseClicked(MouseEvent arg0) {
-//							if(arg0.getClickCount()>1)
-//							{
-//								TreePath path=tree.getSelectionPath();
-//								if(path.getPathCount()!=1)
-//								{
-//									String company=path.getLastPathComponent().toString();
-//									setTableIndex(company);										
-//									txfCompany.setText(company);
-//									txaCommon.setText(company);
-//
-//									dialog.setVisible(false);
-//									dialog.dispose();
-//								}
-//							}
-//
-//						}
-//					});
-//					tree.addTreeSelectionListener(new TreeSelectionListener(){
-//
-//						public void valueChanged(TreeSelectionEvent e) {
-//							TreePath path=e.getNewLeadSelectionPath();
-//
-//							if(path.getPathCount()!=1)
-//								System.out.println(path.getLastPathComponent());	
-//
-//						}});
-//
-//
-//					pnMain.add(new JScrollPane(tree),BorderLayout.CENTER);
-//					JPanel pnSubPnControl = new JPanel();
-//					pnSubPnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-//					JButton butOK = new JButton("OK");
-//
-//					butOK.addActionListener(new ActionListener(){
-//
-//						public void actionPerformed(ActionEvent e) 
-//						{
-//							TreePath path=tree.getSelectionPath();
-//							if(path.getPathCount()!=1)
-//							{
-//								String company=path.getLastPathComponent().toString();
-//								try {
-//
-//									log.debug("company:{}",company);
-//									
-//									
-//									Company companyInfo=companyService.select(company);
-//									setTableIndex(companyInfo.getCompany_abbr());
-//									txfCompany.setText(companyInfo.getCompany_abbr());
-//									txfAgent.setText(companyInfo.getAgent_abbr());
-//									txaCommon.setText(companyInfo.getCompany_abbr());
-//								} catch (Exception e1) {
-//									JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
-//									e1.printStackTrace();
-//								}
-//							}
-//
-//							dialog.setVisible(false);
-//							dialog.dispose();							
-//						}});
-//					butOK.setPreferredSize(new Dimension(80,28));
-//					pnSubPnControl.add(butOK);
-//					JButton butCancel = new JButton("Cancel");
-//
-//					butCancel.addActionListener(new ActionListener(){
-//
-//						public void actionPerformed(ActionEvent e) {
-//							dialog.setVisible(false);
-//							dialog.dispose();
-//
-//						}});
-//					pnSubPnControl.add(butCancel);
-//					butCancel.setPreferredSize(new Dimension(80,28));
-//					JPanel pnTitleInfo = new JPanel();
-//					pnTitleInfo.setLayout(new FlowLayout(FlowLayout.LEFT));
-//					pnTitleInfo.add(new JLabel("Chose the Company"));
-//					pnMain.add(pnTitleInfo,BorderLayout.NORTH);
-//					pnMain.add(pnSubPnControl,BorderLayout.SOUTH);
-//					dialog.add(pnMain);					
-//					dialog.setSize(400, 400);
-//					ViewUtil.center(dialog, false);
-//					dialog.setVisible(true);
-//
-//				} catch (SQLException e1) {
-//					e1.printStackTrace();
-//				}
-				
+
 				SearchCompanyDialog searchCompanyDialog = new SearchCompanyDialog(AddTableInfoDialog.this);
 				
 				searchCompanyDialog.createAndUpdateUI();
 				
 				
+				String company_abbr = searchCompanyDialog.result;
 				
-				String company_name = searchCompanyDialog.result;
-				if(company_name == null)return;
+				if(company_abbr == null)return;
 				try {
 
-					log.debug("company_name:{}",company_name);
+					log.debug("company_name:{}",company_abbr);
 					
-					
-					Company companyInfo=companyService.select(company_name);
+					CommandMap param = new CommandMap();
+					param.put("company_abbr", company_abbr);
+					Company companyInfo=companyService.select(param );
 					setTableIndex(companyInfo.getCompany_abbr());
 					txfCompany.setText(companyInfo.getCompany_abbr());
 					txfAgent.setText(companyInfo.getAgent_abbr());

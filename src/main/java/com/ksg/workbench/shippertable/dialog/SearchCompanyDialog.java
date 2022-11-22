@@ -58,7 +58,7 @@ public class SearchCompanyDialog extends KSGDialog{
 
 	private CompanyService companyService;
 
-	private DefaultMutableTreeNode root = new DefaultMutableTreeNode("선사명");
+	private DefaultMutableTreeNode root = new DefaultMutableTreeNode("선사명 약어");
 
 	private JTree tree;
 
@@ -129,13 +129,13 @@ public class SearchCompanyDialog extends KSGDialog{
 
 					List<CommandMap> data = new ArrayList<CommandMap>();
 					if("".equals(str)||str==null) {
-						param.put("company_name", str);
+						param.put("company_abbr", str);
 						CommandMap result= (CommandMap) companyService.selectListByCondition(param);
 						data = (List<CommandMap>) result.get("master");
 					}
 					else
 					{
-						param.put("company_name", str);
+						param.put("company_abbr", str);
 						CommandMap result= (CommandMap) companyService.selectListByLike(param);
 						data = (List<CommandMap>) result.get("master");
 					}
@@ -189,7 +189,7 @@ public class SearchCompanyDialog extends KSGDialog{
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(SearchCompanyDialog.this, "선택된 선사명이 없습니다.");
+					JOptionPane.showMessageDialog(SearchCompanyDialog.this, "선택된 선사명 약어가 없습니다.");
 				}
 
 
@@ -221,8 +221,8 @@ public class SearchCompanyDialog extends KSGDialog{
 		while(iter.hasNext())
 		{
 			CommandMap company = (CommandMap) iter.next();
-			String company_name = (String) company.get("company_name");
-			DefaultMutableTreeNode sub = new DefaultMutableTreeNode(company_name);
+			String company_abbr = (String) company.get("company_abbr");
+			DefaultMutableTreeNode sub = new DefaultMutableTreeNode(company_abbr);			
 			root.add(sub);						
 		}
 
