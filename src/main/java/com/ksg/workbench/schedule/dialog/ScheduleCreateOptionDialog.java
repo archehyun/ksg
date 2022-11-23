@@ -18,7 +18,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -26,8 +25,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-
-
 
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildWebSchdeduleCommand;
@@ -43,11 +40,22 @@ import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
+
 /**
- * @설명 스케줄 생성시 입력 날짜 및 옵셥 값 설정 화면
- * @author 박창현
- *
- */
+
+  * @FileName : ScheduleCreateOptionDialog.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 11. 22. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 스케줄 생성시 입력 날짜 및 옵셥 값 설정 화면
+
+  */
 public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListener{
 
 	/**
