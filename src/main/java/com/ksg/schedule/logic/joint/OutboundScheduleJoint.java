@@ -22,7 +22,6 @@ import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.ResourceNotFoundException;
-import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.StringCompare;
 import com.ksg.domain.Code;
@@ -42,7 +41,7 @@ public class OutboundScheduleJoint extends DefaultScheduleJoint{
 	XTGManager xtgmanager = new XTGManager();
 	
 	private String fromPort[];
-	int fromPortCount;
+	private int fromPortCount;
 	private String 	BOLD_TAG_F,
 	BOLD_TAG_B,
 	TAG_VERSION0,

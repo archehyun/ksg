@@ -8,10 +8,6 @@ public class ScheduleJointError extends Exception{
 	public ScheduleData getData() {
 		return data;
 	}
-
-	/*public ScheduleJointError(Exception e) {
-		this.ee =e;
-	}*/
 	
 	public ScheduleJointError(Exception e, ScheduleData data) {
 		this.ee = e;

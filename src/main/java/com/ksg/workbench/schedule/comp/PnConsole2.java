@@ -60,8 +60,6 @@ public class PnConsole2 extends PnSchedule{
 
 		super();
 
-
-
 		this.setLayout(new BorderLayout());
 
 		add(buildSearch(),BorderLayout.NORTH);
@@ -94,13 +92,10 @@ public class PnConsole2 extends PnSchedule{
 
 		tableH.initComp();
 
-		//		tableH.setPageCountIndex(6);
-		//		
-		//		pageAction = new PageAction(tableH,scheduleService);
-		//		tableH.addActionListener(pageAction);
-
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
+		
 		pnMain.add(tableH);
 
 		return pnMain;
@@ -132,9 +127,11 @@ public class PnConsole2 extends PnSchedule{
 
 
 		txfNoramlSearch = new JTextField(15);
+		
 		JButton butSearch = new JButton("검색");
+		
 		butSearch.addActionListener(this);
-		//butSearch.setActionCommand("Normal 검색");
+		
 
 
 		pnNormalSearchCenter.add(new JLabel("구분:"));

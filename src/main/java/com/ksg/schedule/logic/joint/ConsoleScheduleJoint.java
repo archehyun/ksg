@@ -24,6 +24,8 @@ import com.ksg.domain.ScheduleType;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleJoint;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
 
@@ -40,6 +42,7 @@ import com.ksg.schedule.logic.ScheduleJoint;
   * @프로그램 설명 :
 
   */
+@Slf4j
 public class ConsoleScheduleJoint extends DefaultScheduleJoint{
 
 	/**
