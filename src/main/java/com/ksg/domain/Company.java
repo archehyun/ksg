@@ -16,15 +16,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 /**
  * 
- * 선사정보 클래스
- * 
- * 
- * @author archehyun
- * 
- */
 
+  * @FileName : Company.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 12. 1. 
+
+  * @작성자 : ch.park
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 선사 정보 클래스
+ */
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Getter @Setter
