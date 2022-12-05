@@ -13,6 +13,7 @@ package com.ksg.workbench.base.port.dialog;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 
 import javax.swing.Box;
@@ -41,7 +42,7 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField txfPortName = new JTextField(20);
-	private JTextField txfPortCode = new JTextField(20);
+	private JTextField txfPortAbbr = new JTextField(20);
 	private String port_name,port_abbr="";
 	private BaseServiceImpl baseService;
 	private PortService portService;
@@ -50,7 +51,7 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 		super(baseInfoUI);
 		portService = new PortServiceImpl();
 		this.baseInfoUI=baseInfoUI;
-		
+		this.addComponentListener(this);
 	}
 	
 	public InsertPortAbbrInfoDialog(BaseInfoUI baseInfoUI,String port_name) {
@@ -59,14 +60,16 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 		
 	}
 
-	public InsertPortAbbrInfoDialog(String portName) {
-		this.port_name =portName;
+	public InsertPortAbbrInfoDialog(String port_name) {
+		baseService = new BaseServiceImpl();
+		this.port_name =port_name;
+		this.addComponentListener(this);
 	}
 
 	public InsertPortAbbrInfoDialog(String port_abbr,String port_name) {
-		baseService = new BaseServiceImpl();
+		this(port_name);
+
 		this.port_abbr=port_abbr;
-		this.port_name=port_name;
 	}
 
 	public void createAndUpdateUI() {
@@ -88,7 +91,7 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 		
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		
-		pnCenter.add(createFormItem(txfPortCode, "항구명 약어"));
+		pnCenter.add(createFormItem(txfPortAbbr, "항구명 약어"));
 		
 		pnMain.add(pnCenter);
 		return pnMain;
@@ -96,16 +99,16 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		if(command.equals("확인"))
+		if(command.equals("저장"))
 		{
-			if(txfPortCode.getText().equals(""))
+			if(txfPortAbbr.getText().equals(""))
 			{
 				JOptionPane.showMessageDialog(this, "항구명 약어를 입력하십시요");
 				return;
 			}
 			PortInfo info = new PortInfo();
 			info.setPort_name(port_name);
-			info.setPort_abbr(txfPortCode.getText());
+			info.setPort_abbr(txfPortAbbr.getText());
 			try {
 				PortInfo info_one=baseService.getPortInfo(info.getPort_name());
 				if(info_one!=null)
@@ -122,6 +125,7 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 				}
 				
 			} catch (SQLException e1) {
+				e1.printStackTrace();
 				if(e1.getErrorCode()==2627)
 				{
 					JOptionPane.showMessageDialog(this, "항구명이 존재합니다.");
@@ -136,6 +140,13 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 			this.setVisible(false);
 //			this.dispose();
 		}
+		
+	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		this.txfPortName.setText(port_name);
+		this.txfPortAbbr.setText(port_abbr);
 		
 	}
 

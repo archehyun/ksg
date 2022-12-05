@@ -43,12 +43,22 @@ import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.adv.dialog.AddPortDialog;
 
+
+
 /**
- * @author archehyun
- * @설명 항구 정보 관리 테이블
  * 
- * 수정 일자 : 20200608
- *
+
+  * @FileName : PortTable.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 12. 5. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 항구 정보 관리 테이블
  */
 public class PortTable extends JTable implements ActionListener
 {
@@ -208,10 +218,10 @@ public class PortTable extends JTable implements ActionListener
 	private String selectedPort;
 
 	public PortTable(JTextArea txaADV,KSGXLSImportPanel base) {
-		DAOManager manager = DAOManager.getInstance();
-		tableService=new TableServiceImpl();
-		baseService  = manager.createBaseService();
-		codeServiceImpl = new CodeServiceImpl();
+		DAOManager manager 	= DAOManager.getInstance();
+		tableService		= new TableServiceImpl();
+		baseService  		= manager.createBaseService();
+		codeServiceImpl 	= new CodeServiceImpl();
 		tableModel = new PortTableModel();
 		
 		portService = new PortServiceImpl();
@@ -530,33 +540,7 @@ public class PortTable extends JTable implements ActionListener
 		}
 
 	}
-/*	*//**
-	 * @param port_array
-	 *//*
-	public void setModel2(Element port_array)
-	{
-		
-		try {
-			
-			// 신규 항구 정보 생성
-			Vector<PortTableInfo> itemList= makeNewList(port_array);
-						
-			// 항구 정보 검증
-			tableModel=createAndvalidateTableModel(itemList);
-			
-						
-			// 테이블 정보 생성
-			this.setModel(tableModel);
 
-			updateTableColumnView();
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
-		
-	}*/
 	private void updateTableColumnView() {
 		TableColumnModel colmodel = this.getColumnModel();
 

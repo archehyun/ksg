@@ -11,10 +11,12 @@
 package com.ksg.commands;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -42,6 +44,7 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.PortInfo;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.base.port.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.workbench.base.port.dialog.InsertPortInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
@@ -49,18 +52,29 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
 public class SearchPortCommand extends AbstractCommand implements ActionListener {
 	
 	private BaseService baseService;
-	KSGModelManager manager = KSGModelManager.getInstance();
+	
+	private KSGModelManager manager = KSGModelManager.getInstance();
+	
 	private JDialog dialog;
-	private JTextField field;
+	
+	private JTextField txfPortName;
+	
 	public PortInfo info;
-	private JRadioButton rbtPort;
-	private JRadioButton rbtPortAbbr;
+	
+	private JRadioButton rbtPort, rbtPortAbbr;	
+	
 	private JCheckBox cbkAddPort;
+	
 	private String selectedport;
+	
 	private JLabel lblSearchedPort;
+	
 	private JButton butAdd;
+	
 	ComboBoxActionLister actionLister = new ComboBoxActionLister();
+	
 	private JComboBox box;
+	
 	public SearchPortCommand() {
 		baseService = new BaseServiceImpl();
 	}
@@ -82,15 +96,15 @@ public class SearchPortCommand extends AbstractCommand implements ActionListener
 					
 					if(bo.getSelectedItem()!=null)
 					{
-						field.setText(bo.getSelectedItem().toString());
+						txfPortName.setText(bo.getSelectedItem().toString());
 					}else
 					{
-						field.setText("");
+						txfPortName.setText("");
 					}
 				}
 				else if(e.getKeyCode()==KeyEvent.VK_ESCAPE)
 				{
-					field.setText("");
+					txfPortName.setText("");
 				}
 			}
 		});
@@ -99,8 +113,8 @@ public class SearchPortCommand extends AbstractCommand implements ActionListener
 			 
 		dialog.setModal(true);
 
-		field = new JTextField(25);
-		field.addKeyListener(new KeyAdapter(){
+		txfPortName = new JTextField(25);
+		txfPortName.addKeyListener(new KeyAdapter(){
 
 			public void keyTyped(KeyEvent e)
 			{
@@ -108,10 +122,10 @@ public class SearchPortCommand extends AbstractCommand implements ActionListener
 			
 			}
 			 public void keyPressed(KeyEvent e) {
-					logger.debug("typed : "+field.getText());
+					logger.debug("typed : "+txfPortName.getText());
 					try {
 						actionLister.stop();
-						List li=	baseService.getPortListByPatten(field.getText());
+						List li=	baseService.getPortListByPatten(txfPortName.getText());
 						if(li.size()==0)
 						{
 							box.setPopupVisible(false);
@@ -154,18 +168,18 @@ public class SearchPortCommand extends AbstractCommand implements ActionListener
 		JLabel lbl1 = new JLabel("항구 검색");
 
 		pn1.add(lbl1);
-		pn1.add(field);
+		pn1.add(txfPortName);
 		panel.add(pn0);
 		panel.add(pn1);
-		JPanel pnBox = new JPanel();
-		pnBox.setLayout( new BorderLayout());
+		KSGPanel pnBox = new KSGPanel(new BorderLayout());		
 		pnBox.add(box,BorderLayout.CENTER);
 		panel.add(pnBox);
 
-		JPanel pnControl = new JPanel();
+		KSGPanel pnControl = new KSGPanel();
+		
 		pnControl.setLayout(new BorderLayout());
 
-		JPanel pnControlright = new JPanel();
+		KSGPanel pnControlright = new KSGPanel();
 		JButton butOK = new JButton("확인");
 		butOK.addActionListener(this);
 		JButton butCancel = new JButton("취소");
@@ -173,7 +187,7 @@ public class SearchPortCommand extends AbstractCommand implements ActionListener
 		pnControlright.add(butOK);
 		pnControlright.add(butCancel);
 		pnControl.add(pnControlright,BorderLayout.EAST);
-		JPanel pnLeft =  new JPanel();
+		KSGPanel pnLeft =  new KSGPanel();
 		cbkAddPort = new JCheckBox("항구등록");
 		cbkAddPort.addItemListener(new ItemListener() {
 
@@ -200,7 +214,9 @@ public class SearchPortCommand extends AbstractCommand implements ActionListener
 		ButtonGroup bg = new ButtonGroup();
 		rbtPort = new JRadioButton("항구");
 		rbtPort.setEnabled(false);
+		rbtPort.setBackground(Color.white);
 		rbtPortAbbr = new JRadioButton("약어",true);
+		rbtPortAbbr.setBackground(Color.white);
 		rbtPortAbbr.setEnabled(false);
 
 		butAdd = new JButton("추가");
@@ -212,12 +228,15 @@ public class SearchPortCommand extends AbstractCommand implements ActionListener
 				{
 					if(rbtPort.isSelected())
 					{
-						KSGDialog dialog = new InsertPortInfoDialog(null, field.getText());
+						KSGDialog dialog = new InsertPortInfoDialog(null, txfPortName.getText());
+						
 						dialog.createAndUpdateUI();
 					}
 					else if(rbtPortAbbr.isSelected())
 					{
-						KSGDialog dialog1 = new InsertPortAbbrInfoDialog(lblSearchedPort.getText(),field.getText());
+						String port_name = txfPortName.getText();
+						String port_abbr = lblSearchedPort.getText();
+						KSGDialog dialog1 = new InsertPortAbbrInfoDialog(port_abbr,port_name );
 						dialog1.createAndUpdateUI();
 					}
 				}
@@ -235,7 +254,7 @@ public class SearchPortCommand extends AbstractCommand implements ActionListener
 		pnControl.add(pnLeft,BorderLayout.WEST);
 		dialog.getContentPane().add(panel,BorderLayout.NORTH);
 		dialog.getContentPane().add(pnControl,BorderLayout.SOUTH);
-		field.setComponentPopupMenu(createTypePopup());
+		txfPortName.setComponentPopupMenu(createTypePopup());
 
 		dialog.setSize(500,300);
 		ViewUtil.center(dialog, false);
@@ -257,7 +276,7 @@ public class SearchPortCommand extends AbstractCommand implements ActionListener
 		if(command.equals("확인"))
 		{
 			try {
-				info=baseService.getPortInfo(field.getText());
+				info=baseService.getPortInfo(txfPortName.getText());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -287,10 +306,204 @@ public class SearchPortCommand extends AbstractCommand implements ActionListener
 			
 			if(bo.getSelectedItem()!=null&&flag)
 			{
-				field.setText(bo.getSelectedItem().toString());
+				txfPortName.setText(bo.getSelectedItem().toString());
 			}
 			
 		}
+	}
+	
+	
+	
+	/**
+	 * 
+	
+	  * @FileName : SearchPortCommand.java
+	
+	  * @Project : KSG2
+	
+	  * @Date : 2022. 12. 5. 
+	
+	  * @작성자 : pch
+	
+	  * @변경이력 :
+	
+	  * @프로그램 설명 : 추가 예정
+	 */
+	class PortSearchDialog extends KSGDialog implements ActionListener
+	{
+		private String portName;
+		
+		private JComboBox cbxSelectOption;
+		
+		private JTextField txfPortName;
+		
+		public PortSearchDialog(String portName )
+		{
+			super();
+			this.portName = portName;
+		}
+		
+		public void buildCenter()
+		{	
+			cbxSelectOption.addKeyListener(new KeyAdapter(){
+				public void keyPressed(KeyEvent e) {
+					if(e.getKeyCode()==KeyEvent.VK_ENTER)
+					{
+						JComboBox bo =(JComboBox) e.getSource();
+						
+						if(bo.getSelectedItem()!=null)
+						{
+							txfPortName.setText(bo.getSelectedItem().toString());
+						}else
+						{
+							txfPortName.setText("");
+						}
+					}
+					else if(e.getKeyCode()==KeyEvent.VK_ESCAPE)
+					{
+						txfPortName.setText("");
+					}
+				}
+			});
+			
+			txfPortName = new JTextField(25);
+			
+			txfPortName.addKeyListener(new KeyAdapter(){
+
+				public void keyTyped(KeyEvent e)
+				{
+					box.setSelectedItem(null);
+				
+				}
+				 public void keyPressed(KeyEvent e) {
+						logger.debug("typed : "+txfPortName.getText());
+						try {
+							actionLister.stop();
+							List li=	baseService.getPortListByPatten(txfPortName.getText());
+							if(li.size()==0)
+							{
+								box.setPopupVisible(false);
+							}else
+							{
+								box.removeAllItems();
+								Iterator iter = li.iterator();
+								while(iter.hasNext())
+								{
+									box.addItem(iter.next());
+								}
+								box.setSelectedItem(null);
+								box.setPopupVisible(false);
+								box.setPopupVisible(true);
+							}
+							
+
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
+						actionLister.start();
+				 }
+
+			});
+		}
+		
+		private KSGPanel buildControl()
+		{
+			
+			KSGPanel pnControl = new KSGPanel();
+			
+			pnControl.setLayout(new BorderLayout());
+			KSGPanel pnControlright = new KSGPanel();			
+			
+			JButton butOK = new JButton("확인");
+			JButton butCancel = new JButton("취소");
+			
+			butOK.addActionListener(this);
+			butCancel.addActionListener(this);
+			
+			pnControlright.add(butOK);
+			pnControlright.add(butCancel);
+			
+			pnControl.add(pnControlright,BorderLayout.EAST);
+			KSGPanel pnLeft =  new KSGPanel();
+			cbkAddPort = new JCheckBox("항구등록");
+			cbkAddPort.setBackground(Color.white);
+			cbkAddPort.addItemListener(new ItemListener() {
+
+				public void itemStateChanged(ItemEvent e) {
+					switch (e.getStateChange()) {
+					case ItemEvent.SELECTED:
+						rbtPort.setEnabled(true);
+						rbtPortAbbr.setEnabled(true);
+						butAdd.setEnabled(true);
+						
+						break;
+					case ItemEvent.DESELECTED:
+						rbtPort.setEnabled(false);
+						rbtPortAbbr.setEnabled(false);
+						butAdd.setEnabled(false);
+						break;
+
+					default:
+						break;
+					}
+
+				}
+			});
+			ButtonGroup bg = new ButtonGroup();
+			rbtPort = new JRadioButton("항구");
+			rbtPort.setEnabled(false);
+			rbtPortAbbr = new JRadioButton("약어",true);
+			rbtPortAbbr.setEnabled(false);
+
+			butAdd = new JButton("추가");
+			butAdd.addActionListener(new ActionListener() {
+
+				public void actionPerformed(ActionEvent arg0) {
+
+					if(cbkAddPort.isSelected())
+					{
+						if(rbtPort.isSelected())
+						{
+							KSGDialog dialog = new InsertPortInfoDialog(null, txfPortName.getText());
+							
+							dialog.createAndUpdateUI();
+						}
+						else if(rbtPortAbbr.isSelected())
+						{
+							KSGDialog dialog1 = new InsertPortAbbrInfoDialog(lblSearchedPort.getText(),txfPortName.getText());
+							dialog1.createAndUpdateUI();
+						}
+					}
+				}
+			});
+
+			bg.add(rbtPort);
+			bg.add(rbtPortAbbr);
+			pnLeft.add(cbkAddPort);
+
+			pnLeft.add(rbtPort);
+			pnLeft.add(rbtPortAbbr);
+			pnLeft.add(butAdd);
+
+			return null;
+		}
+
+		@Override
+		public void createAndUpdateUI() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		@Override
+		public void componentShown(ComponentEvent e) {
+			
+		}
+		
 	}
 
 }
