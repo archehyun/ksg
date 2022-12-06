@@ -139,14 +139,14 @@ public class TreeNodeManager {
 			
 			if(jointScheduleItemList.size()==1)
 			{
-				DefaultMutableTreeNode node = new OutbondScheduleTreeNode(new TreeTableNode(jointScheduleItemList.get(0)));
+				DefaultMutableTreeNode node = new OutbondScheduleTreeNode(jointScheduleItemList.get(0));
 				nodeList.add(node);
 			}
 			else if(jointScheduleItemList.size()>1)
 			{
 				DefaultMutableTreeNode node = new OutbondScheduleTreeNode("joint");
 				
-				jointScheduleItemList.forEach(item -> node.add(new OutbondScheduleTreeNode(new TreeTableNode(item))));
+				jointScheduleItemList.forEach(item -> node.add(new OutbondScheduleTreeNode(item)));
 				
 				nodeList.add(node);
 			}
@@ -245,7 +245,7 @@ public class TreeNodeManager {
 					ArrayList<HashMap<String, Object>> scheduleList =  (ArrayList<HashMap<String, Object>>) vesselitems.get(str);
 
 
-					fromPort.add(new InboundGroupTreeNode(vesselName,new InboundJointedFormatter(), scheduleList ));
+					fromPort.add(new InboundGroupTreeNode(vesselName, scheduleList ));
 					
 				}
 				area.add(fromPort);

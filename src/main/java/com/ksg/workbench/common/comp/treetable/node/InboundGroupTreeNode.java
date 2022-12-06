@@ -2,17 +2,15 @@ package com.ksg.workbench.common.comp.treetable.node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.ksg.schedule.execute.formater.JointFormatter;
+import com.ksg.schedule.execute.formater.InboundJointedFormatter;
 import com.ksg.view.comp.treetable.TreeTableNode;
 
-public class InboundGroupTreeNode extends DefaultMutableTreeNode
+@SuppressWarnings("serial")
+public class InboundGroupTreeNode extends ScheduleTreeNode
 {
-	
-	private JointFormatter jointedFormatter;
 	
 	protected String nodeName;
 	
@@ -23,22 +21,21 @@ public class InboundGroupTreeNode extends DefaultMutableTreeNode
 		this.nodeName = nodeName;
 	}
 	
-	public InboundGroupTreeNode (String nodeName,JointFormatter jointedFormatter, ArrayList<HashMap<String, Object>> scheduleList) {
+	public InboundGroupTreeNode (String nodeName, ArrayList<HashMap<String, Object>> scheduleList) {
 		this(nodeName);
-		this.jointedFormatter = jointedFormatter;			
-		this.jointedFormatter.setNodeName(nodeName);
-		this.jointedFormatter.setSchedule(scheduleList);
 		
-		Iterator scheduleIter= scheduleList.iterator();
+		this.formatter = new InboundJointedFormatter();
 		
-		while(scheduleIter.hasNext())
-		{
-			DefaultMutableTreeNode subnode = new DefaultMutableTreeNode(new TreeTableNode((HashMap<String, Object>) scheduleIter.next()));
-			add(subnode);
-		}
+		((InboundJointedFormatter)this.formatter).setNodeName(nodeName);
+		
+		((InboundJointedFormatter)this.formatter).setSchedule(scheduleList);
+		
+		scheduleList.stream().forEach(item -> add(new DefaultMutableTreeNode(new TreeTableNode(item))) );
+		
+		
 	}
 	public String toString ()
 	{
-		return jointedFormatter==null?nodeName:jointedFormatter.getFormattedString();
+		return formatter==null?nodeName:formatter.getFormattedString();
 	}
 }

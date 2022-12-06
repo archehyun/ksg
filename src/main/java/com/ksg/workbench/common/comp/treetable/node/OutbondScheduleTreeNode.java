@@ -1,71 +1,29 @@
 package com.ksg.workbench.common.comp.treetable.node;
 
-import java.text.SimpleDateFormat;
-
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
-
-import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.model.CommandMap;
 import com.ksg.schedule.execute.formater.OutboundFormatter;
-import com.ksg.view.comp.treetable.TreeTableNode;
 
-public class OutbondScheduleTreeNode extends DefaultMutableTreeNode
+@SuppressWarnings("serial")
+public class OutbondScheduleTreeNode extends ScheduleTreeNode
 {
-	private String vessel;
-	
-	private String company;
-	
-	private String fromDate, toDate;
-	
-	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
-	
-	private OutboundFormatter jointedFormatter 	= new OutboundFormatter();
-
-	private SimpleDateFormat outputDateFormat 	= KSGDateUtil.createOutputDateFormat();
-	
 	public OutbondScheduleTreeNode() {
 		super();
 	}
+	
 	public OutbondScheduleTreeNode(String string) {
 		super(string);
 	}
 
-	public OutbondScheduleTreeNode(TreeTableNode treeTableNode) {
-		super(treeTableNode);
-		setInfo(treeTableNode);
-
+	public OutbondScheduleTreeNode(CommandMap param) {
+		super();
+		formatter = new OutboundFormatter();
+		formatter.setParam(param);
 	}
+	
 	public String toString()
 	{
-		jointedFormatter.setParam(fromDate, vessel, company, toDate);
-		
-		return jointedFormatter.getFormattedString();
+		return formatter!=null? formatter.getFormattedString():super.toString();
 	}
-	@Override
-	public void add(MutableTreeNode newChild) {
-		super.add(newChild);
+	
 
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) newChild;
-
-		TreeTableNode item= (TreeTableNode) node.getUserObject();
-		setInfo(item);
-
-	}
-	public void setInfo(TreeTableNode item)		
-
-	{
-		vessel=String.valueOf(item.get("vessel"));
-		company =String.valueOf(item.get("company_abbr"));
-
-
-		try {
-
-			fromDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("dateF"))));
-			toDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("dateT"))));
-		}catch(Exception e)
-		{
-			System.err.println("item:"+item);
-			e.printStackTrace();
-		}
-	}
 }

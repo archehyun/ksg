@@ -1,8 +1,6 @@
 package com.ksg.workbench.common.comp.treetable.node;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
-public class InboundPortTreeNode extends DefaultMutableTreeNode{
+public class InboundPortTreeNode extends ScheduleTreeNode{
 	
 	private String port_name;
 	

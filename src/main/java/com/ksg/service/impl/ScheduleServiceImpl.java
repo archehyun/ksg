@@ -847,6 +847,8 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		ScheduleData schedule = ScheduleData.builder()
 				.date_issue((String) param.get("date_issue"))
 				.InOutType((String) param.get("inOutType"))
+				.fromPort((String) param.get("fromPort"))
+				.port((String) param.get("port"))
 				.gubun((String) param.get("gubun"))
 				.build();
 

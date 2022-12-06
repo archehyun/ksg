@@ -1,5 +1,8 @@
 package com.ksg.schedule.execute.formater;
 
+import com.ksg.common.model.CommandMap;
+import com.ksg.common.util.KSGDateUtil;
+
 public class OutboundFormatter extends JointFormatter{
 
 	private String fromDate;
@@ -13,6 +16,17 @@ public class OutboundFormatter extends JointFormatter{
 		this.vessel 	= vessel;
 		this.company 	= comapny;
 		this.toDate 	= toDate;
+	}
+	
+	@Override
+	public void setParam(CommandMap param)
+	{
+		super.setParam(param);
+		
+		this.fromDate = KSGDateUtil.convertDateFormatYYYYMMDDToMMDD(String.valueOf(param.get("dateF")));
+		this.vessel = String.valueOf(param.get("vessel"));
+		this.company = String.valueOf(param.get("company_abbr"));
+		this.toDate = KSGDateUtil.convertDateFormatYYYYMMDDToMMDD(String.valueOf(param.get("dateT")));
 	}
 
 	@Override

@@ -135,6 +135,13 @@
 				<isNotNull property="inOutType" prepend="and">
 					inOutType=#inOutType#
 				</isNotNull>
+				
+				<isNotNull property="fromPort" prepend="and">
+					fromPort=#fromPort#
+				</isNotNull>
+				<isNotNull property="port" prepend="and">
+					port=#port#
+				</isNotNull>				
 		</dynamic>
 	</select>
 	
@@ -150,6 +157,13 @@
 				<isNotNull property="inOutType" prepend="and">
 					inOutType=#inOutType#
 				</isNotNull>
+				
+				<isNotNull property="fromPort" prepend="and">
+					fromPort=#fromPort#
+				</isNotNull>
+				<isNotNull property="port" prepend="and">
+					port=#port#
+				</isNotNull>				
 		</dynamic>
 	</select>
 	

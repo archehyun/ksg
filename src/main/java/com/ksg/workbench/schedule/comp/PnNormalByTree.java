@@ -72,6 +72,7 @@ public class PnNormalByTree extends PnSchedule {
 	private KSGPageTablePanel tableH;	
 
 	private KSGComboBox cbxNormalInOut;
+	private KSGComboBox cbxArea;
 
 	private JComboBox<KSGTableColumn> cbxNormalSearch;
 
@@ -81,9 +82,9 @@ public class PnNormalByTree extends PnSchedule {
 
 	private ScheduleTreeTableModel treeTableModel;
 
-	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
-
-	private SimpleDateFormat outputDateFormat 	= KSGDateUtil.createOutputDateFormat();
+//	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
+//
+//	private SimpleDateFormat outputDateFormat 	= KSGDateUtil.createOutputDateFormat();
 
 	private JTextField txfToPort;
 
@@ -158,63 +159,6 @@ public class PnNormalByTree extends PnSchedule {
 
 
 
-	class InboundScheduleTreeNode extends DefaultMutableTreeNode
-	{
-		String vessel;
-
-		String company;
-
-		String fromDate, toDate;
-
-		ArrayList scheduleList = new ArrayList();
-		public InboundScheduleTreeNode() {
-			super();
-		}
-		public InboundScheduleTreeNode(String string) {
-			super(string);
-		}
-
-		public InboundScheduleTreeNode(TreeTableNode treeTableNode) {
-			super(treeTableNode);
-			setInfo(treeTableNode);
-
-		}
-		public String toString()
-		{
-			return fromDate+"  "+vessel+"("+company +")"+toDate;
-		}
-		@Override
-		public void add(MutableTreeNode newChild) {
-			super.add(newChild);
-
-			this.scheduleList.add(newChild);
-
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) newChild;
-
-			TreeTableNode item= (TreeTableNode) node.getUserObject();
-
-			setInfo(item);
-
-		}
-		public void setInfo(TreeTableNode item)		
-
-		{
-			vessel=String.valueOf(item.get("vessel"));
-			company =String.valueOf(item.get("company_abbr"));
-
-
-			try {
-
-				fromDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateF"))));
-				toDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateT"))));
-			}catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-
-	}
-
 
 	public KSGPanel buildSearch()
 	{
@@ -233,11 +177,15 @@ public class PnNormalByTree extends PnSchedule {
 		cbxNormalSearch.addItem(new KSGTableColumn("n_voyage_num", "항차번호"));		
 		cbxNormalSearch.addItem(new KSGTableColumn("DateF", "출발일"));
 		cbxNormalSearch.addItem(new KSGTableColumn("DateT", "도착일"));
+		
+		cbxArea = new KSGComboBox();
 
-
-		JLabel lblFromPort = new JLabel("출발항");		
+		JLabel lblFromPort = new JLabel("출발항");
+		
 		txfFromPort = new JTextField(10);
+		
 		txfFromPort.setEditable(false);
+		
 		JButton butSearchFromPort = new JButton("검색");		
 		butSearchFromPort.setActionCommand("SEARCH_FROM_PORT");
 		butSearchFromPort.addActionListener(this);
@@ -264,6 +212,10 @@ public class PnNormalByTree extends PnSchedule {
 		pnNormalSearchCenter.add(new JLabel("구분:"));
 		
 		pnNormalSearchCenter.add(cbxNormalInOut);
+		
+		pnNormalSearchCenter.add(new JLabel("지역:"));
+		
+		pnNormalSearchCenter.add(cbxArea);
 
 		pnNormalSearchCenter.add(pnPortSearch);
 
@@ -273,9 +225,14 @@ public class PnNormalByTree extends PnSchedule {
 		
 		pnNormalSearchCenter.add(txfNoramlSearch);
 		
-		pnNormalSearchCenter.add(butSearch);
+		
+		KSGPanel pnNormalSeawrchEast = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		
+		pnNormalSeawrchEast.add(butSearch);		
+		
 
 		pnNormalSearchMain.add(pnNormalSearchCenter);
+		pnNormalSearchMain.add(pnNormalSeawrchEast,BorderLayout.EAST);
 
 		return pnNormalSearchMain;
 
@@ -409,61 +366,6 @@ public class PnNormalByTree extends PnSchedule {
 		} 
 	}
 
-//	/**
-//	
-//	  * @ClassName : PnNormalByTree.java	  
-//	
-//	  * @Date : 2022. 4. 15. 
-//	
-//	  * @작성자 : pch
-//	
-//	  * @변경이력 :
-//	
-//	  * @프로그램 설명 :
-//	
-//	  */
-//	class InboundScheduleNode extends DefaultMutableTreeNode
-//	{
-//		private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
-//
-//		private SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
-//
-//		private String vesselName;
-//		
-//		private ArrayList<HashMap<String, Object>> scheduleList;
-//		
-//		public InboundScheduleNode(String vesselName,ArrayList<HashMap<String, Object>> scheduleList) {
-//			this.vesselName = vesselName;
-//			this.scheduleList =scheduleList;
-//
-//			Iterator scheduleIter= scheduleList.iterator();
-//
-//			while(scheduleIter.hasNext())
-//			{
-//				DefaultMutableTreeNode subnode = new DefaultMutableTreeNode(new TreeTableNode((HashMap<String, Object>) scheduleIter.next()));
-//				add(subnode);
-//			}
-//			// 출발일 기준 정렬
-//			Collections.sort(this.scheduleList, new AscendingFromDate("DateF",0) );
-//		}
-//		public String toString()
-//		{
-//			try {
-//				HashMap<String,Object> item = scheduleList.get(0);
-//				String	fromDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateF"))));
-//				String toDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateT"))));
-//				String company = String.valueOf(item.get("company_abbr"));
-//				String fromPort = String.valueOf(item.get("fromPort"));
-//				String toPort = String.valueOf(item.get("toPort"));
-//				return fromDate+"  "+vesselName + "  ("+company+")  "  +"  ["+inboundCodeMap.get(toPort)+"]"+ toDate;
-//			}catch(Exception e)
-//			{
-//				e.printStackTrace();
-//				return "error";
-//			}
-//
-//		}
-//	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
@@ -481,33 +383,5 @@ public class PnNormalByTree extends PnSchedule {
 		}
 		
 	}
-	
-	/*
-	 * 스케줄그룹node
-	 * ---스케줄node
-	 * 
-	 * 인바운드
-	 * Area
-	 * ---FromPort
-	 * ------Vessel
-	 * ---------Schedule
-	 * 
-	 * 아웃바운드
-	 * Area
-	 * ---FromPort
-	 * ------ToPort
-	 * ---------Vessel
-	 * ------------Schedule
-	 */
-	
-	class ScheduleTableTreeNode extends DefaultMutableTreeNode
-	{
-		public ScheduleTableTreeNode(TreeTableNode treeTableNode) {
-			super(treeTableNode);
-		}
-	}
-	
-
-	
 	
 }
