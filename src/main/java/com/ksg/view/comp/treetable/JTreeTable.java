@@ -32,7 +32,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import com.ksg.workbench.common.comp.treetable.node.ScheduleTreeNode;
+import com.ksg.workbench.common.comp.treetable.node.OutbondScheduleTreeNode;
 
 
 

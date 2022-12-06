@@ -12,8 +12,8 @@ import javax.swing.tree.TreeNode;
 
 import com.ksg.view.comp.treetable.JTreeTable;
 import com.ksg.view.comp.treetable.TreeTableModel;
-import com.ksg.workbench.common.comp.treetable.node.PortTreeNode;
-import com.ksg.workbench.common.comp.treetable.node.ScheduleTreeNode;
+import com.ksg.workbench.common.comp.treetable.node.InboundPortTreeNode;
+import com.ksg.workbench.common.comp.treetable.node.OutbondScheduleTreeNode;
 
 @SuppressWarnings("serial")
 public class KSGTreeTable extends JTreeTable{
@@ -46,12 +46,12 @@ public class KSGTreeTable extends JTreeTable{
 			   if(t!=null){
 				   
 				   
-				   if(node instanceof PortTreeNode)
+				   if(node instanceof InboundPortTreeNode)
 					   
 				   {
 					   setIcon(new ImageIcon(changePortImg));
 				   }
-				   else if(node instanceof ScheduleTreeNode)
+				   else if(node instanceof OutbondScheduleTreeNode)
 				   {
 					   setIcon(new ImageIcon(changeShipImg)); 
 				   } 

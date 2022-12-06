@@ -6,32 +6,40 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.schedule.execute.formater.OutboundFormatter;
 import com.ksg.view.comp.treetable.TreeTableNode;
 
-public class ScheduleTreeNode extends DefaultMutableTreeNode
+public class OutbondScheduleTreeNode extends DefaultMutableTreeNode
 {
-	String vessel;
-	String company;
-	String fromDate, toDate;
-	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
-
-	private SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
+	private String vessel;
 	
-	public ScheduleTreeNode() {
+	private String company;
+	
+	private String fromDate, toDate;
+	
+	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
+	
+	private OutboundFormatter jointedFormatter 	= new OutboundFormatter();
+
+	private SimpleDateFormat outputDateFormat 	= KSGDateUtil.createOutputDateFormat();
+	
+	public OutbondScheduleTreeNode() {
 		super();
 	}
-	public ScheduleTreeNode(String string) {
+	public OutbondScheduleTreeNode(String string) {
 		super(string);
 	}
 
-	public ScheduleTreeNode(TreeTableNode treeTableNode) {
+	public OutbondScheduleTreeNode(TreeTableNode treeTableNode) {
 		super(treeTableNode);
 		setInfo(treeTableNode);
 
 	}
 	public String toString()
 	{
-		return fromDate+"  "+vessel+"("+company +")"+toDate;
+		jointedFormatter.setParam(fromDate, vessel, company, toDate);
+		
+		return jointedFormatter.getFormattedString();
 	}
 	@Override
 	public void add(MutableTreeNode newChild) {

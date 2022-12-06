@@ -52,9 +52,7 @@ public class PnNormal2 extends PnSchedule{
 	private JTextField txfNoramlSearch;
 
 	private HashMap<String, Object> searchParam;
-
-//	private PageAction pageAction;	
-
+	
 	public PnNormal2() {
 
 		super();		

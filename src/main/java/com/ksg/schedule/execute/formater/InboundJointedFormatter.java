@@ -28,7 +28,9 @@ public class InboundJointedFormatter extends JointFormatter
 			String company 		= String.valueOf(item.get("company_abbr"));
 			String fromPort 	= String.valueOf(item.get("fromPort"));
 			String toPort 		= String.valueOf(item.get("port"));
-			return fromDate+"  "+getNodeName() + "  ("+company+")  "  +getFormattedToPorts();
+			
+			return String.format("%s             %s  (%s)  %s", fromDate, getNodeName(), company, getFormattedToPorts());
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
