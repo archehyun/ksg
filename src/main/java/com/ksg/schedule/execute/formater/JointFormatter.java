@@ -9,7 +9,7 @@ public abstract  class JointFormatter {
 	
 	String nodeName;
 	
-	ArrayList<HashMap<String, Object>> scheduleList;
+	ArrayList<CommandMap> scheduleList;
 	
 	CommandMap param;
 	
@@ -32,7 +32,7 @@ public abstract  class JointFormatter {
 	{
 		return nodeName;
 	}
-	public  void setSchedule(ArrayList<HashMap<String, Object>> scheduleList)
+	public  void setSchedule(ArrayList<CommandMap> scheduleList)
 	{
 		this. scheduleList = scheduleList;
 	}

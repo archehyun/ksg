@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.SchduleDAO;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Schedule;
@@ -248,7 +249,7 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	}
 	
 	@Override
-	public List selectList(HashMap<String, Object> param) throws SQLException{
+	public List selectList(CommandMap param) throws SQLException{
 		
 		return selectList("schedule.selectScheduleList", param);
 	}

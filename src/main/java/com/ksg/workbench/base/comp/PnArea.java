@@ -298,40 +298,6 @@ public class PnArea extends PnBase implements ActionListener{
 		}
 	}
 
-//	public void initTable() {
-//		model = new KSGTableModel();
-//
-//		for(int i=0;i<columName.length;i++)
-//		{
-//			model.addColumn(columName[i]);
-//		}
-//		
-//		tblTable.setModel(model);
-//		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-//		TableColumnModel colmodel = tblTable.getColumnModel();
-//		TableColumn areacol;
-//
-//		for(int i=0;i<colmodel.getColumnCount();i++)
-//		{
-//			TableColumn namecol = colmodel.getColumn(i);
-//
-//			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
-//			if(i==1)
-//			{
-//				renderer.setHorizontalAlignment(SwingConstants.LEFT);
-//			}
-//			else
-//			{
-//				renderer.setHorizontalAlignment(SwingConstants.CENTER);
-//			}
-//			namecol.setCellRenderer(renderer);	
-//		}
-//		areacol = colmodel.getColumn(1);
-//		areacol.setPreferredWidth(400);
-//		areacol = colmodel.getColumn(2);
-//		areacol.setPreferredWidth(100);
-//		tblTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-//	}
 
 	@Override
 	public void fnSearch() {

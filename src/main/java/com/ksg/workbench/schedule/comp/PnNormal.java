@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ScheduleService;
@@ -134,7 +135,7 @@ public class PnNormal extends KSGPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 		
 		try {
 			
@@ -159,7 +160,7 @@ public class PnNormal extends KSGPanel implements ActionListener{
 			}
 			
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) service.selectScheduleList(param);
+			CommandMap result = (CommandMap) service.selectScheduleList(param);
 
 			tableH.setResultData(result);
 

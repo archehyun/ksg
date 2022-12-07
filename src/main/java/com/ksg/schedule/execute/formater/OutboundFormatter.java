@@ -32,7 +32,7 @@ public class OutboundFormatter extends JointFormatter{
 	@Override
 	public String getFormattedString() {
 		
-		return String.format("%s   %s   (%s)   %s", fromDate,vessel, company, toDate);
+		return String.format("%-8s%-15s(%s)   %s", fromDate,vessel, company, toDate);
 	}
 
 }

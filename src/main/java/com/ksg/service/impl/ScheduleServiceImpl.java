@@ -247,11 +247,11 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		return schduleDAO.getOutboundAreaList();
 
 	}
-	public HashMap<String, Object> selectScheduleList(HashMap<String, Object> commandMap) throws SQLException {
+	public CommandMap selectScheduleList(CommandMap commandMap) throws SQLException {
 
 		log.debug("param:{}", commandMap);
 
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", schduleDAO.selectCount(commandMap));
 
@@ -367,11 +367,11 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	}
 
 	@Override
-	public HashMap<String, Object> selectListMap(HashMap<String, Object> param) throws SQLException {
+	public CommandMap selectListMap(CommandMap param) throws SQLException {
 
 		log.debug("param:{}", param);
 
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		resultMap.put("total", schduleDAO.selectCount(param));
 
@@ -395,11 +395,11 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	}
 
 	@Override
-	public HashMap<String, Object> selectGroupList(HashMap<String, Object> param) throws SQLException {
+	public CommandMap selectGroupList(CommandMap param) throws SQLException {
 
 		log.debug("param:{}", param);
 
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		CommandMap resultMap = new CommandMap();
 
 		List list=schduleDAO.selectList(param);
 
@@ -421,7 +421,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	 *------------선박
 	 */
 
-	private Map<String, Object> selectOutboundScheduleGroupList2(HashMap<String, Object> param) throws SQLException {
+	private Map<String, Object> selectOutboundScheduleGroupList2(CommandMap param) throws SQLException {
 
 		List<ScheduleData>  li = selecteScheduleListByCondition(param);
 
@@ -430,7 +430,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 						Collectors.groupingBy(ScheduleData::getFromPort, // 출발항
 								Collectors.groupingBy(ScheduleData::getPort))));// 도착항
 		
-		HashMap<String, Object> returnValue = new HashMap<String, Object>();
+		CommandMap returnValue = new CommandMap();
 		for(String area : areaList.keySet() ) {
 			returnValue.put(area, areaList.get(area));
 		}
@@ -446,13 +446,13 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	 *------------선박
 	 */
 
-	private HashMap<String, Object> selectOutboundScheduleGroupList1(HashMap<String, Object> param) throws SQLException {
+	private HashMap<String, Object> selectOutboundScheduleGroupList1(CommandMap param) throws SQLException {
 
 
 
 		String inOutType  = (String) param.get("inOutType");
 
-		HashMap<String, Object> result = (HashMap<String, Object>) selectListMap(param);
+		CommandMap result = (CommandMap) selectListMap(param);
 
 		List<HashMap<String, Object>> master = (List) result.get("master");
 
@@ -575,7 +575,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	 *  -----------도착항(국내항)
 	 */
 	@Override
-	public HashMap<String, Object> selectInboundScheduleGroupList(HashMap<String, Object> param) throws SQLException {
+	public CommandMap selectInboundScheduleGroupList(CommandMap param) throws SQLException {
 		
 		return selectInboundScheduleGroupList3(param);
 
@@ -588,21 +588,21 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	 *  --------선박
 	 *  -----------도착항(국내항)
 	 */
-	private HashMap<String, Object> selectInboundScheduleGroupList3(HashMap<String, Object> param) throws SQLException {
+	private CommandMap selectInboundScheduleGroupList3(CommandMap param) throws SQLException {
 
 		log.info("param:{}",param);
 
-		HashMap<String, Object> result = (HashMap<String, Object>) selectListMap(param);
+		CommandMap result = (CommandMap) selectListMap(param);
 
-		List<HashMap<String, Object>> master = (List) result.get("master");
+		List<CommandMap> master = (List) result.get("master");
 
-		HashMap<String, Object> areaList = new HashMap<String, Object>();
+		CommandMap areaList = new CommandMap();
 
-		Iterator<HashMap<String, Object>>iter = master.iterator();		
+		Iterator<CommandMap>iter = master.iterator();		
 
 		while(iter.hasNext())
 		{
-			HashMap<String, Object> item = iter.next();
+			CommandMap item = iter.next();
 
 			String area_name=(String) item.get("area_name");
 
@@ -617,24 +617,24 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 			if(areaList.containsKey(area_name))
 			{	
 				//출발항 목록
-				HashMap<String, Object> fromPorts =(HashMap<String, Object>) areaList.get(area_name);
+				CommandMap fromPorts =(CommandMap) areaList.get(area_name);
 
 				//출발항 있을 경우
 				if(fromPorts.containsKey(fromPort))					  
 				{
 					//스케줄 목록
-					HashMap<String, Object> vessels =(HashMap<String, Object>) fromPorts.get(fromPort);
+					CommandMap vessels =(CommandMap) fromPorts.get(fromPort);
 
 
 					//vessel 있을 경우
 					if(vessels.containsKey(vessel+"$$"+dateF))					  
 					{
-						ArrayList<HashMap<String, Object>> scheduleList =(ArrayList<HashMap<String, Object>>) vessels.get(vessel+"$$"+dateF);
+						ArrayList<CommandMap> scheduleList =(ArrayList<CommandMap>) vessels.get(vessel+"$$"+dateF);
 						scheduleList.add(item);
 					}
 					else
 					{
-						ArrayList<HashMap<String, Object>> scheduleList  = new ArrayList<HashMap<String,Object>>();
+						ArrayList<CommandMap> scheduleList  = new ArrayList<CommandMap>();
 						scheduleList.add(item);
 						vessels.put(vessel+"$$"+dateF, scheduleList);
 					}
@@ -644,9 +644,9 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 				//출발항 없을 경우
 				else
 				{
-					HashMap<String, Object> vessels = new HashMap<String, Object>();
+					CommandMap vessels = new CommandMap();
 
-					ArrayList<HashMap<String, Object>> scheduleList  = new ArrayList<HashMap<String,Object>>();
+					ArrayList<CommandMap> scheduleList  = new ArrayList<CommandMap>();
 
 					scheduleList.add(item);
 
@@ -666,9 +666,9 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 			else
 			{
 				//스케줄 그룹
-				HashMap<String, Object> vessels = new HashMap<String, Object>();
+				CommandMap vessels = new CommandMap();
 
-				ArrayList<HashMap<String, Object>> scheduleList  = new ArrayList<HashMap<String,Object>>();
+				ArrayList<CommandMap> scheduleList  = new ArrayList<CommandMap>();
 
 				scheduleList.add(item);
 
@@ -680,7 +680,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 				vessels.put(vessel+"$$"+dateF, scheduleList);
 
 				// 출발항 그룹
-				HashMap<String, Object> newFromPorts = new HashMap<String, Object>();
+				CommandMap newFromPorts = new CommandMap();
 
 				newFromPorts.put(fromPort, vessels);	
 
@@ -714,15 +714,15 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	 *     			value:scheduleList
 	 */
 	@Override
-	public HashMap<String, Object> selectInboundScheduleGroupList1(HashMap<String, Object> param) throws SQLException {
+	public CommandMap selectInboundScheduleGroupList1(CommandMap param) throws SQLException {
 
-		HashMap<String, Object> result = (HashMap<String, Object>) selectListMap(param);
+		CommandMap result = (CommandMap) selectListMap(param);
 
-		List<HashMap<String, Object>> master = (List) result.get("master");
+		List<CommandMap> master = (List) result.get("master");
 
-		HashMap<String, Object> areaList = new HashMap<String, Object>();
+		CommandMap areaList = new CommandMap();
 
-		Iterator<HashMap<String, Object>>iter = master.iterator();
+		Iterator<CommandMap>iter = master.iterator();
 
 		int scheduleKey=0;
 
@@ -811,7 +811,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	}
 
 	@Override
-	public List<HashMap<String, Object>> selecteScheduleListMapByCondition(HashMap<String, Object> param) {
+	public List<CommandMap> selecteScheduleListMapByCondition(CommandMap param) {
 
 		log.debug("param:{}", param);
 
@@ -821,14 +821,14 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 				.gubun((String) param.get("gubun"))
 				.build();
 
-		ArrayList<HashMap<String, Object>> map = new ArrayList<HashMap<String, Object>>();
+		ArrayList<CommandMap> map = new ArrayList<CommandMap>();
 		try {
 			List<ScheduleData> li = schduleDAO.selectScheduleLisByCondition(schedule);
 
 
 			for(ScheduleData item:li)
 			{	
-				map.add((HashMap<String, Object>) objectMapper.convertValue(item, Map.class));
+				map.add((CommandMap) objectMapper.convertValue(item, CommandMap.class));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -840,7 +840,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 
 	@Override
-	public List<ScheduleData> selecteScheduleListByCondition(HashMap<String, Object> param) throws SQLException {
+	public List<ScheduleData> selecteScheduleListByCondition(CommandMap param) throws SQLException {
 
 		log.debug("param:{}", param);
 
@@ -850,6 +850,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 				.fromPort((String) param.get("fromPort"))
 				.port((String) param.get("port"))
 				.gubun((String) param.get("gubun"))
+				.area_name((String) param.get("area_name"))
 				.build();
 
 		return  schduleDAO.selectScheduleLisByCondition(schedule);
@@ -857,7 +858,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	
 	
 	@Override
-	public List<Schedule> selecteAll(HashMap<String, Object> param) throws SQLException {
+	public List<Schedule> selecteAll(CommandMap param) throws SQLException {
 
 		log.debug("param:{}", param);
 
@@ -870,5 +871,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		return  schduleDAO.selectAll(schedule);
 	}
+
 
 }

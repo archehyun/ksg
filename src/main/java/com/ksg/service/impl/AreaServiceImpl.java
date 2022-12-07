@@ -9,7 +9,6 @@ import java.util.Map;
 import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.AreaDAOImpl;
 import com.ksg.domain.AreaInfo;
-import com.ksg.domain.ScheduleData;
 
 import lombok.extern.slf4j.Slf4j;
 

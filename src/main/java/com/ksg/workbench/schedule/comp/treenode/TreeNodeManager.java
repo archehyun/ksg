@@ -1,10 +1,13 @@
 package com.ksg.workbench.schedule.comp.treenode;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -14,26 +17,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
-import com.ksg.schedule.execute.formater.InboundJointedFormatter;
-import com.ksg.schedule.execute.formater.JointFormatter;
 import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.view.comp.treetable.TreeTableNode;
 import com.ksg.workbench.common.comp.treetable.node.InboundGroupTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.InboundPortTreeNode;
+import com.ksg.workbench.common.comp.treetable.node.JointOutboundScheduleTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.OutbondScheduleTreeNode;
 
 
 public class TreeNodeManager {
-	
-	
-	
+
+
+
 	private ObjectMapper objectMapper;
-	
+
 	public TreeNodeManager()
 	{
 		objectMapper = new ObjectMapper();
 	}
-	
+
 	/**
 	 * 
 	 * 스케줄 리스트를 기준으로 outbound 트리 노드 생성
@@ -46,18 +48,18 @@ public class TreeNodeManager {
 
 
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
-		
-		
+
+
 		for(String strArea:areaList.keySet())
 		{
-		
+
 			HashMap<String, Object> toPortItems =  (HashMap<String, Object>) areaList.get(strArea);
 
 			DefaultMutableTreeNode area = new DefaultMutableTreeNode(strArea);
 
 			// 도착항 정렬
 			Object[] mapkey = toPortItems.keySet().toArray();
-			
+
 			Arrays.sort(mapkey);
 
 
@@ -73,7 +75,7 @@ public class TreeNodeManager {
 				List<Entry<String, Object>> list_entries = new ArrayList<Entry<String, Object>>(fromPortitems.entrySet());
 
 				// 출발항 목록
-				
+
 				for(String fromPortKey:fromPortitems.keySet())
 				{
 
@@ -98,7 +100,7 @@ public class TreeNodeManager {
 
 		return root;
 	}
-	
+
 	/**
 	 * outbound공동배선 적용 
 	 * @param schedule
@@ -106,71 +108,126 @@ public class TreeNodeManager {
 	 */
 	private ArrayList<DefaultMutableTreeNode> createOutboundJoinedScheduleNode(List<ScheduleData> schedule)
 	{
-		HashMap<String, Object> scheduleList = new HashMap<String, Object>();
-		// 항차 번호, 선박명이 같은 목록 조회
+		HashMap<String, SortedScheduleGroup> scheduleList = new HashMap<String,SortedScheduleGroup>();
 
+		// 항차 번호, 선박명이 같은 목록 조회
+		// 공동배선 대상 목록 생성, 선박명-항차번호가 같은 목록을 그룹화
 		for(ScheduleData scheduleItem:schedule)
 		{	
 			//convert hashMap
-			CommandMap scheduleMap=(CommandMap) objectMapper.convertValue(scheduleItem, CommandMap.class);
-			
+			SortedSchedule scheduleMap=new SortedSchedule(scheduleItem);
+
 			String scheduleKey = getScheduleKey(scheduleMap);
-			
+
 			if(scheduleList.containsKey(scheduleKey))
 			{	
-				ArrayList<HashMap<String, Object>> jointScheduleItemList = (ArrayList<HashMap<String, Object>>) scheduleList.get(scheduleKey);
+				SortedScheduleGroup jointScheduleItemList = (SortedScheduleGroup) scheduleList.get(scheduleKey);
 				jointScheduleItemList.add(scheduleMap);
 			}
 			else
 			{
-				ArrayList<HashMap<String, Object>> jointScheduleItemList = new ArrayList<HashMap<String, Object>>();
-				
+				SortedScheduleGroup jointScheduleItemList = new SortedScheduleGroup();
+
 				jointScheduleItemList.add(scheduleMap);
-				
+
 				scheduleList.put(scheduleKey, jointScheduleItemList);
 			}
 		}
 
+
 		ArrayList<DefaultMutableTreeNode> nodeList = new ArrayList<DefaultMutableTreeNode>();
 
-		for(String strKey:scheduleList.keySet())
-		{
-			ArrayList<CommandMap> jointScheduleItemList=(ArrayList<CommandMap>) scheduleList.get(strKey);			
-			
-			if(jointScheduleItemList.size()==1)
-			{
-				DefaultMutableTreeNode node = new OutbondScheduleTreeNode(jointScheduleItemList.get(0));
-				nodeList.add(node);
-			}
-			else if(jointScheduleItemList.size()>1)
-			{
-				DefaultMutableTreeNode node = new OutbondScheduleTreeNode("joint");
-				
-				jointScheduleItemList.forEach(item -> node.add(new OutbondScheduleTreeNode(item)));
-				
-				nodeList.add(node);
-			}
+		Collection<SortedScheduleGroup> values = scheduleList.values();
+		
+		List<SortedScheduleGroup> list = new ArrayList<SortedScheduleGroup>();
+		
+		list.addAll(values);
 
+		Collections.sort(list);
+
+		for(SortedScheduleGroup jointScheduleItemList:list)
+		{				
+
+			if(jointScheduleItemList.scheduleList.size()==1)
+			{	
+				CommandMap item = objectMapper.convertValue(jointScheduleItemList.scheduleList.get(0).getData(), CommandMap.class);
+				
+				nodeList.add(new OutbondScheduleTreeNode(new TreeTableNode(item)));
+			}
+			else if(jointScheduleItemList.scheduleList.size()>1)
+			{
+				//TODO joint 그룹 텍스트 변경;
+				
+				//TODO 공동배선 묶인 스케줄중 날짜 선정
+				
+				
+				Collections.sort(jointScheduleItemList.scheduleList);
+				
+				ScheduleData firstSchedule=jointScheduleItemList.scheduleList.get(0).getData();
+				
+				ScheduleData lastSchedule=jointScheduleItemList.scheduleList.get(jointScheduleItemList.scheduleList.size()-1).getData();
+				
+				String dateF =KSGDateUtil.convertDateFormatYYYYMMDDToMMDD(firstSchedule.getDateF());
+				String vessel = firstSchedule.getVessel();
+				String company_abbr = firstSchedule.getCompany_abbr();
+				String dateT = KSGDateUtil.convertDateFormatYYYYMMDDToMMDD(lastSchedule.getDateT());
+				
+				DefaultMutableTreeNode node = new JointOutboundScheduleTreeNode(String.format("(%s) %s %s (%s) %s " , "j", dateF, vessel, company_abbr, dateT));
+
+				jointScheduleItemList.scheduleList.forEach(item -> node.add(new OutbondScheduleTreeNode(new TreeTableNode(objectMapper.convertValue(item.getData(), CommandMap.class)))));
+
+				nodeList.add(node);
+			}
 		}
 
 		// 스케줄 추가
 		// 정렬
 		return nodeList;
 	}
-	
-	private String getScheduleKey(CommandMap map)
+
+	class SortedScheduleGroup implements Comparable<SortedScheduleGroup>
+	{	
+
+		private  SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
+
+		public ArrayList<SortedSchedule> scheduleList;
+
+		public SortedScheduleGroup()
+		{
+			scheduleList = new ArrayList<SortedSchedule>();
+		}
+
+		public void add(SortedSchedule item)
+		{
+			this.scheduleList.add(item);
+		}
+
+		@Override
+		public int compareTo(SortedScheduleGroup o) {
+			// TODO Auto-generated method stub
+			try {
+				
+				return formatYYYYMMDD.parse(scheduleList.get(0).getData().getDateF()).compareTo(formatYYYYMMDD.parse(o.scheduleList.get(0).getData().getDateF()));
+			} catch (ParseException e) {
+				return 0;
+			}
+		}
+
+	}
+
+	private String getScheduleKey(SortedSchedule map)
 	{
-		String vessel 	= String.valueOf( map.get("vessel"));
-		
-		int n_voyage 	= ScheduleBuildUtil.getNumericVoyage( String.valueOf(map.get("voyage_num")));
-		
+		String vessel 	= map.getData().getVessel();
+
+		int n_voyage 	= ScheduleBuildUtil.getNumericVoyage( map.getData().getVoyage_num());
+
 		return vessel+"-"+n_voyage;
 	}
-	
-	
+
+
 	/**=======================================================================**/
 	/** inbounds tree node**/
-	
+
 	/**
 	 * 지역
 	 * ----출발항(외국항)
@@ -181,73 +238,49 @@ public class TreeNodeManager {
 	 * @param areaList
 	 * @return
 	 */
-	public DefaultMutableTreeNode getInboundTreeNode(HashMap<String, Object> areaList) {
-		
+	public DefaultMutableTreeNode getInboundTreeNode(CommandMap areaList) {
+
 		//inbound port 약어 목록 조회
-		
+
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
-		
+
 		for(String strArea: areaList.keySet())		
 		{	
 
 			DefaultMutableTreeNode area = new DefaultMutableTreeNode(strArea);
 
 			//출발항
-			HashMap<String, Object> fromPortItems =  (HashMap<String, Object>) areaList.get(strArea);
+			CommandMap fromPortItems =  (CommandMap) areaList.get(strArea);
 
 			// 출발항 정렬
 			Object[] mapkey = fromPortItems.keySet().toArray();
 
 			for (Object fromPortKey : mapkey)
 			{	
-				HashMap<String, Object> vesselitems =  (HashMap<String, Object>) fromPortItems.get(fromPortKey);
+				CommandMap vesselitems =  (CommandMap) fromPortItems.get(fromPortKey);
 				//tree 노드 생성
-				DefaultMutableTreeNode fromPort = new InboundPortTreeNode((String)fromPortKey, "");
+				DefaultMutableTreeNode fromPort = new InboundPortTreeNode(fromPortKey);
 
 				// 선박 목록
-				Object[] vesselAndDatekey = vesselitems.keySet().toArray();
-				
-				
+
 				//makeSortedKey
-				
-				String[][] key = new String[vesselAndDatekey.length][2];
-				
-				for(int i =0;i<vesselAndDatekey.length;i++)
-				{
-					String str = (String) vesselAndDatekey[i];
-					key[i][0] =str; //vesselAndDateF
-					key[i][1] =str.substring(str.indexOf("$$")+2, str.length()); // dateF
-					
-				}
-				
-				// key 출발일 기준 정렬
-				Arrays.sort(key, new Comparator<String[]>() { 
-					@Override 
-					public int compare(String[] o1, String[] o2) {
-						
-						String fromDateOne = o1[1];
-						String fromDateTwo = o2[1];;
 
-						return KSGDateUtil.dayDiff(fromDateOne, fromDateTwo)>0?-1:1;
-						
-					}
-				});
+				String[][] sortedKey = getSortedKey(vesselitems.keySet().toArray());
 
-				
-				
-				for (int i=0;i<key.length;i++)
+
+				for(String arr[]: sortedKey)
 				{
-					String str = (String) key[i][0];
-					
+					String str = (String) arr[0];
+
 					String vesselName =str.substring(0,str.indexOf("$$"));
 
 					// 스케줄 목록
-					ArrayList<HashMap<String, Object>> scheduleList =  (ArrayList<HashMap<String, Object>>) vesselitems.get(str);
+					ArrayList<CommandMap> scheduleList =  (ArrayList<CommandMap>) vesselitems.get(str);
 
 
-					fromPort.add(new InboundGroupTreeNode(vesselName, scheduleList ));
-					
+					fromPort.add(new InboundGroupTreeNode(vesselName, scheduleList ));	
 				}
+
 				area.add(fromPort);
 
 			}
@@ -258,6 +291,37 @@ public class TreeNodeManager {
 		return root;
 
 	}
-	
+	/**
+	 * 
+	 * @param vesselAndDatekey
+	 * @return inbound sorted keys
+	 */
+	private String[][] getSortedKey(Object[] vesselAndDatekey) {
+		
+		String[][] sortedKey = new String[vesselAndDatekey.length][2];
+
+		for(int i =0;i<vesselAndDatekey.length;i++)
+		{
+			String str = (String) vesselAndDatekey[i];
+			sortedKey[i][0] =str; //vesselAndDateF
+			sortedKey[i][1] =str.substring(str.indexOf("$$")+2, str.length()); // dateF
+
+		}
+
+		// key 출발일 기준 정렬
+		Arrays.sort(sortedKey, new Comparator<String[]>() { 
+			@Override 
+			public int compare(String[] o1, String[] o2) {
+
+				String fromDateOne = o1[1];
+				String fromDateTwo = o2[1];;
+
+				return KSGDateUtil.dayDiff(fromDateOne, fromDateTwo)>0?-1:1;
+
+			}
+		});
+		return sortedKey;
+	}
+
 
 }

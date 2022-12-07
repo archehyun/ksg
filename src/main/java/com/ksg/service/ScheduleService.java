@@ -26,7 +26,7 @@ public interface ScheduleService extends PageService{
 	
 	public static final String OUTBOUND = "O";	
 	
-	public HashMap<String, Object> selectScheduleList(HashMap<String, Object> commandMap) throws SQLException;
+	public CommandMap selectScheduleList(CommandMap commandMap) throws SQLException;
 	
 	/**
 	 * @return
@@ -169,17 +169,17 @@ public interface ScheduleService extends PageService{
 
 	List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException;
 
-	public HashMap<String, Object> selectListMap(HashMap<String, Object> param) throws SQLException;
+	public CommandMap selectListMap(CommandMap param) throws SQLException;
 	
-	public HashMap<String, Object> selectGroupList(HashMap<String, Object> param) throws SQLException;
+	public CommandMap selectGroupList(CommandMap param) throws SQLException;
 	
 	public int deleteInlnadSchedule()throws SQLException;
 	
 	public Map<String, Object> selectOutboundScheduleGroupList(CommandMap param) throws SQLException;
 	
-	public HashMap<String, Object> selectInboundScheduleGroupList1(HashMap<String, Object> param) throws SQLException;
+	public HashMap<String, Object> selectInboundScheduleGroupList1(CommandMap  param) throws SQLException;
 
-	HashMap<String, Object> selectInboundScheduleGroupList(HashMap<String, Object> param) throws SQLException;
+	public CommandMap selectInboundScheduleGroupList(CommandMap param) throws SQLException;
 	
 	public HashMap<String, Object> selectInlandScheduleList(HashMap<String, Object> commandMap) throws SQLException;
 }

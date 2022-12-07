@@ -17,6 +17,9 @@ public class InboundJointedFormatter extends JointFormatter
 	
 	public InboundJointedFormatter() {
 		inboundCodeMap = new HashMap<String, Object>();
+		inboundCodeMap.put("BUSAN", "B");
+		inboundCodeMap.put("INCHEON", "I");
+		inboundCodeMap.put("GWANGYANG", "GW");
 	}
 
 	@Override

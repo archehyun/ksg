@@ -1,20 +1,27 @@
 package com.ksg.view.comp.treetable;
 
-import java.util.HashMap;
+import com.ksg.common.model.CommandMap;
 
 public class TreeTableNode {
 	
 	
-	private HashMap<String, Object> data;
+	private CommandMap param;
 
-	
-	public TreeTableNode(HashMap<String, Object> data) {
-		this.data = data;
+	public CommandMap getParam()
+	{
+		return param;
+	}
+	public TreeTableNode(CommandMap data) {
+		this.param = data;
 	}
 	
 	public Object get(Object key)
 	{		
-		return data.get(key);
+		return param.get(key);
+	}
+	public String toString()
+	{
+		return "";
 	}
 
 }

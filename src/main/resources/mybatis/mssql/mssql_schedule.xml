@@ -141,6 +141,9 @@
 				</isNotNull>
 				<isNotNull property="port" prepend="and">
 					port=#port#
+				</isNotNull>
+				<isNotNull property="area_name" prepend="and">
+					area_name=#area_name#
 				</isNotNull>				
 		</dynamic>
 	</select>
@@ -163,11 +166,14 @@
 				</isNotNull>
 				<isNotNull property="port" prepend="and">
 					port=#port#
-				</isNotNull>				
+				</isNotNull>
+				<isNotNull property="area_name" prepend="and">
+					area_name=#area_name#
+				</isNotNull>								
 		</dynamic>
 	</select>
 	
-	<select id="selectScheduleList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+	<select id="selectScheduleList" resultClass="com.ksg.common.model.CommandMap" parameterClass="com.ksg.common.model.CommandMap">
 		select * from TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 		    	<isNotNull property="table_id" prepend="and">

@@ -1,10 +1,10 @@
 package com.ksg.workbench.common.comp.treetable.node;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.schedule.execute.formater.InboundJointedFormatter;
 import com.ksg.view.comp.treetable.TreeTableNode;
 
@@ -14,14 +14,14 @@ public class InboundGroupTreeNode extends ScheduleTreeNode
 	
 	protected String nodeName;
 	
-	private ArrayList<HashMap<String, Object>> scheduleList;
+	private ArrayList<CommandMap> scheduleList;
 	
 	public InboundGroupTreeNode(String nodeName) {
 		
 		this.nodeName = nodeName;
 	}
 	
-	public InboundGroupTreeNode (String nodeName, ArrayList<HashMap<String, Object>> scheduleList) {
+	public InboundGroupTreeNode (String nodeName, ArrayList<CommandMap> scheduleList) {
 		this(nodeName);
 		
 		this.formatter = new InboundJointedFormatter();
@@ -34,8 +34,5 @@ public class InboundGroupTreeNode extends ScheduleTreeNode
 		
 		
 	}
-	public String toString ()
-	{
-		return formatter==null?nodeName:formatter.getFormattedString();
-	}
+
 }

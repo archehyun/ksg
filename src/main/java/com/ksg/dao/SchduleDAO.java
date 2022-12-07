@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
@@ -185,7 +186,7 @@ public interface SchduleDAO {
 	public List<String> getOutboundAreaList()throws SQLException;
 	
 	
-	public List<Map<String, Object>> selectList(HashMap<String, Object> param) throws SQLException;
+	public List<CommandMap> selectList(CommandMap param) throws SQLException;
 	public List<Map<String, Object>> selectInlnadList(HashMap<String, Object> param) throws SQLException;
 	
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
