@@ -389,7 +389,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 				try {
 					updateView(searchParam);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+				
 					e1.printStackTrace();
 				}
 			}

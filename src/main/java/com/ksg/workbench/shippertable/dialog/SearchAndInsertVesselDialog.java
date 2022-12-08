@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
@@ -69,7 +70,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		super();
 		this.vesselName=vesselName;
 		vesselService = new VesselServiceImpl();
-		
+
 	}
 	public SearchAndInsertVesselDialog(AdvertiseTable advTable,
 			int selectedVesselrow, int col, String value,
@@ -81,8 +82,8 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		this.advTable = advTable;
 		this.vesselName= value;
 		vesselService = new VesselServiceImpl();
-		
-		
+
+
 	}
 	public void createAndUpdateUI() {
 		setTitle("선박명 검색");
@@ -91,8 +92,8 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		KSGPanel pnTitle = new KSGPanel();
 
 		JLabel lblTitle = new JLabel("검색된 선박명: "+vesselName);	
-		
-		
+
+
 		pnTitle.add(lblTitle);
 
 		KSGPanel pnSearchRight = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -155,15 +156,13 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		liVessel = new JList();
 
 
-	
+
 		JLabel lblSearch = new JLabel("선박명 검색");			
 
 		txfSearch = new JTextField(25);
-		txfSearch.addKeyListener(new KeyListener(){
+		txfSearch.addKeyListener(new KeyAdapter(){
 
-			public void keyPressed(KeyEvent e) 
-			{
-			}
+
 
 			public void keyReleased(KeyEvent e) {
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
@@ -171,14 +170,14 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 					try 
 					{
 						HashMap<String, Object> param = new HashMap<String, Object>();
-						
+
 						param.put("vessel_name", txfSearch.getText());
-						
+
 						List<HashMap<String, Object>> li=vesselService.selectListByLike(param);
-						
-						
-//						List li1=baseService.getVesselInfoByPattenGroupByName(txfSearch.getText()+"%");
-						
+
+
+						//						List li1=baseService.getVesselInfoByPattenGroupByName(txfSearch.getText()+"%");
+
 						DefaultListModel limodel = new DefaultListModel();
 						for(HashMap vesseName:li)
 						{
@@ -196,13 +195,10 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				}
 			}
 
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}});
+		});
 
 
-		
+
 		KSGPanel pnSearch = new KSGPanel();
 		pnSearch.add(lblSearch);
 		pnSearch.add(txfSearch);
@@ -212,7 +208,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		//pnCenter.add(KSGDialog.createMargin(0,15),BorderLayout.SOUTH);
 
 		KSGPanel pnControl = new KSGPanel();
-		
+
 		JButton butCancel = new JButton("닫기");
 		butCancel.addActionListener(new ActionListener(){
 
@@ -222,7 +218,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				dispose();
 
 			}});
-		
+
 		JButton butApply = new JButton("적용");
 		butApply.addActionListener(new ActionListener(){
 
@@ -231,9 +227,9 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				int index=liVessel.getSelectedIndex();
 				if(index<0)return;
 				Vessel vesselName=(Vessel) liVessel.getSelectedValue();
-				
-				
-				
+
+
+
 				if(vesselModel.getRowCount()==row)
 					vesselModel.setRowCount(vesselModel.getRowCount()+1);
 				vesselModel.setValueAt(vesselName.getVessel_name(), row, 0);
@@ -242,16 +238,16 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				advTable.setValue(vesselName.getVessel_name(), row, 0);
 				setVisible(false);
 				dispose();
-				
+
 
 			}});
 
 		KSGPanel pnRightControl = new KSGPanel();
 		pnRightControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		
+
 		pnRightControl.add(butApply);
 		pnRightControl.add(butCancel);
-		
+
 		KSGPanel pnLeftContorl = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnAddVesselAbbr = new JButton("선박명 약어추가");
 		pnAddVesselAbbr.setVisible(false);
@@ -266,7 +262,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 
 			}
 		});
-		
+
 		pnLeftContorl.add(pnAddVesselAbbr);
 
 		pnControl.setBorder(BorderFactory.createLineBorder(Color.lightGray));
@@ -275,7 +271,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 
 		getContentPane().add(pnTitle,BorderLayout.NORTH);
 		getContentPane().add(pnControl,BorderLayout.SOUTH);
-		
+
 		getContentPane().add(pnCenter);
 
 		pack();
@@ -284,14 +280,14 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 		setVisible(true);
 
 	}
-	
+
 	public KSGPanel buildCenter()
 	{
 		KSGPanel pnMain = new KSGPanel();
 		return pnMain;
 	}
 	private void addVesselAbbrAction(String vessel_abbr,String vessel_name) {
-		
+
 		int result=JOptionPane.showConfirmDialog(null,vessel_name+":"+vessel_abbr+"약어를 추가하시겠습니까?","선박명 약어 추가",JOptionPane.OK_CANCEL_OPTION);
 		if(result == JOptionPane.YES_OPTION)
 		{
@@ -299,7 +295,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				Vessel vessel = new Vessel();
 				vessel.setVessel_name(vessel_name);
 				vessel.setVessel_abbr(vessel_abbr);
-				
+
 				Vessel info = new Vessel();
 				info.setVessel_name(vessel_name);
 				HashMap<String,Object> vesselParam = new HashMap<String, Object>();
@@ -307,7 +303,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				vesselParam.put("vessel_abbr", vessel_abbr);
 
 				vesselService.insertDetail(vesselParam);
-				
+
 				vesselModel.setRowCount(vesselModel.getRowCount()+1);
 				vesselModel.setValueAt(vessel_name, row, 0);
 				vesselModel.setValueAt(vessel_abbr, row, 1);
@@ -317,7 +313,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				JOptionPane.showMessageDialog(null, vessel_abbr+" 추가했습니다.");
 				txfSearch.setText("");
 			}
-			
+
 			catch (AlreadyExistException e1)
 			{
 				e1.printStackTrace();

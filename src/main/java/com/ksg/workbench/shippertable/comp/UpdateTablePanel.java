@@ -141,7 +141,7 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 								}
 
 							} catch (SQLException e1) {
-								// TODO Auto-generated catch block
+								
 								e1.printStackTrace();
 							}
 						}catch(NumberFormatException nume)
@@ -1103,25 +1103,24 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

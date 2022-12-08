@@ -231,7 +231,7 @@ public class UpdateTableInOutDialog extends KSGDialog implements ActionListener{
 					outPortList2.put(index, portMap2.remove(index));
 				}
 			}catch (NumberFormatException e) {
-				// TODO: handle exception
+				
 			}
 		}
 

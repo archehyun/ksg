@@ -839,7 +839,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 						}
 					}
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}				
 
@@ -1058,7 +1058,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}
 
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 		try{
@@ -1335,25 +1335,25 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		@Override
 		public boolean contains(Point2D p) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 
 		@Override
 		public boolean contains(Rectangle2D r) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 
 		@Override
 		public boolean contains(double x, double y) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 
 		@Override
 		public boolean contains(double x, double y, double w, double h) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 
@@ -1371,25 +1371,25 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		@Override
 		public PathIterator getPathIterator(AffineTransform at) {
-			// TODO Auto-generated method stub
+			
 			return null;
 		}
 
 		@Override
 		public PathIterator getPathIterator(AffineTransform at, double flatness) {
-			// TODO Auto-generated method stub
+			
 			return null;
 		}
 
 		@Override
 		public boolean intersects(Rectangle2D r) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 
 		@Override
 		public boolean intersects(double x, double y, double w, double h) {
-			// TODO Auto-generated method stub
+			
 			return false;
 		}
 

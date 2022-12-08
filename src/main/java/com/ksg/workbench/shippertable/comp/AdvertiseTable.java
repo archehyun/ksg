@@ -940,7 +940,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		private JTextField editor;
 		public MyTableCellEditor() {
 			super(new JTextField());
-			// TODO Auto-generated constructor stub
+		
 		}
 
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,

@@ -19,15 +19,16 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.view.comp.treetable.TreeTableNode;
+import com.ksg.workbench.common.comp.treetable.node.AreaTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.InboundGroupTreeNode;
-import com.ksg.workbench.common.comp.treetable.node.InboundPortTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.JointOutboundScheduleTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.OutbondScheduleTreeNode;
+import com.ksg.workbench.common.comp.treetable.node.PortTreeNode;
 
 
 public class TreeNodeManager {
 
-
+	//TODO TEST
 
 	private ObjectMapper objectMapper;
 
@@ -47,7 +48,7 @@ public class TreeNodeManager {
 	public DefaultMutableTreeNode getOutboundTreeNode(HashMap<String, Object> areaList) {
 
 
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
+		DefaultMutableTreeNode root = new AreaTreeNode("AREA");
 
 
 		for(String strArea:areaList.keySet())
@@ -55,7 +56,7 @@ public class TreeNodeManager {
 
 			HashMap<String, Object> toPortItems =  (HashMap<String, Object>) areaList.get(strArea);
 
-			DefaultMutableTreeNode area = new DefaultMutableTreeNode(strArea);
+			DefaultMutableTreeNode area = new AreaTreeNode(strArea);
 
 			// 도착항 정렬
 			Object[] mapkey = toPortItems.keySet().toArray();
@@ -69,7 +70,7 @@ public class TreeNodeManager {
 				HashMap<String, Object> fromPortitems =  (HashMap<String, Object>) toPortItems.get(toPortKey);
 
 				//tree 노드 생성
-				DefaultMutableTreeNode toPort = new InboundPortTreeNode(toPortKey);
+				DefaultMutableTreeNode toPort = new PortTreeNode((String)toPortKey);
 
 				// 출발항 정렬
 				List<Entry<String, Object>> list_entries = new ArrayList<Entry<String, Object>>(fromPortitems.entrySet());
@@ -79,7 +80,7 @@ public class TreeNodeManager {
 				for(String fromPortKey:fromPortitems.keySet())
 				{
 
-					DefaultMutableTreeNode fromPort = new DefaultMutableTreeNode(fromPortKey);
+					DefaultMutableTreeNode fromPort = new PortTreeNode(fromPortKey);
 
 					List<ScheduleData> schedule = (List) fromPortitems.get(fromPortKey);
 
@@ -111,7 +112,10 @@ public class TreeNodeManager {
 		HashMap<String, SortedScheduleGroup> scheduleList = new HashMap<String,SortedScheduleGroup>();
 
 		// 항차 번호, 선박명이 같은 목록 조회
+		
 		// 공동배선 대상 목록 생성, 선박명-항차번호가 같은 목록을 그룹화
+		
+		// TODO 공동배선으로 묶을 시 3일 이내로
 		for(ScheduleData scheduleItem:schedule)
 		{	
 			//convert hashMap
@@ -156,7 +160,7 @@ public class TreeNodeManager {
 			}
 			else if(jointScheduleItemList.scheduleList.size()>1)
 			{
-				//TODO joint 그룹 텍스트 변경;
+				
 				
 				//TODO 공동배선 묶인 스케줄중 날짜 선정
 				
@@ -168,11 +172,14 @@ public class TreeNodeManager {
 				ScheduleData lastSchedule=jointScheduleItemList.scheduleList.get(jointScheduleItemList.scheduleList.size()-1).getData();
 				
 				String dateF =KSGDateUtil.convertDateFormatYYYYMMDDToMMDD(firstSchedule.getDateF());
+				
 				String vessel = firstSchedule.getVessel();
+				
 				String company_abbr = firstSchedule.getCompany_abbr();
+				
 				String dateT = KSGDateUtil.convertDateFormatYYYYMMDDToMMDD(lastSchedule.getDateT());
 				
-				DefaultMutableTreeNode node = new JointOutboundScheduleTreeNode(String.format("(%s) %s %s (%s) %s " , "j", dateF, vessel, company_abbr, dateT));
+				DefaultMutableTreeNode node = new JointOutboundScheduleTreeNode(String.format("%s %s (%s) %s " , dateF, vessel, company_abbr, dateT));
 
 				jointScheduleItemList.scheduleList.forEach(item -> node.add(new OutbondScheduleTreeNode(new TreeTableNode(objectMapper.convertValue(item.getData(), CommandMap.class)))));
 
@@ -180,11 +187,24 @@ public class TreeNodeManager {
 			}
 		}
 
-		// 스케줄 추가
-		// 정렬
 		return nodeList;
 	}
-
+	/**
+	 * 
+	
+	  * @FileName : TreeNodeManager.java
+	
+	  * @Project : KSG2
+	
+	  * @Date : 2022. 12. 7. 
+	
+	  * @작성자 : pch
+	
+	  * @변경이력 :
+	
+	  * @프로그램 설명 :
+	 */
+	
 	class SortedScheduleGroup implements Comparable<SortedScheduleGroup>
 	{	
 
@@ -242,12 +262,12 @@ public class TreeNodeManager {
 
 		//inbound port 약어 목록 조회
 
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode("AREA");
+		DefaultMutableTreeNode root = new AreaTreeNode("AREA");
 
 		for(String strArea: areaList.keySet())		
 		{	
 
-			DefaultMutableTreeNode area = new DefaultMutableTreeNode(strArea);
+			DefaultMutableTreeNode area = new PortTreeNode(strArea);
 
 			//출발항
 			CommandMap fromPortItems =  (CommandMap) areaList.get(strArea);
@@ -259,7 +279,7 @@ public class TreeNodeManager {
 			{	
 				CommandMap vesselitems =  (CommandMap) fromPortItems.get(fromPortKey);
 				//tree 노드 생성
-				DefaultMutableTreeNode fromPort = new InboundPortTreeNode(fromPortKey);
+				DefaultMutableTreeNode fromPort = new PortTreeNode((String)fromPortKey);
 
 				// 선박 목록
 

@@ -12,10 +12,12 @@ import javax.swing.tree.TreeNode;
 
 import com.ksg.view.comp.treetable.JTreeTable;
 import com.ksg.view.comp.treetable.TreeTableModel;
+import com.ksg.workbench.common.comp.treetable.node.AreaTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.InboundGroupTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.InboundPortTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.JointOutboundScheduleTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.OutbondScheduleTreeNode;
+import com.ksg.workbench.common.comp.treetable.node.PortTreeNode;
 
 @SuppressWarnings("serial")
 public class KSGTreeTable extends JTreeTable{
@@ -23,6 +25,7 @@ public class KSGTreeTable extends JTreeTable{
 	Image changePortImg;
 	Image changeShipImg;
 	Image changeShipRedImg;
+	Image changeAreaImg;
 
 	public KSGTreeTable(TreeTableModel treeTableModel) {
 		super(treeTableModel);
@@ -34,6 +37,10 @@ public class KSGTreeTable extends JTreeTable{
 		
 		Image img3 = new ImageIcon("images/ship_group_red.png").getImage();
 		changeShipRedImg = img3.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		
+		Image img4 = new ImageIcon("images/internet.png").getImage();
+		changeAreaImg = img4.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+
 
 		this.setCellRenderer(new ScheduleCellRenderer());
 
@@ -52,9 +59,15 @@ public class KSGTreeTable extends JTreeTable{
 			
 			if(t== null) return this;
 			
+			
+			
 			if(node instanceof InboundPortTreeNode)
 			{
 				setIcon(new ImageIcon(changePortImg));
+			}
+			else if(node instanceof PortTreeNode)
+			{
+				setIcon(new ImageIcon(changePortImg)); 
 			}
 			else if(node instanceof InboundGroupTreeNode)
 			{
@@ -68,7 +81,11 @@ public class KSGTreeTable extends JTreeTable{
 			else if(node instanceof JointOutboundScheduleTreeNode)
 			{
 				setIcon(new ImageIcon(changeShipRedImg)); 
-			} 
+			}
+			else if(node instanceof AreaTreeNode)
+			{
+				setIcon(new ImageIcon(changeAreaImg)); 
+			}
 
 			setText(String.valueOf(value));
 			

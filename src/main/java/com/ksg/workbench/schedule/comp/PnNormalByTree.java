@@ -105,7 +105,7 @@ public class PnNormalByTree extends PnSchedule {
 
 		treeTableModel = new ScheduleTreeTableModel();
 
-		treeTableModel.addColumn(new KSGTableColumn("", "",400));
+		treeTableModel.addColumn(new KSGTableColumn("", "",600));
 
 		treeTableModel.addColumn(new KSGTableColumn("table_id", "테이블 ID",100));
 		
@@ -119,9 +119,9 @@ public class PnNormalByTree extends PnSchedule {
 		
 		treeTableModel.addColumn(new KSGTableColumn("fromPort", "출발항",200));
 		
-		treeTableModel.addColumn(new KSGTableColumn("dateF", "출발일", 90));
+		treeTableModel.addColumn(new KSGTableColumn("DateF", "출발일", 90));
 		
-		treeTableModel.addColumn(new KSGTableColumn("dateT", "도착일", 90));
+		treeTableModel.addColumn(new KSGTableColumn("DateT", "도착일", 90));
 		
 		treeTableModel.addColumn(new KSGTableColumn("port", "도착항",200));
 
@@ -152,7 +152,7 @@ public class PnNormalByTree extends PnSchedule {
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
 		
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
+		 
 		cbxNormalInOut = new KSGComboBox("inOutType");
 		cbxNormalSearch = new KSGComboBox();
 		cbxNormalSearch.addItem(new KSGTableColumn("", "전체"));
