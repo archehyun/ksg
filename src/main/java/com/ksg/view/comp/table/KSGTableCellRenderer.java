@@ -22,7 +22,7 @@ import javax.swing.table.JTableHeader;
 import org.jdom.Element;
 
 import com.ksg.view.comp.ColorData;
-import com.ksg.workbench.KSGViewParameter;
+import com.ksg.workbench.admin.KSGViewParameter;
 
 
 /**

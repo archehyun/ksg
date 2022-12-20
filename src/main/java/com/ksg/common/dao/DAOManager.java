@@ -3,18 +3,21 @@ package com.ksg.common.dao;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 
+
+@Deprecated
 public class DAOManager {
 	private static DAOManager manager;
 	private TableService tableservice;
 	private BaseService baseservice;
 	private ADVService advservice;
-	private ScheduleService scheduleService;
+	private ScheduleSubService scheduleService;
 	public static DAOManager getInstance()
 	{
 		if(manager==null)
@@ -39,7 +42,7 @@ public class DAOManager {
 			advservice = new ADVServiceImpl();
 		return advservice;
 	}
-	public ScheduleService createScheduleService() 
+	public ScheduleSubService createScheduleService() 
 	{
 		if(scheduleService==null)
 			scheduleService = new ScheduleServiceImpl();

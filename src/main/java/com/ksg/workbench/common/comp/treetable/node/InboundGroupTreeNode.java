@@ -16,13 +16,12 @@ public class InboundGroupTreeNode extends ScheduleTreeNode
 	
 	private ArrayList<CommandMap> scheduleList;
 	
-	public InboundGroupTreeNode(String nodeName) {
-		
-		this.nodeName = nodeName;
-	}
+	public InboundGroupTreeNode (String vesselName,ArrayList<CommandMap> scheduleList) {
+		super(vesselName,NodeType.SCHEDULE);
 	
-	public InboundGroupTreeNode (String nodeName, ArrayList<CommandMap> scheduleList) {
-		this(nodeName);
+		nodeName = vesselName;
+		
+		this.scheduleList = scheduleList;
 		
 		this.formatter = new InboundJointedFormatter();
 		

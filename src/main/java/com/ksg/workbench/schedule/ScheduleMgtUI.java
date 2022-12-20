@@ -55,7 +55,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.KSGCheckBox;
@@ -113,7 +113,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 	
 	private ScheduleResultDialog scheduleResultDialog;
 	
-	private ScheduleService scheduleService;
+	private ScheduleSubService scheduleService;
 	
 	private JDialog searchScheduleByCompanyDialog;	
 	

@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.workbench.base.vessel.dialog;
+package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -28,9 +28,8 @@ import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.base.BaseInfoUI;
-import com.ksg.workbench.base.dialog.BaseInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.master.BaseInfoUI;
 
 /**선박 양어 정보 추가 다이어그램
  * @author 박창현

@@ -1,4 +1,4 @@
-package com.ksg.workbench.base.vessel.dialog;
+package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -19,8 +19,7 @@ import javax.swing.JTextField;
 
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.workbench.base.code.comp.PnCommonCode;
-import com.ksg.workbench.base.dialog.BasePop;
+import com.ksg.workbench.master.comp.PnCommonCode;
 
 
 /**

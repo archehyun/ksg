@@ -78,7 +78,7 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
-import com.ksg.workbench.KSGViewParameter;
+import com.ksg.workbench.admin.KSGViewParameter;
 import com.ksg.workbench.shippertable.dialog.SearchAndInsertVesselDialog;
 import com.ksg.workbench.shippertable.dialog.SearchVesselDialog;
 

@@ -47,6 +47,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.MemberService;
 import com.ksg.service.impl.MemberServiceImpl;
+import com.ksg.workbench.admin.KSGMainFrame;
 
 
 /**

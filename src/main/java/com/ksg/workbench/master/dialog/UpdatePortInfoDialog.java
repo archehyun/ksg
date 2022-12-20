@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.workbench.base.port.dialog;
+package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -44,7 +44,6 @@ import com.ksg.service.impl.AreaService;
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.base.dialog.BaseInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**

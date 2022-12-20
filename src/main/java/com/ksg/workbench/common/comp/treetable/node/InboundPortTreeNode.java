@@ -2,26 +2,10 @@ package com.ksg.workbench.common.comp.treetable.node;
 
 public class InboundPortTreeNode extends ScheduleTreeNode{
 	
-	private String port_name;
-	
-	private String area;
-	
-	public InboundPortTreeNode(String port_name, String area)
+	public InboundPortTreeNode(String name)
 	{
-		this.port_name =port_name;
-		
-		this.area =area;
-		
+		super(name, NodeType.PORT);
 	}
 	
-	public InboundPortTreeNode(Object toPortKey) {
-		
-		this.port_name =(String) toPortKey;
-	}
-
-	public String toString()
-	{
-		return port_name+(area!=null?"  "+area:"");
-	}
-
+	
 }

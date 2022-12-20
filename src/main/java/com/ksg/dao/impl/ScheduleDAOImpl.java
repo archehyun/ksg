@@ -286,6 +286,16 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		// TODO Auto-generated method stub
 		return sqlMap.queryForList("schedule.selectAll",param);
 	}
+	@Override
+	public List<Schedule> selectScheduleLisByCondition(Schedule schedule) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("schedule.selectScheduleListByCondition2", schedule);
+	}
+	@Override
+	public List<Schedule> selectAll() throws Exception {
+		
+		return sqlMap.queryForList("schedule.selectAll");
+	}
 
 	
 

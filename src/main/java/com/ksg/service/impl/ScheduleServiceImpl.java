@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
+import com.dtp.api.mapper.VesselMapper;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
@@ -32,8 +33,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.KSGHashMap;
-import com.ksg.service.ScheduleService;
 import com.ksg.service.ScheduleServiceV2;
+import com.ksg.service.ScheduleSubService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,7 +55,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @SuppressWarnings("unchecked")
-public class ScheduleServiceImpl extends AbstractServiceImpl implements ScheduleService, ScheduleServiceV2{
+public class ScheduleServiceImpl extends AbstractServiceImpl implements ScheduleSubService, ScheduleServiceV2{
 
 	private SchduleDAO schduleDAO;
 
@@ -63,6 +64,8 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	private ADVScheduleDAO advScheduleDAO;	
 
 	KSGModelManager manager = KSGModelManager.getInstance();
+	
+	VesselMapper vesselMapper;
 
 	public ScheduleServiceImpl() {
 
@@ -405,39 +408,68 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		return null;
 	}
-	@Override
-	public Map<String, Object> selectOutboundScheduleGroupList(CommandMap param) throws SQLException {
+//	@Override
+//	public Map<String, Object> selectOutboundScheduleGroupList(CommandMap param) throws SQLException {
+//
+//		log.debug("param:{}", param);
+//
+//		return selectOutboundScheduleGroupList2(param);
+//	}
 
-		log.debug("param:{}", param);
 
-		return selectOutboundScheduleGroupList2(param);
-	}
+//
+//
+//	/**
+//	 *지역
+//	 *----도착항
+//	 *--------출발항
+//	 *------------선박
+//	 */
+//
+//	private Map<String, Object> selectOutboundScheduleGroupList2(CommandMap param) throws SQLException {
+//
+//		List<ScheduleData>  li = selecteScheduleListByCondition(param);
+//		
+//		
+//		List<String> vesselNames=li.stream().map(ScheduleData::getVessel)
+//											.distinct()
+//											.collect(Collectors.toList());
+//		
+//		
+//		
+//		
+//
+//		Map<String, Map<String, Map<String, List<ScheduleData>>>> areaList =  li.stream().collect(
+//				Collectors.groupingBy(ScheduleData::getArea_name, // 지역
+//						Collectors.groupingBy(ScheduleData::getFromPort, // 출발항
+//								Collectors.groupingBy(ScheduleData::getPort))));// 도착항
+//
+//		CommandMap returnValue = new CommandMap();
+//		for(String area : areaList.keySet() ) {
+//			returnValue.put(area, areaList.get(area));
+//		}
+//
+//		return returnValue;
+//
+//	}
 
-
-	/**
-	 *지역
-	 *----도착항
-	 *--------출발항
-	 *------------선박
-	 */
-
-	private Map<String, Object> selectOutboundScheduleGroupList2(CommandMap param) throws SQLException {
-
-		List<ScheduleData>  li = selecteScheduleListByCondition(param);
-
-		Map<String, Map<String, Map<String, List<ScheduleData>>>> areaList =  li.stream().collect(
-				Collectors.groupingBy(ScheduleData::getArea_name, // 지역
-						Collectors.groupingBy(ScheduleData::getFromPort, // 출발항
-								Collectors.groupingBy(ScheduleData::getPort))));// 도착항
-		
-		CommandMap returnValue = new CommandMap();
-		for(String area : areaList.keySet() ) {
-			returnValue.put(area, areaList.get(area));
-		}
-
-		return returnValue;
-
-	}
+//	public Map<String, Object> selectRouteScheduleGroupList(CommandMap param) throws SQLException {
+//
+//		List<ScheduleData>  li = selecteScheduleListByCondition(param);
+//
+//		Map<String, Map<String, List<ScheduleData>>> areaList =  li.stream().collect(
+//				Collectors.groupingBy(ScheduleData::getArea_name, // 지역
+//						Collectors.groupingBy(ScheduleData::getVessel))
+//				);// 선박
+//
+//		CommandMap returnValue = new CommandMap();
+//		for(String area : areaList.keySet() ) {
+//			returnValue.put(area, areaList.get(area));
+//		}
+//
+//		return returnValue;
+//
+//	}
 
 	/**
 	 *지역
@@ -568,247 +600,249 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		} 
 	}
-	
-	/** 지역
-	 *  ----출발항(외국항)
-	 *  --------선박
-	 *  -----------도착항(국내항)
-	 */
-	@Override
-	public CommandMap selectInboundScheduleGroupList(CommandMap param) throws SQLException {
-		
-		return selectInboundScheduleGroupList3(param);
+//
+//	/** 지역
+//	 *  ----출발항(외국항)
+//	 *  --------선박
+//	 *  -----------도착항(국내항)
+//	 */
+//	@Override
+//	public CommandMap selectInboundScheduleGroupList(CommandMap param) throws SQLException {
+//
+//		return selectInboundScheduleGroupList3(param);
+//
+//	}
+
+
+//
+//	/** 지역
+//	 *  ----출발항(외국항)
+//	 *  --------선박
+//	 *  -----------도착항(국내항)
+//	 */
+//	private CommandMap selectInboundScheduleGroupList3(CommandMap param) throws SQLException {
+//
+//		log.info("param:{}",param);
+//
+//		CommandMap result = (CommandMap) selectListMap(param);
+//
+//		List<CommandMap> master = (List) result.get("master");
+//
+//		CommandMap areaList = new CommandMap();
+//
+//		Iterator<CommandMap>iter = master.iterator();		
+//
+//		while(iter.hasNext())
+//		{
+//			CommandMap item = iter.next();
+//
+//			String area_name=(String) item.get("area_name");
+//
+//			String fromPort = (String) item.get("fromPort");
+//
+//			String toPort = (String) item.get("port");
+//
+//			String dateF = (String) item.get("DateF");
+//
+//			String vessel = (String) item.get("vessel");
+//
+//			if(areaList.containsKey(area_name))
+//			{	
+//				//출발항 목록
+//				CommandMap fromPorts =(CommandMap) areaList.get(area_name);
+//
+//				//출발항 있을 경우
+//				if(fromPorts.containsKey(fromPort))					  
+//				{
+//					//스케줄 목록
+//					CommandMap vessels =(CommandMap) fromPorts.get(fromPort);
+//
+//
+//					//vessel 있을 경우
+//					if(vessels.containsKey(vessel+"$$"+dateF))					  
+//					{
+//						ArrayList<CommandMap> scheduleList =(ArrayList<CommandMap>) vessels.get(vessel+"$$"+dateF);
+//						scheduleList.add(item);
+//					}
+//					else
+//					{
+//						ArrayList<CommandMap> scheduleList  = new ArrayList<CommandMap>();
+//						scheduleList.add(item);
+//						vessels.put(vessel+"$$"+dateF, scheduleList);
+//					}
+//
+//
+//				}
+//				//출발항 없을 경우
+//				else
+//				{
+//					CommandMap vessels = new CommandMap();
+//
+//					ArrayList<CommandMap> scheduleList  = new ArrayList<CommandMap>();
+//
+//					scheduleList.add(item);
+//
+//					/*
+//					 * 
+//					 *  스케줄 그룹 키 : vessel$$fromDate
+//					 */
+//
+//					vessels.put(vessel+"$$"+dateF, scheduleList);
+//
+//					fromPorts.put(fromPort, vessels);
+//				}
+//
+//
+//
+//			}
+//			else
+//			{
+//				//스케줄 그룹
+//				CommandMap vessels = new CommandMap();
+//
+//				ArrayList<CommandMap> scheduleList  = new ArrayList<CommandMap>();
+//
+//				scheduleList.add(item);
+//
+//				/*
+//				 * 
+//				 *  스케줄 그룹 키 : vessel$$fromDate
+//				 */
+//
+//				vessels.put(vessel+"$$"+dateF, scheduleList);
+//
+//				// 출발항 그룹
+//				CommandMap newFromPorts = new CommandMap();
+//
+//				newFromPorts.put(fromPort, vessels);	
+//
+//				areaList.put(area_name, newFromPorts);
+//			}
+//
+//		}
+//
+//		//정렬 및 공동 배선
+//
+//		return areaList;
+//
+//
+//
+//	}
+//
+//	/*
+//	 * map
+//	 *    key(vessel)
+//	 *    scheduleList
+//	 *
+//	 * list
+//	 * 	
+//	 * 
+//	 * 
+//	 * list
+//	 * 	 map
+//	 *      key:fromPort
+//	 *      value:map 	 			
+//	 *     			key:vesselName-date     			
+//	 *     			value:scheduleList
+//	 */
+//	@Override
+//	public CommandMap selectInboundScheduleGroupList1(CommandMap param) throws SQLException {
+//
+//		CommandMap result = (CommandMap) selectListMap(param);
+//
+//		List<CommandMap> master = (List) result.get("master");
+//
+//		CommandMap areaList = new CommandMap();
+//
+//		Iterator<CommandMap>iter = master.iterator();
+//
+//		int scheduleKey=0;
+//
+//		while(iter.hasNext())
+//		{
+//			HashMap<String, Object> item = iter.next();
+//
+//			String area_name	= (String) item.get("area_name");
+//
+//			String fromPort 	= (String) item.get("fromPort");
+//
+//			String toPort 		= (String) item.get("port");
+//
+//			String vessel 		= (String) item.get("vessel");
+//
+//			if(areaList.containsKey(area_name))
+//			{
+//				//출발항 목록
+//				HashMap<String, Object> fromPorts =(HashMap<String, Object>) areaList.get(area_name);
+//
+//				//출발항 있을 경우
+//				if(fromPorts.containsKey(fromPort))					  
+//				{
+//					//스케줄 목록
+//					HashMap<String, Object> vessels =(HashMap<String, Object>) fromPorts.get(fromPort);
+//
+//
+//					//vessel 있을 경우
+//					if(vessels.containsKey(vessel))					  
+//					{
+//						ArrayList<HashMap<String, Object>> scheduleList =(ArrayList<HashMap<String, Object>>) vessels.get(vessel);
+//						scheduleList.add(item);
+//					}
+//					else
+//					{
+//						ArrayList<HashMap<String, Object>> scheduleList  = new ArrayList<HashMap<String,Object>>();
+//						scheduleList.add(item);
+//						vessels.put(vessel+"-"+scheduleKey, scheduleList);
+//					}
+//
+//
+//				}
+//				//출발항 없을 경우
+//				else
+//				{
+//					HashMap<String, Object> vessels = new HashMap<String, Object>();
+//
+//					ArrayList<HashMap<String, Object>> scheduleList  = new ArrayList<HashMap<String,Object>>();
+//
+//					scheduleList.add(item);
+//
+//					/*
+//					 * 
+//					 *  스케줄 그룹 키 : vessel-fromDate
+//					 */
+//
+//					vessels.put(vessel+"-"+scheduleKey, scheduleList);
+//
+//					fromPorts.put(fromPort, vessels);
+//				}
+//				// 
+//			}
+//			else
+//			{	
+//
+//				//스케줄(선박) 목록
+//				ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String,Object>>();
+//
+//				scheduleList.add(item);
+//
+//				HashMap<String, Object> vessels = new HashMap<String, Object>();
+//
+//				vessels.put(vessel, scheduleList);
+//
+//				// 출발항 그룹
+//				HashMap<String, Object> newFromPorts = new HashMap<String, Object>();
+//
+//				newFromPorts.put(fromPort, vessels);	
+//
+//				areaList.put(area_name, newFromPorts);
+//
+//			}
+//		}
+//
+//		return areaList;
+//	}
 
-	}
 
-
-
-	/** 지역
-	 *  ----출발항(외국항)
-	 *  --------선박
-	 *  -----------도착항(국내항)
-	 */
-	private CommandMap selectInboundScheduleGroupList3(CommandMap param) throws SQLException {
-
-		log.info("param:{}",param);
-
-		CommandMap result = (CommandMap) selectListMap(param);
-
-		List<CommandMap> master = (List) result.get("master");
-
-		CommandMap areaList = new CommandMap();
-
-		Iterator<CommandMap>iter = master.iterator();		
-
-		while(iter.hasNext())
-		{
-			CommandMap item = iter.next();
-
-			String area_name=(String) item.get("area_name");
-
-			String fromPort = (String) item.get("fromPort");
-
-			String toPort = (String) item.get("port");
-
-			String dateF = (String) item.get("DateF");
-
-			String vessel = (String) item.get("vessel");
-
-			if(areaList.containsKey(area_name))
-			{	
-				//출발항 목록
-				CommandMap fromPorts =(CommandMap) areaList.get(area_name);
-
-				//출발항 있을 경우
-				if(fromPorts.containsKey(fromPort))					  
-				{
-					//스케줄 목록
-					CommandMap vessels =(CommandMap) fromPorts.get(fromPort);
-
-
-					//vessel 있을 경우
-					if(vessels.containsKey(vessel+"$$"+dateF))					  
-					{
-						ArrayList<CommandMap> scheduleList =(ArrayList<CommandMap>) vessels.get(vessel+"$$"+dateF);
-						scheduleList.add(item);
-					}
-					else
-					{
-						ArrayList<CommandMap> scheduleList  = new ArrayList<CommandMap>();
-						scheduleList.add(item);
-						vessels.put(vessel+"$$"+dateF, scheduleList);
-					}
-
-
-				}
-				//출발항 없을 경우
-				else
-				{
-					CommandMap vessels = new CommandMap();
-
-					ArrayList<CommandMap> scheduleList  = new ArrayList<CommandMap>();
-
-					scheduleList.add(item);
-
-					/*
-					 * 
-					 *  스케줄 그룹 키 : vessel$$fromDate
-					 */
-
-					vessels.put(vessel+"$$"+dateF, scheduleList);
-
-					fromPorts.put(fromPort, vessels);
-				}
-
-
-
-			}
-			else
-			{
-				//스케줄 그룹
-				CommandMap vessels = new CommandMap();
-
-				ArrayList<CommandMap> scheduleList  = new ArrayList<CommandMap>();
-
-				scheduleList.add(item);
-
-				/*
-				 * 
-				 *  스케줄 그룹 키 : vessel$$fromDate
-				 */
-
-				vessels.put(vessel+"$$"+dateF, scheduleList);
-
-				// 출발항 그룹
-				CommandMap newFromPorts = new CommandMap();
-
-				newFromPorts.put(fromPort, vessels);	
-
-				areaList.put(area_name, newFromPorts);
-			}
-
-		}
-
-		//정렬 및 공동 배선
-
-		return areaList;
-
-
-
-	}
-
-	/*
-	 * map
-	 *    key(vessel)
-	 *    scheduleList
-	 *
-	 * list
-	 * 	
-	 * 
-	 * 
-	 * list
-	 * 	 map
-	 *      key:fromPort
-	 *      value:map 	 			
-	 *     			key:vesselName-date     			
-	 *     			value:scheduleList
-	 */
-	@Override
-	public CommandMap selectInboundScheduleGroupList1(CommandMap param) throws SQLException {
-
-		CommandMap result = (CommandMap) selectListMap(param);
-
-		List<CommandMap> master = (List) result.get("master");
-
-		CommandMap areaList = new CommandMap();
-
-		Iterator<CommandMap>iter = master.iterator();
-
-		int scheduleKey=0;
-
-		while(iter.hasNext())
-		{
-			HashMap<String, Object> item = iter.next();
-
-			String area_name=(String) item.get("area_name");
-
-			String fromPort = (String) item.get("fromPort");
-
-			String toPort = (String) item.get("port");
-
-			String vessel = (String) item.get("vessel");
-
-			if(areaList.containsKey(area_name))
-			{
-				//출발항 목록
-				HashMap<String, Object> fromPorts =(HashMap<String, Object>) areaList.get(area_name);
-
-				//출발항 있을 경우
-				if(fromPorts.containsKey(fromPort))					  
-				{
-					//스케줄 목록
-					HashMap<String, Object> vessels =(HashMap<String, Object>) fromPorts.get(fromPort);
-
-
-					//vessel 있을 경우
-					if(vessels.containsKey(vessel))					  
-					{
-						ArrayList<HashMap<String, Object>> scheduleList =(ArrayList<HashMap<String, Object>>) vessels.get(vessel);
-						scheduleList.add(item);
-					}
-					else
-					{
-						ArrayList<HashMap<String, Object>> scheduleList  = new ArrayList<HashMap<String,Object>>();
-						scheduleList.add(item);
-						vessels.put(vessel+"-"+scheduleKey, scheduleList);
-					}
-
-
-				}
-				//출발항 없을 경우
-				else
-				{
-					HashMap<String, Object> vessels = new HashMap<String, Object>();
-
-					ArrayList<HashMap<String, Object>> scheduleList  = new ArrayList<HashMap<String,Object>>();
-
-					scheduleList.add(item);
-
-					/*
-					 * 
-					 *  스케줄 그룹 키 : vessel-fromDate
-					 */
-
-					vessels.put(vessel+"-"+scheduleKey, scheduleList);
-
-					fromPorts.put(fromPort, vessels);
-				}
-				// 
-			}
-			else
-			{	
-
-				//스케줄(선박) 목록
-				ArrayList<HashMap<String, Object>> scheduleList = new ArrayList<HashMap<String,Object>>();
-
-				scheduleList.add(item);
-
-				HashMap<String, Object> vessels = new HashMap<String, Object>();
-
-				vessels.put(vessel, scheduleList);
-
-				// 출발항 그룹
-				HashMap<String, Object> newFromPorts = new HashMap<String, Object>();
-
-				newFromPorts.put(fromPort, vessels);	
-
-				areaList.put(area_name, newFromPorts);
-
-			}
-		}
-
-		return areaList;
-	}
 
 	@Override
 	public List<CommandMap> selecteScheduleListMapByCondition(CommandMap param) {
@@ -855,8 +889,8 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		return  schduleDAO.selectScheduleLisByCondition(schedule);
 	}
-	
-	
+
+
 	@Override
 	public List<Schedule> selecteAll(CommandMap param) throws SQLException {
 
@@ -871,6 +905,15 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		return  schduleDAO.selectAll(schedule);
 	}
+
+	@Override
+	public List<Schedule> selecteScheduleListByCondition(Schedule param) throws SQLException {
+
+		log.debug("param:{}", param);
+
+		return  schduleDAO.selectScheduleLisByCondition(param);
+	}
+
 
 
 }

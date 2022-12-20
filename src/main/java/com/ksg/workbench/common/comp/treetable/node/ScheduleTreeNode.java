@@ -8,16 +8,19 @@ import com.ksg.view.comp.treetable.TreeTableNode;
 @SuppressWarnings("serial")
 public class ScheduleTreeNode extends DefaultMutableTreeNode{
 	
-	public ScheduleTreeNode(String string) {
+	NodeType type;
+	
+	public ScheduleTreeNode() {};
+	public ScheduleTreeNode(String string, NodeType type) {
 		super(string);
+		this.type = type;
 	}
 
-	public ScheduleTreeNode() {
-		super();
-	}
+	
 
-	public ScheduleTreeNode(TreeTableNode treeTableNode) {
+	public ScheduleTreeNode(TreeTableNode treeTableNode, NodeType type) {
 		super(treeTableNode);
+		this.type = type;
 	}
 
 	protected JointFormatter formatter;
@@ -25,6 +28,10 @@ public class ScheduleTreeNode extends DefaultMutableTreeNode{
 	public String toString()
 	{
 		return formatter!=null? formatter.getFormattedString():super.toString();
+	}
+	public NodeType getType()
+	{
+		return type;
 	}
 
 }

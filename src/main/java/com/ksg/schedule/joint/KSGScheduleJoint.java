@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
 /**
@@ -28,7 +29,7 @@ public abstract class KSGScheduleJoint {
 	
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	
-	protected ScheduleService scheduleService;
+	protected ScheduleSubService scheduleService;
 	
 	protected HashMap<String, Object> scheduleList;
 	

@@ -187,6 +187,7 @@ public interface SchduleDAO {
 	
 	
 	public List<CommandMap> selectList(CommandMap param) throws SQLException;
+	
 	public List<Map<String, Object>> selectInlnadList(HashMap<String, Object> param) throws SQLException;
 	
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
@@ -204,7 +205,12 @@ public interface SchduleDAO {
 	public List selectInlandScheduleDateList()throws SQLException;
 	
 	public List<ScheduleData> selectScheduleLisByCondition(ScheduleData schedule) throws SQLException;
+	
+	public List<Schedule> selectScheduleLisByCondition(Schedule schedule) throws SQLException;
+	
 	public List<Schedule> selectAll(Schedule schedule) throws SQLException;
+	
+	public List<Schedule> selectAll() throws  Exception;
 	
 	
 	

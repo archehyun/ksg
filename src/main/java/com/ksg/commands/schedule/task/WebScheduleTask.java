@@ -36,11 +36,14 @@ import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.service.ADVService;
 import com.ksg.service.ScheduleService;
 import com.ksg.service.TableService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 public class WebScheduleTask extends SimpleTask{
+	
 	public static final int RESULT_SUCCESS=0;
+	
 	public static final int RESULT_FAILE=1;
 
 
@@ -83,7 +86,7 @@ public class WebScheduleTask extends SimpleTask{
 	public WebScheduleTask() {
 		errorlist= new Vector();
 		tableService = new TableServiceImpl();
-		scheduleService = DAOManager.getInstance().createScheduleService();
+		scheduleService = new ScheduleServiceImpl();
 		advService = DAOManager.getInstance().createADVService();
 		baseService = DAOManager.getInstance().createBaseService();
 

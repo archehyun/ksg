@@ -90,7 +90,7 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableSelectListner;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;
-import com.ksg.workbench.base.dialog.UpdateTableInfoDialog;
+import com.ksg.workbench.master.dialog.UpdateTableInfoDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 import com.ksg.workbench.shippertable.comp.SearchTable;
 import com.ksg.workbench.shippertable.comp.UpdateTablePanel;
@@ -102,7 +102,7 @@ import com.ksg.workbench.shippertable.dialog.ManagePortDialog;
  */
 @Deprecated
 @SuppressWarnings("unchecked")
-public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements ActionListener
+public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI 
 {	
 	private static final String ACTION_SEARCH = "Á¶È¸";
 

@@ -1,4 +1,4 @@
-package com.ksg.workbench.member.dialog;
+package com.ksg.workbench.master.dialog;
 
 
 
@@ -15,7 +15,6 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.service.MemberService;
 import com.ksg.service.impl.MemberServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.base.dialog.BaseInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 public class MemberInsertDialog extends BaseInfoDialog implements ActionListener{

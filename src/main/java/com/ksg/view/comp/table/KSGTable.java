@@ -30,7 +30,7 @@ import org.apache.logging.log4j.Logger;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.service.TableService;
-import com.ksg.workbench.KSGViewParameter;
+import com.ksg.workbench.admin.KSGViewParameter;
 
 /**
  * @author ¹ÚÃ¢Çö

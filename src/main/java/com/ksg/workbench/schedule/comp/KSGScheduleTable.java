@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ScheduleData;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
 public abstract class KSGScheduleTable extends JTable{
@@ -36,7 +37,7 @@ public abstract class KSGScheduleTable extends JTable{
 	
 	protected DefaultTableModel defaultTableModel;
 	
-	protected ScheduleService scheduleService;
+	protected ScheduleSubService scheduleService;
 	
 	protected static final int TALBE_ROW_HEIGHT = 40;
 	

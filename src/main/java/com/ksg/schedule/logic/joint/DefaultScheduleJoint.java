@@ -21,7 +21,9 @@ import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
@@ -58,7 +60,7 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 	protected BaseService baseService;
 
-	protected ScheduleService scheduleService;
+	protected ScheduleSubService scheduleService;
 
 	protected TableService tableService;
 
@@ -89,7 +91,7 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 		baseService 	= DAOManager.getInstance().createBaseService();
 
-		scheduleService	= DAOManager.getInstance().createScheduleService();
+		scheduleService	= new ScheduleServiceImpl();
 
 		Code param = new Code();
 

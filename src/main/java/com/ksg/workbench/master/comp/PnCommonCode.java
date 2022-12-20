@@ -1,4 +1,4 @@
-package com.ksg.workbench.base.code.comp;
+package com.ksg.workbench.master.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,12 +24,11 @@ import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.base.BaseInfoUI;
-import com.ksg.workbench.base.comp.PnBase;
-import com.ksg.workbench.base.dialog.BasePop;
-import com.ksg.workbench.base.dialog.CommCodeUpdatePop;
-import com.ksg.workbench.base.dialog.CommonCodeDetailInsertPop;
-import com.ksg.workbench.base.dialog.CommonCodeInsertPop;
+import com.ksg.workbench.master.BaseInfoUI;
+import com.ksg.workbench.master.dialog.BasePop;
+import com.ksg.workbench.master.dialog.CommCodeUpdatePop;
+import com.ksg.workbench.master.dialog.CommonCodeDetailInsertPop;
+import com.ksg.workbench.master.dialog.CommonCodeInsertPop;
 
 
 /**

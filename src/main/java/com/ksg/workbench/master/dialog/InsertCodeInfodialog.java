@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.workbench.base.code.dialog;
+package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -23,9 +23,7 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.base.BaseInfoUI;
-
-import com.ksg.workbench.base.dialog.BaseInfoDialog;
+import com.ksg.workbench.master.BaseInfoUI;
 
 /**
  * 코드 정보 추가 다이어그램

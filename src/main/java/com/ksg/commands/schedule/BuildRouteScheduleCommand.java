@@ -31,12 +31,13 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
 public class BuildRouteScheduleCommand implements IFCommand {
 	private static final String WORLD_SCHEDULE_ = "WorldSchedule_";
-	private ScheduleService scheduleService;
+	private ScheduleSubService scheduleService;
 	private BaseService baseService;
 	private JTextArea area2;
 	BufferedReader bufferedReader=null;

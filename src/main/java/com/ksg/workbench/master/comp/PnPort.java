@@ -1,4 +1,4 @@
-package com.ksg.workbench.base.port;
+package com.ksg.workbench.master.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -42,13 +42,12 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.base.BaseInfoUI;
-import com.ksg.workbench.base.comp.PnBase;
-import com.ksg.workbench.base.port.dialog.InsertPortAbbrInfoDialog;
-import com.ksg.workbench.base.port.dialog.UpdatePortInfoDialog;
 import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.master.BaseInfoUI;
+import com.ksg.workbench.master.dialog.InsertPortAbbrInfoDialog;
+import com.ksg.workbench.master.dialog.UpdatePortInfoDialog;
 
 import lombok.extern.slf4j.Slf4j;
 

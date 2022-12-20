@@ -26,6 +26,7 @@ import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.TableServiceImpl;
@@ -48,7 +49,7 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 	
 	private TableService 		tableService;
 	protected ADVService 		advService;
-	protected ScheduleService 	scheduleService;
+	protected ScheduleSubService 	scheduleService;
 	protected BaseService 		baseService;
 	
 	private VesselService vesselService = new VesselServiceImpl();

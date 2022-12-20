@@ -1,4 +1,4 @@
-package com.ksg.workbench.base.company;
+package com.ksg.workbench.master.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,11 +37,10 @@ import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.base.BaseInfoUI;
-import com.ksg.workbench.base.comp.PnBase;
-import com.ksg.workbench.base.company.dialog.UpdateCompanyInfoDialog;
 import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.master.BaseInfoUI;
+import com.ksg.workbench.master.dialog.UpdateCompanyInfoDialog;
 
 import lombok.extern.slf4j.Slf4j;
 

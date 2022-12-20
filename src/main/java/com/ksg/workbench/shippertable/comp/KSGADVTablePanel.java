@@ -39,7 +39,7 @@ import com.ksg.service.BaseService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.KSGViewParameter;
+import com.ksg.workbench.admin.KSGViewParameter;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.dialog.ManageTablePortPop;
 import com.ksg.workbench.shippertable.dialog.ManageVesselDialog;

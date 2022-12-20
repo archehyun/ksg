@@ -1,4 +1,4 @@
-package com.ksg.workbench.base.dialog;
+package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -13,8 +13,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.master.BaseInfoUI;
 
 /**
 

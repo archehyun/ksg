@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.workbench.base.vessel.dialog;
+package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,9 +38,8 @@ import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.base.dialog.SearchCompanyInfoDialog;
-import com.ksg.workbench.base.vessel.comp.PnVessel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.master.comp.PnVessel;
 
 @SuppressWarnings("serial")
 public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{

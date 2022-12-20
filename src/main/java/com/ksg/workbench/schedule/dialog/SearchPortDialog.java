@@ -30,8 +30,8 @@ import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.base.port.dialog.UpdatePortInfoDialog;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.master.dialog.UpdatePortInfoDialog;
 
 /**
 

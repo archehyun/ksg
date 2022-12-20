@@ -119,7 +119,7 @@ import com.ksg.workbench.shippertable.dialog.UpdateShipperTableDateDialog;
 
  */
 @SuppressWarnings("unchecked")
-public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements ActionListener
+public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 {	
 	private static final String ACTION_SEARCH = "Á¶È¸";
 

@@ -27,7 +27,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
 import com.ksg.service.TableService;
-import com.ksg.workbench.base.BaseInfoUI;
+import com.ksg.workbench.master.BaseInfoUI;
 
 /**
 

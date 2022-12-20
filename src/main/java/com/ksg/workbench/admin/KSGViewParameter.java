@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.workbench;
+package com.ksg.workbench.admin;
 
 public class KSGViewParameter {
 	public static int TABLE_COLUM_WIDTH = 70;

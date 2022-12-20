@@ -34,12 +34,13 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
 public class BuildInboundCommand implements IFCommand {
 	private static final String TAG_SIZE = "<$z7f$>";
-	private ScheduleService scheduleService;
+	private ScheduleSubService scheduleService;
 	private BaseService baseService;
 	private JTextArea area2;
 	StringBuffer buffer;

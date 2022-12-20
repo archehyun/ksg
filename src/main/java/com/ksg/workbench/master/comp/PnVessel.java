@@ -1,4 +1,4 @@
-package com.ksg.workbench.base.vessel.comp;
+package com.ksg.workbench.master.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -53,15 +53,14 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.adv.comp.SimpleFileFilter;
-import com.ksg.workbench.base.BaseInfoUI;
-import com.ksg.workbench.base.comp.PnBase;
-import com.ksg.workbench.base.vessel.dialog.InsertVesselAbbrInfoDialog;
-import com.ksg.workbench.base.vessel.dialog.InsertVesselInfoDialog;
-import com.ksg.workbench.base.vessel.dialog.UpdateVesselInfoDialog;
-import com.ksg.workbench.base.vessel.dialog.VesselImportDialog;
 import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.master.BaseInfoUI;
+import com.ksg.workbench.master.dialog.InsertVesselAbbrInfoDialog;
+import com.ksg.workbench.master.dialog.InsertVesselInfoDialog;
+import com.ksg.workbench.master.dialog.UpdateVesselInfoDialog;
+import com.ksg.workbench.master.dialog.VesselImportDialog;
 
 import lombok.extern.slf4j.Slf4j;
 

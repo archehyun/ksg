@@ -1,4 +1,4 @@
-package com.ksg.workbench.base;
+package com.ksg.workbench.master;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -32,13 +33,13 @@ import com.ibatis.sqlmap.client.SqlMapException;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.IconData;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.base.code.comp.PnCommonCode;
-import com.ksg.workbench.base.comp.PnArea;
-import com.ksg.workbench.base.comp.PnBase;
-import com.ksg.workbench.base.company.PnCompany;
-import com.ksg.workbench.base.port.PnPort;
-import com.ksg.workbench.base.vessel.comp.PnVessel;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
+import com.ksg.workbench.master.comp.PnArea;
+import com.ksg.workbench.master.comp.PnBase;
+import com.ksg.workbench.master.comp.PnCommonCode;
+import com.ksg.workbench.master.comp.PnCompany;
+import com.ksg.workbench.master.comp.PnPort;
+import com.ksg.workbench.master.comp.PnVessel;
 
 /**
 
@@ -356,6 +357,12 @@ public class BaseInfoUI extends AbstractMgtUI{
 			}
 			super.paintComponent(g);
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

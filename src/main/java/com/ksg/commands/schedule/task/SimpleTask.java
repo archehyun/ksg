@@ -16,6 +16,8 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 public abstract class SimpleTask implements ScheduleTask{
@@ -26,14 +28,14 @@ public abstract class SimpleTask implements ScheduleTask{
 	protected int current = 0;
 	protected int process=0;
 	protected BaseService baseService;
-	protected ScheduleService scheduleService;
+	protected ScheduleSubService scheduleService;
 	protected HashMap<String, String> portMap;
 	protected String fileName;
 	protected ScheduleBuildMessageDialog di;
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	public SimpleTask() {
 		baseService 	= DAOManager.getInstance().createBaseService();
-		scheduleService	= DAOManager.getInstance().createScheduleService();
+		scheduleService	= new ScheduleServiceImpl();
 		current = 0;
 		done = false;
 		canceled = false;

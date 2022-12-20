@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.workbench.base.dialog;
+package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,8 +31,8 @@ import javax.swing.JTextField;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.AreaInfo;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.master.BaseInfoUI;
 
 public class InsertAreaInfodialog extends BaseInfoDialog implements ActionListener {
 	/**

@@ -1,4 +1,4 @@
-package com.ksg.workbench.base.dialog;
+package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.ksg.service.impl.CodeServiceImpl;
-import com.ksg.workbench.base.code.comp.PnCommonCode;
+import com.ksg.workbench.master.comp.PnCommonCode;
 
 /**
 

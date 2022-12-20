@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.workbench.base.port.dialog;
+package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -27,8 +27,7 @@ import com.ksg.service.PortService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.base.BaseInfoUI;
-import com.ksg.workbench.base.dialog.BaseInfoDialog;
+import com.ksg.workbench.master.BaseInfoUI;
 
 /**
  * 항구 약어 정보 추가 다이어그램

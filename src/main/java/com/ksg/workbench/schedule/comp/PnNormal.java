@@ -17,6 +17,7 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
@@ -39,7 +40,7 @@ public class PnNormal extends KSGPanel implements ActionListener{
 
 	private JComboBox cbxNormalInOut;
 	
-	private ScheduleService service;
+	private ScheduleSubService service;
 	
 	private List<HashMap<String, Object>> master;
 	

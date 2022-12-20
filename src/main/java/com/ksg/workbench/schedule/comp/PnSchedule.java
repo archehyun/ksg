@@ -1,13 +1,9 @@
 package com.ksg.workbench.schedule.comp;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-
-import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.KSGView;
 
 /**
 
@@ -25,7 +21,7 @@ import com.ksg.view.comp.panel.KSGPanel;
 
   */
 @SuppressWarnings("serial")
-public abstract class PnSchedule extends KSGPanel implements ActionListener, ComponentListener{
+public abstract class PnSchedule extends KSGView{
 	
 	
 	protected String input_date="";
@@ -43,7 +39,7 @@ public abstract class PnSchedule extends KSGPanel implements ActionListener, Com
 	
 	protected CodeServiceImpl codeService;
 
-	protected ScheduleService scheduleService;
+	protected ScheduleSubService scheduleService;
 	
 	public PnSchedule()
 	{
@@ -51,17 +47,6 @@ public abstract class PnSchedule extends KSGPanel implements ActionListener, Com
 		scheduleService = new ScheduleServiceImpl();
 	}
 	
-	@Override
-	public void componentResized(ComponentEvent e) {}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {}
-
-	@Override
-	public void componentShown(ComponentEvent e) {}
-
-	@Override
-	public void componentHidden(ComponentEvent e) {}
-
+	
 
 }

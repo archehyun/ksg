@@ -16,8 +16,10 @@ import com.ksg.workbench.common.comp.treetable.node.AreaTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.InboundGroupTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.InboundPortTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.JointOutboundScheduleTreeNode;
+import com.ksg.workbench.common.comp.treetable.node.NodeType;
 import com.ksg.workbench.common.comp.treetable.node.OutbondScheduleTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.PortTreeNode;
+import com.ksg.workbench.common.comp.treetable.node.ScheduleTreeNode;
 
 @SuppressWarnings("serial")
 public class KSGTreeTable extends JTreeTable{
@@ -59,33 +61,54 @@ public class KSGTreeTable extends JTreeTable{
 			
 			if(t== null) return this;
 			
+			if(node instanceof ScheduleTreeNode)
+			{
+				ScheduleTreeNode treeNode = (ScheduleTreeNode) node;
+				
+				if(treeNode.getType() == NodeType.PORT)
+				{
+					setIcon(new ImageIcon(changePortImg));	
+				}
+				
+				else if(treeNode.getType() == NodeType.AREA)
+				{
+					setIcon(new ImageIcon(changeAreaImg));	
+				}
+				else if(treeNode.getType() == NodeType.SCHEDULE)
+				{
+					setIcon(new ImageIcon(changeShipImg));	
+				}
+				else if(treeNode.getType() == NodeType.JOINT_SCHEDULE)
+				{
+					setIcon(new ImageIcon(changeShipRedImg));	
+				}
+			}
 			
-			
-			if(node instanceof InboundPortTreeNode)
-			{
-				setIcon(new ImageIcon(changePortImg));
-			}
-			else if(node instanceof PortTreeNode)
-			{
-				setIcon(new ImageIcon(changePortImg)); 
-			}
-			else if(node instanceof InboundGroupTreeNode)
-			{
-				setIcon(new ImageIcon(changeShipImg)); 
-			}
-			else if(node instanceof OutbondScheduleTreeNode)
-			{
-				setIcon(new ImageIcon(changeShipImg)); 
-			} 
-			
-			else if(node instanceof JointOutboundScheduleTreeNode)
-			{
-				setIcon(new ImageIcon(changeShipRedImg)); 
-			}
-			else if(node instanceof AreaTreeNode)
-			{
-				setIcon(new ImageIcon(changeAreaImg)); 
-			}
+//			if(node instanceof InboundPortTreeNode)
+//			{
+//				setIcon(new ImageIcon(changePortImg));
+//			}
+//			else if(node instanceof PortTreeNode)
+//			{
+//				setIcon(new ImageIcon(changePortImg)); 
+//			}
+//			else if(node instanceof InboundGroupTreeNode)
+//			{
+//				setIcon(new ImageIcon(changeShipImg)); 
+//			}
+//			else if(node instanceof OutbondScheduleTreeNode)
+//			{
+//				setIcon(new ImageIcon(changeShipImg)); 
+//			} 
+//			
+//			else if(node instanceof JointOutboundScheduleTreeNode)
+//			{
+//				setIcon(new ImageIcon(changeShipRedImg)); 
+//			}
+//			else if(node instanceof AreaTreeNode)
+//			{
+//				setIcon(new ImageIcon(changeAreaImg)); 
+//			}
 
 			setText(String.valueOf(value));
 			

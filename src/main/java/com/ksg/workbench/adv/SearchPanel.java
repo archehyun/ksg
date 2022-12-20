@@ -78,7 +78,7 @@ import com.ksg.view.comp.PageInfoCheckBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableImpl;
-import com.ksg.workbench.KSGViewParameter;
+import com.ksg.workbench.admin.KSGViewParameter;
 import com.ksg.workbench.adv.comp.PageCellRenderer;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.comp.SimpleFileFilter;

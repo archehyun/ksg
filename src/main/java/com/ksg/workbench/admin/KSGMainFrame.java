@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package com.ksg.workbench;
+package com.ksg.workbench.admin;
 
 
 
@@ -62,17 +62,18 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleServiceManager;
-import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.KSGLogin;
 import com.ksg.workbench.adv.ADVManageUI;
-import com.ksg.workbench.base.BaseInfoUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.dialog.SearchADVCountDialog;
 import com.ksg.workbench.common.comp.dialog.WebScheduleCreateDialog;
+import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.preference.PreferenceDialog;
 import com.ksg.workbench.print.PrintADVUI;
 import com.ksg.workbench.schedule.ScheduleMgtUI;
@@ -141,7 +142,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 	private JToolBar toolbar;
 	
-	private ScheduleService scheduleService;
+	private ScheduleSubService scheduleService;
 
 	private KSGLogin login;
 

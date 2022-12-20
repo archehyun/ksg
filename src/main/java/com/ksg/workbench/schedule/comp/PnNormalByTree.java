@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,9 +22,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.dtp.api.control.ScheduleController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.domain.ScheduleEnum;
 import com.ksg.service.impl.AreaService;
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.service.impl.CodeServiceImpl;
@@ -30,7 +38,7 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.treetable.KSGTreeTable;
-import com.ksg.workbench.schedule.comp.treenode.TreeNodeManager;
+import com.ksg.workbench.common.comp.treetable.nodemager.TreeNodeManager;
 import com.ksg.workbench.schedule.dialog.SearchPortDialog;
 
 
@@ -49,6 +57,8 @@ import com.ksg.workbench.schedule.dialog.SearchPortDialog;
  * @프로그램 설명 : 스케줄 조회 후 트리 형태로 표시 , 공동 배선 적용
 
  */
+
+@Component("schedule")
 public class PnNormalByTree extends PnSchedule {
 
 	/**
@@ -63,6 +73,8 @@ public class PnNormalByTree extends PnSchedule {
 	private KSGComboBox cbxArea;
 
 	private JComboBox<KSGTableColumn> cbxNormalSearch;
+	
+	private JCheckBox chkRoute;
 
 	private JTextField txfNoramlSearch;	
 
@@ -80,12 +92,15 @@ public class PnNormalByTree extends PnSchedule {
 	
 	AreaService areaService = new AreaServiceImpl();
 	
+
+	ScheduleController control = new ScheduleController(); 
+	
 	protected ObjectMapper objectMapper;
 
 	public PnNormalByTree() {
 
 		super();
-		
+		System.out.println("test");
 		codeService = new CodeServiceImpl();
 		
 		objectMapper = new ObjectMapper();
@@ -119,9 +134,9 @@ public class PnNormalByTree extends PnSchedule {
 		
 		treeTableModel.addColumn(new KSGTableColumn("fromPort", "출발항",200));
 		
-		treeTableModel.addColumn(new KSGTableColumn("DateF", "출발일", 90));
+		treeTableModel.addColumn(new KSGTableColumn("dateF", "출발일", 90));
 		
-		treeTableModel.addColumn(new KSGTableColumn("DateT", "도착일", 90));
+		treeTableModel.addColumn(new KSGTableColumn("dateT", "도착일", 90));
 		
 		treeTableModel.addColumn(new KSGTableColumn("port", "도착항",200));
 
@@ -154,6 +169,8 @@ public class PnNormalByTree extends PnSchedule {
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		 
 		cbxNormalInOut = new KSGComboBox("inOutType");
+		
+		
 		cbxNormalSearch = new KSGComboBox();
 		cbxNormalSearch.addItem(new KSGTableColumn("", "전체"));
 		cbxNormalSearch.addItem(new KSGTableColumn("table_id", "테이블 ID"));
@@ -164,6 +181,23 @@ public class PnNormalByTree extends PnSchedule {
 		cbxNormalSearch.addItem(new KSGTableColumn("n_voyage_num", "항차번호"));		
 		cbxNormalSearch.addItem(new KSGTableColumn("dateF", "출발일"));
 		cbxNormalSearch.addItem(new KSGTableColumn("dateT", "도착일"));
+		
+		cbxNormalInOut.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				// TODO Auto-generated method stub
+				if(cbxNormalInOut.getSelectedItem() ==null)return;
+					
+				String selectedValue = cbxNormalInOut.getSelectedItem().toString();
+				
+				chkRoute.setEnabled("OUTBOUND".equals(selectedValue));
+				System.out.println(selectedValue);
+			}
+		});
+		
+		chkRoute = new JCheckBox("Route");
+		chkRoute.setBackground(Color.white);
 		
 		cbxArea = new KSGComboBox();
 
@@ -205,6 +239,9 @@ public class PnNormalByTree extends PnSchedule {
 		pnNormalSearchCenter.add(cbxArea);
 
 		pnNormalSearchCenter.add(pnPortSearch);
+		
+		pnNormalSearchCenter.add(chkRoute);
+		
 
 		pnNormalSearchCenter.add(new JLabel("항목:"));
 		
@@ -273,22 +310,34 @@ public class PnNormalByTree extends PnSchedule {
 
 
 			// inbound 호출시
-			if(col.columnField.equals("I"))
+			if(col.columnField.equals(ScheduleEnum.INBOUND.getSymbol()))
 			{	
 				table.setShowPathCount(4);
 
-				CommandMap result = (CommandMap) scheduleService.selectInboundScheduleGroupList(param);
+				CommandMap result = (CommandMap) control.selectInboundScheduleGroupList(param);
 				
 				treeTableModel.setRoot(nodeManager.getInboundTreeNode(result));
 			}
 			// outbound 호출시
 			else
 			{
-				table.setShowPathCount(5);		
 				
-				HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectOutboundScheduleGroupList(param);
+				table.setShowPathCount(5);
 				
-				treeTableModel.setRoot(nodeManager.getOutboundTreeNode(result));
+				if(chkRoute.isSelected())
+				{
+					CommandMap result = (CommandMap) control.selectRouteScheduleGroupList(param);
+					treeTableModel.setRoot(nodeManager.getRouteTreeNode(result));
+				}
+				else
+				{
+					CommandMap result = (CommandMap) control.selectOutboundScheduleGroupList(param);
+					
+					treeTableModel.setRoot(nodeManager.getOutboundTreeNode(result));
+					
+				}
+				
+				
 			}
 
 
@@ -362,7 +411,6 @@ public class PnNormalByTree extends PnSchedule {
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		
 		
 		
 		cbxNormalInOut.initComp();

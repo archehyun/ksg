@@ -1,4 +1,4 @@
-package com.ksg.workbench.base.comp;
+package com.ksg.workbench.master.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.base.BaseInfoUI;
+import com.ksg.workbench.master.BaseInfoUI;
 
 /**
  * 마스터 화면 추상 클래스

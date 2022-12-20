@@ -1,4 +1,4 @@
-package com.ksg.workbench.base.comp;
+package com.ksg.workbench.master.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -32,10 +32,10 @@ import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.base.BaseInfoUI;
-import com.ksg.workbench.base.dialog.UpdateAreaInfodialog;
 import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.master.BaseInfoUI;
+import com.ksg.workbench.master.dialog.UpdateAreaInfodialog;
 
 
 
