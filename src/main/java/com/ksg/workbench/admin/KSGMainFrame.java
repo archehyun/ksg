@@ -246,9 +246,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				
 		
 		pnCenter = new KSGPanel();
+		
 		pnCenter.setLayout(cardLayout);
 		
 		pnMain.add(pnCenter);
+		
 		pnMain.add(buildButtom(),BorderLayout.SOUTH);
 
 		return pnMain;
@@ -585,6 +587,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	public void actionPerformed(ActionEvent e) {
 
 		cardLayout.show(pnCenter,  e.getActionCommand());
+		
 		if(e.getActionCommand().equals(PREFERENCE))
 		{
 			PreferenceDialog preferenceDialog = new PreferenceDialog(PREFERENCE,true);
@@ -1111,17 +1114,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 					e1.printStackTrace();
 				}
 			}
-			else if(e.getActionCommand().equals("Inbound스케줄"))
-			{
-
-			}
-			else if(e.getActionCommand().equals("항로별"))
-			{
-			}
-			else if(e.getActionCommand().equals("일괄작업(Build_Sort)"))
-			{
-
-			}
+			
 			else if(e.getActionCommand().equals("일괄작업(Sort)"))
 			{
 				new Thread(){

@@ -163,19 +163,16 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 	public List getScheduleListByArea(ScheduleData data)
 			throws SQLException {
-		// TODO Auto-generated method stub
 		return schduleDAO.getScheduleListByArea(data);
 	}
 
 	public List getScheduleListByVesselVoy(String vessel, String voy)
 			throws SQLException {
-		// TODO Auto-generated method stub
 		return schduleDAO.getScheduleListByVesselVoy(vessel,voy );
 	}
 
 	public List getScheduleListByToFrom(String areaCode, String areaCode2,
 			String InOut, int forSch) throws SQLException {
-		// TODO Auto-generated method stub
 		return schduleDAO.getScheduleListByToFrom(areaCode, areaCode2,
 				InOut, forSch);
 	}
@@ -204,7 +201,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 
 	public int getScheduleNTopCount(ScheduleData data) throws SQLException {
-		// TODO Auto-generated method stub
 		return schduleDAO.getScheduleNTopCount(data);
 	}
 
@@ -215,12 +211,10 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 	public List<ScheduleData> getConsoleScheduleList(String port,
 			String fromPort) throws SQLException {
-		// TODO Auto-generated method stub
 		return schduleDAO.getConsoleScheduleList(port, fromPort);
 	}
 
 	public List getConsoleScheduleList() throws SQLException {
-		// TODO Auto-generated method stub
 		return schduleDAO.getConsoleScheduleList();
 	}
 
@@ -239,7 +233,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	}
 
 	public List getInlandScheduleDateList() throws SQLException {
-		// TODO Auto-generated method stub
 		return schduleDAO.getInlandScheduleDateList();
 	}
 

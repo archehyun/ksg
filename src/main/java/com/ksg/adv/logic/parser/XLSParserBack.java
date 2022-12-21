@@ -24,39 +24,32 @@ import com.ksg.workbench.adv.comp.ADVTableNotMatchException;
 public class XLSParserBack extends XLSParser{
 
 	public String getData() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public int getSearchedTableCount() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public Vector getXLSData() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public void setPreData(List li) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public Vector getErrorList() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public void readFile(String sheetName, String xlsFile, ShippersTable table)
 			throws FileNotFoundException, ADVTableNotMatchException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void readFile(String xlsFile, ShippersTable table)
 			throws FileNotFoundException, ADVTableNotMatchException {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -70,24 +63,20 @@ public class XLSParserBack extends XLSParser{
 			ShippersTable table) throws FileNotFoundException,
 			ADVTableNotMatchException, IOException {
 				return sheetList;
-		// TODO Auto-generated method stub
 		
 	}
 
 	public Vector getXLSTableInfoList() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Vector extractData(Sheet sheet, Vector<TableLocation> tableLocation)
 			throws ADVTableNotMatchException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public Vector<TableLocation> readFile(Vector sheetNameList)
 			throws ADVTableNotMatchException, IOException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -310,7 +310,6 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 					}
 
 				} catch (SQLException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 

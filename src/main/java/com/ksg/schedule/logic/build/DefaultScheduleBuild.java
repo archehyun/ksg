@@ -241,29 +241,24 @@ public abstract class DefaultScheduleBuild implements ScheduleBuild{
 	
 	
 	public int getLengthOfTask() {
-		// TODO Auto-generated method stub
 		return lengthOfTask;
 	}
 	public int getCurrent() {
-		// TODO Auto-generated method stub
 		return current;
 	}
 	
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

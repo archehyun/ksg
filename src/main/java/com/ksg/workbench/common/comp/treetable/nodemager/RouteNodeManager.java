@@ -3,6 +3,7 @@ package com.ksg.workbench.common.comp.treetable.nodemager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -22,7 +23,21 @@ import com.ksg.workbench.common.comp.treetable.node.AreaTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.OutbondScheduleTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.PortTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.ScheduleDateComparator;
+/**
+ * 
 
+  * @FileName : RouteNodeManager.java
+
+  * @Project : KSG2
+
+  * @Date : 2022. 12. 20. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 라우트 스케줄 트리 노드 생성
+ */
 public class RouteNodeManager extends AbstractNodeManager{
 	
 	
@@ -50,40 +65,25 @@ public class RouteNodeManager extends AbstractNodeManager{
 			
 			
 			DefaultMutableTreeNode area = new AreaTreeNode(strArea);
+			
+			Arrays.sort(vesselArray);
 
 			for (Object vesselKey : vesselArray)
 			{
+				
 				// 요소조회
 				List<ScheduleData> scheduleList = (List<ScheduleData>) vesselList.get(vesselKey);
-
-				Map<String, List<ScheduleData>> fromPorts =scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getFromPort));
-
-				Map<String, List<ScheduleData>> toPorts =scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getPort));
-
-				int toPortCount = toPorts.keySet().size();
-
-				int fromPortCount = fromPorts.keySet().size();
 				
-				//TODO 스케줄 밸리데이션
+				// 항차번호(숫자)로 그룹화
+				Map<Integer, List<ScheduleData>> testList =  scheduleList.stream().collect(
+						Collectors.groupingBy(o -> getNumericVoyage(o.getVoyage_num()) ));// 항차
 				
 				
-				DefaultMutableTreeNode schedule = new DefaultMutableTreeNode(vesselKey+", ");
-				
-				
-				
-				DefaultMutableTreeNode toPort =  new PortTreeNode( StringUtils.join(makeDayList(toPorts, ScheduleDateComparator.TO_DATE)," - "));				
-				
-				scheduleList.stream().forEach(o -> toPort.add(new OutbondScheduleTreeNode(new TreeTableNode(objectMapper.convertValue(o, CommandMap.class)))));
-				
-				// 출발항 목록
-				schedule.add(new PortTreeNode( StringUtils.join(makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE)," - ")));
-				
-				// 도착항 목록
-				schedule.add(toPort);
-				
-				
-				
-				area.add(schedule);
+				for(Object voyagekey:testList.keySet())
+				{
+					List<ScheduleData> subscheduleList = testList.get(voyagekey);
+					area.add(makeScheduleNode( vesselKey, voyagekey, subscheduleList));
+				}
 				
 			}
 			root.add(area);
@@ -91,6 +91,41 @@ public class RouteNodeManager extends AbstractNodeManager{
 		}
 
 		return root;
+	}
+	
+	private DefaultMutableTreeNode makeScheduleNode( Object vesselKey, Object voyagekey, List<ScheduleData> scheduleList) {
+		
+
+		Map<String, List<ScheduleData>> fromPorts =scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getFromPort));
+
+		Map<String, List<ScheduleData>> toPorts =scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getPort));
+
+		int toPortCount = toPorts.keySet().size();
+
+		int fromPortCount = fromPorts.keySet().size();
+		
+		//TODO 스케줄 - Route 스케줄 밸리데이션
+		
+		// TODO 스케줄-항차 번호 표시
+		DefaultMutableTreeNode schedule = new OutbondScheduleTreeNode(vesselKey+", "+ voyagekey);
+		
+		
+		
+		DefaultMutableTreeNode toPort =  new PortTreeNode( StringUtils.join(makeDayList(toPorts, ScheduleDateComparator.TO_DATE)," - "));				
+		
+		scheduleList.stream().forEach(o -> toPort.add(new OutbondScheduleTreeNode(new TreeTableNode(objectMapper.convertValue(o, CommandMap.class)))));
+		
+		// 출발항 목록
+		schedule.add(new PortTreeNode( StringUtils.join(makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE)," - ")));
+		
+		// 도착항 목록
+		schedule.add(toPort);
+		
+		return schedule;
+		
+		
+		
+		
 	}
 	
 	/**
@@ -154,6 +189,37 @@ public class RouteNodeManager extends AbstractNodeManager{
 				return 0;
 			}
 		}
+	}
+	
+	/**
+	 * 문자형 항차번호 중 숫자만 반환
+	 * @param voyage_num
+	 * @return
+	 */
+	protected int getNumericVoyage(String voyage_num)
+	{
+		int result=0;
+
+		String temp="";
+		if(voyage_num==null)
+			return 0;
+		for(int i=0;i<voyage_num.length();i++)
+		{
+			try{
+				temp+=Integer.parseInt(String.valueOf(voyage_num.charAt(i)));
+			}catch(NumberFormatException e)
+			{
+
+			}
+		}
+		try{
+			result=Integer.valueOf(temp);
+		}catch(Exception e)
+		{
+			return 0;
+		}
+
+		return result;
 	}
 
 }

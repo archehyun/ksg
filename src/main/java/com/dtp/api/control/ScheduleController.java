@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
@@ -13,8 +14,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.Vessel;
 import com.ksg.service.ScheduleSubService;
+import com.ksg.service.VesselService;
 import com.ksg.service.impl.ScheduleServiceImpl;
+import com.ksg.service.impl.VesselServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,10 +30,12 @@ public class ScheduleController extends AbstractController{
 	
 	private ScheduleSubService service;
 	
+	VesselService vesselService;
+	
 	public ScheduleController()
 	{
 		service = new ScheduleServiceImpl();
-		
+		vesselService = new VesselServiceImpl();
 		objectMapper = new ObjectMapper();
 		System.out.println("control");
 		
@@ -115,8 +121,11 @@ public class ScheduleController extends AbstractController{
 											.distinct()
 											.collect(Collectors.toList());
 		
-		
-		
+		CommandMap vesselParam = new CommandMap();
+		vesselParam.put("vesselNameList", vesselNames);
+		List<Vessel> vesselList = vesselService.selectListByCondition(vesselParam);
+		Map<String, Vessel> vesselMap = vesselList.stream().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));
+		li.forEach(o -> o.setVesselInfo(vesselMap.get(o.getVessel())));
 		
 
 		Map<String, Map<String, Map<String, List<ScheduleData>>>> areaList =  li.stream().collect(

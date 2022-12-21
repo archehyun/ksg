@@ -97,7 +97,6 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 
 
 	public List<ShippersTable> getTableListBycompany(ShippersTable table) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -108,14 +107,12 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 
 
 	public List selectCompanyListGroupByPage() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.selectCompanyListGroupByPage");
 	}
 
 
 	public ShippersTable getTableById(ShippersTable shippersTable)
 	throws SQLException {
-		// TODO Auto-generated method stub
 		return (ShippersTable) sqlMap.queryForObject("Table.selectTableByID",shippersTable);
 	}
 
@@ -132,26 +129,22 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 
 
 	public List selectTableInfoByPage(int page) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.selectTableInfoByPage",page);
 	}
 
 
 	public List selectTablePageListByCompany(ShippersTable shippersTable)
 	throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.getTablePageListByCompany",shippersTable);
 	}
 
 
 	public List selectTableCompanyListByPage(ShippersTable shippersTable) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.getTableCompanyListByPage",shippersTable);
 	}
 
 
 	public List selectParentPortList(String table_id) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.getParentPortList",table_id);
 	}
 
@@ -163,17 +156,14 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 
 
 	public List selectTableListByPage(ShippersTable table) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.selectTableListByPage",table);
 	}
 	public List getTablePortList(TablePort tablePort) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.getTablePortList",tablePort);
 	}
 
 
 	public void deleteTablePort(TablePort tablePort) throws SQLException {
-		// TODO Auto-generated method stub
 		sqlMap.delete("Table.deleteTablePort",tablePort);
 	}
 
@@ -194,13 +184,11 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 
 
 	public List getTablePortByDate(String date) throws SQLException {
-		// TODO Auto-generated method stub
 		return (List) sqlMap.queryForList("Table.getTableListByDate",date);
 	}
 
 
 	public List selectTableInfoList(ShippersTable stable) throws SQLException {
-		// TODO Auto-generated method stub
 		return (List) sqlMap.queryForList("Table.selectTableInfoList",stable);
 	}
 
@@ -231,18 +219,15 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 
 
 	public boolean isPageHave(int page, String company) throws SQLException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 
 	public List getTableListByDate(ShippersTable data) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.getTableListByDate",data);
 	}
 
 	public int getTableCount(String date_isusse) throws SQLException {
-		// TODO Auto-generated method stub
 		return (Integer)sqlMap.queryForObject("Table.getTableCountByDate",date_isusse);
 	}
 
@@ -305,7 +290,6 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 
 
 	public List getTableList(ShippersTable table) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.selectTableList",table);
 	}
 
@@ -316,7 +300,6 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 	}
 	
 	public Table_Property getTableProperty(Table_Property param) throws SQLException {
-		// TODO Auto-generated method stub
 		return (Table_Property) sqlMap.queryForObject("TABLEProperty.selectTABLEProperty",param);
 	}
 
@@ -335,25 +318,21 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 
 
 	public int getPortCount(String tableId) throws SQLException {
-		// TODO Auto-generated method stub
 		return (Integer) sqlMap.queryForObject("Table.selectTablePortCount",tableId);
 	}
 
 
 	public int updateTablePortName(TablePort port) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.update("Table.updateTablePortName",port);
 	}
 
 
 	public List getTableDateList() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Table.selectTableDateList");
 	}
 
 
 	public List selectTableInfo() throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -379,7 +358,6 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 
 	@Override
 	public Object selectListByPage(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("shippertable.selectShipperTableListByPage", param);
 	}
 
@@ -391,14 +369,12 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 
 	@Override
 	public Object selectCount(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return  (Integer) selectOne("shippertable.selectCount", param);
 	}
 
 
 	@Override
 	public int delete(Map<String, Object> param) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

@@ -68,7 +68,7 @@ public class InboundNodeManager extends AbstractNodeManager{
 					String vesselName =str.substring(0,str.indexOf("$$"));
 
 					// 스케줄 목록
-					//TODO INBOUND 공동배선 적용 룰 검토
+					//TODO 스케줄 INBOUND 공동배선 적용 룰 검토
 					ArrayList<CommandMap> scheduleList =  (ArrayList<CommandMap>) vesselitems.get(str);
 
 

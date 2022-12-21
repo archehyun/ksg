@@ -200,7 +200,6 @@ public class KSGTreeDefault extends KSGTree{
 		return sub;
 	}
 	public DefaultMutableTreeNode getRoot() {
-		// TODO Auto-generated method stub
 		return root;
 	}
 	public void setGroupBy(String groupBy) {

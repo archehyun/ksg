@@ -2,7 +2,10 @@ package com.ksg.service;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.ksg.domain.Vessel;
 
 public interface VesselService extends PageService{
 	
@@ -29,6 +32,8 @@ public interface VesselService extends PageService{
 	public void insert(HashMap<String, Object> param) throws RuntimeException;	
 	
 	public void insertDetail(HashMap<String, Object> param) throws RuntimeException;
+
+	List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException;
 
 	
 

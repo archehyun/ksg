@@ -43,19 +43,16 @@ public class XTGFactoryV8 extends XTGFactory{
 
 	@Override
 	public XTGPage createPage() {
-		// TODO Auto-generated method stub
 		return new XTGPageV8();
 	}
 
 	@Override
 	public XTGTable createTable(String info,int pageIndex) {
-		// TODO Auto-generated method stub
 		return new XTGTableV8(info,pageIndex);
 	}
 
 	@Override
 	public XTGRow createRow(String data) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

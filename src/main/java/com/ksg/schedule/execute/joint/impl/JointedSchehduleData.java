@@ -65,11 +65,9 @@ public class JointedSchehduleData {
 		return company;
 	}
 	public String vesselType() {
-		// TODO Auto-generated method stub
 		return vesselType;
 	}
 	public List<ScheduleData> getList() {
-		// TODO Auto-generated method stub
 		return list;
 	}
 }

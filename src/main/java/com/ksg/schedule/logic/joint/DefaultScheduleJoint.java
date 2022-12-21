@@ -114,28 +114,23 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 	@Override
 	public int getLengthOfTask() {
-		// TODO Auto-generated method stub
 		return lengthOfTask;
 	}
 	@Override
 	public int getCurrent() {
-		// TODO Auto-generated method stub
 		return current;
 	}
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
 		return done;
 	}
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
 		return message;
 	}
 	

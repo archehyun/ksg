@@ -58,7 +58,6 @@ public class XTGCell extends XTGDoc{
 
 	@Override
 	public void setADVData(String data) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -70,7 +69,6 @@ public class XTGCell extends XTGDoc{
 
 	@Override
 	public void setQuarkData(String data) {
-		// TODO Auto-generated method stub
 		
 	}
 	public String getData()

@@ -41,12 +41,10 @@ public class PortColorInfo {
 		}
 
 		public String getArea_code() {
-			// TODO Auto-generated method stub
 			return area_code;
 		}
 
 		public String getPort_name() {
-			// TODO Auto-generated method stub
 			return port_name;
 		}
 }

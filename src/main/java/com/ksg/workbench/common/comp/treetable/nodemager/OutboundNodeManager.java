@@ -243,7 +243,7 @@ public class OutboundNodeManager extends AbstractNodeManager{
 		// 도착일
 		String dateT = KSGDateUtil.convertDateFormatYYYYMMDDToMMDD(dateTList.get(0));		
 
-		// TODO 대표 선사명 지정
+		// TODO 스케줄 - 대표 선사명 지정
 		String re_company_abbr = "";
 
 		// 선사명 양식 (선사명1, 선사명2, ...)
@@ -300,7 +300,6 @@ public class OutboundNodeManager extends AbstractNodeManager{
 
 		@Override
 		public int compareTo(SortedScheduleGroup o) {
-			// TODO Auto-generated method stub
 			try {
 
 				return formatYYYYMMDD.parse(scheduleList.get(0).getData().getDateF()).compareTo(formatYYYYMMDD.parse(o.scheduleList.get(0).getData().getDateF()));

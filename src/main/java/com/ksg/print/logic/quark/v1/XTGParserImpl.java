@@ -129,12 +129,10 @@ public class XTGParserImpl implements XTGPaser{
 	}
 	
 	public String getTablePrefix() {
-		// TODO Auto-generated method stub
 		return tablePrefix;
 	}
 	
 	public String getPagePrefix() {
-		// TODO Auto-generated method stub
 		return pagePrefix;
 	}
 }

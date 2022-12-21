@@ -316,7 +316,6 @@ public class JTreeTable extends JTable {
 		}
 
 		public Object getCellEditorValue() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 	}

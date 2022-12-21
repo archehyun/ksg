@@ -81,7 +81,6 @@ public class KSGTreeType2 extends JTree implements KSGObserver{
 	    }
 	  }
 	public void update(KSGModelManager manager) {
-		// TODO Auto-generated method stub
 		
 	}
 

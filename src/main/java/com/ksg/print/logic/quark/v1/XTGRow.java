@@ -41,7 +41,6 @@ public class XTGRow extends XTGDoc
 	}
 	@Override
 	public String getPreFix() {
-		// TODO Auto-generated method stub
 		return prefix;
 	}
 	@Override
@@ -61,7 +60,6 @@ public class XTGRow extends XTGDoc
 	}
 	@Override
 	public void setADVData(String data) {
-		// TODO Auto-generated method stub
 
 	}
 	public void setADVData(String[] data) {
@@ -86,7 +84,6 @@ public class XTGRow extends XTGDoc
 	}
 	@Override
 	public void setQuarkData(String data) {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -30,7 +30,7 @@ public class OutboundScheduleJointTest {
 		
 		try {
 			List area= scheduleService.selecteScheduleListByCondition(param);
-			joint.buildSortedAndJointedScheduleList2(joint.buildOutboundScheduleGroup(area));
+			//joint.buildSortedAndJointedScheduleList2(joint.buildOutboundScheduleGroup(area));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

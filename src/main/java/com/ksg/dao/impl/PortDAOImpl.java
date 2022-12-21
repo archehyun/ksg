@@ -52,7 +52,6 @@ public class PortDAOImpl extends AbstractDAO implements PortDAO{
 	}
 
 	public int update(HashMap<String, Object> param) throws SQLException{
-		// TODO Auto-generated method stub
 		return (Integer) update(this.namespace+".updatePort",param);
 	}
 
@@ -68,36 +67,30 @@ public class PortDAOImpl extends AbstractDAO implements PortDAO{
 
 	@Override
 	public List<Map<String, Object>> selectListByLike(Map<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList(this.namespace+".selectPortListByLike", param);
 	}
 	@Override
 	public List<PortInfo> selectAll() throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList(this.namespace+".selectAll");
 	}
 
 	@Override
 	public Object insert(PortInfo param) throws SQLException {
-		// TODO Auto-generated method stub
 		return insert(this.namespace+".insertPortV1",param);
 	}
 	
 	@Override
 	public Object insertDetail(PortInfo param) throws SQLException {
-		// TODO Auto-generated method stub
 		return insert(this.namespace+".insertPortDetailV1",param);
 	}
 
 	@Override
 	public int update(PortInfo param) throws SQLException {
-		// TODO Auto-generated method stub
 		return (int) update(this.namespace+".updatePortV1",param);
 	}
 
 	@Override
 	public int updateDetail(PortInfo param) throws SQLException {
-		// TODO Auto-generated method stub
 		return (int) update(this.namespace+".updatePortDetailV1",param);
 	}
 
@@ -110,13 +103,11 @@ public class PortDAOImpl extends AbstractDAO implements PortDAO{
 
 	@Override
 	public int deleteDetail(PortInfo param) throws SQLException {
-		// TODO Auto-generated method stub
 		return (Integer) delete(this.namespace+".deletePortAbbr2", param);
 	}
 
 	@Override
 	public PortInfo selectDetail(PortInfo param) throws SQLException {
-		// TODO Auto-generated method stub
 		return (PortInfo) selectOne("port.selectPortDetail", param);
 	}
 	

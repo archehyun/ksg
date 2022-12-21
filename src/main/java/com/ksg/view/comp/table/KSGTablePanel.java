@@ -194,12 +194,10 @@ public class KSGTablePanel extends KSGPanel{
 	}
 
 	public int getSelectedRow() {
-		// TODO Auto-generated method stub
 		return table.getSelectedRow();
 	}
 
 	public Object getValueAt(int row, int col) {
-		// TODO Auto-generated method stub
 		return table.getValueAt(row, col);
 	}
 
@@ -275,12 +273,10 @@ public class KSGTablePanel extends KSGPanel{
 
 	@Override
 	public void createAndUpdateUI() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public int[] getSelectedRows() {
-		// TODO Auto-generated method stub
 		return table.getSelectedRows();
 	}
 	

@@ -66,7 +66,6 @@ public abstract class KSGTable extends JTable implements KSGObserver {
 		tableindex = index;
 	}
 	public int getTableIndex() {
-		// TODO Auto-generated method stub
 		return tableindex;
 	}
 	public void update(KSGModelManager manager)

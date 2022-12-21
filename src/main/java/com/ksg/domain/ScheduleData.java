@@ -74,6 +74,7 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	private String ts_vessel;
 	private String ts_voyage_num;
 	private String vessel; // 선박명
+	private Vessel vesselInfo;
 	private String vessel_type; // 선종
 	private String voyage_num; // 항차 번호
 	private String bookPage="";// 지면 페이지

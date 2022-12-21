@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 /**DAO 추상 클래스
@@ -38,19 +37,18 @@ public abstract class AbstractDAO {
 
 	@SuppressWarnings("rawtypes")
 	public List selectList(String queryId, Object param) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList(queryId, param);
 	}
 	
+	
+	
 	@SuppressWarnings("rawtypes")
 	public List selectList(String queryId) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList(queryId);
 	}
 
 	@SuppressWarnings("rawtypes")
 	public Object selectOne(String queryId, Object param) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForObject(queryId, param);
 	}
 

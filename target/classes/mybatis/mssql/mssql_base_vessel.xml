@@ -92,7 +92,42 @@
 		WHERE A.vessel_name = B.vessel_name
 		 
 	</select>
+	<select id="selectVesselListByCondition" resultClass="com.ksg.domain.Vessel" parameterClass="java.util.HashMap">
 	
+		SELECT 
+			vessel_name
+			,vessel_use
+			,vessel_type
+			,vessel_mmsi
+			,vessel_company
+			
+		FROM TB_VESSEL_H
+		
+		<dynamic prepend="where">
+
+			<isNotNull property="vessel_name" prepend="and">
+						vessel_name like '%$vessel_name$%'
+			</isNotNull>
+			<isNotNull property="vessel_type" prepend="and">
+						vessel_type like '%$vessel_type$%'
+			</isNotNull>
+			<isNotEmpty property="vessel_mmsi" prepend="and">
+						vessel_mmsi like '%$vessel_mmsi$%'
+			</isNotEmpty>
+		<isGreaterThan prepend="and" property="vessel_use" compareValue="-1">
+			vessel_use=#vessel_use#
+			</isGreaterThan>
+			
+			<isNotNull property="vesselNameList" prepend="and">
+						vessel_name in 
+						
+						<iterate property="vesselNameList" open="(" conjunction="," close=")">
+			                #vesselNameList[]#
+			            </iterate>
+			</isNotNull>
+			
+		</dynamic>
+	</select>
 	<select id="selectVesselListByPage" resultClass="java.util.HashMap">
 		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY vessel_name) 
 		

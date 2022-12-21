@@ -73,8 +73,6 @@ public class PnPort extends PnBase implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	//private JLabel lblTotal,lblTable;
-
 	private JComboBox cbxPortArea,cbxAreaCode,cbxField;
 
 	private JTextField txfSearch;
@@ -611,8 +609,7 @@ public class PnPort extends PnBase implements ActionListener{
 				tableH.changeSelection(0,0,false,false);
 			}
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		

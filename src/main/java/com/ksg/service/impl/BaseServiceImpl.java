@@ -34,7 +34,6 @@ public class BaseServiceImpl implements BaseService
 	}
 	
 	public List getBaseInfo(String type) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getBaseInfo(type);
 	}
 	
@@ -44,12 +43,10 @@ public class BaseServiceImpl implements BaseService
 	}
 	
 	public List getCodeInfo(String type) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getCodeInfo(type);
 	}
 	
 	public boolean isExitPort(String port_name) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.isExitPort(port_name);
 	}
 		
@@ -64,7 +61,6 @@ public class BaseServiceImpl implements BaseService
 	}
 
 	public List<Code> getCodeInfoByField(String code_type) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getCodeInfoByType(code_type);
 	}
 
@@ -100,7 +96,6 @@ public class BaseServiceImpl implements BaseService
 
 	public PortInfo getPortInfoAbbrByPortNamePatten(String port)
 			throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getPortInfoAbbrByPortName(port);
 	}
 
@@ -327,32 +322,26 @@ public class BaseServiceImpl implements BaseService
 	}
 
 	public int getAreaCount() throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getAreaCount();
 	}
 
 	public int getCompanyCount() throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getCompanyCount();
 	}
 
 	public int getPortCount() throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getPortCount();
 	}
 
 	public int getPort_AbbrCount() throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getPort_AbbrCount();
 	}
 
 	public int getVesselCount() throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getVesselCount();
 	}
 
 	public List<Code> getCodeInfoList(Code code_info) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getCodeInfoList(code_info);
 	}
 
@@ -381,7 +370,6 @@ public class BaseServiceImpl implements BaseService
 	}
 
 	public Code getCodeInfo(Code code_info) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getCodeInfo(code_info);
 	}
 
@@ -391,7 +379,6 @@ public class BaseServiceImpl implements BaseService
 
 	public PortInfo getPortInfoAbbrByPortName(String portName)
 			throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getPortInfoByPortName(portName);
 	}
 
@@ -413,27 +400,22 @@ public class BaseServiceImpl implements BaseService
 	}
 
 	public List getArrangedVesselAbbrList(String orderBy) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getArrangedVesselAbbrList(orderBy);
 	}
 
 	public List getSearchedVesselAbbrList(String orderBy) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getSearchedVesselAbbrList(orderBy);
 	}
 
 	public Vessel getVesselAbbrInfo(String vesselName) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getVesselAbbrInfo(vesselName);
 	}
 
 	public List getVessel_AbbrList(String vesselName) throws SQLException {
-		// TODO Auto-generated method stub
 		return  baseDAO.getVesselAbbrList(vesselName);
 	}
 
 	public List getVesselAbbrList(Vessel info) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getVesselAbbrList(info);
 	}
 
@@ -466,7 +448,6 @@ public class BaseServiceImpl implements BaseService
 	}
 
 	public Vessel getVesselInfoItem(Vessel vessel) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getVesselInfoItem(vessel);
 	}
 
@@ -480,31 +461,26 @@ public class BaseServiceImpl implements BaseService
 	}
 
 	public boolean hasCodeByField(Code info) throws SQLException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public List getAreaListGroupByAreaCode() throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getAreaListGroupByAreaCode();
 	}
 
 	@Override
 	public List getAreaListGroupByAreaName() throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getAreaListGroupByAreaName();
 	}
 
 	@Override
 	public List getSearchedPortList(PortInfo option) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getSearchedPortList(option);
 	}
 
 	@Override
 	public List getSearchedCompanyList(Company company) throws SQLException {
-		// TODO Auto-generated method stub
 		return baseDAO.getSearchedCompanyList(company);
 	}
 

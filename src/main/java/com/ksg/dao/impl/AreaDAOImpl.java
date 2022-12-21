@@ -28,25 +28,22 @@ public class AreaDAOImpl extends AbstractDAO{
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectAreaList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("area.selectAreaList", commandMap);
 
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<AreaInfo> selectAreaList2(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("area.selectAreaList2", commandMap);
 
 	}
 
 	public int deleteArea(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return (Integer) delete("area.deleteArea", param);
 	}
 
 	public int updateArea(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
+	
 		return (Integer) update("area.updateArea", param);
 	}
 

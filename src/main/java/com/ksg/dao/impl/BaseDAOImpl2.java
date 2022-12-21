@@ -89,7 +89,6 @@ public class BaseDAOImpl2 implements BaseDAO
 
 	
 	public int getAreaCount() throws SQLException {
-		// TODO Auto-generated method stub
 		return (Integer) sqlMap.queryForObject("BASE_AREA.selectAreaCount");
 	}
 	
@@ -138,14 +137,12 @@ public class BaseDAOImpl2 implements BaseDAO
 
 
 	public List getArrangedCompanyList(Object orderBy) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("BASE_COMPANY.selectArrangedCompanyList",orderBy);
 	}
 
 
 
 	public List getArrangedPort_AbbrList(Object orderBy) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("BASE_PORT.selectArrangedPort_AbbrList",orderBy);
 	}
 
@@ -157,7 +154,6 @@ public class BaseDAOImpl2 implements BaseDAO
 	}
 
 	public List getArrangedTableList(Object orderBy) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Base.selectArrangedTableList",orderBy);
 	}
 
@@ -182,7 +178,6 @@ public class BaseDAOImpl2 implements BaseDAO
 	}
 
 	public List<Code> getCodeInfoList(Code code_info) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Base.selectCodeInfo",code_info);
 	}
 
@@ -192,7 +187,6 @@ public class BaseDAOImpl2 implements BaseDAO
 	}
 
 	public int getCompanyCount() throws SQLException {
-		// TODO Auto-generated method stub
 		return (Integer) sqlMap.queryForObject("BASE_COMPANY.selectCompanyCount");
 	}
 
@@ -272,7 +266,6 @@ public class BaseDAOImpl2 implements BaseDAO
 	}
 
 	public List<Code> getSubCodeInfo(Code code_info) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Base.selectSubCodeInfo",code_info);
 	}
 	
@@ -474,25 +467,21 @@ public class BaseDAOImpl2 implements BaseDAO
 
 	@Override
 	public List getSearchedVesselList(Vessel op) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("BASE_VESSEL.selectSearchedVesselList",op);
 	}
 
 	@Override
 	public List getAreaListGroupByAreaCode() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("BASE_AREA.selectAreaCodeListGroupByAreaCode");
 	}
 
 	@Override
 	public List getAreaListGroupByAreaName() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("BASE_AREA.selectAreaListGroupByAreaName");
 	}
 
 	@Override
 	public List getSearchedPortList(PortInfo option) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("BASE_PORT.selectSearchedPortList",option);
 	}
 

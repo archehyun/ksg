@@ -1504,16 +1504,13 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 
 	}
 	public String[][] getVslDatas() {
-		// TODO Auto-generated method stub
 		return vslDatas;
 	}
 	public String[][] getArrayDatas() {
-		// TODO Auto-generated method stub
 		return arrayDatas;
 	}
 	@Override
 	public void initTag() {
-		// TODO Auto-generated method stub
 		
 	}
 

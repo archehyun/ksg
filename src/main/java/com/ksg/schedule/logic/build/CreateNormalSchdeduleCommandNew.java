@@ -407,7 +407,6 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 				try {
 					scheduleService.updateScheduleData(scheduledata);
 				} catch (SQLException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				//					update++;
@@ -614,7 +613,6 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 				try {
 					scheduleService.updateScheduleData(scheduledata);
 				} catch (SQLException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				//					update++;
@@ -623,7 +621,6 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 				try {
 					scheduleService.updateScheduleData(scheduledata);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				//					update++;

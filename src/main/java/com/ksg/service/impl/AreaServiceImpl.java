@@ -27,18 +27,15 @@ public class AreaServiceImpl extends AbstractServiceImpl implements AreaService{
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectAreaList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return areaDAO.selectAreaList(commandMap);
 
 	}
 
 	public int deleteArea(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return (Integer) areaDAO.deleteArea(param);
 	}
 	
 	public int updateArea(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return (Integer) areaDAO.updateArea(param);
 	}
 
@@ -53,7 +50,6 @@ public class AreaServiceImpl extends AbstractServiceImpl implements AreaService{
 
 
 	public List getAreaListGroupByAreaCode() throws SQLException{
-		// TODO Auto-generated method stub
 		return areaDAO.getAreaListGroupBy("code");
 	}
 

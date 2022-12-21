@@ -20,7 +20,6 @@ public class InboundJointedFormatter extends JointFormatter
 	
 	public InboundJointedFormatter() {
 		
-		//TODO INBOUND PORT  ¾à¾î
 		inboundCodeMap = InboundCodeMap.getInstance();
 		
 	}

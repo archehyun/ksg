@@ -35,7 +35,7 @@ public interface MemberDAO {
 	
 	public Object insert(HashMap<String, Object> param) throws SQLException;
 	
-	public int selectCount(Map<String, Object> commandMap) throws SQLException;
+	
 
 	public Object selectListByPage(HashMap<String, Object> param)throws SQLException;
 

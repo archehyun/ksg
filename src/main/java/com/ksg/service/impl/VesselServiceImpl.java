@@ -43,6 +43,11 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 		super();
 		vesselDAO = new VesselDAOImpl();
 	}
+	
+	public List<Vessel> selectVesselListByCondition()
+	{
+		return null;
+	}
 
 	@SuppressWarnings("unchecked")
 	public CommandMap selectList(Map<String, Object> commandMap) throws SQLException {
@@ -343,5 +348,10 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 		
 		
 		return map;
+	}
+	
+	@Override
+	public List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException {
+		return vesselDAO.selectVesselListByCondition(param);
 	}
 }

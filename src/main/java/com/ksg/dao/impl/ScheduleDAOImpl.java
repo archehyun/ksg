@@ -217,34 +217,27 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return sqlMap.queryForList("Schedule.selectConsoleList",data);
 	}
 	public List<ScheduleData> getConsoleScheduleList() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectConsoleList");
 	}
 	public List<ScheduleData> getConsoleScheduleList(ScheduleData data) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectConsoleList",data);
 	}
 	public List<ScheduleData> getInlandScheduleList(ScheduleData data) throws SQLException{
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectInlandList",data);
 	}
 	
 	public List selectInlandScheduleDateList() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("schedule.selectInlandScheduleDateList");
 	}
 	
 	public List getInlandScheduleDateList() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectInlandScheduleDateList");
 	}
 	public int deleteInlandSchedule() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.delete("schedule.deleteInlnadSchedule");
 	}
 	@Override
 	public List<String> getOutboundAreaList() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectOutboundAreaList");
 	}
 	
@@ -265,7 +258,6 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	}
 	@Override
 	public Object insertSchedule(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return insert("schedule.insertSchedule",param);
 	}
 	
@@ -283,12 +275,10 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	}
 	@Override
 	public List<Schedule> selectAll(Schedule param) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("schedule.selectAll",param);
 	}
 	@Override
 	public List<Schedule> selectScheduleLisByCondition(Schedule schedule) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("schedule.selectScheduleListByCondition2", schedule);
 	}
 	@Override

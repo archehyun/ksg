@@ -158,7 +158,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI
 			}
 		}
 	}
-	//TODO 테이블 스타일 정리
+	
 	private static final int _LEFT_SIZE = 250;
 
 	public static final int ADV_TYPE = 0;

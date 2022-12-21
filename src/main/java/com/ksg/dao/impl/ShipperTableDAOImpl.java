@@ -84,7 +84,6 @@ public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 
 
 	public List getPortList(String table_id) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("shippertable.getPortList", table_id);
 	}
 

@@ -398,7 +398,7 @@ public class ADVData {
 		}
 	}
 	public String[] getTSPortArray() {
-		// TODO Auto-generated method stub
+		
 		if(this.getData()==null)
 		{
 			return null;

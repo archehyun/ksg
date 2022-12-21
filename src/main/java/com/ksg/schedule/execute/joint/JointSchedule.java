@@ -36,7 +36,6 @@ public abstract class JointSchedule implements Executeable{
 			vesselMap =vesselService.selectTotalList();
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

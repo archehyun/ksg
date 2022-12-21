@@ -27,7 +27,6 @@ public class FromPortGroup extends HashMap<String,VesselGroup>{
 		this.addSchedule(scheduleData);
 	}
 	public String getID() {
-		// TODO Auto-generated method stub
 		return fromPortName;
 	}
 	/**

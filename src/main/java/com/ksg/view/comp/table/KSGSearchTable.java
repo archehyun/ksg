@@ -230,7 +230,6 @@ public class KSGSearchTable extends KSGTable{
 	}
 	@Override
 	public void retrive() throws SQLException {
-		// TODO Auto-generated method stub
 		
 	}
 

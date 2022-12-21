@@ -83,7 +83,7 @@ public class OutboundScheduleJoint extends JointSchedule{
 	 * @param areaMap
 	 * @return
 	 */
-	public ScheduleList buildSortedAndJointedScheduleList2(Map map)  throws Exception	
+	private ScheduleList buildSortedAndJointedScheduleList2(Map map)  throws Exception	
 	{
 		ScheduleList areaLists = new ScheduleList(date);
 
@@ -256,8 +256,6 @@ public class OutboundScheduleJoint extends JointSchedule{
 		} 
 	}
 	
-	
-	//TODO 태그 파일 출력
 
 
 

@@ -21,7 +21,6 @@ public abstract class AbstractCommand implements IFCommand{
 
 	protected BaseService baseService;
 	public int getTotalSize() {
-		// TODO Auto-generated method stub
 		return totalSize;
 	}
 	public int getSearchTotalSize() {
