@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -100,10 +101,6 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 		this.setModal(true);
 
 		this.setTitle("항구 정보 관리");
-		
-		
-		
-		
 
 		this.getContentPane().add(buildTitle("항구 정보 수정"),BorderLayout.NORTH);
 
@@ -134,133 +131,27 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 
 
 
-		KSGPanel pnArea_code = new KSGPanel();
-		pnArea_code.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblAgent_abbr = new JLabel("지역 코드");
 
-		lblAgent_abbr.setPreferredSize(new Dimension(100,25));
 		JButton butSearchCode = new JButton("코드 검색");
 		butSearchCode.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-
-//				final JDialog dialog = new JDialog(UpdatePortInfoDialog.this);
-//				dialog.setModal(true);
-//				KSGPanel pnMain = new KSGPanel();
-//
-//				JTable tblAreaList = new JTable();
-//				pnMain.setLayout(new BorderLayout());
-//
-//				KSGPanel pnControl = new KSGPanel();
-//				pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-//				final JButton butOk = new JButton("확인");
-//				butOk.addActionListener(new ActionListener(){
-//
-//					public void actionPerformed(ActionEvent e) {
-//						dialog.setVisible(false);
-//						dialog.dispose();
-//
-//					}});
-//				butOk.setEnabled(false);
-//				JButton butCancel = new JButton("취소");
-//				butCancel.addActionListener(new ActionListener(){
-//
-//
-//					public void actionPerformed(ActionEvent e) {
-//						txfPort_area.setText((String) param.get("port_area"));
-//						txfArea_code.setText((String) param.get("area_code"));
-//						dialog.setVisible(false);
-//						dialog.dispose();
-//
-//					}});
-//				pnControl.add(butOk);
-//				pnControl.add(butCancel);
-//				try 
-//				{
-//					DefaultMutableTreeNode root = new DefaultMutableTreeNode("전체지역");
-//					Iterator<String> iter =areaMap.keySet().iterator();
-//					while(iter.hasNext())
-//					{
-//						String area_name = (String) iter.next();
-//						DefaultMutableTreeNode areaGroup = new DefaultMutableTreeNode(area_name);
-//						root.add(areaGroup);
-//
-//					}
-//					final JTree tree = new JTree(root);
-//					tree.addMouseListener(new MouseAdapter() {
-//
-//						public void mouseClicked(MouseEvent arg0) {
-//							if(arg0.getClickCount()>=0)
-//							{
-//								TreePath path=tree.getSelectionPath();
-//								if(path==null)
-//									return;
-//								switch (path.getPathCount()) {
-//
-//								case 2:
-//									String area1=path.getLastPathComponent().toString();
-//
-//
-//									CommandMap areaInfo = (CommandMap) areaMap.get(area1);
-//									txfArea_code.setText(String.valueOf(areaInfo.get("area_code")));
-//									txfPort_area.setText(String.valueOf(areaInfo.get("area_name")));
-//
-//									butOk.setEnabled(true);
-//									break;
-//
-//								case 3:
-//									String area2=path.getLastPathComponent().toString();
-//
-//									CommandMap areaInfo2 = (CommandMap) areaMap.get(area2);
-//									txfArea_code.setText(String.valueOf(areaInfo2.get("area_code")));
-//									txfPort_area.setText(String.valueOf(areaInfo2.get("area_name")));
-//
-//
-//
-//									butOk.setEnabled(true);
-//									break;
-//
-//								default:
-//									butOk.setEnabled(false);
-//									txfArea_code.setText("");
-//									txfPort_area.setText("");
-//
-//									break;
-//								}
-//
-//							}
-//
-//						}
-//					});
-//					pnMain.add(new JScrollPane(tree),BorderLayout.CENTER);
-//
-//				} catch (Exception e1) {
-//					e1.printStackTrace();
-//					JOptionPane.showMessageDialog(UpdatePortInfoDialog.this, e1.getMessage());
-//
-//				}
-//
-//				dialog.getContentPane().add(pnControl,BorderLayout.SOUTH);
-//				dialog.getContentPane().add(pnMain,BorderLayout.CENTER);
-//				dialog.setSize(400,400);
-//				dialog.setLocation(UpdatePortInfoDialog.this.getX()+UpdatePortInfoDialog.this.getWidth(), UpdatePortInfoDialog.this.getY());
-//				dialog.setVisible(true);
 				
 				searchAreaDailog = new SearchAreaDialog(UpdatePortInfoDialog.this);
 				searchAreaDailog.createAndUpdateUI();
 
 			}});
 
-		pnArea_code.add(txfArea_code);
-		pnArea_code.add(butSearchCode);		
+	
 
 		pnCenter.add(createFormItem(txfPort_name, "항구명"));
 		pnCenter.add(createFormItem(txfPort_nationailty, "나라"));
 		pnCenter.add(createFormItem(txfPort_area, "지역"));
-		pnCenter.add(createFormItem(pnArea_code, "지역코드"));	
+		pnCenter.add(createFormItem(txfArea_code, butSearchCode, "지역코드"));	
 
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		pnMain.add(pnCenter);
 		return pnMain;
 	}

@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import java.util.stream.Collectors;
 
 import com.dtp.api.mapper.VesselMapper;
 import com.ksg.common.model.CommandMap;
@@ -877,7 +876,9 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 				.fromPort((String) param.get("fromPort"))
 				.port((String) param.get("port"))
 				.gubun((String) param.get("gubun"))
+				.vessel((String) param.get("vessel"))
 				.area_name((String) param.get("area_name"))
+				
 				.build();
 
 		return  schduleDAO.selectScheduleLisByCondition(schedule);

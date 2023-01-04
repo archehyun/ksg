@@ -87,6 +87,7 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.view.comp.HintTextField;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.KSGRadioButton;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -1843,92 +1844,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			return renderer;
 		}
 
-	}
-
-	class SearchTableModel extends TableModel{
-
-		public SearchTableModel()
-		{
-			super();
-		}
-
-		public boolean isCellEditable(int row, int column) 
-		{
-			return false;
-		}
-	}
-
-	public class HintTextField extends JTextField {  
-
-
-
-		Font gainFont = new Font("Tahoma", Font.PLAIN, 11);  
-
-		Font lostFont = new Font("Tahoma", Font.ITALIC, 11);  
-
-
-
-		public HintTextField(final String hint, int count) {  
-			super(count);
-
-
-			setText(hint);  
-
-			setFont(lostFont);  
-
-			setForeground(Color.GRAY);
-
-			this.addFocusListener(new FocusAdapter() {  
-
-
-
-				@Override  
-
-				public void focusGained(FocusEvent e) {  
-
-					if (getText().equals(hint)) {  
-
-						setText("");  
-
-						setFont(gainFont);  
-
-					} else {  
-
-						setText(getText());  
-
-						setFont(gainFont);  
-
-					}  
-
-				}  
-
-
-
-				@Override  
-
-				public void focusLost(FocusEvent e) {  
-
-					if (getText().equals(hint)|| getText().length()==0) {  
-
-						setText(hint);  
-
-						setFont(lostFont);  
-
-						setForeground(Color.GRAY);  
-
-					} else {  
-
-						setText(getText());  
-
-						setFont(gainFont);  
-
-						setForeground(Color.BLACK);  
-
-					}
-				}
-			});
-		}
-	}  
+	}	  
 }
 
 

@@ -46,11 +46,7 @@ public abstract class RouteAbstractScheduleJoint extends DefaultScheduleJoint{
 	
 	public static final String OUTBOUND = "O";
 	
-	public static final String RUSSIA = "Russia";
-	
-	public static final String JAPAN = "Japan";
-	
-	public static final String CHINA = "China";
+
 
 	public RouteAbstractScheduleJoint() throws SQLException {
 		super();

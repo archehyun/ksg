@@ -15,7 +15,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -110,11 +109,15 @@ public class PnPort extends PnBase implements ActionListener{
 	private JComponent buildSearchPanel() {
 		
 		KSGPanel pnSearch = new KSGPanel();
+		
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		JLabel lbl = new JLabel("필드명 : ");
-		cbxField = new JComboBox();		
+		
+		cbxField = new JComboBox();
+		
 		cbxField.addItem("항구명");
+		
 		cbxField.addItem("나라");
 
 		txfSearch = new JTextField(15);
@@ -137,7 +140,12 @@ public class PnPort extends PnBase implements ActionListener{
 		JLabel lblArea = new JLabel("지역:");
 		JLabel lblAreaCode = new JLabel("지역코드:");
 		cbxPortArea = new JComboBox();
+		
 		cbxAreaCode = new JComboBox();
+		
+		cbxPortArea.setPreferredSize(new Dimension(300,25));
+		
+		cbxAreaCode.setPreferredSize(new Dimension(80,25));
 
 		
 		pnSearch.add(lblArea);
@@ -488,8 +496,6 @@ public class PnPort extends PnBase implements ActionListener{
 		String areaCode;
 		public void mouseClicked(MouseEvent e) 
 		{	
-			
-			
 			JTable es = (JTable) e.getSource();
 			
 			int row=es.getSelectedRow();
@@ -619,26 +625,18 @@ public class PnPort extends PnBase implements ActionListener{
 	public void componentShown(ComponentEvent e) {
 		
 		try {
-			cbxPortArea.addItem("선택");
-			cbxAreaCode.addItem("선택");
-			List listArea = areaService.getAreaListGroupByAreaName();
-			List listAreaCode = areaService.getAreaListGroupByAreaCode();
-			Iterator areaIter = listArea.iterator();
-			while(areaIter.hasNext())
-			{
-				String area = (String) areaIter.next();
-				cbxPortArea.addItem(area);
-			}
+			
+			
+			
+			
+			initComboBox(cbxPortArea, areaService.getAreaListGroupByAreaName());
+			
+			initComboBox(cbxAreaCode, areaService.getAreaListGroupByAreaCode());
+			
 
-			Iterator areaCodeIter = listAreaCode.iterator();
-			while(areaCodeIter.hasNext())
-			{
-				String code = (String) areaCodeIter.next();
-				cbxAreaCode.addItem(code);
-			}
-
-		} catch (SQLException ee) {
-			// TODO Auto-generated catch block
+		} catch (Exception ee) {
+			
+			JOptionPane.showMessageDialog(PnPort.this, ee.getMessage());
 			ee.printStackTrace();
 		}
 
@@ -647,8 +645,16 @@ public class PnPort extends PnBase implements ActionListener{
 		if(isShowData) fnSearch();
 		
 	}
-
-	
+	private void initComboBox(JComboBox combox, List list)	
+	{
+		combox.removeAllItems();
+		
+		combox.addItem("선택");
+		
+		list.stream().forEach(item -> combox.addItem(item));
+		
+		
+	}
 
 
 }

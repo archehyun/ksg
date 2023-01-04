@@ -144,7 +144,13 @@
 				</isNotNull>
 				<isNotNull property="area_name" prepend="and">
 					area_name=#area_name#
+				</isNotNull>
+				
+				<isNotNull property="vessel" prepend="and">
+					
+					vessel like '%$vessel$%'
 				</isNotNull>				
+				
 		</dynamic>
 	</select>
 	

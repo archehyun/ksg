@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.KSGPropertis;
+import com.ksg.domain.AreaEnum;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
@@ -335,7 +336,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 	 */
 	private boolean checkOutPort(String areaName,int outportCount)
 	{
-		if(areaName.equals(CHINA.toUpperCase())||areaName.equals(JAPAN.toUpperCase()))
+		if(areaName.equals(AreaEnum.CHINA.toUpperCase())||areaName.equals(AreaEnum.JAPAN.toUpperCase()))
 		{
 			if(outportCount>=2)
 			{
@@ -347,7 +348,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 			}
 		}
 		// ·¯½Ã¾Æ
-		else if(areaName.equals(RUSSIA.toUpperCase()))
+		else if(areaName.equals(AreaEnum.RUSSIA.toUpperCase()))
 		{
 			if(outportCount>0)
 			{

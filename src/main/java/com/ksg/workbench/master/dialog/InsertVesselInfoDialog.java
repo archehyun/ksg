@@ -18,7 +18,11 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.sql.SQLException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -26,15 +30,23 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.NumberFormatter;
+import javax.swing.text.PlainDocument;
 
 import com.ksg.common.exception.AlreadyExistException;
+import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
+import com.ksg.view.comp.HintTextField;
+import com.ksg.view.comp.KSGCheckBox;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
@@ -42,31 +54,31 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.master.comp.PnVessel;
 
 @SuppressWarnings("serial")
-public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
-	
+public class InsertVesselInfoDialog extends BaseInfoDialog{
+
 	private String LABEL = "선박명 추가";
 	private JTextField txfVesselName;
 	private JTextField txfMMSI;
-	private JTextField txfCompany;	
+	private JTextField txfCompanyName;	
 
 	private JCheckBox chbUse;
-	
-	private KSGComboBox cbxType;
-	
-	
+
+	private KSGComboBox cbxConType;
+
+
 	VesselService service = new VesselServiceImpl();
-	
+
 	Vessel dataInfo;
-	
+
 	private JCheckBox cbxMMSICheck;
-	
+
 	public InsertVesselInfoDialog()
 	{
 		super();
 		this.setTitle("신규 선박 정보 추가");
 		this.addComponentListener(this);
-	 
-		
+
+
 	}
 	PnVessel pnVessel;
 	public InsertVesselInfoDialog(PnVessel pnVessel) {
@@ -77,134 +89,107 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 	public void createAndUpdateUI() 
 	{
 		this.setModal(true);
-		cbxType = new KSGComboBox("conType");
-		Box pnCenter = new Box(BoxLayout.Y_AXIS);
-		pnCenter.setBackground(Color.white);
+
+		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+
+
+
+		this.pack();
+
+		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+		this.setResizable(false);
+		this.setVisible(true);
+	}
+
+	private KSGPanel buildCenter()
+	{	
+		// initcomp
 		txfVesselName = new JTextField(20);
+		txfCompanyName = new JTextField(20);
+		chbUse= new KSGCheckBox("사용안함");
 
-		txfCompany = new JTextField(20);
-		
 
-		chbUse= new JCheckBox("사용안함");
-		chbUse.setBackground(Color.white);	
+		cbxConType = new KSGComboBox("conType");
 		
-		txfMMSI = new JTextField(9);
+		txfMMSI = new JFormattedTextField(new NumberFormatter(new DecimalFormat("#")));
+		txfMMSI.setPreferredSize(new Dimension(75,20));
 		txfMMSI.setEnabled(false);
+		txfMMSI.addKeyListener(new KeyAdapter() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(((JFormattedTextField)e.getSource()).getText().length()>8)
+					e.consume();
+				
+			}
+		});
 		
-		
-		KSGPanel pnName = new KSGPanel();
-		pnName.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblAreaName = new JLabel("선박명(*)");
-		lblAreaName.setPreferredSize(new Dimension(100,25));
-		pnName.add(lblAreaName);
-		pnName.add(txfVesselName);
-
-		KSGPanel pnType = new KSGPanel();
-		pnType.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblType = new JLabel("선박 타입");
-		lblType.setPreferredSize(new Dimension(100,25));
-		pnType.add(lblType);
-		pnType.add(cbxType);
-		
-		KSGPanel pnMMSI = new KSGPanel();
-		pnMMSI.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblMMSI = new JLabel("MMSI");
-		lblMMSI.setPreferredSize(new Dimension(100,25));
 		cbxMMSICheck = new JCheckBox("없음",true);
 		cbxMMSICheck.setBackground(Color.white);
 		cbxMMSICheck.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {				
 				txfMMSI.setEnabled(!cbxMMSICheck.isSelected());
-				
+
 				if(cbxMMSICheck.isSelected())
 				{
 					txfMMSI.setText("");
 				}
 			}
 		});
-		
-		pnMMSI.add(lblMMSI);
-		pnMMSI.add(txfMMSI);
-		pnMMSI.add(cbxMMSICheck);
-		
-		
-		KSGPanel pnCompany = new KSGPanel();
-		pnCompany.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblCompany = new JLabel("대표 선사");
-		lblCompany.setPreferredSize(new Dimension(100,25));
-		JButton butSearchCompany = new JButton("조회");
-		JButton butCancelCompany = new JButton("취소");
-		txfCompany.setEditable(false);
-		butSearchCompany.addActionListener(new ActionListener(){
 
+
+		JButton butSearchCompany = new JButton("조회");
+		butSearchCompany.addActionListener(new ActionListener()
+		{
 			public void actionPerformed(ActionEvent e) {
-				KSGDialog dialog = new SearchCompanyInfoDialog(InsertVesselInfoDialog.this,txfCompany);
+				KSGDialog dialog = new SearchCompanyInfoDialog(InsertVesselInfoDialog.this,txfCompanyName);
 				dialog.createAndUpdateUI();
-			}});
+			}
+
+		});
+
+		JButton butCancelCompany = new JButton("취소");
 		butCancelCompany.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				txfCompany.setText("");
-						
-				
+				txfCompanyName.setText("");
+
+
 			}});
-		pnCompany.add(lblCompany);
-		pnCompany.add(txfCompany);
-		pnCompany.add(butSearchCompany);
-		pnCompany.add(butCancelCompany);
 
-		KSGPanel pnS = new KSGPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		KSGPanel pnS1 = new KSGPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
+		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+		pnCenter.add(createFormItem(txfVesselName, "선박명(*)"));
+		pnCenter.add(createFormItem(cbxConType, "선박 타입"));
+		pnCenter.add(createFormItem(txfMMSI,cbxMMSICheck, "MMSI"));
+		pnCenter.add(createFormItem(txfCompanyName,butSearchCompany,"대표 선사"));
+		pnCenter.add(createFormItem(chbUse,"사용 유무"));
 
-		KSGPanel pnControl =  new KSGPanel();
-		pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butOK = new JButton("확인");
-		JButton butCancel = new JButton("취소");
-		butOK.addActionListener(this);
-		butCancel.addActionListener(this);
-		pnControl.add(butOK);
-		pnControl.add(butCancel);
 
+		KSGPanel pnMain = new KSGPanel();
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));		
+		pnMain.add(pnCenter);
+		return pnMain;
+	}
+
+	private KSGPanel buildTitle() {
 		KSGPanel pnTitle = new KSGPanel();
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnTitle.setBackground(Color.white);
 		JLabel label = new JLabel(LABEL);
 		label.setFont(new Font("돋움",0,16));
 		pnTitle.add(label);
-		
-		KSGPanel pnUse = new KSGPanel();
-		pnUse.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblUse = new JLabel("사용유무");
-		lblUse.setPreferredSize(new Dimension(100,25));
-		pnUse.add(lblUse);
-		pnUse.add(chbUse);
-		pnCenter.add(pnName);
 
-		pnCenter.add(pnType);
-		pnCenter.add(pnMMSI);
-		pnCenter.add(pnCompany);
-		pnCenter.add(pnUse);
-		
-		pnCenter.add(pnS);
-		pnCenter.add(pnControl);		
-		
-		this.getContentPane().add(pnTitle,BorderLayout.NORTH);
-		this.getContentPane().add(pnCenter,BorderLayout.CENTER);
-		
-		ViewUtil.center(this, true);
-		this.setVisible(true);
+		return pnTitle;
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
-		if(command .equals("확인"))
-		{
-			
+		if(command .equals("저장"))
+		{	
 			if(txfVesselName.getText().length()<=0)
 			{
 				JOptionPane.showMessageDialog(this, "선박명이 없습니다.");
@@ -212,31 +197,32 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 			}
 
 			String vesselName = txfVesselName.getText();
+
 			String vesselAbbr = vesselName.toUpperCase();
+
+			KSGTableColumn con =(KSGTableColumn) cbxConType.getSelectedItem();
 			
 			
-			
-			KSGTableColumn con =(KSGTableColumn) cbxType.getSelectedItem();
-			
-			
+
+
 			try {
-				
-				
+
+
 				HashMap<String, Object> param = new HashMap<String, Object>();
 				param.put("vessel_name",vesselName);
 				param.put("vessel_abbr",(vesselAbbr==null||vesselAbbr.equals("")?vesselName:vesselAbbr));
 				param.put("vessel_type", con.columnField);
-				
-				
+
+
 				param.put("vessel_use",chbUse.isSelected()?Vessel.NON_USE:Vessel.USE);
-				param.put("vessel_company", txfCompany.getText());
-				
+				param.put("vessel_company", txfCompanyName.getText());
+
 				if(!cbxMMSICheck.isSelected())
 				{
 					int mmsi_size=txfMMSI.getText().length();
 					if(mmsi_size<9)					
 					{
-						JOptionPane.showMessageDialog(this, "MMSI는 9자리입니다.");
+						JOptionPane.showMessageDialog(this, "MMSI는 9자리 숫자입니다.");
 						return;
 					}
 					param.put("vessel_mmsi", txfMMSI.getText());
@@ -245,18 +231,18 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 				{
 					param.put("vessel_mmsi", "");
 				}
-				
-				
+
+
 				service.insert(param);				
-				
+
 				pnVessel.fnSearch();
-				
+
 				this.setVisible(false);
-				
+
 				this.dispose();
-				
+
 				result = KSGDialog.SUCCESS;
-				
+
 				JOptionPane.showMessageDialog(this, "추가했습니다.");				
 
 			} 
@@ -265,7 +251,7 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 				JOptionPane.showMessageDialog(this, "존재하는 선박명입니다");
 
 			}
-			
+
 			catch(Exception ee)
 			{
 				ee.printStackTrace();
@@ -280,16 +266,36 @@ public class InsertVesselInfoDialog extends KSGDialog implements ActionListener{
 		}
 
 	}
-	
+
 	@Override
 	public void componentShown(ComponentEvent e) {
-		cbxType.initComp();
-		
+		cbxConType.initComp();		
 
-		
-		
 	}
-	
+	class MMISLimit extends PlainDocument
+	{
+		private int limit;
+		MMISLimit(int limit) {
+			super();
+			this.limit = limit;
+		}
+
+		MMISLimit(int limit, boolean upper) {
+			super();
+			this.limit = limit;
+		}
+
+		public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
+			if (str == null)
+				return;
+
+			if ((getLength() + str.length()) <= limit) {
+				super.insertString(offset, str, attr);
+			}
+		}
+
+	}
+
 
 
 }

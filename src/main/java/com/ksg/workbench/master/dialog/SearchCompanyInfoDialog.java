@@ -120,6 +120,7 @@ public class SearchCompanyInfoDialog extends KSGDialog {
 		butCancel.addActionListener(new ActionListener(){
 	
 			public void actionPerformed(ActionEvent e) {
+				txfCompanyName.setText("");
 				setVisible(false);
 				dispose();
 			}});

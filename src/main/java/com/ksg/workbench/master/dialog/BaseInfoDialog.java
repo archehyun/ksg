@@ -71,12 +71,22 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		pnCompany_abbr.add(comp);
 		return pnCompany_abbr;
 	}
+	
+	protected KSGPanel createFormItem(JComponent comp1, JComponent comp2, String title) {
+		KSGPanel pnCompany_abbr = new KSGPanel();
+		pnCompany_abbr.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JLabel lblCompany_abbr = new JLabel(title);
+		lblCompany_abbr.setPreferredSize(new Dimension(100,25));
+		pnCompany_abbr.add(lblCompany_abbr);	
+		pnCompany_abbr.add(comp1);
+		pnCompany_abbr.add(comp2);
+		return pnCompany_abbr;
+	}
 
 	protected BaseInfoUI baseInfoUI;
 	
 	protected KSGPanel buildControl()
-	{
-		
+	{	
 		KSGPanel pnControl =  new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		
 

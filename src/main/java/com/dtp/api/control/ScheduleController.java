@@ -25,86 +25,76 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component("schedule")
 public class ScheduleController extends AbstractController{
-	
+
 	ObjectMapper objectMapper;
-	
+
 	private ScheduleSubService service;
-	
+
 	VesselService vesselService;
-	
+
 	public ScheduleController()
 	{
 		service = new ScheduleServiceImpl();
 		vesselService = new VesselServiceImpl();
 		objectMapper = new ObjectMapper();
-		System.out.println("control");
-		
+
 	}
-	
+
 	public CommandMap selectScheduleList(String inOoutType, String date) throws Exception
 	{
 		log.info("param:{},{}", inOoutType, date);
 		CommandMap result = new CommandMap();
-		
+
 		Schedule param = new Schedule();
 		param .setDate_issue(date);
 		param.setInOutType(inOoutType);
-		
+
 		List li=service.selecteScheduleListByCondition(param);
-		
+
 		result.put("success", true);
 		result.put("data", li);
-		
+
 		return result;
 	}
-	
-//	public CommandMap selectScheduleGroupMap(String scheduleType, String date) throws Exception
-//	{	
-//		List li= service.selecteScheduleListByCondition(new CommandMap());
-//		
-//		CommandMap result = new CommandMap();
-//		result.put("success", true);
-//		result.put("data", service.selectScheduleGroupMap(scheduleType, date));
-//		
-//		return result;
-//	}
-	
+
+
+
 	public CommandMap createSchedule(String scheduleType, String date) throws Exception
 	{
 		CommandMap result = new CommandMap();
 		result.put("success", true);
 		result.put("data", null);
-		
+
 		return result;
 	}
-	
+
 	public CommandMap createScheduleFile(String scheduleType, String date) throws Exception
 	{
 		CommandMap result = new CommandMap();
 		result.put("success", true);
 		result.put("data", null);
-		
+
 		return result;
 	}
-	
+
 	public CommandMap createWebScheduleFile(String scheduleType, String date) throws Exception
 	{
 		CommandMap result = new CommandMap();
 		result.put("success", true);
 		result.put("data", null);
-		
+
 		return result;
 	}
-	
+
 	public CommandMap deleteSchedule(String date) throws Exception
 	{
 		CommandMap result = new CommandMap();
-		
+
 		result.put("data", null);
-		
+
 		return result;
 	}
-	
+
 	/**
 	 *지역
 	 *----도착항
@@ -116,17 +106,19 @@ public class ScheduleController extends AbstractController{
 
 		List<ScheduleData>  li = service.selecteScheduleListByCondition(param);
 		
-		
+		if(li.isEmpty()) return new CommandMap();
+
+
 		List<String> vesselNames=li.stream().map(ScheduleData::getVessel)
-											.distinct()
-											.collect(Collectors.toList());
-		
+				.distinct()
+				.collect(Collectors.toList());
+
 		CommandMap vesselParam = new CommandMap();
 		vesselParam.put("vesselNameList", vesselNames);
 		List<Vessel> vesselList = vesselService.selectListByCondition(vesselParam);
 		Map<String, Vessel> vesselMap = vesselList.stream().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));
 		li.forEach(o -> o.setVesselInfo(vesselMap.get(o.getVessel())));
-		
+
 
 		Map<String, Map<String, Map<String, List<ScheduleData>>>> areaList =  li.stream().collect(
 				Collectors.groupingBy(ScheduleData::getArea_name, // 지역
@@ -141,14 +133,14 @@ public class ScheduleController extends AbstractController{
 		return returnValue;
 
 	}
-	
+
 
 	/** 지역
 	 *  ----출발항(외국항)
 	 *  --------선박
 	 *  -----------도착항(국내항)
 	 */
-	
+
 	public CommandMap selectInboundScheduleGroupList(CommandMap param) throws SQLException {
 
 		log.info("param:{}",param);
@@ -257,7 +249,14 @@ public class ScheduleController extends AbstractController{
 
 
 	}
-	
+
+	/**
+	 * 라우트 스케줄 그룹 조회
+	 * @param param
+	 * @return
+	 * @throws SQLException
+	 */
+
 	public Map<String, Object> selectRouteScheduleGroupList(CommandMap param) throws SQLException {
 
 		List<ScheduleData>  li = service.selecteScheduleListByCondition(param);
@@ -277,6 +276,6 @@ public class ScheduleController extends AbstractController{
 	}
 
 
-	
+
 
 }

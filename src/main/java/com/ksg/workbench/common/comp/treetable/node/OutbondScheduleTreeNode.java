@@ -12,9 +12,19 @@ public class OutbondScheduleTreeNode extends ScheduleTreeNode
 		super(string, NodeType.SCHEDULE);
 	}
 	
+	public OutbondScheduleTreeNode(String string, NodeType nodeType) {
+		super(string, nodeType);
+	}
+	
 
 	public OutbondScheduleTreeNode(TreeTableNode treeTableNode) {
 		super(treeTableNode,  NodeType.SCHEDULE);
+		formatter = new OutboundFormatter();
+		formatter.setParam(treeTableNode.getParam());
+	}
+	
+	public OutbondScheduleTreeNode(TreeTableNode treeTableNode, NodeType nodeType) {
+		super(treeTableNode,  nodeType);
 		formatter = new OutboundFormatter();
 		formatter.setParam(treeTableNode.getParam());
 	}

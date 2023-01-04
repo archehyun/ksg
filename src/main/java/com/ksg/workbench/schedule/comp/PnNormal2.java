@@ -56,9 +56,7 @@ public class PnNormal2 extends PnSchedule{
 	
 	public PnNormal2() {
 
-		super();		
-		
-		
+		super();
 		
 		this.setLayout(new BorderLayout());
 

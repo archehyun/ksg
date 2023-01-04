@@ -17,12 +17,16 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.domain.AreaEnum;
 import com.ksg.domain.ScheduleData;
 import com.ksg.view.comp.treetable.TreeTableNode;
 import com.ksg.workbench.common.comp.treetable.node.AreaTreeNode;
+import com.ksg.workbench.common.comp.treetable.node.NodeType;
 import com.ksg.workbench.common.comp.treetable.node.OutbondScheduleTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.PortTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.ScheduleDateComparator;
+
+import lombok.extern.slf4j.Slf4j;
 /**
  * 
 
@@ -38,7 +42,10 @@ import com.ksg.workbench.common.comp.treetable.node.ScheduleDateComparator;
 
   * @프로그램 설명 : 라우트 스케줄 트리 노드 생성
  */
+@Slf4j
 public class RouteNodeManager extends AbstractNodeManager{
+	
+
 	
 	
 	DateComparator dateComparator = new DateComparator();
@@ -82,7 +89,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 				for(Object voyagekey:testList.keySet())
 				{
 					List<ScheduleData> subscheduleList = testList.get(voyagekey);
-					area.add(makeScheduleNode( vesselKey, voyagekey, subscheduleList));
+					area.add(makeScheduleNode(strArea, vesselKey, voyagekey, subscheduleList));
 				}
 				
 			}
@@ -93,7 +100,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 		return root;
 	}
 	
-	private DefaultMutableTreeNode makeScheduleNode( Object vesselKey, Object voyagekey, List<ScheduleData> scheduleList) {
+	private DefaultMutableTreeNode makeScheduleNode(String strArea, Object vesselKey, Object voyagekey, List<ScheduleData> scheduleList) {
 		
 
 		Map<String, List<ScheduleData>> fromPorts =scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getFromPort));
@@ -104,10 +111,14 @@ public class RouteNodeManager extends AbstractNodeManager{
 
 		int fromPortCount = fromPorts.keySet().size();
 		
+		
+		
 		//TODO 스케줄 - Route 스케줄 밸리데이션
 		
+		log.info("area:{}, fromPortCount:{}, {}",strArea, fromPortCount, checkOutPort(strArea, toPortCount));
+		
 		// TODO 스케줄-항차 번호 표시
-		DefaultMutableTreeNode schedule = new OutbondScheduleTreeNode(vesselKey+", "+ voyagekey);
+		DefaultMutableTreeNode schedule = new OutbondScheduleTreeNode(vesselKey+", "+ voyagekey, (checkOutPort(strArea, toPortCount)?NodeType.SCHEDULE:NodeType.JOINT_SCHEDULE)  );
 		
 		
 		
@@ -196,7 +207,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 	 * @param voyage_num
 	 * @return
 	 */
-	protected int getNumericVoyage(String voyage_num)
+	public int getNumericVoyage(String voyage_num)
 	{
 		int result=0;
 
@@ -220,6 +231,34 @@ public class RouteNodeManager extends AbstractNodeManager{
 		}
 
 		return result;
+	}
+	
+	/**
+	 * 중국, 일본 : 2곳 이상
+	 * 러시아 : 1곳 이상
+	 * 기타 : 3곳 이상
+	 * 항차 스케줄 표시 확인
+	 * @param areaName
+	 * @param outportCount
+	 * @return
+	 */
+	public boolean checkOutPort(String areaName,int outportCount)
+	{
+		if(areaName.equals(AreaEnum.CHINA.toUpperCase())||areaName.equals(AreaEnum.JAPAN.toUpperCase()))
+		{
+			return outportCount>=2;
+		}
+		// 러시아
+		else if(areaName.equals(AreaEnum.RUSSIA.toUpperCase()))
+		{
+			return outportCount>0;
+		}					
+		// 기타 지역
+		else
+		{
+			return outportCount>=3;
+		}
+		
 	}
 
 }

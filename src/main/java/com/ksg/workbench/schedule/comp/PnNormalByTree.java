@@ -8,7 +8,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,13 +21,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.dtp.api.control.ScheduleController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleEnum;
 import com.ksg.service.impl.AreaService;
 import com.ksg.service.impl.AreaServiceImpl;
@@ -37,6 +34,7 @@ import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.common.comp.KSGPageTablePanel;
+import com.ksg.workbench.common.comp.button.ImageButton;
 import com.ksg.workbench.common.comp.treetable.KSGTreeTable;
 import com.ksg.workbench.common.comp.treetable.nodemager.TreeNodeManager;
 import com.ksg.workbench.schedule.dialog.SearchPortDialog;
@@ -88,19 +86,18 @@ public class PnNormalByTree extends PnSchedule {
 	
 	private HashMap<String, Object> inboundCodeMap;
 	
-	TreeNodeManager nodeManager = new TreeNodeManager();
+	private TreeNodeManager nodeManager = new TreeNodeManager();
 	
-	AreaService areaService = new AreaServiceImpl();
-	
+	private AreaService areaService = new AreaServiceImpl();
 
-	ScheduleController control = new ScheduleController(); 
+	private ScheduleController control = new ScheduleController(); 
 	
 	protected ObjectMapper objectMapper;
 
 	public PnNormalByTree() {
 
 		super();
-		System.out.println("test");
+		
 		codeService = new CodeServiceImpl();
 		
 		objectMapper = new ObjectMapper();
@@ -207,13 +204,13 @@ public class PnNormalByTree extends PnSchedule {
 		
 		txfFromPort.setEditable(false);
 		
-		JButton butSearchFromPort = new JButton("검색");		
+		JButton butSearchFromPort = new ImageButton("images/search1.png");		
 		butSearchFromPort.setActionCommand("SEARCH_FROM_PORT");
 		butSearchFromPort.addActionListener(this);
 		JLabel lblToPort = new JLabel("도착항");
 		txfToPort = new JTextField(10);
 		txfToPort.setEditable(false);
-		JButton butSearchToPort = new JButton("검색");
+		JButton butSearchToPort = new ImageButton("images/search1.png");
 		butSearchToPort.setActionCommand("SEARCH_TO_PORT");
 		butSearchToPort.addActionListener(this);
 		KSGPanel pnPortSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
@@ -240,7 +237,7 @@ public class PnNormalByTree extends PnSchedule {
 
 		pnNormalSearchCenter.add(pnPortSearch);
 		
-		pnNormalSearchCenter.add(chkRoute);
+//		pnNormalSearchCenter.add(chkRoute);
 		
 
 		pnNormalSearchCenter.add(new JLabel("항목:"));
@@ -324,20 +321,21 @@ public class PnNormalByTree extends PnSchedule {
 				
 				table.setShowPathCount(5);
 				
-				if(chkRoute.isSelected())
+				
+				
+				if(col.columnField.equals(ScheduleEnum.OUTBOUND.getSymbol()))
 				{
-					CommandMap result = (CommandMap) control.selectRouteScheduleGroupList(param);
-					treeTableModel.setRoot(nodeManager.getRouteTreeNode(result));
+					//OUTBOUND
+					CommandMap result = (CommandMap) control.selectOutboundScheduleGroupList(param);
+					treeTableModel.setRoot(nodeManager.getOutboundTreeNode(result));
 				}
 				else
 				{
-					CommandMap result = (CommandMap) control.selectOutboundScheduleGroupList(param);
-					
-					treeTableModel.setRoot(nodeManager.getOutboundTreeNode(result));
-					
+					// ROUTE
+					param.put("inOutType", ScheduleEnum.OUTBOUND.getSymbol());
+					CommandMap result = (CommandMap) control.selectRouteScheduleGroupList(param);
+					treeTableModel.setRoot(nodeManager.getRouteTreeNode(result));
 				}
-				
-				
 			}
 
 
@@ -381,33 +379,6 @@ public class PnNormalByTree extends PnSchedule {
 		}		
 	}
 
-	
-	/*
-	 * 날짜 기준 정력
-	 */
-	class AscendingFromDate implements Comparator<HashMap<String,Object>> 
-	{ 
-		//출발일, 도착일 구분
-		String dateType;
-		//오름차순, 내림차순 구분
-		int asc;
-		
-		public AscendingFromDate(String dateType, int asc)
-		
-		{
-			this.dateType = dateType;
-		}
-		@Override 
-		public int compare(HashMap<String,Object> one, HashMap<String,Object> two) {
-
-			String fromDateOne = String.valueOf(one.get(dateType));
-			String fromDateTwo = String.valueOf(two.get(dateType));
-
-			return KSGDateUtil.dayDiff(fromDateOne, fromDateTwo)>0?-1:1;
-
-		} 
-	}
-
 
 	@Override
 	public void componentShown(ComponentEvent e) {
@@ -416,15 +387,17 @@ public class PnNormalByTree extends PnSchedule {
 		cbxNormalInOut.initComp();
 		
 		HashMap<String, Object> param = new HashMap<String, Object>();
+		
 		param.put("code_type", "inPort");
+		
+		cbxNormalInOut.addItem(new KSGTableColumn("R", "ROUTE"));
+		
 		try {
 			List<CommandMap> areaList=areaService.selectAreaInfoList();
 			cbxArea.removeAllItems();
 			cbxArea.addItem(new KSGTableColumn("", "전체"));
 			for(CommandMap item:areaList)
-			{
-				
-				
+			{	
 				cbxArea.addItem(new KSGTableColumn(String.valueOf(item.get("area_name")), String.valueOf(item.get("area_name"))));
 			}
 			
