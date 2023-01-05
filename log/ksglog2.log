@@ -1,0 +1,17 @@
+2023-01-05 19:46:21,176 DEBUG [com.ksg.workbench.admin.KSGMainFrame] create frame start
+2023-01-05 19:46:21,204 DEBUG [com.ksg.workbench.admin.KSGMainFrame] create frame end
+2023-01-05 19:46:21,206 DEBUG [com.ksg.workbench.admin.KSGMainFrame] init frame start
+2023-01-05 19:46:21,287 DEBUG [com.ksg.workbench.master.BaseInfoUI] create view start
+2023-01-05 19:46:21,329 DEBUG [com.ksg.workbench.master.BaseInfoUI] update tree model
+2023-01-05 19:46:22,007 DEBUG [com.ksg.workbench.master.BaseInfoUI] create view end
+2023-01-05 19:46:22,010 DEBUG [com.ksg.workbench.shippertable.ShipperTableMgtUI2] init searchUI start
+2023-01-05 19:46:22,019  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
+2023-01-05 19:46:22,135  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-01-05 19:46:22,135  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] param:{PAGE_NO=1, PAGE_SIZE=5000}
+2023-01-05 19:46:22,929 DEBUG [com.ksg.workbench.shippertable.ShipperTableMgtUI2] init searchUI end
+2023-01-05 19:46:22,979 DEBUG [com.ksg.workbench.schedule.comp.NormalScheduleTable] nomal테이블 생성
+2023-01-05 19:46:22,982 DEBUG [com.ksg.workbench.schedule.comp.ConsoleScheduleTable] console테이블 생성
+2023-01-05 19:46:22,984 DEBUG [com.ksg.workbench.schedule.comp.PnInland.InlandScheduleTable] inland테이블 생성
+2023-01-05 19:46:23,395 DEBUG [com.ksg.workbench.admin.KSGMainFrame] init frame end
+2023-01-05 19:46:30,648  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=O, date_issue=2023-01-09, gubun=Normal}
+2023-01-05 19:46:36,706  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=I, date_issue=2023-01-09, gubun=Normal}

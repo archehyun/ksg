@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -61,13 +62,20 @@ public class OutboundNodeManager extends AbstractNodeManager{
 
 
 		DefaultMutableTreeNode root = new AreaTreeNode("AREA");
+		
+		Set<String> areaKeySet=areaList.keySet();
+		
+		areaKeySet.stream().sorted();
+		
+		Object[] mapkey = areaList.keySet().toArray();
+		Arrays.sort(mapkey);
 
 
-		for(String strArea:areaList.keySet())
+		for(Object strArea:mapkey)
 		{
 			HashMap<String, Object> toPortItems =  (HashMap<String, Object>) areaList.get(strArea);
 
-			DefaultMutableTreeNode area = new AreaTreeNode(strArea);
+			DefaultMutableTreeNode area = new AreaTreeNode((String) strArea);
 
 			// µµÂøÇ× Á¤·Ä
 			Object[] toPortArray = toPortItems.keySet().toArray();

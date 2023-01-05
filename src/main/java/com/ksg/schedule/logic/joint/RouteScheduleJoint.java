@@ -226,6 +226,8 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 
 				for(int j=0;j<vesselList.length;j++)
 				{	
+					
+					logger.debug("vesselName:"+vesselList[j].getVessel_name());
 					/* 스케줄 제외 구분
 					 * 중국, 일본; 2개 미만
 					 * 러시아 1개미만
@@ -240,6 +242,20 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 					PortScheduleInfo lastInPort = inPortList[inPortList.length-1];
 
 					GroupPort temp = new GroupPort();
+					
+					StringBuffer buffer1 = new StringBuffer();
+					for(PortScheduleInfo item:inPortList)
+					{
+						buffer1.append(item);
+					}
+					logger.debug("inPort:"+buffer1.toString());
+					
+					StringBuffer buffer2 = new StringBuffer();
+					for(PortScheduleInfo item:outPortList)
+					{
+						buffer2.append(item);
+					}
+					logger.debug("outPort:"+buffer2.toString());
 
 					for(int newIndex=0;newIndex<outPortList.length;newIndex++)
 					{
@@ -251,6 +267,10 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 						{
 							temp.add(outPortList[newIndex]);							
 						}
+						else
+						{
+							logger.debug("==================국내항 마지막 날이 국외항 처음 날을 초과");
+						}
 					}
 					
 					PortScheduleInfo[] newOutPortList =temp.toPortArray();
@@ -259,6 +279,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 					if(checkOutPort(group.getArea_name(),newOutPortList.length))
 					{
 						fw.write(toStringSchedule(vesselList[j],newOutPortList));
+						
 
 						logger.debug(toStringSchedule(vesselList[j],newOutPortList));
 					}

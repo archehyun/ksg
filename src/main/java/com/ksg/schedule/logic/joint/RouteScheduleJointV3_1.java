@@ -691,7 +691,16 @@ public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 					//마지막 국내항 일자가 옵션 날짜 보다 큰 경우
 					if(vesselList[j].getOutPortSize()>=OUT_PORT_SIZE&&
 							KSGDateUtil.daysDiff(inputDateType_yyyy_MM_dd.parse(op.getDate_isusse()), inputDateType_yyyy_MM_dd.parse(vesselList[j].getLastInScheduleDate()))>0)
+					{
+
+						
 						fw.write(vesselList[j].toString());
+					}else
+					{
+						logger.error("제외: "+vesselList[j].vessel_name);
+						
+						
+					}
 				}
 				fw.write(WORLD_E);
 			}
