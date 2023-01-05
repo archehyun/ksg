@@ -4,9 +4,15 @@ import com.ksg.schedule.execute.formater.OutboundFormatter;
 import com.ksg.view.comp.treetable.TreeTableNode;
 
 @SuppressWarnings("serial")
-public class OutbondScheduleTreeNode extends ScheduleTreeNode
+public class OutbondScheduleTreeNode extends ScheduleTreeNode implements Comparable<Object>
 {
 	
+	public String getVessel() {
+		return vessel;
+	}
+	public String vessel;
+	
+	public String date;
 	
 	public OutbondScheduleTreeNode(String string) {
 		super(string, NodeType.SCHEDULE);
@@ -27,6 +33,12 @@ public class OutbondScheduleTreeNode extends ScheduleTreeNode
 		super(treeTableNode,  nodeType);
 		formatter = new OutboundFormatter();
 		formatter.setParam(treeTableNode.getParam());
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 

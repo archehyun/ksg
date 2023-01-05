@@ -9,13 +9,14 @@ import java.util.Map;
 import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.AreaDAOImpl;
 import com.ksg.domain.AreaInfo;
+import com.ksg.service.AreaService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class AreaServiceImpl extends AbstractServiceImpl implements AreaService{
 	
-	AreaDAOImpl areaDAO;
+	private AreaDAOImpl areaDAO;
 	
 	
 	
@@ -29,6 +30,11 @@ public class AreaServiceImpl extends AbstractServiceImpl implements AreaService{
 	public List<Map<String, Object>> selectAreaList(Map<String, Object> commandMap) throws SQLException {
 		return areaDAO.selectAreaList(commandMap);
 
+	}
+	
+	public List<AreaInfo> selectAll() throws SQLException
+	{
+		return areaDAO.selectAll();
 	}
 
 	public int deleteArea(HashMap<String, Object> param) throws SQLException {

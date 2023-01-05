@@ -37,6 +37,12 @@ public class AreaDAOImpl extends AbstractDAO{
 		return selectList("area.selectAreaList2", commandMap);
 
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<AreaInfo> selectAll() throws SQLException {
+		return selectList("area.selectAll");
+
+	}
 
 	public int deleteArea(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete("area.deleteArea", param);

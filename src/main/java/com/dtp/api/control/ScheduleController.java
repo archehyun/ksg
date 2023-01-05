@@ -260,6 +260,8 @@ public class ScheduleController extends AbstractController{
 	public Map<String, Object> selectRouteScheduleGroupList(CommandMap param) throws SQLException {
 
 		List<ScheduleData>  li = service.selecteScheduleListByCondition(param);
+		
+		li.stream().forEach(schedule -> schedule.setArea_name(schedule.getArea_name().toUpperCase()));
 
 		Map<String, Map<String, List<ScheduleData>>> areaList =  li.stream().collect(
 				Collectors.groupingBy(ScheduleData::getArea_name, // Áö¿ª

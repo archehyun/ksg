@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -41,14 +42,20 @@ import lombok.extern.slf4j.Slf4j;
   * @변경이력 :
 
   * @프로그램 설명 : 라우트 스케줄 트리 노드 생성
+  * 
+  * 정렬 기준 1, 선박, 출발일
  */
 @Slf4j
 public class RouteNodeManager extends AbstractNodeManager{
 	
+	
+	PortAndDayDateComparator dateComparator = new PortAndDayDateComparator();
+	
+	FromDateComparator fromDateComparator 	= new FromDateComparator();
+	
+	VesselComparator vesselComparator 		= new VesselComparator();
+	
 
-	
-	
-	DateComparator dateComparator = new DateComparator();
 	
 	public RouteNodeManager()
 	{
@@ -56,28 +63,42 @@ public class RouteNodeManager extends AbstractNodeManager{
 	}
 	/**
 	 * 지역 - 선박
-	 * @param areaList
+	 * @param param
 	 * @return
 	 */
-	public DefaultMutableTreeNode getTreeNode(CommandMap areaList) {
+	public DefaultMutableTreeNode getTreeNode(CommandMap param) {
 
+		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("area");
-
+		
+		CommandMap areaList=(CommandMap) param.get("data");
+		
+		String sortType = (String) param.get("sortType");
+		
+		
+		Set<String> areaKeySet=areaList.keySet();
+		
+		areaKeySet.stream().sorted();
+		
+		Object[] mapkey = areaList.keySet().toArray();
+		Arrays.sort(mapkey);
+		
 		// 지역
-		for(String strArea:areaList.keySet())
+		for(Object strArea:mapkey)
 		{
 			HashMap<String, Object> vesselList =  (HashMap<String, Object>) areaList.get(strArea);
 			// 선박
 			Object[] vesselArray = vesselList.keySet().toArray();
 			
 			
-			DefaultMutableTreeNode area = new AreaTreeNode(strArea);
+			DefaultMutableTreeNode area = new AreaTreeNode((String) strArea);
 			
-			Arrays.sort(vesselArray);
-
+			//Arrays.sort(vesselArray);
+			
+			List<OutbondScheduleTreeNode> areaScheduleList = new ArrayList<OutbondScheduleTreeNode>();
+			
 			for (Object vesselKey : vesselArray)
-			{
-				
+			{	
 				// 요소조회
 				List<ScheduleData> scheduleList = (List<ScheduleData>) vesselList.get(vesselKey);
 				
@@ -86,13 +107,20 @@ public class RouteNodeManager extends AbstractNodeManager{
 						Collectors.groupingBy(o -> getNumericVoyage(o.getVoyage_num()) ));// 항차
 				
 				
+				
 				for(Object voyagekey:testList.keySet())
 				{
 					List<ScheduleData> subscheduleList = testList.get(voyagekey);
-					area.add(makeScheduleNode(strArea, vesselKey, voyagekey, subscheduleList));
-				}
+					areaScheduleList.add((OutbondScheduleTreeNode) makeScheduleNode((String) strArea, (String) vesselKey, voyagekey, subscheduleList));
+				}	
 				
 			}
+			
+			// 출발일 기준으로 정렬
+			Collections.sort(areaScheduleList, sortType.equals("date")?fromDateComparator:vesselComparator);			
+			
+			areaScheduleList.forEach(o ->area.add(o));
+			
 			root.add(area);
 
 		}
@@ -100,17 +128,16 @@ public class RouteNodeManager extends AbstractNodeManager{
 		return root;
 	}
 	
-	private DefaultMutableTreeNode makeScheduleNode(String strArea, Object vesselKey, Object voyagekey, List<ScheduleData> scheduleList) {
+	private DefaultMutableTreeNode makeScheduleNode(String strArea, String vesselKey, Object voyagekey, List<ScheduleData> scheduleList) {
 		
 
-		Map<String, List<ScheduleData>> fromPorts =scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getFromPort));
+		Map<String, List<ScheduleData>> fromPorts 	= scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getFromPort));
 
-		Map<String, List<ScheduleData>> toPorts =scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getPort));
+		Map<String, List<ScheduleData>> toPorts 	= scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getPort));
 
 		int toPortCount = toPorts.keySet().size();
 
 		int fromPortCount = fromPorts.keySet().size();
-		
 		
 		
 		//TODO 스케줄 - Route 스케줄 밸리데이션
@@ -118,19 +145,27 @@ public class RouteNodeManager extends AbstractNodeManager{
 		log.info("area:{}, fromPortCount:{}, {}",strArea, fromPortCount, checkOutPort(strArea, toPortCount));
 		
 		// TODO 스케줄-항차 번호 표시
-		DefaultMutableTreeNode schedule = new OutbondScheduleTreeNode(vesselKey+", "+ voyagekey, (checkOutPort(strArea, toPortCount)?NodeType.SCHEDULE:NodeType.JOINT_SCHEDULE)  );
-		
-		
+		OutbondScheduleTreeNode schedule = new OutbondScheduleTreeNode(vesselKey+", "+ voyagekey, (checkOutPort(strArea, toPortCount)?NodeType.SCHEDULE:NodeType.JOINT_SCHEDULE)  );
 		
 		DefaultMutableTreeNode toPort =  new PortTreeNode( StringUtils.join(makeDayList(toPorts, ScheduleDateComparator.TO_DATE)," - "));				
 		
 		scheduleList.stream().forEach(o -> toPort.add(new OutbondScheduleTreeNode(new TreeTableNode(objectMapper.convertValue(o, CommandMap.class)))));
 		
+		
+		List<PortAndDay> fromPortlist = makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE);
 		// 출발항 목록
-		schedule.add(new PortTreeNode( StringUtils.join(makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE)," - ")));
+		schedule.add(new PortTreeNode( StringUtils.join( fromPortlist," - ")));
+		
+		// 출발항은 늦은 날짜
+		schedule.date = fromPortlist.get(0).date;
+		
+		schedule.vessel = vesselKey;
+		
 		
 		// 도착항 목록
 		schedule.add(toPort);
+		
+		// TODO 출발항 빠른 날짜 기준으로 정렬
 		
 		return schedule;
 		
@@ -156,9 +191,9 @@ public class RouteNodeManager extends AbstractNodeManager{
 
 			Collections.sort(ll, new ScheduleDateComparator(dateType));
 
-			ScheduleData fristSchedule = ll.get(0);
+			ScheduleData lastSchedule = ll.get(ll.size()-1);
 
-			list.add(new PortAndDay(entry.getKey(), dateType==ScheduleDateComparator.FROM_DATE?fristSchedule.getDateF():fristSchedule.getDateT()));
+			list.add(new PortAndDay(entry.getKey(), dateType==ScheduleDateComparator.FROM_DATE?lastSchedule.getDateF():lastSchedule.getDateT()));
 
 		});
 
@@ -185,12 +220,42 @@ public class RouteNodeManager extends AbstractNodeManager{
 
 	}
 	
-	class DateComparator implements Comparator<PortAndDay> {
+	abstract class DateComparator<T> implements Comparator<T>
+	{
+		protected SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
+		
+	}
+	
+	
+	class VesselComparator implements Comparator<OutbondScheduleTreeNode> {
+	
+		@Override
+		public int compare(OutbondScheduleTreeNode f1, OutbondScheduleTreeNode f2) {
+		
+				return f1.vessel.compareTo(f2.vessel);
+		
+		}
+	}
 
+	class PortAndDayDateComparator extends DateComparator<PortAndDay> {
 
-		private  SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
 		@Override
 		public int compare(PortAndDay f1, PortAndDay f2) {
+
+			try {
+
+				return formatYYYYMMDD.parse(f1.date).compareTo(formatYYYYMMDD.parse(f2.date));
+
+			} catch (ParseException e) {
+				return 0;
+			}
+		}
+	}
+	
+	class FromDateComparator extends DateComparator<OutbondScheduleTreeNode>{
+		
+		@Override
+		public int compare(OutbondScheduleTreeNode f1, OutbondScheduleTreeNode f2) {
 
 			try {
 
