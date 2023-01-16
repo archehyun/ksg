@@ -4,9 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
@@ -201,10 +203,7 @@ public class PnNormalByTree extends PnSchedule {
 				String selectedValue = cbxNormalInOut.getSelectedItem().toString();
 
 				chkRoute.setEnabled("OUTBOUND".equals(selectedValue));
-				pnRouteSerchOption.setVisible("ROUTE".equals(selectedValue));
-
-				System.out.println(selectedValue);
-			}
+				pnRouteSerchOption.setVisible("ROUTE".equals(selectedValue));			}
 		});
 
 		chkRoute = new JCheckBox("Route");
@@ -236,7 +235,7 @@ public class PnNormalByTree extends PnSchedule {
 		pnPortSearch.add(butSearchToPort);
 
 		txfNoramlSearch = new JTextField(15);
-		txfNoramlSearch.addKeyListener(new KeyListener() {
+		txfNoramlSearch.addKeyListener(new KeyAdapter() {
 			
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -247,20 +246,23 @@ public class PnNormalByTree extends PnSchedule {
 				
 			}
 			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
 		});
 
 		JButton butSearch = new JButton("검색");
+		
+		JButton butCancel = new JButton("초기화");
+		butCancel.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				txfFromPort.setText("");
+				txfToPort.setText("");
+				txfNoramlSearch.setText("");
+				cbxArea.setSelectedIndex(0);
+				cbxNormalSearch.setSelectedIndex(0);
+				
+			}
+		});
 
 		butSearch.addActionListener(this);
 
@@ -304,8 +306,6 @@ public class PnNormalByTree extends PnSchedule {
 		 
 		 rbtRouteDateSorted.setSelected(true);
 		 rbtRouteVesselSorted.setSelected(false);
-		 
-		
 		
 		
 		pnNormalSearchCenter.add(pnRouteSerchOption);
@@ -317,6 +317,7 @@ public class PnNormalByTree extends PnSchedule {
 		KSGPanel pnNormalSeawrchEast = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		pnNormalSeawrchEast.add(butSearch);
+		pnNormalSeawrchEast.add(butCancel);
 
 		pnNormalSearchMain.add(pnNormalSearchCenter);
 
