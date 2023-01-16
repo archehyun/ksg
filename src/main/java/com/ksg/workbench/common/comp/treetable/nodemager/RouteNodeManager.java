@@ -61,6 +61,11 @@ public class RouteNodeManager extends AbstractNodeManager{
 	{
 		super();
 	}
+	
+	/**
+	 * TODO 도착일 늦은 날짜로 정렬
+	 * TODO
+	 */
 	/**
 	 * 지역 - 선박
 	 * @param param
@@ -107,8 +112,13 @@ public class RouteNodeManager extends AbstractNodeManager{
 						Collectors.groupingBy(o -> getNumericVoyage(o.getVoyage_num()) ));// 항차
 				
 				
+				//TODO 항차 번호로 정렬
 				
-				for(Object voyagekey:testList.keySet())
+				Object[] voyageArray = testList.keySet().toArray();
+				
+				Arrays.sort(voyageArray);
+				
+				for(Object voyagekey:voyageArray)
 				{
 					List<ScheduleData> subscheduleList = testList.get(voyagekey);
 					areaScheduleList.add((OutbondScheduleTreeNode) makeScheduleNode((String) strArea, (String) vesselKey, voyagekey, subscheduleList));
@@ -192,7 +202,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 			Collections.sort(ll, new ScheduleDateComparator(dateType));
 
 			ScheduleData lastSchedule = ll.get(ll.size()-1);
-
+			// 도착항은 빠른 날짜로 정렬
 			list.add(new PortAndDay(entry.getKey(), dateType==ScheduleDateComparator.FROM_DATE?lastSchedule.getDateF():lastSchedule.getDateT()));
 
 		});
@@ -325,5 +335,4 @@ public class RouteNodeManager extends AbstractNodeManager{
 		}
 		
 	}
-
 }
