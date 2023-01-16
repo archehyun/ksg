@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -31,37 +32,47 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 
 
-  * @FileName : RouteNodeManager.java
+ * @FileName : RouteNodeManager.java
 
-  * @Project : KSG2
+ * @Project : KSG2
 
-  * @Date : 2022. 12. 20. 
+ * @Date : 2022. 12. 20. 
 
-  * @작성자 : pch
+ * @작성자 : pch
 
-  * @변경이력 :
+ * @변경이력 :
 
-  * @프로그램 설명 : 라우트 스케줄 트리 노드 생성
-  * 
-  * 정렬 기준 1, 선박, 출발일
+ * @프로그램 설명 : 라우트 스케줄 트리 노드 생성
+ * 
+ * 정렬 기준 1, 선박, 출발일
  */
 @Slf4j
 public class RouteNodeManager extends AbstractNodeManager{
-	
-	
-	PortAndDayDateComparator dateComparator = new PortAndDayDateComparator();
-	
-	FromDateComparator fromDateComparator 	= new FromDateComparator();
-	
-	VesselComparator vesselComparator 		= new VesselComparator();
-	
 
-	
+
+	PortAndDayDateComparator dateComparator = new PortAndDayDateComparator();
+
+	FromDateComparator fromDateComparator 	= new FromDateComparator();
+
+	VesselComparator vesselComparator 		= new VesselComparator();
+
+	SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
+
+
+	private static final String AUSTRALIA_NEW_ZEALAND_SOUTH_PACIFIC = "AUSTRALIA, NEW ZEALAND & SOUTH PACIFIC";
+	private static final String PERSIAN_GULF = "PERSIAN GULF";
+	private static final String RUSSIA = "RUSSIA";
+	private static final String ASIA = "ASIA";
+	private static final String JAPAN = "JAPAN";
+	private static final String CHINA = "CHINA";
+
+
+
 	public RouteNodeManager()
 	{
 		super();
 	}
-	
+
 	/**
 	 * TODO 도착일 늦은 날짜로 정렬
 	 * TODO
@@ -73,73 +84,130 @@ public class RouteNodeManager extends AbstractNodeManager{
 	 */
 	public DefaultMutableTreeNode getTreeNode(CommandMap param) {
 
-		
+
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("area");
-		
+
 		CommandMap areaList=(CommandMap) param.get("data");
-		
+
 		String sortType = (String) param.get("sortType");
-		
-		
+
+
 		Set<String> areaKeySet=areaList.keySet();
-		
+
 		areaKeySet.stream().sorted();
-		
+
 		Object[] mapkey = areaList.keySet().toArray();
 		Arrays.sort(mapkey);
-		
+
 		// 지역
 		for(Object strArea:mapkey)
 		{
 			HashMap<String, Object> vesselList =  (HashMap<String, Object>) areaList.get(strArea);
 			// 선박
 			Object[] vesselArray = vesselList.keySet().toArray();
-			
-			
+
+
 			DefaultMutableTreeNode area = new AreaTreeNode((String) strArea);
-			
+
 			//Arrays.sort(vesselArray);
-			
+
 			List<OutbondScheduleTreeNode> areaScheduleList = new ArrayList<OutbondScheduleTreeNode>();
-			
+
 			for (Object vesselKey : vesselArray)
 			{	
 				// 요소조회
 				List<ScheduleData> scheduleList = (List<ScheduleData>) vesselList.get(vesselKey);
-				
+
 				// 항차번호(숫자)로 그룹화
 				Map<Integer, List<ScheduleData>> testList =  scheduleList.stream().collect(
 						Collectors.groupingBy(o -> getNumericVoyage(o.getVoyage_num()) ));// 항차
-				
-				
-				//TODO 항차 번호로 정렬
-				
+
+				// 항차 번호로 정렬
 				Object[] voyageArray = testList.keySet().toArray();
-				
+
 				Arrays.sort(voyageArray);
-				
+
 				for(Object voyagekey:voyageArray)
 				{
 					List<ScheduleData> subscheduleList = testList.get(voyagekey);
-					areaScheduleList.add((OutbondScheduleTreeNode) makeScheduleNode((String) strArea, (String) vesselKey, voyagekey, subscheduleList));
+
+					//TODO 지역별 스케줄 기간별 스케줄 분할
+
+
+					Collections.sort(subscheduleList);					
+
+					List[] li=divideScheduleByArea(subscheduleList, (String)strArea);
+					for(List item:li)
+					{
+						areaScheduleList.add((OutbondScheduleTreeNode) makeScheduleNode((String) strArea, (String) vesselKey, voyagekey, item));	
+					}					
 				}	
-				
+
 			}
-			
+
 			// 출발일 기준으로 정렬
 			Collections.sort(areaScheduleList, sortType.equals("date")?fromDateComparator:vesselComparator);			
-			
+
 			areaScheduleList.forEach(o ->area.add(o));
-			
+
 			root.add(area);
 
 		}
 
 		return root;
 	}
-	
-	private DefaultMutableTreeNode makeScheduleNode(String strArea, String vesselKey, Object voyagekey, List<ScheduleData> scheduleList) {
+	private List[] divideScheduleByArea(List<ScheduleData> list, String area_name)
+	{		
+
+		// 첫번째 출발항 출발일
+		String firstInPortDateF = list.get(0).getDateF();
+
+		int index =-1;
 		
+		
+		for(int i=1;i< list.size();i++)
+		{
+			ScheduleData secondOutPortData = list.get(i);
+			String outPortDateF = secondOutPortData.getDateF();
+			
+			int differ = differDay(firstInPortDateF, outPortDateF);
+			
+			int gap = getGap(area_name);
+			
+			AreaEnum area = AreaEnum.findGapByAreaName(area_name);
+			
+			if(differ>area.getGap())
+			{	
+				List<ScheduleData> first = new ArrayList<>(list.subList(0, i));
+				
+			    List<ScheduleData> second = new ArrayList<>(list.subList(i, list.size()));
+			    
+			    return new List[] {first, second};
+			}
+		}
+		return new List[] {list};
+	}
+	
+	/**
+	 * 두 날짜간 차이
+	 * @param firstDate yyyy/MM/dd
+	 * @param secondDate yyyy/MM/dd
+	 * @return 
+	 */
+	private int differDay(String firstDate, String secondDate)
+	{
+		try {
+
+			long diffInMillies = Math.abs(formatYYYYMMDD.parse(firstDate).getTime() - formatYYYYMMDD.parse(secondDate).getTime());
+			return (int) TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+		}catch(Exception e)
+		{
+			return 0;
+		}
+
+	}
+	private DefaultMutableTreeNode makeScheduleNode(String strArea, String vesselKey, Object voyagekey, List<ScheduleData> scheduleList) {
+
 
 		Map<String, List<ScheduleData>> fromPorts 	= scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getFromPort));
 
@@ -148,42 +216,42 @@ public class RouteNodeManager extends AbstractNodeManager{
 		int toPortCount = toPorts.keySet().size();
 
 		int fromPortCount = fromPorts.keySet().size();
-		
-		
+
+
 		//TODO 스케줄 - Route 스케줄 밸리데이션
-		
+
 		log.info("area:{}, fromPortCount:{}, {}",strArea, fromPortCount, checkOutPort(strArea, toPortCount));
-		
+
 		// TODO 스케줄-항차 번호 표시
 		OutbondScheduleTreeNode schedule = new OutbondScheduleTreeNode(vesselKey+", "+ voyagekey, (checkOutPort(strArea, toPortCount)?NodeType.SCHEDULE:NodeType.JOINT_SCHEDULE)  );
-		
+
 		DefaultMutableTreeNode toPort =  new PortTreeNode( StringUtils.join(makeDayList(toPorts, ScheduleDateComparator.TO_DATE)," - "));				
-		
+
 		scheduleList.stream().forEach(o -> toPort.add(new OutbondScheduleTreeNode(new TreeTableNode(objectMapper.convertValue(o, CommandMap.class)))));
-		
-		
+
+
 		List<PortAndDay> fromPortlist = makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE);
 		// 출발항 목록
 		schedule.add(new PortTreeNode( StringUtils.join( fromPortlist," - ")));
-		
+
 		// 출발항은 늦은 날짜
 		schedule.date = fromPortlist.get(0).date;
-		
+
 		schedule.vessel = vesselKey;
-		
-		
+
+
 		// 도착항 목록
 		schedule.add(toPort);
-		
+
 		// TODO 출발항 빠른 날짜 기준으로 정렬
-		
+
 		return schedule;
-		
-		
-		
-		
+
+
+
+
 	}
-	
+
 	/**
 	 * 출발일, 도착일 별 그룹 생성
 	 * @param ports
@@ -212,7 +280,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 		return list;
 
 	}
-	
+
 	class PortAndDay
 	{
 
@@ -229,21 +297,21 @@ public class RouteNodeManager extends AbstractNodeManager{
 		}
 
 	}
-	
+
 	abstract class DateComparator<T> implements Comparator<T>
 	{
 		protected SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
-		
+
 	}
-	
-	
+
+
 	class VesselComparator implements Comparator<OutbondScheduleTreeNode> {
-	
+
 		@Override
 		public int compare(OutbondScheduleTreeNode f1, OutbondScheduleTreeNode f2) {
-		
-				return f1.vessel.compareTo(f2.vessel);
-		
+
+			return f1.vessel.compareTo(f2.vessel);
+
 		}
 	}
 
@@ -261,9 +329,9 @@ public class RouteNodeManager extends AbstractNodeManager{
 			}
 		}
 	}
-	
+
 	class FromDateComparator extends DateComparator<OutbondScheduleTreeNode>{
-		
+
 		@Override
 		public int compare(OutbondScheduleTreeNode f1, OutbondScheduleTreeNode f2) {
 
@@ -276,7 +344,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 			}
 		}
 	}
-	
+
 	/**
 	 * 문자형 항차번호 중 숫자만 반환
 	 * @param voyage_num
@@ -307,7 +375,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 
 		return result;
 	}
-	
+
 	/**
 	 * 중국, 일본 : 2곳 이상
 	 * 러시아 : 1곳 이상
@@ -333,6 +401,30 @@ public class RouteNodeManager extends AbstractNodeManager{
 		{
 			return outportCount>=3;
 		}
-		
+
+	}
+	private int getGap(String area_name)
+	{
+		int base=0; // 공동배선 기준 일자
+		String upCaseAreaName = area_name.toUpperCase();
+		if(upCaseAreaName.equals(CHINA)||
+				upCaseAreaName.equals(JAPAN)||
+				upCaseAreaName.equals(RUSSIA)) // 중국, 일본, 러시아
+		{
+			base=4;
+		}else if(upCaseAreaName.equals(ASIA)) // 동남아
+		{
+			base=6;
+
+		}else if(upCaseAreaName.equals(PERSIAN_GULF)||
+				upCaseAreaName.equals(AUSTRALIA_NEW_ZEALAND_SOUTH_PACIFIC))// 중동, 호주
+		{
+			base=8;
+		}		
+		else // 구주, 북미, 중남미, 아프리카
+		{
+			base=10;
+		}
+		return base;
 	}
 }
