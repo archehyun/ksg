@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -234,6 +236,29 @@ public class PnNormalByTree extends PnSchedule {
 		pnPortSearch.add(butSearchToPort);
 
 		txfNoramlSearch = new JTextField(15);
+		txfNoramlSearch.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(e.getKeyChar()== KeyEvent.VK_ENTER)
+				{
+					fnSearch();
+				}
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		JButton butSearch = new JButton("°Ë»ö");
 
