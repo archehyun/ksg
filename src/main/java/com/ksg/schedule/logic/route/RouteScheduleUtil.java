@@ -33,9 +33,28 @@ public class RouteScheduleUtil {
 		if(sortedInPortList.length<2)
 			return index;
 
+		
+		
+		
+		int base=getGap(area_name.toUpperCase()); // 공동배선 기준 일자
+		
+
+		PortScheduleInfo firstInPort=sortedInPortList[0];
+		
+		for(int i=1;i<sortedInPortList.length;i++)
+		{
+			int differ = KSGDateUtil.daysDiff(PortDateUtil.parse(firstInPort.getDate()), PortDateUtil.parse(sortedInPortList[i].getDate()));
+			if(differ>=base)
+				return i;
+		}
+		return index;
+	}
+	
+	public static int getGap(String area_name)
+	{
 		int base=0; // 공동배선 기준 일자
 		String upCaseAreaName = area_name.toUpperCase();
-		if(upCaseAreaName.equals(RouteScheduleUtil.CHINA)||
+		if(upCaseAreaName.equals(CHINA)||
 				upCaseAreaName.equals(JAPAN)||
 				upCaseAreaName.equals(RUSSIA)) // 중국, 일본, 러시아
 		{
@@ -53,16 +72,7 @@ public class RouteScheduleUtil {
 		{
 			base=10;
 		}
-
-		PortScheduleInfo firstInPort=sortedInPortList[0];
-		
-		for(int i=1;i<sortedInPortList.length;i++)
-		{
-			int differ = KSGDateUtil.daysDiff(PortDateUtil.parse(firstInPort.getDate()), PortDateUtil.parse(sortedInPortList[i].getDate()));
-			if(differ>=base)
-				return i;
-		}
-		return index;
+		return base;
 	}
 	public static int getNumericVoyage(String voyage_num)
 	{	

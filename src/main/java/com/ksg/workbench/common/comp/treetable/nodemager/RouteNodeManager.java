@@ -16,11 +16,14 @@ import java.util.stream.Collectors;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.AreaEnum;
 import com.ksg.domain.ScheduleData;
+import com.ksg.schedule.logic.route.RouteScheduleUtil;
 import com.ksg.view.comp.treetable.TreeTableNode;
 import com.ksg.workbench.common.comp.treetable.node.AreaTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.NodeType;
@@ -57,7 +60,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 	VesselComparator vesselComparator 		= new VesselComparator();
 
 	SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
-
+	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	private static final String AUSTRALIA_NEW_ZEALAND_SOUTH_PACIFIC = "AUSTRALIA, NEW ZEALAND & SOUTH PACIFIC";
 	private static final String PERSIAN_GULF = "PERSIAN GULF";
@@ -120,7 +123,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 
 				// 항차번호(숫자)로 그룹화
 				Map<Integer, List<ScheduleData>> testList =  scheduleList.stream().collect(
-						Collectors.groupingBy(o -> getNumericVoyage(o.getVoyage_num()) ));// 항차
+						Collectors.groupingBy(o -> RouteScheduleUtil. getNumericVoyage(o.getVoyage_num()) ));// 항차
 
 				// 항차 번호로 정렬
 				Object[] voyageArray = testList.keySet().toArray();
@@ -137,6 +140,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 					Collections.sort(subscheduleList);					
 
 					List[] li=divideScheduleByArea(subscheduleList, (String)strArea);
+					
 					for(List item:li)
 					{
 						areaScheduleList.add((OutbondScheduleTreeNode) makeScheduleNode((String) strArea, (String) vesselKey, voyagekey, item));	
@@ -160,23 +164,21 @@ public class RouteNodeManager extends AbstractNodeManager{
 	{		
 
 		// 첫번째 출발항 출발일
-		String firstInPortDateF = list.get(0).getDateF();
-
-		int index =-1;
-		
+		String firstInPortDateF = list.get(0).getDateF();		
 		
 		for(int i=1;i< list.size();i++)
 		{
 			ScheduleData secondOutPortData = list.get(i);
+			
 			String outPortDateF = secondOutPortData.getDateF();
 			
 			int differ = differDay(firstInPortDateF, outPortDateF);
 			
 			int gap = getGap(area_name);
 			
-			AreaEnum area = AreaEnum.findGapByAreaName(area_name);
+			AreaEnum area = AreaEnum.findGapByAreaName(area_name.toUpperCase());
 			
-			if(differ>area.getGap())
+			if(differ>=area.getGap())
 			{	
 				List<ScheduleData> first = new ArrayList<>(list.subList(0, i));
 				
@@ -345,36 +347,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 		}
 	}
 
-	/**
-	 * 문자형 항차번호 중 숫자만 반환
-	 * @param voyage_num
-	 * @return
-	 */
-	public int getNumericVoyage(String voyage_num)
-	{
-		int result=0;
-
-		String temp="";
-		if(voyage_num==null)
-			return 0;
-		for(int i=0;i<voyage_num.length();i++)
-		{
-			try{
-				temp+=Integer.parseInt(String.valueOf(voyage_num.charAt(i)));
-			}catch(NumberFormatException e)
-			{
-
-			}
-		}
-		try{
-			result=Integer.valueOf(temp);
-		}catch(Exception e)
-		{
-			return 0;
-		}
-
-		return result;
-	}
+	
 
 	/**
 	 * 중국, 일본 : 2곳 이상
