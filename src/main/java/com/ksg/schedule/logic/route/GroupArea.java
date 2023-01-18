@@ -119,7 +119,7 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 			
 			int index=-1;
 			
-			if((index=item.getSeperateIndex(this.getArea_name()))>-1)
+			if((index=RouteScheduleUtil.getSeperateIndex(this.getArea_name(), item.getGroupPort().createInPortArray()))>-1)
 			{
 				logger.info("sperate====="+item.getVessel_name());
 				

@@ -22,17 +22,21 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	int orderType;
+	
 	protected Logger logger = LogManager.getLogger(this.getClass());
+	
 	private ArrayList<PortScheduleInfo> inPortList;
+	
 	private ArrayList<PortScheduleInfo> outPortList;
+	
+	private GroupPort temp;
 
 	public GroupPort() {
 		inPortList = new ArrayList<PortScheduleInfo>();
 		outPortList = new ArrayList<PortScheduleInfo>();
 	}
 	
-	public List getInPortList()
+	public List<PortScheduleInfo> getInPortList()
 	{
 		return inPortList;
 	}
@@ -56,6 +60,7 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 	public void addPort(ScheduleData data) throws ParseException
 	{
 		inPortList.add(new PortScheduleInfo(data.getFromPort(), data.getDateF(),data.getCompany_abbr()));
+		
 		outPortList.add(new PortScheduleInfo(data.getPort(), data.getDateT(),data.getCompany_abbr()));
 	}
 
@@ -63,17 +68,7 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 	{
 		add(data);
 	}
-	public void addPort(PortScheduleInfo data, int type) throws ParseException
-	{
-		if(type==1)
-		{
-			inPortList.add(data);
-		}
-		else if(type==2)
-		{
-			outPortList.add(data);
-		}
-	}
+
 
 	private PortScheduleInfo[] createArray(ArrayList<PortScheduleInfo> array) {
 		PortScheduleInfo lit[] = new PortScheduleInfo[array.size()];
@@ -184,7 +179,7 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 		return lit2;
 	}
 
-	private GroupPort temp;
+	
 	public PortScheduleInfo[] selectArray(PortScheduleInfo lit[], int startIndex, int endIndex) throws ParseException
 	{		 
 		temp = new GroupPort();
@@ -209,7 +204,6 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 	}
 
 	public PortScheduleInfo[] createCompressedOutPortArray() throws ParseException {
-
 
 		return this.createCompressedArray(this.createOutPortArray(),2);
 	}

@@ -313,7 +313,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 							buffer.append(list[index].getPort()+" "+PortDateUtil.toPrintDate(list[index].getDate())+(index<list.length-1?" - ":""));
 						}
 						
-						errorOutfw.write("E1:"+group.getArea_name()+",\t"+vesselList[j].getVessel_name()+",\t"+vesselList[j].getVoyage_num()+",\t"+vesselList[j].getCompany()+",\t"+buffer.toString()+" ,1\r\n");
+						errorOutfw.write("E1:"+group.getArea_name()+",\t"+vesselList[j].getVessel_name()+",\t"+vesselList[j].getVoyage_num()+",\t"+vesselList[j].getCompanyString()+",\t"+buffer.toString()+" ,1\r\n");
 						
 					}
 				}
@@ -337,7 +337,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 					{
 						buffer.append(list[index].getPort()+" "+PortDateUtil.toPrintDate(list[index].getDate())+(index<list.length-1?" - ":""));
 					}
-					commonInfw.write("   "+commonVessel.getVessel_name()+",\t"+commonVessel.getVoyage_num()+",\t"+commonVessel.getCompany()+",\t"+buffer.toString()+"\r\n");
+					commonInfw.write("   "+commonVessel.getVessel_name()+",\t"+commonVessel.getVoyage_num()+",\t"+commonVessel.getCompanyString()+",\t"+buffer.toString()+"\r\n");
 				}
 
 				current++;
@@ -415,7 +415,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 	private String toStringSchedule(GroupVessel vessel,PortScheduleInfo[] outPortList) throws ParseException
 	{		
 		PortScheduleInfo[] inPortList = vessel.getCompressInPortList();
-		return 	WORLD_F+vessel.getVessel_name()+" - "+vessel.getVoyage_num()+" (" + vessel.getCompany() + ")"+"\r\n"+
+		return 	WORLD_F+vessel.getVessel_name()+" - "+vessel.getVoyage_num()+" (" + vessel.getCompanyString() + ")"+"\r\n"+
 		WORLD_INPORT+toStringInPortInfo(inPortList)+"\r\n"+
 		WORLD_OUTPORT+toStringOutPortInfo(inPortList[inPortList.length-1],outPortList)+"\r\n\r\n";
 	}
