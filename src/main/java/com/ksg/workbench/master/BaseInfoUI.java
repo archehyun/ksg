@@ -39,6 +39,7 @@ import com.ksg.workbench.master.comp.PnBase;
 import com.ksg.workbench.master.comp.PnCommonCode;
 import com.ksg.workbench.master.comp.PnCompany;
 import com.ksg.workbench.master.comp.PnPort;
+import com.ksg.workbench.master.comp.PnPortNew;
 import com.ksg.workbench.master.comp.PnVessel;
 
 /**
@@ -62,6 +63,7 @@ public class BaseInfoUI extends AbstractMgtUI{
 	public static final String STRING_PORT_ABBR 	= "항구 약어";
 	public static final String STRING_AREA_INFO 	= "지역";
 	public static final String STRING_PORT_INFO 	= "항구";
+	private static final String STRING_PORT_NEW_INFO = "항구2";
 	public static final String STRING_COMPANY_INFO 	= "선사";
 	public static final String STRING_VESSEL_INFO 	= "선박";
 	public static final String STRING_COMMONCODE_INFO 	= "공통코드";
@@ -77,6 +79,7 @@ public class BaseInfoUI extends AbstractMgtUI{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 
 
 	private HashMap<String, PnBase> panelList;// 패널 저장 객체
@@ -214,6 +217,8 @@ public class BaseInfoUI extends AbstractMgtUI{
 		//addBasePanel(pnMain,new PnVesselAbbr(this),	STRING_VESSEL_ABBR);
 		addBasePanel(pnMain,new PnCompany(this),	STRING_COMPANY_INFO);
 		addBasePanel(pnMain,new PnPort(this),		STRING_PORT_INFO);
+//		addBasePanel(pnMain,new PnPort(this),		STRING_PORT_INFO);
+		
 		//addBasePanel(pnMain,new PnPortAbbr(this),	STRING_PORT_ABBR);
 		//addBasePanel(pnMain,new PnMember(this),	"사용자");
 

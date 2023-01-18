@@ -15,11 +15,14 @@ import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 
+import lombok.extern.slf4j.Slf4j;
+
  /**
  * @설명 최상위 정렬 기준, 지역이름을 기준으로 선박을 그룹화 하는 클래스 
  * @author 박창현
  *
  */
+@Slf4j
 public class GroupArea extends HashMap<String, GroupVessel> implements Comparable
 {
 	/**
@@ -51,6 +54,8 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 	{
 
 		String key =data.getVessel()+"\r\n"+data.getIntVoyage_num();
+		
+		
 		if(this.containsKey(key))
 		{
 			// 기존 그룹 추가
@@ -91,7 +96,13 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 	public void setArea_name(String area_name) {
 		this.area_name = area_name;
 	}
-	
+	/**
+	 * 지역별 공동배선 적용
+	 * 
+	 * @return
+	 * @throws ParseException
+	 * @throws SQLException
+	 */
 	public GroupVessel[] toSortedArray() throws ParseException, SQLException
 	{
 		Set<String>keylist=keySet();
@@ -110,6 +121,7 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 			
 			if((index=item.getSeperateIndex(this.getArea_name()))>-1)
 			{
+				logger.info("sperate====="+item.getVessel_name());
 				
 				this.commonVesselList.add(item);
 				GroupVessel newGroup1 = new GroupVessel(item);
@@ -122,6 +134,8 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 
 				newList.add(newGroup1);
 				newList.add(newGroup2);
+				logger.info("one list:"+newGroup1.getInPortList());
+				logger.info("two list:"+newGroup2.getInPortList());
 			}
 			else
 			{

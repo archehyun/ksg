@@ -10,7 +10,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -188,21 +188,19 @@ public class PnNormalByTree extends PnSchedule {
 		cbxNormalSearch.addItem(new KSGTableColumn("company_abbr", "선사명"));
 		cbxNormalSearch.addItem(new KSGTableColumn("agent", "에이전트"));
 		cbxNormalSearch.addItem(new KSGTableColumn("vessel", "선박명"));
-		cbxNormalSearch.addItem(new KSGTableColumn("voyage_num", "항차명"));
-		cbxNormalSearch.addItem(new KSGTableColumn("n_voyage_num", "항차번호"));		
-		cbxNormalSearch.addItem(new KSGTableColumn("dateF", "출발일"));
-		cbxNormalSearch.addItem(new KSGTableColumn("dateT", "도착일"));
+
 
 		cbxNormalInOut.addItemListener(new ItemListener() {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				// TODO Auto-generated method stub
+				
 				if(cbxNormalInOut.getSelectedItem() ==null)return;
 
 				String selectedValue = cbxNormalInOut.getSelectedItem().toString();
 
 				chkRoute.setEnabled("OUTBOUND".equals(selectedValue));
+				
 				pnRouteSerchOption.setVisible("ROUTE".equals(selectedValue));			}
 		});
 
@@ -217,16 +215,26 @@ public class PnNormalByTree extends PnSchedule {
 
 		txfFromPort.setEditable(false);
 
-		JButton butSearchFromPort = new ImageButton("images/search1.png");		
+		JButton butSearchFromPort = new ImageButton("images/search1.png");	
+		
 		butSearchFromPort.setActionCommand("SEARCH_FROM_PORT");
+		
 		butSearchFromPort.addActionListener(this);
+		
 		JLabel lblToPort = new JLabel("도착항");
+		
 		txfToPort = new JTextField(10);
+		
 		txfToPort.setEditable(false);
+		
 		JButton butSearchToPort = new ImageButton("images/search1.png");
+		
 		butSearchToPort.setActionCommand("SEARCH_TO_PORT");
+		
 		butSearchToPort.addActionListener(this);
+		
 		KSGPanel pnPortSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
 		pnPortSearch.add(lblFromPort);
 		pnPortSearch.add(txfFromPort);
 		pnPortSearch.add(butSearchFromPort);
@@ -243,7 +251,6 @@ public class PnNormalByTree extends PnSchedule {
 				{
 					fnSearch();
 				}
-				
 			}
 			
 		});
@@ -276,9 +283,6 @@ public class PnNormalByTree extends PnSchedule {
 
 		pnNormalSearchCenter.add(pnPortSearch);
 
-		//		pnNormalSearchCenter.add(chkRoute);
-
-
 		pnNormalSearchCenter.add(new JLabel("항목:"));
 
 		pnNormalSearchCenter.add(cbxNormalSearch);
@@ -286,37 +290,39 @@ public class PnNormalByTree extends PnSchedule {
 		pnNormalSearchCenter.add(txfNoramlSearch);
 
 		pnRouteSerchOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
 		pnRouteSerchOption.setVisible(false);
 
 		pnRouteSerchOption.add(new JLabel("정렬:"));
 		
 		rbtRouteDateSorted = new JRadioButton("날짜");
+		
 		rbtRouteVesselSorted = new JRadioButton("선박");
 		
 		rbtRouteDateSorted.setBackground(Color.white);
+		
 		rbtRouteVesselSorted.setBackground(Color.white);
 		
 		 ButtonGroup group = new ButtonGroup();
 		 
 		 group.add(rbtRouteDateSorted);
+		 
 		 group.add(rbtRouteVesselSorted);
 		 
 		 pnRouteSerchOption.add(rbtRouteDateSorted);
+		 
 		 pnRouteSerchOption.add(rbtRouteVesselSorted);
 		 
 		 rbtRouteDateSorted.setSelected(true);
+		 
 		 rbtRouteVesselSorted.setSelected(false);
 		
-		
 		pnNormalSearchCenter.add(pnRouteSerchOption);
-
-
-
-
 
 		KSGPanel pnNormalSeawrchEast = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		pnNormalSeawrchEast.add(butSearch);
+		
 		pnNormalSeawrchEast.add(butCancel);
 
 		pnNormalSearchMain.add(pnNormalSearchCenter);
@@ -365,7 +371,6 @@ public class PnNormalByTree extends PnSchedule {
 			}
 
 			if(input_date!=null||!input_date.equals(""))
-
 			{
 				param.put("date_issue", input_date);
 			}
@@ -385,7 +390,6 @@ public class PnNormalByTree extends PnSchedule {
 			// outbound 호출시
 			else
 			{
-
 				table.setShowPathCount(5);
 				
 				if(col.columnField.equals(ScheduleEnum.OUTBOUND.getSymbol()))
@@ -404,12 +408,12 @@ public class PnNormalByTree extends PnSchedule {
 					CommandMap routeparam = new CommandMap();
 
 					routeparam.put("data", result);
+					
 					routeparam.put("sortType", rbtRouteDateSorted.isSelected()?"date":"vessel");
 
 					treeTableModel.setRoot(nodeManager.getRouteTreeNode(routeparam));
 				}
 			}
-
 
 			table.setTreeExpandedState(true);
 
@@ -472,14 +476,8 @@ public class PnNormalByTree extends PnSchedule {
 			
 			List<AreaInfo> areaList=areaService.selectAll();
 			
-			areaList.stream().sorted(Comparator.comparing(AreaInfo::getArea_name))
-			.forEach(o->cbxArea.addItem(new KSGTableColumn(o.getArea_name(), o.getArea_name())));
-			;
-			
-			
-			
-			
-			
+			areaList.stream()	.sorted(Comparator.comparing(AreaInfo::getArea_name))
+								.forEach(o->cbxArea.addItem(new KSGTableColumn(o.getArea_name(), o.getArea_name())));
 			
 
 			inboundCodeMap = (HashMap<String, Object>) codeService.selectInboundPortMap();

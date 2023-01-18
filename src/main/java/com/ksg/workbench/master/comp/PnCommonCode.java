@@ -7,7 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -127,7 +126,9 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		tableD.setColumnName(Dcolumns);
 		
 		tableD.initComp();
+		
 		tableD.setShowControl(true);
+		
 		tableD.addContorlListener(new CommonCodeDetileAction());		
 		
 		pnMain.add(tableH,BorderLayout.WEST);
@@ -399,6 +400,12 @@ public class PnCommonCode extends PnBase implements ActionListener{
 	@Override
 	public void componentShown(ComponentEvent e) {
 		fnSearch();
+		
+	}
+
+	@Override
+	public void updateView() {
+		// TODO Auto-generated method stub
 		
 	}
 

@@ -15,11 +15,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.dtp.api.control.AbstractController;
 import com.ksg.common.dao.DAOImplManager;
+import com.ksg.common.model.CommandMap;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.View;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**
@@ -28,56 +28,63 @@ import com.ksg.workbench.master.BaseInfoUI;
  * @author 박창현
  *
  */
-public abstract class PnBase extends KSGPanel implements ComponentListener{
+public abstract class PnBase extends KSGPanel implements ComponentListener, View{
 	/**
 	 * 
 	 */
-	//protected HashMap<String, String> arrangeMap;
-	
-	
+
+	protected CommandMap model;
+
 	// 초기 데이터 표시 여부
 	protected boolean isShowData=true;	
-	
-	//protected Logger logger = LogManager.getLogger(this.getClass());	
+
+	private AbstractController controller;
 
 	private static final long serialVersionUID = 1L;
-	
+
 	DAOImplManager daoImplManager = DAOImplManager.getInstance();
-	
+
 	protected BaseInfoUI baseInfoUI;	
-	
+
 	public BaseInfoUI getBaseInfoUI() {
 		return baseInfoUI;
 	}
-	
-	
+
+
 	public PnBase(BaseInfoUI baseInfoUI) {
-		
+
 		this.baseInfoUI = baseInfoUI;
-		
+
 		this.setLayout(new BorderLayout());		
-		
+
 		this.setBorder(BorderFactory.createLineBorder(Color.gray));
 	}
 	
-
 	
+	public void setController(AbstractController constroller)
+	{
+		this.controller =constroller;
+	}
+
+
+
+
 	protected KSGPanel buildTitleIcon(String title)
 	{
 		KSGPanel pnCount = new KSGPanel();
 		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		
+
+
 		JLabel lblTable = new JLabel(title);
 		lblTable.setSize(200, 25);
 		lblTable.setFont(new Font("돋움",0,16));
 		lblTable.setIcon(new ImageIcon("images/db_table.png"));
-		
-		
+
+
 		pnCount.add(lblTable);
 		return pnCount;
 	}
-	
+
 	protected JComponent buildLine()
 	{
 		KSGPanel pnS = new KSGPanel();
@@ -92,12 +99,12 @@ public abstract class PnBase extends KSGPanel implements ComponentListener{
 	}
 
 
-	
+
 	public abstract void fnSearch();
-	
+
 	@Override
 	public  void createAndUpdateUI() {};
-	
+
 	@Override
 	public void componentResized(ComponentEvent e) {}
 
@@ -109,6 +116,23 @@ public abstract class PnBase extends KSGPanel implements ComponentListener{
 
 	@Override
 	public void componentHidden(ComponentEvent e) {}
-	
+
+	@Override
+	public void setModel(CommandMap model) {
+		this. model = model;
+
+	}
+	public CommandMap getModel() {
+
+		return model;
+	}
+
+	public void callApi(String serviceId, CommandMap param)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, param, this);
+	}
+
+
 
 }

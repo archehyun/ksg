@@ -28,6 +28,8 @@ import com.ksg.schedule.logic.route.GroupVessel;
 import com.ksg.schedule.logic.route.PortDateUtil;
 import com.ksg.schedule.logic.route.PortScheduleInfo;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
 
@@ -55,6 +57,7 @@ import com.ksg.schedule.logic.route.PortScheduleInfo;
 	    GroupInOutPort
 
   */
+@Slf4j
 public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 
 
@@ -156,7 +159,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 	private FileWriter fw,errorOutfw,commonInfw;
 
 	public int execute() {
-		logger.info("항로별 스케줄 생성 시작");		
+		log.info("항로별 스케줄 생성 시작");		
 
 		message = "항로별 스케줄 그룹화..";
 
@@ -180,12 +183,17 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 			fw.write(WORLD_VERSION1+"\r\n"+WORLD_VERSION2);
 
 			Iterator<String> areaIter = areaList.iterator();
+			
 			int i=0;
+			
 			while(areaIter.hasNext())
 			{
 				String area = areaIter.next();
+				
 				ScheduleData searchOp = new ScheduleData();
+				
 				searchOp.setInOutType(OUTBOUND);
+				
 				searchOp.setArea_name(area);
 				
 				List<ScheduleData> outboundScheduleListByArea =scheduleService.getScheduleList(searchOp);
@@ -193,6 +201,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 				logger.info("AREA:"+area+", scheduleSize:"+outboundScheduleListByArea.size());
 
 				GroupArea group = new GroupArea(area, op, orderByType);
+				
 				Iterator<ScheduleData> scheduleIter =outboundScheduleListByArea.iterator();
 				
 				while(scheduleIter.hasNext())
@@ -232,6 +241,11 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 					 * 중국, 일본; 2개 미만
 					 * 러시아 1개미만
 					 * 기타 3개 미만 */
+					GroupVessel vesselGroup = vesselList[j];
+					if("Starship Taurus".equals(vesselGroup.getVessel_name()))
+					{
+						logger.info("test:"+ vesselGroup.getGroupPort().getInPortList());
+					}
 
 					// 국내항 목록
 					PortScheduleInfo[] inPortList = vesselList[j].getCompressInPortList();

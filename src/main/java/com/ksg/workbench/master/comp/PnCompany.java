@@ -32,6 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 
+import com.dtp.api.control.CompanyController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -65,6 +66,8 @@ public class PnCompany extends PnBase implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 
+
+
 	/**
 	 * 
 	 */
@@ -77,7 +80,7 @@ public class PnCompany extends PnBase implements ActionListener{
 	private KSGTablePanel tableH;
 
 	private String query;
-	
+
 	CompanyServiceImpl companyService = new CompanyServiceImpl();
 
 	private List<HashMap<String, Object>> master;
@@ -85,6 +88,7 @@ public class PnCompany extends PnBase implements ActionListener{
 	public PnCompany(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);		
 		this.addComponentListener(this);
+		this.setController(new CompanyController());
 		this.add(buildCenter());
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
@@ -122,17 +126,17 @@ public class PnCompany extends PnBase implements ActionListener{
 		columns[3].columnName = "에이전트 약어";
 		columns[3].size = 300;
 		columns[3].ALIGNMENT = SwingConstants.LEFT;
-		
+
 		columns[4] = new KSGTableColumn();
 		columns[4].columnField = "contents";
 		columns[4].columnName = "비고";
 		columns[4].size = 300;
-		
-		
+
+
 		tableH = new KSGTablePanel("선사목록");
 
 		tableH.addMouseListener(new TableSelectListner());
-		
+
 		tableH.setShowControl(true);
 		tableH.addContorlListener(this);
 
@@ -140,14 +144,14 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		tableH.setColumnName(columns);
 		tableH.initComp();
-//		tableH.setPageCountIndex(6);
-//		tableH.addActionListener(new PageAction(tableH, companyService));
-		
+		//		tableH.setPageCountIndex(6);
+		//		tableH.addActionListener(new PageAction(tableH, companyService));
+
 
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
-		
+
 		log.debug("화면 초기화 종료");
 		return pnMain;
 
@@ -158,7 +162,7 @@ public class PnCompany extends PnBase implements ActionListener{
 	private KSGPanel buildSearchPanel() {
 		KSGPanel pnSearch = new KSGPanel();
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		
+
 		lblTable = new JLabel("선사 정보");
 		lblTable.setSize(200, 25);
 		lblTable.setFont(new Font("돋움",0,16));
@@ -176,17 +180,17 @@ public class PnCompany extends PnBase implements ActionListener{
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				
+
 				if(e.getKeyChar()==KeyEvent.VK_ENTER)
 				{
 					fnSearch();
 				}
 			}
 		});
-		
-		
+
+
 		JButton butUpSearch = new JButton("검색");
-		
+
 		butUpSearch.addActionListener(this);
 
 		cbxField.setPreferredSize(new Dimension(150,23));
@@ -223,14 +227,14 @@ public class PnCompany extends PnBase implements ActionListener{
 				return;
 
 			CommandMap data= (CommandMap) tableH.getValueAt(row);
-			
+
 			int result=JOptionPane.showConfirmDialog(this,data.get("company_name")+"를 삭제 하시겠습니까?", "선사 정보 삭제", JOptionPane.YES_NO_OPTION);
-			
+
 			if(result==JOptionPane.OK_OPTION)
 			{	
 				try {
 					int count=companyService.delete(data);
-					
+
 					if(count>0)
 					{
 						fnSearch();
@@ -247,9 +251,9 @@ public class PnCompany extends PnBase implements ActionListener{
 		else if(command.equals(KSGPageTablePanel.INSERT))
 		{
 			KSGDialog dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.INSERT);
-			
+
 			dialog.createAndUpdateUI();
-			
+
 			if(dialog.result==KSGDialog.SUCCESS)
 			{
 				fnSearch();
@@ -262,10 +266,10 @@ public class PnCompany extends PnBase implements ActionListener{
 	class TableSelectListner extends MouseAdapter
 	{
 		KSGDialog dialog;
-		
+
 		public void mouseClicked(MouseEvent e) 
 		{
-			
+
 			if(e.getClickCount()>1)
 			{
 				JTable es = (JTable) e.getSource();
@@ -273,21 +277,21 @@ public class PnCompany extends PnBase implements ActionListener{
 
 				if(row<0)
 					return;
-				
-				
+
+
 				HashMap<String, Object> port=(HashMap<String, Object>) tableH.getValueAt(row);
 
 				dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.UPDATE,port);
-				
+
 				dialog .createAndUpdateUI();
-				
+
 				int result = dialog.result;
-				
+
 				if(result==UpdateCompanyInfoDialog.SUCCESS)
 				{
 					fnSearch();
 				}
-				
+
 
 
 			}
@@ -329,11 +333,11 @@ public class PnCompany extends PnBase implements ActionListener{
 	public void fnSearch() {
 
 		log.debug("start");
-		
-		HashMap<String, Object> param = new HashMap<String, Object>();
+
+		CommandMap param = new CommandMap();
 
 		String field = (String) cbxField.getSelectedItem();
-		
+
 		if(!"".equals(txfSearch.getText()))
 		{
 			if(field.equals("선사명"))
@@ -353,43 +357,40 @@ public class PnCompany extends PnBase implements ActionListener{
 			}
 			param.put(query, txfSearch.getText());
 		}
-		
-		
-		try {
-			
-			log.info("param:"+param);
 
-			
-			HashMap<String, Object> result = (HashMap<String, Object>) companyService.selectListByCondition(param);
-			
-			result.put("PAGE_NO", 1);
+		callApi("selectCompany", param);
 
-			tableH.setResultData(result);
-
-			master = (List) result.get("master");
-
-			if(master.size()==0)
-			{
-				
-			}
-			else
-			{
-				tableH.changeSelection(0,0,false,false);
-			}
-
-		} catch (Exception e) {
-		
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, e.getMessage());
-		}
-		
 	}
 
 
 	@Override
 	public void componentShown(ComponentEvent e) {
 		if(isShowData)fnSearch();
-		
+
+	}
+
+	@Override
+	public void updateView() {
+		CommandMap result= this.getModel();
+
+		boolean success = (boolean) result.get("success");
+
+		if(success)
+		{
+
+			List data = (List )result.get("data");
+
+			tableH.setResultData(data);
+
+			if(data.size()==0)tableH.changeSelection(0,0,false,false);
+
+		}
+		else{  
+			String error = (String) result.get("error");
+			JOptionPane.showMessageDialog(this, error);
+		}
+
+
 	}
 
 }

@@ -146,9 +146,23 @@
 					area_name=#area_name#
 				</isNotNull>
 				
+				<isNotNull property="agent" prepend="and">
+					
+					agent like '%$agent$%'
+				</isNotNull>
+				
 				<isNotNull property="vessel" prepend="and">
 					
 					vessel like '%$vessel$%'
+				</isNotNull>
+				<isNotNull property="company_abbr" prepend="and">
+					
+					company_abbr like '%$company_abbr$%'
+				</isNotNull>	
+				
+				<isNotNull property="table_id" prepend="and">
+					
+					table_id like '%$table_id$%'
 				</isNotNull>				
 				
 		</dynamic>

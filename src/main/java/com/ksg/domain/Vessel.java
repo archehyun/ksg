@@ -42,6 +42,8 @@ public class Vessel extends BaseInfo{
 	private String patten;
 	private String option;
 	
+	private String contents;
+	
 	public String toString()
 	{
 		return vessel_name;

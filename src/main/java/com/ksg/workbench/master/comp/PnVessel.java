@@ -835,4 +835,10 @@ public class PnVessel extends PnBase implements ActionListener {
 			e1.printStackTrace();
 		}
 	}
+
+	@Override
+	public void updateView() {
+		// TODO Auto-generated method stub
+		
+	}
 }

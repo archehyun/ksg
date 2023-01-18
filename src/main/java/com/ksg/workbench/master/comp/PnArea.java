@@ -318,6 +318,12 @@ public class PnArea extends PnBase implements ActionListener{
 		
 	}
 
+	@Override
+	public void updateView() {
+		
+		
+	}
+
 
 
 }

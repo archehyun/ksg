@@ -232,6 +232,12 @@ public class PnMember extends PnBase implements ActionListener{
 
 	}
 
+	@Override
+	public void updateView() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

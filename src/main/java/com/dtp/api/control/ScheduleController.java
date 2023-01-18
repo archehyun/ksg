@@ -26,11 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 @Component("schedule")
 public class ScheduleController extends AbstractController{
 
-	ObjectMapper objectMapper;
+	private ObjectMapper objectMapper;
 
 	private ScheduleSubService service;
 
-	VesselService vesselService;
+	private VesselService vesselService;
 
 	public ScheduleController()
 	{

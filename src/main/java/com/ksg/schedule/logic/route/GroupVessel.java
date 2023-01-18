@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
-import com.ksg.common.dao.DAOManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.StringCompare;
@@ -14,9 +16,11 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.joint.RouteScheduleJoint;
-import com.ksg.service.BaseService;
 
 public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<GroupVessel>{
+	
+	
+	protected Logger logger = LogManager.getLogger(this.getClass());
 	/**
 	 * 
 	 */
@@ -27,8 +31,26 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 	private static final String ASIA = "ASIA";
 	private static final String JAPAN = "JAPAN";
 	private static final String CHINA = "CHINA";
+	
+	public static final int SORT_BY_LAST	= 1;
+	public static final int SORT_BY_FIRST 	= 2;
+	
+	private String voyage_num;
+	
+	private int intVoyate_num;
+	
+	private ArrayList<ScheduleData> scheduleList;
+	
+	private String majorCompany;
+	
+	private int orderByType;
+	
+	private GroupPort groupPort;
+	
 	ScheduleManager scheduleManager = ScheduleManager.getInstance();
+	
 	private String vessel_name;
+	
 	public String getVessel_name() {
 		return vessel_name;
 	}
@@ -47,12 +69,7 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 	public void setIntVoyate_num(int intVoyate_num) {
 		this.intVoyate_num = intVoyate_num;
 	}
-	public BaseService getBaseService() {
-		return baseService;
-	}
-	public void setBaseService(BaseService baseService) {
-		this.baseService = baseService;
-	}
+	
 	public ArrayList<ScheduleData> getScheduleList() {
 		return scheduleList;
 	}
@@ -65,13 +82,12 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 	public void setMajorCompany(String majorCompany) {
 		this.majorCompany = majorCompany;
 	}
-	private String voyage_num;
-	private int intVoyate_num;
-	protected BaseService baseService 	= DAOManager.getInstance().createBaseService();
-	private ArrayList<ScheduleData> scheduleList;
-	private String majorCompany;
-	private int orderByType;
-	private GroupPort groupPort;
+
+	
+	public GroupPort getGroupPort()
+	{
+		return groupPort;
+	}
 
 	public GroupVessel(ScheduleData data,int orderByType) throws SQLException, ParseException, VesselNullException 
 	{
@@ -368,6 +384,7 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 		}
 
 		PortScheduleInfo firstInPort=sortedInPortList[0];
+		
 		for(int i=1;i<sortedInPortList.length;i++)
 		{
 			int differ = KSGDateUtil.daysDiff(PortDateUtil.parse(firstInPort.getDate()), PortDateUtil.parse(sortedInPortList[i].getDate()));
@@ -396,12 +413,12 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 	}
 	public PortScheduleInfo[] getCompressInPortList() throws ParseException {
 
-		return groupPort.createCompressedArray(groupPort.createInPortArray(),1);
+		return groupPort.createCompressedArray(groupPort.createInPortArray(),SORT_BY_LAST);
 	}
 
 	public PortScheduleInfo[] getCompressOutPortList() throws ParseException {
 
-		return groupPort.createCompressedArray(groupPort.createOutPortArray(),2);
+		return groupPort.createCompressedArray(groupPort.createOutPortArray(),SORT_BY_FIRST);
 	}
 
 	public PortScheduleInfo[] getInPortList(int startIndex, int endIndex) throws ParseException {

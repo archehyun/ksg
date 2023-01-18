@@ -877,6 +877,9 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 				.port((String) param.get("port"))
 				.gubun((String) param.get("gubun"))
 				.vessel((String) param.get("vessel"))
+				.table_id((String) param.get("table_id"))
+				.company_abbr((String) param.get("company_abbr"))
+				.agent((String) param.get("agent"))
 				.area_name((String) param.get("area_name"))
 				
 				.build();

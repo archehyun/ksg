@@ -4,9 +4,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 
-import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
 
+/**
+ * 
+
+  * @FileName : ScheduleDateComparator.java
+
+  * @Project : KSG2
+
+  * @Date : 2023. 1. 16. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 스케줄 날짜 정렬
+  *  출발항은 늦은 날자가 앞으로..
+  *  도착항은 빠른 날자가 앞으로..
+ */
 public class ScheduleDateComparator implements Comparator<ScheduleData> {
 	public static final int FROM_DATE=0;
 	public static final int TO_DATE=1;
@@ -28,7 +44,7 @@ public class ScheduleDateComparator implements Comparator<ScheduleData> {
 				return formatYYYYMMDD.parse(f1.getDateF()).compareTo(formatYYYYMMDD.parse(f2.getDateF()));
 				
 			case TO_DATE:
-				return formatYYYYMMDD.parse(f1.getDateT()).compareTo(formatYYYYMMDD.parse(f2.getDateT()));
+				return formatYYYYMMDD.parse(f1.getDateT()).compareTo(formatYYYYMMDD.parse(f2.getDateT()))*-1;
 				
 
 			default:

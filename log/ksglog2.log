@@ -1,17 +1,87 @@
-2023-01-05 19:46:21,176 DEBUG [com.ksg.workbench.admin.KSGMainFrame] create frame start
-2023-01-05 19:46:21,204 DEBUG [com.ksg.workbench.admin.KSGMainFrame] create frame end
-2023-01-05 19:46:21,206 DEBUG [com.ksg.workbench.admin.KSGMainFrame] init frame start
-2023-01-05 19:46:21,287 DEBUG [com.ksg.workbench.master.BaseInfoUI] create view start
-2023-01-05 19:46:21,329 DEBUG [com.ksg.workbench.master.BaseInfoUI] update tree model
-2023-01-05 19:46:22,007 DEBUG [com.ksg.workbench.master.BaseInfoUI] create view end
-2023-01-05 19:46:22,010 DEBUG [com.ksg.workbench.shippertable.ShipperTableMgtUI2] init searchUI start
-2023-01-05 19:46:22,019  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
-2023-01-05 19:46:22,135  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
-2023-01-05 19:46:22,135  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] param:{PAGE_NO=1, PAGE_SIZE=5000}
-2023-01-05 19:46:22,929 DEBUG [com.ksg.workbench.shippertable.ShipperTableMgtUI2] init searchUI end
-2023-01-05 19:46:22,979 DEBUG [com.ksg.workbench.schedule.comp.NormalScheduleTable] nomal테이블 생성
-2023-01-05 19:46:22,982 DEBUG [com.ksg.workbench.schedule.comp.ConsoleScheduleTable] console테이블 생성
-2023-01-05 19:46:22,984 DEBUG [com.ksg.workbench.schedule.comp.PnInland.InlandScheduleTable] inland테이블 생성
-2023-01-05 19:46:23,395 DEBUG [com.ksg.workbench.admin.KSGMainFrame] init frame end
-2023-01-05 19:46:30,648  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=O, date_issue=2023-01-09, gubun=Normal}
-2023-01-05 19:46:36,706  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=I, date_issue=2023-01-09, gubun=Normal}
+2023-01-17 17:37:24,062 DEBUG [com.ksg.workbench.admin.KSGMainFrame] create frame start
+2023-01-17 17:37:24,100 DEBUG [com.ksg.workbench.admin.KSGMainFrame] create frame end
+2023-01-17 17:37:24,104 DEBUG [com.ksg.workbench.admin.KSGMainFrame] init frame start
+2023-01-17 17:37:24,219 DEBUG [com.ksg.workbench.master.BaseInfoUI] create view start
+2023-01-17 17:37:24,283 DEBUG [com.ksg.workbench.master.BaseInfoUI] update tree model
+2023-01-17 17:37:24,821 DEBUG [com.ksg.workbench.master.BaseInfoUI] create view end
+2023-01-17 17:37:24,825 DEBUG [com.ksg.workbench.shippertable.ShipperTableMgtUI2] init searchUI start
+2023-01-17 17:37:24,836  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
+2023-01-17 17:37:24,942  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-01-17 17:37:24,943  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] param:{PAGE_NO=1, PAGE_SIZE=5000}
+2023-01-17 17:37:26,103 DEBUG [com.ksg.workbench.shippertable.ShipperTableMgtUI2] init searchUI end
+2023-01-17 17:37:26,175 DEBUG [com.ksg.workbench.schedule.comp.NormalScheduleTable] nomal테이블 생성
+2023-01-17 17:37:26,180 DEBUG [com.ksg.workbench.schedule.comp.ConsoleScheduleTable] console테이블 생성
+2023-01-17 17:37:26,182 DEBUG [com.ksg.workbench.schedule.comp.PnInland.InlandScheduleTable] inland테이블 생성
+2023-01-17 17:37:26,645 DEBUG [com.ksg.workbench.admin.KSGMainFrame] init frame end
+2023-01-17 17:37:31,567  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] 정렬기준:1
+2023-01-17 17:37:31,587 DEBUG [com.ksg.dao.impl.BaseDAOImpl2] search port
+2023-01-17 17:37:31,805  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] 스케줄 그룹화 시작
+2023-01-17 17:37:32,031  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:ASIA, scheduleSize:4058
+2023-01-17 17:37:32,033  INFO [com.ksg.schedule.logic.route.GroupArea] new area:ASIA
+2023-01-17 17:37:34,535  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: ASIA
+
+, 스케줄 사이즈:299
+2023-01-17 17:37:34,547  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Sitc Kawasaki
+2023-01-17 17:37:34,550  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@c112b1f
+2023-01-17 17:37:34,551  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@2a87bfd3
+2023-01-17 17:37:34,555  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Hochiminh Voyager
+2023-01-17 17:37:34,555  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@212a65a4
+2023-01-17 17:37:34,555  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@26c98695
+2023-01-17 17:37:34,555  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Hyundai Dynasty
+2023-01-17 17:37:34,555  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@23051880
+2023-01-17 17:37:34,555  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@346b5214
+2023-01-17 17:37:34,556  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Hyundai Supreme
+2023-01-17 17:37:34,556  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@461e0678
+2023-01-17 17:37:34,557  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@2c89cd00
+2023-01-17 17:37:34,562  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Kmtc Dalian
+2023-01-17 17:37:34,562  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@27c30109
+2023-01-17 17:37:34,562  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@49d60c17
+2023-01-17 17:37:34,567  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Kmtc Tianjin
+2023-01-17 17:37:34,567  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@7fcdfe93
+2023-01-17 17:37:34,567  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@1dcecda7
+2023-01-17 17:37:34,568  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Bf Carp
+2023-01-17 17:37:34,569  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@223a4c5e
+2023-01-17 17:37:34,569  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@5bf54aba
+2023-01-17 17:37:34,569  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Inceda
+2023-01-17 17:37:34,570  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@4b5c1e31
+2023-01-17 17:37:34,570  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@20945108
+2023-01-17 17:37:34,572  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====TBN-HS LINE
+2023-01-17 17:37:34,573  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@503ca1f8
+2023-01-17 17:37:34,574  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@216d91df
+2023-01-17 17:37:34,574  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Vms
+2023-01-17 17:37:34,574  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@aebbe55
+2023-01-17 17:37:34,574  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@8f5a211
+2023-01-17 17:37:34,574  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Starship Taurus
+2023-01-17 17:37:34,575  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@3d73e196
+2023-01-17 17:37:34,575  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@705d6c8e
+2023-01-17 17:37:34,576  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Kmtc Dalian
+2023-01-17 17:37:34,576  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@27937dc6
+2023-01-17 17:37:34,576  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@253b60f
+2023-01-17 17:37:34,578  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Sawasdee Baltic
+2023-01-17 17:37:34,579  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@208e9882
+2023-01-17 17:37:34,579  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@3baca901
+2023-01-17 17:37:34,580  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Timu
+2023-01-17 17:37:34,580  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@76d8eff
+2023-01-17 17:37:34,580  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@1811a3d3
+2023-01-17 17:37:34,582  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Heung-a Akita
+2023-01-17 17:37:34,583  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@4c8f72db
+2023-01-17 17:37:34,583  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@12b53eea
+2023-01-17 17:37:34,584  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====TBN-YANGMING
+2023-01-17 17:37:34,584  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@79c44035
+2023-01-17 17:37:34,584  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@6cde6be5
+2023-01-17 17:37:34,585  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Pegasus Unix
+2023-01-17 17:37:34,585  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@5bf0c50f
+2023-01-17 17:37:34,585  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@6089f2f5
+2023-01-17 17:37:34,585  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Sawasdee Chittagong
+2023-01-17 17:37:34,586  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@3b97c339
+2023-01-17 17:37:34,586  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@240906ed
+2023-01-17 17:37:34,586  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Pegasus Unix
+2023-01-17 17:37:34,586  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@798c67de
+2023-01-17 17:37:34,586  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@563d2c40
+2023-01-17 17:37:34,587  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Dongjin Confident
+2023-01-17 17:37:34,589  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@5336b3b5
+2023-01-17 17:37:34,589  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@3f64e950
+2023-01-17 17:37:34,591  INFO [com.ksg.schedule.logic.route.GroupArea] sperate=====Ocean Glory
+2023-01-17 17:37:34,591  INFO [com.ksg.schedule.logic.route.GroupArea] one list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@25cccbf5
+2023-01-17 17:37:34,591  INFO [com.ksg.schedule.logic.route.GroupArea] two list:[Lcom.ksg.schedule.logic.route.PortScheduleInfo;@1aacbc20
+2023-01-17 17:37:34,739 DEBUG [com.ksg.schedule.logic.joint.RouteScheduleJoint] vesselName:Hyundai Dynasty

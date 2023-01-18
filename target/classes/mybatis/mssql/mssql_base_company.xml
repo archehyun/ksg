@@ -56,7 +56,28 @@
 		
 		</dynamic>
 		
-	</select>
+		</select>
+	<select id="selectCompanyListByCondition" resultClass="com.ksg.domain.Company">
+		SELECT * from TB_COMPANY
+		<dynamic prepend="where">
+		    <isNotNull property="company_name" prepend="and">
+		        company_name like '%$company_name$%'
+		    </isNotNull>
+		    <isNotNull property="agent_name" prepend="and">
+		        agent_name like '%$agent_name$%'
+		    </isNotNull>
+		    <isNotNull property="company_abbr" prepend="and">
+		        company_abbr like '%$company_abbr$%'
+		    </isNotNull>
+		    <isNotNull property="agent_abbr" prepend="and">
+		        agent_abbr like '%$agent_abbr$%'
+		    </isNotNull>
+		
+		</dynamic>
+		
+	</select>	
+		
+	
 		<select id="selectCompanyByLike" resultClass="com.ksg.domain.Company">
 		select * from TB_COMPANY
 		<dynamic prepend="where">
