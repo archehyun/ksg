@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.AreaEnum;
 import com.ksg.domain.ScheduleData;
+import com.ksg.schedule.logic.route.RouteScheduleUtil;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager;
@@ -114,10 +115,10 @@ public class TreeNodeTest {
 	@Test
 	public void checkRouteTest3() throws SQLException
 	{
-		RouteNodeManager mgr = new RouteNodeManager();
-		assertFalse(mgr.checkOutPort(AreaEnum.JAPAN.toString(), 1));
-		assertFalse(mgr.checkOutPort(AreaEnum.CHINA.toString(), 1));
-		assertFalse(mgr.checkOutPort("test", 2));
+		
+		assertFalse(RouteScheduleUtil.checkOutPort(AreaEnum.JAPAN.toString(), 1));
+		assertFalse(RouteScheduleUtil.checkOutPort(AreaEnum.CHINA.toString(), 1));
+		assertFalse(RouteScheduleUtil.checkOutPort("test", 2));
 		
 	}
 	

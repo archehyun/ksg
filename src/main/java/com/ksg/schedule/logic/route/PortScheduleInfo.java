@@ -62,6 +62,11 @@ public class PortScheduleInfo implements Comparable<Object>
 	{		
 		return this.getPort()+" "+KSGDateUtil.getRouteDate(this.getDate());
 	}
+	public String toPortAndDateString()
+	{
+		return getPort()+" "+PortDateUtil.toPrintDate(getDate());
+	}
+	
 
 
 }

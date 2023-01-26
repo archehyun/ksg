@@ -6,9 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.AreaEnum;
 import com.ksg.domain.ScheduleData;
-import com.ksg.domain.ShippersTable;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,14 +31,8 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 	 * 
 	 */
 	protected Logger logger = LogManager.getLogger(this.getClass());
-	private static final String AUSTRALIA_NEW_ZEALAND_SOUTH_PACIFIC = "AUSTRALIA, NEW ZEALAND & SOUTH PACIFIC";
-	private static final String PERSIAN_GULF = "PERSIAN GULF";
-	private static final String RUSSIA = "RUSSIA";
-	private static final String ASIA = "ASIA";
-	private static final String JAPAN = "JAPAN";
-	private static final String CHINA = "CHINA";
 	
-	
+	SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
 	
 	private String area_name;
 	
@@ -114,7 +105,7 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 	}
 	/**
 	 * 지역별 공동배선 적용
-	 * 
+	 * @deprecated
 	 * @return
 	 * @throws ParseException
 	 * @throws SQLException
@@ -134,10 +125,12 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 			
 			if((index=RouteScheduleUtil.getSeperateIndex(this.getArea_name(), item.getGroupPort().createInPortArray()))>-1)
 			{
-				logger.info("sperate====="+item.getVessel_name());
+				logger.debug("sperate====="+item.getVessel_name());
 				
 				this.commonVesselList.add(item);
+				
 				GroupVessel newGroup1 = new GroupVessel(item);
+				
 				GroupVessel newGroup2 = new GroupVessel(item);
 				
 				newGroup1.setInPortList(item.getInPortList(0, index));
@@ -147,8 +140,7 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 
 				newList.add(newGroup1);
 				newList.add(newGroup2);
-				logger.info("one list:"+newGroup1.getInPortList());
-				logger.info("two list:"+newGroup2.getInPortList());
+				
 			}
 			else
 			{
@@ -171,9 +163,7 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 	 * @throws SQLException
 	 */
 	public GroupVessel[] toSortedArray() throws ParseException, SQLException
-	{
-	
-		
+	{	
 		ArrayList<GroupVessel> newList = new ArrayList<GroupVessel>();	
 		
 		for(String key:this.keySet())
@@ -186,24 +176,26 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 			if((index=RouteScheduleUtil.getSeperateIndex(this.getArea_name(), item.getGroupPort().createInPortArray()))>-1)
 			{
 				
-				
-				
-				item.getGroupPort().getInPortList().stream().forEach(o-> logger.info(o.getPort()+","+o.getDate()));
-				
+				//item.getGroupPort().getInPortList().stream().forEach(o-> logger.debug(o.getPort()+","+o.getDate()));
 				
 				
 				this.commonVesselList.add(item);
+				
 				GroupVessel newGroup1 = new GroupVessel(item);
+				
 				GroupVessel newGroup2 = new GroupVessel(item);
 				
 				
 				newGroup1.setInPortList(item.getInPortList(0, index));
+				
 				newGroup2.setInPortList(item.getInPortList(index));
 				
 				newGroup1.setOutPortList(item.getOutPortList(0, index));
+				
 				newGroup2.setOutPortList(item.getOutPortList(index));				
 
 				newList.add(newGroup1);
+				
 				newList.add(newGroup2);
 				
 			}
@@ -252,7 +244,7 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 		}
 		return new List[] {list};
 	}
-	SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
+	
 	/**
 	 * 두 날짜간 차이
 	 * @param firstDate yyyy/MM/dd

@@ -13,8 +13,13 @@ public class PortDateUtil {
 	{
 		return inputDateType_yyyy_MM_dd.parse(date);
 	}
-	public static String toPrintDate(String date) throws ParseException
+	public static String toPrintDate(String date)
 	{
+		try {
 		return outputDateType.format(PortDateUtil.parse(date));
+		}catch(ParseException e)
+		{
+			return date;
+		}
 	}
 }

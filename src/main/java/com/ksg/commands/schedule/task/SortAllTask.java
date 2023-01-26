@@ -28,7 +28,7 @@ public class SortAllTask implements LongTask {
 	}
 
 
-	public SortAllTask(ShippersTable op,int orderBy,boolean isNew,boolean isPrintInbound, boolean isPrintOutbound, boolean isPrintRoute) throws IOException {
+	public SortAllTask(ShippersTable op,int orderBy,boolean isNew,boolean isPrintInbound, boolean isPrintOutbound, boolean isPrintRoute) throws Exception {
 		try {
 			if(isPrintInbound)
 			{

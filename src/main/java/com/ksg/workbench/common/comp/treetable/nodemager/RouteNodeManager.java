@@ -60,14 +60,10 @@ public class RouteNodeManager extends AbstractNodeManager{
 	VesselComparator vesselComparator 		= new VesselComparator();
 
 	SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
+	
+	boolean diviedByAreaGap = true;
+	
 	protected Logger logger = LogManager.getLogger(this.getClass());
-
-	private static final String AUSTRALIA_NEW_ZEALAND_SOUTH_PACIFIC = "AUSTRALIA, NEW ZEALAND & SOUTH PACIFIC";
-	private static final String PERSIAN_GULF = "PERSIAN GULF";
-	private static final String RUSSIA = "RUSSIA";
-	private static final String ASIA = "ASIA";
-	private static final String JAPAN = "JAPAN";
-	private static final String CHINA = "CHINA";
 
 
 
@@ -94,12 +90,12 @@ public class RouteNodeManager extends AbstractNodeManager{
 
 		String sortType = (String) param.get("sortType");
 
-
 		Set<String> areaKeySet=areaList.keySet();
 
 		areaKeySet.stream().sorted();
 
 		Object[] mapkey = areaList.keySet().toArray();
+		
 		Arrays.sort(mapkey);
 
 		// 지역
@@ -134,10 +130,7 @@ public class RouteNodeManager extends AbstractNodeManager{
 				{
 					List<ScheduleData> subscheduleList = testList.get(voyagekey);
 
-					//TODO 지역별 스케줄 기간별 스케줄 분할
-
-
-					Collections.sort(subscheduleList);					
+					Collections.sort(subscheduleList, new ScheduleDateComparator(ScheduleDateComparator.FROM_DATE));					
 
 					List[] li=divideScheduleByArea(subscheduleList, (String)strArea);
 					
@@ -160,11 +153,23 @@ public class RouteNodeManager extends AbstractNodeManager{
 
 		return root;
 	}
+	
+	/**
+	 * 지역 및 날짜에 따라 스케줄 구분
+	 * @param list 출발일 기준으로 정렬된 스케줄 리스트
+	 * @param area_name
+	 * @return
+	 */
 	private List[] divideScheduleByArea(List<ScheduleData> list, String area_name)
 	{		
 
 		// 첫번째 출발항 출발일
-		String firstInPortDateF = list.get(0).getDateF();		
+		
+		if(!diviedByAreaGap) return new List[] {list};
+		
+		String firstInPortDateF = list.get(0).getDateF();
+		
+		// 국내항 첫재날 , 외국항 첫째날 비교
 		
 		for(int i=1;i< list.size();i++)
 		{
@@ -173,8 +178,6 @@ public class RouteNodeManager extends AbstractNodeManager{
 			String outPortDateF = secondOutPortData.getDateF();
 			
 			int differ = differDay(firstInPortDateF, outPortDateF);
-			
-			int gap = getGap(area_name);
 			
 			AreaEnum area = AreaEnum.findGapByAreaName(area_name.toUpperCase());
 			
@@ -222,10 +225,10 @@ public class RouteNodeManager extends AbstractNodeManager{
 
 		//TODO 스케줄 - Route 스케줄 밸리데이션
 
-		log.info("area:{}, fromPortCount:{}, {}",strArea, fromPortCount, checkOutPort(strArea, toPortCount));
+		log.info("area:{}, fromPortCount:{}, {}",strArea, fromPortCount, RouteScheduleUtil. checkOutPort(strArea, toPortCount));
 
 		// TODO 스케줄-항차 번호 표시
-		OutbondScheduleTreeNode schedule = new OutbondScheduleTreeNode(vesselKey+", "+ voyagekey, (checkOutPort(strArea, toPortCount)?NodeType.SCHEDULE:NodeType.JOINT_SCHEDULE)  );
+		OutbondScheduleTreeNode schedule = new OutbondScheduleTreeNode(vesselKey+", "+ voyagekey, (RouteScheduleUtil.checkOutPort(strArea, toPortCount)?NodeType.SCHEDULE:NodeType.JOINT_SCHEDULE)  );
 
 		DefaultMutableTreeNode toPort =  new PortTreeNode( StringUtils.join(makeDayList(toPorts, ScheduleDateComparator.TO_DATE)," - "));				
 
@@ -348,56 +351,4 @@ public class RouteNodeManager extends AbstractNodeManager{
 	}
 
 	
-
-	/**
-	 * 중국, 일본 : 2곳 이상
-	 * 러시아 : 1곳 이상
-	 * 기타 : 3곳 이상
-	 * 항차 스케줄 표시 확인
-	 * @param areaName
-	 * @param outportCount
-	 * @return
-	 */
-	public boolean checkOutPort(String areaName,int outportCount)
-	{
-		if(areaName.equals(AreaEnum.CHINA.toUpperCase())||areaName.equals(AreaEnum.JAPAN.toUpperCase()))
-		{
-			return outportCount>=2;
-		}
-		// 러시아
-		else if(areaName.equals(AreaEnum.RUSSIA.toUpperCase()))
-		{
-			return outportCount>0;
-		}					
-		// 기타 지역
-		else
-		{
-			return outportCount>=3;
-		}
-
-	}
-	private int getGap(String area_name)
-	{
-		int base=0; // 공동배선 기준 일자
-		String upCaseAreaName = area_name.toUpperCase();
-		if(upCaseAreaName.equals(CHINA)||
-				upCaseAreaName.equals(JAPAN)||
-				upCaseAreaName.equals(RUSSIA)) // 중국, 일본, 러시아
-		{
-			base=4;
-		}else if(upCaseAreaName.equals(ASIA)) // 동남아
-		{
-			base=6;
-
-		}else if(upCaseAreaName.equals(PERSIAN_GULF)||
-				upCaseAreaName.equals(AUSTRALIA_NEW_ZEALAND_SOUTH_PACIFIC))// 중동, 호주
-		{
-			base=8;
-		}		
-		else // 구주, 북미, 중남미, 아프리카
-		{
-			base=10;
-		}
-		return base;
-	}
 }

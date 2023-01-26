@@ -3,6 +3,7 @@ package com.ksg.schedule.logic.route;
 import java.text.ParseException;
 
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.domain.AreaEnum;
 
 public class RouteScheduleUtil {
 	
@@ -82,6 +83,34 @@ public class RouteScheduleUtil {
 		{
 			return 0;
 		}
+	}
+	
+	/**
+	 * 중국, 일본 : 2곳 이상
+	 * 러시아 : 1곳 이상
+	 * 기타 : 3곳 이상
+	 * 항차 스케줄 표시 확인
+	 * @param areaName
+	 * @param outportCount
+	 * @return
+	 */
+	public static boolean checkOutPort(String areaName,int outportCount)
+	{
+		if(areaName.equals(AreaEnum.CHINA.toUpperCase())||areaName.equals(AreaEnum.JAPAN.toUpperCase()))
+		{
+			return outportCount>=2;
+		}
+		// 러시아
+		else if(areaName.equals(AreaEnum.RUSSIA.toUpperCase()))
+		{
+			return outportCount>0;
+		}					
+		// 기타 지역
+		else
+		{
+			return outportCount>=3;
+		}
+
 	}
 
 }

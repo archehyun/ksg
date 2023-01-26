@@ -1,7 +1,5 @@
 package com.ksg.commands.schedule;
 
-import java.io.IOException;
-
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.task.SortAllTask;
 import com.ksg.domain.ShippersTable;
@@ -39,7 +37,7 @@ public class SortAllCommand implements IFCommand {
 				
 				try {
 					return new SortAllTask(op,orderby,isNew,isPrintInbound,isPrintOutbound,isPrintRoute);
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return null;

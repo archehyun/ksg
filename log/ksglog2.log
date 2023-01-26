@@ -1,0 +1,181 @@
+2023-01-25 16:12:44,644  INFO [com.ksg.schedule.logic.ScheduleManager] 스케줄 생성 마스터 초기화
+2023-01-25 16:12:45,327  INFO [com.ksg.schedule.logic.ScheduleManager] 스케줄 생성 마스터 초기화 종료
+2023-01-25 16:12:45,473  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] 정렬기준:1
+2023-01-25 16:12:45,474  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] 스케줄 그룹화 시작
+2023-01-25 16:12:45,988  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] schedule size:13122
+2023-01-25 16:12:45,995  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] 
+- 지역목록- 
+ASIA
+AUSTRALIA , NEW ZEALAND & SOUTH PACIFIC
+CARIBBEAN SEA & CENTRAL AMERICA
+CHINA
+CIS
+CONTINENTAL EUROPE , U.K. & SCANDINAVIA
+EAST COAST OF NORTH AMERICA
+JAPAN
+MEDITERRANEAN SEA
+PERSIAN GULF
+RED SEA
+RUSSIA
+SOUTH & EAST AFRICA
+SOUTH AMERICA
+WEST AFRICA
+WEST COAST OF NORTH AMERICA & HAWAII
+
+2023-01-25 16:12:45,995  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:ASIA, scheduleSize:4741
+2023-01-25 16:12:45,996  INFO [com.ksg.schedule.logic.route.GroupArea] new area:ASIA
+2023-01-25 16:12:47,925  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: ASIA
+
+, 스케줄 그룹 사이즈:358
+2023-01-25 16:12:48,213  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:ASIA, 공동배선스케줄 수: 40
+2023-01-25 16:12:48,218  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:AUSTRALIA , NEW ZEALAND & SOUTH PACIFIC, scheduleSize:680
+2023-01-25 16:12:48,218  INFO [com.ksg.schedule.logic.route.GroupArea] new area:AUSTRALIA , NEW ZEALAND & SOUTH PACIFIC
+2023-01-25 16:12:48,453  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+AUSTRALIA , NEW ZEALAND & SOUTH PACIFIC
+
+, 스케줄 그룹 사이즈:87
+2023-01-25 16:12:48,473  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:AUSTRALIA , NEW ZEALAND & SOUTH PACIFIC, 공동배선스케줄 수: 2
+2023-01-25 16:12:48,473  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:CARIBBEAN SEA & CENTRAL AMERICA, scheduleSize:300
+2023-01-25 16:12:48,473  INFO [com.ksg.schedule.logic.route.GroupArea] new area:CARIBBEAN SEA & CENTRAL AMERICA
+2023-01-25 16:12:48,588  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+CARIBBEAN SEA & CENTRAL AMERICA
+
+, 스케줄 그룹 사이즈:68
+2023-01-25 16:12:48,595  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:CARIBBEAN SEA & CENTRAL AMERICA, 공동배선스케줄 수: 1
+2023-01-25 16:12:48,595  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:CHINA, scheduleSize:2620
+2023-01-25 16:12:48,595  INFO [com.ksg.schedule.logic.route.GroupArea] new area:CHINA
+2023-01-25 16:12:49,602  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+CHINA
+
+, 스케줄 그룹 사이즈:488
+2023-01-25 16:12:49,671  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:CHINA, 공동배선스케줄 수: 60
+2023-01-25 16:12:49,673  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:CIS, scheduleSize:9
+2023-01-25 16:12:49,674  INFO [com.ksg.schedule.logic.route.GroupArea] new area:CIS
+2023-01-25 16:12:49,677  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+CIS
+
+, 스케줄 그룹 사이즈:5
+2023-01-25 16:12:49,678  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:CIS, 공동배선스케줄 수: 1
+2023-01-25 16:12:49,678  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:CONTINENTAL EUROPE , U.K. & SCANDINAVIA, scheduleSize:348
+2023-01-25 16:12:49,678  INFO [com.ksg.schedule.logic.route.GroupArea] new area:CONTINENTAL EUROPE , U.K. & SCANDINAVIA
+2023-01-25 16:12:49,751  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+CONTINENTAL EUROPE , U.K. & SCANDINAVIA
+
+, 스케줄 그룹 사이즈:40
+2023-01-25 16:12:49,758  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:CONTINENTAL EUROPE , U.K. & SCANDINAVIA, 공동배선스케줄 수: 1
+2023-01-25 16:12:49,758  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:EAST COAST OF NORTH AMERICA, scheduleSize:210
+2023-01-25 16:12:49,758  INFO [com.ksg.schedule.logic.route.GroupArea] new area:EAST COAST OF NORTH AMERICA
+2023-01-25 16:12:49,835  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+EAST COAST OF NORTH AMERICA
+
+, 스케줄 그룹 사이즈:76
+2023-01-25 16:12:49,838  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:EAST COAST OF NORTH AMERICA, 공동배선스케줄 수: 0
+2023-01-25 16:12:49,838  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:JAPAN, scheduleSize:1775
+2023-01-25 16:12:49,838  INFO [com.ksg.schedule.logic.route.GroupArea] new area:JAPAN
+2023-01-25 16:12:50,475  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+JAPAN
+
+, 스케줄 그룹 사이즈:249
+2023-01-25 16:12:50,520  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:JAPAN, 공동배선스케줄 수: 14
+2023-01-25 16:12:50,521  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:MEDITERRANEAN SEA, scheduleSize:556
+2023-01-25 16:12:50,521  INFO [com.ksg.schedule.logic.route.GroupArea] new area:MEDITERRANEAN SEA
+2023-01-25 16:12:50,743  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+MEDITERRANEAN SEA
+
+, 스케줄 그룹 사이즈:73
+2023-01-25 16:12:50,765  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:MEDITERRANEAN SEA, 공동배선스케줄 수: 1
+2023-01-25 16:12:50,765  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:PERSIAN GULF, scheduleSize:605
+2023-01-25 16:12:50,765  INFO [com.ksg.schedule.logic.route.GroupArea] new area:PERSIAN GULF
+2023-01-25 16:12:50,970  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+PERSIAN GULF
+
+, 스케줄 그룹 사이즈:45
+2023-01-25 16:12:50,984  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:PERSIAN GULF, 공동배선스케줄 수: 4
+2023-01-25 16:12:50,985  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:RED SEA, scheduleSize:130
+2023-01-25 16:12:50,985  INFO [com.ksg.schedule.logic.route.GroupArea] new area:RED SEA
+2023-01-25 16:12:51,036  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+RED SEA
+
+, 스케줄 그룹 사이즈:32
+2023-01-25 16:12:51,039  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:RED SEA, 공동배선스케줄 수: 0
+2023-01-25 16:12:51,039  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:RUSSIA, scheduleSize:59
+2023-01-25 16:12:51,039  INFO [com.ksg.schedule.logic.route.GroupArea] new area:RUSSIA
+2023-01-25 16:12:51,069  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+RUSSIA
+
+, 스케줄 그룹 사이즈:40
+2023-01-25 16:12:51,070  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:RUSSIA, 공동배선스케줄 수: 1
+2023-01-25 16:12:51,070  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:SOUTH & EAST AFRICA, scheduleSize:260
+2023-01-25 16:12:51,071  INFO [com.ksg.schedule.logic.route.GroupArea] new area:SOUTH & EAST AFRICA
+2023-01-25 16:12:51,151  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+SOUTH & EAST AFRICA
+
+, 스케줄 그룹 사이즈:41
+2023-01-25 16:12:51,156  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:SOUTH & EAST AFRICA, 공동배선스케줄 수: 0
+2023-01-25 16:12:51,156  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:SOUTH AMERICA, scheduleSize:427
+2023-01-25 16:12:51,156  INFO [com.ksg.schedule.logic.route.GroupArea] new area:SOUTH AMERICA
+2023-01-25 16:12:51,301  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+SOUTH AMERICA
+
+, 스케줄 그룹 사이즈:66
+2023-01-25 16:12:51,310  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:SOUTH AMERICA, 공동배선스케줄 수: 1
+2023-01-25 16:12:51,311  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:WEST AFRICA, scheduleSize:67
+2023-01-25 16:12:51,311  INFO [com.ksg.schedule.logic.route.GroupArea] new area:WEST AFRICA
+2023-01-25 16:12:51,334  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+WEST AFRICA
+
+, 스케줄 그룹 사이즈:17
+2023-01-25 16:12:51,335  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:WEST AFRICA, 공동배선스케줄 수: 0
+2023-01-25 16:12:51,335  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] AREA:WEST COAST OF NORTH AMERICA & HAWAII, scheduleSize:335
+2023-01-25 16:12:51,336  INFO [com.ksg.schedule.logic.route.GroupArea] new area:WEST COAST OF NORTH AMERICA & HAWAII
+2023-01-25 16:12:51,473  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] Area: 
+
+
+
+WEST COAST OF NORTH AMERICA & HAWAII
+
+, 스케줄 그룹 사이즈:80
+2023-01-25 16:12:51,480  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] area:WEST COAST OF NORTH AMERICA & HAWAII, 공동배선스케줄 수: 0
+2023-01-25 16:12:51,480  INFO [com.ksg.schedule.logic.joint.RouteScheduleJoint] 항로별 스케줄 생성 종료(6006s)

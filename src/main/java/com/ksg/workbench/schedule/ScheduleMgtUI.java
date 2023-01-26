@@ -788,10 +788,8 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 					String gubun 		= (String) tblScheduleDateList.getValueAt(selectedRow, 0);
 					
 					//스케줄 생성일
-					String selectedDate = (String) tblScheduleDateList.getValueAt(selectedRow, 1);
-
+					String selectedDate = (String) tblScheduleDateList.getValueAt(selectedRow, 1);				
 					
-					java.util.Date d 	= fromDateformat.parse(selectedDate);
 
 					ScheduleData op = new ScheduleData();
 					op.setDate_issue(selectedDate);
@@ -820,7 +818,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 					else //normal: 아웃바운드, 인바운드, 항로별
 					{
 						ShippersTable op2 = new ShippersTable();
-						op2.setDate_isusse(optionformat.format(d));
+						op2.setDate_isusse(selectedDate);
 						new SortAllCommand(op2,optDate.isSelected()?RouteTaskNewVessel.ORDER_BY_DATE:RouteTaskNewVessel.ORDER_BY_VESSEL,
 											cbxNew.isSelected(),
 											cbxInboundSchedule.isSelected(),

@@ -36,6 +36,11 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 		outPortList = new ArrayList<PortScheduleInfo>();
 	}
 	
+	public ArrayList<PortScheduleInfo> getOutPortList()
+	{
+		return outPortList;
+	}
+	
 	public List<PortScheduleInfo> getInPortList()
 	{
 		return inPortList;
@@ -126,15 +131,6 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 		// 신규 리스트 생성
 		HashMap<String, PortScheduleInfo> arr = new HashMap<String, PortScheduleInfo>();
 		
-		StringBuffer buffer = new StringBuffer();
-		for(PortScheduleInfo item:lit)
-		{
-			
-			buffer.append(item+", ");
-			
-		}
-		logger.info("sort전:{}",buffer.toString());
-		
 
 		for(int i=0;i<lit.length;i++)	
 		{	
@@ -156,6 +152,7 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 				arr.put(lit[i].getPort(),lit[i]);
 			}
 		}
+		
 		Set<String>keylist=arr.keySet();
 		
 		PortScheduleInfo lit2[] = new PortScheduleInfo[keylist.size()];
@@ -168,14 +165,7 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 			lit2[i]=arr.get(key);
 		}
 		Arrays.sort(lit2);
-		StringBuffer buffer2 = new StringBuffer();
-		for(PortScheduleInfo item:lit2)
-		{
-			
-			buffer2.append(item+", ");
-			
-		}
-		logger.info("sort후:{}",buffer2.toString());
+		
 		return lit2;
 	}
 

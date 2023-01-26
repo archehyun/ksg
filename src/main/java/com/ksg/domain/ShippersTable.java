@@ -73,13 +73,13 @@ public class ShippersTable extends BaseInfo{
 
 	
 	
-	public String getDate_isusse() {
-		try {
-			return KSGDateUtil.format(KSGDateUtil.toDate2(date_isusse));
-		} catch (Exception e) {
-			return date_isusse;
-		}
-	}
+//	public String getDate_isusse() {
+//		try {
+//			return KSGDateUtil.format(KSGDateUtil.toDate2(date_isusse));
+//		} catch (Exception e) {
+//			return date_isusse;
+//		}
+//	}
 	
 	
 	/**
