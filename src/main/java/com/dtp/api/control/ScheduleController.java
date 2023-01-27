@@ -56,6 +56,16 @@ public class ScheduleController extends AbstractController{
 
 		return result;
 	}
+	public CommandMap selectScheduleMapList(CommandMap param) throws Exception
+	{
+		CommandMap result = new CommandMap();
+		
+		List li  = service.selecteScheduleListMapByCondition(param);
+		result.put("success", true);
+		result.put("master", li);
+
+		return result;
+	}
 
 
 
