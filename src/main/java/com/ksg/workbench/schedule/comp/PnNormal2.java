@@ -83,13 +83,6 @@ public class PnNormal2 extends PnSchedule{
 
 		tableH.initComp();
 
-//		tableH.setPageCountIndex(6);
-//
-//		pageAction = new PageAction(tableH,scheduleService);
-//		
-//		
-//		
-//		tableH.addActionListener(pageAction);
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
