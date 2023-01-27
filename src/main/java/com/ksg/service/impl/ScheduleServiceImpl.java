@@ -845,6 +845,12 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 				.date_issue((String) param.get("date_issue"))
 				.InOutType((String) param.get("inOutType"))
 				.gubun((String) param.get("gubun"))
+				.vessel((String) param.get("vessel"))
+				.company_abbr((String) param.get("company_abbr"))
+				.agent((String) param.get("agent"))
+				.area_name((String) param.get("area_name"))
+				.port((String) param.get("port"))
+				.fromPort((String) param.get("fromPort"))
 				.build();
 
 		ArrayList<CommandMap> map = new ArrayList<CommandMap>();
