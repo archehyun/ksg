@@ -3,6 +3,8 @@ package com.ksg.workbench.schedule.comp;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.List;
 
@@ -118,6 +120,18 @@ public class PnNormal2 extends PnSchedule{
 
 
 		txfNoramlSearch = new JTextField(15);
+		txfNoramlSearch.addKeyListener(new KeyAdapter() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(e.getKeyChar()== KeyEvent.VK_ENTER)
+				{
+					fnSearch();
+				}
+			}
+			
+		});
+		
 		JButton butSearch = new JButton("°Ë»ö");
 		butSearch.addActionListener(this);
 		
