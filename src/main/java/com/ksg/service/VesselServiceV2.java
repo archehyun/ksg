@@ -12,6 +12,8 @@ public interface VesselServiceV2 extends VesselService{
 	
 	public List selectListByLike(HashMap<String, Object> param) throws SQLException;
 	
+	public List<Vessel> selectAllList() throws SQLException;
+	
 	public HashMap<String, Object> selectDetailList(Vessel commandMap) throws SQLException;
 	
 	public HashMap<String, Object> selectTotalList() throws SQLException;

@@ -458,6 +458,79 @@
 
 <!-- ********************************************* -->	
 
+<insert id="insertScheduleBulk" parameterClass="java.util.List">
+		insert TB_SCHEDULE_INFO(
+		table_id,
+		vessel,
+		voyage_num,
+		port,
+		dateF,
+		dateT,
+		company_abbr,
+		agent,
+		TS,
+		common_shipping,		
+		area_code,
+		inOutType,
+		fromPort,
+		date_issue,
+		gubun,
+		ts_vessel,
+		ts_date,
+		n_voyage_num,
+		area_name,
+		console_cfs,
+		console_page,
+		c_time,
+		d_time,
+		inland_port,
+		inland_date
+		
+		) 
+		values
+		
+		<iterate conjunction="," >
+		
+		(
+		#[].table_id#,
+		#[].vessel#,
+		#[].voyage_num#,
+		#[].port#,
+		#[].dateF#,
+		#[].dateT#,
+		#[].company_abbr#,
+		#[].agent#,
+		#[].TS#,
+		#[].common_shipping#,
+		
+		#[].area_code#,
+		
+		
+		#[].inOutType#,
+		#[].fromPort#,
+		#[].date_issue#,
+		#[].gubun#,
+		
+		#[].ts_vessel#,
+		
+		#[].ts_date#,
+		
+		#[].n_voyage_num#,
+		
+		#[].area_name#,
+		
+		#[].console_cfs#,
+		#[].console_page#,
+		#[].c_time#,
+		#[].d_time#,
+		#[].inland_port#,
+		#[].inland_date#
+		
+		)
+		</iterate>
+</insert>
+
+
 
 				
 </sqlMap>

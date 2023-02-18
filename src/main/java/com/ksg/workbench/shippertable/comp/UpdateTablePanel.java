@@ -70,7 +70,7 @@ import com.ksg.service.CompanyService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 import com.ksg.workbench.shippertable.dialog.UpdateTableInOutDialog;
 

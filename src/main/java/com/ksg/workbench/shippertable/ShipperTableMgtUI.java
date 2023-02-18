@@ -86,10 +86,10 @@ import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.CurvedBorder;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableSelectListner;
 import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.view.comp.tree.KSGTreeImpl;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.dialog.UpdateTableInfoDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 import com.ksg.workbench.shippertable.comp.SearchTable;
@@ -1716,11 +1716,11 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI
 			txfPageIndexSearchInput.setText("");
 		}
 	}
-	public void updateView() throws SQLException
+	public void updateView() 
 	{
 		if(searchParam==null)
 			return;
-		updateView(searchParam);
+		
 	}
 
 	private void updateView(ShippersTable searchParam) throws SQLException

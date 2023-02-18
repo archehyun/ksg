@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,15 +22,12 @@ import com.ksg.dao.impl.VesselDAOImpl;
 import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
-import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.joint.ConsoleScheduleJoint;
 import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
 import com.ksg.schedule.logic.joint.InboundScheduleJoint;
 import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
-import com.ksg.schedule.logic.joint.RouteScheduleJoint;
 import com.ksg.service.BaseService;
-import com.ksg.service.CompanyService;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
@@ -79,10 +78,11 @@ public class ScheduleManager {
 		companyDAO = new CompanyDAOImpl();
 		
 	}
-	public void init()
+	public void initMasterData()
 	{
 		try {
 			logger.info("스케줄 생성 마스터 초기화");
+			
 			allPortlist 	= (ArrayList<PortInfo>) baseService.getPortInfoList();
 			allPortAbbrlist = (ArrayList<PortInfo>) baseService.getPort_AbbrList();
 //			allVessellist 	= (ArrayList<Vessel>) baseService.getVesselList(new Vessel());
@@ -126,10 +126,10 @@ public class ScheduleManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public ScheduleJoint getRouteSchedule(ShippersTable op,int orderType) throws Exception
-	{
-		return new RouteScheduleJoint(op,orderType);
-	}
+//	public ScheduleJoint getRouteSchedule(ShippersTable op,int orderType) throws Exception
+//	{
+//		return new RouteScheduleJoint(op,orderType);
+//	}
 	/**
 	 * @설명 콘솔 스케줄 생성
 	 * @param op
@@ -256,7 +256,9 @@ public class ScheduleManager {
 				di.createAndUpdateUI();
 				
 				Iterator<ScheduleJoint>iter = scheduleBuilds.iterator();
-				init();
+				
+				initMasterData();
+				
 				try {
 					while(iter.hasNext())
 					{
@@ -264,10 +266,11 @@ public class ScheduleManager {
 						di.setTask(build);
 						build.initTag();
 						build.execute();
+						build.setDone(true);
 					}
 				}
 				catch (Exception e) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, e);
 					e.printStackTrace();
 				}finally {
 					scheduleBuilds.clear();

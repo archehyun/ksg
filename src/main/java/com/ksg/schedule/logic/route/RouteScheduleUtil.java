@@ -1,9 +1,14 @@
 package com.ksg.schedule.logic.route;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.AreaEnum;
+import com.ksg.domain.ScheduleData;
 
 public class RouteScheduleUtil {
 	
@@ -13,6 +18,8 @@ public class RouteScheduleUtil {
 	private static final String ASIA = "ASIA";
 	private static final String JAPAN = "JAPAN";
 	private static final String CHINA = "CHINA";
+	
+	private static SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
 	
 	/**
 	 * @설명 국내항 기준 공동배선 여부 결정  
@@ -33,8 +40,6 @@ public class RouteScheduleUtil {
 		//PortScheduleInfo[] sortedInPortList = groupPort.createInPortArray();
 		if(sortedInPortList.length<2)
 			return index;
-
-		
 		
 		
 		int base=getGap(area_name.toUpperCase()); // 공동배선 기준 일자
@@ -75,15 +80,15 @@ public class RouteScheduleUtil {
 		}
 		return base;
 	}
-	public static int getNumericVoyage(String voyage_num)
-	{	
-		try{
-			return Integer.valueOf(voyage_num.replaceAll("[^0-9]", ""));
-		}catch(Exception e)
-		{
-			return 0;
-		}
-	}
+//	public static int getNumericVoyage(String voyage_num)
+//	{	
+//		try{
+//			return Integer.valueOf(voyage_num.replaceAll("[^0-9]", ""));
+//		}catch(Exception e)
+//		{
+//			return 0;
+//		}
+//	}
 	
 	/**
 	 * 중국, 일본 : 2곳 이상
@@ -109,6 +114,58 @@ public class RouteScheduleUtil {
 		else
 		{
 			return outportCount>=3;
+		}
+
+	}
+	
+	public static List[] divideScheduleByArea(List<ScheduleData> list, String area_name)
+	{		
+
+		// 첫번째 출발항 출발일
+		
+		//if(!diviedByAreaGap) return new List[] {list};
+		
+		String firstInPortDateF = list.get(0).getDateF();
+		
+		// 국내항 첫재날 , 외국항 첫째날 비교
+		
+		for(int i=1;i< list.size();i++)
+		{
+			ScheduleData secondOutPortData = list.get(i);
+			
+			String outPortDateF = secondOutPortData.getDateF();
+			
+			int differ = differDay(firstInPortDateF, outPortDateF);
+			
+			AreaEnum area = AreaEnum.findGapByAreaName(area_name.toUpperCase());
+			
+			if(differ>=area.getGap())
+			{	
+				List<ScheduleData> first = new ArrayList<>(list.subList(0, i));
+				
+			    List<ScheduleData> second = new ArrayList<>(list.subList(i, list.size()));
+			    
+			    return new List[] {first, second};
+			}
+		}
+		return new List[] {list};
+	}
+	
+	/**
+	 * 두 날짜간 차이
+	 * @param firstDate yyyy/MM/dd
+	 * @param secondDate yyyy/MM/dd
+	 * @return 
+	 */
+	private static int differDay(String firstDate, String secondDate)
+	{
+		try {
+
+			long diffInMillies = Math.abs(formatYYYYMMDD.parse(firstDate).getTime() - formatYYYYMMDD.parse(secondDate).getTime());
+			return (int) TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+		}catch(Exception e)
+		{
+			return 0;
 		}
 
 	}

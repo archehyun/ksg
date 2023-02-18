@@ -625,7 +625,7 @@ public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 	 * }
 	 */
 
-	public RouteScheduleJointV3_1(ShippersTable op, int orderBy) throws SQLException {
+	public RouteScheduleJointV3_1(ShippersTable op, int orderBy) throws Exception {
 		super(op);
 		this.orderByType =orderBy;
 	}

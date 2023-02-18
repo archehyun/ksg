@@ -70,8 +70,6 @@ public class ShippersTable extends BaseInfo{
 		hachData = new HashMap<Object, Object>();
 	}
 	
-
-	
 	
 //	public String getDate_isusse() {
 //		try {

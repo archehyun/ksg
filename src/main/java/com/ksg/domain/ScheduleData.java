@@ -316,6 +316,21 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public String toKey()
+	{
+		return String.format("ScheduleData{tableId='%s', company_abbr='%s',vessel='%s', voyage_num='%s', fromPort='%s', toPort='%s', DateF='%s', DateT='%s', date_issue='%s'}", 
+						this.getTable_id(), 
+						this.getCompany_abbr(), 
+						this.getVessel(),
+						this.getVoyage_num(),
+						this.getFromPort(), 
+						this.getPort(),
+						this.getDateF(),
+						this.getDateT(),
+						this.getDate_issue()
+						);
+	}
 
 	
 	

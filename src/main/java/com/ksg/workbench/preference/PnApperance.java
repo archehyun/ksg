@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 
 import com.ksg.view.comp.KSGViewUtil;
-import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 /**
 

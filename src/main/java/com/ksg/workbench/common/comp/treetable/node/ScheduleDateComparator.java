@@ -34,6 +34,7 @@ public class ScheduleDateComparator implements Comparator<ScheduleData> {
 	}
 
 	private  SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
+	
 	@Override
 	public int compare(ScheduleData f1, ScheduleData f2) {
 

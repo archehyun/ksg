@@ -30,8 +30,9 @@ public abstract class SwingWorker {
 
 	/** 
 	 * Compute the value to be returned by the <code>get</code> method. 
+	 *  
 	 */
-	public abstract Object construct();
+	public abstract Object construct(); 
 
 	/**
 	 * Called on the event dispatching thread (not on the worker thread)

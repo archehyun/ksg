@@ -63,7 +63,7 @@ public class RouteScheduleJointV2 extends RouteAbstractScheduleJoint {
 
 	private int UP_SIZE,DOWN_SIZE;
 
-	public RouteScheduleJointV2(ShippersTable op) throws SQLException {
+	public RouteScheduleJointV2(ShippersTable op) throws Exception {
 		super(op);
 				
 		map = new HashMap<String, MiniSchedule>();

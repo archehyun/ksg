@@ -34,6 +34,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.build.CreateScheduleCommand;
+import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.service.ScheduleService;
 import com.ksg.view.ui.ErrorLogManager;
 
@@ -427,7 +428,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 		} 
 		scheduledata.setCompany_abbr(table.getCompany_abbr());
 		scheduledata.setVoyage_num(vslDatas[vslIndex][1]);
-		scheduledata.setN_voyage_num(getNumericVoyage(vslDatas[vslIndex][1]));
+		scheduledata.setN_voyage_num(ScheduleBuildUtil.getNumericVoyage(vslDatas[vslIndex][1]));
 		//scheduledata.setE_I(InOutBoundType);
 		scheduledata.setInOutType(InOutBoundType);
 		scheduledata.setGubun(table.getGubun());

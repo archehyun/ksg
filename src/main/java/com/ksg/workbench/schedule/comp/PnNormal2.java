@@ -25,10 +25,10 @@ import com.ksg.domain.AreaInfo;
 import com.ksg.service.AreaService;
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.common.comp.button.ImageButton;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.schedule.dialog.SearchPortDialog;
 
 

@@ -56,7 +56,7 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("unchecked")
 public class ScheduleServiceImpl extends AbstractServiceImpl implements ScheduleSubService, ScheduleServiceV2{
 
-	private SchduleDAO schduleDAO;
+	private SchduleDAO scheduleDAO;
 
 	private Vector<KSGHashMap> ksgHashMapList;
 
@@ -69,130 +69,130 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	public ScheduleServiceImpl() {
 
 		super();
-		schduleDAO = new ScheduleDAOImpl();
+		scheduleDAO = new ScheduleDAOImpl();
 		advScheduleDAO = new ADVScheduleDAO();
 	}
 
 	@Override
 	public List getInboundPortList() throws SQLException{
-		return schduleDAO.getInboundPortList();
+		return scheduleDAO.getInboundPortList();
 	}
 
 	public int deleteSchedule() throws SQLException {
-		return schduleDAO.deleteSchedule();
+		return scheduleDAO.deleteSchedule();
 
 	}
 
 	public int deleteInlnadSchedule() throws SQLException {
-		return schduleDAO.deleteInlandSchedule();
+		return scheduleDAO.deleteInlandSchedule();
 
 	}
 
 
 	public List getScheduleList() throws SQLException
 	{
-		return schduleDAO.getScheduleList();
+		return scheduleDAO.getScheduleList();
 	}
 	public List getScheduleList2(String inOutType) throws SQLException
 	{
-		return schduleDAO.getScheduleListOrderBy(inOutType);
+		return scheduleDAO.getScheduleListOrderBy(inOutType);
 	}
 
 	public List getTableAndADVList() throws SQLException {
-		return schduleDAO.getTableAndADVList();
+		return scheduleDAO.getTableAndADVList();
 	}
 
 
 	public int updateScheduleData(ScheduleData data) throws SQLException {
-		return schduleDAO.updateScheduleData(data);
+		return scheduleDAO.updateScheduleData(data);
 
 	}
 
 	public List getOutboundFromPortList(String port)
 			throws SQLException {
-		return schduleDAO.getOutboundFromPortList(port);
+		return scheduleDAO.getOutboundFromPortList(port);
 	}
 
 	public List getOutboundPortList() throws SQLException {
-		return schduleDAO.getOutboundPortList();
+		return scheduleDAO.getOutboundPortList();
 	}
 
 	public List getOutboundScheduleList(String port,String fromPort) throws SQLException {
-		return schduleDAO.getOutboundScheduleList(port, fromPort);
+		return scheduleDAO.getOutboundScheduleList(port, fromPort);
 	}
 
 	public List getOutboundScheduleList() throws SQLException {
-		return schduleDAO.getOutboundScheduleList();
+		return scheduleDAO.getOutboundScheduleList();
 	}
 
 	public List getOutboundScheduleList(ScheduleData data) throws SQLException {
-		return schduleDAO.getOutboundScheduleList(data);
+		return scheduleDAO.getOutboundScheduleList(data);
 	}
 
 	public ScheduleData insertScheduleData(ScheduleData data) 
 			throws SQLException {
-		return schduleDAO.insertScheduleData(data);
+		return scheduleDAO.insertScheduleData(data);
 	}
 	public ScheduleData insertInlandScheduleData(ScheduleData data) 
 			throws SQLException {
-		return schduleDAO.insertInlandScheduleData(data);
+		return scheduleDAO.insertInlandScheduleData(data);
 	}
 
 	public List getInboundtoPortList(String port) throws SQLException {
-		return schduleDAO.getInboundtoPortList();
+		return scheduleDAO.getInboundtoPortList();
 	}
 
 	public PortInfo getPortInfoByPortAbbr(String port) throws SQLException {
-		return schduleDAO.getPortInfoByPortAbbr(port);
+		return scheduleDAO.getPortInfoByPortAbbr(port);
 	}
 
 	public boolean isInPort(String port_name) throws SQLException {
-		return schduleDAO.isInPort(port_name);
+		return scheduleDAO.isInPort(port_name);
 	}
 
 	public List getInboundScheduleList(String port) throws SQLException {
-		return schduleDAO.getInboundScheduleList(port );
+		return scheduleDAO.getInboundScheduleList(port );
 	}
 
 	public List getInboundScheduleListByVessel(String port, String vessel)
 			throws SQLException {
-		return schduleDAO.getInboundScheduleListByVessel(port,vessel );
+		return scheduleDAO.getInboundScheduleListByVessel(port,vessel );
 
 	}
 
 	public List getScheduleListByArea(ScheduleData data)
 			throws SQLException {
-		return schduleDAO.getScheduleListByArea(data);
+		return scheduleDAO.getScheduleListByArea(data);
 	}
 
 	public List getScheduleListByVesselVoy(String vessel, String voy)
 			throws SQLException {
-		return schduleDAO.getScheduleListByVesselVoy(vessel,voy );
+		return scheduleDAO.getScheduleListByVesselVoy(vessel,voy );
 	}
 
 	public List getScheduleListByToFrom(String areaCode, String areaCode2,
 			String InOut, int forSch) throws SQLException {
-		return schduleDAO.getScheduleListByToFrom(areaCode, areaCode2,
+		return scheduleDAO.getScheduleListByToFrom(areaCode, areaCode2,
 				InOut, forSch);
 	}
 
 	public List getScheduleListGroupByCompany(String searchDate)
 			throws SQLException {
-		return schduleDAO.getScheduleListGroupByCompany(searchDate);
+		return scheduleDAO.getScheduleListGroupByCompany(searchDate);
 	}
 
 	public List getScheduleList(ScheduleData param) throws SQLException {
 
 		log.info("param:{}",param.getDate_issue());
 
-		return schduleDAO.getScheduleList(param);
+		return scheduleDAO.getScheduleList(param);
 	}
 
 	public List selectScheduleDateList() throws SQLException {
 
-		List li1 = schduleDAO.selectScheduleDateList();
+		List li1 = scheduleDAO.selectScheduleDateList();
 
-		List li2 = schduleDAO.selectInlandScheduleDateList();
+		List li2 = scheduleDAO.selectInlandScheduleDateList();
 
 		li1.addAll(li2);
 		return li1;
@@ -200,27 +200,27 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 
 	public int getScheduleNTopCount(ScheduleData data) throws SQLException {
-		return schduleDAO.getScheduleNTopCount(data);
+		return scheduleDAO.getScheduleNTopCount(data);
 	}
 
 	public List getScheduleListNTop(ScheduleData data) throws SQLException
 	{
-		return schduleDAO.getScheduleListNTop(data);
+		return scheduleDAO.getScheduleListNTop(data);
 	}
 
 	public List<ScheduleData> getConsoleScheduleList(String port,
 			String fromPort) throws SQLException {
-		return schduleDAO.getConsoleScheduleList(port, fromPort);
+		return scheduleDAO.getConsoleScheduleList(port, fromPort);
 	}
 
 	public List getConsoleScheduleList() throws SQLException {
-		return schduleDAO.getConsoleScheduleList();
+		return scheduleDAO.getConsoleScheduleList();
 	}
 
 	@Override
 	public List getConsoleScheduleList(ScheduleData data) throws SQLException {
 
-		return schduleDAO.getConsoleScheduleList(data);
+		return scheduleDAO.getConsoleScheduleList(data);
 	}
 
 	@Deprecated
@@ -228,18 +228,18 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	public List<ScheduleData> getInlandScheduleList(ScheduleData data) 
 			throws SQLException {
 
-		return schduleDAO.getInlandScheduleList(data);
+		return scheduleDAO.getInlandScheduleList(data);
 	}
 
 	public List getInlandScheduleDateList() throws SQLException {
-		return schduleDAO.getInlandScheduleDateList();
+		return scheduleDAO.getInlandScheduleDateList();
 	}
 
 
 
 	@Override
 	public List<String> getOutboundAreaList() throws SQLException {
-		return schduleDAO.getOutboundAreaList();
+		return scheduleDAO.getOutboundAreaList();
 
 	}
 	public CommandMap selectScheduleList(CommandMap commandMap) throws SQLException {
@@ -248,9 +248,9 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		CommandMap resultMap = new CommandMap();
 
-		resultMap.put("total", schduleDAO.selectCount(commandMap));
+		resultMap.put("total", scheduleDAO.selectCount(commandMap));
 
-		resultMap.put("master", schduleDAO.selectList(commandMap));
+		resultMap.put("master", scheduleDAO.selectList(commandMap));
 
 		return resultMap;
 
@@ -262,9 +262,9 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
-		resultMap.put("total", schduleDAO.selectCount(commandMap));
+		resultMap.put("total", scheduleDAO.selectCount(commandMap));
 
-		resultMap.put("master", schduleDAO.selectInlnadList(commandMap));
+		resultMap.put("master", scheduleDAO.selectInlnadList(commandMap));
 
 		return resultMap;
 
@@ -368,9 +368,9 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		CommandMap resultMap = new CommandMap();
 
-		resultMap.put("total", schduleDAO.selectCount(param));
+		resultMap.put("total", scheduleDAO.selectCount(param));
 
-		resultMap.put("master", schduleDAO.selectList(param));
+		resultMap.put("master", scheduleDAO.selectList(param));
 
 		return resultMap;
 	}
@@ -382,9 +382,9 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
-		resultMap.put("total", schduleDAO.selectCount(param));
+		resultMap.put("total", scheduleDAO.selectCount(param));
 
-		resultMap.put("master", schduleDAO.selectListByPage(param));
+		resultMap.put("master", scheduleDAO.selectListByPage(param));
 
 		return resultMap;
 	}
@@ -396,7 +396,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		CommandMap resultMap = new CommandMap();
 
-		List list=schduleDAO.selectList(param);
+		List list=scheduleDAO.selectList(param);
 
 		return null;
 	}
@@ -855,7 +855,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		ArrayList<CommandMap> map = new ArrayList<CommandMap>();
 		try {
-			List<ScheduleData> li = schduleDAO.selectScheduleLisByCondition(schedule);
+			List<ScheduleData> li = scheduleDAO.selectScheduleLisByCondition(schedule);
 
 
 			for(ScheduleData item:li)
@@ -890,7 +890,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 				
 				.build();
 
-		return  schduleDAO.selectScheduleLisByCondition(schedule);
+		return  scheduleDAO.selectScheduleLisByCondition(schedule);
 	}
 
 
@@ -906,7 +906,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 				.build();
 
 
-		return  schduleDAO.selectAll(schedule);
+		return  scheduleDAO.selectAll(schedule);
 	}
 
 	@Override
@@ -914,7 +914,13 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		log.debug("param:{}", param);
 
-		return  schduleDAO.selectScheduleLisByCondition(param);
+		return  scheduleDAO.selectScheduleLisByCondition(param);
+	}
+
+	@Override
+	public Object insertScheduleBulkData(List<ScheduleData> scheduleList) throws SQLException {
+		
+		return scheduleDAO.insertScheduleBulkData(scheduleList);
 	}
 
 

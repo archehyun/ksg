@@ -39,10 +39,10 @@ import com.ksg.service.AreaService;
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.ImageButton;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.treetable.KSGTreeTable;
 import com.ksg.workbench.common.comp.treetable.nodemager.TreeNodeManager;
 import com.ksg.workbench.schedule.dialog.SearchPortDialog;
@@ -91,6 +91,8 @@ public class PnNormalByTree extends PnSchedule {
 	private JTextField txfToPort;
 
 	private JTextField txfFromPort;
+	
+	private JCheckBox cbxIsAddValidate;
 
 	private HashMap<String, Object> inboundCodeMap;
 
@@ -206,6 +208,10 @@ public class PnNormalByTree extends PnSchedule {
 
 		chkRoute = new JCheckBox("Route");
 		chkRoute.setBackground(Color.white);
+		
+		cbxIsAddValidate = new JCheckBox("제외 항구 추가");
+		
+		cbxIsAddValidate.setBackground(Color.white);
 
 		cbxArea = new KSGComboBox();
 
@@ -313,11 +319,15 @@ public class PnNormalByTree extends PnSchedule {
 		 
 		 pnRouteSerchOption.add(rbtRouteVesselSorted);
 		 
+		 pnRouteSerchOption.add(cbxIsAddValidate);
+		 
+		 
 		 rbtRouteDateSorted.setSelected(true);
 		 
 		 rbtRouteVesselSorted.setSelected(false);
 		
 		pnNormalSearchCenter.add(pnRouteSerchOption);
+		
 
 		KSGPanel pnNormalSeawrchEast = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -374,6 +384,9 @@ public class PnNormalByTree extends PnSchedule {
 			{
 				param.put("date_issue", input_date);
 			}
+			
+			
+			
 
 			logger.info("param:"+param);
 
@@ -402,6 +415,8 @@ public class PnNormalByTree extends PnSchedule {
 				{
 					// ROUTE
 					param.put("inOutType", ScheduleEnum.OUTBOUND.getSymbol());
+					
+					param.remove("gubun");
 
 					CommandMap result = (CommandMap) control.selectRouteScheduleGroupList(param);
 
@@ -410,6 +425,8 @@ public class PnNormalByTree extends PnSchedule {
 					routeparam.put("data", result);
 					
 					routeparam.put("sortType", rbtRouteDateSorted.isSelected()?"date":"vessel");
+					
+					routeparam.put("isAddValidate", cbxIsAddValidate.isSelected());
 
 					treeTableModel.setRoot(nodeManager.getRouteTreeNode(routeparam));
 				}

@@ -5,13 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ComponentEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+import com.dtp.api.control.AbstractController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.view.comp.CurvedBorder;
-import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 /**
 
@@ -28,11 +29,15 @@ import com.ksg.view.comp.panel.KSGPanel;
   * @프로그램 설명 :
 
   */
-public abstract class AbstractMgtUI extends KSGView{
+public abstract class AbstractMgtUI extends KSGView implements View{
 	
 	protected String title;
 	
 	protected Color borderColor;
+	
+	private AbstractController controller;
+	
+	private CommandMap model;
 	
 	public AbstractMgtUI()
 	{
@@ -72,6 +77,38 @@ public abstract class AbstractMgtUI extends KSGView{
 
 		return pnTitleMain;
 	}
+	
+	@Override
+	public void setModel(CommandMap model) {
+		this. model = model;
+
+	}
+	public CommandMap getModel() {
+
+		return model;
+	}
+
+	public void callApi(String serviceId, CommandMap param)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, param, this);
+	}
+	
+	public void callApi(String serviceId)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, new CommandMap(),this);
+	}
+	
+	public void updateView() {};
+	
+	public void setController(AbstractController constroller)
+	{
+		this.controller =constroller;
+	}
+
+	
+	
 	
 	
 

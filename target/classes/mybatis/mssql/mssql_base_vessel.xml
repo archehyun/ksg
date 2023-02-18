@@ -84,6 +84,14 @@
 		SELECT * FROM TB_VESSEL_H
 		WHERE vessel_name =#vessel_name#
 	</select>
+	<select id="selectVesselListByNameList" resultClass="com.ksg.domain.Vessel" parameterClass="java.util.List">
+		SELECT 	* 
+		FROM 	TB_VESSEL_H
+		WHERE 	vessel_name in
+		<iterate open="(" close=")" conjunction=",">
+			#[]#	
+		</iterate>
+	</select>
 	
 	
 	<select id="selectVesselTotalList" resultClass="com.ksg.domain.Vessel">

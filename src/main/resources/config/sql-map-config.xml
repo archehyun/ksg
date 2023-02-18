@@ -17,7 +17,7 @@
 <sqlMapConfig>
 	<properties resource="config/db.properties"/>
 	<settings enhancementEnabled="true" useStatementNamespaces="true" />	
-	 <transactionManager type="JDBC">
+	 <transactionManager type="JDBC" commitRequired="false">
 		<dataSource type="SIMPLE">
 		<property name="JDBC.Driver" value="${mssql.driver}"/>
 		<property name="JDBC.Username" value="${mssql.id}"/>

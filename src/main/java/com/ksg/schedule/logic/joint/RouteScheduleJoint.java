@@ -1,6 +1,5 @@
 package com.ksg.schedule.logic.joint;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -111,15 +110,33 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 
 	}
 
-	private int orderByType=1;	
+	private int orderByType=1;
+	
+	private String date_issue;
+	
+	private int totalCount;
+	
+	public RouteScheduleJoint(String date_issue, int orderBy) throws Exception {
+		super();
+		
+		this.date_issue = date_issue;
+		
+		this.orderByType =orderBy;
+		
+		message = "항로별 생성중...";
+		
+		logger.info("정렬기준:"+orderByType);
+	
+	}
 
 	public RouteScheduleJoint(ShippersTable op, int orderBy) throws Exception {
 
 		super(op);
-
-		this.orderByType =orderBy;		
-
-
+		
+		this.date_issue  = KSGDateUtil.format(KSGDateUtil.toDate2(op.getDate_isusse()));
+		
+		this.orderByType =orderBy;
+		
 
 		message = "항로별 생성중...";
 
@@ -138,9 +155,6 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 		WORLD_E="<ct:><cs:><cf:><ct:Bold><cf:Helvetica LT Std>";
 	}
 
-	private FileWriter fw,errorOutfw,commonInfw;
-
-
 	public int execute() throws IOException {
 
 		log.info("항로별 스케줄 생성 시작");		
@@ -150,14 +164,8 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 		message = "항로별 스케줄 그룹화..";
 
 		logger.info("스케줄 그룹화 시작");
-
-		fw = new FileWriter(saveLoaction+"/"+fileName);
-
-		errorOutfw = new FileWriter(saveLoaction+"/"+errorOutPortfileName);
-
-		commonInfw = new FileWriter(saveLoaction+"/"+commonInPortfileName);
-
-
+		
+		totalCount =0;
 
 		// 출력 프로세스
 		// toPort 그룹에서 키 셋(도착항) 조회
@@ -171,7 +179,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 
 			CommandMap param = new CommandMap();
 
-			param.put("date_issue", KSGDateUtil.format(KSGDateUtil.toDate2(op.getDate_isusse())));
+			param.put("date_issue", this.date_issue);
 
 			param.put("inOutType", OUTBOUND);
 
@@ -194,43 +202,46 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 			// 지역명 정렬
 			Arrays.sort(areakeyList);
 
-			StringBuffer areaBuffer = new StringBuffer();
+			printAreaList(areakeyList);			
+			
+			fw.write(WORLD_VERSION1+"\r\n"+WORLD_VERSION2);
 
-			// 지역 정보 로그 출력
-			for(Object area:areakeyList)
+			for(Object strArea: areakeyList)
 			{
-				areaBuffer.append(area+"\n");
-			}
-
-			logger.info("\n- 지역목록- \n{}",areaBuffer.toString());
-
-			for(Object keyItem: areakeyList)
-			{
-				String strAreaName = (String) keyItem;
+				firstIndex++;
 				
 				// 지역별 조회
-				List<ScheduleData> outboundScheduleListByArea = areaList.get(strAreaName);
+				List<ScheduleData> outboundScheduleListByArea = areaList.get(strArea);
+				
+				logger.info("Area: "+strArea+ ", 스케줄 그룹 사이즈:"+outboundScheduleListByArea.size());
 
 				// 지역 그룹 생성
-				GroupArea group = crateGroupArea(strAreaName, orderByType, outboundScheduleListByArea);
-
-				String areaName = (firstIndex>0?"\r\n\r\n\r\n\r\n":"")+group.getArea_name()+"\r\n\r\n";
-
-				firstIndex++;
-
-				fw.write(areaName);
-
-				errorOutfw.write(areaName);
-
-				logger.info("Area: "+areaName+ ", 스케줄 그룹 사이즈:"+group.size());
+				GroupArea group = crateGroupArea((String)strArea, orderByType, outboundScheduleListByArea);
+				
+				
+				
+				// 지역명 출력
+				writeArea(group.getArea_name(), firstIndex);				
 				
 				// 스케줄 출력
-				writeRouteSchedule(group.getArea_name(), group.toSortedArray());
+				List<String> scList= getValidatedRouteScheduleString(group.getArea_name(), group.toSortedArray());
+				
+				logger.info("route schedule :{}", scList.size());
+				
+				for(String schedule:scList)
+				{
+					totalCount++;
+					
+					fw.write(schedule);
+				}
+				
 
-				// 공동배성 정보 출력
+				// 공동배선 정보 출력
 				writeCommonInPort(group.getArea_name(), group.getCommonVessel());
 
 				current++;
+				
+				
 
 				fw.write(WORLD_E);
 
@@ -242,7 +253,8 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 			long endTime = System.currentTimeMillis();
 
 			logger.info("항로별 스케줄 생성 종료({}s)",(endTime-startTime));
-
+			
+			logger.info("항로별 스케줄 수 :({})",totalCount);
 			return ScheduleJoint.SUCCESS;
 
 		}catch(Exception e)
@@ -255,19 +267,35 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 
 		}
 	}
-	private void close() throws IOException
-	{
-		fw.close();
-		errorOutfw.close();
-		commonInfw.close();	
+	
+	private void printAreaList(Object[] areakeyList) {
+		
+		StringBuffer areaBuffer = new StringBuffer();
+
+		// 지역 정보 로그 출력
+		for(Object area:areakeyList)
+		{
+			areaBuffer.append(area+"\n");
+		}
+
+		logger.info("\n- 지역목록- \n{}",areaBuffer.toString());
 	}
+	
+	private void writeArea(String areaName, int index) throws IOException
+	{	
+		String strAreaName = (index>0?"\r\n\r\n\r\n\r\n":"")+areaName+"\r\n\r\n";
+
+		fw.write(strAreaName);
+
+		errorOutfw.write(strAreaName);
+	}
+	
 
 	private void writeCommonInPort(String areaName, ArrayList<GroupVessel> commonVesselList) throws IOException, ParseException
 	{
 		commonInfw.write("\r\n\r\nArea:"+areaName+", 공동배선스케줄 수: "+commonVesselList.size()+"\r\n\r\n");
 
-		logger.info("area:"+areaName+", 공동배선스케줄 수: "+commonVesselList.size());
-
+		logger.debug("area:"+areaName+", 공동배선스케줄 수: "+commonVesselList.size());
 
 		for(GroupVessel commonVessel:commonVesselList)
 		{
@@ -308,12 +336,12 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 	}
 
 
-	private void writeRouteSchedule(String areaName,GroupVessel[] vesselList) throws Exception
+	private List<String> getValidatedRouteScheduleString(String areaName,GroupVessel[] vesselList) throws Exception
 	{
-
+		
+		List<String> list = new ArrayList<String>();
 		for(GroupVessel vesselGroup:vesselList)
-		{	
-
+		{
 			/* 스케줄 제외 구분
 			 * 중국, 일본; 2개 미만
 			 * 러시아 1개미만
@@ -343,11 +371,12 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 			if(RouteScheduleUtil.checkOutPort(areaName,newOutPortArray.length))
 			{
 				// 정상 스케줄
-				String strSchedule = toStringSchedule(vesselGroup,newOutPortArray);
+				
+				list.add(toStringSchedule(vesselGroup,newOutPortArray));
 
-				fw.write(strSchedule);
+				
 
-				logger.debug(strSchedule);
+				
 			}
 			else
 			{
@@ -355,6 +384,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 				writeErrorSchedule(areaName, vesselGroup, newOutPortArray );
 			}
 		}
+		return list;
 	}
 	
 	// 국내항 마지막 일자 보다 늦은 외국항 제외
@@ -376,7 +406,7 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 	 */
 	public GroupArea crateGroupArea(String areaName, int orderByType, List<ScheduleData> outboundScheduleListByArea) throws Exception
 	{
-		logger.info("AREA:{}, scheduleSize:{}",areaName,outboundScheduleListByArea.size());
+		logger.debug("AREA:{}, scheduleSize:{}",areaName,outboundScheduleListByArea.size());
 
 		GroupArea group = new GroupArea(areaName,  orderByType);
 

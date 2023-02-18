@@ -34,6 +34,8 @@ public interface VesselService extends PageService{
 	public void insertDetail(HashMap<String, Object> param) throws RuntimeException;
 
 	List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException;
+	
+	List<Vessel> selectVesselListByNameList(List<String>nameList)throws SQLException;
 
 	
 

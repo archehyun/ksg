@@ -21,6 +21,7 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.joint.RouteScheduleJoint;
+import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 
 public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<GroupVessel>{
 	
@@ -264,7 +265,7 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 	}
 	private String getVoyageInfo(String voyageString) {
 
-		int result=RouteScheduleUtil.getNumericVoyage(voyageString);
+		int result=ScheduleBuildUtil.getNumericVoyage(voyageString);
 		
 		return result!=0? " - "+result:"";
 		

@@ -54,7 +54,7 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 		
 		commonVesselList = new ArrayList<GroupVessel>();
 		
-		logger.info("new area:"+this.area_name);
+		logger.debug("new area:"+this.area_name);
 	}
 
 	public void addSchedule(ScheduleData data) throws SQLException, ParseException, VesselNullException 

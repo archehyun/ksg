@@ -37,6 +37,8 @@ public interface ScheduleService extends PageService{
 	
 	public ScheduleData insertScheduleData(ScheduleData data)				throws SQLException;
 	
+	public Object insertScheduleBulkData(List<ScheduleData> scheduleList)				throws SQLException;
+	
 	public int deleteSchedule()												throws SQLException;
 	
 	

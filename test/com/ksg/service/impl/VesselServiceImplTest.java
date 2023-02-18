@@ -3,6 +3,8 @@ package com.ksg.service.impl;
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -83,6 +85,21 @@ public class VesselServiceImplTest {
 	@Test
 	public void testSelectDetailListByLike() {
 		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testSelectVesseListByNameList() throws SQLException {
+		
+		List<String> nameList = new ArrayList<String>();
+		
+		nameList.add("A Aso");
+		nameList.add("A Bote");
+		
+		List li=vesselService.selectVesselListByNameList(nameList);
+		
+		assertTrue(li.size()==2);
+		
+		
 	}
 
 	@Test

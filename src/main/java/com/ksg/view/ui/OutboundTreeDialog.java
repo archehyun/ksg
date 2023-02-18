@@ -39,7 +39,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 public class OutboundTreeDialog extends KSGPanel{
 

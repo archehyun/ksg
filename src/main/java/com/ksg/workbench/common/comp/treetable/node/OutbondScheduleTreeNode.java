@@ -1,10 +1,11 @@
 package com.ksg.workbench.common.comp.treetable.node;
 
+import com.dtp.api.schedule.comparator.IFComparator;
 import com.ksg.schedule.execute.formater.OutboundFormatter;
 import com.ksg.view.comp.treetable.TreeTableNode;
 
 @SuppressWarnings("serial")
-public class OutbondScheduleTreeNode extends ScheduleTreeNode implements Comparable<Object>
+public class OutbondScheduleTreeNode extends ScheduleTreeNode implements IFComparator
 {
 	
 	public String getVessel() {
@@ -34,11 +35,9 @@ public class OutbondScheduleTreeNode extends ScheduleTreeNode implements Compara
 		formatter = new OutboundFormatter();
 		formatter.setParam(treeTableNode.getParam());
 	}
-
-	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public String getDate()
+	{
+		return date;
 	}
 	
 

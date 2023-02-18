@@ -212,6 +212,8 @@ public interface SchduleDAO {
 	
 	public List<Schedule> selectAll() throws  Exception;
 	
+	public Object insertScheduleBulkData(List<ScheduleData> scheduleList) throws SQLException;
+	
 	
 	
 }

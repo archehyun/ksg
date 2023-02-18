@@ -28,7 +28,7 @@ import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.impl.CompanyServiceImpl;
-import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 	/**

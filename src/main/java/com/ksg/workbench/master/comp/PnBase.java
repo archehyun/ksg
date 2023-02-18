@@ -18,8 +18,8 @@ import javax.swing.JLabel;
 import com.dtp.api.control.AbstractController;
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.CommandMap;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.View;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**

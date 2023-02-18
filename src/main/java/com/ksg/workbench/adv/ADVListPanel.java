@@ -52,11 +52,11 @@ import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.PageInfoCheckBox;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.admin.KSGMainFrame;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.AddAdvDialog;
 import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 /**
  * 

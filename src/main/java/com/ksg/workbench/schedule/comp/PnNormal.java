@@ -19,9 +19,9 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.service.ScheduleService;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 public class PnNormal extends KSGPanel implements ActionListener{
 

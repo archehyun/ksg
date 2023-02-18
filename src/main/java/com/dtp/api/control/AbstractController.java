@@ -16,104 +16,112 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class AbstractController {
-	
+
+
+	protected CommandMap model = new CommandMap();
+
 	protected ObjectMapper objectMapper = new ObjectMapper();
-	
+
 	protected View view; 
-	
-    public void setView(View view)
-    {
-        this.view = view; 
-    }
-	
-    public void call(String serviceId, CommandMap param, View view) 
-    {
-        setView(view);
 
-        call(serviceId, param);
+	public void setView(View view)
+	{
+		this.view = view; 
+	}
 
-    }
-    
-    
-	
-	  /**
-     * 
-     * @param serviceId
-     * @param param
-     */
-    public void call(String serviceId, CommandMap param) 
-    {
-        log.debug("serviceId:{}, param:{}",serviceId, param);
+	public void call(String serviceId, CommandMap param, View view) 
+	{
+		setView(view);
 
-        CommandMap model =new CommandMap();
+		call(serviceId, param);
 
-        String errMessage =null;
+	}
 
-        try {
+	public CommandMap getModel()
+	{
+		return model;
+	}
 
-            Method[] declaredMethods = getClass().getDeclaredMethods();
-            for(Method method :declaredMethods)
-            {
-                // Check if PrintAnnotation is applied
-                if (method.isAnnotationPresent(ControlMethod.class))
-                {
-                    ControlMethod methoAnnotation = method.getAnnotation(ControlMethod.class);
-                    if(methoAnnotation.serviceId().equals(serviceId))
-                    {   
-                        
-                        model=(CommandMap)method.invoke(this, param );                            
-                        if(model==null) model = new CommandMap();
 
-                        model.put("success", true);
-                        return;
-                    }
 
-                }
-            }
-    
-       
-            throw new ApiCallException("service not founded : "+serviceId);
+	/**
+	 * 
+	 * @param serviceId
+	 * @param param
+	 */
+	 private void call(String serviceId, CommandMap param) 
+	 {
+		 log.debug("serviceId:{}, param:{}",serviceId, param);
 
-    } catch (ApiCallException e) {
-        model.put("success", false);
-        model.put("error", e.getMessage());
-    }
-    
-    catch(InvocationTargetException e)
-    {
-        e.printStackTrace();
-        Exception targetExcpetion=(Exception) e.getTargetException();
-        if(targetExcpetion instanceof AlreadyExistException || targetExcpetion instanceof ResourceNotFoundException)
-        {
-            
-            errMessage = targetExcpetion.getMessage();
-            model.put("success", false);
-            model.put("error", errMessage);
-        }
-        else{
-            errMessage ="unhandeld error : "+targetExcpetion.getMessage();                          
-            model.put("success", false);
-            model.put("error", errMessage);
+		 CommandMap model =new CommandMap();
 
-        }
-    }
+		 String errMessage =null;
 
-    catch (Exception e) {
-        
-        e.printStackTrace();
-        errMessage ="unhandeld error:"+e.getMessage();                          
-        model.put("success", false);
-        model.put("error", errMessage);
+		 try {
 
-        
-    }
-    finally
-    {
-        model.setService_id(serviceId);
-        view.setModel( model);
-        view.updateView();
-    }
-    
-}
+			 Method[] declaredMethods = getClass().getDeclaredMethods();
+			 for(Method method :declaredMethods)
+			 {
+				 // Check if PrintAnnotation is applied
+				 if (method.isAnnotationPresent(ControlMethod.class))
+				 {
+					 ControlMethod methoAnnotation = method.getAnnotation(ControlMethod.class);
+					 if(methoAnnotation.serviceId().equals(serviceId))
+					 {   
+
+						 model=(CommandMap)method.invoke(this, param );                            
+						 if(model==null) model = new CommandMap();
+						 model.put("serviceId", serviceId);
+						 model.put("success", true);
+						 return;
+					 }
+
+				 }
+			 }
+
+
+			 throw new ApiCallException("service not founded : "+serviceId);
+
+		 } catch (ApiCallException e) {
+			 model.put("success", false);
+			 model.put("error", e.getMessage());
+		 }
+
+		 catch(InvocationTargetException e)
+		 {
+			 e.printStackTrace();
+			 Exception targetExcpetion=(Exception) e.getTargetException();
+			 if(targetExcpetion instanceof AlreadyExistException || targetExcpetion instanceof ResourceNotFoundException)
+			 {
+
+				 errMessage = targetExcpetion.getMessage();
+				 model.put("success", false);
+				 model.put("error", errMessage);
+			 }
+			 else{
+				 errMessage ="unhandeld error : "+targetExcpetion.getMessage();                          
+				 model.put("success", false);
+				 model.put("error", errMessage);
+
+			 }
+		 }
+
+		 catch (Exception e) {
+
+			 e.printStackTrace();
+			 errMessage ="unhandeld error:"+e.getMessage();                          
+			 model.put("success", false);
+			 model.put("error", errMessage);
+
+
+		 }
+		 finally
+		 {
+			 model.setService_id(serviceId);
+			 view.setModel( model);
+			 view.updateView();
+		 }
+
+	 }
 
 }

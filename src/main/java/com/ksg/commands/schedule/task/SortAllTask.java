@@ -1,63 +1,86 @@
 package com.ksg.commands.schedule.task;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
-import javax.swing.JOptionPane;
-
 import com.ksg.commands.LongTask;
-import com.ksg.commands.schedule.outbound.OutboundTask;
-import com.ksg.commands.schedule.route.RouteTaskDate;
 import com.ksg.commands.schedule.route.RouteTaskNewVessel;
-import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ShippersTable;
-import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.joint.InboundScheduleJoint;
-import com.ksg.schedule.logic.joint.OutboundScheduleJoint;
 import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
+import com.ksg.schedule.logic.joint.RouteAbstractScheduleJoint;
 import com.ksg.schedule.logic.joint.RouteScheduleJoint;
+import com.ksg.schedule.logic.joint.RouteScheduleJointV4;
+import com.ksg.schedule.logic.joint.route.RouteSchedulePrint;
 
 public class SortAllTask implements LongTask {
 
-	public SortAllTask(ShippersTable op) {
-		new InboundTask();
-		new OutboundTask();
-		new RouteTaskDate(op);
-		JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "Sorting을 완료 했습니다.");
-	}
+	int orderBy;
 
+	boolean isRouteNew;
+
+	boolean isPrintNewRoute;
+	
+	private ShippersTable op;
+	
+	private String date_isusse;
 
 	public SortAllTask(ShippersTable op,int orderBy,boolean isNew,boolean isPrintInbound, boolean isPrintOutbound, boolean isPrintRoute) throws Exception {
-		try {
-			if(isPrintInbound)
-			{
-				
-				ScheduleManager.getInstance().addBulid(new InboundScheduleJoint());
+		this.op = op;
+		
+		this.orderBy = orderBy;
+		
+		this.isPrintNewRoute = false;
+		
+		initPrintSchedule(isPrintOutbound, isPrintInbound, isPrintRoute);		
 
-			}
-			if(isPrintOutbound)
+	}
+	public SortAllTask(CommandMap param) throws Exception
+	{	
+		date_isusse = (String) param.get("date_isusse");
+		
+		boolean isPrintInbound = (boolean) param.get("isPrintInbound");
+
+		boolean isPrintOutbound = (boolean) param.get("isPrintOutbound");
+
+		boolean isPrintRoute = (boolean) param.get("isPrintRoute");
+
+		orderBy = (int) param.get("orderBy");
+
+		isPrintNewRoute = (boolean) param.get("isPrintNewRoute");
+
+		isRouteNew = (boolean) param.get("isNew");
+		
+		initPrintSchedule(isPrintOutbound, isPrintInbound, isPrintRoute);
+
+	}
+
+	private void initPrintSchedule(boolean isPrintOutbound, boolean isPrintInbound, boolean isPrintRoute) throws Exception
+	{
+		if(isPrintInbound) ScheduleManager.getInstance().addBulid(new InboundScheduleJoint());
+		
+		if(isPrintOutbound) ScheduleManager.getInstance().addBulid(new OutboundScheduleJointV2());
+		
+		if(isPrintRoute)
+		{
+			if(isRouteNew)
 			{
-				//new OutboundTask();
-				ScheduleManager.getInstance().addBulid(new OutboundScheduleJointV2());
+				new RouteTaskNewVessel(op,orderBy).start();
 			}
-			if(isPrintRoute)
+			else
 			{
-				if(isNew)
-				{
-					new RouteTaskNewVessel(op,orderBy).start();
-				}
-				else
-				{
-					ScheduleManager.getInstance().addBulid(new RouteScheduleJoint(op, orderBy));
-				}
+				RouteAbstractScheduleJoint joint = isPrintNewRoute?new RouteScheduleJointV4(date_isusse, orderBy):new RouteScheduleJoint(date_isusse, orderBy);
+
+				ScheduleManager.getInstance().addBulid(new RouteSchedulePrint(joint));
 			}
-			ScheduleManager.getInstance().startBuild();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
+	}
+	
+	public Object startBuild()
+	{
+		ScheduleManager.getInstance().startBuild();
+		
+		return this;
 	}
 
 

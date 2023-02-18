@@ -48,9 +48,9 @@ import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.HintTextField;
 import com.ksg.view.comp.KSGCheckBox;
 import com.ksg.view.comp.KSGComboBox;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.comp.PnVessel;
 
 @SuppressWarnings("serial")

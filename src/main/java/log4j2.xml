@@ -22,7 +22,7 @@
 
 
    
-   <logger level="INFO" name="java.sql.Statement"/>
+   <logger level="DEBUG" name="java.sql.Statement"/>
     
    <logger level="INFO" name="com.dtp"  additivity="false" />     
    

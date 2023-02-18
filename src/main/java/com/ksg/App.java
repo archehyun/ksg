@@ -19,10 +19,10 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.ColorUIResource;
 
-import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import com.dtp.view.workwench.ViewConfiguration;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.PropertiManager;
 import com.ksg.workbench.KSGLogin;
@@ -55,7 +55,7 @@ public class App
 
 	public App() 
 	{	
-		
+//		ApplicationContext ac = new AnnotationConfigApplicationContext(ViewConfiguration.class);
 	}
 
 

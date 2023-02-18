@@ -67,12 +67,12 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.KSGLogin;
 import com.ksg.workbench.adv.ADVManageUI;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.dialog.SearchADVCountDialog;
 import com.ksg.workbench.common.comp.dialog.WebScheduleCreateDialog;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.preference.PreferenceDialog;
 import com.ksg.workbench.print.PrintADVUI;
@@ -94,11 +94,13 @@ import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
   */
 public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
+	
+	private static final String MONDAY = "월요일";
 	private static final String SCHEDULE_WORLDWIDE	= "항로별 스케줄 생성";
 	private static final String SCHEDULE_INBOUND	= "Inbound 스케줄 생성";
 	private static final String SCHEDULE_OUTBOUND	= "Outbound 스케줄 생성";
 	private static final String ADV_INPUT_SEARCH	= "광고입력 조회";
-	private static final String MONDAY = "월요일";
+	
 	private static final String SCHEDULE_DELETE 	= "Schedule 삭제";
 	private static final String SCHEDULE_SEARCH 	= "Schedule 확인";
 	private static final String ADV_PRINT 			= "광고정보 출력";
@@ -142,7 +144,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 	private JToolBar toolbar;
 	
-	private ScheduleSubService scheduleService;
+	private ScheduleSubService scheduleService= new ScheduleServiceImpl();
 
 	private KSGLogin login;
 
@@ -242,8 +244,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 
 	private KSGPanel buildCenter() 
 	{
-		KSGPanel pnMain = new KSGPanel(new BorderLayout(0,10));  
-				
+		KSGPanel pnMain = new KSGPanel(new BorderLayout(0,10));
 		
 		pnCenter = new KSGPanel();
 		
@@ -264,7 +265,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		
 		logger.debug("create frame start");
 
-		scheduleService= new ScheduleServiceImpl();	
 		
 		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -718,7 +718,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		}
 
 		public Dimension getMinimumSize() {
-			Dimension d =getPreferredSize();
+			Dimension d =getPreferredSize(); 
 			d.width+=20;
 			return d;
 		}

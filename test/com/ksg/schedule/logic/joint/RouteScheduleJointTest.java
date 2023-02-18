@@ -25,10 +25,11 @@ public class RouteScheduleJointTest {
 	@Test
 	public void testCreateSche() throws Exception
 	{
-		ScheduleManager.getInstance().init();
+		ScheduleManager.getInstance().initMasterData();
 		ShippersTable op = new ShippersTable();
 		op.setDate_isusse("2023-01-30");
 		RouteScheduleJoint schedule= new RouteScheduleJoint(op, 1);
+		schedule.initTag();
 		schedule.execute();
 	}
 	

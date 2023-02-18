@@ -21,8 +21,8 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.service.ShipperTableService;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
 /**

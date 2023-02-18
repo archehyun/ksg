@@ -138,4 +138,10 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 		// TODO Auto-generated method stub
 		return selectList("vessel.selectVesselListByCondition", object);
 	}
+
+	@Override
+	public List<Vessel> selectVesselListByNameList(List<String> nameList) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("vessel.selectVesselListByNameList", nameList);
+	}
 }

@@ -1,6 +1,7 @@
 package com.ksg.schedule.logic.joint;
 
-import java.sql.SQLException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ShippersTable;
@@ -47,9 +48,6 @@ public abstract class RouteAbstractScheduleJoint extends DefaultScheduleJoint{
 	
 	public static final String OUTBOUND = "O";
 	
-//	private String fileName="world_print_new_date2.txt";
-//	private String commonInPortfileName="world_print_common_inport.txt";;
-//	private String errorOutPortfileName="world_print_error_outport.txt";
 	protected  String saveLoaction;
 	
 	protected String fileName;
@@ -58,12 +56,20 @@ public abstract class RouteAbstractScheduleJoint extends DefaultScheduleJoint{
 	
 	protected String commonInPortfileName;
 	
+	protected FileWriter fw,errorOutfw,commonInfw;
+	
 	KSGPropertis ksgPropertiey= KSGPropertis.getIntance();
 
-	public RouteAbstractScheduleJoint(ShippersTable op) throws SQLException {
+	public RouteAbstractScheduleJoint(ShippersTable op) throws Exception {
+		this();
+		
+		this.op = op;
+		
+		
+	}
+	
+	public RouteAbstractScheduleJoint() throws Exception {
 		super();
-		
-		
 		this.saveLoaction = ksgPropertiey.getProperty(KSGPropertis.SAVE_LOCATION);
 		
 		this.fileName  = ksgPropertiey.getProperty("schedule.route.filename");
@@ -72,9 +78,23 @@ public abstract class RouteAbstractScheduleJoint extends DefaultScheduleJoint{
 		
 		this.commonInPortfileName = ksgPropertiey.getProperty("schedule.route.commoninport");
 		
-		this.op = op;
-		
-		
+
+		fw = new FileWriter(saveLoaction+"/"+fileName);
+
+		errorOutfw = new FileWriter(saveLoaction+"/"+errorOutPortfileName);
+
+		commonInfw = new FileWriter(saveLoaction+"/"+commonInPortfileName);
+	}
+
+	protected void close() throws IOException
+	{
+		fw.close();
+		errorOutfw.close();
+		commonInfw.close();	
+	}
+	public String getMessage()
+	{
+		return super.getMessage();
 	}
 
 }

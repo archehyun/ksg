@@ -8,16 +8,27 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import com.dtp.api.annotation.ControlMethod;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ksg.commands.schedule.SortAllCommand;
+import com.ksg.commands.schedule.SortInlandCommnad;
+import com.ksg.commands.schedule.route.RouteTaskNewVessel;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.ScheduleType;
+import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
+import com.ksg.schedule.logic.ScheduleJoint;
+import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.ScheduleServiceImpl;
+import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +42,9 @@ public class ScheduleController extends AbstractController{
 	private ScheduleSubService service;
 
 	private VesselService vesselService;
+
+	private TableServiceImpl tableService = new TableServiceImpl();
+	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	public ScheduleController()
 	{
@@ -59,7 +73,7 @@ public class ScheduleController extends AbstractController{
 	public CommandMap selectScheduleMapList(CommandMap param) throws Exception
 	{
 		CommandMap result = new CommandMap();
-		
+
 		List li  = service.selecteScheduleListMapByCondition(param);
 		result.put("success", true);
 		result.put("master", li);
@@ -115,7 +129,7 @@ public class ScheduleController extends AbstractController{
 	public CommandMap selectOutboundScheduleGroupList(CommandMap param) throws SQLException {
 
 		List<ScheduleData>  li = service.selecteScheduleListByCondition(param);
-		
+
 		if(li.isEmpty()) return new CommandMap();
 
 
@@ -270,7 +284,9 @@ public class ScheduleController extends AbstractController{
 	public Map<String, Object> selectRouteScheduleGroupList(CommandMap param) throws SQLException {
 
 		List<ScheduleData>  li = service.selecteScheduleListByCondition(param);
-		
+		logger.info("schedule size:{}", li.size());
+		System.out.println("siize:"+li.size());
+
 		li.stream().forEach(schedule -> schedule.setArea_name(schedule.getArea_name().toUpperCase()));
 
 		Map<String, Map<String, List<ScheduleData>>> areaList =  li.stream().collect(
@@ -285,6 +301,76 @@ public class ScheduleController extends AbstractController{
 
 		return returnValue;
 
+	}
+	
+	@ControlMethod(serviceId = "deleteSchedule")
+	public CommandMap deleteSchedule(CommandMap param) throws Exception
+	{
+		CommandMap returnMap = new CommandMap();
+		
+		int result=service.deleteSchedule();
+		
+		int b=service.deleteInlnadSchedule();
+		
+		returnMap.put("deleteCount",(result+b));
+		
+		return returnMap;
+	}
+
+	@ControlMethod(serviceId = "scheduleViewUpdate")
+	public CommandMap updateView(CommandMap param) throws Exception
+	{	
+		
+		List tableDatelist = tableService.getTableDateList();
+
+		List scheduleDateLists = service.selectScheduleDateList();
+
+		CommandMap returnMap = new CommandMap();
+		
+		returnMap.put("tableDatelist", tableDatelist);
+
+		returnMap.put("scheduleDateLists", scheduleDateLists);
+
+		return returnMap;
+
+	}
+	@ControlMethod(serviceId = "schedulePrint")
+	public CommandMap schedulePrint(CommandMap param) throws Exception
+	{	
+		ScheduleManager scheduleManager = ScheduleManager.getInstance();
+		
+		ScheduleData op = (ScheduleData) param.get("op");
+		
+		String gubun = (String) param.get("gubun");
+		
+		// 콘솔 스케줄 생성
+		if(gubun.equals(ShippersTable.GUBUN_CONSOLE))
+		{	
+			ScheduleJoint console=scheduleManager.getConsoleSchedudle(op);
+
+			scheduleManager.addBulid(console);
+
+			scheduleManager.startBuild();
+
+		}
+
+		// 인랜드 스케줄
+		else if(gubun.equals(ShippersTable.GUBUN_INLAND))
+		{	
+
+			new SortInlandCommnad(op).execute();
+		}
+
+		else //normal: 아웃바운드, 인바운드, 항로별
+		{
+			new SortAllCommand(param).execute();
+		}
+		
+		
+		
+		CommandMap returnMap = new CommandMap();
+		
+		return returnMap;
 	}
 
 

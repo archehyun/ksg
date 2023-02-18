@@ -20,7 +20,6 @@ import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
-import com.ksg.service.ScheduleService;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.ScheduleServiceImpl;
@@ -135,6 +134,11 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 	}
 	
 	public abstract void initTag();
+
+	public void setDone(boolean b) {
+		this.done =b;
+		
+	}
 
 
 

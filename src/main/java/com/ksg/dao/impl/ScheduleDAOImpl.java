@@ -286,6 +286,11 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		
 		return sqlMap.queryForList("schedule.selectAll");
 	}
+	@Override
+	public Object insertScheduleBulkData(List<ScheduleData> scheduleList) throws SQLException {
+		// TODO Auto-generated method stub
+		return sqlMap.insert("schedule.insertScheduleBulk", scheduleList);
+	}
 
 	
 

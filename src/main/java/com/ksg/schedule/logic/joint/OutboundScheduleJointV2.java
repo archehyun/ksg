@@ -283,9 +283,7 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 
 					for(int i=0;i<fromPortArray.length;i++)
 					{
-						FromPortGroup fromPortGroup =toPortgroup.get(fromPortArray[i]);						
-
-						
+						FromPortGroup fromPortGroup =toPortgroup.get(fromPortArray[i]);	
 
 						String[] vesselArray = fromPortGroup.keySet().toArray(new String[fromPortGroup.keySet().size()]);
 
@@ -308,12 +306,17 @@ public class OutboundScheduleJointV2 extends DefaultScheduleJoint{
 						for(int y=0;y<vesselArrays.length;y++)
 						{
 							ArrayList<PrintItem> li = vesselArrays[y].getJointedVesselList();
+							
+							
 
-							Iterator<PrintItem> iterator = li.iterator();
-							while(iterator.hasNext())
-							{
-								printList.add(iterator.next());
-							}
+//							Iterator<PrintItem> iterator = li.iterator();
+//							
+//							while(iterator.hasNext())
+//							{
+//								printList.add(iterator.next());
+//							}
+							li.stream().forEach(o -> printList.add(o));
+							
 						}
 						
 						// 스케줄이 있을때 출발항 표시

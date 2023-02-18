@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
+import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
+
 public class GroupVesselTest {
 
 	//@Test
@@ -51,7 +53,7 @@ public class GroupVesselTest {
 	public void testgetNumericVoyage()
 	{
 		GroupVessel vessel = new GroupVessel();
-		System.out.println(RouteScheduleUtil.getNumericVoyage("v1-23v"));
+		System.out.println(ScheduleBuildUtil.getNumericVoyage("v1-23v"));
 	}
 	@Test
 	public void testStringnull()
