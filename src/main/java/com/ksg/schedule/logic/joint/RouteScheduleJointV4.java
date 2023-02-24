@@ -98,6 +98,7 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 		
 		logger.info("row schedule size:{}",scheduleList.size());		
 		
+		//  선박명 유효성 체크
 		List<ScheduleData> schedulelist = scheduleList.stream().filter(schedule ->vesselNameMap.containsKey(schedule.getVessel())).collect(Collectors.toList());
 		
 		logger.info("schedule size:{}",scheduleList.size());
@@ -118,7 +119,7 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 		long endTime = System.currentTimeMillis();
 
 		logger.info("항로별 스케줄 생성 종료({}s)",(endTime-startTime));
-		//logger.info("항로별 스케줄 수 :({})",totalCount);
+		
 
 		return ScheduleJoint.SUCCESS;
 	}
@@ -202,18 +203,17 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 				Map<Integer, List<ScheduleData>> voyageList =  scheduleList.stream().collect(
 						Collectors.groupingBy(o -> ScheduleBuildUtil. getNumericVoyage(o.getVoyage_num()) ));// 항차
 
-				Object[] voyageArray = voyageList.keySet().toArray();
+//				Object[] voyageArray = voyageList.keySet().toArray();
+				
+				List<Integer> keySet = new ArrayList<>(voyageList.keySet());
+				
+				// 항창번호로 정렬(오름차순)
+				Collections.sort(keySet);
 
 				//항차명 정렬
-				Arrays.sort(voyageArray);
+				// 스케줄 생성
+				keySet.stream().forEach(voyage -> joint.createScheduleAndAddGroup(scheduleGroupList, voyageList.get(voyage), (String)strArea, (String)vesselKey));
 				
-				for(Object voyagekey:voyageArray)
-				{
-					List<ScheduleData> subscheduleList = voyageList.get(voyagekey);
-					
-					joint.createScheduleAndAddGroup(scheduleGroupList, subscheduleList, (String)strArea, (String)vesselKey);
-					
-				}
 			}
 			
 			// 출발일, 선박명 기준으로 정렬

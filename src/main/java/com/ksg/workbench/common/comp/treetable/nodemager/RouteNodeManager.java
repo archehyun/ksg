@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,15 +22,12 @@ import com.dtp.api.schedule.joint.RouteJointSubject;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
-import com.ksg.schedule.logic.joint.route.PortAndDay;
 import com.ksg.schedule.logic.joint.route.RouteScheduleGroup;
-import com.ksg.schedule.logic.route.RouteScheduleUtil;
 import com.ksg.view.comp.treetable.TreeTableNode;
 import com.ksg.workbench.common.comp.treetable.node.AreaTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.NodeType;
 import com.ksg.workbench.common.comp.treetable.node.OutbondScheduleTreeNode;
 import com.ksg.workbench.common.comp.treetable.node.PortTreeNode;
-import com.ksg.workbench.common.comp.treetable.node.ScheduleDateComparator;
 
 import lombok.extern.slf4j.Slf4j;
 /**
@@ -132,7 +128,6 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 
 				}
 			}
-			
 
 			// 출발일 기준으로 정렬
 			Collections.sort(areaScheduleNodeList, sortType.equals("date")?dateComparator:vesselComparator);
@@ -146,7 +141,6 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 			areaScheduleNodeList.stream().filter(o -> isAddValidate?true:!o.getType().equals(NodeType.JOINT_SCHEDULE)).forEach(o ->area.add(o));
 			
 			root.add(area);
-			
 
 		}
 
@@ -195,67 +189,7 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 		return schedule;
 
 	}
-//	
-//	/**
-//	 * 
-//	 * @param strArea
-//	 * @param vesselKey
-//	 * @param voyagekey
-//	 * @param scheduleList
-//	 * @return
-//	 */
-//	private DefaultMutableTreeNode makeScheduleNode(String strArea, String vesselKey, Object voyagekey, List<ScheduleData> scheduleList) {
-//
-//
-//		Map<String, List<ScheduleData>> fromPorts 	= scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getFromPort));
-//
-//		Map<String, List<ScheduleData>> toPorts 	= scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getPort));
-//
-//		int toPortCount = toPorts.keySet().size();
-//
-//		int fromPortCount = fromPorts.keySet().size();
-//		
-//		List<String> companyList = scheduleList.stream()
-//				.map(ScheduleData::getCompany_abbr)
-//				.distinct()
-//				.sorted()
-//				.collect(Collectors.toList());
-//
-//		String strCompanys = StringUtils.join(companyList,",");
-//		
-//		String strVoyage = (!scheduleList.isEmpty())?scheduleList.get(0).getVoyage_num():"";
-//
-//		//TODO 스케줄 - Route 스케줄 밸리데이션
-//
-//		//log.info("area:{}, fromPortCount:{}, {}",strArea, fromPortCount, RouteScheduleUtil. checkOutPort(strArea, toPortCount));
-//		
-//		
-//		
-//
-//		// TODO 스케줄-항차 번호 표시
-//		OutbondScheduleTreeNode schedule = new OutbondScheduleTreeNode(String.format("%s - %s (%s)", vesselKey, strVoyage, strCompanys), (RouteScheduleUtil.checkOutPort(strArea, toPortCount)?NodeType.SCHEDULE:NodeType.JOINT_SCHEDULE)  );
-//
-//		DefaultMutableTreeNode toPort =  new PortTreeNode( StringUtils.join(joint.makeDayList(toPorts, ScheduleDateComparator.TO_DATE)," - "));				
-//
-//		scheduleList.stream().forEach(o -> toPort.add(new OutbondScheduleTreeNode(new TreeTableNode(objectMapper.convertValue(o, CommandMap.class)))));
-//
-//		List<PortAndDay> fromPortlist = joint.makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE);
-//		// 출발항 목록
-//		schedule.add(new PortTreeNode( StringUtils.join( fromPortlist," - ")));
-//
-//		// 출발항은 늦은 날짜
-//		schedule.date = fromPortlist.get(0).getDate();
-//
-//		schedule.vessel = vesselKey;
-//
-//		// 도착항 목록
-//		schedule.add(toPort);
-//
-//		// TODO 출발항 빠른 날짜 기준으로 정렬
-//
-//		return schedule;
-//
-//	}
+
 
 	@Override
 	public void createScheduleAndAddGroup(List group, List scheduleList, String areaName, String vesselName) {

@@ -1,6 +1,8 @@
 package com.ksg.schedule.logic.joint;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -16,6 +18,14 @@ import com.ksg.service.impl.VesselServiceImpl;
 
 public class RouteScheduleJoint4Test {
 	
+	@Ignore
+	@Test
+	public void testDate() throws Exception {
+		SimpleDateFormat dateFormat =new SimpleDateFormat("yyyyMMddHHmmss");
+		
+		System.out.println("date:"+dateFormat.format(new Date()));
+	}
+//	@Ignore
 	@Test
 	public void testPrintRoute() throws Exception {
 		

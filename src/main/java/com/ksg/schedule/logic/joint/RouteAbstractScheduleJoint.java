@@ -2,7 +2,10 @@ package com.ksg.schedule.logic.joint;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import com.dtp.api.schedule.comparator.DateComparator;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ShippersTable;
 
@@ -59,6 +62,8 @@ public abstract class RouteAbstractScheduleJoint extends DefaultScheduleJoint{
 	protected FileWriter fw,errorOutfw,commonInfw;
 	
 	KSGPropertis ksgPropertiey= KSGPropertis.getIntance();
+	
+	SimpleDateFormat dateFormat =new SimpleDateFormat("yyyyMMddHHmmss");
 
 	public RouteAbstractScheduleJoint(ShippersTable op) throws Exception {
 		this();
@@ -77,9 +82,8 @@ public abstract class RouteAbstractScheduleJoint extends DefaultScheduleJoint{
 		this.errorOutPortfileName = ksgPropertiey.getProperty("schedule.route.erroroutport");
 		
 		this.commonInPortfileName = ksgPropertiey.getProperty("schedule.route.commoninport");
-		
 
-		fw = new FileWriter(saveLoaction+"/"+fileName);
+		fw = new FileWriter(saveLoaction+"/"+String.format("%s_%s.txt", fileName, dateFormat.format(new Date())));
 
 		errorOutfw = new FileWriter(saveLoaction+"/"+errorOutPortfileName);
 
