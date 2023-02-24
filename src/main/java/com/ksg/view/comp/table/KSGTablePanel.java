@@ -16,8 +16,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.table.model.TableModel;
+import com.ksg.workbench.common.comp.label.BoldLabel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 

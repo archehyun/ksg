@@ -42,6 +42,11 @@ public class ADVData {
 	private String ts;
 	private Document document = null;
 	private SAXBuilder builder = new SAXBuilder();
+	public ADVData(){}
+	public ADVData(String data){
+		this.data = data;
+	}
+	
 	public String getTs() {
 		return ts;
 	}
@@ -142,71 +147,17 @@ public class ADVData {
 
 	}
 
-	public String[][] getDataArray() throws JDOMException, IOException,OutOfMemoryError
+	public String[][] getDataArray() 
 	{	
-			try{
-			return this.getXMLDataArray();
-			}catch(OutOfMemoryError e)
-			{
-				e.printStackTrace();
-				throw new OutOfMemoryError();
+			
+			try {
+				return this.getXMLDataArray();
+			} catch (OutOfMemoryError | JDOMException | IOException e) {
+				return new String[0][];
 			}
+			
 	}
 	
-	//2014. 9. 12 메모리 오류 때문에 수정
-	/*public String[][] getDataArray()
-	{
-		if(this.getData()==null)
-		{	
-			return null;
-		}
-		else
-		{
-			String words[] = data.split(ADVData.ROW_DIVIDER);
-			String[][] a = new String[words.length-1][];
-			for(int i=1;i<words.length;i++)
-			{
-				StringTokenizer st2= new StringTokenizer(words[i],ADVData.COL_DIVIDER);
-				a[i-1]=new String[st2.countTokens()-2];
-				st2.nextToken();
-				st2.nextToken();
-				for(int j=0;j<a[i-1].length;j++)
-				{
-					a[i-1][j]=st2.nextToken();
-				}
-			}
-
-			return a;
-		}
-		try {
-			return this.getXMLDataArray();
-		} catch (JDOMException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}*/
-	/*public String[][] getXMLVesselArray() throws JDOMException, IOException
-	{
-		SAXBuilder builder = new SAXBuilder();
-		Document document = builder.build(new ByteArrayInputStream(data.getBytes()));
-		Element root = document.getRootElement();
-		List vessel_list=root.getChildren("vessel");
-		String returndata[][] = new String[vessel_list.size()][];
-		for(int i=0;i<vessel_list.size();i++)
-		{
-			Element vessel_info = (Element) vessel_list.get(i);
-			String vessel_name = vessel_info.getAttributeValue("name");
-			String voyage  = vessel_info.getAttributeValue("voyage");
-			returndata[i] = new String[2];
-			returndata[i][0] =vessel_name;
-			returndata[i][1] =voyage;
-
-		}
-		return returndata;
-	}*/
 	public String[][] getXMLFullVesselArray(boolean ts) throws JDOMException, IOException
 	{	
 		document = builder.build(new ByteArrayInputStream(data.getBytes()));

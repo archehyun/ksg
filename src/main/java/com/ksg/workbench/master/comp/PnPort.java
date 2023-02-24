@@ -36,13 +36,13 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.service.PortService;
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
-import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.label.BoldLabel;
+import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.InsertPortAbbrInfoDialog;
@@ -625,9 +625,6 @@ public class PnPort extends PnBase implements ActionListener{
 	public void componentShown(ComponentEvent e) {
 		
 		try {
-			
-			
-			
 			
 			initComboBox(cbxPortArea, areaService.getAreaListGroupByAreaName());
 			

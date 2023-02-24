@@ -41,19 +41,21 @@ import com.ksg.service.impl.VesselServiceImpl;
  */
 public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements RouteJointSubject{
 	
-	RouteJoint joint;
+	private RouteJoint joint;
 	
 	private DateComparator dateComparator 			= new DateComparator(new SimpleDateFormat("yyyy/MM/dd"));
 
 	private VesselComparator vesselComparator 		= new VesselComparator();
 	
-	private VesselServiceV2 vesselService = new VesselServiceImpl();
+	private VesselServiceV2 vesselService 			= new VesselServiceImpl();
 	
 	private String date_isusse;
 	
 	private int orderBy;
 	
 	private List<Vessel>allVesselList;
+	
+	private List<ScheduleData> scheduleList;
 
 	public RouteScheduleJointV4(ShippersTable op, int orderBy) throws Exception {
 		super(op);
@@ -61,38 +63,44 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 	
 	public RouteScheduleJointV4(String date_isusse, int orderBy) throws Exception {
 		super();
+		
 		this.date_isusse = date_isusse;
+		
 		this.orderBy = orderBy;
+		
 		joint = new RouteJoint(this);
+		
+		CommandMap param = new CommandMap();
+		
+		param.put("date_issue", date_isusse);
+
+		param.put("inOutType", OUTBOUND);
+		
+		// 스케줄 목록 조회
+		scheduleList= scheduleService.selecteScheduleListByCondition(param);
 		
 	}
 
 	@Override
 	public int execute() throws Exception {
 		
+		
+		if(scheduleList== null || scheduleList.isEmpty()) return 0;
+		
 		long startTime = System.currentTimeMillis();
 		
-		CommandMap param = new CommandMap();
-		
-		message = "항로별 스케줄 출력..";
-
-		param.put("date_issue", date_isusse);
-
-		param.put("inOutType", OUTBOUND);
+		message = "항로별 스케줄 출력..";		
 		
 		// vessel map 생성
 		allVesselList= vesselService.selectAllList();
 		
-		Map<String, Vessel> vesselNameMap = allVesselList.stream().distinct().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));
-
-		// 스케줄 목록 조회
-		List<ScheduleData> rowlist= scheduleService.selecteScheduleListByCondition(param);
+		Map<String, Vessel> vesselNameMap = allVesselList.stream().distinct().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));		
 		
-		logger.info("row schedule size:{}",rowlist.size());		
+		logger.info("row schedule size:{}",scheduleList.size());		
 		
-		List<ScheduleData> schedulelist = rowlist.stream().filter(schedule ->vesselNameMap.containsKey(schedule.getVessel())).collect(Collectors.toList());
+		List<ScheduleData> schedulelist = scheduleList.stream().filter(schedule ->vesselNameMap.containsKey(schedule.getVessel())).collect(Collectors.toList());
 		
-		logger.info("schedule size:{}",rowlist.size());
+		logger.info("schedule size:{}",scheduleList.size());
 
 		schedulelist.forEach(item -> item.setArea_name(item.getArea_name().toUpperCase()));
 
@@ -172,6 +180,8 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 		// 지역 순회
 		for(Object strArea:areakeyList)
 		{	
+			firstIndex++;
+			
 			writeArea(firstIndex, (String) strArea);
 
 			Map<String, List<ScheduleData>> vesselList = areaList.get(strArea);

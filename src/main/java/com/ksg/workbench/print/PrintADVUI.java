@@ -70,11 +70,11 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.KSGCheckBox;
 import com.ksg.view.comp.KSGRadioButton;
 import com.ksg.view.comp.table.model.KSGTableModel;
-import com.ksg.view.comp.tree.KSGTree;
-import com.ksg.view.comp.tree.KSGTreeDefault;
-import com.ksg.view.comp.tree.KSGTreeImpl;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.tree.KSGTree;
+import com.ksg.workbench.common.comp.tree.KSGTreeDefault;
+import com.ksg.workbench.common.comp.tree.KSGTreeImpl;
 
 public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObserver{
 	/**

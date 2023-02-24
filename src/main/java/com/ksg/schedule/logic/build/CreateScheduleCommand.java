@@ -230,7 +230,7 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 	 */
 	protected String[] adjestDateYear(String dateF, String dateT, String inOutBoundType) throws NotSupportedDateTypeException{
 
-		//logger.debug("dateF:"+dateF+", dateT:"+dateT+", in/out:"+inOutBoundType);
+
 
 		dateT = dateT.replace(" ", "");
 

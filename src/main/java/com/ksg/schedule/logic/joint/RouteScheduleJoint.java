@@ -202,9 +202,8 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 			// 지역명 정렬
 			Arrays.sort(areakeyList);
 
-			printAreaList(areakeyList);			
+			printAreaList(areakeyList);
 			
-			fw.write(WORLD_VERSION1+"\r\n"+WORLD_VERSION2);
 
 			for(Object strArea: areakeyList)
 			{

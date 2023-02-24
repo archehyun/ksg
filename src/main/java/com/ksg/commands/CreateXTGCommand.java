@@ -214,15 +214,9 @@ public class CreateXTGCommand extends AbstractCommand{
 
 				//				logger.debug("result:"+result);
 				String dataArray[][]=null;
-				try {
+				
 					dataArray = data.getDataArray();
-				} catch (OutOfMemoryError e) {
-					e.printStackTrace();
-				} catch (JDOMException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				
 				
 				
 				String vesselList[][] = data.getAbbrVesselArray(false);
@@ -597,15 +591,9 @@ public class CreateXTGCommand extends AbstractCommand{
 				}
 				logger.debug("result:"+result);
 				String dataArray[][]=null;
-				try {
+				
 					dataArray = data.getDataArray();
-				} catch (OutOfMemoryError e2) {
-					e2.printStackTrace();
-				} catch (JDOMException e2) {
-					e2.printStackTrace();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
+				
 				String vesselList[][] = data.getFullVesselArray(false);
 				for(int j=0;j<dataArray.length;j++)
 				{

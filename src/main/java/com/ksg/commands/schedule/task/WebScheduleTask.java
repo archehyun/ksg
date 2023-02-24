@@ -704,18 +704,9 @@ public class WebScheduleTask extends SimpleTask{
 				scheduledata.setTS(info.getPort_name());
 
 				String date[][]=null;
-				try {
+				
 					date = adv.getDataArray();
-				} catch (OutOfMemoryError e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JDOMException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
 				//scheduledata.setTs_date(date[vslIndex][table.getDirection()-1]);
 			}
 			scheduledata.setAgent(table.getAgent());

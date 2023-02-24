@@ -33,7 +33,7 @@ import com.ksg.service.impl.TableServiceImpl;
 
 public class CreateXTGCommandInD extends AbstractCommand{
 
-	
+
 	protected ADVService	 		_advService;
 	protected TableService 		_tableService;
 	int pages;
@@ -87,19 +87,19 @@ public class CreateXTGCommandInD extends AbstractCommand{
 			shippersTable.setAgent(agent);
 			shippersTable.setDate_isusse(selectDate);
 			lis=_tableService.getTableList(shippersTable);
-			
+
 			if(agent==null)
 			{
 				logger.debug("agent null");
-				
-				
+
+
 				lis = _tableService.getTableListByPage(shippersTable);
 			}
 			else
 			{
 				lis = _tableService.getTableListByAgent(shippersTable);
 			}
-//			logger.debug(lis);
+			//			logger.debug(lis);
 
 			for(int i=0;i<lis.size();i++)
 			{
@@ -143,7 +143,7 @@ public class CreateXTGCommandInD extends AbstractCommand{
 					// 추후 수정 예정
 					//result+="<"+table.getQuark_format().substring(fistIndex,lastIndex+1);//table
 					try{
-					version=table.getQuark_format().substring(firstIndex,table.getQuark_format().length());//bold
+						version=table.getQuark_format().substring(firstIndex,table.getQuark_format().length());//bold
 					}catch(Exception e)
 					{
 						logger.error("출력 오류"+e.getMessage());
@@ -153,19 +153,13 @@ public class CreateXTGCommandInD extends AbstractCommand{
 
 				//				logger.debug("result:"+result);
 				String dataArray[][]=null;
-				try {
-					dataArray = data.getDataArray();
-				} catch (OutOfMemoryError e) {
-					e.printStackTrace();
-				} catch (JDOMException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				
+
+				dataArray = data.getDataArray();
+
+
+
 				String vesselList[][] = data.getAbbrVesselArray(false);
-				
+
 				for(int j=0;j<dataArray.length;j++)
 				{
 					// bold
@@ -215,20 +209,20 @@ public class CreateXTGCommandInD extends AbstractCommand{
 						{
 							String date = st.nextToken();
 							try {
-								
+
 								StringTokenizer st2 = new StringTokenizer(date,"/");
-								
+
 								int month  = Integer.parseInt(st2.nextToken());
 								int day  = Integer.parseInt(st2.nextToken());
-								
+
 								StringTokenizer st3 = new StringTokenizer(st.nextToken(),"/");
-								
+
 								if(st3.countTokens()==2)
 								{
 									int month3  = Integer.parseInt(st3.nextToken());
 									int day3  = Integer.parseInt(st3.nextToken());
 									result +=month+"/"+day+"-"+month3+"/"+day3;
-									
+
 								}else
 								{
 									int day3  = Integer.parseInt(st3.nextToken());
@@ -236,7 +230,7 @@ public class CreateXTGCommandInD extends AbstractCommand{
 								}
 								/*int month3  = Integer.parseInt(st3.nextToken());
 								int day3  = Integer.parseInt(st3.nextToken());
-								
+
 								result +=month+"/"+day+"-"+month3+"/"+day3;*/
 
 							} catch (Exception e1) {
@@ -244,12 +238,12 @@ public class CreateXTGCommandInD extends AbstractCommand{
 								logger.error(date);
 								e1.printStackTrace();
 							}
-							
+
 							/*try {
-								
-								
+
+
 								StringTokenizer st2 = new StringTokenizer(st.nextToken(),"/");
-								
+
 								int month  = Integer.parseInt(st2.nextToken());
 								int day  = Integer.parseInt(st2.nextToken());
 								result +=month+"/"+day;
@@ -265,36 +259,36 @@ public class CreateXTGCommandInD extends AbstractCommand{
 						{
 							try {
 								StringTokenizer st2 = new StringTokenizer(st.nextToken(),"/");
-								
+
 								int month  = Integer.parseInt(st2.nextToken());
 								int day  = Integer.parseInt(st2.nextToken());
-								
+
 								result +=month+"/"+day;
 
 							} catch (Exception e1) {
 								result +=dataArray[j][z];
 								e1.printStackTrace();
 							}
-							
+
 						}else
 						{
 							result +=dataArray[j][z];
 						}
-						
+
 						/*try
 						{
-							
-							
+
+
 							Date d =KSGDateUtil.toDateBySearch(dataArray[j][z]);
 //							result +=dateFormat.parse(dataArray[j][z]).toString();
-						
+
 							result+=(d.getMonth()+"/"+d.getDay());
-							
+
 						} catch (ParseException e)
 						{
 							result +=dataArray[j][z];
 
-							
+
 							e.printStackTrace();
 						}*/
 						if(z<dataArray[j].length-1)
@@ -389,15 +383,9 @@ public class CreateXTGCommandInD extends AbstractCommand{
 
 				logger.debug("result:"+result);
 				String dataArray[][]=null;
-				try {
-					dataArray = data.getDataArray();
-				} catch (OutOfMemoryError e2) {
-					e2.printStackTrace();
-				} catch (JDOMException e2) {
-					e2.printStackTrace();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
+
+				dataArray = data.getDataArray();
+
 				String vesselList[][] = data.getFullVesselArray(false);
 				for(int j=0;j<dataArray.length;j++)
 				{

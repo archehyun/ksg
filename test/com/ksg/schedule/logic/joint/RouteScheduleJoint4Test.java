@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ksg.domain.ShippersTable;
@@ -15,7 +16,21 @@ import com.ksg.service.impl.VesselServiceImpl;
 
 public class RouteScheduleJoint4Test {
 	
-
+	@Test
+	public void testPrintRoute() throws Exception {
+		
+		ShippersTable op = new ShippersTable();
+		
+		op.setDate_isusse("2023-02-13");
+		
+		RouteScheduleJointV4 jointV4 = new RouteScheduleJointV4("2023-02-27",RouteScheduleJoint.ORDER_BY_DATE);
+		
+		jointV4.initTag();
+		
+		jointV4 .execute();
+		
+	}
+	@Ignore
 	@Test
 	public void testCheckOutPort() throws Exception {
 		
@@ -23,14 +38,15 @@ public class RouteScheduleJoint4Test {
 		
 		op.setDate_isusse("2023-02-13");
 		
-		RouteScheduleJointV4 jointV4 = new RouteScheduleJointV4("2023-02-13",1);
+		RouteScheduleJointV4 jointV4 = new RouteScheduleJointV4("2023-02-27",RouteScheduleJoint.ORDER_BY_DATE);
 		
 		jointV4.initTag();
 		
 		jointV4 .execute();
 		
 	}
-//	@Test
+	@Ignore
+	@Test
 	public void test()
 	{
 		

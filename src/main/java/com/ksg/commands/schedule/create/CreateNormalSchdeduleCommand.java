@@ -342,15 +342,9 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 
 
 				String date[][]=null;
-				try {
+				
 					date = adv.getDataArray();
-				} catch (OutOfMemoryError e) {
-					e.printStackTrace();
-				} catch (JDOMException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				
 
 
 			}

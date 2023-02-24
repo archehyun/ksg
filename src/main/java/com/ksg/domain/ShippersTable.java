@@ -11,17 +11,25 @@
 package com.ksg.domain;
 
 import java.util.HashMap;
+import java.util.List;
 
-import com.ksg.common.util.KSGDateUtil;
+import com.dtp.api.model.Company;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 테이블에 대한 상세 정보 정의
  * @author archehyun
  *
  */
-@Data
+@NoArgsConstructor @AllArgsConstructor
+@Builder
+@Getter @Setter
 public class ShippersTable extends BaseInfo{
 	
 	
@@ -43,7 +51,7 @@ public class ShippersTable extends BaseInfo{
 
 	private String date_isusse;
 	private String gubun; 				// 구분	 
-	HashMap<Object, Object> hachData;
+	HashMap<Object, Object> hachData = new HashMap<Object, Object>();
 	private String in_port; 			// inbound 출발항 인덱스 문자
 	private String in_to_port; 			// inbound 도착항 인덱스 문자
 	private String inland_indexs;
@@ -63,21 +71,10 @@ public class ShippersTable extends BaseInfo{
 	private String ts_port;
 	private int tsIndex; 
 	private int vsl_row=-1;
+	private String data;
 	
+	private List tablePortList;
 	
-	
-	public ShippersTable() {
-		hachData = new HashMap<Object, Object>();
-	}
-	
-	
-//	public String getDate_isusse() {
-//		try {
-//			return KSGDateUtil.format(KSGDateUtil.toDate2(date_isusse));
-//		} catch (Exception e) {
-//			return date_isusse;
-//		}
-//	}
 	
 	
 	/**

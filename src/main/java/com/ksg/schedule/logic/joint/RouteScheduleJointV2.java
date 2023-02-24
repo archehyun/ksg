@@ -59,6 +59,7 @@ public class RouteScheduleJointV2 extends RouteAbstractScheduleJoint {
 	private XTGManager xtgmanager = new XTGManager();
 	
 	private static final String WORLD_SOURCE_XML = "world_source.xml";
+	
 	private ScheduleBuildMessageDialog di;
 
 	private int UP_SIZE,DOWN_SIZE;
