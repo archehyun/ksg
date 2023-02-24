@@ -1,6 +1,7 @@
 package com.ksg.workbench.shippertable.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -12,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -23,6 +24,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 
 import lombok.extern.slf4j.Slf4j;
@@ -47,16 +49,17 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 	private JTable _tblVesselList;
 
 	private DefaultTableModel model;
-
-	//	private BaseService baseService;
-
-	VesselService vesselService;
+	
+	private VesselService vesselService;
+	
 	public ManageVesselDialog(String selectedTableId, ShipperTableAbstractMgtUI base) {
 		this.base =base;
+		
 		this.table_id=selectedTableId;
+		
 		DAOManager manager = DAOManager.getInstance();
+		
 		tableService = manager.createTableService();
-		//		baseService = manager.createBaseService();
 
 		vesselService = new VesselServiceImpl();
 	}
@@ -69,17 +72,21 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 
 
 	public void createAndUpdateUI() {
+		
 		setTitle(this.table_id+"테이블 선박 관리");
+		
 		setModal(true);
 
-		getContentPane().add(buildCenter());
-		getContentPane().add(createLine(),BorderLayout.WEST);
-		getContentPane().add(createLine(),BorderLayout.EAST);
+		getContentPane().add(buildCenter());	
+		
 		getContentPane().add(buildControl(),BorderLayout.SOUTH);
 
 		setSize(520,550);
+		
 		this.setMinimumSize(new Dimension(400,400));
+		
 		ViewUtil.center(this, false);
+		
 		setVisible(true);
 
 	}
@@ -90,12 +97,12 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 	 * @return
 	 */
 	private Component buildControl() {
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
-		JPanel pnRight = new JPanel();
+		KSGPanel pnRight = new KSGPanel();
 		pnRight.setLayout( new FlowLayout(FlowLayout.RIGHT));
 
-		JPanel pnLeft = new JPanel();
+		KSGPanel pnLeft = new KSGPanel();
 
 
 		pnLeft.setLayout( new FlowLayout(FlowLayout.LEFT));
@@ -123,11 +130,21 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 	 * @return
 	 */
 	private Component buildCenter() {
-		JPanel pnMain = new JPanel();
+		
+		KSGPanel pnMain = new KSGPanel();
+		
 		_tblVesselList = new JTable();
+		
+		_tblVesselList.setRowHeight(25);
+		
 		_tblVesselList.setModel(model);
+		
 		_tblVesselList.updateUI();
+		
 		pnMain.add(new JScrollPane(_tblVesselList));
+		
+		_tblVesselList.getParent().setBackground(Color.white);
+		
 		return pnMain;
 	}
 
@@ -144,13 +161,8 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 			if(row==-1)
 				return;
 			String vesselAbbr = (String) _tblVesselList.getValueAt(row, 1);
+			
 			try {
-
-//				Vessel info = new Vessel();
-//				info.setVessel_abbr(vesselAbbr);
-
-
-				//List li=baseService.getVesselAbbrList(info);
 				
 				HashMap<String, Object> param = new HashMap<String, Object>();
 				
