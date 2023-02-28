@@ -91,8 +91,6 @@ public class PnCompany extends PnBase implements ActionListener{
 		this.setController(new CompanyController());
 		this.add(buildCenter());
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-
-
 	}
 
 
@@ -138,21 +136,21 @@ public class PnCompany extends PnBase implements ActionListener{
 		tableH.addMouseListener(new TableSelectListner());
 
 		tableH.setShowControl(true);
+		
 		tableH.addContorlListener(this);
 
 		pnMain.add(tableH);
 
 		tableH.setColumnName(columns);
+		
 		tableH.initComp();
-		//		tableH.setPageCountIndex(6);
-		//		tableH.addActionListener(new PageAction(tableH, companyService));
-
 
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 
 		log.debug("화면 초기화 종료");
+		
 		return pnMain;
 
 	}
@@ -282,9 +280,13 @@ public class PnCompany extends PnBase implements ActionListener{
 				HashMap<String, Object> port=(HashMap<String, Object>) tableH.getValueAt(row);
 
 				dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.UPDATE,port);
+				
+				
 
 				dialog .createAndUpdateUI();
-
+				
+				
+				
 				int result = dialog.result;
 
 				if(result==UpdateCompanyInfoDialog.SUCCESS)

@@ -12,6 +12,7 @@ package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
@@ -27,6 +28,7 @@ import javax.swing.JTextField;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.ViewUtil;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 
@@ -96,10 +98,15 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			CommandMap param = new CommandMap();
 
 			param.put("company_name", txfCompany_name.getText());
+			
 			param.put("company_abbr", txfCompany_abbr.getText());
+			
 			param.put("agent_name", txfAgent_name.getText());
+			
 			param.put("agent_abbr", txfAgent_abbr.getText());
+			
 			param.put("contents", txaContents.getText());
+			
 			param.put("base_company_abbr", txfCompany_abbr.getText());
 
 
@@ -172,10 +179,15 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
 
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		
+		this.setSize(400, 350);
 
-		this.pack();
-		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+//		this.pack
+		
+		ViewUtil.center(this);
+		
 		this.setResizable(false);
+		
 		this.setVisible(true);
 
 	}
@@ -189,18 +201,31 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 
 		txfCompany_name = new JTextField(20);
+		
 		txfCompany_abbr = new JTextField(20);
+		
 		txfAgent_name = new JTextField(20);
+		
 		txfAgent_abbr = new JTextField(20);
+		
 		txaContents = new JTextArea(8,32);
+		
 		txaContents.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-		Box pnCenter = new Box(BoxLayout.Y_AXIS);		
+//		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+		
+		KSGPanel pnCenter = new KSGPanel(new GridLayout(0,1,0,-3));
+		
 		pnCenter.add( createFormItem(txfCompany_name,"선사명"));
+		
 		pnCenter.add( createFormItem(txfCompany_abbr,"선사명 약어"));
+		
 		pnCenter.add(createFormItem(txfAgent_name,"에이전트"));
+		
 		pnCenter.add(createFormItem(txfAgent_abbr,"에이전트 약어"));
+		
 		pnCenter.add(createFormItem(txaContents,"비고"));
+		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
 

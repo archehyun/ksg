@@ -39,15 +39,25 @@ public class KSGPageTablePanel extends KSGTablePanel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private JLabel lblTotalPage;
+	
 	private JComboBox<String> cbxPageCount;
+	
 	private JButton butFirst;
+	
 	private JButton butFw;
+	
 	private JTextField txfPage;
+	
 	private JButton butBw;
+	
 	private JButton butEnd;
+	
 	private int pageSize;
+	
 	private int totalPage;
+	
 	public int getTotalPage() {
 		return totalPage;
 	}

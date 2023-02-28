@@ -127,11 +127,17 @@ public class PnVessel extends PnBase implements ActionListener {
 	private CodeServiceImpl codeService= new CodeServiceImpl();
 
 	private KSGAbstractTable tableD;
+	
 	private JLabel lblVesselName;
+	
 	private JLabel lblVesselMMSI;
+	
 	private JLabel lblVesselType;
+	
 	private JLabel lblVesselCompany;
+	
 	private JLabel lblVesselUse;
+	
 	private JLabel lblInputDate;
 
 	public PnVessel(BaseInfoUI baseInfoUI) {
@@ -204,9 +210,10 @@ public class PnVessel extends PnBase implements ActionListener {
 		tableH.addMouseListener(new TableSelectListner());
 
 		tableH.setShowControl(true);
+		
 		tableH.addContorlListener(this);
+		
 		tableH.addPageActionListener(new PageAction(tableH, vesselService));
-
 
 		tableH.getSelectionModel().addListSelectionListener(selectionListner);
 

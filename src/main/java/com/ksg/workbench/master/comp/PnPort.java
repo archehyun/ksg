@@ -149,14 +149,23 @@ public class PnPort extends PnBase implements ActionListener{
 
 		
 		pnSearch.add(lblArea);
+		
 		pnSearch.add(cbxPortArea);
+		
 		pnSearch.add(lblAreaCode);
+		
 		pnSearch.add(cbxAreaCode);
+		
 		pnSearch.add(lbl);
+		
 		pnSearch.add(cbxField);
+		
 		pnSearch.add(txfSearch);
+		
 		pnSearch.add(butUpSearch);
+		
 		Box pnSearchAndCount = Box.createVerticalBox();
+		
 		pnSearchAndCount.add(pnSearch);
 
 
@@ -175,9 +184,13 @@ public class PnPort extends PnBase implements ActionListener{
 		KSGPanel pnButtomRight = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		JButton butNewAbbr = new JButton("추가");
+		
 		butNewAbbr.setActionCommand("약어 등록");
+		
 		JButton butDelAbbr = new JButton("삭제");
+		
 		butDelAbbr.setActionCommand("약어 삭제");
+		
 		pnButtomRight.setBorder(BorderFactory.createEtchedBorder());		
 		
 		butNewAbbr.addActionListener(this);

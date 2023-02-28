@@ -61,26 +61,53 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		super();
 		
 	}
+	private Color labelColor = new Color(230,230,230);
 	
 	protected KSGPanel createFormItem(JComponent comp, String title) {
-		KSGPanel pnCompany_abbr = new KSGPanel();
-		pnCompany_abbr.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
+		KSGPanel pnLabel = new KSGPanel(new BorderLayout());
+		
+		
+		
+		pnLabel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		
 		JLabel lblCompany_abbr = new JLabel(title);
-		lblCompany_abbr.setPreferredSize(new Dimension(100,25));
-		pnCompany_abbr.add(lblCompany_abbr);	
-		pnCompany_abbr.add(comp);
-		return pnCompany_abbr;
+		
+		lblCompany_abbr.setVerticalAlignment(JLabel.CENTER);
+		
+		pnLabel.add(lblCompany_abbr);
+		
+		pnLabel.setBackground(labelColor);
+		
+		lblCompany_abbr.setPreferredSize(new Dimension(120,15));
+		
+		KSGPanel pnComp = new KSGPanel(new BorderLayout());
+		
+		pnComp.add(comp);
+		
+		pnComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		
+		pnMain.add(pnLabel,BorderLayout.WEST);	
+		
+		pnMain.add(pnComp);
+		
+		pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		
+		return pnMain;
 	}
 	
 	protected KSGPanel createFormItem(JComponent comp1, JComponent comp2, String title) {
-		KSGPanel pnCompany_abbr = new KSGPanel();
-		pnCompany_abbr.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblCompany_abbr = new JLabel(title);
-		lblCompany_abbr.setPreferredSize(new Dimension(100,25));
-		pnCompany_abbr.add(lblCompany_abbr);	
-		pnCompany_abbr.add(comp1);
-		pnCompany_abbr.add(comp2);
-		return pnCompany_abbr;
+		
+		KSGPanel pnComp = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		pnComp.add(comp1);
+		
+		pnComp.add(comp2);
+		
+		
+		return createFormItem(pnComp, title);
 	}
 
 	protected BaseInfoUI baseInfoUI;
@@ -89,7 +116,6 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	{	
 		KSGPanel pnControl =  new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-
 		butOK = new JButton("저장");
 
 		butCancel = new JButton("취소");

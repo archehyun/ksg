@@ -11,8 +11,8 @@
 package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -28,7 +28,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -120,11 +119,6 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 		txfPort_nationailty = new JTextField(20);
 		txfPort_area = new JTextField(20);
 		txfArea_code = new JTextField(5);
-
-
-
-		Box pnCenter = new Box(BoxLayout.Y_AXIS);
-
 		txfArea_code.setEditable(false);
 		txfPort_area.setEditable(false);
 
@@ -143,16 +137,22 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 			}});
 
 	
-
+		KSGPanel pnCenter = new KSGPanel(new GridLayout(0,1,0,-3));
+		
 		pnCenter.add(createFormItem(txfPort_name, "항구명"));
+		
 		pnCenter.add(createFormItem(txfPort_nationailty, "나라"));
-		pnCenter.add(createFormItem(txfPort_area, "지역"));
-		pnCenter.add(createFormItem(txfArea_code, butSearchCode, "지역코드"));	
-
+		
+		pnCenter.add(createFormItem(txfArea_code, butSearchCode, "지역코드"));
+		
+		pnCenter.add(createFormItem(txfPort_area, "지역명"));	
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		
 		pnMain.add(pnCenter);
+		
 		return pnMain;
 	}
 
@@ -321,11 +321,13 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 	{
 
 		private JButton butOk;
+		
 		private JButton butCancel;
 		
 		public SearchAreaDialog(JDialog dialog)		
 		{
 			super(dialog);
+			this.setTitle("지역 선택");
 		}
 
 		private KSGPanel buildCenter()
@@ -336,14 +338,14 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 			JTable tblAreaList = new JTable();
 
 			DefaultMutableTreeNode root = new DefaultMutableTreeNode("전체지역");
-			Iterator<String> iter =areaMap.keySet().iterator();
-			while(iter.hasNext())
-			{
-				String area_name = (String) iter.next();
-				DefaultMutableTreeNode areaGroup = new DefaultMutableTreeNode(area_name);
-				root.add(areaGroup);
-
+			
+			for(String areaName: areaMap.keySet())
+			{	
+				root.add(new DefaultMutableTreeNode(areaName));
 			}
+			
+			
+			
 			final JTree tree = new JTree(root);
 			tree.addMouseListener(new MouseAdapter() {
 
@@ -401,8 +403,11 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 		{
 
 			KSGPanel pnControl = new KSGPanel();
+			
 			pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			
 			butOk = new JButton("확인");
+			
 			butOk.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
@@ -431,10 +436,15 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 
 		@Override
 		public void createAndUpdateUI() {
+			
 			getContentPane().add(buildControl(),BorderLayout.SOUTH);
+			
 			getContentPane().add(buildCenter(),BorderLayout.CENTER);
+			
 			setSize(400,400);
+			
 			setLocation(UpdatePortInfoDialog.this.getX()+UpdatePortInfoDialog.this.getWidth(), UpdatePortInfoDialog.this.getY());
+			
 			setVisible(true);
 		}
 
