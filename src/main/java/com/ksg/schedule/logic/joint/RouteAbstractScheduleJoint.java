@@ -84,7 +84,9 @@ public abstract class RouteAbstractScheduleJoint extends DefaultScheduleJoint{
 		
 		this.commonInPortfileName = ksgPropertiey.getProperty("schedule.route.commoninport");
 
-		fw = new FileWriter(saveLoaction+"/"+String.format("%s_%s.txt", fileName, dateFormat.format(new Date())));
+//		fw = new FileWriter(saveLoaction+"/"+String.format("%s_%s.txt", fileName, dateFormat.format(new Date())));
+		
+		fw = new FileWriter(saveLoaction+"/"+String.format("%s.txt", fileName ));
 
 		errorOutfw = new FileWriter(saveLoaction+"/"+errorOutPortfileName);
 

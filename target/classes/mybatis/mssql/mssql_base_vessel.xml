@@ -69,7 +69,7 @@
 <!-- select -->
 
 	<select id="selectAll" resultClass="com.ksg.domain.Vessel">
-		select * FROM TB_VESSEL
+		select * FROM TB_VESSEL_H
 		
 	</select>
 

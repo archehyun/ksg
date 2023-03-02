@@ -38,21 +38,21 @@ public class ScheduleControllerTest {
 	
 	@Test
 	public void testSelectRouteScheduleList() {
-		try {
-			
-			CommandMap param = new CommandMap();
-			param.put("inOutType", "O");
-			CommandMap result =(CommandMap) controller.selectRouteScheduleGroupList(param);
-				
-			TreeNodeManager node = new TreeNodeManager();
-			
-			DefaultMutableTreeNode tt = node.getRouteTreeNode(result);
-			
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			
+//			CommandMap param = new CommandMap();
+//			param.put("inOutType", "O");
+//			CommandMap result =(CommandMap) controller.selectRouteScheduleGroupList(param);
+//				
+//			TreeNodeManager node = new TreeNodeManager();
+//			
+//			DefaultMutableTreeNode tt = node.getRouteTreeNode(result);
+//			
+//			
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 //	@Test

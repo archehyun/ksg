@@ -1,9 +1,12 @@
 package com.ksg.workbench.schedule.comp;
 
+import com.dtp.api.control.AbstractController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.workbench.common.comp.KSGView;
+import com.ksg.workbench.common.comp.View;
 
 /**
 
@@ -21,12 +24,16 @@ import com.ksg.workbench.common.comp.KSGView;
 
   */
 @SuppressWarnings("serial")
-public abstract class PnSchedule extends KSGView{
+public abstract class PnSchedule extends KSGView implements View{
 	
+	
+	private CommandMap model;
 	
 	protected String input_date="";
 	
 	protected String gubun;
+	
+	private AbstractController controller;
 	
 	public void setGubun(String gubun)
 	{
@@ -45,6 +52,35 @@ public abstract class PnSchedule extends KSGView{
 	{
 		super();
 		scheduleService = new ScheduleServiceImpl();
+	}
+	
+	@Override
+	public void setModel(CommandMap model) {
+		this. model = model;
+
+	}
+	public CommandMap getModel() {
+
+		return model;
+	}
+
+	public void callApi(String serviceId, CommandMap param)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, param, this);
+	}
+	
+	public void callApi(String serviceId)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, new CommandMap(),this);
+	}
+	
+	public void updateView() {};
+	
+	public void setController(AbstractController constroller)
+	{
+		this.controller =constroller;
 	}
 	
 	

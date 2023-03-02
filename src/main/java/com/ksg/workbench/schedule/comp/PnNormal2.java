@@ -69,7 +69,6 @@ public class PnNormal2 extends PnSchedule{
 	private ScheduleController control = new ScheduleController(); 
 
 	private JTextField txfNoramlSearch;
-	
 
 	private JTextField txfToPort;
 

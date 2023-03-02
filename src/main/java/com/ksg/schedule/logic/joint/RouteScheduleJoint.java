@@ -372,9 +372,6 @@ public class RouteScheduleJoint extends RouteAbstractScheduleJoint{
 				// 정상 스케줄
 				
 				list.add(toStringSchedule(vesselGroup,newOutPortArray));
-
-				
-
 				
 			}
 			else

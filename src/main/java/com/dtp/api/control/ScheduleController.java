@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,17 +23,22 @@ import com.ksg.commands.schedule.SortAllCommand;
 import com.ksg.commands.schedule.SortInlandCommnad;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
+import com.ksg.service.AreaService;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.VesselServiceV2;
+import com.ksg.service.impl.AreaServiceImpl;
+import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
+import com.ksg.workbench.common.comp.treetable.nodemager.TreeNodeManager;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,6 +46,10 @@ import lombok.extern.slf4j.Slf4j;
 @Component("schedule")
 public class ScheduleController extends AbstractController{
 
+	private AreaService areaService = new AreaServiceImpl();
+	
+	protected CodeServiceImpl codeService = 		 new CodeServiceImpl();;
+	
 	private ObjectMapper objectMapper;
 
 	private ScheduleSubService service;
@@ -47,6 +57,8 @@ public class ScheduleController extends AbstractController{
 	private VesselServiceV2 vesselService;
 
 	private ShipperTableService tableService = new ShipperTableServiceImpl();
+	
+	private TreeNodeManager nodeManager = new TreeNodeManager();
 	
 	protected Logger logger = LogManager.getLogger(this.getClass());
 
@@ -242,9 +254,6 @@ public class ScheduleController extends AbstractController{
 
 					fromPorts.put(fromPort, vessels);
 				}
-
-
-
 			}
 			else
 			{
@@ -287,9 +296,9 @@ public class ScheduleController extends AbstractController{
 	 * @throws SQLException
 	 */
 
-	public Map<String, Object> selectRouteScheduleGroupList(CommandMap param) throws SQLException {
+	public Map<String, Object> selectRouteScheduleGroupList(List<ScheduleData> li) throws SQLException {
 
-		List<ScheduleData>  li = service.selecteScheduleListByCondition(param);
+		
 		
 		logger.info("schedule size:{}", li.size());
 		
@@ -302,6 +311,8 @@ public class ScheduleController extends AbstractController{
 		Map<String, Vessel> vesselNameMap = (Map<String, Vessel>) allVesselList.stream().distinct().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));
 		
 		List<ScheduleData> schedulelist = li.stream().filter(schedule ->vesselNameMap.containsKey(schedule.getVessel())).collect(Collectors.toList());
+		
+		System.out.println("vessel filtered size:"+schedulelist.size());
 
 		Map<String, Map<String, List<ScheduleData>>> areaList =  schedulelist.stream().collect(
 				Collectors.groupingBy(ScheduleData::getArea_name, // 지역
@@ -309,7 +320,7 @@ public class ScheduleController extends AbstractController{
 				);// 선박
 		
 		
-
+		
 		CommandMap returnValue = new CommandMap();
 		for(String area : areaList.keySet() ) {
 			returnValue.put(area, areaList.get(area));
@@ -401,6 +412,88 @@ public class ScheduleController extends AbstractController{
 		
 		
 		CommandMap returnMap = new CommandMap();
+		
+		return returnMap;
+	}
+	
+	@ControlMethod(serviceId = "pnNormalByTree.init")
+	public CommandMap initView(CommandMap param) throws Exception
+	{	
+		List<AreaInfo> trgetList=areaService.selectAll();
+		
+		List<String>areaList= trgetList.stream()
+										.map(AreaInfo::getArea_name)
+										.sorted()
+										.collect(Collectors.toList());
+		
+		HashMap<String, Object> inboundCodeMap = (HashMap<String, Object>) codeService.selectInboundPortMap();
+		
+		
+		CommandMap returnMap = new CommandMap();
+		
+		returnMap.put("areaList", areaList);
+		returnMap.put("inboundCodeMap", inboundCodeMap);
+		
+		return returnMap;
+	}
+	
+	@ControlMethod(serviceId = "pnNormalByTree.fnSearch")
+	public CommandMap fnSearch(CommandMap param) throws Exception
+	{
+		
+		
+		CommandMap returnMap = new CommandMap();
+		
+		String inOutType = (String)param.get("inOutType");
+		
+		returnMap.put("inOutType", inOutType);
+		returnMap.put("depth", param.get("depth"));
+		
+		if(inOutType.equals(ScheduleEnum.INBOUND.getSymbol()))			
+		{
+			CommandMap result = (CommandMap) selectInboundScheduleGroupList(param);
+			
+			returnMap.put("treeNode", nodeManager.getInboundTreeNode(result));
+		}
+		else
+		{
+			if(inOutType.equals(ScheduleEnum.OUTBOUND.getSymbol()))
+			{
+				CommandMap result = (CommandMap) selectOutboundScheduleGroupList(param);
+				returnMap.put("treeNode", nodeManager.getOutboundTreeNode(result));
+				
+			}
+			else
+			{
+				param.put("inOutType",ScheduleEnum.OUTBOUND.getSymbol());
+				
+				param.put("gubun", null);
+				
+				List<ScheduleData>  li = service.selecteScheduleListByCondition(param);
+				
+				
+				
+				CommandMap result = (CommandMap) selectRouteScheduleGroupList(li);
+
+				CommandMap routeparam = new CommandMap();
+
+				routeparam.put("data", result);
+				
+				routeparam.put("sortType", param.get("sortType"));
+				
+				routeparam.put("isAddValidate", param.get("isAddValidate"));
+				
+				
+				
+				returnMap.put("count", li.size());
+				
+				returnMap.put("treeNode", nodeManager.getRouteTreeNode(routeparam));
+				
+				returnMap.put("inOutType","O");
+			}
+		}
+		
+		
 		
 		return returnMap;
 	}

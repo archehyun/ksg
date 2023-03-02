@@ -10,9 +10,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
-import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +18,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -33,14 +31,15 @@ import org.springframework.stereotype.Component;
 import com.dtp.api.control.ScheduleController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
-import com.ksg.domain.AreaInfo;
 import com.ksg.domain.ScheduleEnum;
 import com.ksg.service.AreaService;
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.workbench.common.comp.View;
 import com.ksg.workbench.common.comp.button.ImageButton;
+import com.ksg.workbench.common.comp.label.BoldLabel;
 import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.treetable.KSGTreeTable;
@@ -65,7 +64,7 @@ import com.ksg.workbench.schedule.dialog.SearchPortDialog;
  */
 
 @Component("schedule")
-public class PnNormalByTree extends PnSchedule {
+public class PnNormalByTree extends PnSchedule implements View {
 
 	/**
 	 * 
@@ -109,6 +108,10 @@ public class PnNormalByTree extends PnSchedule {
 	private JRadioButton rbtRouteDateSorted;
 
 	private JRadioButton rbtRouteVesselSorted;
+	
+	private JLabel lblCount = new JLabel("0");
+
+	private JLabel lblTotalCount;
 
 	public PnNormalByTree() {
 
@@ -119,13 +122,25 @@ public class PnNormalByTree extends PnSchedule {
 		objectMapper = new ObjectMapper();
 
 		this.setLayout(new BorderLayout());
+		
+		this.setController(new ScheduleController());
 
 		this.addComponentListener(this);
 
 		add(buildSearch(),BorderLayout.NORTH);
 
 		add(buildCenter());
+		
+		
 
+	}
+
+	private java.awt.Component buildSouth() {
+		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		pnMain.add(new JLabel("총"));
+		pnMain.add(lblCount);
+		return pnMain;
 	}
 
 	public KSGPanel buildCenter()
@@ -133,7 +148,7 @@ public class PnNormalByTree extends PnSchedule {
 
 		treeTableModel = new ScheduleTreeTableModel();
 
-		treeTableModel.addColumn(new KSGTableColumn("", "",600));
+		treeTableModel.addColumn(new KSGTableColumn("", "",2000));
 
 		treeTableModel.addColumn(new KSGTableColumn("table_id", "테이블 ID",100));
 
@@ -166,11 +181,41 @@ public class PnNormalByTree extends PnSchedule {
 		table.getParent().setBackground(Color.white);
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
+		
 		pnMain.add(treeTableScrollPane);
+		
+		pnMain.add(createTitle(),BorderLayout.NORTH);
+		
 		return pnMain;
 	}
+	public JComponent createTitle() {
 
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+
+		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+
+		
+
+		String title = "스케줄 목록";
+	
+
+		lblTotalCount = new JLabel("0");
+		lblTotalCount.setForeground(Color.red);
+
+
+
+		pnTitle.add(new BoldLabel(title + " 총"));
+		pnTitle.add(lblTotalCount);
+		pnTitle.add(new JLabel("건"));
+
+
+		pnMain.add(pnTitle,BorderLayout.LINE_START);
+		
+
+		return pnMain;
+	}
 
 
 
@@ -242,10 +287,15 @@ public class PnNormalByTree extends PnSchedule {
 		KSGPanel pnPortSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		pnPortSearch.add(lblFromPort);
+		
 		pnPortSearch.add(txfFromPort);
+		
 		pnPortSearch.add(butSearchFromPort);
+		
 		pnPortSearch.add(lblToPort);
+		
 		pnPortSearch.add(txfToPort);
+		
 		pnPortSearch.add(butSearchToPort);
 
 		txfNoramlSearch = new JTextField(15);
@@ -367,7 +417,6 @@ public class PnNormalByTree extends PnSchedule {
 				KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
 				if(!"".equals(searchOption))
 				{
-
 					param.put(item.columnField, searchOption);
 				}
 			}
@@ -380,62 +429,38 @@ public class PnNormalByTree extends PnSchedule {
 				param.put("port", txfToPort.getText());
 			}
 
-			if(input_date!=null||!input_date.equals(""))
+			if(input_date!=null&&!input_date.equals(""))
 			{
 				param.put("date_issue", input_date);
 			}
+			else
+			{
+				JOptionPane.showMessageDialog(PnNormalByTree.this, "스케줄 생성 일자를 선택하십시요");
+				return;
+			}
 			
+			param.put("sortType", rbtRouteDateSorted.isSelected()?"date":"vessel");
 			
-			
+			param.put("isAddValidate", cbxIsAddValidate.isSelected());
 
 			logger.info("param:"+param);
-
-
+			
 			// inbound 호출시
-			if(col.columnField.equals(ScheduleEnum.INBOUND.getSymbol()))
+			if(col.columnField.equals(ScheduleEnum.OUTBOUND.getSymbol()))
 			{	
-				table.setShowPathCount(4);
-
-				CommandMap result = (CommandMap) control.selectInboundScheduleGroupList(param);
-
-				treeTableModel.setRoot(nodeManager.getInboundTreeNode(result));
+				param.put("depth", 5);
 			}
 			// outbound 호출시
 			else
 			{
-				table.setShowPathCount(5);
-				
-				if(col.columnField.equals(ScheduleEnum.OUTBOUND.getSymbol()))
-				{
-					//OUTBOUND
-					CommandMap result = (CommandMap) control.selectOutboundScheduleGroupList(param);
-					treeTableModel.setRoot(nodeManager.getOutboundTreeNode(result));
-				}
-				else
-				{
-					// ROUTE
-					param.put("inOutType", ScheduleEnum.OUTBOUND.getSymbol());
-					
-//					param.remove("gubun");
-
-					CommandMap result = (CommandMap) control.selectRouteScheduleGroupList(param);
-
-					CommandMap routeparam = new CommandMap();
-
-					routeparam.put("data", result);
-					
-					routeparam.put("sortType", rbtRouteDateSorted.isSelected()?"date":"vessel");
-					
-					routeparam.put("isAddValidate", cbxIsAddValidate.isSelected());
-
-					treeTableModel.setRoot(nodeManager.getRouteTreeNode(routeparam));
-				}
+				param.put("depth", 4);
 			}
+			
+			
 
-			table.setTreeExpandedState(true);
-
-			table.updateUI();
-
+			callApi("pnNormalByTree.fnSearch", param);
+			
+			
 
 		}
 		catch (Exception e) {
@@ -476,34 +501,76 @@ public class PnNormalByTree extends PnSchedule {
 	@Override
 	public void componentShown(ComponentEvent e) {
 
-
-		cbxNormalInOut.initComp();
-
-		HashMap<String, Object> param = new HashMap<String, Object>();
-
-		param.put("code_type", "inPort");
-
-		cbxNormalInOut.addItem(new KSGTableColumn("R", "ROUTE"));
-
-		try {
-			
-			cbxArea.removeAllItems();
-			
-			cbxArea.addItem(new KSGTableColumn("", "전체"));
-			
-			List<AreaInfo> areaList=areaService.selectAll();
-			
-			areaList.stream()	.sorted(Comparator.comparing(AreaInfo::getArea_name))
-								.forEach(o->cbxArea.addItem(new KSGTableColumn(o.getArea_name(), o.getArea_name())));
-			
-
-			inboundCodeMap = (HashMap<String, Object>) codeService.selectInboundPortMap();
-
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		callApi("pnNormalByTree.init");
 
 	}
+	
+	@Override
+	public void updateView() {
+		
+		CommandMap result= this.getModel();
+
+		boolean success = (boolean) result.get("success");
+		
+		if(success)
+		{
+			String serviceId = (String) result.get("serviceId");
+			
+			if("pnNormalByTree.init".equals(serviceId)) {
+				
+				cbxNormalInOut.initComp();	
+
+				cbxNormalInOut.addItem(new KSGTableColumn("R", "ROUTE"));
+				
+				cbxArea.removeAllItems();
+				
+				cbxArea.addItem(new KSGTableColumn("", "전체"));
+				
+				List<String> areaList=(List<String>) result.get("areaList");
+				
+				
+				areaList.stream()
+						.forEach(areaName->cbxArea.addItem(new KSGTableColumn(areaName, areaName)));
+				
+				inboundCodeMap = (HashMap<String, Object>) result.get("inboundCodeMap");
+			}
+			else if("pnNormalByTree.fnSearch".equals(serviceId)) {
+				
+				Object treeNode = result.get("treeNode");
+				
+				int depth = (int) result.get("depth");
+				
+				int count = result.containsKey("count")?(int) result.get("count"):0;
+				
+				lblTotalCount.setText(String.valueOf(count));
+				
+				table.setShowPathCount(depth);
+				
+				treeTableModel.setRoot(treeNode);
+
+				table.setTreeExpandedState(true);
+
+				table.updateUI();
+			
+				
+				
+			}
+			
+			else if("deleteSchedule".equals(serviceId)) {
+				
+				int deleteCount = (int) result.get("deleteCount");
+				
+				JOptionPane.showMessageDialog(this, deleteCount+"건을 삭제 했습니다.");
+				
+				callApi("scheduleViewUpdate");
+			}
+		}
+		else{  
+			String error = (String) result.get("error");
+			JOptionPane.showMessageDialog(this, error);
+		}
+	}
+
+	
 
 }

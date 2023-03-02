@@ -205,13 +205,21 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		KSGPanel pnLeftMenu = new KSGPanel(new BorderLayout(5,5));	
 
 		butPrint = new JButton("파일 출력 (P)");
+		
 		butPrint.setActionCommand("파일 출력");
+		
 		butPrint.setMnemonic(KeyEvent.VK_P);
+		
 		butBuild = new JButton("스케줄 생성(N)");
+		
 		butBuild.setMnemonic(KeyEvent.VK_N);
-		butBuild.setActionCommand(ACTION_CREATE);
+		
+		butBuild.setActionCommand(ACTION_CREATE);		
+		
 		butDelete = new JButton("스케줄 삭제(D)");
+		
 		butDelete.setMnemonic(KeyEvent.VK_D);
+		
 		butDelete.setActionCommand(ACTION_DELETE);
 
 		butPrint.addActionListener(new SchedulePrintAction());
@@ -235,6 +243,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		cbxTableDateList = new JComboBox();
 
 		JButton butUpdate = new JButton("갱신");
+		
 		butUpdate.addActionListener(this);
 
 		KSGPanel pnDateMain = new KSGPanel(new BorderLayout());
@@ -316,8 +325,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 				{
 					pnOption.setVisible(false);
 				}
-
-				// pnNomalByTree
+				
 				if(tabPane.getSelectedIndex()==3)
 				{
 					pnNomalByTree.fnSearch();
@@ -325,13 +333,21 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			}
 		});
 		pnTblScheduleDateList.add(new JLabel("스케줄 생성 일자"),BorderLayout.NORTH);
+		
 		pnTblScheduleDateList.add(new JScrollPane(tblScheduleDateList));
+		
 		tblScheduleDateList.getParent().setBackground(Color.white);
+		
 		pnConsoleOption = new KSGPanel(new FlowLayout(FlowLayout.LEADING));
+		
 		pnConsoleOption.setBorder(BorderFactory.createTitledBorder("출력 항목"));
+		
 		optPage = new KSGRadioButton("Page",true);
+		
 		optCFS = new KSGRadioButton("CFS");
+		
 		ButtonGroup bg = new ButtonGroup();
+		
 		bg.add(optPage);
 		bg.add(optCFS);		
 

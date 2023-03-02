@@ -78,7 +78,7 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 
 		param.put("inOutType", OUTBOUND);
 		
-		param.put("gubun", "Normal");
+//		param.put("gubun", "Normal");
 		
 		// 스케줄 목록 조회
 		scheduleList= scheduleService.selecteScheduleListByCondition(param);
