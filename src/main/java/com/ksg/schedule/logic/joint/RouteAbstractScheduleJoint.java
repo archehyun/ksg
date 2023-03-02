@@ -75,6 +75,7 @@ public abstract class RouteAbstractScheduleJoint extends DefaultScheduleJoint{
 	
 	public RouteAbstractScheduleJoint() throws Exception {
 		super();
+		
 		this.saveLoaction = ksgPropertiey.getProperty(KSGPropertis.SAVE_LOCATION);
 		
 		this.fileName  = ksgPropertiey.getProperty("schedule.route.filename");

@@ -15,6 +15,15 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 	{
 		shipperTableDAO = new ShipperTableDAO();
 	}
+	
+	@Override
+	public List selectTableAll() throws SQLException {
+		
+		List<ShippersTable> li = shipperTableDAO.selectShipperTableListAll();
+		
+		return li;
+	}
+	
 
 	@Override
 	public List selectTableListByCondition(ShippersTable param) throws SQLException {

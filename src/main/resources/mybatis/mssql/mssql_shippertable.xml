@@ -80,6 +80,10 @@
 	</sql>
 	
 	
+	<select id="selectShipperTableListAll" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
+		<include refid="TableList"/>
+	</select>
+	
 	<select id="selectShipperTableListByCondition" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
 		SELECT    
 			A.table_id,	

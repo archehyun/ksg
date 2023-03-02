@@ -416,7 +416,7 @@ public class PnNormalByTree extends PnSchedule {
 					// ROUTE
 					param.put("inOutType", ScheduleEnum.OUTBOUND.getSymbol());
 					
-					param.remove("gubun");
+//					param.remove("gubun");
 
 					CommandMap result = (CommandMap) control.selectRouteScheduleGroupList(param);
 

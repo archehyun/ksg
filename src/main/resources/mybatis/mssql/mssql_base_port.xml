@@ -52,6 +52,17 @@
 		<include refid="LIKE_WHERE"></include>
 	</select>
 	
+	<select id="selectPortListByCondition" resultClass="com.ksg.domain.PortInfo">
+		SELECT
+			*, 
+			(	SELECT COUNT(*) 
+				FROM TB_PORT_ABBR ABBR 
+				WHERE ABBR.port_name=TBL.port_name
+			) ABBR_COUNT 
+		FROM TB_PORT TBL
+		<include refid="LIKE_WHERE"></include>
+	</select>
+	
 	<select id="selectPortListByPage"  resultClass="java.util.HashMap" parameterClass="java.util.HashMap">		
 		
 		SELECT * FROM ( 
@@ -70,10 +81,30 @@
 	</select>
 	
 	<select id="selectPort" resultClass="com.ksg.domain.PortInfo" parameterClass="com.ksg.domain.PortInfo">
-		select * from TB_PORT
-		where port_name = #port_name#
+		SELECT
+			*
+		FROM TB_PORT
+		WHERE port_name = #port_name#
 	
 	</select>
+	
+	
+	<select id="selectPortAbbrListByPortName" resultClass="com.ksg.domain.PortInfo">
+		SELECT
+		 		* 
+		FROM 	TB_PORT_ABBR
+		WHERE 	port_name = #port_name#
+	</select>
+	
+	<select id="selectPortDetailListByPortName" resultClass="com.ksg.domain.PortInfo">
+		SELECT
+		 		* 
+		FROM 	TB_PORT_ABBR
+		WHERE 	port_name = #port_name#
+	</select>
+	
+	
+	
 	
 	<select id="selectPortDetail" resultClass="com.ksg.domain.PortInfo" parameterClass="com.ksg.domain.PortInfo">
 		select * from TB_PORT_ABBR
@@ -89,7 +120,7 @@
 	
 	</select>
 	
-		<select id="selectPortAbbrList" resultClass="java.util.HashMap">
+	<select id="selectPortAbbrList" resultClass="java.util.HashMap">
 		select * from TB_PORT_ABBR
 		<dynamic prepend="where">
 		    <isNotNull property="port_abbr" prepend="and">

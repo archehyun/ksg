@@ -43,6 +43,8 @@ public class PortInfo extends BaseInfo {
 	
 	private String port_abbr;
 	
+	private int abbr_count;
+	
 	public String toString()
 	{
 		return "["+this.getPort_name()+"]";

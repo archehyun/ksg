@@ -78,7 +78,7 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 	public DefaultMutableTreeNode getTreeNode(CommandMap param) {
 		
 
-		CommandMap areaList=(CommandMap) param.get("data");
+		CommandMap areaList=(CommandMap) param.get("data"); 
 
 		String sortType = (String) param.get("sortType");
 		

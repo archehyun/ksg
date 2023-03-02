@@ -24,4 +24,9 @@ public class ShipperTableDAO extends AbstractDAO{
 		return selectList(namespace+".selectShipperTablePortListByID", id);
 	}
 
+	public List<ShippersTable> selectShipperTableListAll() throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList(namespace+".selectShipperTableListAll");
+	}
+
 }

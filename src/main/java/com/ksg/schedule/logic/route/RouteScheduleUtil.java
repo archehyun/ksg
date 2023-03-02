@@ -80,15 +80,7 @@ public class RouteScheduleUtil {
 		}
 		return base;
 	}
-//	public static int getNumericVoyage(String voyage_num)
-//	{	
-//		try{
-//			return Integer.valueOf(voyage_num.replaceAll("[^0-9]", ""));
-//		}catch(Exception e)
-//		{
-//			return 0;
-//		}
-//	}
+
 	
 	/**
 	 * 중국, 일본 : 2곳 이상
@@ -118,6 +110,13 @@ public class RouteScheduleUtil {
 
 	}
 	
+	/**
+	 *  지역에 따라 스케줄 분리
+	 *  
+	 * @param list
+	 * @param area_name
+	 * @return
+	 */
 	public static List[] divideScheduleByArea(List<ScheduleData> list, String area_name)
 	{		
 
@@ -141,9 +140,11 @@ public class RouteScheduleUtil {
 			
 			if(differ>=area.getGap())
 			{	
+				
 				List<ScheduleData> first = new ArrayList<>(list.subList(0, i));
 				
 			    List<ScheduleData> second = new ArrayList<>(list.subList(i, list.size()));
+
 			    
 			    return new List[] {first, second};
 			}

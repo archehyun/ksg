@@ -20,75 +20,24 @@ public interface ScheduleSubService extends ScheduleService{
 	 * @throws SQLException
 	 */
 
-	/**
-	 * @return
-	 * @throws SQLException
-	 */
-	public List getInboundPortList()										throws SQLException;
-	/**
-	 * @param port
-	 * @return
-	 * @throws SQLException
-	 */
-	public List getInboundScheduleList(String port)							throws SQLException;
+	public HashMap<String, Object> selectInlandScheduleList(HashMap<String, Object> commandMap) throws SQLException;
+	
+	public List<ScheduleData> selecteScheduleListByCondition(CommandMap param) throws SQLException;
+	
+	public List<CommandMap> selecteScheduleListMapByCondition(CommandMap param);
 
-	/**
-	 * @param port
-	 * @param vessel
-	 * @return
-	 * @throws SQLException
-	 */
-	public List getInboundScheduleListByVessel(String port, String vessel)	throws SQLException;
-
-	/**
-	 * @param port
-	 * @return
-	 * @throws SQLException
-	 */
-	public List getOutboundFromPortList(String port)						throws SQLException;
-	/**
-	 * 
-	 * 
-	 * @return
-	 * @throws SQLException
-	 */
-	@Deprecated
-	public List getOutboundPortList()										throws SQLException;
 	
-	
-	@Deprecated
-	public List<ScheduleData> getConsoleScheduleList(String port, String fromPort)		throws SQLException;
-	/**
-	 * @param port
-	 * @param fromPort
-	 * @return
-	 * @throws SQLException
-	 */
-	@Deprecated
-	public List<ScheduleData> getOutboundScheduleList()		throws SQLException;
-	
-	@Deprecated
-	public List<ScheduleData> getOutboundScheduleList(String port, String fromPort)		throws SQLException;
-	/**
-	 * @param port
-	 * @return
-	 * @throws SQLException
-	 */
-	@Deprecated
-	public PortInfo getPortInfoByPortAbbr(String port)						throws SQLException;
 	/**
 	 * @return
 	 * @throws SQLException
 	 */
 	@Deprecated
 	public List getScheduleList() 											throws SQLException;
+	
 	/**
 	 * @return
 	 * @throws SQLException
-	 */
-	
-
-	
+	 */	
 	public ScheduleData insertInlandScheduleData(ScheduleData data)				throws SQLException;
 	/**
 	 * @param port_name
@@ -160,18 +109,67 @@ public interface ScheduleSubService extends ScheduleService{
 	
 	public int deleteInlnadSchedule()throws SQLException;
 	
-	
-	
-	//public HashMap<String, Object> selectInboundScheduleGroupList1(CommandMap  param) throws SQLException;
 
-	//public CommandMap selectInboundScheduleGroupList(CommandMap param) throws SQLException;
 	
-	public HashMap<String, Object> selectInlandScheduleList(HashMap<String, Object> commandMap) throws SQLException;
 	
-	public List<ScheduleData> selecteScheduleListByCondition(CommandMap param) throws SQLException;
 	
-	public List<CommandMap> selecteScheduleListMapByCondition(CommandMap param);
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
+	public List getInboundPortList()										throws SQLException;
+	/**
+	 * @param port
+	 * @return
+	 * @throws SQLException
+	 */
+	public List getInboundScheduleList(String port)							throws SQLException;
 	
-//	public Map<String, Object> selectRouteScheduleGroupList(CommandMap param) throws SQLException;
+	/**
+	 * @param port
+	 * @param vessel
+	 * @return
+	 * @throws SQLException
+	 */
+	public List getInboundScheduleListByVessel(String port, String vessel)	throws SQLException;
+	
+	
+	/**
+	 * @param port
+	 * @return
+	 * @throws SQLException
+	 */
+	public List getOutboundFromPortList(String port)						throws SQLException;
+	
+	/**
+	 * 
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	@Deprecated
+	public List getOutboundPortList()										throws SQLException;
+	
+	
+	@Deprecated
+	public List<ScheduleData> getConsoleScheduleList(String port, String fromPort)		throws SQLException;
+	/**
+	 * @param port
+	 * @param fromPort
+	 * @return
+	 * @throws SQLException
+	 */
+	@Deprecated
+	public List<ScheduleData> getOutboundScheduleList()		throws SQLException;
+	
+	@Deprecated
+	public List<ScheduleData> getOutboundScheduleList(String port, String fromPort)		throws SQLException;
+	/**
+	 * @param port
+	 * @return
+	 * @throws SQLException
+	 */
+	@Deprecated
+	public PortInfo getPortInfoByPortAbbr(String port)						throws SQLException;
 
 }

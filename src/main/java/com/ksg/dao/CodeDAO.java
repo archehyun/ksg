@@ -7,6 +7,9 @@ import java.util.Map;
 
 public interface CodeDAO {
 	
+	
+	// -- select List -- //
+	
 	public Object select(Map<String, Object> commandMap) throws SQLException ;
 	
 	public Object selectDetail(Map<String, Object> param) throws SQLException;
@@ -18,12 +21,18 @@ public interface CodeDAO {
 	public int selectDetailCount(Map<String, Object> commandMap) throws SQLException;
 	
 	public int selectCount(Map<String, Object> commandMap)throws SQLException ;
+	
+	// -- insert -- //
 
 	public Object insert(HashMap<String, Object> param) throws SQLException;
 	
 	public Object insertDetail(HashMap<String, Object> param) throws SQLException ;
+	
+	// -- update -- //
 
-	public Object update(HashMap<String, Object> param) throws SQLException ;	
+	public Object update(HashMap<String, Object> param) throws SQLException ;
+	
+	// -- delete -- //
 
 	public Object delete(HashMap<String, Object> param) throws SQLException;
 

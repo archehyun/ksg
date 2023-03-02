@@ -1325,7 +1325,7 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 
 				}else
 				{
-					List li=tableService.getTableCompanyListByPage(Integer.parseInt(page));
+					List li=tableService.selectTableCompanyListByPage(Integer.parseInt(page));
 					DefaultListModel listModel = new DefaultListModel();
 					for(int i=0;i<li.size();i++)
 					{

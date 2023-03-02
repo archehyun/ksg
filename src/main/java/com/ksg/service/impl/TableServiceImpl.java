@@ -183,7 +183,7 @@ public class TableServiceImpl extends AbstractServiceImpl implements TableServic
 		return tableDAO.selectTablePageListByCompany(shippersTable);
 	}
 
-	public List getTableCompanyListByPage(int page) throws SQLException {
+	public List selectTableCompanyListByPage(int page) throws SQLException {
 		ShippersTable shippersTable = new ShippersTable();
 		shippersTable.setPage(page);
 		return tableDAO.selectTableCompanyListByPage(shippersTable);

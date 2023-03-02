@@ -41,7 +41,7 @@ import com.ksg.service.impl.VesselServiceImpl;
  */
 public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements RouteJointSubject{
 	
-	private RouteJoint joint;
+	private RouteJoint routeJoint;
 	
 	private DateComparator dateComparator 			= new DateComparator(new SimpleDateFormat("yyyy/MM/dd"));
 
@@ -58,17 +58,19 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 	private List<ScheduleData> scheduleList;
 
 	public RouteScheduleJointV4(ShippersTable op, int orderBy) throws Exception {
+		
 		super(op);
 	}
 	
 	public RouteScheduleJointV4(String date_isusse, int orderBy) throws Exception {
+		
 		super();
 		
 		this.date_isusse = date_isusse;
 		
 		this.orderBy = orderBy;
 		
-		joint = new RouteJoint(this);
+		routeJoint = new RouteJoint(this);
 		
 		CommandMap param = new CommandMap();
 		
@@ -76,8 +78,12 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 
 		param.put("inOutType", OUTBOUND);
 		
+		param.put("gubun", "Normal");
+		
 		// 스케줄 목록 조회
 		scheduleList= scheduleService.selecteScheduleListByCondition(param);
+		
+		logger.info("schedule size:{}", scheduleList.size());		
 		
 	}
 
@@ -85,7 +91,7 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 	public int execute() throws Exception {
 		
 		
-		if(scheduleList== null || scheduleList.isEmpty()) return 0;
+		if(scheduleList== null || scheduleList.isEmpty()) return ScheduleJoint.FAILURE;
 		
 		long startTime = System.currentTimeMillis();
 		
@@ -94,9 +100,10 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 		// vessel map 생성
 		allVesselList= vesselService.selectAllList();
 		
+		
 		Map<String, Vessel> vesselNameMap = allVesselList.stream().distinct().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));		
 		
-		logger.info("row schedule size:{}",scheduleList.size());		
+		logger.info("row schedule size:{}",scheduleList.size());
 		
 		//  선박명 유효성 체크
 		List<ScheduleData> schedulelist = scheduleList.stream().filter(schedule ->vesselNameMap.containsKey(schedule.getVessel())).collect(Collectors.toList());
@@ -111,15 +118,25 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 						// 지역
 						Collectors.groupingBy(ScheduleData::getVessel))
 						
-						); // 지역
+						); // 선박
 		
+		try
+		{
+			executeJointSchedule(areaList);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
-		executeJointSchedule(areaList);
-		
-		long endTime = System.currentTimeMillis();
+		finally
+		{
+			close();
+			
+			long endTime = System.currentTimeMillis();
 
-		logger.info("항로별 스케줄 생성 종료({}s)",(endTime-startTime));
-		
+			logger.info("항로별 스케줄 생성 종료({}s)",(endTime-startTime));
+		}
 
 		return ScheduleJoint.SUCCESS;
 	}
@@ -163,99 +180,91 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 	}
 	private void executeJointSchedule(Map<String, Map<String, List<ScheduleData>>> areaList) throws IOException
 	{	
-		try {
-			Object[] areakeyList = areaList.keySet().toArray();
+		
+		Object[] areakeyList = areaList.keySet().toArray();
 
-			lengthOfTask = areakeyList.length;
+		lengthOfTask = areakeyList.length;
 
-			// 지역명 정렬
-			Arrays.sort(areakeyList);
+		// 지역명 정렬
+		Arrays.sort(areakeyList);
+		
+		// 지역명 출력
+		printAreaList(areakeyList);		
+
+		int firstIndex=0;
+		
+		int totalCount = 0;
+
+		fw.write(WORLD_VERSION1+"\r\n"+WORLD_VERSION2);
+		
+		// 지역 순회
+		for(Object strArea:areakeyList)
+		{	
+			firstIndex++;
 			
-			// 지역명 출력
-			printAreaList(areakeyList);		
+			writeArea(firstIndex, (String) strArea);
 
-			int firstIndex=0;
+			Map<String, List<ScheduleData>> vesselList = areaList.get(strArea);
 			
-			int totalCount = 0;
-
-			fw.write(WORLD_VERSION1+"\r\n"+WORLD_VERSION2);
-
+			logger.info("Area: "+strArea+ ", 스케줄 그룹 사이즈:"+vesselList.keySet().size());
+		
+			Object[] vesselArray = vesselList.keySet().toArray();
 			
-			// 지역 순회
-			for(Object strArea:areakeyList)
+			List<RouteScheduleGroup> scheduleGroupList = new ArrayList<RouteScheduleGroup>();			
+			
+			for (Object vesselKey : vesselArray)
 			{	
-				firstIndex++;
+				List<ScheduleData> scheduleList = (List<ScheduleData>) vesselList.get(vesselKey);
 				
-				writeArea(firstIndex, (String) strArea);
+				// 항차번호(숫자)로 그룹화
+				Map<Integer, List<ScheduleData>> voyageList =  scheduleList.stream().collect(
+						Collectors.groupingBy(o -> ScheduleBuildUtil. getNumericVoyage(o.getVoyage_num()) ));// 항차
+				
+				List<Integer> keySet = new ArrayList<>(voyageList.keySet());
+				
+				// 항차번호로 정렬(오름차순)
+				Collections.sort(keySet);
 
-				Map<String, List<ScheduleData>> vesselList = areaList.get(strArea);
+				//항차명 정렬
 				
-				logger.info("Area: "+strArea+ ", 스케줄 그룹 사이즈:"+vesselList.keySet().size());
-
-				// 선박명으로 그룹화
-			
-				Object[] vesselArray = vesselList.keySet().toArray();
+				// 
+				keySet.stream().forEach(voyage -> routeJoint.createScheduleAndAddGroup(scheduleGroupList, voyageList.get(voyage), (String)strArea, (String)vesselKey));
 				
-				List<RouteScheduleGroup> scheduleGroupList = new ArrayList<RouteScheduleGroup>();			
-				
-				for (Object vesselKey : vesselArray)
-				{	
-					List<ScheduleData> scheduleList = (List<ScheduleData>) vesselList.get(vesselKey);
-					
-					// 항차번호(숫자)로 그룹화
-					Map<Integer, List<ScheduleData>> voyageList =  scheduleList.stream().collect(
-							Collectors.groupingBy(o -> ScheduleBuildUtil. getNumericVoyage(o.getVoyage_num()) ));// 항차
-					
-					List<Integer> keySet = new ArrayList<>(voyageList.keySet());
-					
-					// 항창번호로 정렬(오름차순)
-					Collections.sort(keySet);
-
-					//항차명 정렬
-					// 스케줄 생성
-					keySet.stream().forEach(voyage -> joint.createScheduleAndAddGroup(scheduleGroupList, voyageList.get(voyage), (String)strArea, (String)vesselKey));
-					
-				}
-				
-				// 출발일, 선박명 기준으로 정렬
-				Collections.sort(scheduleGroupList, orderBy==RouteAbstractScheduleJoint.ORDER_BY_DATE ?dateComparator:vesselComparator);
-				
-				// 출력
-				for(RouteScheduleGroup group:scheduleGroupList ){
-					
-					String strCompanys 	= group.toCompanyString();
-					
-					String strVoyage 	= group.getVoyage();
-					
-					String vesselName 	= group.getVessel();
-					
-					String strFromPorts = group.toFromPortString();
-					
-					String strToPorts 	= group.toToPortString();
-					
-					fw.write(String.format("%s%s - %s (%s)\r\n%s%s\r\n%s%s\r\n\r\n",WORLD_F,vesselName, strVoyage, strCompanys,WORLD_INPORT, strFromPorts,WORLD_OUTPORT, strToPorts));
-					
-				}
-				
-				current++;
-				
-				firstIndex++;
 			}
 			
+			// 출발일, 선박명 기준으로 정렬
+			Collections.sort(scheduleGroupList, orderBy==RouteAbstractScheduleJoint.ORDER_BY_DATE ?dateComparator:vesselComparator);
 			
-		}catch(IOException e)
-		{
-			throw new IOException(e);
-		}
-		finally {
-			close();
+			// 출력
+			for(RouteScheduleGroup group:scheduleGroupList ){
+				
+				String strCompanys 	= group.toCompanyString();
+				
+				String strVoyage 	= group.getVoyage();
+				
+				String vesselName 	= group.getVessel();
+				
+				String strFromPorts = group.toFromPortString();
+				
+				String strToPorts 	= group.toToPortString();
+				
+				fw.write(String.format("%s%s - %s (%s)\r\n%s%s\r\n%s%s\r\n\r\n",WORLD_F,vesselName, strVoyage, strCompanys,WORLD_INPORT, strFromPorts,WORLD_OUTPORT, strToPorts));
+				
+			}
+			
+			current++;
+			
+			firstIndex++;
 		}
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void createScheduleAndAddGroup(List scheduleGroupList, List scheduleList, String areaName, String vesselName) {
 		
-		List<RouteScheduleGroup> validScheduleGroupList = joint.getValidatedScheduleGroupList(areaName,vesselName, scheduleList);
+		List<RouteScheduleGroup> validScheduleGroupList = routeJoint.getValidatedScheduleGroupList(areaName,vesselName, scheduleList);
 		
 		scheduleGroupList.addAll(validScheduleGroupList);
 	}

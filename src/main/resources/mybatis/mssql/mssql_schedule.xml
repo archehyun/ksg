@@ -146,6 +146,10 @@
 					area_name=#area_name#
 				</isNotNull>
 				
+				<isNotNull property="gubun" prepend="and">
+					gubun=#gubun#
+				</isNotNull>
+				
 				<isNotNull property="agent" prepend="and">
 					
 					agent like '%$agent$%'

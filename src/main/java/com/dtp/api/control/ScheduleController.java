@@ -1,7 +1,9 @@
 package com.dtp.api.control;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -13,20 +15,21 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.dtp.api.annotation.ControlMethod;
+import com.dtp.api.service.ShipperTableService;
+import com.dtp.api.service.impl.ShipperTableServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.commands.schedule.SortAllCommand;
 import com.ksg.commands.schedule.SortInlandCommnad;
-import com.ksg.commands.schedule.route.RouteTaskNewVessel;
 import com.ksg.common.model.CommandMap;
+import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
-import com.ksg.domain.ScheduleType;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.ScheduleSubService;
-import com.ksg.service.VesselService;
+import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
@@ -41,15 +44,18 @@ public class ScheduleController extends AbstractController{
 
 	private ScheduleSubService service;
 
-	private VesselService vesselService;
+	private VesselServiceV2 vesselService;
 
-	private TableServiceImpl tableService = new TableServiceImpl();
+	private ShipperTableService tableService = new ShipperTableServiceImpl();
+	
 	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	public ScheduleController()
 	{
 		service = new ScheduleServiceImpl();
+		
 		vesselService = new VesselServiceImpl();
+		
 		objectMapper = new ObjectMapper();
 
 	}
@@ -284,15 +290,25 @@ public class ScheduleController extends AbstractController{
 	public Map<String, Object> selectRouteScheduleGroupList(CommandMap param) throws SQLException {
 
 		List<ScheduleData>  li = service.selecteScheduleListByCondition(param);
+		
 		logger.info("schedule size:{}", li.size());
-		System.out.println("siize:"+li.size());
+		
+		System.out.println("size:"+li.size());
 
 		li.stream().forEach(schedule -> schedule.setArea_name(schedule.getArea_name().toUpperCase()));
+		
+		List allVesselList= vesselService.selectAllList();
+		
+		Map<String, Vessel> vesselNameMap = (Map<String, Vessel>) allVesselList.stream().distinct().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));
+		
+		List<ScheduleData> schedulelist = li.stream().filter(schedule ->vesselNameMap.containsKey(schedule.getVessel())).collect(Collectors.toList());
 
-		Map<String, Map<String, List<ScheduleData>>> areaList =  li.stream().collect(
+		Map<String, Map<String, List<ScheduleData>>> areaList =  schedulelist.stream().collect(
 				Collectors.groupingBy(ScheduleData::getArea_name, // 지역
 						Collectors.groupingBy(ScheduleData::getVessel))
 				);// 선박
+		
+		
 
 		CommandMap returnValue = new CommandMap();
 		for(String area : areaList.keySet() ) {
@@ -321,8 +337,24 @@ public class ScheduleController extends AbstractController{
 	public CommandMap updateView(CommandMap param) throws Exception
 	{	
 		
-		List tableDatelist = tableService.getTableDateList();
-
+		List<ShippersTable> tableDateTarget = tableService.selectTableAll();
+		
+		List<String> tableDatelist =  tableDateTarget.stream()
+															.map(ShippersTable ->
+															{
+																try {
+																	return KSGDateUtil.format(KSGDateUtil.toDate2(ShippersTable.getDate_isusse()));
+																	
+																} catch (ParseException e) {
+																	e.printStackTrace();
+																	return "error";
+																}
+															})
+															
+															.distinct()
+															.sorted(Comparator.reverseOrder())
+															.collect(Collectors.toList());
+		
 		List scheduleDateLists = service.selectScheduleDateList();
 
 		CommandMap returnMap = new CommandMap();

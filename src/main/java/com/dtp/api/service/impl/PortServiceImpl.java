@@ -1,5 +1,6 @@
 package com.dtp.api.service.impl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,12 +35,19 @@ public class PortServiceImpl implements PortService{
         return dao.selectAll();
     }
 
-    public List<PortInfo> selectListByCondtion(PortInfo param)
+    public List<PortInfo> selectListByCondtion(PortInfo param) throws SQLException
     {
         List result = dao.selectListByCondition(param);
 
+        
         return result;
     }
+    
+	@Override
+	public List<PortInfo> selectPortDetailListByPortName(String port_name) throws SQLException {
+		// TODO Auto-generated method stub
+		return dao.selectPortDetailListByPortName(port_name);
+	}
 
 
     public CommandMap selectMapAll()
@@ -128,5 +136,6 @@ public class PortServiceImpl implements PortService{
 
         return selectOne;
     }
+
 
 }

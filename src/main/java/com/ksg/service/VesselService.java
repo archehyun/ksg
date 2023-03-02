@@ -9,13 +9,20 @@ import com.ksg.domain.Vessel;
 
 public interface VesselService extends PageService{
 	
+	public Map<String, String> selectAll()throws SQLException;
+	
 	public HashMap<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
 	
 	public HashMap<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException;
 	
 	public HashMap<String, Object> selectDetailListByLike(Map<String, Object> commandMap) throws SQLException;
 	
-	public Map<String, String> selectAll()throws SQLException;
+	public List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException;
+	
+	public List<Vessel> selectVesselListByNameList(List<String>nameList)throws SQLException;
+
+	
+	
 	
 	
 	//--insert--//
@@ -33,10 +40,7 @@ public interface VesselService extends PageService{
 	
 	public void insertDetail(HashMap<String, Object> param) throws RuntimeException;
 
-	List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException;
 	
-	List<Vessel> selectVesselListByNameList(List<String>nameList)throws SQLException;
-
 	
 
 	

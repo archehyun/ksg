@@ -102,50 +102,10 @@ public class RouteScheduleGroup implements IFComparator{
 	{
 		return  (!scheduleList.isEmpty())?scheduleList.get(0).getVoyage_num():"";
 	}
-//	public String toString()
-//	{
-//		String strVoyage = (!scheduleList.isEmpty())?scheduleList.get(0).getVoyage_num():"";		
-//		
-//		String strFromPorts = StringUtils.join(makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE)," - ");
-//
-//		String strToPorts = 
-//
-//		return String.format("%s%s - %s (%s)\r\n%s%s\r\n%s%s\r\n\r\n",WORLD_F,vesselName, strVoyage, strCompanys,WORLD_INPORT, strFromPorts,WORLD_OUTPORT, strToPorts);
-//	}
-	
+
 	public boolean isRouteScheduleValidation(String strArea)
 	{
 		return RouteScheduleUtil.checkOutPort(strArea, toPortCount);
 	}
-	
-//	/**
-//	 * 출발일, 도착일 별 그룹 생성
-//	 * @param ports
-//	 * @param dateType
-//	 * @return
-//	 */
-//	private List<PortAndDay> makeDayList(Map<String, List<ScheduleData>> ports,  int dateType)
-//	{
-//		ArrayList<PortAndDay> list = new ArrayList<PortAndDay>();
-//
-//		ports.entrySet().stream()
-//		.forEach(entry -> {
-//
-//			List<ScheduleData> ll =entry.getValue();
-//
-//			Collections.sort(ll, new ScheduleDateComparator(dateType));
-//
-//			ScheduleData lastSchedule = ll.get(ll.size()-1);
-//			// 도착항은 빠른 날짜로 정렬
-//			list.add(new PortAndDay(entry.getKey(), dateType==ScheduleDateComparator.FROM_DATE?lastSchedule.getDateF():lastSchedule.getDateT()));
-//
-//		});
-//
-//		Collections.sort(list, dateComparator);
-//
-//		return list;
-//
-//	}
-
 
 }

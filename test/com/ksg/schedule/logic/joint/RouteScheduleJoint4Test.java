@@ -31,11 +31,11 @@ public class RouteScheduleJoint4Test {
 		
 		ShippersTable op = new ShippersTable();
 		
-		op.setDate_isusse("2023-02-13");
+		op.setDate_isusse("2023-03-06");
 		
-		RouteScheduleJointV4 jointV4 = new RouteScheduleJointV4("2023-02-27",RouteScheduleJoint.ORDER_BY_DATE);
+		RouteScheduleJointV4 jointV4 = new RouteScheduleJointV4("2023-03-06",RouteScheduleJoint.ORDER_BY_DATE);
 		
-		jointV4.initTag();
+//		jointV4.initTag();
 		
 		jointV4 .execute();
 		

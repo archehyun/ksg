@@ -46,10 +46,13 @@ public class RouteJoint {
 		for(List item:li)
 		{
 			RouteScheduleGroup routeScheduleGroup = new RouteScheduleGroup(vesselName,item);
-			
+
+			// 도착항 수에 따라 판단
 			if(routeScheduleGroup.isRouteScheduleValidation(areaName))
+			{	
 				
-			scheduleGroupList.add(routeScheduleGroup);
+				scheduleGroupList.add(routeScheduleGroup);
+			}
 		}
 		return scheduleGroupList;  
 	}

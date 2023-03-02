@@ -25,8 +25,6 @@ public interface ScheduleService extends PageService{
 	
 	public List<Schedule> selecteScheduleListByCondition(Schedule param) throws SQLException;
 	
-	
-	
 	public List<Schedule> selecteAll(CommandMap param) throws SQLException;
 	
 	/**

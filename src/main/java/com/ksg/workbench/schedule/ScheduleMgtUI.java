@@ -157,7 +157,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 	JComboBox cbxRouteLogic;	
 
-
 	public ScheduleMgtUI() {
 
 		scheduleService = new ScheduleServiceImpl();
@@ -456,20 +455,9 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		return pnMain;
 	}
 
-	private void updateTableDateList(List tableDatelist)  {		
+	private void updateTableDateList(List<String> tableDatelist)  {		
 
-		cbxTableDateList.removeAllItems();
-
-		for(int i=0;i<tableDatelist.size();i++)
-		{
-			ShippersTable date = (ShippersTable) tableDatelist.get(i);
-			try {
-				cbxTableDateList.addItem(KSGDateUtil.format(KSGDateUtil.toDate2(date.getDate_isusse())));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+				
 	}
 
 	private KSGPanel buildCenter() {
@@ -742,7 +730,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		KSGPanel pnLeft = new KSGPanel();
 
-
 		lblNTop = new JLabel("0/0");
 		pnLeft.add(lblNTop);
 
@@ -901,7 +888,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-
+		
 		callApi("scheduleViewUpdate");
 	}
 
@@ -918,15 +905,18 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		if(success)
 		{
 			String serviceId = (String) result.get("serviceId");
+			
 			if("scheduleViewUpdate".equals(serviceId)) {
 				
 				List tableDatelist = (List) result.get("tableDatelist");
 
 				List scheduleDateLists = (List) result.get("scheduleDateLists");
 
-				updateTableDateList(tableDatelist);
+				cbxTableDateList.removeAllItems();
 				
 				tblScheduleDateList.setResultData(scheduleDateLists);
+				
+				tableDatelist.stream().forEach(scheduleDate -> cbxTableDateList.addItem(scheduleDate));
 	
 			}
 			else if("deleteSchedule".equals(serviceId)) {

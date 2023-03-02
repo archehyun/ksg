@@ -1,5 +1,6 @@
 package com.dtp.api.control;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,25 +26,21 @@ public class PortController  extends AbstractController{
 
     }
     @ControlMethod(serviceId = "selectPort")
-    public CommandMap selectByCondtion(CommandMap param)
+    public CommandMap selectByCondtion(CommandMap param) throws SQLException
     {
         log.info("param:{}",param);
 
         String port_name =(String) param.get("port_name");
         String area_code =(String) param.get("area_code");
+        String port_area =(String) param.get("port_area");
         
         PortInfo port = PortInfo.builder().port_name(port_name)
                                     .area_code(area_code)
+                                    .port_area(port_area)
                                     .build();
 
         List<PortInfo> result = service.selectListByCondtion(port);
-//        result.stream().forEach(o -> {
-//            try {
-//                o.setEvent_date( DateUtil.convertType(o.getEvent_date()));
-//            } catch (Exception e) {
-//                //o.setEvent_date()
-//            }
-//        });
+
 
         CommandMap model = new CommandMap();
 
@@ -52,6 +49,31 @@ public class PortController  extends AbstractController{
                         .collect(Collectors.toList());
 
         model.put("success", true);
+        model.put("data", resultArry);
+
+        return model;
+        
+    }
+    
+    @ControlMethod(serviceId = "selectPortDetailList")
+    public CommandMap selectPortDeatilListByPortName(CommandMap param) throws SQLException
+    {
+        log.info("param:{}",param);
+
+        String port_name =(String) param.get("port_name");
+        
+        if(port_name== null) throw new NullPointerException("port_name is null");
+
+        List<PortInfo> result = service.selectPortDetailListByPortName(port_name);
+
+        CommandMap model = new CommandMap();
+
+        List<CommandMap> resultArry=result.stream()
+                        .map(o -> objectMapper.convertValue(o, CommandMap.class))
+                        .collect(Collectors.toList());
+
+        model.put("success", true);
+        
         model.put("data", resultArry);
 
         return model;
