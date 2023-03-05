@@ -225,7 +225,8 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		butPrint.addActionListener(new SchedulePrintAction());
 		
 		
-		butBuild.addActionListener(this);		
+		butBuild.addActionListener(this);	
+		
 		butDelete.addActionListener(this);		
 
 
@@ -241,6 +242,8 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnTableDateModelSouth.add(pnTableDateModelSouthPadding,BorderLayout.SOUTH);
 
 		cbxTableDateList = new JComboBox();
+		
+		cbxTableDateList.setPreferredSize(new Dimension(120,25));
 
 		JButton butUpdate = new JButton("°»½Å");
 		
@@ -907,9 +910,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		
 		callApi("scheduleViewUpdate");
 	}
-
-
-
 
 	@Override
 	public void updateView() {

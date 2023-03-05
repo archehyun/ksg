@@ -23,9 +23,13 @@ public abstract class KSGTree extends JTree{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	public static final String GroupByCompany="company_abbr";
+	
 	public static final String GroupByPage="page";
+	
 	public abstract DefaultMutableTreeNode getRoot();
+	
 	public static TreePath find(JTree tree, TreePath parent, Object[] nodes, int depth)
 	{
 		TreeNode node = (TreeNode)parent.getLastPathComponent();
@@ -51,7 +55,9 @@ public abstract class KSGTree extends JTree{
 	public static  DefaultMutableTreeNode searchNodeByCompany (KSGTree tree1,String nodeStr)
 	{
 		DefaultMutableTreeNode node = null;
+		
 		Enumeration e = tree1.getRoot().breadthFirstEnumeration();
+		
 		while(e.hasMoreElements())
 		{
 			node =(DefaultMutableTreeNode)e.nextElement();
@@ -71,7 +77,9 @@ public abstract class KSGTree extends JTree{
 	public static DefaultMutableTreeNode searchNodeByPage (KSGTree tree1,int nodeStr)
 	{
 		DefaultMutableTreeNode node = null;
+		
 		Enumeration e = tree1.getRoot().breadthFirstEnumeration();
+		
 		while(e.hasMoreElements())
 		{
 			node =(DefaultMutableTreeNode)e.nextElement();
@@ -80,7 +88,7 @@ public abstract class KSGTree extends JTree{
 			{
 				try{
 					int page= Integer.parseInt(st.nextToken());
-					//String company = st.nextToken();
+					
 					if(nodeStr==page)
 					{
 						return node;
@@ -93,5 +101,7 @@ public abstract class KSGTree extends JTree{
 		}
 		return null;
 	}
+	
+	
 
 }

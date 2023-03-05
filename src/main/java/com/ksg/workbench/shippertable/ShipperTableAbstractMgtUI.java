@@ -2,13 +2,19 @@ package com.ksg.workbench.shippertable;
 
 import java.sql.SQLException;
 
+import com.dtp.api.control.AbstractController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
+import com.ksg.workbench.common.comp.View;
 
 @SuppressWarnings("serial")
-public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI {
+public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements View{
 	
 	
 	protected boolean isShowData=true;
+	
+	protected CommandMap model;
+	
 	
 	public ShipperTableAbstractMgtUI()
 	{
@@ -30,5 +36,7 @@ public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI {
 	public void searchByOption() throws SQLException {}
 
 	public void fnUpdate() {}
+	
+	
 
 }

@@ -679,6 +679,7 @@ public class PnPort extends PnBase implements ActionListener{
 		{
 			
 			String serviceId=(String) result.get("serviceId");
+			
 			List data = (List )result.get("data");
 			
 			if("selectPort".equals(serviceId))

@@ -20,14 +20,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.model.KSGObserver;
 import com.ksg.common.util.CharUtil;
 import com.ksg.domain.ShippersTable;
-import com.ksg.service.ADVService;
 import com.ksg.service.TableService;
-import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 /**
  * @author archehyun
@@ -122,9 +118,9 @@ public class KSGTreeDefault extends KSGTree{
 	};
 	private static final long serialVersionUID = 1L;
 	
-	ADVService advService = new ADVServiceImpl();
+	//ADVService advService = new ADVServiceImpl();
 	
-	DAOManager daomanager = DAOManager.getInstance();
+//	DAOManager daomanager = DAOManager.getInstance();
 	
 	private String groupBy;
 	
@@ -145,7 +141,7 @@ public class KSGTreeDefault extends KSGTree{
 		
 		this.groupBy=GroupByPage;
 		
-		advService = daomanager.createADVService();
+//		advService = daomanager.createADVService();
 		
 		tableService  =new TableServiceImpl();
 		
@@ -165,6 +161,7 @@ public class KSGTreeDefault extends KSGTree{
 					List subcompany = tableService.getTableListByCompany(company.getCompany_abbr());
 
 					subPage.add(createNode(root, company.getPage()+":"+company.getCompany_abbr(), subcompany));
+					
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -173,6 +170,7 @@ public class KSGTreeDefault extends KSGTree{
 		}
 	}
 	private boolean addPageNode(ShippersTable table) {
+		
 		Iterator pageGroup = pageGroupList.iterator();
 
 		while(pageGroup.hasNext())
@@ -239,7 +237,7 @@ public class KSGTreeDefault extends KSGTree{
 						root.add(pageGroup);
 						pageGroupList.add(pageGroup);
 						
-					}					
+					}
 					
 				}
 

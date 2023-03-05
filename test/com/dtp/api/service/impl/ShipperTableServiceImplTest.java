@@ -16,7 +16,7 @@ public class ShipperTableServiceImplTest {
 		ShippersTable param = new ShippersTable();
 //		param.setGubun(ShippersTable.GUBUN_NNN);
 		param.setDate_isusse("2023-02-20");
-		List list =service.selectTableListByCondition(param);
+		List list =service.selectTableListAndPortListByCondition(param);
 		System.out.println("size:"+list.size());
 	}
 

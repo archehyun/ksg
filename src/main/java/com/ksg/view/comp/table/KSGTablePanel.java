@@ -259,6 +259,11 @@ public class KSGTablePanel extends KSGPanel{
 
 			lblTotalCount.setText(String.valueOf(master.size())+"/"+total);
 	}
+	
+	public void setTotalCount(String total)
+	{
+		lblTotalCount.setText(total);
+	}
 
 	public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
 		table.changeSelection(rowIndex, columnIndex, toggle, extend);

@@ -1,16 +1,14 @@
 package com.dtp.api.control;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ksg.common.model.CommandMap;
-import com.ksg.workbench.common.comp.treetable.nodemager.TreeNodeManager;
 
 public class ScheduleControllerTest {
 

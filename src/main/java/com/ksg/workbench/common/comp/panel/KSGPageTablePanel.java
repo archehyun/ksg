@@ -181,6 +181,13 @@ public class KSGPageTablePanel extends KSGTablePanel{
 			endPage = totalPage;
 		}
 	}
+	public void setTotalCount(int totalCount)
+	{
+		this.total = totalCount;
+		
+		
+		this.setTotalCount(String.valueOf(this.total));
+	}
 	
 	
 	public void addPageActionListener(ActionListener l)	

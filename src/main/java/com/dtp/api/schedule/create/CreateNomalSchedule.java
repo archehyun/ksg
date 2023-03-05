@@ -31,7 +31,7 @@ public class CreateNomalSchedule {
 										.date_isusse(date)
 										.build();
 		
-		shippersTables  = service.selectTableListByCondition(param);
+		shippersTables  = service.selectTableListAndPortListByCondition(param);
 			
 			
 		

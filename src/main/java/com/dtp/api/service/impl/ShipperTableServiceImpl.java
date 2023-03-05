@@ -26,7 +26,7 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 	
 
 	@Override
-	public List selectTableListByCondition(ShippersTable param) throws SQLException {
+	public List selectTableListAndPortListByCondition(ShippersTable param) throws SQLException {
 		List<ShippersTable> li = shipperTableDAO.selectShipperTableListByCondition(param);
 		
 		li.stream().forEach(o -> {
@@ -43,6 +43,12 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 	public List selectShipperTablePortListByID(String id) throws SQLException
 	{
 		return shipperTableDAO.selectShipperTablePortListByID(id);
+	}
+
+	@Override
+	public List selectTableListByCondition(ShippersTable param) throws SQLException {
+		// TODO Auto-generated method stub
+		return shipperTableDAO.selectShipperTableListByCondition(param);
 	}
 
 }

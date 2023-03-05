@@ -1131,6 +1131,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			{
 				try {
 					serviceManager.buildWebSchedule();
+					
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}

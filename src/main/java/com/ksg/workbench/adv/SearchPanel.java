@@ -137,7 +137,7 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 	
 	public static final String SEARCH_TYPE_COMPANY = "선사";
 
-	private JTextField  	_txfCPage,txfPage,txfPCompany,_txfPort;
+	private JTextField  	txfCPage,txfPage,txfPCompany,_txfPort;
 
 	private static final String SEARCH_TYPE_PAGE = "페이지";
 
@@ -236,7 +236,9 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		{
 			box.addItem(i);
 		}
+		
 		box.setSelectedIndex(0);
+		
 		box.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
@@ -1080,7 +1082,7 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 
 		pnSubControl1.add(lblCompany);		
 
-		pnSubControl1.add(_txfCPage);
+		pnSubControl1.add(txfCPage);
 
 		pnMain.add(pnSubControl1);
 		pnMain.add(pnSubPage);
@@ -1118,8 +1120,8 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		txfPage = new JTextField(5);
 		txfPage.setEditable(false);
 		txfPage.setVisible(false);
-		_txfCPage = new JTextField(5);
-		_txfCPage.setEditable(false);
+		txfCPage = new JTextField(5);
+		txfCPage.setEditable(false);
 		txfPCompany = new JTextField(20);
 		txfPCompany.setEditable(false);
 		_txfSearchedTableCount = new JTextField(2);
@@ -1249,11 +1251,13 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 			//	lblSelectedCompanyName.setText("");
 			//	lblSelectedPage.setText("");
 			DefaultListModel listModel1 = new DefaultListModel();
+			
 			pageLi.setModel(listModel1);
-			companyLi.setModel(listModel1);
+			
+			//companyLi.setModel(listModel1);
 
 			//test
-			butCompanyAdd.setEnabled(false);
+			//butCompanyAdd.setEnabled(false);
 			//	lblSelectedCompanyName.setText("");
 			//	lblSelectedPage.setText("");
 
@@ -1262,33 +1266,40 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 			manager.selectedCompany=null;
 
 			manager.selectedPage=-1;
+			
 			txfCompany.setText("");
+			
 			txfPage.setText("");
-			_txfCPage.setText("");
+			
+			txfCPage.setText("");
+			
 			txfPCompany.setText("");
-			DefaultListModel listModel2 = new DefaultListModel();
-			pageLi.setModel(listModel2);
-			companyLi.setModel(listModel2);
-
-			//test
-			//lblSelectedCompanyName.setText("");
-			//lblSelectedPage.setText("");
+			
+			pageLi.setModel(new DefaultListModel());
+			
+			
 			break;
 		case 3: // 0~9 선택시
 			StringTokenizer st = new StringTokenizer(selectedCompany,":");
 
 			String company = new String();
+			
 			String page = new String();
 
 			page=st.nextToken();
+			
 			company = st.nextToken();
 
 			txfCompany.setText(company);
 
 			this.selectedCompany =company;
+			
 			this.selectedPage = page;
+			
 			txfPage.setText(page);
-			_txfCPage.setText(page);
+			
+			txfCPage.setText(page);
+			
 			txfPCompany.setText(company);
 
 			try {
@@ -1326,21 +1337,24 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 				}else
 				{
 					List li=tableService.selectTableCompanyListByPage(Integer.parseInt(page));
+					
 					DefaultListModel listModel = new DefaultListModel();
+					
 					for(int i=0;i<li.size();i++)
 					{
 						ShippersTable tableInfo = (ShippersTable) li.get(i);
 
 						PageInfoCheckBox info = new PageInfoCheckBox(tableInfo.getCompany_abbr());
 
-						if(company.equals(info.getText()))
-						{
-							info.setSelected(true);
-						}
+						info.setSelected(company.equals(info.getText()));
+						
 						listModel.addElement(info);
 					}
+					
 					logger.info("searched Page size:"+listModel.size());
+					
 					companyLi.setModel(listModel);
+					
 					updateTableInfo2(listModel);
 
 				}
@@ -1348,11 +1362,6 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 
 				updatePropertyTable(company,Integer.parseInt(page));
 
-
-				//test
-				//butCompanyAdd.setEnabled(true);
-				//lblSelectedPage.setText(page);
-				//lblSelectedCompanyName.setText(com);
 
 			} catch (SQLException e) {
 				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e.getMessage());
@@ -1409,10 +1418,6 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		}
 	}
 	
-	public void cancel()
-	{
-		
-	}
 	
 	/**
 	 * 
