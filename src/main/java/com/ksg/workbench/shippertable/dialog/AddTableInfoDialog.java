@@ -22,12 +22,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -35,21 +31,16 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTree;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
@@ -60,7 +51,6 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.service.CompanyService;
 import com.ksg.service.ShipperTableService;
 import com.ksg.service.impl.ADVServiceImpl;
-import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
@@ -120,10 +110,10 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	private JTextField txfCtime;
 	private int vgap=31;
 	private KSGComboBox cbxGubun;
-	private JPanel pnClosingTime;
+	private KSGPanel pnClosingTime;
 	private JRadioButton optPage;
 	private JRadioButton optCFS;
-	private JPanel pnInland;
+	private KSGPanel pnInland;
 
 	private JTextField txfInland;
 	private ShipperTableService service;
@@ -146,21 +136,22 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent) {
 
 		this();
+		
+		this.setModal(true);
+		
 		this.searchUI=parent;		
 	}
-	public AddTableInfoDialog(ShipperTableAbstractMgtUI prent, ShippersTable selectedCompany) {
+	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent, ShippersTable selectedCompany) {
 
-		this();
-		this.searchUI=prent;	
-		this.setModal(true);
+		this(parent);
+		
 		this.setSelectedCompany(selectedCompany);
 
 	}
 	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent, String selectedCompany) {
 
-		this();
-		this.searchUI=parent;		
-		this.setModal(true);
+		this(parent);
+		
 		this.company_abbr=selectedCompany;
 
 	}
@@ -220,35 +211,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 	}
 
-//	private void saveAction_temp() throws SQLException
-//	{
-//		ShippersTable shippersTable = new ShippersTable();
-//		shippersTable.setTable_id(txfTableID.getText());
-//		shippersTable.setPage(Integer.parseInt(txfPage.getText()));
-//		shippersTable.setBookPage(txfBookPage.getText());
-//		shippersTable.setTable_index(Integer.parseInt(txfIndex.getText()));
-//		shippersTable.setCompany_abbr(txfCompany.getText());				
-//		shippersTable.setAgent(txfAgent.getText());
-//		shippersTable.setCommon_shipping(txaCommon.getText());
-//		shippersTable.setQuark_format(txaQuark.getText());
-//		shippersTable.setIn_port(txfInPort.getText());
-//		shippersTable.setIn_to_port(txfInToPort.getText());
-//		shippersTable.setOut_port(txfOutPort.getText());
-//		shippersTable.setOut_to_port(txfOutToPort.getText());
-//		shippersTable.setPort_col(Integer.parseInt(txfPortCount.getText()));
-//		shippersTable.setVsl_row(Integer.parseInt(txfVesselCount.getText()));
-//		shippersTable.setTitle(txfTitle.getText());
-//		shippersTable.setOthercell(Integer.parseInt(txfOther.getText()));
-//		shippersTable.setConsole_cfs(txaConsoleCFS.getText());
-//		shippersTable.setConsole_page(txfConsolePage.getText());
-//		shippersTable.setGubun((String) cbxGubun.getSelectedItem());
-//		shippersTable.setC_time(Integer.parseInt(txfCtime.getText()));
-//		shippersTable.setD_time(Integer.parseInt(txfDtime.getText()));
-//		shippersTable.setInland_indexs(txfInland.getText());
-//		tableService.insert(shippersTable);
-//		manager.execute(searchUI.getName());
-//
-//	}
+
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -324,19 +287,21 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	}
 	public Component buildButtom()
 	{
-		JPanel pnButtom = new JPanel();
+		KSGPanel pnButtom = new KSGPanel();
+		
 		pnButtom.setLayout(new GridLayout(1,0));
-		JPanel pnPass = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
-
+		
+		KSGPanel pnPass = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		JButton btnNext = new JButton("저장");
+		
 		btnNext.addActionListener(this);
 
 		pnPass.add(btnNext);
+		
 		JButton btnCancel = new JButton("취소");
+		
 		btnCancel.addActionListener(new ActionListener(){
-
 
 			public void actionPerformed(ActionEvent e) {
 
@@ -347,10 +312,10 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 		pnPass.add(btnCancel);
 
-		JPanel pnS = new JPanel();
+		KSGPanel pnS = new KSGPanel();
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		pnS.setPreferredSize(new Dimension(0,1));
-		JPanel pnS1 = new JPanel();
+		KSGPanel pnS1 = new KSGPanel();
 		pnS1.setPreferredSize(new Dimension(0,15));
 		Box bb = new Box(BoxLayout.Y_AXIS);
 		bb.add(pnS);
@@ -359,7 +324,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		pnButtom.add(bb);
 		return pnButtom;
 	}
-	private Box buildPnCenter() {
+	private JComponent buildPnCenter() {
 
 		txfTableID=createTextField( 20);
 
@@ -400,10 +365,14 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		txfPage.setHorizontalAlignment(JTextField.RIGHT);
 
 
-		JPanel pnFromCompany = new JPanel();
+		KSGPanel pnFromCompany = new KSGPanel();
+		
 		pnFromCompany.setLayout(new FlowLayout(FlowLayout.LEADING));
+		
 		pnFromCompany.add(createForm("선사명 약어: ", txfCompany));
+		
 		JButton button = new JButton("검색");
+		
 		button.addActionListener(new ActionListener(){
 
 			@SuppressWarnings("unchecked")
@@ -436,7 +405,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 				
 			}});
 		pnFromCompany.add(button);
-		JPanel pnFromPortVslCount = new JPanel();
+		KSGPanel pnFromPortVslCount = new KSGPanel();
 		pnFromPortVslCount.setBorder(BorderFactory.createEmptyBorder());
 		pnFromPortVslCount.setLayout(new  FlowLayout(FlowLayout.LEADING));
 		pnFromPortVslCount.add(txfPortCount);
@@ -444,7 +413,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		pnFromPortVslCount.add(createForm("기타 : ", txfOther,40));		
 
 
-		JPanel pnTableInfo = new JPanel();
+		KSGPanel pnTableInfo = new KSGPanel();
 		pnTableInfo.setBorder(BorderFactory.createEmptyBorder());
 		pnTableInfo.setLayout(new  FlowLayout(FlowLayout.LEADING));
 		pnTableInfo.add(createForm("페이지 : ", txfPage));
@@ -489,6 +458,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 
 		Box boxTableInfo = Box.createVerticalBox();
+		boxTableInfo.setBackground(Color.white);
 		boxTableInfo.setBorder(BorderFactory.createTitledBorder("테이블 정보"));
 		boxTableInfo.add(createForm(createForm("테이블 ID : ", txfTableID),vgap));
 		boxTableInfo.add(createForm(createForm("테이블 구분 : ", cbxGubun),vgap));
@@ -504,47 +474,49 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		GridLayout gridLayout = new GridLayout(0,1);
 		gridLayout.setVgap(10);
 
-		JPanel pnOutBound = createPnOutBound(gridLayout);
+		KSGPanel pnOutBound = createPnOutBound(gridLayout);
 
 
-		JPanel pnInBound = createPnInBound(gridLayout);
+		KSGPanel pnInBound = createPnInBound(gridLayout);
 
 		pnBound.add( pnOutBound);
 		pnBound.add( pnInBound);
 
 
-		pnClosingTime = new JPanel(new BorderLayout());
+		pnClosingTime = new KSGPanel(new BorderLayout());
 		Box bxClosingTime = new Box(BoxLayout.X_AXIS);
 
 		bxClosingTime.add(createForm("Document Closing: ", txfDtime,120));
+		
 		bxClosingTime.add(createForm(" Cargo Closing: ", txfCtime,100));
 		pnClosingTime.add(bxClosingTime);		
 		pnClosingTime.setBorder(BorderFactory.createTitledBorder("Closing Time Index"));
 
 
-		pnInland = new JPanel(new BorderLayout());		
+		pnInland = new KSGPanel(new BorderLayout());		
 		TitledBorder boderInland = BorderFactory.createTitledBorder("내륙 기항지 지정");
 		pnInland.setBorder(boderInland);
 
 
 		Box bxInland = new Box(BoxLayout.X_AXIS);
+		
 		bxInland.add(createForm("기항지: ", txfInland));
 
 		pnInland.add(bxInland);
 
-		Box pnMain = new Box(BoxLayout.Y_AXIS);
-		pnMain.add(boxTableInfo);
-		pnMain.add(pnBound);
-		pnMain.add(pnClosingTime);
-		pnMain.add(pnInland);
+		Box pnBox = new Box(BoxLayout.Y_AXIS);
+		pnBox.add(boxTableInfo);
+		pnBox.add(pnBound);
+		pnBox.add(pnClosingTime);
+		pnBox.add(pnInland);
 
 		pnClosingTime.setVisible(false);
 		pnInland.setVisible(false);
 
-		JPanel pnConsole = new JPanel(new BorderLayout());
+		KSGPanel pnConsole = new KSGPanel(new BorderLayout());
 
-		JPanel pnConsolePage = new JPanel(new BorderLayout());
-		JPanel pnConsoleCFS = new JPanel(new BorderLayout());
+		KSGPanel pnConsolePage = new KSGPanel(new BorderLayout());
+		KSGPanel pnConsoleCFS = new KSGPanel(new BorderLayout());
 
 		pnConsoleCFS.add(new JScrollPane(txaConsoleCFS));
 		pnConsolePage.add(txfConsolePage);
@@ -565,31 +537,38 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		pn.addTab("QuarkFormat", new JScrollPane(txaQuark));
 		pn.addTab("Console", pnConsole);
 
-		pnMain.add(pn);
+		pnBox.add(pn);
 
 		setTableIndex(company_abbr);
 
 
-		pnMain.add(buildButtom());
+		pnBox.add(buildButtom());
+		
+		
+		
+		KSGPanel pnMain = new KSGPanel();
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		pnMain.add(pnBox);
+		
 		return pnMain;
 	}
-	private JPanel createPnInBound(GridLayout gridLayout) {
-		JPanel pnInBound = new JPanel();
+	private KSGPanel createPnInBound(GridLayout gridLayout) {
+		KSGPanel pnInBound = new KSGPanel();
 		pnInBound.setLayout(gridLayout);
 		pnInBound.add(createForm("국내항 : ", txfInPort));
 		pnInBound.add(createForm("외국항 : ", txfInToPort));
 		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수입항 등록");
 		pnInBound.setBorder(createTitledBorder);
 
-		JPanel pnInBoundSub = new JPanel();
+		KSGPanel pnInBoundSub = new KSGPanel();
 		pnInBoundSub.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		JButton butUpdateInbound = new JButton("등록/수정");
 		butUpdateInbound.addActionListener(this);
 
 		return pnInBound;
 	}
-	private JPanel createPnOutBound(GridLayout gridLayout) {
-		JPanel pnOutBound = new JPanel();
+	private KSGPanel createPnOutBound(GridLayout gridLayout) {
+		KSGPanel pnOutBound = new KSGPanel();
 		pnOutBound.setLayout(gridLayout);
 
 		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수출항 등록");
@@ -598,8 +577,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 		pnOutBound.add(createForm("국내항 : ", txfOutPort));
 		pnOutBound.add(createForm("외국항 : ", txfOutToPort));
-		JPanel pnOutboundSub = new JPanel();
-		pnOutboundSub.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnOutboundSub = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton butUpdate = new JButton("등록/수정");
 		butUpdate.addActionListener(this);
 		return pnOutBound;
@@ -607,71 +585,73 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 	public void createAndUpdateUI() {
 		this.setTitle("테이블 정보 추가");
-
+		this.setBackground(Color.white);
 		this.addComponentListener(this);
-		JPanel pnTitleInfo = new JPanel();
+
+		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
+		
+		this.getContentPane().add(buildPnCenter());
+
+		ViewUtil.center(this, true);
+		
+		this.setResizable(false);
+		
+		this.setVisible(true);
+
+	}
+	
+	private JComponent buildTitle()
+	{
+		KSGPanel pnTitleInfo = new KSGPanel();
+		
 		pnTitleInfo.setLayout(new BorderLayout());
+		
 		pnTitleInfo.setBorder(BorderFactory.createEtchedBorder());
+		
 		pnTitleInfo.setPreferredSize(new Dimension(0,45));
 
 		JLabel label = new JLabel("테이블 정보 생성",JLabel.LEFT);
 
 		label.setFont(new Font("aria", Font.BOLD, 16));
+		
 		pnTitleInfo.add(label,BorderLayout.WEST);
+		
 		pnTitleInfo.setBackground(Color.white);
-
-
-		JPanel leftPadding = new JPanel();
-		leftPadding.setPreferredSize(new Dimension(15,0));
-		JPanel rightPadding = new JPanel();
-		rightPadding.setPreferredSize(new Dimension(15,0));
-
-		this.getContentPane().add(pnTitleInfo,BorderLayout.NORTH);
-		this.getContentPane().add(buildPnCenter(), BorderLayout.CENTER);
-		this.getContentPane().add(leftPadding, BorderLayout.WEST);
-		this.getContentPane().add(rightPadding, BorderLayout.EAST);
-
-
-
-		ViewUtil.center(this, true);
-		this.pack();
-		this.setResizable(false);
-		this.setVisible(true);
-
+		
+		return pnTitleInfo;
 	}
 
 
-	private Component createForm(JPanel comp, int i) {
-		JPanel pnMain = new JPanel();
-		pnMain.setLayout(new FlowLayout(FlowLayout.LEADING));
+	private Component createForm(JComponent comp, int i) {
+		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEADING));
 		pnMain.setPreferredSize(new Dimension(0,i));
 
 		pnMain.add(comp);
 		return pnMain; 
 	}
-	private JPanel createForm(String label,Component comp)
+	private KSGPanel createForm(String label,Component comp)
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 		JLabel label2 = new JLabel(label,JLabel.RIGHT);
 		label2.setPreferredSize(new Dimension(100,20));
 		pnMain.add(label2,BorderLayout.WEST);
-		JPanel pnComp = new JPanel();
+		KSGPanel pnComp = new KSGPanel();
 		pnComp.setLayout(new BorderLayout());
 		pnComp.add(comp);
 		pnMain.add(pnComp,BorderLayout.CENTER);
 		return pnMain; 
 
 	}
-	private JPanel createForm(String label,Component comp, int width)
+	private KSGPanel createForm(String label,Component comp, int width)
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new BorderLayout());
 		JLabel label2 = new JLabel(label,JLabel.RIGHT);
 		label2.setVerticalTextPosition(JLabel.CENTER);
 		label2.setPreferredSize(new Dimension(	width,20));
 		pnMain.add(label2,BorderLayout.WEST);
-		JPanel pnComp = new JPanel();
+		KSGPanel pnComp = new KSGPanel();
 		pnComp.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		pnComp.add(comp);

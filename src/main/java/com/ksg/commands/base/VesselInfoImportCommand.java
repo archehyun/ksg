@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.HashMap;
 
@@ -75,7 +74,7 @@ public class VesselInfoImportCommand extends ImportCommand {
 				insertParameter.setVessel_use(this.getVesselUse(cell3));					
 				insertParameter.setVessel_company(cell4.getStringCellValue());
 				insertParameter.setVessel_mmsi(cell5.getStringCellValue());
-				insertParameter.setInput_date(cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
+			//	insertParameter.setInput_date(cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
 
 				logger.info("xls insert:"+insertParameter.toInfoString());
 				

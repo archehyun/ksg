@@ -27,21 +27,21 @@ public class VesselServiceTeset {
 	@Test
 	public void test()
 	{
-		try {
-			
-			List<String> vesselName = new ArrayList<String>();
-			vesselName.add("test");
-			CommandMap param = new CommandMap();
-			param.put("vessel_use", 0);
-			param.put("vesselNameList", vesselName.toArray(new String[vesselName.size()]));
-			param.put("vessel_type", "A");
-			
-		List<Vessel> li=	service.selectListByCondition(param);
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			
+//			List<String> vesselName = new ArrayList<String>();
+//			vesselName.add("test");
+//			CommandMap param = new CommandMap();
+//			param.put("vessel_use", 0);
+//			param.put("vesselNameList", vesselName.toArray(new String[vesselName.size()]));
+//			param.put("vessel_type", "A");
+//			
+//		//List<Vessel> li=	service.selectListByCondition(param);
+//		
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 }

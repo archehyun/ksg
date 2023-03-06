@@ -157,7 +157,7 @@ public class ScheduleController extends AbstractController{
 
 		CommandMap vesselParam = new CommandMap();
 		vesselParam.put("vesselNameList", vesselNames);
-		List<Vessel> vesselList = vesselService.selectListByCondition(vesselParam);
+		List<Vessel> vesselList = vesselService.selectVesselListByNameList(vesselNames);
 		Map<String, Vessel> vesselMap = vesselList.stream().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));
 		li.forEach(o -> o.setVesselInfo(vesselMap.get(o.getVessel())));
 

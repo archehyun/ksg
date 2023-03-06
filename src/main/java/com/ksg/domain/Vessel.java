@@ -47,7 +47,7 @@ public class Vessel extends BaseInfo{
 	
 	private String vessel_mmsi="";
 	
-	private Date input_date;
+	private String input_date;
 	
 	private String vessel_type;
 	

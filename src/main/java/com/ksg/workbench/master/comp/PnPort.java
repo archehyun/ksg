@@ -81,7 +81,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private AreaServiceImpl areaService = new AreaServiceImpl();
 
-	private KSGPageTablePanel tableH;
+	private KSGTablePanel tableH;
 
 	private KSGAbstractTable tableD;
 
@@ -310,7 +310,7 @@ public class PnPort extends PnBase implements ActionListener{
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
-		tableH = new KSGPageTablePanel("亲备格废");
+		tableH = new KSGTablePanel("亲备格废");
 
 		tableH.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
@@ -391,9 +391,9 @@ public class PnPort extends PnBase implements ActionListener{
 
 		tableH.initComp();
 
-		tableH.setPageCountIndex(6);
+		//tableH.setPageCountIndex(6);
 
-		tableH.addPageActionListener(new PageAction(tableH, portService));
+		//tableH.addPageActionListener(new PageAction(tableH, portService));
 
 		tableH.setShowControl(true);
 
@@ -683,10 +683,9 @@ public class PnPort extends PnBase implements ActionListener{
 			List data = (List )result.get("data");
 			
 			if("selectPort".equals(serviceId))
-			{
-				
-				
+			{	
 				tableH.setResultData(data);
+				tableH.setTotalCount(String.valueOf(data.size()));
 
 				if(data.size()==0)tableH.changeSelection(0,0,false,false);
 

@@ -348,10 +348,10 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 		return map;
 	}
 	
-	@Override
-	public List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException {
-		return vesselDAO.selectVesselListByCondition(param);
-	}
+//	@Override
+//	public List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException {
+//		return vesselDAO.selectVesselListByCondition(param);
+//	}
 
 	@Override
 	public List<Vessel> selectVesselListByNameList(List<String> nameList) throws SQLException {

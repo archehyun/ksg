@@ -28,24 +28,15 @@ public class VesselController extends AbstractController{
 
         String vessel_name =(String) param.get("vessel_name");
         String vessel_type =(String) param.get("vessel_type");
-        Integer vessel_use =(Integer) param.get("vessel_use");
         String vessel_company =(String) param.get("vessel_company");
         Vessel vessel = Vessel.builder()
                                 .vessel_name(vessel_name)
-                                .vessel_use(vessel_use)
+                                .vessel_use(param.containsKey("vessel_use")? (Integer) param.get("vessel_use"):-1)
                                 .vessel_type(vessel_type)
                                 .vessel_company(vessel_company)
                                 .build();
 
         List<Vessel> result = service.selectListByCondtion(vessel);
-
-//        result.stream().forEach(o -> {
-//            try {
-//                o.setEvent_date( DateUtil.convertType(o.getEvent_date()));
-//            } catch (Exception e) {
-//                //o.setEvent_date()
-//            }
-//        });
 
         CommandMap model = new CommandMap();
 
@@ -60,6 +51,22 @@ public class VesselController extends AbstractController{
         
     }
     
+    @ControlMethod(serviceId = "selectVesselDetailList")
+    public CommandMap selectVesselDetailList(CommandMap param) throws Exception
+    {
+    	String vesselName = (String) param.get("vessel_name");
+    	 List<Vessel> result = service.selectDetailList(vesselName);
+    	 CommandMap model = new CommandMap();
+
+         List<CommandMap> resultArray=result.stream()
+                         .map(o -> objectMapper.convertValue(o, CommandMap.class))
+                         .collect(Collectors.toList());
+                         
+         model.put("success", true);
+         model.put("data", resultArray);
+
+         return model;
+    }
     @ControlMethod(serviceId = "insertVessel")
     public CommandMap insertVessel(CommandMap param) throws Exception
     {

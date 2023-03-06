@@ -40,9 +40,9 @@ public class VesselServiceImpl implements VesselService{
 		return result;
 	}
 	@Override
-	public List<Vessel> selectDetailList(String param) throws Exception 
+	public List<Vessel> selectDetailList(String vessel_name) throws Exception 
 	{
-		List result = dao.selectDetailList(param);
+		List result = dao.selectDetailList(vessel_name);
 
 		return result;
 	}

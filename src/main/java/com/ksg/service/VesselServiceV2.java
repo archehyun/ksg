@@ -25,6 +25,8 @@ public interface VesselServiceV2 extends VesselService{
 	public void insert(Vessel param) throws SQLException;
 	
 	public Object update(Vessel op)throws SQLException;
+	
+	
 
 	
 

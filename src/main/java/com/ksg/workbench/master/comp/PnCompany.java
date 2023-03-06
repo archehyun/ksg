@@ -12,7 +12,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -402,6 +401,8 @@ public class PnCompany extends PnBase implements ActionListener{
 			List data = (List )result.get("data");
 
 			tableH.setResultData(data);
+			
+			tableH.setTotalCount(String.valueOf(data.size()));
 
 			if(data.size()==0)tableH.changeSelection(0,0,false,false);
 

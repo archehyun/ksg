@@ -40,7 +40,9 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
 
+import com.dtp.api.control.VesselController;
 import com.ksg.commands.base.VesselInfoExportCommand;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Code;
@@ -50,6 +52,7 @@ import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.adv.comp.SimpleFileFilter;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
@@ -118,7 +121,7 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	private JComboBox cbxUse;// 사용 유무 선택
 
-	KSGPageTablePanel tableH;
+	KSGTablePanel tableH;
 
 	SelectionListner selectionListner = new SelectionListner();
 
@@ -127,22 +130,23 @@ public class PnVessel extends PnBase implements ActionListener {
 	private CodeServiceImpl codeService= new CodeServiceImpl();
 
 	private KSGAbstractTable tableD;
-	
+
 	private JLabel lblVesselName;
-	
+
 	private JLabel lblVesselMMSI;
-	
+
 	private JLabel lblVesselType;
-	
+
 	private JLabel lblVesselCompany;
-	
+
 	private JLabel lblVesselUse;
-	
+
 	private JLabel lblInputDate;
 
 	public PnVessel(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
+		this.setController(new VesselController());
 		this.addComponentListener(this);
 		this.add(buildCenter());
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -152,7 +156,7 @@ public class PnVessel extends PnBase implements ActionListener {
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
-		tableH = new KSGPageTablePanel("선박목록");
+		tableH = new KSGTablePanel("선박목록");
 
 		KSGTableColumn columns[] = new KSGTableColumn[6];
 
@@ -181,7 +185,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		{
 			public Object getValue(Object obj)
 			{
-				if((Short)obj==0)
+				if((Integer)obj==0)
 				{
 					return "Y";
 				}
@@ -204,16 +208,16 @@ public class PnVessel extends PnBase implements ActionListener {
 		tableH.setColumnName(columns);
 
 		tableH.initComp();
-		
-		tableH.setPageCountIndex(6);
+
+//		tableH.setPageCountIndex(6);
 
 		tableH.addMouseListener(new TableSelectListner());
 
 		tableH.setShowControl(true);
-		
+
 		tableH.addContorlListener(this);
-		
-		tableH.addPageActionListener(new PageAction(tableH, vesselService));
+
+//		tableH.addPageActionListener(new PageAction(tableH, vesselService));
 
 		tableH.getSelectionModel().addListSelectionListener(selectionListner);
 
@@ -250,20 +254,20 @@ public class PnVessel extends PnBase implements ActionListener {
 		cbxField.addItem(new KSGTableColumn("input_date",STRING_INPUTDATE));
 
 		txfSearch = new JTextField(15);
-		
+
 		txfSearch.addKeyListener(new KeyAdapter() {
 
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				
+
 				if(e.getKeyChar()==KeyEvent.VK_ENTER)
 				{
 					fnSearch();
 				}
 			}
 		});
-		
+
 
 
 		JButton butUpSearch = new JButton(STRING_SEARCH);
@@ -369,9 +373,9 @@ public class PnVessel extends PnBase implements ActionListener {
 				fnSearchDetail((String)item.get("vessel_name"));
 
 			}catch (Exception e1) {
-				
+
 				e1.printStackTrace();
-				
+
 				JOptionPane.showMessageDialog(PnVessel.this, e1.getMessage());
 
 			}
@@ -529,7 +533,7 @@ public class PnVessel extends PnBase implements ActionListener {
 			try {
 				HashMap<String, Object> param = new HashMap<String, Object>();
 				param.put("vessel_name", vessel_name);
-				
+
 				log.info("del param:{}", param);
 				vesselService.delete(param);
 
@@ -551,7 +555,7 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	public void fnSearch()
 	{
-		HashMap<String, Object> param = new HashMap<String, Object>();	
+		CommandMap param = new CommandMap();	
 
 
 
@@ -583,49 +587,12 @@ public class PnVessel extends PnBase implements ActionListener {
 		}
 
 
-
-		try {
-
-
-			int page_size = tableH.getPageSize();
-
-			param.put("PAGE_SIZE", page_size);
-
-			param.put("PAGE_NO", 1);
-
-			log.info("param:{}",param);
-
-
-			HashMap<String, Object> result = (HashMap<String, Object>) vesselService.selectListByPage(param);			
-
-
-			tableH.setResultData(result);
-
-
-			List master = (List) result.get("master");
-
-			if(master.size()==0)
-			{
-				
-				tableD.clearReslult();
-				/*lblArea.setText("");
-				lblAreaCode.setText("");
-				lblPationality.setText("");
-				lblPortName.setText("");
-				tableD.clearReslult();*/
-			}
-			else
-			{
-				tableH.changeSelection(0,0,false,false);
-			}
+		callApi("selectVessel", param);
 
 
 
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(PnVessel.this, e.getMessage());
-		}
+
+
 
 	}
 
@@ -826,17 +793,12 @@ public class PnVessel extends PnBase implements ActionListener {
 	{
 
 		try {
-			HashMap<String, Object> commandMap = new HashMap<String, Object>();
+			CommandMap param = new CommandMap();
 
-			commandMap.put("vessel_name", vessel_name);
-
-			HashMap<String, Object> resultMap =  (HashMap<String, Object>) vesselService.selectDetailList(commandMap);
-
-			List result = (List) resultMap.get("master");
-
-			System.out.println("list size:"+result.size());
-
-			tableD.setResultData(result);
+			param.put("vessel_name", vessel_name);
+			
+			callApi("selectVesselDetailList", param);
+			
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(null, "error : "+e1.getMessage());
 			e1.printStackTrace();
@@ -845,7 +807,44 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	@Override
 	public void updateView() {
-		// TODO Auto-generated method stub
-		
+		CommandMap result= this.getModel();
+
+		boolean success = (boolean) result.get("success");
+
+		if(success)
+		{
+
+			String serviceId=(String) result.get("serviceId");
+
+			List data = (List )result.get("data");
+
+			if("selectVessel".equals(serviceId))
+			{	
+				tableH.setResultData(data);
+				tableH.setTotalCount(String.valueOf(data.size()));
+
+				if(data.size()==0)tableH.changeSelection(0,0,false,false);
+
+				if(data.size()==0)
+				{
+					tableD.clearReslult();
+				}
+				else
+				{
+					tableH.changeSelection(0,0,false,false);
+				}
+			}
+			else if("selectVesselDetailList".equals(serviceId))
+			{
+				tableD.setResultData(data);
+
+			}
+
+		}
+		else{  
+			String error = (String) result.get("error");
+			JOptionPane.showMessageDialog(this, error);
+		}
+
 	}
 }

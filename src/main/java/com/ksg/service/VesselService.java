@@ -17,7 +17,7 @@ public interface VesselService extends PageService{
 	
 	public HashMap<String, Object> selectDetailListByLike(Map<String, Object> commandMap) throws SQLException;
 	
-	public List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException;
+//	public List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException;
 	
 	public List<Vessel> selectVesselListByNameList(List<String>nameList)throws SQLException;
 

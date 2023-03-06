@@ -1,11 +1,21 @@
 package com.dtp.api.dao;
 
 
+import java.sql.SQLException;
 import java.util.List;
 
+import com.ksg.common.dao.AbstractDAO;
 import com.ksg.domain.Vessel;
 
-public class VesselDAO {
+public class VesselDAO extends AbstractDAO{
+	
+	/**
+	 * 
+	 */
+	public VesselDAO() {
+		super();
+		this.namespace = "vessel";
+	}
 
 	public Vessel selectById(String string) {
 		// TODO Auto-generated method stub
@@ -32,14 +42,14 @@ public class VesselDAO {
 		return 0;
 	}
 
-	public List selectListByCondition(Vessel param) {
+	public List selectListByCondition(Vessel param) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return selectList("vessel.selectVesselListByCondition", param);
 	}
 
-	public List selectDetailList(String param) {
-		// TODO Auto-generated method stub
-		return null;
+	public List selectDetailList(String vessel_name) throws SQLException {
+		Vessel param = Vessel.builder().vessel_name(vessel_name).build();
+		return selectList("vessel.selectVesselDetailList", param);
 	}
 
 	public int deleteVessel(String id) {
