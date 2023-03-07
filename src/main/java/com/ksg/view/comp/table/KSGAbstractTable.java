@@ -46,10 +46,11 @@ public class KSGAbstractTable extends JTable{
 
 	private TableModel model;
 	
-	DefaultTableCellRenderer renderer;
+	private DefaultTableCellRenderer renderer;
 	
+	private boolean isOdd= true;
 	
-	KSGViewUtil propeties = KSGViewUtil.getInstance();
+	private KSGViewUtil propeties = KSGViewUtil.getInstance();
 	
 	private int HEADER_HEIGHT;
 	
@@ -70,6 +71,8 @@ public class KSGAbstractTable extends JTable{
 		GRID_COLOR = getColor(propeties.getProperty("table.girdcolor"));
 		
 		FONT_SIZE = Integer.parseInt(propeties.getProperty("table.font.size"));
+		
+		isOdd =Boolean.getBoolean(propeties.getProperty("table.row.odd"));
 		
 		
 		this.setGridColor(GRID_COLOR);
@@ -93,6 +96,11 @@ public class KSGAbstractTable extends JTable{
 		Font currentFont=this.getFont();
 		this.setFont(new Font(currentFont.getName(),currentFont.getStyle(), size));
 		
+	}
+	
+	public void setOdd(boolean isOdd)
+	{
+		this.isOdd = isOdd;
 	}
 	
 	public KSGAbstractTable(TableModel model) {
@@ -169,9 +177,7 @@ public class KSGAbstractTable extends JTable{
 			{
 				namecol.setPreferredWidth(col.size);
 			}
-		}
-		
-		this.setRowHeight(30);		
+		}		
 
 		DefaultTableCellRenderer renderer =  
 				(DefaultTableCellRenderer)this.getTableHeader().getDefaultRenderer();
@@ -247,22 +253,45 @@ public class KSGAbstractTable extends JTable{
 			Component renderer = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			((JLabel) renderer).setOpaque(true);
 			Color foreground, background;
-			if (isSelected) {
-				foreground = Color.WHITE;
-				background = new Color(51, 153, 255);
-			} else {
+			
+			
+			
+			if(isOdd)
+			{
+				if (isSelected) {
+					foreground = Color.WHITE;
+					background = new Color(51, 153, 255);
+				} else {
 
-				if (row % 2 == 0) {
+					if (row % 2 == 0) {
+						foreground = Color.black;
+						background = Color.WHITE;
+					} else {
+						background = new Color(225, 235, 255);
+						foreground = Color.black;
+					}
+				}
+				setBorder(BorderFactory.createCompoundBorder(getBorder(), padding));
+				renderer.setForeground(foreground);
+				renderer.setBackground(background);
+			}
+			else
+			{
+				if (isSelected) {
+					foreground = Color.WHITE;
+					background = new Color(51, 153, 255);
+				} else {
+
 					foreground = Color.black;
 					background = Color.WHITE;
-				} else {
-					background = new Color(225, 235, 255);
-					foreground = Color.black;
 				}
+				setBorder(BorderFactory.createCompoundBorder(getBorder(), padding));
+				renderer.setForeground(foreground);
+				renderer.setBackground(background);
 			}
-			setBorder(BorderFactory.createCompoundBorder(getBorder(), padding));
-			renderer.setForeground(foreground);
-			renderer.setBackground(background);
+			
+			
+			
 
 			return renderer;
 		}

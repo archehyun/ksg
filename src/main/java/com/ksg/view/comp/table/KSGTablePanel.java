@@ -85,6 +85,11 @@ public class KSGTablePanel extends KSGPanel{
 
 		table.getParent().setBackground(Color.white);
 	}
+	
+	public void setOdd(boolean isOdd)
+	{
+		table.setOdd(isOdd);
+	}
 
 	public KSGTablePanel(TableModel model) {
 

@@ -27,8 +27,11 @@ public class VesselController extends AbstractController{
         log.info("param:{}",param);
 
         String vessel_name =(String) param.get("vessel_name");
+        
         String vessel_type =(String) param.get("vessel_type");
+        
         String vessel_company =(String) param.get("vessel_company");
+        
         Vessel vessel = Vessel.builder()
                                 .vessel_name(vessel_name)
                                 .vessel_use(param.containsKey("vessel_use")? (Integer) param.get("vessel_use"):-1)

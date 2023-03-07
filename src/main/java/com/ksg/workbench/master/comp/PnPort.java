@@ -40,10 +40,8 @@ import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.label.BoldLabel;
-import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.InsertPortAbbrInfoDialog;
@@ -208,6 +206,7 @@ public class PnPort extends PnBase implements ActionListener{
 		butDelAbbr.addActionListener(this);
 
 		pnButtom.add(pnButtomRight);
+		
 		return pnButtom;
 	}
 
@@ -243,10 +242,13 @@ public class PnPort extends PnBase implements ActionListener{
 	}
 	private KSGPanel createPortDetail()
 	{		
-		lblPortName = new JLabel();
-		lblArea = new JLabel();
-		lblAreaCode = new JLabel();
-		lblPationality = new JLabel();
+		lblPortName 	= new JLabel();
+		
+		lblArea 		= new JLabel();
+		
+		lblAreaCode 	= new JLabel();
+		
+		lblPationality 	= new JLabel();
 
 		lblPortName.setBackground(Color.WHITE);
 
@@ -262,15 +264,21 @@ public class PnPort extends PnBase implements ActionListener{
 
 
 		KSGPanel pnControl = new KSGPanel(new FlowLayout());
+		
 		JButton butNewAbbr = new JButton("추가");
+		
 		butNewAbbr.setActionCommand("약어 등록");
+		
 		JButton butDelAbbr = new JButton("삭제");
+		
 		butDelAbbr.setActionCommand("약어 삭제");
 
 		pnControl.add(butNewAbbr);
+		
 		pnControl.add(butDelAbbr);
 
 		butNewAbbr.addActionListener(this);
+		
 		butDelAbbr.addActionListener(this);
 
 		pnTitle.add(pnControl,BorderLayout.EAST);
@@ -387,14 +395,12 @@ public class PnPort extends PnBase implements ActionListener{
 		columns[4].columnName = "상세수";
 		columns[4].size = 50;
 
+		tableH.setOdd(false);
+		
 		tableH.setColumnName(columns);
 
 		tableH.initComp();
-
-		//tableH.setPageCountIndex(6);
-
-		//tableH.addPageActionListener(new PageAction(tableH, portService));
-
+		
 		tableH.setShowControl(true);
 
 		tableH.addMouseListener(new TableSelectListner());
