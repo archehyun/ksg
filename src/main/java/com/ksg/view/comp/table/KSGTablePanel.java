@@ -196,6 +196,7 @@ public class KSGTablePanel extends KSGPanel{
 	public void setResultData(List resultData) {
 
 		table.setResultData(resultData);
+		lblTotalCount.setText(String.valueOf(resultData.size()));
 	}
 
 	public int getSelectedRow() {

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.dao.CodeDAO;
+import com.ksg.domain.Code;
 
 /**
 
@@ -83,10 +84,24 @@ public class CodeDAOImpl extends AbstractDAO implements CodeDAO{
 	public Object delete(HashMap<String, Object> param) throws SQLException{
 		return delete(namespace+".deleteCodeH",param);
 	}
+	
+	@Override
+	public Object deleteCode(String code_field) throws SQLException{
+		return delete(namespace+".deleteCode",code_field);
+	}
 
 	@Override
 	public Object deleteDetail(HashMap<String, Object> param) throws SQLException {
 		return delete(namespace+".deleteCodeD",param);
+	}
+
+	public List selectCodeListByCondition(Code param) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList(namespace+".selectCodeHListByCondition", param);
+	}
+
+	public List selectCodeDetailListByCondition(Code param) throws SQLException {
+		return selectList(namespace+".selectCodeDetailList", param);
 	}
 
 

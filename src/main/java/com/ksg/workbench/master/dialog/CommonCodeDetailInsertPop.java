@@ -61,7 +61,7 @@ public class CommonCodeDetailInsertPop extends BasePop implements ActionListener
 	
 	public CommonCodeDetailInsertPop(HashMap<String, Object> item) {
 		this();
-		txfCodeType.setText((String)item.get("CD_ENG"));
+		txfCodeType.setText((String)item.get("code_name"));
 	}
 	
 	public JPanel createCenter()
@@ -174,11 +174,7 @@ public class CommonCodeDetailInsertPop extends BasePop implements ActionListener
 					JOptionPane.showMessageDialog(this, e1.getMessage());	
 				}
 				
-				
-				
 			}
-			
-			
 		}
 		
 	}

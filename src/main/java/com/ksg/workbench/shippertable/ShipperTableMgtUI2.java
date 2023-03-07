@@ -91,6 +91,7 @@ import com.ksg.view.comp.HintTextField;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.KSGRadioButton;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.view.comp.table.KSGTableSelectListner;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
@@ -196,7 +197,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 	private JPopupMenu 			popupMenu;	
 
-	private KSGPageTablePanel tableH;
+	private KSGTablePanel tableH;
 
 	private JTable				currentTable;
 
@@ -430,7 +431,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		pnTable.setLayout(tableLayout);
 
 
-		tableH = new KSGPageTablePanel("광고목록");
+		tableH = new KSGTablePanel("광고목록");
 		tableH.addColumn(new KSGTableColumn("page", "페이지"));
 		tableH.addColumn(new KSGTableColumn("table_index", "인덱스"));
 		tableH.addColumn(new KSGTableColumn("table_id", "테이블ID", 125));
@@ -452,11 +453,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		tableH.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		tableH.initComp();
-
-		tableH.setPageCountIndex(6);
-
-		tableH.addPageActionListener(new PageAction(tableH, shipperTableService));
-
+		
 		tableH.setName("tableH");
 
 
@@ -1443,9 +1440,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	public void fnUpdate()
 	{
 		try {
-			int page_size = tableH.getPageSize();
+//			int page_size = tableH.getPageSize();
 
-			searchParamHash.put("PAGE_SIZE", page_size);
+			searchParamHash.put("PAGE_SIZE", 0);
 
 			searchParamHash.put("PAGE_NO", 1);
 
@@ -1792,7 +1789,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 				tableH.setResultData(data);
 
-				tableH.setTotalCount(data.size());
+//				tableH.setTotalCount(data.size());
 
 				tableH.requestFocus();
 

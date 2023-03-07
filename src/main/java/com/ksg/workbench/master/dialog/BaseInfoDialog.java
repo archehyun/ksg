@@ -69,8 +69,6 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		
 		KSGPanel pnLabel = new KSGPanel(new BorderLayout());
 		
-		
-		
 		pnLabel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		
 		JLabel lblCompany_abbr = new JLabel(title);
@@ -140,11 +138,17 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	public KSGPanel buildTitle(String title)
 	{
 		KSGPanel pnTitle = new KSGPanel();
+		
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		pnTitle.setBackground(Color.white);
+		
 		lblTitle = new JLabel(title);
+		
 		lblTitle.setFont(new Font("area",Font.BOLD,16));
+		
 		pnTitle.add(lblTitle);
+		
 		return pnTitle;
 	}
 	

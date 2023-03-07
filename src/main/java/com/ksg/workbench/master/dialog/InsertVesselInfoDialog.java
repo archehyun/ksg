@@ -20,9 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -41,11 +39,9 @@ import javax.swing.text.PlainDocument;
 
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.view.comp.HintTextField;
 import com.ksg.view.comp.KSGCheckBox;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
@@ -57,8 +53,11 @@ import com.ksg.workbench.master.comp.PnVessel;
 public class InsertVesselInfoDialog extends BaseInfoDialog{
 
 	private String LABEL = "선박명 추가";
+	
 	private JTextField txfVesselName;
+	
 	private JTextField txfMMSI;
+	
 	private JTextField txfCompanyName;	
 
 	private JCheckBox chbUse;
@@ -91,15 +90,17 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 		this.setModal(true);
 
 		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
+		
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-
-
 
 		this.pack();
 
 		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+		
 		this.setResizable(false);
+		
 		this.setVisible(true);
 	}
 
@@ -176,11 +177,17 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 	}
 
 	private KSGPanel buildTitle() {
+		
 		KSGPanel pnTitle = new KSGPanel();
+		
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		pnTitle.setBackground(Color.white);
+		
 		JLabel label = new JLabel(LABEL);
+		
 		label.setFont(new Font("돋움",0,16));
+		
 		pnTitle.add(label);
 
 		return pnTitle;

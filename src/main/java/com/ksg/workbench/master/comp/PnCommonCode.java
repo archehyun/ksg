@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.dtp.api.control.CodeController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
@@ -46,31 +48,32 @@ import com.ksg.workbench.master.dialog.CommonCodeInsertPop;
 @SuppressWarnings("serial")
 public class PnCommonCode extends PnBase implements ActionListener{
 	
-	JTextField txfCodeName;
+	private JTextField txfCodeName;
 	
-	KSGTablePanel tableH;
+	private KSGTablePanel tableH;
 	
-	KSGTablePanel tableD;
+	private KSGTablePanel tableD;
 	
-	CodeServiceImpl codeService;
+	private CodeServiceImpl codeService;
 	
-	SelectionListner selectionListner = new SelectionListner();	
-	
-	private List<HashMap<String, Object>> master;
+	SelectionListner selectionListner = new SelectionListner();
 
 	public PnCommonCode(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
 		
-		codeService = new CodeServiceImpl();		
+		codeService = new CodeServiceImpl();
+		
+		this.setController(new CodeController());
 		
 		this.add(createCenter());
+		
 		this.addComponentListener(this);
+		
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		
-		
 	}
 
 	private Component createCenter() {
+		
 		KSGPanel pnMain = new KSGPanel(new BorderLayout(5,5));	
 		
 		tableH = new KSGTablePanel("코드 목록");		
@@ -78,17 +81,17 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		KSGTableColumn Hcolumns[] = new KSGTableColumn[3];
 
 		Hcolumns[0] = new KSGTableColumn();
-		Hcolumns[0].columnField = "CD_ID";
+		Hcolumns[0].columnField = "code_field";
 		Hcolumns[0].columnName = "코드ID";
 		Hcolumns[0].size = 100;
 		
 		Hcolumns[1] = new KSGTableColumn();
-		Hcolumns[1].columnField = "CD_NM";
+		Hcolumns[1].columnField = "code_name_kor";
 		Hcolumns[1].columnName = "코드명";
 		Hcolumns[1].size = 100;		
 		
 		Hcolumns[2] = new KSGTableColumn();
-		Hcolumns[2].columnField = "CD_ENG";
+		Hcolumns[2].columnField = "code_name";
 		Hcolumns[2].columnName = "코드타입";
 		Hcolumns[2].size = 100;
 		
@@ -123,6 +126,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		Dcolumns[2].columnField = "code_name";
 		Dcolumns[2].columnName = "코드영문명";
 		Dcolumns[2].size = 200;
+		
 		tableD.setColumnName(Dcolumns);
 		
 		tableD.initComp();
@@ -149,7 +153,6 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		
 		KSGPanel pnSearchAndCount = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		
 		pnSearchAndCount.add(new JLabel("코드명:"));
 		
 		pnSearchAndCount.add(txfCodeName);
@@ -159,8 +162,6 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		butSearch.addActionListener(this);
 		
 		pnSearchAndCount.add(butSearch);
-		
-		
 		
 		KSGPanel pnMain= new KSGPanel(new BorderLayout());
 		
@@ -191,20 +192,20 @@ public class PnCommonCode extends PnBase implements ActionListener{
 	public void fnSearchDetail(String CDENG)
 	{
 
-		try {
+
+			System.out.println("send:"+CDENG);
+			
+			CommandMap param = new CommandMap();
+			
 			HashMap<String, Object> commandMap = new HashMap<String, Object>();
 			
 			commandMap.put("code_type", CDENG);
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) codeService.selectCodeDList(commandMap);
 			
-			int total = (Integer) result.get("total");
+			param.put("code_type", CDENG);
 			
-			tableD.setResultData(result);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+			callApi("selectCodeDetailList", param);
+		
 	}
 
 	
@@ -213,50 +214,19 @@ public class PnCommonCode extends PnBase implements ActionListener{
 	public void fnSearch() {
 		
 		
-		tableH.getSelectionModel().removeListSelectionListener(selectionListner);
+//		tableH.getSelectionModel().removeListSelectionListener(selectionListner);
 		
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 		
 		
 		if(!"".equals(txfCodeName.getText()))
 		{
-			param.put("CD_NM", txfCodeName.getText());
-		}	
-		
-		try {
-			
-			logger.info("param:{}",param);
-		HashMap<String, Object> result = (HashMap<String, Object>) codeService.selectCodeHList(param);
-		
-		tableH.setResultData(result);
-		
-		tableH.getSelectionModel().addListSelectionListener(selectionListner);
-		
-		
-		
-		master = (List) result.get("master");
-
-		if(master.size()==0)
-		{
-			/*lblArea.setText("");
-			lblAreaCode.setText("");
-			lblPationality.setText("");
-			lblPortName.setText("");
-			tableD.clearReslult();*/
-			
-			tableD.clearResult();
-		}
-		else
-		{
-			tableH.changeSelection(0,0,false,false);
+			param.put("code_name_kor", txfCodeName.getText());
 		}
 		
+		callApi("selectCodeList", param);
 		
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, e.getMessage());
-		}
+		
 	}
 	class CommonCodeAction implements ActionListener
 	{
@@ -269,10 +239,11 @@ public class PnCommonCode extends PnBase implements ActionListener{
 			{
 				CommonCodeInsertPop codeInsertPop = new CommonCodeInsertPop();
 				
-				codeInsertPop.showPop(PnCommonCode.this);
+				codeInsertPop.createAndUpdateUI();
+				
 				switch (codeInsertPop.result) {
 				case BasePop.OK:
-					
+					fnSearch();
 					break;
 				case BasePop.CANCEL:					
 					break;	
@@ -296,7 +267,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 				
 				switch (codeInsertPop.result) {
 				case BasePop.OK:
-					
+					fnSearch();
 					//tableH.changeSelection(row, 0, false, extend);
 					break;
 				case BasePop.CANCEL:					
@@ -314,21 +285,25 @@ public class PnCommonCode extends PnBase implements ActionListener{
 				if(row<0)
 					return;
 				HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(row);
-				try {
-				codeService.deleteCodeH(item);
 				
-				fnSearch();
+				CommandMap param = new CommandMap();
+				param.put("code_field", item.get("code_field"));
 				
-				}catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-					JOptionPane.showMessageDialog(null, e1.getMessage());
-					
-				}
+				callApi("deleteCode", param);
+				
+//				try {
+//				codeService.deleteCodeH(item);
+//				
+//				fnSearch();
+//				
+//				}catch (SQLException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//					JOptionPane.showMessageDialog(null, e1.getMessage());
+//					
+//				}
 			}
-			
 		}
-		
 	}
 	
 	class CommonCodeDetileAction implements ActionListener
@@ -390,9 +365,8 @@ public class PnCommonCode extends PnBase implements ActionListener{
 				String CDENG = (String) tableH.getValueAt(tableH.getSelectedRow(), 2);
 				
 				fnSearchDetail(CDENG);
-				
-				
 			}
+			
 		}
 	}
 
@@ -405,7 +379,62 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 	@Override
 	public void updateView() {
-		// TODO Auto-generated method stub
+
+
+		CommandMap result= this.getModel();
+
+		boolean success = (boolean) result.get("success");
+
+		if(success)
+		{
+			
+			String serviceId=(String) result.get("serviceId");
+			
+			List data = (List )result.get("data");
+			
+			if("selectCodeList".equals(serviceId))
+			{	
+				
+				
+				tableH.getSelectionModel().removeListSelectionListener(selectionListner);
+				tableH.setResultData(data);
+				
+				tableH.setTotalCount(String.valueOf(data.size()));
+
+				if(data.size()==0)tableH.changeSelection(0,0,false,false);
+
+				if(data.size()==0)
+				{
+//					lblArea.setText("");
+//					lblAreaCode.setText("");
+//					lblPationality.setText("");
+//					lblPortName.setText("");
+//					tableD.clearReslult();
+				}
+				else
+				{
+					tableH.changeSelection(0,0,false,false);
+				}
+				tableH.getSelectionModel().addListSelectionListener(selectionListner);
+			}
+			else if("deleteCode".equals(serviceId))
+			{
+				String code_filed = (String) result.get("code_field");
+				JOptionPane.showMessageDialog(this, String.format("(%s) 삭제 되었습니다.", code_filed));
+				fnSearch();
+			}
+			
+			else if("selectCodeDetailList".equals(serviceId))
+			{
+				tableD.setResultData(data);
+
+			}
+
+		}
+		else{  
+			String error = (String) result.get("error");
+			JOptionPane.showMessageDialog(this, error);
+		}
 		
 	}
 

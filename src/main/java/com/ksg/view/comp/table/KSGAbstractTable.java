@@ -59,6 +59,8 @@ public class KSGAbstractTable extends JTable{
 	private int FONT_SIZE;
 	
 	private static Color GRID_COLOR;
+	
+	private static Color ODD_COLOR;
 
 	public KSGAbstractTable() {
 
@@ -70,10 +72,11 @@ public class KSGAbstractTable extends JTable{
 		
 		GRID_COLOR = getColor(propeties.getProperty("table.girdcolor"));
 		
+		ODD_COLOR = getColor(propeties.getProperty("table.oddcolor"));
+		
 		FONT_SIZE = Integer.parseInt(propeties.getProperty("table.font.size"));
 		
-		isOdd =Boolean.getBoolean(propeties.getProperty("table.row.odd"));
-		
+		isOdd =Boolean.parseBoolean(propeties.getProperty("table.row.odd"));
 		
 		this.setGridColor(GRID_COLOR);
 		
@@ -267,7 +270,7 @@ public class KSGAbstractTable extends JTable{
 						foreground = Color.black;
 						background = Color.WHITE;
 					} else {
-						background = new Color(225, 235, 255);
+						background = ODD_COLOR;
 						foreground = Color.black;
 					}
 				}

@@ -1,25 +1,24 @@
 package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ksg.common.util.ViewUtil;
+import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.impl.CodeServiceImpl;
-import com.ksg.workbench.master.comp.PnCommonCode;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 /**
 
@@ -35,101 +34,67 @@ import com.ksg.workbench.master.comp.PnCommonCode;
 
   */
 @SuppressWarnings("serial")
-public class CommonCodeInsertPop extends BasePop implements ActionListener{
+public class CommonCodeInsertPop extends BaseInfoDialog{
 	
 	CodeServiceImpl codeService;
 	
-	JButton butOk;
+	private JButton butOk;
 	
-	JButton butCancel;
+	private JButton butCancel;
 	
-	JTextField txfCodeID;
+	private JTextField txfCodeID;
 	
-	JTextField txfCodeNM;
+	private JTextField txfCodeNM;
 	
-	JTextField txfCodeENG;
-
-	private PnCommonCode pnCommonCode;
+	private JTextField txfCodeENG;	
 	
 	public CommonCodeInsertPop() {
+		
+		this.setTitle("코드 정보 추가");
+		
 		codeService = new CodeServiceImpl();
-		this.getContentPane().add(createCenter());
-		
-		
-		
-		this.getContentPane().add(createNorth(),BorderLayout.SOUTH);
-		this.setTitle("코드 추가");
-		
+
 	}
 	
-	public JPanel createCenter()
+	public KSGPanel buildCenter()
 	{
-		JPanel pnMain = new JPanel();
-		
-		BoxLayout boxLayout = new BoxLayout(pnMain, BoxLayout.Y_AXIS);
-		
-		pnMain.setLayout(boxLayout);
-		
+			
 		txfCodeID = new JTextField(15);
+		
 		txfCodeNM = new JTextField(15);
+		
 		txfCodeENG = new JTextField(15);
 		
-		pnMain.add(addComp("코드ID", txfCodeID));
-		pnMain.add(addComp("코드명", txfCodeNM));
-		pnMain.add(addComp("코드영문명", txfCodeENG));
+		
+		
+		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+		
+		pnCenter.add(createFormItem(txfCodeID,"코드ID"));
+		
+		pnCenter.add(createFormItem(txfCodeNM, "코드명"));
+		
+		pnCenter.add(createFormItem(txfCodeENG,"코드영문명"));
+
+		KSGPanel pnMain = new KSGPanel();
+		
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		
+		pnMain.add(pnCenter);
 		
 		return pnMain;
-	}
-	
-	private JPanel addComp(String title, JComponent comp)
-	{
-		JPanel pnMain = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		JLabel lblTitle = new JLabel(title,JLabel.RIGHT);
-		
-		lblTitle.setPreferredSize(new Dimension(100,25));
-		
-		pnMain.add(lblTitle);
-		pnMain.add(comp);
-		return pnMain;
-	}
-	
-	private JPanel createNorth()
-	{
-		
-		JPanel pnMain = new JPanel(new BorderLayout());
-		
-		
-		JPanel pnCenter = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		
-		butOk = new JButton("확인");
-		
-		butCancel = new JButton("취소");
-		
-		butOk.addActionListener(this);
-		butCancel.addActionListener(this);
-		
-		pnCenter.add(butOk);
-		
-		pnCenter.add(butCancel);
-		
-		pnMain.add(pnCenter,BorderLayout.LINE_END);
-		
-		
-		return pnMain;
-		
-			
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		String command = e.getActionCommand();
+		
 		if(command.equals("취소"))
 		{
 			close();
 			result = BasePop.CANCEL;
 		}
-		else if(command.equals("확인"))
+		else if(command.equals("저장"))
 		{
 			String codeID = txfCodeID.getText();
 			String codeNM = txfCodeNM.getText();
@@ -149,9 +114,11 @@ public class CommonCodeInsertPop extends BasePop implements ActionListener{
 			
 			try {
 				codeService.insertCodeH(param);
+				
 				result = BasePop.OK;
+				
 				close();
-				pnCommonCode.fnSearch();
+				
 				
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
@@ -162,12 +129,42 @@ public class CommonCodeInsertPop extends BasePop implements ActionListener{
 			}
 		}
 		
+	}	
+	
+	private KSGPanel buildTitle() {
+		
+		KSGPanel pnTitle = new KSGPanel();
+		
+		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		pnTitle.setBackground(Color.white);
+		
+		JLabel label = new JLabel(title);
+		
+		label.setFont(new Font("돋움",0,16));
+		
+		pnTitle.add(label);
+
+		return pnTitle;
 	}
 
-	public void showPop(PnCommonCode pnCommonCode) {
-		super.showPop();
-		this.pnCommonCode =pnCommonCode;
+	@Override
+	public void createAndUpdateUI() {
+		this.setModal(true);
+
+		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
 		
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+
+		this.pack();
+
+		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+		
+		this.setResizable(false);
+		
+		this.setVisible(true);
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.CodeDAOImpl;
+import com.ksg.domain.Code;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +34,16 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 		
 		super();
 		codeDAO = new CodeDAOImpl();
+	}
+	
+	public List selectCodeHList(Code param) throws SQLException
+	{
+		return codeDAO.selectCodeListByCondition(param);
+	}
+	
+	public List selectCodeDetailList(Code param) throws SQLException
+	{
+		return codeDAO.selectCodeDetailListByCondition(param);
 	}
 	
 	public Map<String, Object> selectCodeHList(Map<String, Object> param) throws SQLException {
@@ -99,6 +110,12 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 	public Object deleteCodeH(HashMap<String, Object> param)throws SQLException {
 		log.debug("param:{}"+param);
 		return codeDAO.delete(param);
+		
+	}
+	
+	public Object deleteCode(String code_field)throws SQLException {
+		
+		return codeDAO.deleteCode(code_field);
 		
 	}
 

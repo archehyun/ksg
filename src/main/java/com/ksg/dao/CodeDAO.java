@@ -37,6 +37,8 @@ public interface CodeDAO {
 	public Object delete(HashMap<String, Object> param) throws SQLException;
 
 	public Object deleteDetail(HashMap<String, Object> param) throws SQLException ;
+
+	Object deleteCode(String code_field) throws SQLException;
 	
 
 }

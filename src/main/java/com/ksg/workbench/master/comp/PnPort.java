@@ -395,7 +395,7 @@ public class PnPort extends PnBase implements ActionListener{
 		columns[4].columnName = "»ó¼¼¼ö";
 		columns[4].size = 50;
 
-		tableH.setOdd(false);
+		
 		
 		tableH.setColumnName(columns);
 
