@@ -7,7 +7,9 @@ import com.dtp.api.annotation.ControlMethod;
 import com.dtp.api.service.VesselService;
 import com.dtp.api.service.impl.VesselServiceImpl;
 import com.ksg.common.model.CommandMap;
+import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
+import com.ksg.service.impl.CodeServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 public class VesselController extends AbstractController{
 	
 	private VesselService service;
+	
+	private CodeServiceImpl codeService= new CodeServiceImpl();
 
     public VesselController() {
         super();
@@ -188,6 +192,32 @@ public class VesselController extends AbstractController{
         returnMap.put("success", true);
         returnMap.put("data", result);
         return returnMap;
+    }
+    
+    @ControlMethod(serviceId = "pnVessel.init")
+    public CommandMap init(CommandMap param) throws Exception
+    {
+
+		
+		Code codeParam = Code.builder().code_type((String) param.get("code_type")).build();
+
+		List<Code> result= codeService.selectCodeDetailList(codeParam);
+        
+
+        List<CommandMap> resultArry=result.stream()
+                        .map(o -> objectMapper.convertValue(o, CommandMap.class))
+                        .collect(Collectors.toList());
+    	
+    	
+        CommandMap returnMap = new CommandMap();
+	  
+        returnMap.put("success", true);
+      
+        returnMap.put("data", resultArry);
+      
+        return returnMap;
+      
+   
     }
 
 }

@@ -1,2 +1,4 @@
-2023-03-07 13:53:43,000  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
-2023-03-07 13:53:43,073  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-03-08 17:24:59,427  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
+2023-03-08 17:24:59,530  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-03-08 17:27:56,552  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=I, sortType=date, isAddValidate=false, date_issue=2023-03-13, gubun=Normal}
+2023-03-08 17:27:57,031  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=I, sortType=date, isAddValidate=false, date_issue=2023-03-13, gubun=Normal}

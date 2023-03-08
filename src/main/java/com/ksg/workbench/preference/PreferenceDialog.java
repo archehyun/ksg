@@ -27,7 +27,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
@@ -56,18 +56,26 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 	String selectedKeyword="vessel";
 	
 	private CardLayout cardLayout;
+	
 	private KSGPanel pnCardMain;
+	
 	private PnPath pnPath;
+	
 	private PnXLS pnXLS;
+	
 	private PnKeyWord pnKeyWord;
+	
 	private PnPortExcpetion pnOtherPort;
+	
 	private PnCheckPort pnCheckPort;
 	
 	private JLabel lblTitle;
 	
 	String startTab;
 	private PnApperance pnApperance;
+	
 	private BaseServiceImpl baseService;
+	
 	public PreferenceDialog(String title, boolean modal) {
 		this.setTitle(title);
 		this.setModal(modal);
@@ -87,18 +95,22 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 		this.dispose();
 
 	}
-	public JPanel addComp(JComponent comp,String label)
+	public KSGPanel addComp(JComponent comp,String label)
 	{
 		return this.addComp(comp, label,100);
 	}
-	public JPanel addComp(JComponent comp,String label,int width)
+	public KSGPanel addComp(JComponent comp,String label,int width)
 	{
-		JPanel pnSavefolder =  new JPanel();
+		KSGPanel pnSavefolder =  new KSGPanel();
+		
 		pnSavefolder.setLayout(new BorderLayout());
+		
 		JLabel label2 = new JLabel(label,JLabel.RIGHT);
+		
 		label2.setPreferredSize(new Dimension(width,24));
 
 		pnSavefolder.add(label2,BorderLayout.WEST);
+		
 		if(comp instanceof JList)
 		{
 			pnSavefolder.add(new JScrollPane(comp),BorderLayout.CENTER);
@@ -109,11 +121,14 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 
 		return pnSavefolder;
 	}
-	private JPanel buildCenter() {
-		JPanel pnCenter = new JPanel();
-		JPanel pnNorth = new JPanel();
+	private KSGPanel buildCenter() {
+		
+		KSGPanel pnCenter = new KSGPanel();
+		
+		KSGPanel pnNorth = new KSGPanel();
 		
 		pnNorth.setPreferredSize(new Dimension(0,15));
+		
 		pnNorth.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		pnCenter.setLayout(new BorderLayout());
@@ -121,16 +136,16 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 
 		pnCenter.setBorder(BorderFactory.createEmptyBorder());
 
-		JPanel pnSearch =  new JPanel();
+		KSGPanel pnSearch =  new KSGPanel();
 		pnSearch.setBackground(Color.white);
 		pnSearch.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JTextField field = new JTextField(10);
 		pnSearch.add(field);
 
 		
-		JPanel pn1 =new JPanel();
+		KSGPanel pn1 =new KSGPanel();
 		pn1.setLayout(new BorderLayout());
-		JPanel pnTitle = new JPanel();
+		KSGPanel pnTitle = new KSGPanel();
 		pnTitle.setPreferredSize(new Dimension(0,45));
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 		lblTitle = new JLabel();
@@ -143,7 +158,7 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 		pn1.add(pnTitle,BorderLayout.NORTH);
 		
 		pnCenter.add(pn1,BorderLayout.CENTER);
-		JPanel pnLeftMenu = new JPanel();
+		KSGPanel pnLeftMenu = new KSGPanel();
 		pnLeftMenu.setLayout( new BorderLayout());
 
 		pnLeftMenu.setBorder(BorderFactory.createEtchedBorder());
@@ -153,6 +168,8 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 		
 		pnCenter.add(pnLeftMenu,BorderLayout.WEST);
 		pnCenter.setBorder(BorderFactory.createEtchedBorder());
+		
+		pnCenter.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
 		return pnCenter;
 	}
@@ -175,27 +192,18 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 		
 		
 		addPnOption(pnXLS);
+		
 		addPnOption(pnKeyWord);
+		
 		addPnOption(pnPath);
+		
 		addPnOption(pnOtherPort);
-		addPnOption(pnCheckPort);		
+		
+		addPnOption(pnCheckPort);
+		
 		addPnOption(pnApperance);
 		
-//		
-//		pnCardMain.add(pnXLS,pnXLS.getName());
-//		pnCardMain.add(pnKeyWord,pnKeyWord.getName());
-//		pnCardMain.add(pnPath,pnPath.getName());
-//		pnCardMain.add(pnOtherPort,pnOtherPort.getName());
-//		pnCardMain.add(pnCheckPort,pnCheckPort.getName());
-//		pnCardMain.add(pnApperance,pnCheckPort.getName());
-//		
-//		preferenceList.add(pnXLS);
-//		preferenceList.add(pnKeyWord);
-//		preferenceList.add(pnPath);
-//		preferenceList.add(pnOtherPort);
-//		preferenceList.add(pnCheckPort);
-//		preferenceList.add(pnApperance);
-		
+
 		if(startTab==null)
 		{
 			lblTitle.setText(preferenceList.get(0).getName());	
@@ -213,8 +221,8 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 		preferenceList.add(pn);
 	}
 	
-	private JPanel buildControl() {
-		JPanel pnButtom = new JPanel();
+	private KSGPanel buildControl() {
+		KSGPanel pnButtom = new KSGPanel();
 		pnButtom.setPreferredSize(new Dimension(0,45));
 		pnButtom.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
@@ -233,14 +241,20 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 	public void createAndUpdateUI(Component component) {
 		
 		this.getContentPane().add( buildCenter(),BorderLayout.CENTER);
+		
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		
 		this.pack();
+		
 		this.setLocationRelativeTo(component);
+		
 		this.setVisible(true);
 		
 	}
 	private JTree createTree() {
+		
 		JTree jTree = new JTree();
+		
 		jTree.setPreferredSize( new Dimension(180,0));
 
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode();
@@ -253,8 +267,13 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 		}
 	
 		DefaultTreeModel model = new DefaultTreeModel(root);
+		
 		jTree.setModel(model);
+		
 		jTree.setRootVisible(false);
+		
+		jTree.setRowHeight(25);
+		
 		jTree.addTreeSelectionListener(new TreeSelectionListener(){
 
 			public void valueChanged(TreeSelectionEvent e) {

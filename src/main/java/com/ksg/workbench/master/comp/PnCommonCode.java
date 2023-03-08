@@ -326,9 +326,19 @@ public class PnCommonCode extends PnBase implements ActionListener{
 			else if(command.equals(KSGTablePanel.DELETE))
 			{
 				int row = tableD.getSelectedRow();
-				if(row<0)
-					return;
+				
+				if(row<0) return;
+				
 				HashMap<String, Object> item=(HashMap<String, Object>) tableD.getValueAt(row);
+				
+				
+				CommandMap param = new CommandMap();
+				
+				param.put("","");
+				
+				callApi("deleteCodeDetail", param);
+				
+				
 				try {
 				codeService.deleteCodeD(item);
 				

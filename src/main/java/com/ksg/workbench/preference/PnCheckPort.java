@@ -1,20 +1,22 @@
 package com.ksg.workbench.preference;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 
 import com.ksg.common.dao.DAOManager;
@@ -36,54 +38,80 @@ public class PnCheckPort extends PnOption{
 	private BaseService baseService;
 
 	public PnCheckPort(PreferenceDialog preferenceDialog) {
+		
 		super(preferenceDialog);
+		
 		this.setName("확인 항구명 목록");
-		listKeyword = new JList();
+		
 		baseService =DAOManager.getInstance().createBaseService();
+		
+		this.addComponentListener(this);
+		
+		this.setLayout(new BorderLayout());
+		
+		this.add(buildCenter(),BorderLayout.CENTER);
+		
+		
+	}
+	
+	public KSGPanel buildCenter()
+	{
+		
+		listKeyword = new JList();
+		
 		KSGPanel pnKeyWordTypeOption = new KSGPanel();
+		
 		pnKeyWordTypeOption.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		pnKeyWordTypeOption.add(new JLabel("광고정보 입력시에 확인하는 항구명을 입력하십시요 "));
 		
 
 		JButton butADD = new JButton("확인 항구  추가");
-		butADD.addActionListener(this);
+		
 		JButton butDel = new JButton("확인 항구  삭제");
+		
+		butADD.addActionListener(this);
+		
 		butDel.addActionListener(this);
-
 		
-		Box pnMain =Box.createVerticalBox();
+		Box pnBox =Box.createVerticalBox();
 		
-		pnMain.add(pnKeyWordTypeOption);
+		pnBox.add(pnKeyWordTypeOption);
 		
-		JPanel pnKeyList = new JPanel();
+		KSGPanel pnKeyList = new KSGPanel();
+		
 		pnKeyList.setLayout(new BorderLayout());
+		
 		pnKeyList.add(new JScrollPane(listKeyword));
+		
 		Box pnKeyControl = Box.createVerticalBox();
 		
-		pnKeyControl.add(butADD);		
-		pnKeyControl.add(Box.createGlue());
-		pnKeyControl.add(butDel);
+		
+		
+		pnKeyControl.add(butADD);
+		
 		pnKeyControl.add(Box.createGlue());
 		
-		JPanel pn1 = new JPanel();
+		pnKeyControl.add(butDel);
+		
+		pnKeyControl.add(Box.createGlue());
+		
+		KSGPanel pn1 = new KSGPanel();
+		
 		pn1.add(pnKeyControl);
 		
 		pnKeyList.add(pn1,BorderLayout.EAST);
-		JPanel pnWest = new JPanel();
-		pnWest.setPreferredSize(new Dimension(15,0));
-		pnKeyList.add(pnWest,BorderLayout.WEST);
-		pnMain.add(pnKeyList);
 		
-		this.setLayout(new BorderLayout());
-		this.add(pnMain,BorderLayout.CENTER);
-		Code code_info = new Code();
-		code_info.setCode_type("port_check");
-		try {
-			updateKeyWordList(baseService.getCodeInfoList(code_info));
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "에러:"+e.getMessage());
-			e.printStackTrace();
-		}
+		pnBox.add(pnKeyList);
+		
+		
+		KSGPanel pnMain=new KSGPanel(new BorderLayout());
+		
+		pnMain.add(pnBox);
+		
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,15, 5,5));
+		
+		return pnMain;
 	}
 	private void updateKeyWordList(List keyList) {
 
@@ -152,6 +180,20 @@ public class PnCheckPort extends PnOption{
 			{
 				JOptionPane.showMessageDialog(preferenceDialog, "선택된 Key Word가 없습니다");
 			}
+		}
+		
+	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+		Code code_info = new Code();
+		code_info.setCode_type("port_check");
+		try {
+			updateKeyWordList(baseService.getCodeInfoList(code_info));
+		} catch (SQLException ee) {
+			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "에러:"+ee.getMessage());
+			ee.printStackTrace();
 		}
 		
 	}

@@ -29,7 +29,7 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -146,9 +146,13 @@ public class PnVessel extends PnBase implements ActionListener {
 	public PnVessel(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
+		
 		this.setController(new VesselController());
+		
 		this.addComponentListener(this);
+		
 		this.add(buildCenter());
+		
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 	}
 
@@ -316,7 +320,7 @@ public class PnVessel extends PnBase implements ActionListener {
 	 */
 	private JComponent buildButton()
 	{
-		JPanel pnMain = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		KSGPanel pnButtomRight = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton butDel = new JButton(STRING_DELETE);
 
@@ -702,10 +706,11 @@ public class PnVessel extends PnBase implements ActionListener {
 			if(e.getClickCount()>1)
 			{
 				int row=tableH.getSelectedRow();
-				if(row<0)
-					return;
+				if(row<0) return;
 				HashMap<String, Object> item = (HashMap<String, Object>) tableH.getValueAt(row);
+				
 				UpdateVesselInfoDialog dialog = new UpdateVesselInfoDialog(item);
+				
 				dialog.createAndUpdateUI();
 
 			}
@@ -728,34 +733,17 @@ public class PnVessel extends PnBase implements ActionListener {
 		Code code = new Code();
 
 		code.setCode_name_kor(STRING_CONTAINER_TYPE);
-		try {
+	
 
-			HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 
-			param.put("code_type", "conType");
+		param.put("code_type", "conType");
+		
+		callApi("pnVessel.init", param);
 
-			HashMap<String , Object> result=(HashMap<String, Object>) codeService.selectCodeDList(param);
 
-			List<HashMap<String, Object>> list = (List<HashMap<String, Object>>) result.get("master");			
 
-			DefaultComboBoxModel boxModel = new DefaultComboBoxModel();
-
-			Iterator iter =list.iterator();
-
-			while(iter.hasNext())
-			{
-				HashMap<String, Object> item = (HashMap<String, Object>) iter.next();
-
-				cbxVesselType.addItem(item.get("code_field"));
-
-			}
-		} catch (SQLException ee) {
-			// TODO Auto-generated catch block
-			ee.printStackTrace();
-		}
-
-		if(isShowData)
-			fnSearch();
+		
 	}
 
 	class SelectionListner implements ListSelectionListener
@@ -792,17 +780,14 @@ public class PnVessel extends PnBase implements ActionListener {
 	public void fnSearchDetail(String vessel_name)
 	{
 
-		try {
+	
 			CommandMap param = new CommandMap();
 
 			param.put("vessel_name", vessel_name);
 			
 			callApi("selectVesselDetailList", param);
 			
-		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(null, "error : "+e1.getMessage());
-			e1.printStackTrace();
-		}
+		
 	}
 
 	@Override
@@ -816,10 +801,11 @@ public class PnVessel extends PnBase implements ActionListener {
 
 			String serviceId=(String) result.get("serviceId");
 
-			List data = (List )result.get("data");
+			
 
 			if("selectVessel".equals(serviceId))
 			{	
+				List data = (List )result.get("data");
 				tableH.setResultData(data);
 				tableH.setTotalCount(String.valueOf(data.size()));
 
@@ -836,7 +822,31 @@ public class PnVessel extends PnBase implements ActionListener {
 			}
 			else if("selectVesselDetailList".equals(serviceId))
 			{
+				List data = (List )result.get("data");
 				tableD.setResultData(data);
+
+			}
+			
+			else if("pnVessel.init".equals(serviceId))
+			{
+				List data = (List )result.get("data");		
+
+				DefaultComboBoxModel boxModel = new DefaultComboBoxModel();
+
+				Iterator iter =data.iterator();
+				
+				cbxVesselType.removeAllItems();
+
+				while(iter.hasNext())
+				{
+					HashMap<String, Object> item = (HashMap<String, Object>) iter.next();
+
+					cbxVesselType.addItem(item.get("code_field"));
+
+				}
+				
+				if(isShowData)
+					fnSearch();
 
 			}
 

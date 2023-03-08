@@ -279,7 +279,13 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 
 					for(List items: partitions)
 					{
-						scheduleService.insertScheduleBulkData(items);	
+						try {
+						scheduleService.insertScheduleBulkData(items);
+						}catch(SQLException e)
+						{
+							//TODO 날짜 입력에 문자가 포함시 에러 발생
+							e.printStackTrace();
+						}
 					}
 				}
 				else

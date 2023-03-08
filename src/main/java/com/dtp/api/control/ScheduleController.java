@@ -2,6 +2,7 @@ package com.dtp.api.control;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
+import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.AreaService;
@@ -61,6 +63,8 @@ public class ScheduleController extends AbstractController{
 	private TreeNodeManager nodeManager = new TreeNodeManager();
 	
 	protected Logger logger = LogManager.getLogger(this.getClass());
+	
+	private ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
 
 	public ScheduleController()
 	{
@@ -335,6 +339,8 @@ public class ScheduleController extends AbstractController{
 	{
 		CommandMap returnMap = new CommandMap();
 		
+		
+		
 		int result=service.deleteSchedule();
 		
 		int b=service.deleteInlnadSchedule();
@@ -377,6 +383,25 @@ public class ScheduleController extends AbstractController{
 		return returnMap;
 
 	}
+	
+	@ControlMethod(serviceId = "createSchedule")
+	public CommandMap scheduleCreate(CommandMap param) throws Exception
+	{	
+		
+		ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
+		
+		String inputDate= (String) param.get("inputDate");
+		
+		serviceManager.buildSchedule(inputDate);
+		
+		CommandMap returnMap = new CommandMap();
+		
+		return returnMap;
+	}
+	
+	
+	
+	
 	@ControlMethod(serviceId = "schedulePrint")
 	public CommandMap schedulePrint(CommandMap param) throws Exception
 	{	
@@ -470,8 +495,6 @@ public class ScheduleController extends AbstractController{
 				param.put("gubun", null);
 				
 				List<ScheduleData>  li = service.selecteScheduleListByCondition(param);
-				
-				
 				
 				CommandMap result = (CommandMap) selectRouteScheduleGroupList(li);
 
