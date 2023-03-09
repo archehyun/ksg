@@ -65,6 +65,16 @@
 		
 	</select>
 	
+	
+	<select id="selectCodeDetailByKey" resultClass="com.ksg.domain.Code">
+		SELECT 
+				* 
+		FROM 	TB_CODE_INFO
+		WHERE 	code_field=#code_field# 
+		AND 	code_name = #code_name#
+	</select>
+	
+	
 	<select id="selectCodeDetailList" resultClass="com.ksg.domain.Code">
 		SELECT 
 				code_field,
@@ -130,6 +140,21 @@
 			#code_name_kor#
 		);
 	</insert>
+	<insert id="insertCodeDetail" parameterClass="com.ksg.domain.Code">
+		insert into TB_CODE_INFO(
+			code_field,
+			code_name,
+			code_type,
+			code_name_kor
+		
+		)values
+		(
+			#code_field#,
+			#code_name#,
+			#code_type#,
+			#code_name_kor#
+		);
+	</insert>	
 	
 <!-- update -->
 	
@@ -158,6 +183,13 @@
 	
 	<delete id="deleteCodeD" parameterClass="java.util.HashMap">
 		delete from TB_CODE_INFO where code_field=#code_field# and code_name=#code_name#
+	</delete>
+	
+	<delete id="deleteCodeDetail" parameterClass="com.ksg.domain.Code">
+		DELETE 
+		FROM 	TB_CODE_INFO 
+		WHERE 	code_field=#code_field# 
+		AND 	code_name=#code_name#
 	</delete>
 	
 	

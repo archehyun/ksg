@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.dtp.api.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.CodeDAOImpl;
 import com.ksg.domain.Code;
@@ -130,6 +131,24 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 		log.debug("param:{}"+param);
 		return codeDAO.deleteDetail(param);
 		
+	}
+
+	public Object deleteCodeDetail(Code codeParam) throws SQLException {
+		return codeDAO.deleteCodeDetail(codeParam);
+	}
+
+	public Object insertCodeDetail(Code codeParam) throws Exception {
+		
+		Code  code =selectCodeDetailByKey(codeParam);
+		
+		if(code !=null) throw new AlreadyExistException(String.format("이미 존재하는 코드명(%s)입니다.", code.getCode_name()));
+		
+		return codeDAO.insertCodeDetail(codeParam);
+	}
+
+	private Code selectCodeDetailByKey(Code codeParam) throws SQLException {
+		// TODO Auto-generated method stub
+		return codeDAO.selectCodeDetailByKey(codeParam);
 	}
 
 }

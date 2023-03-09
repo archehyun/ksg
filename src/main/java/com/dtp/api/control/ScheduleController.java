@@ -339,8 +339,6 @@ public class ScheduleController extends AbstractController{
 	{
 		CommandMap returnMap = new CommandMap();
 		
-		
-		
 		int result=service.deleteSchedule();
 		
 		int b=service.deleteInlnadSchedule();

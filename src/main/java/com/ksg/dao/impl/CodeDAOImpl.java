@@ -94,6 +94,11 @@ public class CodeDAOImpl extends AbstractDAO implements CodeDAO{
 	public Object deleteDetail(HashMap<String, Object> param) throws SQLException {
 		return delete(namespace+".deleteCodeD",param);
 	}
+	
+	@Override
+	public Object deleteCodeDetail(Code param) throws SQLException {
+		return delete(namespace+".deleteCodeDetail",param);
+	}
 
 	public List selectCodeListByCondition(Code param) throws SQLException {
 		// TODO Auto-generated method stub
@@ -102,6 +107,16 @@ public class CodeDAOImpl extends AbstractDAO implements CodeDAO{
 
 	public List selectCodeDetailListByCondition(Code param) throws SQLException {
 		return selectList(namespace+".selectCodeDetailList", param);
+	}
+
+	public Object insertCodeDetail(Code codeParam) throws SQLException {
+		// TODO Auto-generated method stub
+		return insert(namespace+".insertCodeDetail",codeParam);
+	}
+
+	public Code selectCodeDetailByKey(Code codeParam) throws SQLException {
+		// TODO Auto-generated method stub
+		return  (Code) selectOne(namespace+".selectCodeDetailByKey", codeParam);
 	}
 
 

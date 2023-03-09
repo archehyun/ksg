@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dtp.api.annotation.ControlMethod;
+import com.dtp.api.exception.ResourceNotFoundException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.Code;
 import com.ksg.service.impl.CodeServiceImpl;
@@ -82,6 +83,28 @@ public class CodeController extends AbstractController{
 		return model;
     }
 	
+	@ControlMethod(serviceId = "insertCodeDetail")
+    public CommandMap insertCodeDetail(CommandMap param) throws Exception
+    {	
+		
+		Code codeParam = Code.builder()
+							.code_name((String) param.get("code_name"))
+							.code_type((String) param.get("code_type"))
+							.code_field((String) param.get("code_field"))
+							.code_name_kor((String) param.get("code_name_kor"))
+							.build();
+		
+		service.insertCodeDetail(codeParam);
+		
+		CommandMap model = new CommandMap();
+		
+        model.put("success", true);
+		
+		
+		return model;
+    }
+    
+	
 	@ControlMethod(serviceId = "deleteCode")
     public CommandMap deleteCode(CommandMap param) throws Exception
     {
@@ -103,6 +126,41 @@ public class CodeController extends AbstractController{
 		
 		return model;
     }
+	
+	@ControlMethod(serviceId = "deleteCodeDetail")
+    public CommandMap deleteCodeDetail(CommandMap param) throws Exception
+    {
+		log.debug("param:{}", param);
+		
+		logger.info("param:{}", param);
+		
+		String code_name= (String) param.get("code_name");
+		
+		String code_field = (String) param.get("code_field");
+		
+		if(code_name==null|| code_field==null) throw new ResourceNotFoundException("code_name:"+code_name+",code_field:"+code_field);
+		
+		Code codeParam = Code.builder()
+								.code_name(code_name)
+								.code_field(code_field)
+								.build();
+		
+		service.deleteCodeDetail(codeParam);
+		
+								
+		CommandMap model = new CommandMap();
+		
+		model.put("code_name", code_name);
+		model.put("code_field", code_field);
+		
+        model.put("success", true);
+		
+		
+		return model;
+    }
+	
+	
+	
 
 
 }

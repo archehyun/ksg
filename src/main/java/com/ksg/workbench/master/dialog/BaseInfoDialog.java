@@ -12,6 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import com.dtp.api.control.AbstractController;
+import com.ksg.common.model.CommandMap;
+import com.ksg.workbench.common.comp.View;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
@@ -31,7 +34,7 @@ import com.ksg.workbench.master.BaseInfoUI;
   * @프로그램 설명 : 다이어로그 추상 클래스
 
   */
-public abstract class BaseInfoDialog extends KSGDialog implements ActionListener{
+public abstract class BaseInfoDialog extends KSGDialog implements ActionListener, View{
 	
 	
 	protected static String INSERT_ACTION = "추가";
@@ -47,6 +50,10 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	
 	protected JButton butCancel;
 	
+	protected CommandMap model;
+	
+	private AbstractController controller;
+	
 	/**
 	 * 
 	 */
@@ -61,6 +68,12 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		super();
 		
 	}
+	
+	public void setController(AbstractController constroller)
+	{
+		this.controller =constroller;
+	}
+
 	private Color labelColor = new Color(230,230,230);
 	
 	protected KSGPanel createFormItem(JComponent comp, String title) {
@@ -151,6 +164,29 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		
 		return pnTitle;
 	}
+	
+	@Override
+	public void setModel(CommandMap model) {
+		this. model = model;
+
+	}
+	public CommandMap getModel() {
+
+		return model;
+	}
+
+	public void callApi(String serviceId, CommandMap param)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, param, this);
+	}
+	
+	@Override
+	public void updateView() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 }

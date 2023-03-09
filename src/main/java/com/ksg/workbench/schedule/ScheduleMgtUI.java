@@ -64,7 +64,6 @@ import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.ui.ErrorLogManager;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.schedule.comp.PnConsole;
 import com.ksg.workbench.schedule.comp.PnConsole2;
@@ -845,6 +844,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 			String command = e.getActionCommand();
 
 			try{

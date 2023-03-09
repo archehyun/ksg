@@ -19,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.service.impl.BaseServiceImpl;
@@ -38,17 +39,16 @@ public class InsertCodeInfodialog extends BaseInfoDialog {
 	private static final long serialVersionUID = 1L;
 
 	private JTextField txfCodeName;
+	
 	private JTextField txtKorCode;
+	
 	private JTextField txfField;
 	
+	private String code_type;
 	
+	private String title;
 	
-	
-	
-	String code_type;
-	String title;
 	private BaseServiceImpl baseService;
-	
 	
 	public InsertCodeInfodialog(BaseInfoUI baseInfoUI) 
 	{
@@ -170,5 +170,9 @@ public class InsertCodeInfodialog extends BaseInfoDialog {
 			close();
 		}
 	}
+
+	
+
+	
 
 }

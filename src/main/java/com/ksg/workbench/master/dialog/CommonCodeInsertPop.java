@@ -166,6 +166,5 @@ public class CommonCodeInsertPop extends BaseInfoDialog{
 		
 		this.setVisible(true);
 	}
-
 }
 

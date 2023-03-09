@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ksg.domain.Code;
+
 public interface CodeDAO {
 	
 	
@@ -39,6 +41,8 @@ public interface CodeDAO {
 	public Object deleteDetail(HashMap<String, Object> param) throws SQLException ;
 
 	Object deleteCode(String code_field) throws SQLException;
+
+	Object deleteCodeDetail(Code param) throws SQLException;
 	
 
 }

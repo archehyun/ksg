@@ -93,12 +93,16 @@ public class InsertPortInfoDialog extends BaseInfoDialog
 		this.setTitle("항구 정보 추가");
 
 		this.getContentPane().add(buildTitle("Port Info"),BorderLayout.NORTH);
+		
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 		
 
 		this.pack();
+		
 		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+		
 		this.setVisible(true);
 	
 	}
@@ -109,15 +113,21 @@ public class InsertPortInfoDialog extends BaseInfoDialog
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		
 		txfArea_code.setEditable(false);
+		
 		txfPort_area.setEditable(false);
 		
 		
 		
 		KSGPanel pnPort_name = new KSGPanel();
+		
 		pnPort_name.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		JLabel lblCompany_name = new JLabel("Port Name");
+		
 		lblCompany_name.setPreferredSize(new Dimension(100,25));
+		
 		pnPort_name.add(lblCompany_name);
+		
 		pnPort_name.add(txfPort_name);
 
 
