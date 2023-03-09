@@ -59,7 +59,9 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 	private boolean diviedByAreaGap = true;
 	
 	protected Logger logger = LogManager.getLogger(this.getClass());
-
+	
+	boolean isAddValidate = false;
+	
 	public RouteNodeManager()
 	{
 		super();
@@ -82,7 +84,7 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 
 		String sortType = (String) param.get("sortType");
 		
-		boolean isAddValidate = (boolean) param.get("isAddValidate");
+		isAddValidate = (boolean) param.get("isAddValidate");
 
 		Set<String> areaKeySet=areaList.keySet();
 
@@ -136,7 +138,12 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 			// 출력			
 			int count =(int) areaScheduleNodeList.stream().filter(o ->isAddValidate?true:!o.getType().equals(NodeType.JOINT_SCHEDULE)).count();
 			
-			if(count==0) continue;
+			
+			if(count==0)
+			{
+//				logger.info("", root);
+				continue;
+			}
 			
 			DefaultMutableTreeNode area = new AreaTreeNode(String.format("%s(%d)", strArea, count));
 
@@ -196,7 +203,7 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 	@Override
 	public void createScheduleAndAddGroup(List group, List scheduleList, String areaName, String vesselName) {
 		// 예외 사항 적용된 스캐줄 그룹 생성
-		List<RouteScheduleGroup> validScheduleGroupList = joint.getValidatedScheduleGroupList(areaName,vesselName, scheduleList);
+		List<RouteScheduleGroup> validScheduleGroupList = joint.getValidatedScheduleGroupList(areaName,vesselName, scheduleList, isAddValidate);
 
 		// 스케줄 노드에 추가 
 		validScheduleGroupList.stream().forEach(o -> group.add( (OutbondScheduleTreeNode) makeScheduleNode(areaName,o, scheduleList)));

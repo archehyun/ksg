@@ -35,7 +35,7 @@ public class RouteJoint {
 	 * @see RouteScheduleUtil#isRouteScheduleValidation
 	 * @return
 	 */
-	public List getValidatedScheduleGroupList(String areaName,String vesselName, List<ScheduleData> subscheduleList)
+	public List getValidatedScheduleGroupList(String areaName,String vesselName, List<ScheduleData> subscheduleList, boolean isValid)
 	{
 		Collections.sort(subscheduleList, new ScheduleDateComparator(ScheduleDateComparator.FROM_DATE));
 
@@ -50,8 +50,11 @@ public class RouteJoint {
 			// 도착항 수에 따라 판단
 			if(routeScheduleGroup.isRouteScheduleValidation(areaName))
 			{	
-				
 				scheduleGroupList.add(routeScheduleGroup);
+			}
+			else
+			{
+				if(isValid) scheduleGroupList.add(routeScheduleGroup);
 			}
 		}
 		return scheduleGroupList;  

@@ -264,7 +264,7 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 	@Override
 	public void createScheduleAndAddGroup(List scheduleGroupList, List scheduleList, String areaName, String vesselName) {
 		
-		List<RouteScheduleGroup> validScheduleGroupList = routeJoint.getValidatedScheduleGroupList(areaName,vesselName, scheduleList);
+		List<RouteScheduleGroup> validScheduleGroupList = routeJoint.getValidatedScheduleGroupList(areaName,vesselName, scheduleList, false);
 		
 		scheduleGroupList.addAll(validScheduleGroupList);
 	}
