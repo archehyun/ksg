@@ -47,12 +47,15 @@ public class UpdatePortAbbrInfoDialog extends BaseInfoDialog{
 		selectedPortCode = portAbbr;
 		
 		this.portAbbr=  portAbbr;
+		
 		this.portName = portName;
+		
 		baseService = new BaseServiceImpl(); 
 		
 	}
 
 	public void createAndUpdateUI() {
+		
 		this.setModal(true);
 		
 		this.setTitle("항구 정보 관리");
@@ -60,7 +63,6 @@ public class UpdatePortAbbrInfoDialog extends BaseInfoDialog{
 		this.getContentPane().add(buildTitle("항구 약어 수정"),BorderLayout.NORTH);
 		
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-		
 		
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 		

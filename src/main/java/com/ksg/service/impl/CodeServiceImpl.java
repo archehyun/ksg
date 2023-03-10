@@ -151,4 +151,19 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 		return codeDAO.selectCodeDetailByKey(codeParam);
 	}
 
+	public Object insertCode(Code codeParam) throws Exception {
+		
+		Code  code =selectCodeByKey(codeParam);
+		
+		if(code !=null) throw new AlreadyExistException(String.format("이미 존재하는 코드명(%s)입니다.", code.getCode_name()));
+		
+		return codeDAO.insertCode(codeParam);
+		
+	}
+
+	private Code selectCodeByKey(Code codeParam) throws SQLException {
+		// TODO Auto-generated method stub
+		return codeDAO.selectCodeByKey(codeParam);
+	}
+
 }

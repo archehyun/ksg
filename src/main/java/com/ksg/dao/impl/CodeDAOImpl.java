@@ -119,6 +119,16 @@ public class CodeDAOImpl extends AbstractDAO implements CodeDAO{
 		return  (Code) selectOne(namespace+".selectCodeDetailByKey", codeParam);
 	}
 
+	public Object insertCode(Code codeParam) throws SQLException {
+		// TODO Auto-generated method stub
+		return insert(namespace+".insertCode",codeParam);
+	}
+
+	public Code selectCodeByKey(Code codeParam) throws SQLException {
+		// TODO Auto-generated method stub
+		return  (Code) selectOne(namespace+".selectCodeByKey", codeParam);
+	}
+
 
 
 

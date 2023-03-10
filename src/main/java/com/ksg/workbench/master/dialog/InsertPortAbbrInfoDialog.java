@@ -72,27 +72,34 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 	}
 
 	public void createAndUpdateUI() {
+		
 		this.setModal(true);
+		
 		this.setTitle("항구명 약어 추가");
 
 		this.getContentPane().add(buildTitle("항구명: "+port_name),BorderLayout.NORTH);
+		
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 		
 		this.pack();
+		
 		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+		
 		this.setVisible(true);
 	}
 	
 	public KSGPanel buildCenter() {
-		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		
 		pnCenter.add(createFormItem(txfPortAbbr, "항구명 약어"));
 		
 		pnMain.add(pnCenter);
+		
 		return pnMain;
 	}
 

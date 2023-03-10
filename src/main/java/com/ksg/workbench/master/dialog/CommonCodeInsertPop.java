@@ -16,8 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import com.dtp.api.control.CodeController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.impl.CodeServiceImpl;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 /**
@@ -38,10 +41,6 @@ public class CommonCodeInsertPop extends BaseInfoDialog{
 	
 	CodeServiceImpl codeService;
 	
-	private JButton butOk;
-	
-	private JButton butCancel;
-	
 	private JTextField txfCodeID;
 	
 	private JTextField txfCodeNM;
@@ -53,6 +52,8 @@ public class CommonCodeInsertPop extends BaseInfoDialog{
 		this.setTitle("코드 정보 추가");
 		
 		codeService = new CodeServiceImpl();
+		
+		this.setController( new CodeController());
 
 	}
 	
@@ -106,11 +107,14 @@ public class CommonCodeInsertPop extends BaseInfoDialog{
 			}
 			
 			
-			HashMap<String, Object> param = new HashMap<String, Object>();
+			CommandMap param = new CommandMap();
+			
+			
 			param.put("CD_ID", codeID);
 			param.put("CD_NM", codeNM);
 			param.put("CD_ENG", codeENG);
 			
+//			callApi("insertCode", param);
 			
 			try {
 				codeService.insertCodeH(param);
@@ -165,6 +169,36 @@ public class CommonCodeInsertPop extends BaseInfoDialog{
 		this.setResizable(false);
 		
 		this.setVisible(true);
+	}
+	
+	@Override
+	public void updateView() {
+
+
+		CommandMap resultMap= this.getModel();
+
+		boolean success = (boolean) resultMap.get("success");
+
+		if(success)
+		{
+
+			String serviceId=(String) resultMap.get("serviceId");
+
+			if("insertCode".equals(serviceId))
+			{	
+				result = KSGDialog.SUCCESS;
+				
+				close();
+
+			}
+
+		}
+		else{  
+			String error = (String) resultMap.get("error");
+			
+			JOptionPane.showMessageDialog(this, error);
+		}
+
 	}
 }
 

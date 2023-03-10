@@ -38,6 +38,7 @@ public class RouteScheduleUtil {
 		int index=-1;
 
 		//PortScheduleInfo[] sortedInPortList = groupPort.createInPortArray();
+		
 		if(sortedInPortList.length<2)
 			return index;
 		
@@ -56,26 +57,43 @@ public class RouteScheduleUtil {
 		return index;
 	}
 	
+	
+	/**
+	 * 
+	 * 기존
+	 * 중국, 일본, 러시아 : 4일(D+3)
+	 * 동남아 : 6일(D+5)
+	 * 중동, 호주 : 8일(D+7)
+	 * 기타 : 10일(D+9)
+	 * @param area_name
+	 * @return
+	 */
 	public static int getGap(String area_name)
 	{
 		int base=0; // 공동배선 기준 일자
+		
 		String upCaseAreaName = area_name.toUpperCase();
+		
 		if(upCaseAreaName.equals(CHINA)||
 				upCaseAreaName.equals(JAPAN)||
 				upCaseAreaName.equals(RUSSIA)) // 중국, 일본, 러시아
 		{
+			//4일(D+3)
 			base=4;
 		}else if(upCaseAreaName.equals(ASIA)) // 동남아
 		{
+			//6일(D+5)
 			base=6;
 
 		}else if(upCaseAreaName.equals(PERSIAN_GULF)||
 				upCaseAreaName.equals(AUSTRALIA_NEW_ZEALAND_SOUTH_PACIFIC))// 중동, 호주
 		{
-			base=8;
+			//8일(D+7)
+			base=7;
 		}		
 		else // 구주, 북미, 중남미, 아프리카
 		{
+			//10일(D+9)
 			base=10;
 		}
 		return base;
@@ -137,14 +155,12 @@ public class RouteScheduleUtil {
 			int differ = differDay(firstInPortDateF, outPortDateF);
 			
 			AreaEnum area = AreaEnum.findGapByAreaName(area_name.toUpperCase());
-			
-			if(differ>=area.getGap())
+			   
+			if(differ>=(area.getGap()-1))
 			{	
-				
 				List<ScheduleData> first = new ArrayList<>(list.subList(0, i));
 				
 			    List<ScheduleData> second = new ArrayList<>(list.subList(i, list.size()));
-
 			    
 			    return new List[] {first, second};
 			}

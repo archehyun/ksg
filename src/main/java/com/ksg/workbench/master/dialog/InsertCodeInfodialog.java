@@ -19,7 +19,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.service.impl.BaseServiceImpl;

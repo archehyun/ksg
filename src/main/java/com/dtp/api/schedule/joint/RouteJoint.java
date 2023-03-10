@@ -43,9 +43,9 @@ public class RouteJoint {
 		
 		List<RouteScheduleGroup> scheduleGroupList = new ArrayList<RouteScheduleGroup>();
 
-		for(List item:li)
+		for(List listItem:li)
 		{
-			RouteScheduleGroup routeScheduleGroup = new RouteScheduleGroup(vesselName,item);
+			RouteScheduleGroup routeScheduleGroup = new RouteScheduleGroup(vesselName,listItem);
 
 			// 도착항 수에 따라 판단
 			if(routeScheduleGroup.isRouteScheduleValidation(areaName))

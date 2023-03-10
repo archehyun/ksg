@@ -42,8 +42,6 @@ public abstract class AbstractController {
 		return model;
 	}
 
-
-
 	/**
 	 * 
 	 * @param serviceId

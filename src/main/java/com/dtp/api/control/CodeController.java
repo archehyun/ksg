@@ -83,6 +83,28 @@ public class CodeController extends AbstractController{
 		return model;
     }
 	
+	
+	
+	@ControlMethod(serviceId = "insertCode")
+    public CommandMap insertCode(CommandMap param) throws Exception
+    {	
+		Code codeParam = Code.builder()
+							.code_name((String) param.get("code_name"))
+							.code_type((String) param.get("code_type"))
+							.code_field((String) param.get("code_field"))
+							.code_name_kor((String) param.get("code_name_kor"))
+							.build();
+		
+		service.insertCode(codeParam);
+		
+		CommandMap model = new CommandMap();
+		
+        model.put("success", true);
+		
+		
+		return model;
+    }
+	
 	@ControlMethod(serviceId = "insertCodeDetail")
     public CommandMap insertCodeDetail(CommandMap param) throws Exception
     {	

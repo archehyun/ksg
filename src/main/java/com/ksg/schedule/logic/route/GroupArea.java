@@ -229,7 +229,7 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 			
 			int differ = differDay(firstInPortDateF, outPortDateF);
 			
-			int gap = RouteScheduleUtil. getGap(area_name);
+			//int gap = RouteScheduleUtil. getGap(area_name);
 			
 			AreaEnum area = AreaEnum.findGapByAreaName(area_name);
 			

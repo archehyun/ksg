@@ -1,5 +1,7 @@
 package com.ksg.schedule.logic.joint.route;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -8,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.dtp.api.schedule.comparator.IFComparator;
 import com.dtp.api.schedule.joint.RouteJoint;
+import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.route.RouteScheduleUtil;
 import com.ksg.workbench.common.comp.treetable.node.ScheduleDateComparator;
@@ -44,6 +47,13 @@ public class RouteScheduleGroup implements IFComparator{
 	
 	RouteJoint joint = new RouteJoint();
 	
+	SimpleDateFormat dateformat = new SimpleDateFormat("yyyy/MM/dd");
+	
+	List<PortAndDay> inboundPort;
+	
+	List<PortAndDay> outboundPort;
+	
+	
 	public RouteScheduleGroup() {}
 	
 	public void setDate(String date)
@@ -59,16 +69,34 @@ public class RouteScheduleGroup implements IFComparator{
 		this.scheduleList = scheduleList;
 
 		fromPorts 	= scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getFromPort));
-
-		toPorts 	= scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getPort));
+		
+		fromPortCount = fromPorts.keySet().size();
+		
+		
+		List<PortAndDay> fromPortlist = joint.makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE);
+		
+		this.date = fromPortlist.get(0).getDate();
+		
+		// 첫번째 출발일 보다 늦은 항구 제외
+		toPorts 	= scheduleList.stream()
+									.filter(item -> compareDate(item.getDateT(), date))
+									.collect(Collectors.groupingBy(ScheduleData::getPort));
 		
 		toPortCount = toPorts.keySet().size();
-
-		fromPortCount = fromPorts.keySet().size();
-
-		List<PortAndDay> fromPortlist = joint.makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE);
-
-		this.date = fromPortlist.get(0).getDate();
+		
+		inboundPort = joint.makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE);
+		
+		outboundPort = joint.makeDayList(toPorts, ScheduleDateComparator.TO_DATE);
+		
+	}
+	
+	private boolean compareDate(String one, String two)
+	{
+		try {
+			return (dateformat.parse(one).compareTo(dateformat.parse(two)))>0;
+		} catch (ParseException e) {
+			return false;
+		}
 	}
 	
 	public String getDate()
@@ -92,20 +120,43 @@ public class RouteScheduleGroup implements IFComparator{
 	}
 	public String toFromPortString()
 	{
-		return StringUtils.join(joint.makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE)," - ");
+		return StringUtils.join(inboundPort," - ");
 	}
 	public String toToPortString()
 	{
-		return StringUtils.join(joint.makeDayList(toPorts, ScheduleDateComparator.TO_DATE)," - ");
+		return StringUtils.join(outboundPort," - ");
 	}
 	public String getVoyage()
 	{
 		return  (!scheduleList.isEmpty())?scheduleList.get(0).getVoyage_num():"";
 	}
-
+	
+	/**
+	 * 스케줄 제외 조건
+	 * 1. 외국항 수
+	 * 2. 외국항 첫번째 도착일이 국내항 마지막 출발일 보다 늦은 경우
+	 * @param strArea
+	 * @return
+	 */
 	public boolean isRouteScheduleValidation(String strArea)
+	{	
+		return RouteScheduleUtil.checkOutPort(strArea, toPortCount)&&isDateValidate();
+	}
+	/**
+	 * 외국항 첫번째 도착일이 국내항 마지막 출발일 비교 
+	 * @return
+	 */
+	private boolean isDateValidate()
 	{
-		return RouteScheduleUtil.checkOutPort(strArea, toPortCount);
+		if(inboundPort.size()==0||outboundPort.size()==0) return false;
+		
+		// 국내항 마지막
+		PortAndDay inboundLastPortAndDate=inboundPort.get(inboundPort.size()-1);
+		
+		// 외국항 첫번째		
+		PortAndDay outboundFirstPortAndDate=outboundPort.get(0);
+		
+		return KSGDateUtil.dayDiff(inboundLastPortAndDate.getDate(), outboundFirstPortAndDate.getDate())>0;
 	}
 
 }

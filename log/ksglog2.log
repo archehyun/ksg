@@ -1,4 +1,25 @@
-2023-03-08 17:24:59,427  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
-2023-03-08 17:24:59,530  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
-2023-03-08 17:27:56,552  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=I, sortType=date, isAddValidate=false, date_issue=2023-03-13, gubun=Normal}
-2023-03-08 17:27:57,031  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=I, sortType=date, isAddValidate=false, date_issue=2023-03-13, gubun=Normal}
+2023-03-10 22:55:59,231  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
+2023-03-10 22:55:59,305  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-03-10 22:56:09,468  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=R, sortType=date, isAddValidate=false, date_issue=2023-03-13, gubun=Normal}
+2023-03-10 22:56:10,067  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: ASIA, 스케줄 그룹 사이즈:259
+2023-03-10 22:56:10,277  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: AUSTRALIA , NEW ZEALAND & SOUTH PACIFIC, 스케줄 그룹 사이즈:73
+2023-03-10 22:56:10,293  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: CARIBBEAN SEA & CENTRAL AMERICA, 스케줄 그룹 사이즈:60
+2023-03-10 22:56:10,301  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: CHINA, 스케줄 그룹 사이즈:239
+2023-03-10 22:56:10,353  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: CONTINENTAL EUROPE , U.K. & SCANDINAVIA, 스케줄 그룹 사이즈:31
+2023-03-10 22:56:10,360  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: EAST COAST OF NORTH AMERICA, 스케줄 그룹 사이즈:78
+2023-03-10 22:56:10,366  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: JAPAN, 스케줄 그룹 사이즈:93
+2023-03-10 22:56:10,412  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: MEDITERRANEAN SEA, 스케줄 그룹 사이즈:78
+2023-03-10 22:56:10,424  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: PERSIAN GULF, 스케줄 그룹 사이즈:43
+2023-03-10 22:56:10,436  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: RED SEA, 스케줄 그룹 사이즈:35
+2023-03-10 22:56:10,438  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: RUSSIA, 스케줄 그룹 사이즈:25
+2023-03-10 22:56:10,440  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: SOUTH & EAST AFRICA, 스케줄 그룹 사이즈:37
+2023-03-10 22:56:10,447  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: SOUTH AMERICA, 스케줄 그룹 사이즈:57
+2023-03-10 22:56:10,453  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: WEST AFRICA, 스케줄 그룹 사이즈:22
+2023-03-10 22:56:10,457  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: WEST COAST OF NORTH AMERICA & HAWAII, 스케줄 그룹 사이즈:78
+2023-03-10 22:56:22,707  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=R, sortType=date, isAddValidate=false, vessel=KMTC KO, date_issue=2023-03-13, gubun=Normal}
+2023-03-10 22:56:23,897  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=R, sortType=date, isAddValidate=false, vessel=KMTC TO, date_issue=2023-03-13, gubun=Normal}
+2023-03-10 22:56:24,015  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: ASIA, 스케줄 그룹 사이즈:1
+2023-03-10 22:56:24,017  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: CHINA, 스케줄 그룹 사이즈:1
+2023-03-10 23:01:22,879  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=R, sortType=date, isAddValidate=false, vessel=KMTC TO, date_issue=2023-03-13, gubun=Normal}
+2023-03-10 23:01:22,973  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: ASIA, 스케줄 그룹 사이즈:1
+2023-03-10 23:01:22,974  INFO [com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager] Area: CHINA, 스케줄 그룹 사이즈:1

@@ -64,6 +64,15 @@
 		WHERE code_field=#code_field#
 		
 	</select>
+	<select id="selectCodeByKey" resultMap="codeList">
+		SELECT
+				CD_ID, 
+				CD_NM, 
+				CD_ENG 
+		FROM TB_CODE_H
+		WHERE 	CD_ID=#code_field# 
+		
+	</select>
 	
 	
 	<select id="selectCodeDetailByKey" resultClass="com.ksg.domain.Code">
