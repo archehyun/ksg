@@ -27,7 +27,6 @@ import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.MemberInsertDialog;
 import com.ksg.workbench.master.dialog.MemberUpdateDialog;
-import com.ksg.workbench.master.dialog.UpdateCompanyInfoDialog;
 
 /**
 

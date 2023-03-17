@@ -188,7 +188,7 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 		butSearchCompany.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) {
-				KSGDialog dialog = new SearchCompanyInfoDialog(UpdateVesselInfoDialog.this,txfCompanyName);
+				KSGDialog dialog = new SearchCompanyInfoDialog(UpdateVesselInfoDialog.this, txfCompanyName);
 				dialog.createAndUpdateUI();
 			}
 

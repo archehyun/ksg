@@ -43,6 +43,12 @@
 		<include refid="WHERE"></include>
 	</select>
 	
+	<select id="selectCompanyById" resultClass="com.ksg.domain.Company">
+		SELECT * 
+		FROM TB_COMPANY
+		WHERE company_abbr = #company_abbr#
+	</select>
+	
 	<select id="selectCompany" resultClass="com.ksg.domain.Company">
 		select * from TB_COMPANY
 		<dynamic prepend="where">
@@ -144,6 +150,17 @@
 			company_name=#company_name#,
 			contents=#contents#
 		where (company_abbr=#base_company_abbr#)
+	</update>
+	
+	<update id="updateCompanyInfo" parameterClass="com.ksg.domain.Company">
+		UPDATE TB_COMPANY 
+		SET 
+			agent_name=#agent_name#,
+			company_abbr=#company_abbr#,
+			agent_abbr=#agent_abbr#,
+			company_name=#company_name#,
+			contents=#contents#
+		WHERE company_abbr=#base_company_abbr#
 	</update>
 
 <!-- delete -->

@@ -353,7 +353,8 @@ public class PnCompany extends PnBase implements ActionListener{
 	@Override
 	public void fnSearch() {
 
-		log.debug("start");
+		
+		System.out.println("select");
 
 		CommandMap param = new CommandMap();
 

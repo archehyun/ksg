@@ -140,8 +140,6 @@ public class RouteScheduleUtil {
 
 		// 첫번째 출발항 출발일
 		
-		//if(!diviedByAreaGap) return new List[] {list};
-		
 		String firstInPortDateF = list.get(0).getDateF();
 		
 		// 국내항 첫재날 , 외국항 첫째날 비교

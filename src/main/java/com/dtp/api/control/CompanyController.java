@@ -29,6 +29,7 @@ public class CompanyController extends AbstractController{
     }
 	
 	@ControlMethod(serviceId = "selectCompany")
+	
     public CommandMap selectByCondtion(CommandMap param) throws Exception
     {
 		log.debug("param:{}", param);
@@ -110,11 +111,13 @@ public class CompanyController extends AbstractController{
         String company_abbr = (String) param.get("company_abbr");
         String agent_name = (String) param.get("agent_name");
         String agent_abbr = (String) param.get("agent_abbr");
+        String base_company_abbr = (String) param.get("base_company_abbr");
         String contents = (String) param.get("contents");
 
         Company company = Company.builder()
                                 
                                 .company_name(company_name)
+                                .base_company_abbr(base_company_abbr)
                                 .company_abbr(company_abbr)
                                 .agent_name(agent_name)
                                 .agent_abbr(agent_abbr)

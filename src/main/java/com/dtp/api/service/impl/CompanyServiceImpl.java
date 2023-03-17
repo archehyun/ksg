@@ -43,9 +43,9 @@ public class CompanyServiceImpl implements CompanyService{
 	
 	
 	@Override
-	public Company selectById(String id)
+	public Company selectById(String company_abbr) throws Exception
 	{
-		return dao.selectById(id);
+		return dao.selectById(company_abbr);
 	}
 
 	@Override
@@ -55,19 +55,19 @@ public class CompanyServiceImpl implements CompanyService{
         if(selectOne!=null)
             throw new AlreadyExistException("("+param.getCompany_name()+")존재하는 선사명입니다.");
 
-        int result = dao.insertCompany(param);
+        dao.insertCompany(param);
 
         return selectOne;
 	}
 
 	@Override
-	public Company update(Company param) {
+	public Company update(Company param) throws Exception {
 		Company selectOne= selectById(param.getCompany_abbr());
 		
 		if(selectOne==null)
 			throw new ResourceNotFoundException("("+param.getCompany_name()+")선사명이 존재하지 않습니다.");
 
-		int result = dao.updateCompany(param);
+		int result = (int) dao.updateCompany(param);
 		
 		return selectOne;
 	}

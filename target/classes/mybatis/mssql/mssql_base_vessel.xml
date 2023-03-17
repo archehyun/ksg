@@ -84,6 +84,10 @@
 		SELECT * FROM TB_VESSEL_H
 		WHERE vessel_name =#vessel_name#
 	</select>
+	<select id="selectVesselById" resultClass="com.ksg.domain.Vessel">
+		SELECT * FROM TB_VESSEL_H
+		WHERE vessel_name =#vessel_name#
+	</select>
 	<select id="selectVesselListByNameList" resultClass="com.ksg.domain.Vessel" parameterClass="java.util.List">
 		SELECT 	* 
 		FROM 	TB_VESSEL_H

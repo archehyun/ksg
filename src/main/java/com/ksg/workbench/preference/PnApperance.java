@@ -5,17 +5,16 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -58,6 +57,8 @@ public class PnApperance extends PnOption {
 	 private DefaultMutableTreeNode root;
 
 	private JTree tree;
+
+	private JColorChooser tcc;
 	
 	public PnApperance(PreferenceDialog preferenceDialog) {
 		
@@ -86,8 +87,7 @@ public class PnApperance extends PnOption {
 		    	  String selectedKey = path.getLastPathComponent().toString();
 		    	  
 		    	  String value = (String) propeties.get(selectedKey);
-		    	  
-		    	  System.out.println(value);
+		    	
 		      }
 
 			
@@ -118,7 +118,52 @@ public class PnApperance extends PnOption {
 		
 		KSGPanel pnLight = new KSGPanel();
 		
-		pnLight.add(new JButton("EDIT"));
+		JButton butEdit = new JButton("EDIT");
+		
+		butEdit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				Object node=tree.getLastSelectedPathComponent();
+				
+				if(node instanceof ColorNode)
+				{
+					ColorNode colorNode = (ColorNode) node;
+					
+					String key = colorNode.key;
+					 
+					 Color selectedColor =  getColor(propeties.getProperty(key));
+					 
+					 System.out.println("gridColor:"+selectedColor);
+					 
+					 Color newColor = JColorChooser.showDialog(
+		                     PnApperance.this,
+		                     "Choose Background Color",
+		                     selectedColor);
+					
+					if(newColor!=null)
+					{	 
+						 
+						int red =newColor.getRed();
+						
+						int green=newColor.getGreen();
+						
+						int blue = newColor.getBlue();
+						
+						propeties.put(key, red+","+green+","+blue);
+						
+						propeties.store();
+					}
+				}
+				
+				
+				
+				
+			}
+		});
+		
+		pnLight.add(butEdit);
 		
 		
 		pnMain.add(pnTitle, BorderLayout.NORTH);
@@ -145,14 +190,14 @@ public class PnApperance extends PnOption {
 		Map<String, List<ApperanceKeyGroup>> apperanceGroupMap =  apperanceGroup.stream()
 																.collect(
 																		Collectors.groupingBy(ApperanceKeyGroup::getGroup)
-																		);// µµÂøÇ×
+																		);
 		for(String keyGroup:apperanceGroupMap.keySet())
 		{
 			List<ApperanceKeyGroup> group = apperanceGroupMap.get(keyGroup);
 			
 			DefaultMutableTreeNode groupNode = new DefaultMutableTreeNode(keyGroup);
 			
-			group.forEach(o -> groupNode.add(new DefaultMutableTreeNode(o.value)));
+			group.forEach(o -> groupNode.add(new ColorNode(o.value, o.key)));
 			
 			root.add(groupNode);
 			
@@ -168,26 +213,46 @@ public class PnApperance extends PnOption {
 	private ApperanceKeyGroup makeApperanceKeyGroup(String key)
 	{
 		String keyArray[] = key.split("[.]");
+		
 		if(keyArray.length>1)
 		{
-			return new ApperanceKeyGroup(keyArray[0], String.join(".", Arrays.copyOfRange(keyArray, 1, keyArray.length)));
+			return new ApperanceKeyGroup(keyArray[0], String.join(".", Arrays.copyOfRange(keyArray, 1, keyArray.length)),key);
 		}
 		else
 		{
-			return new ApperanceKeyGroup(key, key);
+			return new ApperanceKeyGroup(key, key, key);
 		}
 	}
 	
 	class ApperanceKeyGroup
 	{
 		private String group;
+		
 		private String value;
+		
+		private String key;
+		
+		public ApperanceKeyGroup(String key)
+		{
+			this.group = key;
+			this.value = key;
+			this.key =key;
+			
+		}
+		
 		public ApperanceKeyGroup(String group, String value)
 		{
 			this.group = group;
 			this.value = value;
 			
 		}
+		public ApperanceKeyGroup(String group, String value, String key)
+		{
+			this(group, value);
+			this.key = key;
+			
+		}
+		 
 		public String getGroup()
 		{
 			return group;
@@ -220,21 +285,17 @@ public class PnApperance extends PnOption {
 		
 	}
 	
-	class Branch {
-		  private DefaultMutableTreeNode r;
-
-		  public Branch(String[] data) {
-		    r = new DefaultMutableTreeNode(data[0]);
-		    for (int i = 1; i < data.length; i++)
-		      r.add(new DefaultMutableTreeNode(data[i]));
-		  }
-
-		  public DefaultMutableTreeNode node() {
-		    return r;
-		  }
+	class ColorNode extends DefaultMutableTreeNode
+	{
+		private String key;
+		
+		public ColorNode(String name, String key)
+		{
+			super(name);
+			this.key = key;
 		}
-
-
+		
+	}
 
 	
 

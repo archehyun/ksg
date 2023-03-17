@@ -17,13 +17,12 @@ public class VesselDAO extends AbstractDAO{
 		this.namespace = "vessel";
 	}
 
-	public Vessel selectById(String string) {
-		// TODO Auto-generated method stub
-		return null;
+	public Vessel selectById(String vessel_name) throws SQLException {
+		
+		return (Vessel) selectOne("vessel.selectVesselById", vessel_name);
 	}
 
 	public List<Vessel> selectAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -32,9 +31,9 @@ public class VesselDAO extends AbstractDAO{
 		return 0;
 	}
 
-	public int insertVessel(Vessel param) {
+	public Object insertVessel(Vessel param) throws SQLException {
 		// TODO Auto-generated method stub
-		return 0;
+		return insert("vessel.insertVessel", param);
 	}
 
 	public int updateVessel(Vessel param) {

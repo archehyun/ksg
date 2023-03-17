@@ -2,6 +2,7 @@ package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -64,6 +65,10 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		this.baseInfoUI = baseInfoUI;
 	}
 	
+	public BaseInfoDialog(Dialog dialog) {
+		super(dialog);
+		
+	}
 	public BaseInfoDialog() {
 		super();
 		

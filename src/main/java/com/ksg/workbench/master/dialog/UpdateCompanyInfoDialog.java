@@ -19,17 +19,16 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.dtp.api.control.CompanyController;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.impl.CompanyServiceImpl;
+import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
@@ -52,20 +51,22 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 	private int type;
 
-
 	private HashMap<String, Object> company;
-
 
 	public UpdateCompanyInfoDialog(int type)
 	{
 		super();
+
+		this.setController(new CompanyController());
 
 		companyService = new CompanyServiceImpl();
 
 		this.addComponentListener(this);
 
 		this.type = type;
+
 		title = "선사 정보 관리";
+
 		switch (type) {
 		case UPDATE:
 
@@ -98,34 +99,20 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			CommandMap param = new CommandMap();
 
 			param.put("company_name", txfCompany_name.getText());
-			
+
 			param.put("company_abbr", txfCompany_abbr.getText());
-			
+
 			param.put("agent_name", txfAgent_name.getText());
-			
+
 			param.put("agent_abbr", txfAgent_abbr.getText());
-			
+
 			param.put("contents", txaContents.getText());
-			
+
 			param.put("base_company_abbr", txfCompany_abbr.getText());
 
+			callApi("updateCompany", param);
 
-			try {
-				int obj=companyService.update(param);
 
-				if(obj>0)
-				{	
-					result = SUCCESS;
-
-					JOptionPane.showMessageDialog(null,"수정 했습니다.");
-					this.setVisible(false);
-					this.dispose();
-				}
-
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 
 		}else if(command.equals("취소"))
 		{
@@ -140,38 +127,25 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			CommandMap param = new CommandMap();
 
 			param.put("company_name", txfCompany_name.getText());
+
 			param.put("company_abbr", txfCompany_abbr.getText());
+
 			param.put("agent_name", txfAgent_name.getText());
+
 			param.put("agent_abbr", txfAgent_abbr.getText());
+
 			param.put("contents", txaContents.getText());
+
 			param.put("base_company_abbr", txfCompany_abbr.getText());
 
-			try {
-				companyService.insert(param);
-				result = SUCCESS;
-
-				JOptionPane.showMessageDialog(null,"추가했습니다.");
-				this.setVisible(false);
-				this.dispose();
-
-
-			}catch(AlreadyExistException ee)
-			{
-				JOptionPane.showMessageDialog(this, "존재하는 선사명입니다");
-
-			}
-			catch(Exception ee)
-			{
-				ee.printStackTrace();
-				JOptionPane.showMessageDialog(this, ee.getMessage());
-			}
-
+			callApi("insertCompany", param);
 
 		}
 
 	}
 
 	public void createAndUpdateUI() {
+		
 		this.setModal(true);
 
 		this.getContentPane().add(buildTitle("Add a Company Field"),BorderLayout.NORTH);
@@ -179,15 +153,15 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
 
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-		
+
 		this.setSize(400, 350);
 
-//		this.pack
-		
+		//		this.pack
+
 		ViewUtil.center(this);
-		
+
 		this.setResizable(false);
-		
+
 		this.setVisible(true);
 
 	}
@@ -201,34 +175,30 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 
 		txfCompany_name = new JTextField(20);
-		
+
 		txfCompany_abbr = new JTextField(20);
-		
+
 		txfAgent_name = new JTextField(20);
-		
+
 		txfAgent_abbr = new JTextField(20);
-		
+
 		txaContents = new JTextArea(8,32);
-		
+
 		txaContents.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-//		Box pnCenter = new Box(BoxLayout.Y_AXIS);
-		
 		KSGPanel pnCenter = new KSGPanel(new GridLayout(0,1,0,-3));
-		
+
 		pnCenter.add( createFormItem(txfCompany_name,"선사명"));
-		
+
 		pnCenter.add( createFormItem(txfCompany_abbr,"선사명 약어"));
-		
+
 		pnCenter.add(createFormItem(txfAgent_name,"에이전트"));
-		
+
 		pnCenter.add(createFormItem(txfAgent_abbr,"에이전트 약어"));
-		
+
 		pnCenter.add(createFormItem(txaContents,"비고"));
-		
+
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-
-
 
 		pnMain.add(pnCenter);
 
@@ -247,9 +217,13 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		if(company!=null)
 		{
 			this.txfCompany_abbr.setText((String) company.get("company_abbr"));
+			
 			this.txfCompany_name.setText((String) company.get("company_name"));
+			
 			this.txfAgent_abbr.setText((String) company.get("agent_abbr"));
+			
 			this.txfAgent_name.setText((String) company.get("agent_name"));
+			
 			this.txaContents.setText((String) company.get("contents"));
 		}
 		switch (type) {
@@ -264,6 +238,50 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 			break;
 
+		}
+
+	}
+
+	@Override
+	public void updateView() {
+		CommandMap resultMap= this.getModel();
+
+		boolean success = (boolean) resultMap.get("success");
+
+		if(success)
+		{
+
+			String serviceId=(String) resultMap.get("serviceId");
+
+			if("insertCompany".equals(serviceId))
+			{	
+				result = SUCCESS;
+
+				JOptionPane.showMessageDialog(UpdateCompanyInfoDialog.this,"추가했습니다.");
+
+				this.setVisible(false);
+
+				this.dispose();
+
+			}
+
+			if("updateCompany".equals(serviceId))
+			{	
+				result = SUCCESS;
+
+				JOptionPane.showMessageDialog(UpdateCompanyInfoDialog.this,"수정했습니다.");
+
+				this.setVisible(false);
+
+				this.dispose();
+
+			}
+
+		}
+		else{  
+			String error = (String) resultMap.get("error");
+
+			JOptionPane.showMessageDialog(this, error);
 		}
 
 	}

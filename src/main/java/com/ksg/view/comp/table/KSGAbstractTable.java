@@ -94,6 +94,8 @@ public class KSGAbstractTable extends JTable{
 
 	}
 	
+	
+	
 	private void setFontSize(int size)
 	{
 		Font currentFont=this.getFont();
@@ -157,6 +159,7 @@ public class KSGAbstractTable extends JTable{
 			
 			
 			DefaultTableCellRenderer cellRenderer = getCellRenderer();
+			
 			TableColumn namecol = colmodel.getColumn(i);
 
 			namecol.setCellRenderer(cellRenderer);

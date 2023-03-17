@@ -29,7 +29,6 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -54,12 +53,12 @@ import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.adv.comp.SimpleFileFilter;
-import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.label.BoldLabel;
 import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
+import com.ksg.workbench.master.dialog.BasePop;
 import com.ksg.workbench.master.dialog.InsertVesselAbbrInfoDialog;
 import com.ksg.workbench.master.dialog.InsertVesselInfoDialog;
 import com.ksg.workbench.master.dialog.UpdateVesselInfoDialog;
@@ -250,11 +249,17 @@ public class PnVessel extends PnBase implements ActionListener {
 		KSGPanel pnSearch = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));	
 
 		JLabel lbl = new JLabel("필드명 : ");
+		
 		cbxField = new JComboBox<KSGTableColumn>();
+		
 		cbxField.addItem(new KSGTableColumn("vessel_name",STRING_VESSEL_NAME));
+		
 		cbxField.addItem(new KSGTableColumn("vessel_abbr",STRING_VESSEL_ABBR));
+		
 		cbxField.addItem(new KSGTableColumn("vessel_mmsi",STRING_VESSEL_MMSI));
-		cbxField.addItem(new KSGTableColumn("vessel_company",STRING_VESSEL_COMPANY));		
+		
+		cbxField.addItem(new KSGTableColumn("vessel_company",STRING_VESSEL_COMPANY));
+		
 		cbxField.addItem(new KSGTableColumn("input_date",STRING_INPUTDATE));
 
 		txfSearch = new JTextField(15);
@@ -275,6 +280,7 @@ public class PnVessel extends PnBase implements ActionListener {
 
 
 		JButton butUpSearch = new JButton(STRING_SEARCH);
+		
 		butUpSearch.addActionListener(this);
 
 		cbxVesselType = new JComboBox();
@@ -282,11 +288,15 @@ public class PnVessel extends PnBase implements ActionListener {
 		cbxVesselType.addItem(STRING_ALL);
 
 		cbxUse = new JComboBox();
+		
 		cbxUse.addItem(STRING_ALL);
+		
 		cbxUse.addItem("사용함");
+		
 		cbxUse.addItem("사용안함");
 
 		JLabel lblType = new JLabel("선박타입 : ");
+		
 		JLabel lblUse = new JLabel("사용유무 : ");
 
 		cbxField.setPreferredSize(new Dimension(150,23));
@@ -388,8 +398,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		{
 			int row=tableH.getSelectedRow();
 
-			if(row<0)
-				return;
+			if(row<0) return;
 
 			HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(tableH.getSelectedRow());
 			KSGDialog dialog = new InsertVesselAbbrInfoDialog(item);
@@ -495,9 +504,24 @@ public class PnVessel extends PnBase implements ActionListener {
 	 * 
 	 */
 	private void insertAction() {
+		
 		log.debug("insert");
+		
 		KSGDialog dialog = new InsertVesselInfoDialog(this);
+		
 		dialog.createAndUpdateUI();
+		
+		switch (dialog.result) {
+		case KSGDialog.SUCCESS:
+			fnSearch();
+			break;
+		case KSGDialog.FAILE:					
+			break;	
+
+		default:
+			//fnSearch();
+			break;
+		}
 
 	}
 	private void deleteAllAction()
@@ -605,10 +629,15 @@ public class PnVessel extends PnBase implements ActionListener {
 	private JComponent createVesselDetail()
 	{		
 		lblVesselName = new JLabel();
+		
 		lblVesselMMSI = new JLabel();
+		
 		lblVesselType = new JLabel();
+		
 		lblVesselCompany = new JLabel();
+		
 		lblVesselUse = new JLabel();
+		
 		lblInputDate = new JLabel();
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout(5,5));
@@ -718,31 +747,18 @@ public class PnVessel extends PnBase implements ActionListener {
 	}
 
 
-
-	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
-
 	@Override
 	public void componentShown(ComponentEvent e) {
 
 		Code code = new Code();
 
-		code.setCode_name_kor(STRING_CONTAINER_TYPE);
-	
+		code.setCode_name_kor(STRING_CONTAINER_TYPE);	
 
 		CommandMap param = new CommandMap();
 
 		param.put("code_type", "conType");
 		
 		callApi("pnVessel.init", param);
-
-
-
 		
 	}
 
@@ -778,16 +794,12 @@ public class PnVessel extends PnBase implements ActionListener {
 		}
 	}
 	public void fnSearchDetail(String vessel_name)
-	{
-
-	
+	{	
 			CommandMap param = new CommandMap();
 
 			param.put("vessel_name", vessel_name);
 			
 			callApi("selectVesselDetailList", param);
-			
-		
 	}
 
 	@Override

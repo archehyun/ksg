@@ -31,21 +31,19 @@ public class CompanyDAO extends AbstractDAO{
 	}
 
 
-	public Company selectById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Company selectById(String company_abbr) throws SQLException {
+		
+		return (Company) selectOne(namespace+".selectCompanyById", company_abbr);
 	}
 
 
-	public int updateCompany(Company param) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Object updateCompany(Company param) throws SQLException {
+		return update(namespace+".updateCompanyInfo", param);
 	}
 
 
-	public int insertCompany(Company param) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Object insertCompany(Company param) throws SQLException {
+		return insert(namespace+".insertCompany", param);
 	}
 
 }
