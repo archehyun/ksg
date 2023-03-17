@@ -76,9 +76,9 @@ import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableCellRenderer;
-import com.ksg.workbench.KSGViewParameter;
+import com.ksg.workbench.admin.KSGViewParameter;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.dialog.SearchAndInsertVesselDialog;
 import com.ksg.workbench.shippertable.dialog.SearchVesselDialog;
 
@@ -940,7 +940,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		private JTextField editor;
 		public MyTableCellEditor() {
 			super(new JTextField());
-			// TODO Auto-generated constructor stub
+		
 		}
 
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,

@@ -12,6 +12,21 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.execute.joint.impl.JointedSchehduleData;
 import com.ksg.schedule.execute.joint.impl.ScheduleList;
 
+/**
+
+ * @FileName : PnNormalByTree.java
+
+ * @Project : KSG2
+
+ * @Date : 2022. 5. 25. 
+
+ * @작성자 : pch
+
+ * @변경이력 :
+
+ * @프로그램 설명 :
+
+ */
 public class InboundPrintSchedule<E> extends PrintSchedule
 {
 	

@@ -16,7 +16,7 @@ import java.util.Map;
 
 public interface MemberService extends PageService{
 
-	public Map<String, Object> select(Map<String, Object> commandMap) throws SQLException;
+	
 	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
 	
 	public boolean login(String id,String pw) throws Exception;

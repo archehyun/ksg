@@ -39,7 +39,6 @@ public class AreaInfo extends BaseInfo{
 	
 	@Override
 	public String toInfoString() {
-		// TODO Auto-generated method stub
 		return "["+area_name+","+area_code+"]";
 	}
 

@@ -13,13 +13,15 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 public class PnNormal extends KSGPanel implements ActionListener{
 
@@ -38,7 +40,7 @@ public class PnNormal extends KSGPanel implements ActionListener{
 
 	private JComboBox cbxNormalInOut;
 	
-	private ScheduleService service;
+	private ScheduleSubService service;
 	
 	private List<HashMap<String, Object>> master;
 	
@@ -134,7 +136,7 @@ public class PnNormal extends KSGPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 		
 		try {
 			
@@ -159,7 +161,7 @@ public class PnNormal extends KSGPanel implements ActionListener{
 			}
 			
 			
-			HashMap<String, Object> result = (HashMap<String, Object>) service.selectScheduleList(param);
+			CommandMap result = (CommandMap) service.selectScheduleList(param);
 
 			tableH.setResultData(result);
 

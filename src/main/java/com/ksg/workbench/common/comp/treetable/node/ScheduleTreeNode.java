@@ -1,63 +1,37 @@
 package com.ksg.workbench.common.comp.treetable.node;
 
-import java.text.SimpleDateFormat;
-
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
 
-import com.ksg.common.util.KSGDateUtil;
+import com.ksg.schedule.execute.formater.JointFormatter;
 import com.ksg.view.comp.treetable.TreeTableNode;
 
-public class ScheduleTreeNode extends DefaultMutableTreeNode
-{
-	String vessel;
-	String company;
-	String fromDate, toDate;
-	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
-
-	private SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
+@SuppressWarnings("serial")
+public class ScheduleTreeNode extends DefaultMutableTreeNode{
 	
-	public ScheduleTreeNode() {
-		super();
-	}
-	public ScheduleTreeNode(String string) {
+	NodeType type;
+	
+	public ScheduleTreeNode() {};
+	public ScheduleTreeNode(String string, NodeType type) {
 		super(string);
+		this.type = type;
 	}
 
-	public ScheduleTreeNode(TreeTableNode treeTableNode) {
+	
+
+	public ScheduleTreeNode(TreeTableNode treeTableNode, NodeType type) {
 		super(treeTableNode);
-		setInfo(treeTableNode);
-
+		this.type = type;
 	}
+
+	protected JointFormatter formatter;
+	
 	public String toString()
 	{
-		return fromDate+"  "+vessel+"("+company +")"+toDate;
+		return formatter!=null? formatter.getFormattedString():super.toString();
 	}
-	@Override
-	public void add(MutableTreeNode newChild) {
-		super.add(newChild);
-
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) newChild;
-
-		TreeTableNode item= (TreeTableNode) node.getUserObject();
-		setInfo(item);
-
-	}
-	public void setInfo(TreeTableNode item)		
-
+	public NodeType getType()
 	{
-		vessel=String.valueOf(item.get("vessel"));
-		company =String.valueOf(item.get("company_abbr"));
-
-
-		try {
-
-			fromDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("dateF"))));
-			toDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("dateT"))));
-		}catch(Exception e)
-		{
-			System.err.println("item:"+item);
-			e.printStackTrace();
-		}
+		return type;
 	}
+
 }

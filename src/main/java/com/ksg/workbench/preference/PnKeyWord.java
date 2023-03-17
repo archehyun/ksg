@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -19,7 +20,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 
 import com.ksg.common.model.KSGModelManager;
@@ -28,6 +29,7 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.KeyWordInfo;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 public class PnKeyWord extends PnOption {
 	private JList listKeyword;
@@ -45,9 +47,20 @@ public class PnKeyWord extends PnOption {
 		super(preferenceDialog);
 		
 		this.setName("Keyword형식");
-		listKeyword = new JList();
+		
 		baseService = new BaseServiceImpl();
-		JPanel pnKeyWordTypeOption = new JPanel();
+		
+		
+		this.setLayout(new BorderLayout());
+		this.add(buildCenter(),BorderLayout.CENTER);
+	}
+	
+	private KSGPanel buildCenter()
+	{
+		
+		listKeyword = new JList();
+		
+		KSGPanel pnKeyWordTypeOption = new KSGPanel();
 		pnKeyWordTypeOption.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnKeyWordTypeOption.add(new JLabel("키워드 타입: "));
 		
@@ -76,11 +89,11 @@ public class PnKeyWord extends PnOption {
 		butDel.setFont(defaultfont);
 
 		
-		Box pnMain =Box.createVerticalBox();
+		Box pnBox =Box.createVerticalBox();
 		
-		pnMain.add(pnKeyWordTypeOption);
+		pnBox.add(pnKeyWordTypeOption);
 		
-		JPanel pnKeyList = new JPanel();
+		KSGPanel pnKeyList = new KSGPanel();
 		pnKeyList.setLayout(new BorderLayout());
 		pnKeyList.add(new JScrollPane(listKeyword));
 		Box pnKeyControl = Box.createVerticalBox();
@@ -90,17 +103,19 @@ public class PnKeyWord extends PnOption {
 		pnKeyControl.add(butDel);
 		pnKeyControl.add(Box.createGlue());
 		
-		JPanel pn1 = new JPanel();
+		KSGPanel pn1 = new KSGPanel();
 		pn1.add(pnKeyControl);
 		
 		pnKeyList.add(pn1,BorderLayout.EAST);
-		JPanel pnWest = new JPanel();
-		pnWest.setPreferredSize(new Dimension(15,0));
-		pnKeyList.add(pnWest,BorderLayout.WEST);
-		pnMain.add(pnKeyList);
+
+		pnBox.add(pnKeyList);
 		
-		this.setLayout(new BorderLayout());
-		this.add(pnMain,BorderLayout.CENTER);
+		KSGPanel pnMain=new KSGPanel(new BorderLayout());
+		
+		pnMain.add(pnBox);
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,15, 5,5));
+		return pnMain;
+		
 	}
 	
 	private final class KeywordOptionDialog implements ActionListener {
@@ -112,7 +127,7 @@ public class PnKeyWord extends PnOption {
 			
 			final JDialog dialog =  new JDialog(preferenceDialog);
 			dialog.setTitle("Vessel&Voy Keyword 옵션" );
-			JPanel pnControl = new JPanel();
+			KSGPanel pnControl = new KSGPanel();
 			pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			JButton butSubOk = new JButton("확인");
 			butSubOk.addActionListener(new ActionListener() {
@@ -141,7 +156,7 @@ public class PnKeyWord extends PnOption {
 			butSubCancel.setFont(defaultfont);
 			pnControl.add(butSubOk);
 			pnControl.add(butSubCancel);
-			JPanel pnMain = new JPanel();
+			KSGPanel pnMain = new KSGPanel();
 			pnMain.setLayout(new FlowLayout(FlowLayout.LEFT));
 			JLabel lblDivider =new JLabel("구분자 : ");
 			lblDivider.setFont(defaultfont);

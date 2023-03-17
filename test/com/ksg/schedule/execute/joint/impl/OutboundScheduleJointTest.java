@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.service.ScheduleServiceV2;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
@@ -23,13 +24,13 @@ public class OutboundScheduleJointTest {
 
 	@Test
 	public void testExecute() {
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 		param.put("inOutType", "O");
 		param.put("date_issue", "2021-12-06");
 		
 		try {
 			List area= scheduleService.selecteScheduleListByCondition(param);
-			joint.buildSortedAndJointedScheduleList2(joint.buildOutboundScheduleGroup(area));
+			//joint.buildSortedAndJointedScheduleList2(joint.buildOutboundScheduleGroup(area));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

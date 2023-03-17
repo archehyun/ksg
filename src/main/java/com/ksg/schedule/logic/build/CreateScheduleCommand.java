@@ -25,7 +25,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
-import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.TableServiceImpl;
@@ -48,7 +48,7 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 	
 	private TableService 		tableService;
 	protected ADVService 		advService;
-	protected ScheduleService 	scheduleService;
+	protected ScheduleSubService 	scheduleService;
 	protected BaseService 		baseService;
 	
 	private VesselService vesselService = new VesselServiceImpl();
@@ -88,12 +88,7 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 		currentMonth = Integer.valueOf(sdfMonth.format(new Date()));
 
 		portList = 		baseService.getPortInfoList();
-		portAbbrList = 	baseService.getPort_AbbrList();
-
-//		Vessel op = new Vessel();
-//		op.setVessel_use(Vessel.NON_USE);
-		//NO_VESSEL = baseService.getVesselList(op);
-		
+		portAbbrList = 	baseService.getPort_AbbrList();		
 		
 		HashMap<String, Object> vesselParam = new HashMap<String, Object>();
 		
@@ -235,7 +230,7 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 	 */
 	protected String[] adjestDateYear(String dateF, String dateT, String inOutBoundType) throws NotSupportedDateTypeException{
 
-		//logger.debug("dateF:"+dateF+", dateT:"+dateT+", in/out:"+inOutBoundType);
+
 
 		dateT = dateT.replace(" ", "");
 
@@ -559,36 +554,7 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
 			}
 		}
 	}
-	/**
-	 * 문자형 항차번호 중 숫자만 반환
-	 * @param voyage_num
-	 * @return
-	 */
-	protected int getNumericVoyage(String voyage_num)
-	{
-		int result=0;
-
-		String temp="";
-		if(voyage_num==null)
-			return 0;
-		for(int i=0;i<voyage_num.length();i++)
-		{
-			try{
-				temp+=Integer.parseInt(String.valueOf(voyage_num.charAt(i)));
-			}catch(NumberFormatException e)
-			{
-
-			}
-		}
-		try{
-			result=Integer.valueOf(temp);
-		}catch(Exception e)
-		{
-			return 0;
-		}
-
-		return result;
-	}
+	
 	/**
 	 * @param type
 	 * @param tableID

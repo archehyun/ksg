@@ -19,10 +19,14 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.ColorUIResource;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.dtp.view.workwench.ViewConfiguration;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.PropertiManager;
 import com.ksg.workbench.KSGLogin;
-import com.ksg.workbench.KSGMainFrame;
+import com.ksg.workbench.admin.KSGMainFrame;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 
   */
 @Slf4j
+
 public class App 
 {
 	
@@ -50,14 +55,11 @@ public class App
 
 	public App() 
 	{	
-		
+//		ApplicationContext ac = new AnnotationConfigApplicationContext(ViewConfiguration.class);
 	}
 
 
 	private ServerSocket serverSocket;
-
-	//private KSGMainFrame frame;
-
 
 
 	public void start() {
@@ -118,6 +120,8 @@ public class App
 	}
 
 	public static void main(String[] args) {
+		
+		
 		new App().start();
 
 	}

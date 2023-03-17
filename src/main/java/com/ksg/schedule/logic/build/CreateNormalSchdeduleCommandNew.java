@@ -10,23 +10,31 @@
  *******************************************************************************/
 package com.ksg.schedule.logic.build;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
-import org.jdom.JDOMException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.commands.schedule.SwingWorker;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
@@ -36,6 +44,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.ScheduleManager;
+import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.service.ScheduleService;
 import com.ksg.view.ui.ErrorLogManager;
 
@@ -70,6 +79,8 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 
 	private static final String SCHEDULE_BUILD_ERROR_TXT = "schedule_build_error.txt";
 
+	protected Logger logger = LogManager.getLogger(this.getClass());
+
 	private ErrorLogManager errorLogManager = ErrorLogManager.getInstance();
 
 	private int[]	a_inport,a_intoport,a_outport,a_outtoport;
@@ -83,29 +94,38 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 	private XTGManager xtgmanager = new XTGManager();
 
 	private String[][] vslDatas;
-	
-	private String currentTableID=null;
-	
-	
-	boolean isOutToNewBusanPortScheduleAdd=false;
-	
-	boolean isOutNewBusanPortScheduleAdd=false;
-	
-	int outBusanNewPortIndex;
-	int outToBusanNewPortIndex;
-	boolean isExitOutOldPort=false;
-	boolean isExitOutNewPort=false;
-	boolean isExitOutToOldPort=false;
-	boolean isExitOutToNewPort=false;
-	SimpleDateFormat format = new SimpleDateFormat("M/d");
-	
 
-	public CreateNormalSchdeduleCommandNew(ShippersTable op) throws SQLException 
+	private String currentTableID=null;
+
+	private boolean isOutToNewBusanPortScheduleAdd=false;
+
+	private boolean isOutNewBusanPortScheduleAdd=false;
+
+	private int outBusanNewPortIndex;
+
+	private int outToBusanNewPortIndex;
+
+	private boolean isExitOutOldPort=false;
+
+	private boolean isExitOutNewPort=false;
+
+	private boolean isExitOutToOldPort=false;
+
+	private boolean isExitOutToNewPort=false;
+
+	SimpleDateFormat format = new SimpleDateFormat("M/d");
+
+
+	public CreateNormalSchdeduleCommandNew() throws SQLException
 	{
 		super();
+	}
+	public CreateNormalSchdeduleCommandNew(ShippersTable op) throws SQLException 
+	{
+		this();
 		searchOption =op;
 	}
-	
+
 	public int execute() {
 
 		final SwingWorker worker = new SwingWorker() {
@@ -121,7 +141,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 		return result;
 	}
 
-
+	ArrayList<ScheduleData> insertList = new ArrayList<ScheduleData>();
 	/**
 	 * @return 스케줄 생성 결과
 	 */
@@ -134,20 +154,19 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 			 * ********************************************			 
 			 */
 			log.info("search option:"+searchOption);
-			
-			this.setTime(startTime);
-			
-			List table_list = this.getTableListByOption();
-			
+
+			long startTime = System.currentTimeMillis();
+
+			List<ShippersTable> table_list = this.getTableListByOption();
+
 			setMessageDialog();
-			
+
 			Iterator iter = table_list.iterator();
-			while(iter.hasNext())
+			
+			for(ShippersTable tableData: table_list)
 			{
-				ShippersTable tableData = (ShippersTable) iter.next();
-				
 				currentTableID = tableData.getTable_id();
-				
+
 				// 테이블 데이터가 유효 한지 검증
 				if(isTableDataValidation(tableData))
 				{
@@ -173,26 +192,39 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 				 */
 
 				// 아웃바운드 국내항
-				a_outport=makePortArraySub(tableData.getOut_port(),tableData);
-				// 인바운드 국내항
-				a_inport =makePortArraySub(tableData.getIn_port(),tableData);
-				// 아웃바운드 외국항
-				a_outtoport=makePortArraySub(tableData.getOut_to_port(),tableData);
-				// 인바운드 외국항
-				a_intoport =makePortArraySub(tableData.getIn_to_port(),tableData);				
+
+				try {
+					a_outport 	= ScheduleBuildUtil. makePortArraySub(tableData.getOut_port());
+					// 인바운드 국내항
+					a_inport 	= ScheduleBuildUtil.makePortArraySub(tableData.getIn_port());
+					// 아웃바운드 외국항
+					a_outtoport	= ScheduleBuildUtil.makePortArraySub(tableData.getOut_to_port());
+					// 인바운드 외국항
+					a_intoport 	= ScheduleBuildUtil.makePortArraySub(tableData.getIn_to_port());
+				}catch(NumberFormatException e)
+				{	
+					log.error("ID({}) port index number foramt error:", currentTableID, e.getMessage());
+
+					errorlist.add(createError("인덱스 오류", currentTableID, e.getMessage()));
+
+					continue;
+				}
+
+				// 국내항
+				portDataArray=getPortList(currentTableID);
 
 				for(int vslIndex=0;vslIndex<vslDatas.length;vslIndex++)
 				{
 					try 
 					{
 						String vesselName=vslDatas[vslIndex][0];
-						
+
 						Vessel vesselInfo = ScheduleManager.getInstance().searchVessel(vesselName);
-						
+
 						// 사용하지 않는 선박이면 스케줄에서 제외
 						if(vesselInfo.getVessel_use()==Vessel.NON_USE)
 							continue;
-						
+
 						// 인바운드 스케줄 생성
 						makeSchedule(tableData, vslIndex,a_inport,a_intoport,ScheduleService.INBOUND,advData);
 
@@ -203,9 +235,9 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 					catch (PortIndexNotMatchException e) 
 					{	
 						String errorLog =e.table.getCompany_abbr()+"선사의 "+e.table.getPage()+" 페이지,"+e.table.getTable_index()+
-						"번 테이블의 스케줄 정보 생성시 문제가 생겼습니다.\n\n항구정보, 항구 인덱스 정보,날짜 형식를 확인 하십시요.\n\n스케줄 생성을 종료 합니다.";
+								"번 테이블의 스케줄 정보 생성시 문제가 생겼습니다.\n\n항구정보, 항구 인덱스 정보,날짜 형식를 확인 하십시요.\n\n스케줄 생성을 종료 합니다.";
 						errorLogManager.setLogger(errorLog);
-						
+
 						log.error(errorLog);
 						JOptionPane.showMessageDialog(null, errorLog);
 
@@ -229,26 +261,61 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 						return RESULT_FAILE;
 					}
 				}
+
+
+
+				log.info("size:{}",insertList.size());
+
+				if(insertList.isEmpty()) continue;
+
+				boolean flag = true;
+				
+				if(flag)
+				{
+					List newList=insertList.stream().filter(distinctByKey(m -> m.toKey())).collect(Collectors.toList());;
+
+					Collection<List<ScheduleData>> partitions = partition(newList, 80);
+
+
+					for(List items: partitions)
+					{
+						try {
+						scheduleService.insertScheduleBulkData(items);
+						}catch(SQLException e)
+						{
+							//TODO 날짜 입력에 문자가 포함시 에러 발생
+							e.printStackTrace();
+						}
+					}
+				}
+				else
+				{
+					insertList.stream().forEach(schedule -> insertScheduleNew(schedule));
+				}					
+				insertList.clear();
+
+
 				process++;		
 				current++;
 			}
 
 			done = true;
-			
-			current = lengthOfTask;	
 
-			log.info("<==build schedule end==>");
-			
-			this.setTime(endtime);
-			
-			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "스케줄 생성완료 ("+(endtime-startTime)+"ms)");
-			
+			current = lengthOfTask;			
+
+			long endTime = System.currentTimeMillis();
+
+			log.info("스케줄 생성 종료({})",getSecond((endTime-startTime)));
+
+			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "스케줄 생성완료 ("+getSecond((endTime-startTime))+"s)");
+
 			return RESULT_SUCCESS;
 
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 			done=false;
+			JOptionPane.showMessageDialog(null, e);
 			return RESULT_FAILE;
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -263,13 +330,33 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 		}
 
 		// 전체
+
 	}
 
+	private static <T> Collection<List<T>> partition(List<T> collection, int n) {
+		AtomicInteger counter = new AtomicInteger();
+		return collection.stream()
+				.collect(Collectors.groupingBy(it -> counter.getAndIncrement() / n))
+				.values();
+	}
+	public static <T> Predicate<T> distinctByKey( Function<? super T, Object> keyExtractor) {
+		Map<Object, Boolean> map = new HashMap<>();
+		return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+	}
 
 	private void close() {
 		done=false;
 		processMessageDialog.setVisible(false);
 		processMessageDialog.dispose();
+	}
+
+	private String getSecond(long millis)
+	{
+		int minutes = (int) ((millis / 1000) / 60 % 60);
+
+		int seconds = (int) ((millis/1000) % 60);
+		;
+		return String.format("%02d:%02d", minutes, seconds);
 	}
 
 
@@ -310,28 +397,27 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 	/**
 	 * @param table
 	 * @return
+	 * @throws SQLException 
 	 */
-	private Vector getPortList(ShippersTable table) 
+	private Vector getPortList(String table_id) throws SQLException 
 	{
 		portDataArray  = new Vector();
-		try {
 
-			TablePort tablePort = new TablePort();
-			tablePort.setTable_id(table.getTable_id());
-			tablePort.setPort_type(TablePort.TYPE_PARENT);
 
-			List li=getTablePortList(tablePort);
+		TablePort tablePort = new TablePort();
+		tablePort.setTable_id(table_id);
+		tablePort.setPort_type(TablePort.TYPE_PARENT);
 
-			for(int i=0;i<li.size();i++)
-			{
-				TablePort port = (TablePort) li.get(i);
+		List li=getTablePortList(tablePort);
 
-				portDataArray.add(port);
-			}
-			log.debug("portarray:"+table.getTable_id()+","+portDataArray);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
+		for(int i=0;i<li.size();i++)
+		{
+			TablePort port = (TablePort) li.get(i);
+
+			portDataArray.add(port);
 		}
+		log.debug("portarray:"+table_id+","+portDataArray);
+
 		return portDataArray;
 	}
 
@@ -364,10 +450,6 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 			String common_shipping,String date_isusse, int vslIndex)
 	{
 
-		// 날짜 형식이 맞지 않으면 처리 하지 않음
-		if(!isScheduleDataValidation())
-			return;
-
 		ScheduleData scheduledata = new ScheduleData();
 		scheduledata.setTable_id(table_id); // 테이블 아이디
 		scheduledata.setVessel(vesselName); // 선박명
@@ -380,12 +462,12 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 		scheduledata.setArea_name(area_name);// 지역 명
 		scheduledata.setCompany_abbr(company_abbr);// 선사명
 		scheduledata.setVoyage_num(voyageNum);//	항차번호
-		scheduledata.setN_voyage_num(getNumericVoyage(voyageNum));// 항차 번호
+		scheduledata.setN_voyage_num(ScheduleBuildUtil.getNumericVoyage(voyageNum));// 항차 번호(숫자)
 		scheduledata.setInOutType(inOutType);	//in, out 타입
 		scheduledata.setGubun(gubun);		//구분
 		scheduledata.setCommon_shipping(common_shipping==null?"":common_shipping);//
 		scheduledata.setDate_issue(date_isusse);// 입력일
-		
+
 		//구분이 콘솔일 경우
 		if(searchOption.getGubun().equals(ShippersTable.GUBUN_CONSOLE))
 		{
@@ -394,7 +476,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 			scheduledata.setConsole_cfs(table.getConsole_cfs());
 			scheduledata.setConsole_page(table.getConsole_page());
 		}
-		
+
 		try
 		{
 			scheduleService.insertScheduleData(scheduledata);// DB 에 저장
@@ -407,7 +489,6 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 				try {
 					scheduleService.updateScheduleData(scheduledata);
 				} catch (SQLException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				//					update++;
@@ -421,14 +502,81 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 				break;
 			default:
 				log.error("error:"+scheduledata+", id:"+scheduledata.getTable_id()+", fromPort:"+scheduledata.getFromPort());
-			e.printStackTrace();
-			break;
+				e.printStackTrace();
+				break;
 			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 			errorlist.add(createError(e.getMessage(), scheduledata.getTable_id(), ""));
+
+		}
+	}
+
+	public ScheduleData createScheduleData(ShippersTable table,
+			String table_id,
+			String voyageNum,
+			String vesselName,
+			String dateF, 
+			String dateT,
+			String area_code, 
+			String area_name, 
+			String gubun,
+			String company_abbr,
+			String agent,
+			String fromPort, 
+			String toPort,
+			String inOutType,
+			String common_shipping,
+			String date_isusse, 
+			int vslIndex)
+
+	{
+
+		ScheduleData scheduledata =ScheduleData.builder()
+				.table_id(table_id)
+				.vessel(vesselName)
+				.agent(agent)
+				.company_abbr(company_abbr)
+				.port(toPort)
+				.fromPort(fromPort)
+				.area_code(area_code)
+				.area_name(area_name.toUpperCase())
+				.InOutType(inOutType)
+				.voyage_num(voyageNum)
+				.n_voyage_num(ScheduleBuildUtil.getNumericVoyage(voyageNum))
+				.gubun(gubun)
+				.common_shipping(common_shipping==null?"":common_shipping)
+				.TS("")
+				.ts_date("")
+				.ts_port("")
+				.ts_vessel("")
+				.ts_voyage_num("")
+				//											.inland_date_back("")
+				.inland_date("")
+				.inland_port("")
+				.DateF(dateF)
+				.DateT(dateT)
+				.date_issue(getDateIsusse(date_isusse))
+				.c_time("")
+				.d_time("")
+				.console_cfs("")
+				.console_page("")
+				.build();
+		
+		
+		
+		return scheduledata;
+	}
+
+	private String getDateIsusse(String date_isusse)
+	{
+		try {
+			return KSGDateUtil.format(KSGDateUtil.toDate2(date_isusse));
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return date_isusse;
 
 		}
 	}
@@ -496,18 +644,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 				scheduledata.setTS(info.getPort_name());
 
 
-				String date[][]=null;
-				try {
-					date = adv.getDataArray();
-				} catch (OutOfMemoryError e) {
-					e.printStackTrace();
-				} catch (JDOMException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				//scheduledata.setTs_date(date[vslIndex][table.getDirection()-1]);
-
+				String date[][]=adv.getDataArray();
 
 			}
 			scheduledata.setAgent(table.getAgent());
@@ -582,7 +719,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 		} 
 		scheduledata.setCompany_abbr(table.getCompany_abbr());
 		scheduledata.setVoyage_num(vslDatas[vslIndex][1]);
-		scheduledata.setN_voyage_num(getNumericVoyage(vslDatas[vslIndex][1]));
+		scheduledata.setN_voyage_num(ScheduleBuildUtil.getNumericVoyage(vslDatas[vslIndex][1]));
 		scheduledata.setInOutType(InOutBoundType);
 		scheduledata.setGubun(table.getGubun());
 		scheduledata.setCommon_shipping("");
@@ -614,7 +751,6 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 				try {
 					scheduleService.updateScheduleData(scheduledata);
 				} catch (SQLException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				//					update++;
@@ -623,15 +759,14 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 				try {
 					scheduleService.updateScheduleData(scheduledata);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				//					update++;
 				break;
 			default:
 				log.error("error:"+scheduledata+", id:"+scheduledata.getTable_id()+", fromPort:"+scheduledata.getFromPort());
-			e.printStackTrace();
-			break;
+				e.printStackTrace();
+				break;
 			}
 		}
 		catch(Exception e)
@@ -647,8 +782,8 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 	 */
 	private boolean isScheduleDataValidation() {
 		return !outToPortData.equals("-")&&!outPortData.equals("-")&&
-		!outToPortData.equals("_")&&!outPortData.equals("_")&&
-		!outToPortData.trim().equals("")&&!outPortData.trim().equals("");
+				!outToPortData.equals("_")&&!outPortData.equals("_")&&
+				!outToPortData.trim().equals("")&&!outPortData.trim().equals("");
 	}
 
 	/**@설명 항구이름을 기준으로 메모리 상에 있는 항구 상세 정보 검색
@@ -685,46 +820,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 	}
 
 
-	/**
-	 * @param field
-	 * @param table
-	 * @return
-	 */
-	private int[] makePortArraySub(String field, ShippersTable table) {
-		if(field==null||field.equals("")||field.equals(" "))
-			return null;
 
-		log.debug("table id:"+table.getTable_id()+" field:"+field);
-		field=field.trim();
-
-		// #을 기준으로 항구 인덱스를 구분
-		StringTokenizer st = new StringTokenizer(field,"#");
-
-		Vector<Integer> indexList = new Vector<Integer>();
-		while(st.hasMoreTokens())
-		{
-			try
-			{
-				indexList.add(Integer.parseInt(st.nextToken().trim()));
-			}
-			catch (NumberFormatException e) 
-			{
-				log.error("number foramt error:"+field+",id:"+table.getTable_id());
-				errorlist.add(createError("인덱스 오류", table.getTable_id(), field));
-
-				continue;
-			}
-		}
-
-		int array[] =new int[indexList.size()];
-		for(int i=0;i<indexList.size();i++)
-		{
-			array[i]=indexList.get(i);
-		}		
-
-		return array;
-
-	}
 
 	int oldPortIndex;
 	int newPortIndex;
@@ -764,8 +860,8 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 
 	}
 
-	
-	
+
+
 	/**
 	 * @param table
 	 * @param vslIndex
@@ -788,8 +884,9 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 			String gubun= table.getGubun();
 			String date_isusse = table.getDate_isusse();
 			String common_shipping = table.getCommon_shipping();
-			String dateF=null;
-			String dateT=null;
+			//String dateF=null;
+			//String dateT=null;
+			String scheduleDate[];
 			String area_code=null;
 			String area_name=null;
 			String vesselName=vslDatas[vslIndex][0];			
@@ -798,15 +895,14 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 			String toPort=null;
 			String dates[]= null;
 
-			// 국내항
-			portDataArray=getPortList(table);
+
 
 			log.debug("MakeSchedule "+InOutBoundType+ " start:"+table.getTable_id()+","+table.getPage());
-			
+
 			log.debug("table info:"+table.getTable_id()+", vessel name:"+vesselName+","+fromPorts.length+","+toPorts.length);
 
 			boolean isOutFromBusanAndNewBusan=isBusanAndNewBusan(fromPorts, toPorts,TYPE_INBOUND);
-			
+
 			boolean isOutToBusanAndNewBusan=isBusanAndNewBusan(fromPorts, toPorts,TYPE_OUTBOUND);
 
 			for(int fromPortCount=0;fromPortCount<fromPorts.length;fromPortCount++)
@@ -819,37 +915,22 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 					int outToPortIndex = toPorts[toPortCount];
 
 					TablePort _outport = this.getPort(portDataArray, outPortIndex);
-					
+
 					TablePort _outtoport = this.getPort(portDataArray, outToPortIndex);
 
 					String subFromPortArray[]=_outport.getPortArray();
-					
+
 					String subToPortArray[]=_outtoport.getPortArray();
 
 					outToPortData = arrayDatas[vslIndex][outToPortIndex-1];
 
 					outPortData = arrayDatas[vslIndex][outPortIndex-1];
 					
-					try{
-						//부산 신항 스케줄 확인 아웃 바운드
-						format.parse(arrayDatas[vslIndex][outToBusanNewPortIndex-1]);
-						
-						isOutToNewBusanPortScheduleAdd=true;
-					}
-					catch(Exception e)
-					{
-						isOutToNewBusanPortScheduleAdd=false;
-					}
+					//부산 신항 스케줄 확인 아웃 바운드
+					isOutToNewBusanPortScheduleAdd = checkBusanPortAdd(vslIndex,outToBusanNewPortIndex);
+					//부산 신항 스케줄 확인 인 바운드
+					isOutNewBusanPortScheduleAdd = checkBusanPortAdd(vslIndex, outBusanNewPortIndex);
 					
-					try{
-						//부산 신항 스케줄 확인 인 바운드
-						format.parse(arrayDatas[vslIndex][outBusanNewPortIndex-1]);
-						isOutNewBusanPortScheduleAdd=true;
-					}
-					catch(Exception e)
-					{
-						isOutNewBusanPortScheduleAdd=false;
-					}
 
 					/*
 					 * 부산항만 있을 경우
@@ -857,24 +938,17 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 					 * 부산항과 신항이 같이 있을 경우
 					 * 
 					 */
+					
+					
 
 					try 
 					{
 						// 출발일, 도착일 날짜 지정
-						if(InOutBoundType.equals(ScheduleService.INBOUND))
-						{
-							dates=adjestDateYear(arrayDatas[vslIndex][outToPortIndex-1],arrayDatas[vslIndex][outPortIndex-1],InOutBoundType);
-						}
-						else
-						{
-							dates=adjestDateYear(arrayDatas[vslIndex][outPortIndex-1],arrayDatas[vslIndex][outToPortIndex-1],InOutBoundType);
-						}
-						dateF=dates[0];
-						dateT=dates[1];
-
+						scheduleDate=					getScheduleDdate(InOutBoundType,vslIndex, outPortIndex, outToPortIndex);
+						
 					} catch (NotSupportedDateTypeException e) 
 					{
-						
+
 						// 날자 형태가 "-"라면 계속 속행
 						if(!e.date.equals("-"))
 						{
@@ -888,38 +962,38 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 					{
 						for(int c =0;c<subToPortArray.length;c++)
 						{
-							try{
-
+							try{								
+								fromPort= InOutBoundType.equals(ScheduleService.INBOUND)?subToPortArray[c]:subFromPortArray[z];
+//								
+								toPort	= InOutBoundType.equals(ScheduleService.INBOUND)?subFromPortArray[z]:subToPortArray[c];
+//								if(InOutBoundType.equals(ScheduleService.INBOUND))
+//								{										
+//									fromPort=subToPortArray[c];
+//									toPort=subFromPortArray[z];
+//								}
+//								else
+//								{
+//									fromPort=subFromPortArray[z];
+//									toPort=subToPortArray[c];									
+//								}
+//								
+								
 								// 출발항, 도착항 지정
-								if(InOutBoundType.equals(ScheduleService.INBOUND))
-								{										
-									fromPort=subToPortArray[c];
-									toPort=subFromPortArray[z];
-								}
-								else
-								{
-									fromPort=subFromPortArray[z];
-									toPort=subToPortArray[c];									
-								}
+								
 								PortInfo  fromPortInfo=getPortInfo(fromPort);
-								if(fromPortInfo== null)
-								{
-									log.error("null port error:"+fromPort+",id:"+table_id);
-									continue;
-								}
 
 								PortInfo  toPortInfo=getPortInfo(toPort);
 
-								if(toPortInfo== null)
+								if(fromPortInfo== null||toPortInfo== null)
 								{
-									log.error("null port error:"+toPort+",id:"+table_id);
+									logger.error("null port error- fromport:{}, toPort:{}, table_id:{}",fromPort, toPort,table_id);
 									continue;
 								}
 
 								area_code=toPortInfo.getArea_code();
 								area_name=toPortInfo.getPort_area();
-								
-								
+
+
 								/* 부산항과 신항이 같이 있을 경우 부산항 스케줄은 추가 하지 않음
 								 * 
 								 */
@@ -932,7 +1006,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 									 * 2. 부산 신항 스케줄이 있는 경우
 									 * 오류: 부산항, 부산 신항이 동시에 존재하는 경우 부산 신항 스케줄이 없을 경우에도 부산 스케줄 무시됨 
 									 */
-									
+
 									if(fromPort.equals(BUSAN)&&isOutToNewBusanPortScheduleAdd)
 									{
 										log.info(InOutBoundType+" busan port skip:"+vesselName);
@@ -940,7 +1014,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 										continue;
 									}
 								}
-								
+
 								// inbound 스케줄
 								if(InOutBoundType.equals(ScheduleService.INBOUND)&&isOutFromBusanAndNewBusan)
 								{									
@@ -952,13 +1026,40 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 									}
 								}
 
-								insertSchedule(table,table_id, 
-										voyageNum, vesselName,
-										dateF, dateT, area_code,
-										area_name, gubun, company_abbr,agent,fromPort,toPort,
-										InOutBoundType,common_shipping,
-										date_isusse,vslIndex);
+								// 날짜 형식이 맞지 않으면 처리 하지 않음
+								if(!isScheduleDataValidation())
+									continue;
+
+
+
+								ScheduleData insertData=	
+										createScheduleData(table, 
+												table_id, 
+												voyageNum, 
+												vesselName, 
+												scheduleDate[0],//dateF 
+												scheduleDate[1],//dateT 
+												area_code, 
+												area_name,
+												gubun,
+												company_abbr, 
+												agent, 
+												fromPort, 
+												toPort, InOutBoundType, common_shipping, date_isusse, vslIndex);
 								
+								//구분이 콘솔일 경우
+								if(searchOption.getGubun().equals(ShippersTable.GUBUN_CONSOLE))
+								{
+									insertData.setC_time(table.getC_time()==0?"":arrayDatas[vslIndex][table.getC_time()-1]);
+									insertData.setD_time(table.getD_time()==0?"":arrayDatas[vslIndex][table.getD_time()-1]);
+									insertData.setConsole_cfs(table.getConsole_cfs());
+									insertData.setConsole_page(table.getConsole_page());
+								}
+								
+
+
+								insertList.add(insertData);
+
 							}catch(Exception e)
 							{
 								e.printStackTrace();
@@ -966,18 +1067,13 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 								throw new NotSupportedDateTypeException("", 0);
 							}
 						}
-					}
-
-					/******************
-					 *에러 발생 될 수 있음				*
-					 **/				
-
+					}					
 				}
 
 			}
 			log.debug("MakeSchedule end");
 		}	
-		
+
 		catch(Exception e)
 		{
 			e.printStackTrace();
@@ -996,8 +1092,8 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 	 * 
 	 */
 	private boolean isBusanAndNewBusan(int[] fromPorts, int[] toPort, int type)
-	throws SQLException {
-		
+			throws SQLException {
+
 		isExitOutOldPort=false;
 		isExitOutNewPort=false;
 		isExitOutToOldPort=false;
@@ -1048,36 +1144,90 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 				}
 			}
 		}
-		
-		
+
+
 		boolean result=false;
 		switch (type) {
 		case TYPE_INBOUND:
-			
+
 			result= isExitOutOldPort&&isExitOutNewPort;
 			break;
 
 		case TYPE_OUTBOUND:
-			
+
 			result= isExitOutToOldPort&&isExitOutToNewPort;
 			break;
 		}
 		return result;
-		
-	}
 
+	}
+	private void insertScheduleNew(ScheduleData data)
+	{
+		try
+		{
+			scheduleService.insertScheduleData(data);// DB 에 저장
+		}
+		catch(SQLException e)
+		{
+
+			switch (e.getErrorCode()) {
+			case 1062:// 주키 동일
+				try {
+					scheduleService.updateScheduleData(data);
+				} catch (SQLException e2) {
+					e2.printStackTrace();
+				}
+				//					update++;
+				break;
+			case 2627:// 주키 동일
+				try {
+					scheduleService.updateScheduleData(data);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				//					update++;
+				break;
+			default:
+				log.error("error:"+data+", id:"+data.getTable_id()+", fromPort:"+data.getFromPort());
+				e.printStackTrace();
+				break;
+			}
+		}
+
+	}
 	class ActualTask {
 		ActualTask() {
 
 			result=makeBildingSchedule();
 		}
 	}
-
-
-
-
-
-
+	
+	private boolean checkBusanPortAdd(int vslIndex, int busanPortIndex)
+	{
+		try{
+			//부산 신항 스케줄 확인 아웃 바운드
+			format.parse(arrayDatas[vslIndex][busanPortIndex-1]);
+			return true;
+			
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		
+	}
+	private String[] getScheduleDdate(String InOutBoundType, int vslIndex,int outPortIndex, int outToPortIndex) throws NotSupportedDateTypeException
+	{
+		// 출발일, 도착일 날짜 지정
+		if(InOutBoundType.equals(ScheduleService.INBOUND))
+		{
+			return adjestDateYear(arrayDatas[vslIndex][outToPortIndex-1],arrayDatas[vslIndex][outPortIndex-1],InOutBoundType);
+		}
+		else
+		{
+			return adjestDateYear(arrayDatas[vslIndex][outPortIndex-1],arrayDatas[vslIndex][outToPortIndex-1],InOutBoundType);
+		}
+	}
 
 
 

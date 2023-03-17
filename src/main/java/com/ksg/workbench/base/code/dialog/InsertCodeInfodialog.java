@@ -22,10 +22,9 @@ import javax.swing.JTextField;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.base.BaseInfoUI;
-
-import com.ksg.workbench.base.dialog.BaseInfoDialog;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.workbench.master.BaseInfoUI;
+import com.ksg.workbench.master.dialog.BaseInfoDialog;
 
 /**
  * 코드 정보 추가 다이어그램

@@ -23,7 +23,7 @@ import com.ksg.common.model.KSGObserver;
 import com.ksg.domain.Company;
 import com.ksg.service.ADVService;
 import com.ksg.service.impl.ADVServiceImpl;
-import com.ksg.view.comp.tree.KSGTreeImpl;
+import com.ksg.workbench.common.comp.tree.KSGTreeImpl;
 
 /**
  * @author ¹ÚÃ¢Çö

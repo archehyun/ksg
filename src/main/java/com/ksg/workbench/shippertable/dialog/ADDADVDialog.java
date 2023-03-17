@@ -101,7 +101,7 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 							return;
 						}
 					} catch (SQLException ee) {
-						// TODO Auto-generated catch block
+						
 						ee.printStackTrace();
 					}
 
@@ -145,7 +145,7 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 				portModel.addElement(po.getPort_name());
 			}
 		} catch (SQLException e3) {
-			// TODO Auto-generated catch block
+			
 			e3.printStackTrace();
 		}
 		portLi.setModel(portModel);	
@@ -310,7 +310,6 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 					}
 
 				} catch (SQLException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 
@@ -418,7 +417,7 @@ public class ADDADVDialog extends KSGDialog implements ActionListener{
 					return;
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 

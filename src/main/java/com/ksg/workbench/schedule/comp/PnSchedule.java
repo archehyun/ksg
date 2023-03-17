@@ -1,13 +1,12 @@
 package com.ksg.workbench.schedule.comp;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-
-import com.ksg.service.ScheduleService;
+import com.dtp.api.control.AbstractController;
+import com.ksg.common.model.CommandMap;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.KSGView;
+import com.ksg.workbench.common.comp.View;
 
 /**
 
@@ -25,12 +24,16 @@ import com.ksg.view.comp.panel.KSGPanel;
 
   */
 @SuppressWarnings("serial")
-public abstract class PnSchedule extends KSGPanel implements ActionListener, ComponentListener{
+public abstract class PnSchedule extends KSGView implements View{
 	
+	
+	private CommandMap model;
 	
 	protected String input_date="";
 	
 	protected String gubun;
+	
+	private AbstractController controller;
 	
 	public void setGubun(String gubun)
 	{
@@ -43,7 +46,7 @@ public abstract class PnSchedule extends KSGPanel implements ActionListener, Com
 	
 	protected CodeServiceImpl codeService;
 
-	protected ScheduleService scheduleService;
+	protected ScheduleSubService scheduleService;
 	
 	public PnSchedule()
 	{
@@ -52,16 +55,34 @@ public abstract class PnSchedule extends KSGPanel implements ActionListener, Com
 	}
 	
 	@Override
-	public void componentResized(ComponentEvent e) {}
+	public void setModel(CommandMap model) {
+		this. model = model;
 
-	@Override
-	public void componentMoved(ComponentEvent e) {}
+	}
+	public CommandMap getModel() {
 
-	@Override
-	public void componentShown(ComponentEvent e) {}
+		return model;
+	}
 
-	@Override
-	public void componentHidden(ComponentEvent e) {}
-
+	public void callApi(String serviceId, CommandMap param)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, param, this);
+	}
+	
+	public void callApi(String serviceId)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, new CommandMap(),this);
+	}
+	
+	public void updateView() {};
+	
+	public void setController(AbstractController constroller)
+	{
+		this.controller =constroller;
+	}
+	
+	
 
 }

@@ -1,5 +1,7 @@
 package com.ksg.workbench.preference;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -12,18 +14,15 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 public class PnXLS extends PnOption{
 	
@@ -54,27 +53,40 @@ public class PnXLS extends PnOption{
 		
 		this.setName("엑셀입력옵션");
 		
+		baseService = new BaseServiceImpl();
+		defaultfont = KSGModelManager.getInstance().defaultFont;
+		
 		initComponent();
 		
-		Box pnMain =Box.createVerticalBox();
-		JPanel pnSub = new JPanel();
+		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		this.add(buildCenter());
+		
+	}
+	
+	private KSGPanel buildCenter()
+	{
+		Box pnBox =Box.createVerticalBox();
+		
+		KSGPanel pnSub = new KSGPanel();
+		
 		pnSub.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		
 		Box pnInfo = Box.createVerticalBox();
 		
-		JPanel pnInfo1 = new JPanel();
+		KSGPanel pnInfo1 = new KSGPanel();
 		pnInfo1.setBorder(BorderFactory.createTitledBorder("항구 지정"));
 		pnInfo1.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		
 		pnInfo1.add(new JLabel("적용안함 :  항구 형태가 일반적일 때"));		
-		JPanel pnInfo2 = new JPanel();
+		KSGPanel pnInfo2 = new KSGPanel();
 		pnInfo2.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnInfo2.add(new JLabel("일괄적용 :  위에는 대표명이 있고 아래 셀에 항구명이 있을 때 "));
 				
 		
-		JPanel pnInfo3 = new JPanel();
+		KSGPanel pnInfo3 = new KSGPanel();
 		pnInfo3.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnInfo3.add(new JLabel("부분적용 :  일반적인 형태와 혼합되어 있을 때"));
 		pnInfo.add(pnInfo1);
@@ -84,32 +96,35 @@ public class PnXLS extends PnOption{
 		pnSub.add(new JLabel("하위항구: "));
 		pnSub.add(cbbUnderPort);
 		
-		pnMain.add(pnInfo);
-		pnMain.add(pnSub);
+		pnBox.add(pnInfo);
+		pnBox.add(pnSub);
 		
 		
-		pnMain.add(createComp(cbxDoubleLine));
-		pnMain.add(createComp(cbxVoy));
-		pnMain.add(createComp(cbxVesselVoyage));
-		pnMain.add(createComp(chxDoubleKeyword));
-		pnMain.add(createComp(chxETAETD));
+		pnBox.add(createComp(cbxDoubleLine));
+		pnBox.add(createComp(cbxVoy));
+		pnBox.add(createComp(cbxVesselVoyage));
+		pnBox.add(createComp(chxDoubleKeyword));
+		pnBox.add(createComp(chxETAETD));
 		
-		JPanel panel = new JPanel();
+		KSGPanel panel = new KSGPanel();
 		panel.add(radioButNoaml);
 		panel.add(radioButDot);
 		panel.add(radioButSlash);
 		panel.add(radioButGyu);
-		pnMain.add(createComp(new JLabel("이중항구 등록시:")));
-		pnMain.add(createComp(panel));
+		pnBox.add(createComp(new JLabel("이중항구 등록시:")));
+		pnBox.add(createComp(panel));
 		
 		
-		this.setLayout(new FlowLayout(FlowLayout.LEFT));
-		this.add(pnMain);
 		
+		KSGPanel pnMain=new KSGPanel(new BorderLayout());
+		
+		pnMain.add(pnBox);
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,15, 5,5));
+		return pnMain;
 	}
 	public Component createComp(Component comp)
 	{
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 		pnMain.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnMain.add(comp);
 		return pnMain;
@@ -136,12 +151,12 @@ public class PnXLS extends PnOption{
 	}
 	private void initComponent()
 	{
-		baseService = new BaseServiceImpl();
-		defaultfont = KSGModelManager.getInstance().defaultFont;
+
 		cbxUnderPort = new JCheckBox();
 		cbxVoy = new JCheckBox("Voyage가 생략 되어 있을 경우 선택");
 		cbxDoubleLine = new JCheckBox("Keyword또는 항구가 아래,위 동일한 형태로 있을 경우 선택");
 		cbxVesselVoyage = new JCheckBox("Vessel&Voyage 키워드가  혼재 되어 있을 경우 선택");
+
 		
 		cbxVesselVoyage.setSelected(KSGModelManager.getInstance().seperatedVesselvoy);
 		cbxVesselVoyage.addChangeListener(new ChangeListener() {
@@ -237,6 +252,19 @@ public class PnXLS extends PnOption{
 		bg.add(radioButSlash);
 		bg.add(radioButGyu);
 		
+		
+		
+		cbxVoy.setBackground(Color.white);
+		cbxDoubleLine.setBackground(Color.white);
+		cbxVesselVoyage.setBackground(Color.white);
+		
+		chxDoubleKeyword.setBackground(Color.white);
+		chxETAETD.setBackground(Color.white);
+		
+		radioButNoaml.setBackground(Color.white);
+		radioButDot.setBackground(Color.white);
+		radioButSlash.setBackground(Color.white);
+		radioButGyu.setBackground(Color.white);
 		
 		/*switch (KSGPropertis.PROPERTIES_DIVIDER_COUNT) {
 		case KSGPropertis.PROPERTIES_DIVIDER_NOMAL:

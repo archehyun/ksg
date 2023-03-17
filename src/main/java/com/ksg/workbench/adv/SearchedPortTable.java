@@ -400,12 +400,10 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 	}
 	@Override
 	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 	@Override
 	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 	@Override
@@ -415,7 +413,6 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 	}
 	@Override
 	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 	@Override

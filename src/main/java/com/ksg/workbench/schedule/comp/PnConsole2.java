@@ -13,11 +13,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.view.comp.KSGComboBox;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 
 /**
@@ -52,7 +53,7 @@ public class PnConsole2 extends PnSchedule{
 
 	private JTextField txfNoramlSearch;
 
-	private HashMap<String, Object> searchParam;
+	private CommandMap searchParam;
 
 	private PageAction pageAction;	
 
@@ -151,7 +152,7 @@ public class PnConsole2 extends PnSchedule{
 
 		try {
 
-			searchParam = new HashMap<String, Object>();
+			searchParam = new CommandMap();
 
 			searchParam.put("gubun", "console");
 
@@ -187,7 +188,7 @@ public class PnConsole2 extends PnSchedule{
 
 			logger.info("param:"+searchParam);
 
-			HashMap<String, Object> result = (HashMap<String, Object>) scheduleService.selectListMap(searchParam);			
+			CommandMap result = (CommandMap) scheduleService.selectListMap(searchParam);			
 
 			result.put("PAGE_NO", 1);
 

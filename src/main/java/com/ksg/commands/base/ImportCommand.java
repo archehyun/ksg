@@ -34,31 +34,26 @@ public abstract class ImportCommand implements IFCommand, LongTask{
 	}
 	@Override
 	public int getLengthOfTask() {
-		// TODO Auto-generated method stub
 		return lengthOfTask;
 	}
 
 	@Override
 	public int getCurrent() {
-		// TODO Auto-generated method stub
 		return current;
 	}
 
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
 		return isdone;
 	}
 
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
 		return message;
 	}
 	

@@ -27,12 +27,13 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
 public class BuildWebScheduleCommand2 implements IFCommand {
 	private BaseService baseService;
-	private ScheduleService scheduleService;
+	private ScheduleSubService scheduleService;
 	Vector webSchedule;
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	private XTGManager xtgManager;

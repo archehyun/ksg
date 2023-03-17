@@ -5,30 +5,37 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.workbench.schedule.comp.treenode.InboundCodeMap;
 
 
 public class InboundJointedFormatter extends JointFormatter
 {
-	private HashMap<String, Object> inboundCodeMap;
+	
+	
+	InboundCodeMap inboundCodeMap;
 	
 	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
 
 	private SimpleDateFormat outputDateFormat 	= KSGDateUtil.createOutputDateFormat();
 	
 	public InboundJointedFormatter() {
-		inboundCodeMap = new HashMap<String, Object>();
+		
+		inboundCodeMap = InboundCodeMap.getInstance();
+		
 	}
 
 	@Override
 	public String getFormattedString() {
 		try {
 			HashMap<String,Object> item = scheduleList.get(0);
-			String	fromDate 	= outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateF"))));
+			String fromDate 	= outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateF"))));
 			String toDate 		= outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateT"))));
 			String company 		= String.valueOf(item.get("company_abbr"));
 			String fromPort 	= String.valueOf(item.get("fromPort"));
 			String toPort 		= String.valueOf(item.get("port"));
-			return fromDate+"  "+getNodeName() + "  ("+company+")  "  +getFormattedToPorts();
+			
+			return String.format("%-8s%s  (%s)  %s", fromDate, getNodeName(), company, getFormattedToPorts());
+			
 		}catch(Exception e)
 		{
 			e.printStackTrace();

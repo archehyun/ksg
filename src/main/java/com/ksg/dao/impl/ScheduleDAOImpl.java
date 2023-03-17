@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ksg.common.dao.AbstractDAO;
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.SchduleDAO;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Schedule;
@@ -216,39 +217,32 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return sqlMap.queryForList("Schedule.selectConsoleList",data);
 	}
 	public List<ScheduleData> getConsoleScheduleList() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectConsoleList");
 	}
 	public List<ScheduleData> getConsoleScheduleList(ScheduleData data) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectConsoleList",data);
 	}
 	public List<ScheduleData> getInlandScheduleList(ScheduleData data) throws SQLException{
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectInlandList",data);
 	}
 	
 	public List selectInlandScheduleDateList() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("schedule.selectInlandScheduleDateList");
 	}
 	
 	public List getInlandScheduleDateList() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectInlandScheduleDateList");
 	}
 	public int deleteInlandSchedule() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.delete("schedule.deleteInlnadSchedule");
 	}
 	@Override
 	public List<String> getOutboundAreaList() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Schedule.selectOutboundAreaList");
 	}
 	
 	@Override
-	public List selectList(HashMap<String, Object> param) throws SQLException{
+	public List selectList(CommandMap param) throws SQLException{
 		
 		return selectList("schedule.selectScheduleList", param);
 	}
@@ -264,7 +258,6 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	}
 	@Override
 	public Object insertSchedule(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return insert("schedule.insertSchedule",param);
 	}
 	
@@ -282,8 +275,21 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	}
 	@Override
 	public List<Schedule> selectAll(Schedule param) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("schedule.selectAll",param);
+	}
+	@Override
+	public List<Schedule> selectScheduleLisByCondition(Schedule schedule) throws SQLException {
+		return selectList("schedule.selectScheduleListByCondition2", schedule);
+	}
+	@Override
+	public List<Schedule> selectAll() throws Exception {
+		
+		return sqlMap.queryForList("schedule.selectAll");
+	}
+	@Override
+	public Object insertScheduleBulkData(List<ScheduleData> scheduleList) throws SQLException {
+		// TODO Auto-generated method stub
+		return sqlMap.insert("schedule.insertScheduleBulk", scheduleList);
 	}
 
 	

@@ -1,7 +1,12 @@
 package com.ksg.schedule.logic.joint;
 
-import java.sql.SQLException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import com.dtp.api.schedule.comparator.DateComparator;
+import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ShippersTable;
 
 /**
@@ -46,14 +51,57 @@ public abstract class RouteAbstractScheduleJoint extends DefaultScheduleJoint{
 	
 	public static final String OUTBOUND = "O";
 	
-	public static final String RUSSIA = "Russia";
+	protected  String saveLoaction;
 	
-	public static final String JAPAN = "Japan";
-	
-	public static final String CHINA = "China";
+	protected String fileName;
 
-	public RouteAbstractScheduleJoint() throws SQLException {
+	protected String errorOutPortfileName;
+	
+	protected String commonInPortfileName;
+	
+	protected FileWriter fw,errorOutfw,commonInfw;
+	
+	KSGPropertis ksgPropertiey= KSGPropertis.getIntance();
+	
+	SimpleDateFormat dateFormat =new SimpleDateFormat("yyyyMMddHHmmss");
+
+	public RouteAbstractScheduleJoint(ShippersTable op) throws Exception {
+		this();
+		
+		this.op = op;
+		
+		
+	}
+	
+	public RouteAbstractScheduleJoint() throws Exception {
 		super();
+		
+		this.saveLoaction = ksgPropertiey.getProperty(KSGPropertis.SAVE_LOCATION);
+		
+		this.fileName  = ksgPropertiey.getProperty("schedule.route.filename");
+		
+		this.errorOutPortfileName = ksgPropertiey.getProperty("schedule.route.erroroutport");
+		
+		this.commonInPortfileName = ksgPropertiey.getProperty("schedule.route.commoninport");
+
+//		fw = new FileWriter(saveLoaction+"/"+String.format("%s_%s.txt", fileName, dateFormat.format(new Date())));
+		
+		fw = new FileWriter(saveLoaction+"/"+String.format("%s.txt", fileName ));
+
+		errorOutfw = new FileWriter(saveLoaction+"/"+errorOutPortfileName);
+
+		commonInfw = new FileWriter(saveLoaction+"/"+commonInPortfileName);
+	}
+
+	protected void close() throws IOException
+	{
+		fw.close();
+		errorOutfw.close();
+		commonInfw.close();	
+	}
+	public String getMessage()
+	{
+		return super.getMessage();
 	}
 
 }

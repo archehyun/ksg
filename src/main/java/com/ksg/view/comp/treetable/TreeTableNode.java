@@ -1,29 +1,27 @@
 package com.ksg.view.comp.treetable;
 
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-
-import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.model.CommandMap;
 
 public class TreeTableNode {
-	HashMap<String, Object> data;
-	String vessel;
-	String company;
-	private String fromDate;
-	private String toDate;
-	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
+	
+	
+	private CommandMap param;
 
-	private SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
-	public TreeTableNode(HashMap<String, Object> data) {
-		this.data = data;
+	public CommandMap getParam()
+	{
+		return param;
 	}
-	
-	
-
+	public TreeTableNode(CommandMap data) {
+		this.param = data;
+	}
 	
 	public Object get(Object key)
 	{		
-		return data.get(key);
+		return param.get(key);
+	}
+	public String toString()
+	{
+		return "";
 	}
 
 }

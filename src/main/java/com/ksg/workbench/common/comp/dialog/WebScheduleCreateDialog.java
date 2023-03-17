@@ -134,7 +134,7 @@ public class WebScheduleCreateDialog extends JDialog implements ActionListener{
 					public void run()
 					{
 						try {
-							ScheduleManager.getInstance().init();
+							ScheduleManager.getInstance().initMasterData();
 							defaultWebSchedule = new DefaultWebSchedule(format_type,op);
 							defaultWebSchedule.execute();
 						} catch (SQLException e) {

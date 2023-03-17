@@ -21,8 +21,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -75,7 +73,9 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
+import com.dtp.api.control.ShipperTableController;
 import com.ksg.commands.SearchSubTableCommand;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
@@ -87,21 +87,26 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.view.comp.HintTextField;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.KSGRadioButton;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.view.comp.table.KSGTableSelectListner;
-import com.ksg.view.comp.table.model.TableModel;
-import com.ksg.view.comp.tree.KSGTreeDefault;
-import com.ksg.view.comp.tree.KSGTreeImpl;
-import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
+import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.tree.CustomTree;
+import com.ksg.workbench.common.comp.tree.KSGTreeDefault;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 import com.ksg.workbench.shippertable.comp.UpdateTablePanel;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 import com.ksg.workbench.shippertable.dialog.UpdateShipperTableDateDialog;
+
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 /**
 
@@ -119,14 +124,12 @@ import com.ksg.workbench.shippertable.dialog.UpdateShipperTableDateDialog;
 
  */
 @SuppressWarnings("unchecked")
-public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements ActionListener
+public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 {	
 	private static final String ACTION_SEARCH = "조회";
 
 	private static final String ACTION_UPDATE_DATE = "입력일자 수정";
-	
-	
-	
+
 	/**
 	 * @author 박창현
 	 * @테이블에서의 마우스 동작
@@ -137,10 +140,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		{			
 			try {
 
-
 				int row = tableH.getSelectedRow();
-				if(row<0) return;
 
+				if(row<0) return;
 
 				HashMap<String , Object> item = (HashMap<String, Object>) tableH.getValueAt(row);
 
@@ -174,7 +176,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		}
 
 	}
-	//TODO 테이블 스타일 정리
+
 	private static final int _LEFT_SIZE = 250;
 
 	public static final int ADV_TYPE = 0;
@@ -195,7 +197,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	private JPopupMenu 			popupMenu;	
 
-	private KSGPageTablePanel tableH;
+	private KSGTablePanel tableH;
 
 	private JTable				currentTable;
 
@@ -255,7 +257,17 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	private ADVServiceImpl _advService;
 
-	private TableService tableService;	
+	private TableService tableService;
+
+	private CustomTree tree;
+
+	UtilDateModel dateModel;
+
+	private ButtonGroup tableGroup;
+
+	private JRadioButton rbtPage;
+
+	CommandMap viewModel = new CommandMap();
 
 	public ShipperTableMgtUI2() 
 	{		
@@ -267,10 +279,12 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		tableService = new TableServiceImpl();
 
 		_advService= new ADVServiceImpl();
-		
+
 		shipperTableService = new ShipperTableServiceImpl();
 
 		this.addComponentListener(this);
+
+		this.setController(new ShipperTableController());
 
 		this.title="광고정보 관리";
 
@@ -278,26 +292,26 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		createAndUpdateUI(); 
 
+		callApi("shipperTableMgtUI2.init");
+
 	}
 
 	private void insertAction()
 	{
 		int row=tableH.getSelectedRow();
-		
+
 		ShippersTable param = null;
 
 		if(row>-1)
 		{
 			HashMap<String, Object> item = (HashMap<String, Object>) tableH.getValueAt(row);
-		
 
-		
-		param = new ShippersTable();
-		param.setTable_id((String) item.get("table_id"));
+			param = new ShippersTable();
+			param.setTable_id((String) item.get("table_id"));
 		}
-		
+
 		addTableInfoDialog = new AddTableInfoDialog(this,param);
-		
+
 		addTableInfoDialog.createAndUpdateUI();
 
 
@@ -313,31 +327,13 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			KSGPanel pnMain = new KSGPanel();
 
 			final JTextField txfSearchInput = new JTextField(15);
-			
-
-
-			
 
 			JLabel lblSearchPage = new JLabel("Page : ");
 			JButton butSubmit = new JButton("검색",new ImageIcon("images/buticon.gif"));
 			butSubmit.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
-					//					try {
-					//						ShippersTable shippersTable = new ShippersTable();						
-					//						shippersTable.setPage(Integer.parseInt(txfSearchInput.getText()));
-					////						tblSearchTable.setSearchParam(shippersTable);
-					////						tblSearchTable.retrive();
-					////						_searchedList = tblSearchTable.getSearchedList();
-					//
-					//					} catch (SQLException e1) {
-					//						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e1.getMessage());
-					//						e1.printStackTrace();
-					//					}
-					//					catch (NumberFormatException e2) {
-					//						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "error:"+e2.getMessage());
-					//						e2.printStackTrace();
-					//					}
+
 				}});
 
 			pnMain.add(lblSearchPage);
@@ -380,14 +376,12 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			{
 				list.add(tableH.getValueAt(i));
 			}
+			
 			if(list.size()==0)return;
 
-
 			updateAllDateDialog = new UpdateShipperTableDateDialog(list, this);
+			
 			updateAllDateDialog.createAndUpdateUI();
-
-
-
 		}
 
 		else if(command.equals("광고삭제"))
@@ -400,7 +394,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			updateAllDateDialog = new UpdateShipperTableDateDialog(selectedList, this);
 			if(updateAllDateDialog.result==1)
 			{
-				
+
 			}
 		}
 	}
@@ -413,7 +407,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		logger.info("seleted page:"+searchParamHash);
 
-		
+
 		fnSearch();
 
 		pnADVInfo.setVisible(false);		
@@ -437,7 +431,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		pnTable.setLayout(tableLayout);
 
 
-		tableH = new KSGPageTablePanel("광고목록");
+		tableH = new KSGTablePanel("광고목록");
 		tableH.addColumn(new KSGTableColumn("page", "페이지"));
 		tableH.addColumn(new KSGTableColumn("table_index", "인덱스"));
 		tableH.addColumn(new KSGTableColumn("table_id", "테이블ID", 125));
@@ -453,39 +447,22 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		tableH.addColumn(new KSGTableColumn("in_to_port", "Inbound 도착항",110, SwingConstants.LEFT ));
 		tableH.addColumn(new KSGTableColumn("out_port", "Outbound 출발항", 110, SwingConstants.LEFT ));
 		tableH.addColumn(new KSGTableColumn("out_to_port", "Outbound 도착항",110, SwingConstants.LEFT ));
-		
+
 		//TODO 컬럼 가운데 정렬
 
 		tableH.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		tableH.initComp();
-
-		tableH.setPageCountIndex(6);
-
-		tableH.addPageActionListener(new PageAction(tableH, shipperTableService));
-
+		
 		tableH.setName("tableH");
-		//tableH.setShowControl(true);
 
-
-		//tblSearchTable = new SearchTable();
 
 		tableH.addKeyListener(new KeyAdapter() {
 
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()== KeyEvent.VK_ENTER)
 				{
-					//					final JTable table = (JTable) e.getSource();
-					//					int row = table.getSelectedRow();
-					//					if(row==-1)
-					//						return;
-					//					final int page =(Integer)table.getValueAt(row, 0);					
-					//
-					//					searchADVTable();
-					//
-					//					pnADVInfo.setVisible(true);
-					//
-					//					tableLayout.show(pnTable, advTablePanel.getName());
+
 				}
 
 			}
@@ -497,57 +474,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 					if(arg0.getKeyCode()== KeyEvent.VK_ENTER)
 					{
 
-						//						logger.debug("releas " +arg0.getKeyCode()+table.getSelectedColumn());
-						//
-						//
-						//						int row = table.getSelectedRow();
-						//
-						//						if(row==-1)
-						//							return;
-
-						//					try {
-						//						KSGDateUtil.toDate2(String.valueOf(tblSearchTable.getValueAt(row, 2)));
-						//					} catch (ParseException e1) 
-						//					{
-						//						JOptionPane.showMessageDialog(null, "정확한 날짜를 입력하십시요");
-						//						try {
-						//
-						//
-						//							searchSubTable();
-						//						} catch (SQLException e) {
-						//							// TODO Auto-generated catch block
-						//							e.printStackTrace();
-						//						}
-						//						return;
-						//					}
-
-						//						String table_id = String.valueOf(table.getValueAt(row, 3));
-						//						String date = String.valueOf(table.getValueAt(row, 2));
-						//
-						//						HashMap<String, Object> param = new HashMap<String, Object>();
-						//
-						//						param.put("table_id", table_id);
-						//
-						//						param.put("date_isusse", date);
-						//
-						//						shipperTableService.update(param);
-						//
-						//						//tableService.updateTableDate(table_id,date);
-						//
-						//						_advService.updateDateADVData(table_id, date);
-						//
-						//						switch (depth) {
-						//						case DEPTH_SUB:
-						//							_searchedList= tableService.getTableListByPage(startpage,endpage);	
-						//							searchSubTable();
-						//							break;
-						//						case DEPTH_PAGE:
-						//							//	updateSubTable();	
-						//							break;
-						//
-						//						default:
-						//							break;
-						//						}
 
 
 					}
@@ -584,7 +510,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		KSGPanel pnSouth = new KSGPanel(new BorderLayout());
 
 		butEdit = new JToggleButton("편집(E)",new ImageIcon("images/editClose.gif"));
+		
 		butEdit.setMnemonic(KeyEvent.VK_E);
+		
 		butEdit.setSelectedIcon(new ImageIcon("images/editOpen.gif"));
 
 		butEdit.addChangeListener(new ChangeListener(){
@@ -599,9 +527,10 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 
 		JButton butCreateADV = new JButton("광고 등록( + N)");
+		
 		butCreateADV.setActionCommand("광고 등록");
+		
 		butCreateADV.addActionListener(this);
-
 
 		KSGPanel pnRightControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -610,17 +539,25 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		KSGPanel pnLeftControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		JButton butUpdateDate = new JButton(ACTION_UPDATE_DATE);
+
 		butUpdateDate.setVisible(false);
+
 		butUpdateDate.addActionListener(this);
 
 		pnLeftControl.add(butUpdateDate);
+
 		pnSouth.add(pnRightControl, BorderLayout.EAST);
+
 		pnSouth.add(pnLeftControl, BorderLayout.WEST);
 
 		pnUpdateTable = new UpdateTablePanel(this);
+
 		pnUpdateTable.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
 		pnUpdateTable.setVisible(false);
+		
 		pnUpdateTable.setMinimumSize(new Dimension(200,0));
+		
 		pnUpdateTable.setMaximumSize(new Dimension(300,0));
 
 
@@ -680,83 +617,92 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		pnMain.setLayout(new BorderLayout());
 
 		pnMain.add(new JScrollPane(_treeMenu),BorderLayout.CENTER);
-		pnMain.setPreferredSize(new Dimension(_LEFT_SIZE,100));
-		KSGPanel panel = new KSGPanel();
-		ButtonGroup group = new ButtonGroup();
 
+		pnMain.setPreferredSize(new Dimension(_LEFT_SIZE,100));
+
+		KSGPanel panel = new KSGPanel();
+
+		tableGroup = new ButtonGroup();
 
 		JRadioButton rbtCompany = new KSGRadioButton("선사별");
-		JRadioButton rbtPage = new KSGRadioButton("페이지별",true);
-		group.add(rbtCompany);
-		group.add(rbtPage);
+
+		rbtPage = new KSGRadioButton("페이지별",true);
+
+		tableGroup.add(rbtCompany);
+
+		tableGroup.add(rbtPage);
 
 		panel.add(rbtCompany);
-		panel.add(rbtPage);
+
+		panel.add(rbtPage);		
 
 		ItemListener itemListener= new ItemListener(){
 
 			public void itemStateChanged(ItemEvent e) {
+				
 				AbstractButton but = (AbstractButton) e.getSource();
+				
 				if(ItemEvent.SELECTED==e.getStateChange())
 				{
 					String te = but.getActionCommand();
-					logger.debug("selected "+te);
+
 					if(te.equals("선사별"))
 					{
-						tree2.setGroupBy(KSGTreeImpl.GroupByCompany);
+						tree.changeState(CustomTree.COMPAY_LIST);
 					}
 					else if(te.equals("페이지별"))
 					{
-						tree2.setGroupBy(KSGTreeImpl.GroupByPage);
+						tree.changeState(CustomTree.PAGE_LIST);
+						
 					}
-					manager.execute(tree2.getName());
+
 				}
 			}};
-			rbtCompany.addItemListener(itemListener);
-			rbtPage.addItemListener(itemListener);
-			panel.add(new JSeparator(JSeparator.HORIZONTAL));
-			JButton butADDTable = new JButton(new ImageIcon("images/plus.gif"));
+		rbtCompany.addItemListener(itemListener);
+		rbtPage.addItemListener(itemListener);
+		panel.add(new JSeparator(JSeparator.HORIZONTAL));
+		JButton butADDTable = new JButton(new ImageIcon("images/plus.gif"));
 
-			butADDTable.setPreferredSize(new Dimension(35,25));
-			butADDTable.setFocusPainted(false);
-			butADDTable.setActionCommand("신규등록");
-			butADDTable.setToolTipText("신규 테이블 등록");
-			butADDTable.addActionListener(this);
+		butADDTable.setPreferredSize(new Dimension(35,25));
+		butADDTable.setFocusPainted(false);
+		butADDTable.setActionCommand("신규등록");
+		butADDTable.setToolTipText("신규 테이블 등록");
+		butADDTable.addActionListener(this);
 
-			panel.add(butADDTable);
-			JButton butDelTable = new JButton(new ImageIcon("images/minus.gif"));
-			butDelTable.setPreferredSize(new Dimension(35,25));
-			butDelTable.setFocusPainted(false);
-			butDelTable.setActionCommand("테이블삭제");
-			butDelTable.addActionListener(this);
-			panel.add(butDelTable);
-
-
-			KSGPanel pnTitle = new KSGPanel();
-			pnTitle.setBackground(new Color(88,141,250));
+		panel.add(butADDTable);
+		JButton butDelTable = new JButton(new ImageIcon("images/minus.gif"));
+		butDelTable.setPreferredSize(new Dimension(35,25));
+		butDelTable.setFocusPainted(false);
+		butDelTable.setActionCommand("테이블삭제");
+		butDelTable.addActionListener(this);
+		panel.add(butDelTable);
 
 
-			pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-			JLabel label = new JLabel("테이블 목록");
-
-			label.setForeground(Color.white);
-
-			pnTitle.add(label);
-			pnTitle.setPreferredSize( new Dimension(0,22));
+		KSGPanel pnTitle = new KSGPanel();
+		pnTitle.setBackground(new Color(88,141,250));
 
 
-			pnMain.add(pnSearch,BorderLayout.NORTH);
-			pnMain.add(panel,BorderLayout.SOUTH);
+		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-			KSGPanel pnArrow = new KSGPanel();
-			JButton butA = new JButton("");
-			pnArrow.setPreferredSize(new Dimension(15,0));
-			pnArrow.add(butA);
-			pnMain.setPreferredSize(new Dimension(220,0));
+		JLabel label = new JLabel("테이블 목록");
+
+		label.setForeground(Color.white);
+
+		pnTitle.add(label);
+		pnTitle.setPreferredSize( new Dimension(0,22));
 
 
-			return pnMain;
+		pnMain.add(pnSearch,BorderLayout.NORTH);
+		pnMain.add(panel,BorderLayout.SOUTH);
+
+		KSGPanel pnArrow = new KSGPanel();
+		JButton butA = new JButton("");
+		pnArrow.setPreferredSize(new Dimension(15,0));
+		pnArrow.add(butA);
+		pnMain.setPreferredSize(new Dimension(220,0));
+
+
+		return pnMain;
 	}
 	/**
 	 * @param isSelected
@@ -899,18 +845,16 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		lblDateSearch.setFont(new Font("맑은고딕", Font.BOLD, 12));
 
-		txfDateSearch = new HintTextField("2000.1.1",10);
+		dateModel = new UtilDateModel();
 
-		txfDateSearch.addKeyListener(new KeyAdapter(){
+		JDatePanelImpl datePanel = new JDatePanelImpl(dateModel);
 
-			public void keyReleased(KeyEvent e) 
-			{
-				if(e.getKeyCode()==KeyEvent.VK_ENTER)
-				{	
-					fnSearch();
-				}
-			}
-		});
+		JDatePickerImpl jdatePicker = new JDatePickerImpl(datePanel);
+
+		jdatePicker.setPreferredSize(new Dimension(120,25));
+
+		this.add(jdatePicker);
+
 		Icon warnIcon = new ImageIcon("images/search.png");
 
 		JButton butDateSearch = new JButton(warnIcon);
@@ -962,7 +906,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			{
 				if(e.getKeyCode()==KeyEvent.VK_ENTER)
 				{
-
 					fnSearch();
 					String param=txfSearchInput.getText();
 					//					try {
@@ -995,8 +938,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 			public void actionPerformed(ActionEvent arg0) 
 			{
-
-
 				fnSearch();
 
 			}
@@ -1024,7 +965,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		pnSearchMainDown.add(cbbOption);
 		pnSearchMainDown.add(txfSearchInput);
 		pnSearchMainDown.add(lblDateSearch);
-		pnSearchMainDown.add(txfDateSearch);
+		//		pnSearchMainDown.add(txfDateSearch);
+		pnSearchMainDown.add(jdatePicker);
 		pnSearchMainDown.add(butDateSearch);
 		pnSearchMain.add(createSearchPanel(),BorderLayout.NORTH);
 		pnSearchMain.add(pnSearchMainDown,BorderLayout.SOUTH);
@@ -1148,34 +1090,94 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	 */
 	private JTree createTreeMenu() 
 	{
-		tree2 = new KSGTreeDefault("tree1");
-		tree2.setComponentPopupMenu(createTreePopupmenu());
-		tree2.setRowHeight(25);
-		tree2.update();
 
-		tree2.addTreeSelectionListener(new TreeSelectionListener(){
+		tree = new CustomTree();
+
+		//		tree = new KSGTreeDefault("tree1");
+
+		tree.setComponentPopupMenu(createTreePopupmenu());
+
+		tree.setRowHeight(25);
+
+		//		tree.update();
+
+		tree.addTreeSelectionListener(new TreeSelectionListener(){
 
 			public void valueChanged(TreeSelectionEvent e) {
 
 				TreePath path=e.getNewLeadSelectionPath();
+
 				if(path!=null)
 				{
+					int pathCount = path.getPathCount();
+					CommandMap param = new CommandMap();
 
-					try{
-						//updateViewByTree(path);
+					switch (pathCount) {
 
-					}catch(Exception e2)
-					{
-						e2.printStackTrace();
-						return;
+
+					case 2:
+
+
+
+						if(rbtPage.isSelected())
+						{
+							String pa = path.getLastPathComponent().toString();
+
+							String pa1[] = pa.split("~");
+
+							String startPage= pa1[0];
+
+							String endPage= pa1[1];
+
+							param.put("startPage", Integer.parseInt(startPage));
+
+							param.put("endPage", Integer.parseInt(endPage));
+						}
+						else
+						{
+							String alphabet = path.getLastPathComponent().toString();
+
+							param.put("alphabet",alphabet);
+
+						}
+
+
+
+						break;
+					case 3:
+
+						if(rbtPage.isSelected())
+						{
+							String ca = path.getLastPathComponent().toString();
+
+							String ca1[] = ca.split(":");
+
+							param.put("page", Integer.parseInt(ca1[0]));	
+						}
+						else
+						{
+							String ca = path.getLastPathComponent().toString();
+
+							param.put("company_abbr", ca);
+						}
+
+
+
+						break;
+
+					default:
+						break;
 					}
+
+
+					callApi("shipperTableMgtUI2.fnSearch", param);
 				}
 
 			}});
 
 
 
-		return tree2;
+		return tree;
 	}
 
 	/**
@@ -1247,6 +1249,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 
 		int row = tableH.getSelectedRow();
+
 		if(row<0)return;
 
 		HashMap<String, Object> param = (HashMap<String, Object>) tableH.getValueAt(row);
@@ -1260,7 +1263,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 				fnUpdate();
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
@@ -1313,7 +1316,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			logger.debug("option result1 "+j);
 		}
 	}
-	
+
 	/**
 	 * @param selectedCompany
 	 */
@@ -1365,7 +1368,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 		}
 	}
 
-	
+
 
 	/**
 	 * @param selectedCompany
@@ -1384,13 +1387,13 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		delMenu.setEnabled(false);
 
-		//lblCount.setText(String.valueOf(tblSearchTable.getRowCount()));
 		tableLayout.show(pnTable, tableH.getName());
 	}
-	
+
 
 
 	private void updateADVTable(String table_id) {
+
 		logger.info("start");		
 
 		ShippersTable st = new ShippersTable();
@@ -1409,7 +1412,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 
 	}
-	
+
 	/**
 	 * @param selectedCompany
 	 * @param selectedPage
@@ -1428,46 +1431,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 		searchSubTable();
 	}
-	//	/**
-	//	 * @param path
-	//	 */
-	//	private void updateViewByTree(TreePath path) {
-	//
-	//		logger.debug("select tree "+path.getLastPathComponent());
-	//
-	//		String selectedCompany = path.getLastPathComponent().toString();
-	//		manager.selectedTable_id=null;
-	//		pnADVInfo.setVisible(false);
-	//		try {
-	//			logger.debug("selected path:"+path.getPathCount());
-	//			switch (path.getPathCount()) {
-	//			case DEPTH_ROOT: // root 선택시
-	//				selectRoot(selectedCompany);
-	//
-	//				break;
-	//
-	//			case DEPTH_SUB: //2번째 노드 선택 ex:0~9
-	//				selectSub(selectedCompany);
-	//
-	//				break;
-	//			case DEPTH_PAGE: //3번재 노드 선택 ex) 11:OOCL
-	//
-	//				selectPage(selectedCompany);
-	//
-	//				break;
-	//
-	//			default:
-	//				break;
-	//			}
-	//
-	//		} catch (SQLException e1) {
-	//			JOptionPane.showMessageDialog(null, e1.getMessage());
-	//		}
-	//		txfCount.setText(String.valueOf(manager.tableCount));
-	//	}
-	/**
-	 * @param count
-	 */
+
 	public void setPortCount(int count) {
 		pnUpdateTable.setPortCount(count);
 
@@ -1476,9 +1440,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	public void fnUpdate()
 	{
 		try {
-			int page_size = tableH.getPageSize();
+//			int page_size = tableH.getPageSize();
 
-			searchParamHash.put("PAGE_SIZE", page_size);
+			searchParamHash.put("PAGE_SIZE", 0);
 
 			searchParamHash.put("PAGE_NO", 1);
 
@@ -1499,80 +1463,34 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	{
 		logger.info("START");
 
-		String param=txfSearchInput.getText();
-		
-		if(searchParamHash ==null)
-		searchParamHash = new HashMap<String, Object>();
+
+		CommandMap param = new CommandMap();		
 
 		if(cbxGubun.getSelectedIndex()>0)
 		{
 			KSGTableColumn item=(KSGTableColumn) cbxGubun.getSelectedItem();
-			searchParamHash.put("gubun", item.columnName);
 
+			param.put("gubun", item.columnName);
 		}
 
-		if(!param.equals("")) {
-			selectOptionHash(searchParamHash, param, cbbOption.getSelectedIndex());
+		String strParam=txfSearchInput.getText();
+
+		if(!strParam.equals("")) {
+			try
+			{
+				selectOptionHash(param, strParam, cbbOption.getSelectedIndex());
+			}catch(Exception e)
+			{
+				JOptionPane.showMessageDialog(this, e.getMessage());
+			}
 		}
 
-
-		String date=txfDateSearch.getText();
-
-		if(!date.equals("2000.1.1"))
+		if(dateModel.isSelected()) 
 		{
-
-			try {
-				String	fomattedDate = KSGDateUtil.toDate3(date).toString();
-
-
-				searchParamHash.put("date_isusse",fomattedDate);
-			} catch (DateFormattException e) {
-				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e.getMessage()+ ": 입력 형식(2000.1.1) 이 틀렸습니다.");
-			}
-
+			param.put("date_isusse", String.format("%tF", dateModel.getValue()));
 		}
-		try {
 
-			int page_size = tableH.getPageSize();
-
-			searchParamHash.put("PAGE_SIZE", page_size);
-
-			searchParamHash.put("PAGE_NO", 1);
-
-			logger.info("param:"+searchParamHash);
-
-			HashMap<String, Object> result = (HashMap<String, Object>) shipperTableService.selectListByPage(searchParamHash);
-
-			result.put("PAGE_NO", 1);
-
-			tableH.setResultData(result);
-
-
-			List master = (List) result.get("master");
-
-			txfDateSearch.setText("2000.1.1");
-
-			tableH.requestFocus();
-
-			txfSearchInput.setText("");
-
-			if(master.size()==0)
-			{
-				/*lblArea.setText("");
-				lblAreaCode.setText("");
-				lblPationality.setText("");
-				lblPortName.setText("");
-				tableD.clearReslult();*/
-			}
-			else
-			{
-				//tableH.changeSelection(0,0,false,false);
-				txfSearchInput.requestFocus();
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		callApi("shipperTableMgtUI2.fnSearch", param);			
 
 	}
 
@@ -1667,7 +1585,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 			break;
 		case 5://테이블 인덱스
-			searchOption.put("table_index", param);			
+			searchOption.put("table_index", Integer.parseInt(param));			
 
 			break;
 		case 2://선사명
@@ -1704,6 +1622,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			this.list = searchedList;			
 
 			tableService = new TableServiceImpl();
+
 			setModal(true);
 
 			this.setTitle("날짜정보 수정");
@@ -1764,7 +1683,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 			}
 			else if(command.equals("확인"))
 			{
-
 				try {
 					String date=txfImportDate.getText();
 
@@ -1797,6 +1715,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 	public void componentShown(ComponentEvent e) {
 
 		//if(isShowData)fnSearch();
+
+
 	}
 	class SearchOptionKeyAdapter extends KeyAdapter
 	{		
@@ -1845,90 +1765,52 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI implements Act
 
 	}
 
-	class SearchTableModel extends TableModel{
+	@Override
+	public void updateView() {
 
-		public SearchTableModel()
+		CommandMap result= this.getModel();
+
+		boolean success = (boolean) result.get("success");
+
+		if(success)
 		{
-			super();
+			String serviceId = (String) result.get("serviceId");
+
+			if("shipperTableMgtUI2.init".equals(serviceId)) {
+
+				viewModel = (CommandMap) result.clone();
+				
+				tree.loadModel(viewModel);
+
+			}
+			else if("shipperTableMgtUI2.fnSearch".equals(serviceId)) {
+
+				List data = (List )result.get("data");
+
+				tableH.setResultData(data);
+
+//				tableH.setTotalCount(data.size());
+
+				tableH.requestFocus();
+
+				txfSearchInput.setText("");	
+
+			}
+
+			else if("deleteSchedule".equals(serviceId)) {
+
+				int deleteCount = (int) result.get("deleteCount");
+
+				JOptionPane.showMessageDialog(this, deleteCount+"건을 삭제 했습니다.");
+
+				callApi("scheduleViewUpdate");
+			}
 		}
-
-		public boolean isCellEditable(int row, int column) 
-		{
-			return false;
+		else{  
+			String error = (String) result.get("error");
+			JOptionPane.showMessageDialog(this, error);
 		}
-	}
-
-	public class HintTextField extends JTextField {  
-
-
-
-		Font gainFont = new Font("Tahoma", Font.PLAIN, 11);  
-
-		Font lostFont = new Font("Tahoma", Font.ITALIC, 11);  
-
-
-
-		public HintTextField(final String hint, int count) {  
-			super(count);
-
-
-			setText(hint);  
-
-			setFont(lostFont);  
-
-			setForeground(Color.GRAY);
-
-			this.addFocusListener(new FocusAdapter() {  
-
-
-
-				@Override  
-
-				public void focusGained(FocusEvent e) {  
-
-					if (getText().equals(hint)) {  
-
-						setText("");  
-
-						setFont(gainFont);  
-
-					} else {  
-
-						setText(getText());  
-
-						setFont(gainFont);  
-
-					}  
-
-				}  
-
-
-
-				@Override  
-
-				public void focusLost(FocusEvent e) {  
-
-					if (getText().equals(hint)|| getText().length()==0) {  
-
-						setText(hint);  
-
-						setFont(lostFont);  
-
-						setForeground(Color.GRAY);  
-
-					} else {  
-
-						setText(getText());  
-
-						setFont(gainFont);  
-
-						setForeground(Color.BLACK);  
-
-					}
-				}
-			});
-		}
-	}  
+	}	
 }
 
 

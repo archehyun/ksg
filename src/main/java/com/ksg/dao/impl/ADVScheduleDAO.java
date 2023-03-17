@@ -14,12 +14,10 @@ public class ADVScheduleDAO extends AbstractDAO{
 	}
 	
 	public List<Map<String, Object>> selectScheduleJointList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("schedule.selectScheduleJointList",commandMap);
 	}
 
 	public List<Map<String, Object>> selectScheduleList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("schedule.selectScheduleList",commandMap);
 	}
 
@@ -28,17 +26,14 @@ public class ADVScheduleDAO extends AbstractDAO{
 	}
 
 	public List<Map<String, Object>> selectScheduledAreaList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("schedule.selectScheduledAreaList",commandMap);
 	}
 	
 	public List<Map<String, Object>> selectScheduledToPortList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("schedule.selectScheduledPortList",commandMap);
 	}
 	
 	public List<Map<String, Object>> selectScheduledFromPortList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("schedule.selectScheduledFromPortList",commandMap);
 	}
 

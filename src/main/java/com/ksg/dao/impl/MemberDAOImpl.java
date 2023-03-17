@@ -29,48 +29,37 @@ public class MemberDAOImpl extends AbstractDAO implements MemberDAO
 	}
 
 	public Member selectMember(String member_id) throws SQLException {
-		// TODO Auto-generated method stub
 		return (Member) selectOne("member.selectMember",member_id);
 	}
 
 	@Override
 	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("member.selectList",commandMap);
 	}
 
 	@Override
 	public Object select(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectOne("member.select",param);
 	}
 
 	@Override
 	public int update(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int delete(Map<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return (Integer) delete("member.deleteMember",param);
 	}
 
 	@Override
 	public Object insert(HashMap<String, Object> param) throws SQLException {
-		// TODO Auto-generated method stub
 		return insert("member.insertMember", param);
 	}
 
-	@Override
-	public int selectCount(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 	
 	public List selectListByPage(HashMap<String, Object> param) throws SQLException{
-		// TODO Auto-generated method stub
 		return selectList("member.selectMemberListByPage", param);
 	}
 

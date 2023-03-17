@@ -29,12 +29,10 @@ public class XTGPage extends XTGDoc {
 		map = new HashMap<String, XTGTable>();
 	}
 	public String getPreFix() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String getVersion() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -60,17 +58,14 @@ public class XTGPage extends XTGDoc {
 	}
 
 	public void setPreFix(String preFix) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void setADVData(String data) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void setVersion(String version) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -82,7 +77,6 @@ public class XTGPage extends XTGDoc {
 		
 	}
 	public void setQuarkData(String data) {
-		// TODO Auto-generated method stub
 		
 	}
 	public XTGTable getTable(String i) 

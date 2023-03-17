@@ -12,6 +12,8 @@ public interface VesselServiceV2 extends VesselService{
 	
 	public List selectListByLike(HashMap<String, Object> param) throws SQLException;
 	
+	public List<Vessel> selectAllList() throws SQLException;
+	
 	public HashMap<String, Object> selectDetailList(Vessel commandMap) throws SQLException;
 	
 	public HashMap<String, Object> selectTotalList() throws SQLException;
@@ -23,6 +25,8 @@ public interface VesselServiceV2 extends VesselService{
 	public void insert(Vessel param) throws SQLException;
 	
 	public Object update(Vessel op)throws SQLException;
+	
+	
 
 	
 

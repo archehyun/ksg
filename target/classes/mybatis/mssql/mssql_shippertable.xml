@@ -78,6 +78,76 @@
 		,bookPage
 	FROM TB_TABLE_INFO
 	</sql>
+	
+	
+	<select id="selectShipperTableListAll" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
+		<include refid="TableList"/>
+	</select>
+	
+	<select id="selectShipperTableListByCondition" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
+		SELECT    
+			A.table_id,	
+			A.table_index,
+			CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse    ,
+			A.vsl_row   ,
+			A.title   ,
+			A.out_port   ,
+			A.common_shipping   ,A.company_abbr   ,
+			A.TS   ,
+			A.company_name   ,
+			A.gubun   ,
+			A.page   ,
+			A.agent   ,
+			A.quark_format   ,
+			A.port_col   ,
+			A.out_to_port   ,
+			A.in_to_port   ,
+			A.in_port   ,
+			A.othercell   ,
+			A.console_cfs   ,
+			A.d_time   ,
+			A.c_time   ,
+			A.console_page   ,
+			A.inland_indexs   ,
+			A.bookPage   ,
+			B.data  
+		FROM TB_TABLE_INFO AS A LEFT JOIN TB_ADV_INFO AS B
+		ON A.table_id = B.table_id 
+		<dynamic prepend="where">
+		<isNotEmpty prepend="and" property="table_id">
+		A.table_id like '%$table_id$%'
+		</isNotEmpty>
+		<isGreaterThan prepend="and" property="page" compareValue="-1">
+		A.page = #page#
+		</isGreaterThan>
+		<isGreaterThan prepend="and" property="table_index" compareValue="-1">
+		A.table_index = #table_index#
+		</isGreaterThan>
+		<isNotEmpty prepend="and" property="company_abbr">
+		A.company_abbr like '%$company_abbr$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="title">
+		A.title  like '%$title$%'
+		</isNotEmpty>
+		<isNotNull prepend="and" property="agent">
+		A.agent  like '%$agent$%'
+		</isNotNull>
+		<isNotNull prepend="and" property="gubun">
+		A.gubun = #gubun#
+		</isNotNull>
+		<isNotNull prepend="and" property="date_isusse">
+		A.date_isusse=#date_isusse#
+		</isNotNull>
+		</dynamic>
+	order by A.page, A.table_index 
+	</select>
+	
+	<select id="selectShipperTablePortListByID" resultClass="com.ksg.domain.TablePort">
+		SELECT * 
+		FROM TB_TABLE_PORTLIST 
+		WHERE table_id=#table_id#	
+	</select>
+	
 	<select id="selectList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		<include refid="TableList"/>
 		

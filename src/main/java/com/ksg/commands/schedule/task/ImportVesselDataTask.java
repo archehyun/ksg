@@ -158,22 +158,18 @@ public class ImportVesselDataTask implements LongTask{
 	}
 
 	public int getCurrent() {
-		// TODO Auto-generated method stub
 		return current;
 	}
 
 	public int getLengthOfTask() {
-		// TODO Auto-generated method stub
 		return lengthOfTask;
 	}
 
 	public String getMessage() {
-		// TODO Auto-generated method stub
 		return statMessage;
 	}
 
 	public boolean isDone() {
-		// TODO Auto-generated method stub
 		return done;
 	}
 

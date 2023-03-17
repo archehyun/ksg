@@ -5,27 +5,25 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 public class PnPortExcpetion extends PnOption{
 
@@ -33,8 +31,11 @@ public class PnPortExcpetion extends PnOption{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private JList listKeyword;
+	
 	private BaseService baseService;
+	
 	private Font defaultfont;
 	
 	DAOManager dao;
@@ -44,10 +45,25 @@ public class PnPortExcpetion extends PnOption{
 		
 		dao = DAOManager.getInstance();
 		
-		this.setName("예외 항구명 지정");
-		listKeyword = new JList();
 		baseService =DAOManager.getInstance().createBaseService();
-		JPanel pnKeyWordTypeOption = new JPanel();
+		
+		this.setName("예외 항구명 지정");
+		
+		this.addComponentListener(this);
+		
+		this.setLayout(new BorderLayout());
+		
+		this.add(buildCenter(),BorderLayout.CENTER);
+		
+		
+	}
+	
+	private KSGPanel buildCenter()
+	{
+		
+		listKeyword = new JList();
+		
+		KSGPanel pnKeyWordTypeOption = new KSGPanel();
 		pnKeyWordTypeOption.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnKeyWordTypeOption.add(new JLabel("광고정보 입력시에는 사용되고 스케줄 생성시에는 사용되지 않는 항구명을 입력하십시요 "));
 		
@@ -62,11 +78,11 @@ public class PnPortExcpetion extends PnOption{
 		butDel.setFont(defaultfont);
 
 		
-		Box pnMain =Box.createVerticalBox();
+		Box pnBox =Box.createVerticalBox();
 		
-		pnMain.add(pnKeyWordTypeOption);
+		pnBox.add(pnKeyWordTypeOption);
 		
-		JPanel pnKeyList = new JPanel();
+		KSGPanel pnKeyList = new KSGPanel();
 		pnKeyList.setLayout(new BorderLayout());
 		pnKeyList.add(new JScrollPane(listKeyword));
 		Box pnKeyControl = Box.createVerticalBox();
@@ -76,25 +92,20 @@ public class PnPortExcpetion extends PnOption{
 		pnKeyControl.add(butDel);
 		pnKeyControl.add(Box.createGlue());
 		
-		JPanel pn1 = new JPanel();
+		KSGPanel pn1 = new KSGPanel();
 		pn1.add(pnKeyControl);
 		
 		pnKeyList.add(pn1,BorderLayout.EAST);
-		JPanel pnWest = new JPanel();
+		KSGPanel pnWest = new KSGPanel();
 		pnWest.setPreferredSize(new Dimension(15,0));
 		pnKeyList.add(pnWest,BorderLayout.WEST);
-		pnMain.add(pnKeyList);
+		pnBox.add(pnKeyList);
 		
-		this.setLayout(new BorderLayout());
-		this.add(pnMain,BorderLayout.CENTER);
-		Code code_info = new Code();
-		code_info.setCode_type("port_exception");
-		try {
-			updateKeyWordList(baseService.getCodeInfoList(code_info));
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "에러:"+e.getMessage());
-			e.printStackTrace();
-		}
+		KSGPanel pnMain=new KSGPanel(new BorderLayout());
+		
+		pnMain.add(pnBox);
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,15, 5,5));
+		return pnMain;
 		
 	}
 	public void actionPerformed(ActionEvent e) {
@@ -163,6 +174,22 @@ public class PnPortExcpetion extends PnOption{
 			}
 		}
 	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+		Code code_info = new Code();
+		code_info.setCode_type("port_exception");
+		try {
+			updateKeyWordList(baseService.getCodeInfoList(code_info));
+		} catch (SQLException ee) {
+			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "에러:"+ee.getMessage());
+			ee.printStackTrace();
+		}
+		
+	}
+	
+	
 	private void updateKeyWordList(List keyList) {
 
 		Iterator ite = keyList.iterator();

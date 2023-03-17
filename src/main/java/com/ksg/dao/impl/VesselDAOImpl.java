@@ -93,13 +93,11 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 
 	@Override
 	public Object selectListByPage(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("vessel.selectVesselListByPage", commandMap);
 	}
 	
 	@Override
 	public Object selectListByPage2(Map<String, Object> commandMap) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("vessel.selectVesselListByPage2", commandMap);
 	}
 	
@@ -119,7 +117,6 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	
 	@Override
 	public List<Vessel> selectAll() throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList(this.namespace+".selectAll");
 	}
 
@@ -134,7 +131,17 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	}
 
 	public Vessel selectDetailInfo(String vessel_abbr) throws SQLException {
-		// TODO Auto-generated method stub
 		return  (Vessel) selectOne("vessel.selectVesselAbbr", vessel_abbr);
+	}
+
+	public List<Vessel> selectVesselListByCondition(Object object) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("vessel.selectVesselListByCondition", object);
+	}
+
+	@Override
+	public List<Vessel> selectVesselListByNameList(List<String> nameList) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("vessel.selectVesselListByNameList", nameList);
 	}
 }

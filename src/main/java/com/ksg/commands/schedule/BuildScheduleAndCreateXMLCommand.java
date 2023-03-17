@@ -10,6 +10,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
@@ -17,7 +18,7 @@ public class BuildScheduleAndCreateXMLCommand implements IFCommand{
 	
 	
 	private TableService tableService;
-	private ScheduleService scheduleService;
+	private ScheduleSubService scheduleService;
 	private BaseService baseService;
 	private ADVService advService;
 	ScheduleBuildMessageDialog processMessageDialog;

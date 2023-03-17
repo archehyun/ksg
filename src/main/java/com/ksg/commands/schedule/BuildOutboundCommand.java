@@ -34,13 +34,14 @@ import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.service.BaseService;
 import com.ksg.service.CompanyService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
 public class BuildOutboundCommand implements IFCommand {
 	private JTextArea area2;
-	private ScheduleService scheduleService;
+	private ScheduleSubService scheduleService;
 	private BaseService baseService;
 	
 	private CompanyService companyService;

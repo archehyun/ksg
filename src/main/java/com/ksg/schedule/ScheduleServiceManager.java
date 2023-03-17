@@ -215,7 +215,7 @@ public class ScheduleServiceManager {
 					
 					op.setGubun(gubun);
 					
-					ScheduleManager.getInstance().init();
+					ScheduleManager.getInstance().initMasterData();
 					
 					IFCommand command=null;
 					

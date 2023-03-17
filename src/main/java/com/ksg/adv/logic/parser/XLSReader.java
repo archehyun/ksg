@@ -142,7 +142,6 @@ public abstract class XLSReader {
 	}
 	
 	public Vector getXLSData() {
-		// TODO Auto-generated method stub
 		return datas;
 	}
 	

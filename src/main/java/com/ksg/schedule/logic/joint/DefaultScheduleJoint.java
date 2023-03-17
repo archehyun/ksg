@@ -20,8 +20,9 @@ import com.ksg.schedule.logic.ScheduleJoint;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
-import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
@@ -58,7 +59,7 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 	protected BaseService baseService;
 
-	protected ScheduleService scheduleService;
+	protected ScheduleSubService scheduleService;
 
 	protected TableService tableService;
 
@@ -89,7 +90,7 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 		baseService 	= DAOManager.getInstance().createBaseService();
 
-		scheduleService	= DAOManager.getInstance().createScheduleService();
+		scheduleService	= new ScheduleServiceImpl();
 
 		Code param = new Code();
 
@@ -112,32 +113,32 @@ public abstract class DefaultScheduleJoint implements ScheduleJoint{
 
 	@Override
 	public int getLengthOfTask() {
-		// TODO Auto-generated method stub
 		return lengthOfTask;
 	}
 	@Override
 	public int getCurrent() {
-		// TODO Auto-generated method stub
 		return current;
 	}
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
 		return done;
 	}
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
 		return message;
 	}
 	
 	public abstract void initTag();
+
+	public void setDone(boolean b) {
+		this.done =b;
+		
+	}
 
 
 

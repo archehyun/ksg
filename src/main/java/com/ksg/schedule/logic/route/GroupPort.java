@@ -1,29 +1,49 @@
 package com.ksg.schedule.logic.route;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class GroupPort extends ArrayList<PortScheduleInfo>{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	int orderType;
-
+	
+	protected Logger logger = LogManager.getLogger(this.getClass());
+	
 	private ArrayList<PortScheduleInfo> inPortList;
+	
 	private ArrayList<PortScheduleInfo> outPortList;
+	
+	private GroupPort temp;
 
 	public GroupPort() {
 		inPortList = new ArrayList<PortScheduleInfo>();
 		outPortList = new ArrayList<PortScheduleInfo>();
+	}
+	
+	public ArrayList<PortScheduleInfo> getOutPortList()
+	{
+		return outPortList;
+	}
+	
+	public List<PortScheduleInfo> getInPortList()
+	{
+		return inPortList;
 	}
 	public void setInPortArray(PortScheduleInfo array[])
 	{
@@ -45,6 +65,7 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 	public void addPort(ScheduleData data) throws ParseException
 	{
 		inPortList.add(new PortScheduleInfo(data.getFromPort(), data.getDateF(),data.getCompany_abbr()));
+		
 		outPortList.add(new PortScheduleInfo(data.getPort(), data.getDateT(),data.getCompany_abbr()));
 	}
 
@@ -52,17 +73,7 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 	{
 		add(data);
 	}
-	public void addPort(PortScheduleInfo data, int type) throws ParseException
-	{
-		if(type==1)
-		{
-			inPortList.add(data);
-		}
-		else if(type==2)
-		{
-			outPortList.add(data);
-		}
-	}
+
 
 	private PortScheduleInfo[] createArray(ArrayList<PortScheduleInfo> array) {
 		PortScheduleInfo lit[] = new PortScheduleInfo[array.size()];
@@ -97,30 +108,43 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 		return lit;
 	}
 
+	private boolean checkType(String oneDate, String twoDate, int sortType) throws ParseException
+	
+	{
+		int dayDiffer = KSGDateUtil.daysDiff(PortDateUtil.parse(oneDate), PortDateUtil.parse(twoDate));
+		
+		if(sortType==GroupVessel.SORT_BY_LAST) // in 늦은 날짜 기준
+		{
+			return dayDiffer>=0;
+			
+		}else if(sortType==GroupVessel.SORT_BY_FIRST) // out 빠른 날자 기준
+		{
+			return dayDiffer<0;
+				
+		}
+		
+		return false;
+	}
 
+	public PortScheduleInfo[] createCompressedArray(PortScheduleInfo lit[],int sortType) throws ParseException {
 
-	public PortScheduleInfo[] createCompressedArray(PortScheduleInfo lit[],int type) throws ParseException {
-
-
+		// 신규 리스트 생성
 		HashMap<String, PortScheduleInfo> arr = new HashMap<String, PortScheduleInfo>();
+		
 
 		for(int i=0;i<lit.length;i++)	
 		{	
 			if(arr.containsKey(lit[i].getPort()))
 			{
 				PortScheduleInfo one=arr.get(lit[i].getPort());
-				if(type==1) // in 늦은 날짜 기준
+				
+				String oneDate = one.getDate();
+				
+				String twoDate = lit[i].getDate();
+
+				if(checkType(oneDate, twoDate, sortType))
 				{
-					if(KSGDateUtil.daysDiff(PortDateUtil.parse(one.getDate()), PortDateUtil.parse(lit[i].getDate()))>=0)
-					{
-						arr.put(lit[i].getPort(), lit[i]);
-					}
-				}else if(type==2) // out 빠른 날자 기준
-				{
-					if(KSGDateUtil.daysDiff(PortDateUtil.parse(one.getDate()), PortDateUtil.parse(lit[i].getDate()))<0)
-					{
-						arr.put(lit[i].getPort(), lit[i]);
-					}	
+					arr.put(lit[i].getPort(), lit[i]);
 				}
 
 			}else
@@ -128,8 +152,11 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 				arr.put(lit[i].getPort(),lit[i]);
 			}
 		}
+		
 		Set<String>keylist=arr.keySet();
+		
 		PortScheduleInfo lit2[] = new PortScheduleInfo[keylist.size()];
+		
 		Iterator<String> iter=keylist.iterator();
 
 		for(int i=0;iter.hasNext();i++)	
@@ -138,12 +165,11 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 			lit2[i]=arr.get(key);
 		}
 		Arrays.sort(lit2);
-
-
+		
 		return lit2;
 	}
 
-	private GroupPort temp;
+	
 	public PortScheduleInfo[] selectArray(PortScheduleInfo lit[], int startIndex, int endIndex) throws ParseException
 	{		 
 		temp = new GroupPort();
@@ -168,7 +194,6 @@ public class GroupPort extends ArrayList<PortScheduleInfo>{
 	}
 
 	public PortScheduleInfo[] createCompressedOutPortArray() throws ParseException {
-
 
 		return this.createCompressedArray(this.createOutPortArray(),2);
 	}

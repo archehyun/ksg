@@ -34,6 +34,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.build.CreateScheduleCommand;
+import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.service.ScheduleService;
 import com.ksg.view.ui.ErrorLogManager;
 
@@ -341,19 +342,9 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 
 
 				String date[][]=null;
-				try {
+				
 					date = adv.getDataArray();
-				} catch (OutOfMemoryError e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JDOMException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				//scheduledata.setTs_date(date[vslIndex][table.getDirection()-1]);
+				
 
 
 			}
@@ -431,7 +422,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 		} 
 		scheduledata.setCompany_abbr(table.getCompany_abbr());
 		scheduledata.setVoyage_num(vslDatas[vslIndex][1]);
-		scheduledata.setN_voyage_num(getNumericVoyage(vslDatas[vslIndex][1]));
+		scheduledata.setN_voyage_num(ScheduleBuildUtil.getNumericVoyage(vslDatas[vslIndex][1]));
 		//scheduledata.setE_I(InOutBoundType);
 		scheduledata.setInOutType(InOutBoundType);
 		scheduledata.setGubun(table.getGubun());
@@ -466,7 +457,6 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 				try {
 					scheduleService.updateScheduleData(scheduledata);
 				} catch (SQLException e2) {
-					// TODO Auto-generated catch block
 					e2.printStackTrace();
 				}
 				//					update++;
@@ -475,7 +465,6 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 				try {
 					scheduleService.updateScheduleData(scheduledata);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				//					update++;

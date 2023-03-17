@@ -135,10 +135,69 @@
 				<isNotNull property="inOutType" prepend="and">
 					inOutType=#inOutType#
 				</isNotNull>
+				
+				<isNotNull property="fromPort" prepend="and">
+					fromPort=#fromPort#
+				</isNotNull>
+				<isNotNull property="port" prepend="and">
+					port=#port#
+				</isNotNull>
+				<isNotNull property="area_name" prepend="and">
+					area_name=#area_name#
+				</isNotNull>
+				
+				<isNotNull property="gubun" prepend="and">
+					gubun=#gubun#
+				</isNotNull>
+				
+				<isNotNull property="agent" prepend="and">
+					
+					agent like '%$agent$%'
+				</isNotNull>
+				
+				<isNotNull property="vessel" prepend="and">
+					
+					vessel like '%$vessel$%'
+				</isNotNull>
+				<isNotNull property="company_abbr" prepend="and">
+					
+					company_abbr like '%$company_abbr$%'
+				</isNotNull>	
+				
+				<isNotNull property="table_id" prepend="and">
+					
+					table_id like '%$table_id$%'
+				</isNotNull>				
+				
 		</dynamic>
 	</select>
 	
-		<select id="selectAll" resultClass="com.ksg.domain.Schedule" parameterClass="com.ksg.domain.Schedule">
+		<select id="selectScheduleListByCondition2" resultClass="com.ksg.domain.Schedule" parameterClass="com.ksg.domain.Schedule">
+			SELECT * FROM TB_SCHEDULE_INFO
+			<dynamic prepend="where">
+					<isNotNull property="gubun" prepend="and">
+						gubun=#gubun#
+					</isNotNull>
+					<isNotNull property="date_issue" prepend="and">
+						date_issue=#date_issue#
+					</isNotNull>
+					<isNotNull property="inOutType" prepend="and">
+						inOutType=#inOutType#
+					</isNotNull>
+					
+					<isNotNull property="fromPort" prepend="and">
+						fromPort=#fromPort#
+					</isNotNull>
+					<isNotNull property="port" prepend="and">
+						port=#port#
+					</isNotNull>
+					<isNotNull property="area_name" prepend="and">
+						area_name=#area_name#
+					</isNotNull>				
+			</dynamic>
+		</select>
+	
+	<select id="selectAll" resultClass="com.ksg.domain.Schedule" parameterClass="com.ksg.domain.Schedule">
 		SELECT * FROM TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 				<isNotNull property="gubun" prepend="and">
@@ -150,10 +209,20 @@
 				<isNotNull property="inOutType" prepend="and">
 					inOutType=#inOutType#
 				</isNotNull>
+				
+				<isNotNull property="fromPort" prepend="and">
+					fromPort=#fromPort#
+				</isNotNull>
+				<isNotNull property="port" prepend="and">
+					port=#port#
+				</isNotNull>
+				<isNotNull property="area_name" prepend="and">
+					area_name=#area_name#
+				</isNotNull>								
 		</dynamic>
 	</select>
 	
-	<select id="selectScheduleList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
+	<select id="selectScheduleList" resultClass="com.ksg.common.model.CommandMap" parameterClass="com.ksg.common.model.CommandMap">
 		select * from TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 		    	<isNotNull property="table_id" prepend="and">
@@ -392,6 +461,79 @@
 	</select>
 
 <!-- ********************************************* -->	
+
+<insert id="insertScheduleBulk" parameterClass="java.util.List">
+		insert TB_SCHEDULE_INFO(
+		table_id,
+		vessel,
+		voyage_num,
+		port,
+		dateF,
+		dateT,
+		company_abbr,
+		agent,
+		TS,
+		common_shipping,		
+		area_code,
+		inOutType,
+		fromPort,
+		date_issue,
+		gubun,
+		ts_vessel,
+		ts_date,
+		n_voyage_num,
+		area_name,
+		console_cfs,
+		console_page,
+		c_time,
+		d_time,
+		inland_port,
+		inland_date
+		
+		) 
+		values
+		
+		<iterate conjunction="," >
+		
+		(
+		#[].table_id#,
+		#[].vessel#,
+		#[].voyage_num#,
+		#[].port#,
+		#[].dateF#,
+		#[].dateT#,
+		#[].company_abbr#,
+		#[].agent#,
+		#[].TS#,
+		#[].common_shipping#,
+		
+		#[].area_code#,
+		
+		
+		#[].inOutType#,
+		#[].fromPort#,
+		#[].date_issue#,
+		#[].gubun#,
+		
+		#[].ts_vessel#,
+		
+		#[].ts_date#,
+		
+		#[].n_voyage_num#,
+		
+		#[].area_name#,
+		
+		#[].console_cfs#,
+		#[].console_page#,
+		#[].c_time#,
+		#[].d_time#,
+		#[].inland_port#,
+		#[].inland_date#
+		
+		)
+		</iterate>
+</insert>
+
 
 
 				

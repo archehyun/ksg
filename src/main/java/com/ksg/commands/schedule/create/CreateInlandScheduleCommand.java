@@ -21,6 +21,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.build.CreateScheduleCommand;
+import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.service.ScheduleService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -223,7 +224,7 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 										// 항차번호(문자)
 										String voyage_num_str 	= vslDatas[vslIndex][1];
 										// 항차번호(숫자)
-										int voyage_num 			= getNumericVoyage(vslDatas[vslIndex][1]);
+										int voyage_num 			= ScheduleBuildUtil. getNumericVoyage(vslDatas[vslIndex][1]);
 										// 지역 정보 생성
 										PortInfo  portInfo=getPortInfo(toPortStr);
 

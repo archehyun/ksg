@@ -75,7 +75,6 @@ public class BaseDAOManager
 	}
 
 	public List getArrangedTableList(Object orderBy) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Base.selectArrangedTableList",orderBy);
 	}
 
@@ -104,7 +103,6 @@ public class BaseDAOManager
 		return sqlMap.queryForList("Base.selectCodeListByField",code_type);
 	}
 	public List<Code> getCodeInfoList(Code code_info) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Base.selectCodeInfo",code_info);
 	}
 
@@ -207,7 +205,6 @@ public class BaseDAOManager
 //		return vesselDAOImpl.getSearchedVesselList(op);
 //	}	
 	public List<Code> getSubCodeInfo(Code code_info) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlMap.queryForList("Base.selectSubCodeInfo",code_info);
 	}
 	public List getVesselAbblListByPatten(String op) throws SQLException {

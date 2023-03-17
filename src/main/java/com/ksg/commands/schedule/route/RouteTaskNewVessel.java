@@ -459,6 +459,7 @@ public class RouteTaskNewVessel extends DefaultRouteTask{
 		private String getVoyageInfo(String vessel) {
 
 			int result=getNumericVoyage(vessel);
+			
 			if(result!=0)
 			{
 				return " - "+vessel;

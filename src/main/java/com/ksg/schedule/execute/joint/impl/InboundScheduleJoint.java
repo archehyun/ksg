@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.ksg.common.exception.ResourceNotFoundException;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
@@ -156,7 +157,7 @@ public class InboundScheduleJoint extends JointSchedule{
 	@Override
 	public int execute() {
 		log.info("inbound joint start");
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 		
 		param.put("inOutType", "I");
 		

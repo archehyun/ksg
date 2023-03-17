@@ -34,6 +34,11 @@
 		</dynamic>
 	</select>
 	
+	<select id="selectAll" resultClass="com.ksg.domain.AreaInfo">
+		select * from TB_AREA
+			 
+	</select>
+	
 	<select id="selectAreaList2" resultClass="com.ksg.domain.AreaInfo">
 		<include refid="AreaList"/>
 		<dynamic prepend="where">

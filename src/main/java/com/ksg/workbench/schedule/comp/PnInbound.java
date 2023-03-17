@@ -16,10 +16,10 @@ import javax.swing.JTextField;
 
 import com.ksg.service.ScheduleService;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.common.comp.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.button.PageAction;
+import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 public class PnInbound extends KSGPanel implements ActionListener{
 
@@ -38,9 +38,7 @@ public class PnInbound extends KSGPanel implements ActionListener{
 
 	private JComboBox<KSGTableColumn> cbxNormalSearch;
 
-	private JTextField txfNoramlSearch;
-
-	
+	private JTextField txfNoramlSearch;	
 	
 	public PnInbound() {
 		

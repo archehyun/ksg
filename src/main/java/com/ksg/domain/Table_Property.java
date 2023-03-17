@@ -9,16 +9,27 @@ package com.ksg.domain;
  *
  */
 public class Table_Property extends BaseInfo{
+	
 	private String table_id;
+	
 	private String company_abbr;
+	
 	private int page;
+	
 	private int vesselvoycount;
+	
 	private String vesselvoydivider;
+	
 	private int under_port;
+	
 	private int voyage;
+	
 	private int table_type;// key word type
+	
 	private int port_type=0;
+	
 	private int eta=0;
+	
 	public String getCompany_abbr() {
 		return company_abbr;
 	}

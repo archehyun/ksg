@@ -250,15 +250,9 @@ public class BuildWebSchdeduleCommand implements IFCommand
 				scheduledata.setTS(info.getPort_name());
 
 				String date[][]=null;
-				try {
+				
 					date = adv.getDataArray();
-				} catch (OutOfMemoryError e) {
-					e.printStackTrace();
-				} catch (JDOMException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				
 				//scheduledata.setTs_date(date[vslIndex][table.getDirection()-1]);
 			}
 			scheduledata.setAgent(table.getAgent());

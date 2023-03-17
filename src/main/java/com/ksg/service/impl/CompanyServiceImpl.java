@@ -156,11 +156,6 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 		}
 	}
 
-	@Override
-	public int getCompanyCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public CommandMap selectListByPage(HashMap<String, Object> param) throws SQLException {

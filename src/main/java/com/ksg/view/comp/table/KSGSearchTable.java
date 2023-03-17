@@ -35,7 +35,7 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.ColorData;
 import com.ksg.view.comp.table.model.KSGTableModel;
-import com.ksg.workbench.KSGViewParameter;
+import com.ksg.workbench.admin.KSGViewParameter;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 /**
  * @author archehyun
@@ -230,7 +230,6 @@ public class KSGSearchTable extends KSGTable{
 	}
 	@Override
 	public void retrive() throws SQLException {
-		// TODO Auto-generated method stub
 		
 	}
 

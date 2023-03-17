@@ -12,38 +12,36 @@ import com.ksg.domain.PortInfo;
 public interface PortDAO {
 	
 	
+	// -- select List -- //
+	
 	public List<PortInfo> selectAll() throws SQLException ;
 	
 	public List<Map<String, Object>> selectList(Map<String, Object> commandMap) throws SQLException ;
 	
 	public PortInfo select(PortInfo param) throws SQLException;
 	
-	public Object selectDetail(HashMap<String, Object> param) throws SQLException;
-
-	
+	public Object selectDetail(HashMap<String, Object> param) throws SQLException;	
 
 	public List<Map<String, Object>> selectDetailList(HashMap<String, Object> commandMap) throws SQLException;
 	
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
-
-
-	public int update(HashMap<String, Object> param) throws SQLException;
-
-	public Object isnert(HashMap<String, Object> param) throws SQLException;
-	
-	
 	
 	public Object selectListByPage(HashMap<String, Object> param)throws SQLException;
 	
 	public List<Map<String, Object>> selectListByLike(Map<String, Object> param)throws SQLException;
 	
+	
 	// -- update -- //
+	
+	public int update(HashMap<String, Object> param) throws SQLException;
 	
 	public int update(PortInfo param) throws SQLException;
 
 	public int updateDetail(PortInfo param) throws SQLException;
 	
 	// -- insert -- //
+	
+	public Object isnert(HashMap<String, Object> param) throws SQLException;
 	
 	public Object insert(PortInfo param) throws SQLException;
 	

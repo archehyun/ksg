@@ -1,16 +1,20 @@
 package com.ksg.workbench.shippertable;
 
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.sql.SQLException;
 
+import com.dtp.api.control.AbstractController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
+import com.ksg.workbench.common.comp.View;
 
 @SuppressWarnings("serial")
-public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements ComponentListener{
+public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements View{
 	
 	
 	protected boolean isShowData=true;
+	
+	protected CommandMap model;
+	
 	
 	public ShipperTableAbstractMgtUI()
 	{
@@ -23,14 +27,7 @@ public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements
 
 	public abstract  void setPortCount(int count);
 	
-	@Override
-	public void componentResized(ComponentEvent e) {}
-	@Override
-	public void componentMoved(ComponentEvent e) {}
-	@Override
-	public void componentShown(ComponentEvent e) {}
-	@Override
-	public void componentHidden(ComponentEvent e) {}
+	
 
 	@Deprecated
 	public void updateSubTable() throws SQLException {}
@@ -39,5 +36,7 @@ public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements
 	public void searchByOption() throws SQLException {}
 
 	public void fnUpdate() {}
+	
+	
 
 }

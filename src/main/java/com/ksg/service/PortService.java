@@ -10,6 +10,8 @@ import com.ksg.domain.PortInfo;
 
 public interface PortService extends PageService{
 	
+	//--select--//
+	
 	public PortInfo select(Map<String, Object> commandMap) throws SQLException;
 	
 	public Map<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;

@@ -22,14 +22,15 @@
 
 
    
-   <logger level="INFO" name="java.sql.Statement"/>    
+   <logger level="DEBUG" name="java.sql.Statement"/>
+    
+   <logger level="INFO" name="com.dtp"  additivity="false" />     
    
-   
-        
    
 
-  <Root level="ERROR">
+  <Root level="INFO">
    <AppenderRef ref="console"/>
+   <AppenderRef ref="file"/>
   </Root>
  </Loggers>
  

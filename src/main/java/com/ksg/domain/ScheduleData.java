@@ -74,6 +74,7 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	private String ts_vessel;
 	private String ts_voyage_num;
 	private String vessel; // 선박명
+	private Vessel vesselInfo;
 	private String vessel_type; // 선종
 	private String voyage_num; // 항차 번호
 	private String bookPage="";// 지면 페이지
@@ -314,6 +315,21 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	public String toInfoString() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public String toKey()
+	{
+		return String.format("ScheduleData{tableId='%s', company_abbr='%s',vessel='%s', voyage_num='%s', fromPort='%s', toPort='%s', DateF='%s', DateT='%s', date_issue='%s'}", 
+						this.getTable_id(), 
+						this.getCompany_abbr(), 
+						this.getVessel(),
+						this.getVoyage_num(),
+						this.getFromPort(), 
+						this.getPort(),
+						this.getDateF(),
+						this.getDateT(),
+						this.getDate_issue()
+						);
 	}
 
 	

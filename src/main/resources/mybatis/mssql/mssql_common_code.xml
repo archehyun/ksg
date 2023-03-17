@@ -15,7 +15,12 @@
 <sqlMap namespace="code">
 
 
-<!-- *** Port *** -->
+	<resultMap id="codeList" class="com.ksg.domain.Code">
+		<result property="code_field" column="CD_ID"/>
+		<result property="code_name_kor" column="CD_NM"/>
+		<result property="code_name" column="CD_ENG"/>
+
+	</resultMap>
 	
 
 <!-- select -->
@@ -34,14 +39,70 @@
 	
 	</select>
 	
+	<select id="selectCodeHListByCondition" resultMap="codeList">
+	
+	
+		SELECT
+				CD_ID, 
+				CD_NM, 
+				CD_ENG 
+		FROM TB_CODE_H
+
+		<dynamic prepend="where">
+			<isNotNull property="code_name_kor" prepend="and">
+							CD_NM like '%$code_name_kor$%'
+			</isNotNull>
+		</dynamic>
+	
+	
+	</select>
+	
 	
 	<select id="selectCodeD" resultClass="java.util.HashMap">
-		select * from TB_CODE_INFO
-		
-		where
-		code_field=#code_field#
+		SELECT * 
+		FROM TB_CODE_INFO
+		WHERE code_field=#code_field#
 		
 	</select>
+	<select id="selectCodeByKey" resultMap="codeList">
+		SELECT
+				CD_ID, 
+				CD_NM, 
+				CD_ENG 
+		FROM TB_CODE_H
+		WHERE 	CD_ID=#code_field# 
+		
+	</select>
+	
+	
+	<select id="selectCodeDetailByKey" resultClass="com.ksg.domain.Code">
+		SELECT 
+				* 
+		FROM 	TB_CODE_INFO
+		WHERE 	code_field=#code_field# 
+		AND 	code_name = #code_name#
+	</select>
+	
+	
+	<select id="selectCodeDetailList" resultClass="com.ksg.domain.Code">
+		SELECT 
+				code_field,
+				code_name,
+				code_type,
+				code_name_kor 
+		FROM TB_CODE_INFO
+		<dynamic prepend="WHERE">
+		    
+		    <isNotNull property="code_type" prepend="and">
+		        code_type=#code_type#
+		    </isNotNull>
+		    
+		    <isNotNull property="code_name" prepend="and">
+		        code_name like '%$code_name$%'
+		    </isNotNull>
+ 
+		</dynamic>
+	</select>	
 	
 	<select id="selectCodeDList" resultClass="java.util.HashMap">
 		select * from TB_CODE_INFO
@@ -88,6 +149,21 @@
 			#code_name_kor#
 		);
 	</insert>
+	<insert id="insertCodeDetail" parameterClass="com.ksg.domain.Code">
+		insert into TB_CODE_INFO(
+			code_field,
+			code_name,
+			code_type,
+			code_name_kor
+		
+		)values
+		(
+			#code_field#,
+			#code_name#,
+			#code_type#,
+			#code_name_kor#
+		);
+	</insert>	
 	
 <!-- update -->
 	
@@ -108,8 +184,21 @@
 		delete from TB_CODE_H where CD_ID=#CD_ID#
 	</delete>
 	
+	<delete id="deleteCode" >
+		DELETE 
+		FROM TB_CODE_H 
+		WHERE CD_ID=#code_field#
+	</delete>
+	
 	<delete id="deleteCodeD" parameterClass="java.util.HashMap">
 		delete from TB_CODE_INFO where code_field=#code_field# and code_name=#code_name#
+	</delete>
+	
+	<delete id="deleteCodeDetail" parameterClass="com.ksg.domain.Code">
+		DELETE 
+		FROM 	TB_CODE_INFO 
+		WHERE 	code_field=#code_field# 
+		AND 	code_name=#code_name#
 	</delete>
 	
 	

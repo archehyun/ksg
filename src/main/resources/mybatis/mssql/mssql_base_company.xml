@@ -43,6 +43,12 @@
 		<include refid="WHERE"></include>
 	</select>
 	
+	<select id="selectCompanyById" resultClass="com.ksg.domain.Company">
+		SELECT * 
+		FROM TB_COMPANY
+		WHERE company_abbr = #company_abbr#
+	</select>
+	
 	<select id="selectCompany" resultClass="com.ksg.domain.Company">
 		select * from TB_COMPANY
 		<dynamic prepend="where">
@@ -56,7 +62,28 @@
 		
 		</dynamic>
 		
-	</select>
+		</select>
+	<select id="selectCompanyListByCondition" resultClass="com.ksg.domain.Company">
+		SELECT * from TB_COMPANY
+		<dynamic prepend="where">
+		    <isNotNull property="company_name" prepend="and">
+		        company_name like '%$company_name$%'
+		    </isNotNull>
+		    <isNotNull property="agent_name" prepend="and">
+		        agent_name like '%$agent_name$%'
+		    </isNotNull>
+		    <isNotNull property="company_abbr" prepend="and">
+		        company_abbr like '%$company_abbr$%'
+		    </isNotNull>
+		    <isNotNull property="agent_abbr" prepend="and">
+		        agent_abbr like '%$agent_abbr$%'
+		    </isNotNull>
+		
+		</dynamic>
+		
+	</select>	
+		
+	
 		<select id="selectCompanyByLike" resultClass="com.ksg.domain.Company">
 		select * from TB_COMPANY
 		<dynamic prepend="where">
@@ -123,6 +150,17 @@
 			company_name=#company_name#,
 			contents=#contents#
 		where (company_abbr=#base_company_abbr#)
+	</update>
+	
+	<update id="updateCompanyInfo" parameterClass="com.ksg.domain.Company">
+		UPDATE TB_COMPANY 
+		SET 
+			agent_name=#agent_name#,
+			company_abbr=#company_abbr#,
+			agent_abbr=#agent_abbr#,
+			company_name=#company_name#,
+			contents=#contents#
+		WHERE company_abbr=#base_company_abbr#
 	</update>
 
 <!-- delete -->

@@ -807,7 +807,6 @@ public class PortTable extends JTable implements ActionListener
 			return value;
 		}
 		public int getType() {
-			// TODO Auto-generated method stub
 			return info.getType();
 		}
 		public void setValue(Object value)

@@ -59,13 +59,14 @@ public class RouteScheduleJointV2 extends RouteAbstractScheduleJoint {
 	private XTGManager xtgmanager = new XTGManager();
 	
 	private static final String WORLD_SOURCE_XML = "world_source.xml";
+	
 	private ScheduleBuildMessageDialog di;
 
 	private int UP_SIZE,DOWN_SIZE;
 
-	public RouteScheduleJointV2(ShippersTable op) throws SQLException {
-		super();
-		this.op=op;		
+	public RouteScheduleJointV2(ShippersTable op) throws Exception {
+		super(op);
+				
 		map = new HashMap<String, MiniSchedule>();
 		logger.info("op date:"+op.getDate_isusse());
 

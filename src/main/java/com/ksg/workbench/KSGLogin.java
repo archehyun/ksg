@@ -47,6 +47,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.MemberService;
 import com.ksg.service.impl.MemberServiceImpl;
+import com.ksg.workbench.admin.KSGMainFrame;
 
 
 /**
@@ -279,13 +280,11 @@ public class KSGLogin extends JDialog implements ComponentListener{
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -299,7 +298,6 @@ public class KSGLogin extends JDialog implements ComponentListener{
 
 	@Override
 	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 

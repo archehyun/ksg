@@ -266,7 +266,6 @@ public class ConsoleTask extends SimpleTask{
 			return data.getAgent();
 		}
 		public int compareTo(SortScheduleData o) {
-			// TODO Auto-generated method stub
 			return this.getData().getAgent().toUpperCase().compareTo(o.getData().getAgent().toUpperCase());
 		}
 	}
@@ -427,7 +426,6 @@ public class ConsoleTask extends SimpleTask{
 			try {
 				logger.debug(data.getDateF()+","+dateIssueformat.format(inputDateformat.parse(data.getDateF()))+","+isAfterThenDateIssue(data.getDateF()));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}		
@@ -448,7 +446,6 @@ public class ConsoleTask extends SimpleTask{
 					toPortGroupList.add(item);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}	

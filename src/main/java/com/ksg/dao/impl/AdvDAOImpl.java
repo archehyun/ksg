@@ -225,7 +225,6 @@ public class AdvDAOImpl implements AdvDAO{
 	}
 
 	public ADVData getADVData(String table_id) throws SQLException {
-		// TODO Auto-generated method stub
 		return (ADVData) sqlMap.queryForObject("Adv.selectADVdataByTableID",table_id);
 	}
 }

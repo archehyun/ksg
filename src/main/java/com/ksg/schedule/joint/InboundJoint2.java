@@ -11,7 +11,6 @@ public class InboundJoint2 extends KSGScheduleJoint{
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
 		
 	}
 	

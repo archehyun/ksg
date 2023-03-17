@@ -36,9 +36,9 @@ import com.ksg.commands.SearchSheetNameCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.view.comp.FileInfo;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 /**
  * @author ¹ÚÃ¢Çö

@@ -86,11 +86,11 @@ import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.CurvedBorder;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableSelectListner;
-import com.ksg.view.comp.tree.KSGTreeDefault;
-import com.ksg.view.comp.tree.KSGTreeImpl;
-import com.ksg.workbench.base.dialog.UpdateTableInfoDialog;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.tree.KSGTreeDefault;
+import com.ksg.workbench.common.comp.tree.KSGTreeImpl;
+import com.ksg.workbench.master.dialog.UpdateTableInfoDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 import com.ksg.workbench.shippertable.comp.SearchTable;
 import com.ksg.workbench.shippertable.comp.UpdateTablePanel;
@@ -102,7 +102,7 @@ import com.ksg.workbench.shippertable.dialog.ManagePortDialog;
  */
 @Deprecated
 @SuppressWarnings("unchecked")
-public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements ActionListener
+public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI 
 {	
 	private static final String ACTION_SEARCH = "조회";
 
@@ -158,7 +158,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 			}
 		}
 	}
-	//TODO 테이블 스타일 정리
+	
 	private static final int _LEFT_SIZE = 250;
 
 	public static final int ADV_TYPE = 0;
@@ -389,7 +389,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 				try {
 					updateView(searchParam);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+				
 					e1.printStackTrace();
 				}
 			}
@@ -1716,11 +1716,11 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI implements Acti
 			txfPageIndexSearchInput.setText("");
 		}
 	}
-	public void updateView() throws SQLException
+	public void updateView() 
 	{
 		if(searchParam==null)
 			return;
-		updateView(searchParam);
+		
 	}
 
 	private void updateView(ShippersTable searchParam) throws SQLException

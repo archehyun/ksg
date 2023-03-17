@@ -38,7 +38,7 @@ public class ADVServiceImpl extends AbstractServiceImpl implements ADVService{
 	}
 	
 	public List getShippers(String gropBy) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return advDAO.getShippers(gropBy);
 	}
 	
@@ -106,13 +106,13 @@ public class ADVServiceImpl extends AbstractServiceImpl implements ADVService{
 	
 	public List getQuarkFormatList(String company, String date)
 			throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return advDAO.getQuarkFormatList(company,date);
 		
 	}
 	
 	public List<ShippersTable> getPageList(String gropBy) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return advDAO.getPageList(gropBy);
 	}
 	
@@ -142,17 +142,17 @@ public class ADVServiceImpl extends AbstractServiceImpl implements ADVService{
 	}
 	
 	public List getADVDataListByDate(String date) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return advDAO.getADVDataListByDate(date);
 	}
 
 	public List getCompanyList() throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return advDAO.getCompanyList();
 	}
 
 	public List getADVDataList() throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return advDAO. getADVDataList();
 	}
 
@@ -170,7 +170,7 @@ public class ADVServiceImpl extends AbstractServiceImpl implements ADVService{
 
 	public List<ADVData> getADVDataList(String selectedCompany, int selectedPage)
 			throws SQLException {
-		// TODO Auto-generated method stub
+		
 		ADVData data = new ADVData();
 		data.setCompany_abbr(selectedCompany);
 		data.setPage(selectedPage);
@@ -199,7 +199,7 @@ public class ADVServiceImpl extends AbstractServiceImpl implements ADVService{
 		try {
 			data.setDate_isusse(KSGDateUtil.toDate2(selectDate));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return advDAO. getADVDataListByPage(data);
@@ -212,12 +212,12 @@ public class ADVServiceImpl extends AbstractServiceImpl implements ADVService{
 	}
 
 	public int getADVCount(String tableId) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return advDAO. getADVCount(tableId);
 	}
 
 	public ADVData getADVTopOne(String tableId) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return advDAO. getADVTopOne(tableId);
 	}
 

@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.dtp.api.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.CodeDAOImpl;
+import com.ksg.domain.Code;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +37,16 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 		codeDAO = new CodeDAOImpl();
 	}
 	
+	public List selectCodeHList(Code param) throws SQLException
+	{
+		return codeDAO.selectCodeListByCondition(param);
+	}
+	
+	public List selectCodeDetailList(Code param) throws SQLException
+	{
+		return codeDAO.selectCodeDetailListByCondition(param);
+	}
+	
 	public Map<String, Object> selectCodeHList(Map<String, Object> param) throws SQLException {
 		
 		log.debug("param:{}"+param);
@@ -61,6 +73,7 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 		return resultMap;
 
 	}
+	
 	
 	public CommandMap selectInboundPortMap() throws SQLException
 	{
@@ -101,6 +114,12 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 		return codeDAO.delete(param);
 		
 	}
+	
+	public Object deleteCode(String code_field)throws SQLException {
+		
+		return codeDAO.deleteCode(code_field);
+		
+	}
 
 	public Object insertCodeD(HashMap<String, Object> param) throws SQLException {
 		log.debug("param:{}"+param);
@@ -112,6 +131,39 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 		log.debug("param:{}"+param);
 		return codeDAO.deleteDetail(param);
 		
+	}
+
+	public Object deleteCodeDetail(Code codeParam) throws SQLException {
+		return codeDAO.deleteCodeDetail(codeParam);
+	}
+
+	public Object insertCodeDetail(Code codeParam) throws Exception {
+		
+		Code  code =selectCodeDetailByKey(codeParam);
+		
+		if(code !=null) throw new AlreadyExistException(String.format("이미 존재하는 코드명(%s)입니다.", code.getCode_name()));
+		
+		return codeDAO.insertCodeDetail(codeParam);
+	}
+
+	private Code selectCodeDetailByKey(Code codeParam) throws SQLException {
+		// TODO Auto-generated method stub
+		return codeDAO.selectCodeDetailByKey(codeParam);
+	}
+
+	public Object insertCode(Code codeParam) throws Exception {
+		
+		Code  code =selectCodeByKey(codeParam);
+		
+		if(code !=null) throw new AlreadyExistException(String.format("이미 존재하는 코드명(%s)입니다.", code.getCode_name()));
+		
+		return codeDAO.insertCode(codeParam);
+		
+	}
+
+	private Code selectCodeByKey(Code codeParam) throws SQLException {
+		// TODO Auto-generated method stub
+		return codeDAO.selectCodeByKey(codeParam);
 	}
 
 }

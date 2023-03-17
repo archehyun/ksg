@@ -17,22 +17,26 @@ import com.ksg.domain.TablePort;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.service.ADVService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author 박창현
  *
  */
+@Slf4j
 public abstract class DefaultScheduleBuild implements ScheduleBuild{
 	
 	protected ShippersTable searchOption;
-	protected Logger logger = LogManager.getLogger(this.getClass());
+	
 	private TableService 		tableService;
 	protected ADVService 		advService;
-	protected ScheduleService 	scheduleService;
+	protected ScheduleSubService 	scheduleService;
 	protected List scheduleList;
 	protected int lengthOfTask, current;
 	protected Date selectedDate;
@@ -55,7 +59,7 @@ public abstract class DefaultScheduleBuild implements ScheduleBuild{
 		
 		lengthOfTask=scheduleList.size();
 		
-		logger.info("스케줄 처리용 테이블 수 : "+lengthOfTask);
+		log.info("스케줄 처리용 테이블 수 : "+lengthOfTask);
 	}
 	/**
 	 * 
@@ -87,7 +91,7 @@ public abstract class DefaultScheduleBuild implements ScheduleBuild{
 				}
 				break;
 			default:
-				logger.error("error code:"+e.getErrorCode()+"error:"+scheduledata+", id:"+scheduledata.getTable_id()+", fromPort:"+scheduledata.getFromPort());
+				log.error("error code:"+e.getErrorCode()+"error:"+scheduledata+", id:"+scheduledata.getTable_id()+", fromPort:"+scheduledata.getFromPort());
 			e.printStackTrace();
 			break;
 			}
@@ -195,7 +199,7 @@ public abstract class DefaultScheduleBuild implements ScheduleBuild{
 
 				portDataArray.add(port);
 			}
-			logger.debug("portarray:"+table.getTable_id()+","+portDataArray);
+			log.debug("portarray:"+table.getTable_id()+","+portDataArray);
 		
 		return portDataArray;
 	}
@@ -237,29 +241,24 @@ public abstract class DefaultScheduleBuild implements ScheduleBuild{
 	
 	
 	public int getLengthOfTask() {
-		// TODO Auto-generated method stub
 		return lengthOfTask;
 	}
 	public int getCurrent() {
-		// TODO Auto-generated method stub
 		return current;
 	}
 	
 	@Override
 	public void stop() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public boolean isDone() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

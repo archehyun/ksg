@@ -16,37 +16,37 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import com.ksg.view.comp.label.BoldLabel;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.model.TableModel;
+import com.ksg.workbench.common.comp.label.BoldLabel;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
- 
+
 
 
 /**
 
-  * @FileName : KSGTablePanel.java
+ * @FileName : KSGTablePanel.java
 
-  * @Project : KSG2
+ * @Project : KSG2
 
-  * @Date : 2021. 12. 29. 
+ * @Date : 2021. 12. 29. 
 
-  * @작성자 : pch
+ * @작성자 : pch
 
-  * @변경이력 :
+ * @변경이력 :
 
-  * @프로그램 설명 :
+ * @프로그램 설명 :
 
-  */
+ */
 @SuppressWarnings("serial")
 public class KSGTablePanel extends KSGPanel{ 
 	public static final String INSERT="insert";
-	
+
 	public static final String DELETE="delete";
-	
+
 	public static final String UPDATE="update";
-	
-	
+
+
 	protected int total;
 
 	private KSGAbstractTable table;
@@ -54,13 +54,13 @@ public class KSGTablePanel extends KSGPanel{
 	private String title;
 
 	private JLabel lblTotalCount;
-	
+
 	private boolean showControl=false;
 
 	private JButton butInsert;
 
 	private JButton butDelete;	
-	
+
 	private KSGPanel pnControl;
 
 	public void setShowControl(boolean showControl) {
@@ -74,11 +74,11 @@ public class KSGTablePanel extends KSGPanel{
 
 	public KSGTablePanel() {
 		super();
-		
+
 		this.setLayout(new BorderLayout(5,5));
 
 		table = new KSGAbstractTable();
-		
+
 		table.setGridColor(Color.lightGray);
 
 		this.add(new JScrollPane(table));
@@ -86,20 +86,25 @@ public class KSGTablePanel extends KSGPanel{
 		table.getParent().setBackground(Color.white);
 	}
 	
+	public void setOdd(boolean isOdd)
+	{
+		table.setOdd(isOdd);
+	}
+
 	public KSGTablePanel(TableModel model) {
 
 		super();
-		
+
 		this.setLayout(new BorderLayout(5,5));
 
 		table = new KSGAbstractTable(model);
-		
+
 		table.setGridColor(Color.lightGray);
 
 		this.add(new JScrollPane(table));
 
 		table.getParent().setBackground(Color.white);
-		
+
 	}
 
 	public KSGTablePanel(String title) {
@@ -107,76 +112,76 @@ public class KSGTablePanel extends KSGPanel{
 		this();
 		this.title = title;
 		this.add(createTitle(), BorderLayout.NORTH);
-		
+
 	}
-	
+
 	public KSGTablePanel(String title, TableModel model) {
 
 		this(model);
 		this.title = title;
 		this.add(createTitle(), BorderLayout.NORTH);
-		
+
 	}
-	
+
 	public void setSelectionMode(int SINGLE_SELECTION)
 	{
 		table.setSelectionMode(SINGLE_SELECTION);
 	}
-	
-	
+
+
 	public void setAutoResizeMode(int mode)
 	{
 		table.setAutoResizeMode(mode);
 	}
-	
-	 public ListSelectionModel getSelectionModel() {
-	        return table.getSelectionModel();
-	    }
-	
+
+	public ListSelectionModel getSelectionModel() {
+		return table.getSelectionModel();
+	}
+
 	public KSGTablePanel(String title,boolean paging) {
 
 		this(title);
 	}
 
 	public JComponent createTitle() {
-		
+
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-		
+
 		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
+
 		pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		
+
 		BoldLabel lblTitle = new BoldLabel(title + " 총");
-		
+
 		butInsert = new JButton("추가");
-		
-		
-		
+
+
+
 		butDelete = new JButton("삭제");
-		
+
 		//butUpdate = new JButton("수정");
-		
-		
+
+
 		//butInsert.setBackground(Color.BLUE);
 		//butInsert.setForeground(Color.white);
-		
+
 		butInsert.setActionCommand(INSERT);
 		butDelete.setActionCommand(DELETE);
 		//butUpdate.setActionCommand(UPDATE);
-		
+
 		lblTotalCount = new JLabel("0");
 		lblTotalCount.setForeground(Color.red);
-		
-		
+
+
 		pnControl.add(butInsert);
 		//pnControl.add(butUpdate);
 		pnControl.add(butDelete);
-		
+
 		pnTitle.add(lblTitle);
 		pnTitle.add(lblTotalCount);
 		pnTitle.add(new JLabel("건"));
-		
-		
+
+
 		pnMain.add(pnTitle,BorderLayout.LINE_START);
 		pnMain.add(pnControl,BorderLayout.LINE_END);
 		pnControl.setVisible(showControl);
@@ -191,15 +196,14 @@ public class KSGTablePanel extends KSGPanel{
 	public void setResultData(List resultData) {
 
 		table.setResultData(resultData);
+		lblTotalCount.setText(String.valueOf(resultData.size()));
 	}
 
 	public int getSelectedRow() {
-		// TODO Auto-generated method stub
 		return table.getSelectedRow();
 	}
 
 	public Object getValueAt(int row, int col) {
-		// TODO Auto-generated method stub
 		return table.getValueAt(row, col);
 	}
 
@@ -210,18 +214,18 @@ public class KSGTablePanel extends KSGPanel{
 
 	@Override
 	public synchronized void addMouseListener(MouseListener l) {
-		
+
 		super.addMouseListener(l);
 
 		table.addMouseListener(l);
 	}
-	
+
 	public synchronized void addKeyListener(KeyListener l)
 	{
 		super.addKeyListener(l);
 		table.addKeyListener(l);
 	}
-	
+
 	public void addContorlListener(ActionListener l)
 	{
 		butDelete.addActionListener(l);
@@ -243,22 +247,33 @@ public class KSGTablePanel extends KSGPanel{
 	}
 
 	public void setResultData(HashMap<String, Object> resultMap) {
-		
+
 		List master = (List) resultMap.get("master");
 
 		table.setResultData(master);
 
-		total = (Integer) resultMap.get("total");
-		
-		
+		try {
+
+			total = (Integer) resultMap.get("total");
+		}catch(Exception e)
+		{
+			total=0;
+		}
+
+
 		if(lblTotalCount!=null)
-			
-		lblTotalCount.setText(String.valueOf(master.size())+"/"+total);
+
+			lblTotalCount.setText(String.valueOf(master.size())+"/"+total);
+	}
+	
+	public void setTotalCount(String total)
+	{
+		lblTotalCount.setText(total);
 	}
 
 	public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
 		table.changeSelection(rowIndex, columnIndex, toggle, extend);
-		
+
 	}
 	public void setComponentPopupMenu(JPopupMenu popup) 
 	{
@@ -266,7 +281,7 @@ public class KSGTablePanel extends KSGPanel{
 		table.setComponentPopupMenu(popup);
 	}
 
-	
+
 	public void  clearResult()
 	{
 		table.clearReslult();
@@ -275,16 +290,14 @@ public class KSGTablePanel extends KSGPanel{
 
 	@Override
 	public void createAndUpdateUI() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int[] getSelectedRows() {
-		// TODO Auto-generated method stub
 		return table.getSelectedRows();
 	}
-	
-	
-	
+
+
+
 
 }

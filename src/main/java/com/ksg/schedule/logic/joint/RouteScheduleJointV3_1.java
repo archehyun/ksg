@@ -121,8 +121,9 @@ public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 				String key =iter.next();
 
 				GroupVessel item  = (GroupVessel) this.get(key);
-				if(item.getInPortListSize()==0)
-					continue;
+				
+				if(item.getInPortListSize()==0) continue;
+					
 				String lastInScheduleDate=item.getLastInScheduleDate();
 
 				// 옵션 날짜 보다 크면 추가
@@ -133,7 +134,9 @@ public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 			}
 
 			GroupVessel lit[] = new GroupVessel[newList.size()];
+			
 			lit = newList.toArray(lit);
+			
 			Arrays.sort(lit);
 
 			return lit;
@@ -141,7 +144,9 @@ public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 		public String toString()
 		{
 			GroupVessel group[] =this.toSortedArray();
+			
 			StringBuffer buffer = new StringBuffer();
+			
 			for(int i=0;i<group.length;i++)
 			{
 				buffer.append(group[i].toString());	
@@ -161,10 +166,13 @@ public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 	class PortArray extends HashMap<String, PortScheduleInfo>
 	{
 		public static final int IN=1;
+		
 		public static final int OUT=2;
 
 		private static final long serialVersionUID = 1L;
+		
 		private int type;
+		
 		public PortArray(int type) {
 			this.type = type;
 		}
@@ -198,6 +206,7 @@ public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 		private String getStringInfo(PortScheduleInfo[] portList)
 		{
 			StringBuffer buffer = new StringBuffer();
+			
 			for(int i=0;i<portList.length;i++)
 			{
 				buffer.append(portList[i]+(i<(portList.length-1)?" - ":""));
@@ -608,15 +617,16 @@ public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 	
 	private final int OUT_PORT_SIZE = 3;// 최소 외국항 수	
 
-	public RouteScheduleJointV3_1(ShippersTable op) throws SQLException {
+	/*
+	 * public RouteScheduleJointV3_1(ShippersTable op) throws SQLException {
+	 * 
+	 * super(); this.op = op;
+	 * 
+	 * }
+	 */
 
-		super();
-		this.op = op;
-
-	}
-
-	public RouteScheduleJointV3_1(ShippersTable op, int orderBy) throws SQLException {
-		this(op);
+	public RouteScheduleJointV3_1(ShippersTable op, int orderBy) throws Exception {
+		super(op);
 		this.orderByType =orderBy;
 	}
 	public void initTag() {
@@ -691,7 +701,16 @@ public class RouteScheduleJointV3_1 extends RouteAbstractScheduleJoint{
 					//마지막 국내항 일자가 옵션 날짜 보다 큰 경우
 					if(vesselList[j].getOutPortSize()>=OUT_PORT_SIZE&&
 							KSGDateUtil.daysDiff(inputDateType_yyyy_MM_dd.parse(op.getDate_isusse()), inputDateType_yyyy_MM_dd.parse(vesselList[j].getLastInScheduleDate()))>0)
+					{
+
+						
 						fw.write(vesselList[j].toString());
+					}else
+					{
+						logger.error("제외: "+vesselList[j].vessel_name);
+						
+						
+					}
 				}
 				fw.write(WORLD_E);
 			}

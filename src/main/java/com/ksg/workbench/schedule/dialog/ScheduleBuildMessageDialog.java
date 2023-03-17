@@ -29,8 +29,8 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ksg.commands.LongTask;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 public class ScheduleBuildMessageDialog extends KSGDialog{
 
@@ -86,7 +86,7 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 		
 		this.setTitle("스케줄 파일 생성");
 		
-		JPanel pnProcess = new JPanel(new BorderLayout());
+		KSGPanel pnProcess = new KSGPanel(new BorderLayout());
 		
 		tblErrorList = new JTable();
 		
@@ -111,24 +111,12 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 		timer = new Timer(ONE_SECOND, new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				
-				bar.setMaximum(task.getLengthOfTask());
-				
-				bar.setValue(task.getCurrent());
-				
-				lblMessage.setText(task.getMessage());
-				
-				lblCurrentMessage.setText(task.getMessage());
-				if (task.isDone()) {
-					Toolkit.getDefaultToolkit().beep();
-					timer.stop();
-					setCursor(null); //turn off the wait cursor
-					bar.setValue(bar.getMinimum());
-				}
+				update();
 			}
 		});
 		
 		
-		JPanel pnSouth=new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnSouth=new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		pnSouth.setBorder(BorderFactory.createEtchedBorder());
 		
 		butClose = new JButton("완료");
@@ -154,7 +142,9 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 		pnMain.add(pnProcess,BorderLayout.NORTH);
 		
 		JScrollPane comp = new JScrollPane(tblErrorList);
+		
 		comp.setVisible(false);
+		
 		pnMain.add(comp);
 		
 		pnMain.add(pnSouth,BorderLayout.SOUTH);
@@ -164,6 +154,24 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		
 		return pnMain;
+	}
+	
+	private void update()
+	{
+		bar.setMaximum(task.getLengthOfTask());
+		
+		bar.setValue(task.getCurrent());
+		
+		lblMessage.setText(task.getMessage());
+		
+		lblCurrentMessage.setText(task.getMessage());
+		
+		if (task.isDone()) {
+			Toolkit.getDefaultToolkit().beep();
+			timer.stop();
+			setCursor(null); //turn off the wait cursor
+//			bar.setValue(bar.getMinimum());
+		}
 	}
 
 	public void createAndUpdateUI() {
@@ -201,9 +209,13 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 		
 	}
 	public void setTask(LongTask task) {
+		
 		this.task = task;
+		
 		bar.setMaximum(task.getLengthOfTask());
+		
 		bar.setValue(0);
+		
 		bar.setStringPainted(true);
 		
 		timer.start();

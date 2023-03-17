@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 
  */
 @Slf4j
-public class VesselServiceImpl extends AbstractServiceImpl implements VesselService, VesselServiceV2{
+public class VesselServiceImpl extends AbstractServiceImpl implements VesselServiceV2{
 
 
 	private VesselDAOImpl vesselDAO;
@@ -42,6 +42,11 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	public VesselServiceImpl() {
 		super();
 		vesselDAO = new VesselDAOImpl();
+	}
+	
+	public List<Vessel> selectVesselListByCondition()
+	{
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -140,8 +145,6 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("total", vesselDAO.selectCount(param));
-		
-		
 
 		resultMap.put("master", param.get("vessel_abbr")==null? vesselDAO.selectListByPage(param):vesselDAO.selectListByPage2(param));
 
@@ -343,5 +346,22 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 		
 		
 		return map;
+	}
+	
+//	@Override
+//	public List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException {
+//		return vesselDAO.selectVesselListByCondition(param);
+//	}
+
+	@Override
+	public List<Vessel> selectVesselListByNameList(List<String> nameList) throws SQLException {
+		// TODO Auto-generated method stub
+		return vesselDAO.selectVesselListByNameList(nameList);
+	}
+
+	@Override
+	public List<Vessel> selectAllList() throws SQLException {
+		// TODO Auto-generated method stub
+		return vesselDAO.selectAll();
 	}
 }
