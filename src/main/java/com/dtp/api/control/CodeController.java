@@ -14,6 +14,22 @@ import com.ksg.service.impl.CodeServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
+
+/**
+ * 
+
+  * @FileName : CodeController.java
+
+  * @Project : KSG2
+
+  * @Date : 2023. 3. 17. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+ */
 @Slf4j
 public class CodeController extends AbstractController{
 	
