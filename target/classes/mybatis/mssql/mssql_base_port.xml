@@ -43,10 +43,21 @@
 <!-- select -->
 
 	<select id="selectAll" resultClass="com.ksg.domain.PortInfo">
-		select * FROM TB_PORT
-		
+		SELECT * FROM TB_PORT
 	</select>
-
+	
+	<select id="selectPortById" resultClass="com.ksg.domain.PortInfo">
+		SELECT * FROM TB_PORT
+		WHERE port_name = #port_name# 
+	</select>
+	
+	<select id="selectPortDetailByKey" resultClass="com.ksg.domain.PortInfo" parameterClass="com.ksg.domain.PortInfo">
+		SELECT * 
+		FROM TB_PORT_ABBR
+		WHERE port_name = #port_name#
+		AND	  port_abbr = #port_abbr#
+	</select>
+	
 	<select id="selectPortList" resultClass="java.util.HashMap">
 		select *, (SELECT COUNT(*) FROM TB_PORT_ABBR ABBR WHERE ABBR.port_name=TBL.port_name) ABBR_COUNT from TB_PORT TBL
 		<include refid="LIKE_WHERE"></include>
@@ -107,16 +118,18 @@
 	
 	
 	<select id="selectPortDetail" resultClass="com.ksg.domain.PortInfo" parameterClass="com.ksg.domain.PortInfo">
-		select * from TB_PORT_ABBR
-		where port_name = #port_name#
+		SELECT * 
+		FROM TB_PORT_ABBR
+		WHERE port_name = #port_name#
 		AND port_abbr= #port_abbr#
 	
 	</select>
 	
 	<select id="selectPortAbbr" resultClass="java.util.HashMap">
-	select A.port_abbr, B.port_name, B.area_code,B.port_area, B.port_nationality from TB_PORT_ABBR A, TB_PORT B
-	WHERE A.port_name=B.port_name 
-	AND A.port_abbr=#port_abbr#
+		SELECT A.port_abbr, B.port_name, B.area_code,B.port_area, B.port_nationality 
+		FROM TB_PORT_ABBR A, TB_PORT B
+		WHERE A.port_name=B.port_name 
+		AND A.port_abbr=#port_abbr#
 	
 	</select>
 	
@@ -152,6 +165,21 @@
 		);
 	</insert>
 	
+	<insert id="insertPortInfo" parameterClass="com.ksg.domain.PortInfo">
+		INSERT INTO TB_PORT(
+			port_area,
+			port_name,
+			port_nationality,
+			area_code
+		)VALUES
+		(
+			#port_area#,
+			#port_name#,
+			#port_nationality#,
+			#area_code#
+		);
+	</insert>
+	
 	
 	<insert id="insertPortV1" parameterClass="com.ksg.domain.PortInfo">
 		insert into TB_PORT(
@@ -169,6 +197,15 @@
 			#area_code#
 		);
 	</insert>
+	<insert id="insertPortInfoDetail" parameterClass="com.ksg.domain.PortInfo">
+		insert into TB_PORT_ABBR(
+			port_name,
+			port_abbr
+		)values(
+			#port_name#,
+			#port_abbr#
+		);
+	</insert>
 	
 	<insert id="insertPortDetailV1" parameterClass="com.ksg.domain.PortInfo">
 		insert into TB_PORT_ABBR(
@@ -183,17 +220,28 @@
 <!-- update -->
 	
 	<update id="updatePort" parameterClass="java.util.HashMap">
-		update TB_PORT 
-			set 
+			UPDATE TB_PORT 
+			SET 
 				port_area=#port_area#,
 				port_name=#port_name#,
 				port_nationality=#port_nationality#,
 				area_code=#area_code#
 				
-			where 
+			WHERE 
 			(
 				port_name=#base_port_name#
 			)
+	</update>
+	
+	<update id="updatePortInfo" parameterClass="com.ksg.domain.PortInfo">
+			UPDATE TB_PORT 
+			SET 
+				port_area=#port_area#,
+				port_nationality=#port_nationality#,
+				area_code=#area_code#
+			WHERE 
+				port_name=#port_name#
+			
 	</update>
 	
 		
@@ -228,6 +276,19 @@
 
 	<delete id="deletePort" parameterClass="java.util.HashMap">
 		delete from TB_PORT where port_name=#port_name#
+	</delete>
+	
+	<delete id="deletePortInfo" >
+		DELETE FROM TB_PORT 
+		WHERE port_name=#port_name#
+	</delete>
+	
+	
+	
+	<delete id="deletePortDetail" parameterClass="com.ksg.domain.PortInfo">
+		DELETE FROM TB_PORT_ABBR 
+		WHERE port_abbr=#port_abbr#
+		AND	  port_name=#port_name#
 	</delete>
 	
 	<delete id="deletePortAbbr" parameterClass="java.util.HashMap">

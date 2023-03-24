@@ -15,8 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.JTableHeader;
 
+import com.ksg.view.comp.table.groupable.GroupableTableHeader;
 import com.ksg.view.comp.table.model.TableModel;
+import com.ksg.workbench.common.comp.button.GradientButton;
 import com.ksg.workbench.common.comp.label.BoldLabel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 
@@ -62,6 +65,11 @@ public class KSGTablePanel extends KSGPanel{
 	private JButton butDelete;	
 
 	private KSGPanel pnControl;
+	
+	public KSGAbstractTable getTable()
+	{
+		return table;
+	}
 
 	public void setShowControl(boolean showControl) {
 		this.showControl = showControl;
@@ -76,8 +84,13 @@ public class KSGTablePanel extends KSGPanel{
 		super();
 
 		this.setLayout(new BorderLayout(5,5));
-
-		table = new KSGAbstractTable();
+//		table = new KSGAbstractTable();
+		table = new KSGAbstractTable()
+		{
+			protected JTableHeader createDefaultTableHeader() {
+	              return new GroupableTableHeader(columnModel);
+	          }
+		};
 
 		table.setGridColor(Color.lightGray);
 
@@ -153,11 +166,9 @@ public class KSGTablePanel extends KSGPanel{
 
 		BoldLabel lblTitle = new BoldLabel(title + " 총");
 
-		butInsert = new JButton("추가");
+		butInsert = new GradientButton("추가");
 
-
-
-		butDelete = new JButton("삭제");
+		butDelete = new GradientButton("삭제");
 
 		//butUpdate = new JButton("수정");
 

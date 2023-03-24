@@ -1,5 +1,6 @@
 package com.ksg.view.comp;
 
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -50,6 +51,17 @@ public class KSGViewUtil extends Properties{
 			e.printStackTrace();
 		}
 	}
+	
+	 public static Color[] getGradientColor(String param)
+		{
+			String index[] = param.split(",");
+			Color colors[] = new Color[index.length];
+			for(int i=0;i<index.length;i++)
+			{
+				colors[i] = Color.decode(index[i].trim());
+			}
+			return colors;
+		}
 	
     
 }

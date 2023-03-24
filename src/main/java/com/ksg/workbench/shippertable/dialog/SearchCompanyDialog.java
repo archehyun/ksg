@@ -62,14 +62,31 @@ public class SearchCompanyDialog extends KSGDialog{
 
 	private JTree tree;
 
-	String result;
+	public String result;
+	
+	public SearchCompanyDialog()
+	{
+		super();
+		
+		this.setModal(true);
+		
+		this.setTitle("선사 선택");
+		
+		companyService = new CompanyServiceImpl();
+		
+		this.addComponentListener(this);
+	}
 
 	public SearchCompanyDialog(JDialog comp)
 	{
 		super(comp);
+		
 		this.setModal(true);
+		
 		this.setTitle("선사 선택");
+		
 		companyService = new CompanyServiceImpl();
+		
 		this.addComponentListener(this);
 	}
 
@@ -123,7 +140,6 @@ public class SearchCompanyDialog extends KSGDialog{
 
 				try {
 					String str = txfSearch.getText();
-					System.out.println("str:"+str);
 
 					CommandMap param = new CommandMap();
 

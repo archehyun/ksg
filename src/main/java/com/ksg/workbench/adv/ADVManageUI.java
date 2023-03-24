@@ -61,7 +61,6 @@ import javax.swing.tree.TreePath;
 
 import com.dtp.api.control.ShipperTableController;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.TablePort;
 import com.ksg.service.TableService;
@@ -77,7 +76,6 @@ import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.tree.CustomTree;
-import com.ksg.workbench.common.comp.tree.KSGTree;
 import com.ksg.workbench.common.comp.tree.KSGTreeDefault;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 

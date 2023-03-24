@@ -18,13 +18,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -35,11 +34,11 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 
+import com.dtp.api.control.VesselController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
@@ -87,14 +86,15 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 	
 	HashMap<String, Object> info;
 	
-	VesselService service;
-	
 	private JCheckBox cbxMMSICheck;
 	
 	public UpdateVesselInfoDialog(HashMap<String, Object> item) {
 		super();
-		service = new VesselServiceImpl();
+		
+		this.setController( new VesselController());
+		
 		this.info = item;
+		
 		this.addComponentListener(this);
 	}
 	public void createAndUpdateUI() 
@@ -102,9 +102,10 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 		this.setModal(true);			
 		
 		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 		
+		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 		
 
 		this.pack();
@@ -116,16 +117,21 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 	
 	private KSGPanel buildTitle() {
 		KSGPanel pnTitle = new KSGPanel();
+		
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		pnTitle.setBackground(Color.white);
+		
 		LABEL ="선박 명: ";
 		
-
-		
 		LABEL +=info.get("vessel_name");
+		
 		vesselName = (String) info.get("vessel_name");
+		
 		JLabel label = new JLabel(LABEL);
+		
 		label.setFont(new Font("돋움",0,16));
+		
 		pnTitle.add(label);
 		
 		return pnTitle;
@@ -134,14 +140,17 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 	private KSGPanel buildCenter()
 	{	
 		// initcomp
+		
 		txfCompanyName = new JTextField(20);
+		
 		txfCompanyName.setEditable(false);
+		
 		txfCompanyName.setEnabled(false);
 		
-		chbUse= new KSGCheckBox("사용안함");
-		
+		chbUse= new KSGCheckBox("사용안함");		
 		
 		txfMMSI = new JFormattedTextField(new NumberFormatter(new DecimalFormat("#")));
+		
 		txfMMSI.setPreferredSize(new Dimension(75,20));
 		
 		txfMMSI.addKeyListener(new KeyAdapter() {
@@ -160,7 +169,9 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 		cbxConType = new KSGComboBox("conType");
 		
 		cbxMMSICheck = new KSGCheckBox("없음");
+		
 		cbxMMSICheck.setSelected(false);
+		
 		cbxMMSICheck.addActionListener(new ActionListener() {
 
 			@Override
@@ -197,28 +208,31 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 
 		
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+		
 		pnCenter.add(createFormItem(cbxConType, "선박 타입"));
+		
 		pnCenter.add(createFormItem(txfMMSI,cbxMMSICheck, "MMSI"));
+		
 		pnCenter.add(createFormItem(txfCompanyName,butSearchCompany,"대표 선사"));
+		
 		pnCenter.add(createFormItem(chbUse,"사용 유무"));
 		
-		
 		KSGPanel pnMain = new KSGPanel();
-		pnMain.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));		
+		
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));	
+		
 		pnMain.add(pnCenter);
+		
 		return pnMain;
 	}
-	
-
-
 
 	public void actionPerformed(ActionEvent e) {
+		
 		String command = e.getActionCommand();
+		
 		if(command .equals("저장"))
 		{
-			
-			HashMap<String, Object> param = new HashMap<String, Object>();
-			
+			CommandMap param = new CommandMap();			
 
 			if(!cbxMMSICheck.isSelected())			
 			{
@@ -228,57 +242,24 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 					JOptionPane.showMessageDialog(this, "MMSI는 9자리 숫자입니다.");
 					return;
 				}
-				
 				param.put("vessel_mmsi", txfMMSI.getText());
 			}
 			
 			KSGTableColumn conType = (KSGTableColumn) cbxConType.getSelectedItem(); 
-
-
 			param.put("vessel_name", this.vesselName);			
 			param.put("vessel_type", conType.columnField);
 			param.put("vessel_use", chbUse.isSelected()?Vessel.NON_USE:Vessel.USE);
-			param.put("vessel_company", txfCompanyName.getText());			
+			param.put("vessel_company", txfCompanyName.getText());
 			
-			try {
-				
-				service.update(param);
-				
+			callApi("updateVessel",param);
+			
 
-
-				this.setVisible(false);
-				this.dispose();
-				JOptionPane.showMessageDialog(this, "수정했습니다.");
-
-				result=KSGDialog.SUCCESS;
-
-			} catch (SQLException e1) 
-			{	
-				
-				e1.printStackTrace();
-				if(e1.getErrorCode()==8152)
-				{
-					JOptionPane.showMessageDialog(this, "9자리까지 입력 할수 있습니다.");	
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());	
-				}
-
-			}catch(Exception ee)
-			{
-				JOptionPane.showMessageDialog(UpdateVesselInfoDialog.this,ee.getMessage());
-				ee.printStackTrace();
-				
-					
-			}
 		}else
 		{
 			result=KSGDialog.FAILE;
 			this.setVisible(false);
 			this.dispose();
 		}
-
 	}
 	
 	@Override
@@ -288,10 +269,13 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 		
 		
 		String vessel_type = (String) info.get("vessel_type");
+		
 		String vessel_company = (String) info.get("vessel_company");
+		
 		String vessel_mmsi = (String) info.get("vessel_mmsi");
 
-		int use=(Short)info.get("vessel_use");
+		int use=(Integer)info.get("vessel_use");
+		
 		if(use==Vessel.NON_USE)
 		{
 			chbUse.setSelected(true);
@@ -324,6 +308,39 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 		}
 		
 	}
+	
+	@Override
+	public void updateView() {
+		CommandMap resultMap= this.getModel();
+
+		boolean success = (boolean) resultMap.get("success");
+
+		if(success)
+		{
+			String serviceId=(String) resultMap.get("serviceId");
+
+			 if("updateVessel".equals(serviceId))
+			{	
+
+				JOptionPane.showMessageDialog(UpdateVesselInfoDialog.this,"수정했습니다.");
+
+				this.setVisible(false);
+
+				this.dispose();
+				
+				result=KSGDialog.SUCCESS;
+
+			}
+
+		}
+		else{  
+			String error = (String) resultMap.get("error");
+
+			JOptionPane.showMessageDialog(this, error);
+		}
+		
+	}
+
 
 
 

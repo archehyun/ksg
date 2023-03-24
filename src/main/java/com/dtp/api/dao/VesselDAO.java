@@ -36,9 +36,9 @@ public class VesselDAO extends AbstractDAO{
 		return insert("vessel.insertVessel", param);
 	}
 
-	public int updateVessel(Vessel param) {
+	public Object updateVessel(Vessel param) throws SQLException {
 		// TODO Auto-generated method stub
-		return 0;
+		return update("vessel.updateVesselInfo",param);
 	}
 
 	public List selectListByCondition(Vessel param) throws SQLException {
@@ -51,9 +51,9 @@ public class VesselDAO extends AbstractDAO{
 		return selectList("vessel.selectVesselDetailList", param);
 	}
 
-	public int deleteVessel(String id) {
+	public Object deleteVessel(String vessel_name) throws SQLException {
 		// TODO Auto-generated method stub
-		return 0;
+		return delete("vessel.deleteVesselInfo",vessel_name);
 	}
 
 	public List selectByVesselNames(List names) {

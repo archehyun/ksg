@@ -84,6 +84,7 @@ import com.ksg.workbench.adv.comp.SimpleFileFilter;
 import com.ksg.workbench.adv.dialog.SearchCompanyAndPageDialog;
 import com.ksg.workbench.adv.dialog.SheetSelectDialog;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
+import com.ksg.workbench.common.comp.button.GradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.comp.SearchTable;
@@ -335,16 +336,6 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 
 		add(mainTab,BorderLayout.CENTER);
 	}
-	
-//	private KSGPanel buildTableInfo()	
-//	{
-//		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-//		searchTable = new SearchTable();
-//		pnMain.add(new JScrollPane(searchTable));
-//		
-//		return pnMain;
-//		
-//	}
 
 
 	/**
@@ -357,7 +348,8 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 
 		this._txfXLSFile.setVisible(false);	
 
-		JButton butFile = new JButton("추가(A)");
+		GradientButton butFile = new GradientButton("추가(A)");
+//		JButton butFile = new JButton("추가(A)");
 		butFile.setMnemonic(KeyEvent.VK_A);
 		butFile.addActionListener(new ActionListener(){
 
@@ -373,7 +365,8 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		pnButList.setLayout(new GridLayout(1,0));
 
 		pnButList.add(butFile);
-		JButton butDel = new JButton("삭제(D)");
+		GradientButton butDel = new GradientButton("삭제(D)");
+//		JButton butDel = new JButton("삭제(D)");
 		butDel.setMnemonic(KeyEvent.VK_D);
 		butDel.addActionListener(new ActionListener(){
 
@@ -383,7 +376,8 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 
 			}});
 		pnButList.add(butDel);
-		JButton butUp = new JButton("위로");
+		GradientButton butUp = new GradientButton("위로");
+//		JButton butUp = new JButton("위로");
 		butUp.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
@@ -393,7 +387,9 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		});
 		pnButList.add(butUp);
 
-		JButton butDown = new JButton("아래로");
+		
+		GradientButton butDown = new GradientButton("아래로");
+//		JButton butDown = new JButton("아래로");
 		butDown.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
@@ -413,7 +409,10 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 
 		scrollPane.setPreferredSize(new Dimension(160,100));
 		
-		JButton butImportFile = new JButton("\n불러오기(V)");
+//		JButton butImportFile = new JButton("\n불러오기(V)");
+		
+		GradientButton butImportFile = new GradientButton("\n불러오기(V)");
+		
 		butImportFile.setMnemonic(KeyEvent.VK_V);
 		butImportFile.addActionListener(new ActionListener(){
 
@@ -584,8 +583,8 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		
 		KSGPanel pnSeachs =  new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 			
-		
-		JButton butImportFile = new JButton("\n불러오기(V)");
+		GradientButton butImportFile = new GradientButton("\n불러오기(V)");
+//		JButton butImportFile = new JButton("\n불러오기(V)");
 		
 		butImportFile.setActionCommand("불러오기");
 

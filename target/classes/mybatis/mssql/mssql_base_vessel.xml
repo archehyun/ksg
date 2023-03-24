@@ -122,7 +122,7 @@
 						vessel_name like '%$vessel_name$%'
 			</isNotNull>
 			<isNotNull property="vessel_type" prepend="and">
-						vessel_type like '%$vessel_type$%'
+						vessel_type = #vessel_type#
 			</isNotNull>
 			<isNotEmpty property="vessel_mmsi" prepend="and">
 						vessel_mmsi like '%$vessel_mmsi$%'
@@ -351,6 +351,14 @@
 	
 <!-- update -->
 	
+	<update id="updateVesselInfo" parameterClass="com.ksg.domain.Vessel">
+		UPDATE TB_VESSEL_H 
+		SET vessel_type=#vessel_type# 
+			,vessel_use=#vessel_use#
+			,vessel_company=#vessel_company#
+			,vessel_mmsi=#vessel_mmsi#  
+		WHERE vessel_name=#vessel_name#
+	</update>
 	<update id="updateVessel" parameterClass="java.util.HashMap">
 		UPDATE TB_VESSEL_H 
 		SET vessel_type=#vessel_type# 
@@ -371,6 +379,10 @@
 
 
 <!-- delete -->
+
+	<delete id="deleteVesselInfo" parameterClass="string">
+		delete from TB_VESSEL_H where vessel_name=#vessel_name#
+	</delete>
 
 	<delete id="deleteVessel" parameterClass="java.util.HashMap">
 		delete from TB_VESSEL_H where vessel_name=#vessel_name#

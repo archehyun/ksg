@@ -14,9 +14,8 @@ public class PortDAO extends AbstractDAO {
 		this.namespace ="port";
 	}
 
-	public PortInfo selectById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public PortInfo selectById(String port_name) throws SQLException {
+		return (PortInfo) selectOne(this.namespace+".selectPortById", port_name);
 	}
 
 	public List<PortInfo> selectAll() {
@@ -29,18 +28,22 @@ public class PortDAO extends AbstractDAO {
 		return selectList(this.namespace+".selectPortListByCondition", param);
 	}
 
-	public int deletePort(String id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Object deletePort(String port_name) throws SQLException {
+		return delete(this.namespace+".deletePortInfo", port_name);
 	}
 
 	public void deletePortDetail(String id) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public Object deletePortDetail(PortInfo port) throws SQLException {
+		return delete(this.namespace+".deletePortDetail", port);
+		
+	}
 
-	public void insertPort(PortInfo param) {
-		// TODO Auto-generated method stub
+	public Object insertPort(PortInfo param) throws SQLException {
+		return insert(this.namespace+".insertPortInfo", param);
 		
 	}
 
@@ -49,14 +52,14 @@ public class PortDAO extends AbstractDAO {
 		return null;
 	}
 
-	public int insertPortDetail(PortInfo param) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Object insertPortDetail(PortInfo param) throws SQLException {
+		
+		return insert(this.namespace+".insertPortInfoDetail", param);
 	}
 
-	public int updatePort(PortInfo param) {
+	public Object updatePort(PortInfo param) throws SQLException {
 		// TODO Auto-generated method stub
-		return 0;
+		return update(this.namespace+".updatePortInfo", param);
 	}
 
 	public void updatePortDetail(PortInfo param) {
@@ -68,5 +71,12 @@ public class PortDAO extends AbstractDAO {
 		// TODO Auto-generated method stub
 		return selectList(this.namespace+".selectPortDetailListByPortName", port_name);
 	}
+
+	public PortInfo selectDetailByKey(PortInfo param) throws SQLException {
+		// TODO Auto-generated method stub
+		return (PortInfo) selectOne(this.namespace+".selectPortDetailByKey", param);
+	}
+
+	
 
 }

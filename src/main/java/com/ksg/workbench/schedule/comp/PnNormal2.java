@@ -1,6 +1,8 @@
 package com.ksg.workbench.schedule.comp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,8 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -27,8 +27,9 @@ import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.button.ImageButton;
+import com.ksg.workbench.common.comp.button.GradientButton;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.textfield.SearchTextField;
 import com.ksg.workbench.schedule.dialog.SearchPortDialog;
 
 
@@ -64,15 +65,15 @@ public class PnNormal2 extends PnSchedule{
 	
 	private AreaService areaService = new AreaServiceImpl();
 
-	private JComboBox<KSGTableColumn> cbxNormalSearch;
+	private KSGComboBox cbxNormalSearch;
 	
 	private ScheduleController control = new ScheduleController(); 
 
 	private JTextField txfNoramlSearch;
-
-	private JTextField txfToPort;
-
-	private JTextField txfFromPort;
+	
+	private SearchTextField txfFromPort;
+	
+	private SearchTextField txfToPort;
 
 
 	private CommandMap searchParam;
@@ -125,10 +126,12 @@ public class PnNormal2 extends PnSchedule{
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		cbxNormalInOut = new KSGComboBox("inOutType");
+		cbxNormalInOut.setPreferredSize(new Dimension(100,23));
 		cbxNormalInOut.setShowTotal(true);		
 		cbxNormalInOut.initComp();
 
-		cbxNormalSearch = new JComboBox<KSGTableColumn>();
+		cbxNormalSearch = new KSGComboBox();
+		cbxNormalSearch.setPreferredSize(new Dimension(150,25));
 		cbxNormalSearch.addItem(new KSGTableColumn("", "전체"));
 		cbxNormalSearch.addItem(new KSGTableColumn("table_id", "테이블 ID"));
 		cbxNormalSearch.addItem(new KSGTableColumn("company_abbr", "선사명"));
@@ -155,7 +158,41 @@ public class PnNormal2 extends PnSchedule{
 			
 		});
 		
-		JButton butCancel = new JButton("초기화");
+		
+		
+		cbxArea = new KSGComboBox();
+		
+		cbxArea.setPreferredSize(new Dimension(250,23));
+		
+		JLabel lblFromPort = new JLabel("출발항");
+
+		txfFromPort = new SearchTextField();
+		txfFromPort.setPreferredSize(new Dimension(150,25));
+
+		txfFromPort.setActionCommand("SEARCH_FROM_PORT");
+		
+		JLabel lblToPort = new JLabel("도착항");
+		
+		txfToPort = new SearchTextField();
+		txfToPort.setPreferredSize(new Dimension(150,25));
+		txfToPort.setActionCommand("SEARCH_TO_PORT");
+		txfFromPort.addActionListener(this);
+		txfToPort.addActionListener(this);
+		
+		
+		KSGPanel pnPortSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		pnPortSearch.add(lblFromPort);
+		pnPortSearch.add(txfFromPort);
+		pnPortSearch.add(lblToPort);
+		pnPortSearch.add(txfToPort);
+		
+		GradientButton butSearch = new GradientButton("검색", "images/search3.png");
+		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		GradientButton butCancel = new GradientButton("",  "images/init.png");
+		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		butSearch.addActionListener(this);
 		butCancel.addActionListener(new ActionListener() {
 			
 			@Override
@@ -165,47 +202,10 @@ public class PnNormal2 extends PnSchedule{
 				txfNoramlSearch.setText("");
 				cbxArea.setSelectedIndex(0);
 				cbxNormalSearch.setSelectedIndex(0);
-				
 			}
 		});
 		
-		cbxArea = new KSGComboBox();
 		
-		JLabel lblFromPort = new JLabel("출발항");
-
-		txfFromPort = new JTextField(10);
-
-		txfFromPort.setEditable(false);
-
-		JButton butSearchFromPort = new ImageButton("images/search1.png");	
-		
-		butSearchFromPort.setActionCommand("SEARCH_FROM_PORT");
-		
-		butSearchFromPort.addActionListener(this);
-		
-		JLabel lblToPort = new JLabel("도착항");
-		
-		txfToPort = new JTextField(10);
-		
-		txfToPort.setEditable(false);
-		
-		JButton butSearchToPort = new ImageButton("images/search1.png");
-		
-		butSearchToPort.setActionCommand("SEARCH_TO_PORT");
-		
-		butSearchToPort.addActionListener(this);
-		
-		KSGPanel pnPortSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		pnPortSearch.add(lblFromPort);
-		pnPortSearch.add(txfFromPort);
-		pnPortSearch.add(butSearchFromPort);
-		pnPortSearch.add(lblToPort);
-		pnPortSearch.add(txfToPort);
-		pnPortSearch.add(butSearchToPort);
-		
-		JButton butSearch = new JButton("검색");
-		butSearch.addActionListener(this);
 
 		pnNormalSearchCenter.add(new JLabel("구분:"));
 		pnNormalSearchCenter.add(cbxNormalInOut);
@@ -273,11 +273,9 @@ public class PnNormal2 extends PnSchedule{
 			{
 				searchParam.put("date_issue", input_date);
 			}
+			
 			searchParam.put("TABLE_NAME", "TB_SCHEDULE_INFO");
 
-//			int page_size = tableH.getPageSize();
-//
-//			searchParam.put("PAGE_SIZE", page_size);
 
 			searchParam.put("PAGE_NO", 1);
 
@@ -285,7 +283,6 @@ public class PnNormal2 extends PnSchedule{
 
 			
 			CommandMap result =control.selectScheduleMapList(searchParam);
-//			CommandMap result = (CommandMap) scheduleService.selectListMap(searchParam);			
 
 			result.put("PAGE_NO", 1);
 
@@ -299,8 +296,6 @@ public class PnNormal2 extends PnSchedule{
 			}
 			else
 			{
-				
-//				pageAction.setSearchPram(searchParam);
 				tableH.changeSelection(0,0,false,false);
 			}
 

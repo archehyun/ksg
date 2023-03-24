@@ -107,10 +107,4 @@ public abstract class AbstractMgtUI extends KSGView implements View{
 		this.controller =constroller;
 	}
 
-	
-	
-	
-	
-
-
 }

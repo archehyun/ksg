@@ -14,15 +14,15 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.sql.SQLException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import com.dtp.api.control.PortController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.domain.PortInfo;
 import com.ksg.service.PortService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
@@ -40,35 +40,32 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private JTextField txfPortName = new JTextField(20);
+	
 	private JTextField txfPortAbbr = new JTextField(20);
+	
 	private String port_name,port_abbr="";
-	private BaseServiceImpl baseService;
-	private PortService portService;
+	
+
 
 	public InsertPortAbbrInfoDialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
-		portService = new PortServiceImpl();
+		
+		this.setController(new PortController());
+		
 		this.baseInfoUI=baseInfoUI;
+		
 		this.addComponentListener(this);
 	}
 	
 	public InsertPortAbbrInfoDialog(BaseInfoUI baseInfoUI,String port_name) {
+		
 		this(baseInfoUI);
+		
+		
 		this.port_name =port_name;
 		
-	}
-
-	public InsertPortAbbrInfoDialog(String port_name) {
-		baseService = new BaseServiceImpl();
-		this.port_name =port_name;
-		this.addComponentListener(this);
-	}
-
-	public InsertPortAbbrInfoDialog(String port_abbr,String port_name) {
-		this(port_name);
-
-		this.port_abbr=port_abbr;
 	}
 
 	public void createAndUpdateUI() {
@@ -112,39 +109,20 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 				JOptionPane.showMessageDialog(this, "항구명 약어를 입력하십시요");
 				return;
 			}
-			PortInfo info = new PortInfo();
-			info.setPort_name(port_name);
-			info.setPort_abbr(txfPortAbbr.getText());
-			try {
-				PortInfo info_one=baseService.getPortInfo(info.getPort_name());
-				if(info_one!=null)
-				{
-					baseService.insertPort_Abbr(info);
-					JOptionPane.showMessageDialog(this, "추가 했습니다.");
-					this.setVisible(false);
-					this.dispose();
+			String port_abbr = txfPortAbbr.getText(); 
+			
+			CommandMap param = new CommandMap();
+			
+			param.put("port_name", port_name);
+			
+			param.put("port_abbr", port_abbr);
+			
+			callApi("insertPortDetail", param);
+			
 
-				}else
-					
-				{
-					JOptionPane.showMessageDialog(this, info.getPort_name()+" 기존 항구가 존재하지 않습니다.");
-				}
-				
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				if(e1.getErrorCode()==2627)
-				{
-					JOptionPane.showMessageDialog(this, "항구명이 존재합니다.");
-				}else
-				{
-					JOptionPane.showMessageDialog(this, e1.getErrorCode()+","+e1.getMessage());
-					e1.printStackTrace();
-				}
-			}
 		}else
 		{
-			this.setVisible(false);
-//			this.dispose();
+			close();
 		}
 		
 	}
@@ -154,6 +132,37 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 		this.txfPortName.setText(port_name);
 		this.txfPortAbbr.setText(port_abbr);
 		
+	}
+	
+	@Override
+	public void updateView() {
+		
+		CommandMap resultMap= this.getModel();
+
+		boolean success = (boolean) resultMap.get("success");
+
+		if(success)
+		{
+			String serviceId=(String) resultMap.get("serviceId");
+
+			if("insertPortDetail".equals(serviceId))
+			{	
+				result = SUCCESS;
+
+				JOptionPane.showMessageDialog(InsertPortAbbrInfoDialog.this,"추가했습니다.");
+
+				close();
+
+			}
+
+			
+		}
+		else{  
+			String error = (String) resultMap.get("error");
+
+			JOptionPane.showMessageDialog(this, error);
+		}
+
 	}
 
 }

@@ -101,11 +101,11 @@ public class VesselServiceImpl implements VesselService{
 	@Override
 	public Vessel update(Vessel param) throws Exception
 	{
-		Vessel selectOne= dao.selectById(param.getVessel_abbr());
+		Vessel selectOne= dao.selectById(param.getVessel_name());
 		if(selectOne==null)
-			throw new ResourceNotFoundException("("+param.getVessel_abbr()+")선박명이 존재하지 않습니다.");
+			throw new ResourceNotFoundException("("+param.getVessel_name()+")선박명이 존재하지 않습니다.");
 
-		int result = dao.updateVessel(param);
+		Object result = dao.updateVessel(param);
 
 		return selectOne;
 	}
@@ -116,7 +116,7 @@ public class VesselServiceImpl implements VesselService{
 		if(selectOne==null)
 			throw new ResourceNotFoundException("("+param.getVessel_abbr()+")선박명이 존재하지 않습니다.");
 
-		int result = dao.updateVessel(param);
+		Object result = dao.updateVessel(param);
 
 		return selectOne;
 	}

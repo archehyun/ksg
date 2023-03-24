@@ -18,7 +18,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -34,8 +33,10 @@ import javax.swing.event.TableColumnModelListener;
 import com.dtp.api.control.CompanyController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.service.impl.CompanyServiceImpl;
+import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
+import com.ksg.workbench.common.comp.button.GradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
@@ -175,7 +176,7 @@ public class PnCompany extends PnBase implements ActionListener{
 		
 		JLabel lbl = new JLabel("필드명 : ");
 		
-		cbxField = new JComboBox();	
+		cbxField = new KSGComboBox();	
 		
 		cbxField.addItem("선사명");
 		
@@ -201,8 +202,9 @@ public class PnCompany extends PnBase implements ActionListener{
 		});
 
 
-		JButton butUpSearch = new JButton("검색");
-
+		GradientButton butUpSearch = new GradientButton("검색", "images/search3.png");
+		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		
 		butUpSearch.addActionListener(this);
 
 		cbxField.setPreferredSize(new Dimension(150,23));

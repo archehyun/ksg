@@ -133,9 +133,7 @@ public class PnApperance extends PnOption {
 					
 					String key = colorNode.key;
 					 
-					 Color selectedColor =  getColor(propeties.getProperty(key));
-					 
-					 System.out.println("gridColor:"+selectedColor);
+					 Color selectedColor =  Color.decode(propeties.getProperty(key));
 					 
 					 Color newColor = JColorChooser.showDialog(
 		                     PnApperance.this,

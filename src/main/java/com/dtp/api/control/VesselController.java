@@ -134,13 +134,13 @@ public class VesselController extends AbstractController{
     public CommandMap updateVessel(CommandMap param) throws Exception
     {
         log.info("param:{}",param);
-        int id = (int) param.get("id");
+//        int id = (int) param.get("id");
         String vessel_name = (String) param.get("vessel_name");
         String vessel_abbr = (String) param.get("vessel_abbr");
         String vessel_type = (String) param.get("vessel_type");
         String vessel_mmsi = (String) param.get("vessel_mmsi");
         String vessel_company = (String) param.get("vessel_company");
-        String contents =(String) param.get("contents");
+//        String contents =(String) param.get("contents");
         Integer vessel_use = (Integer) param.get("vessel_use");
         
 
@@ -152,7 +152,7 @@ public class VesselController extends AbstractController{
                                 .vessel_mmsi(vessel_mmsi)
                                 .vessel_company(vessel_company)
                                 .vessel_use(vessel_use)                                
-                                .contents(contents)
+//                                .contents(contents)
                                 .build();
                                 
         Vessel result = service.update(vessel);

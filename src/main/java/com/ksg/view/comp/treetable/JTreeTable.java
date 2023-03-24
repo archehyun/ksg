@@ -1,19 +1,19 @@
 package com.ksg.view.comp.treetable;
 
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.MouseEvent;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
-import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTree;
@@ -22,6 +22,8 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -32,7 +34,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import com.ksg.workbench.common.comp.treetable.node.OutbondScheduleTreeNode;
+import com.ksg.view.comp.table.renderer.GridHeaderRenderer;
 
 
 
@@ -69,8 +71,11 @@ public class JTreeTable extends JTable {
 
 		// Create the tree. It will be used as a renderer and editor.
 		this.treeTableModel = treeTableModel;
+		
 		tree = new TreeTableCellRenderer(treeTableModel);
+		
 		tree.setRootVisible(false);
+		
 		// Install a tableModel representing the visible rows in the tree.
 		super.setModel(new TreeTableModelAdapter(treeTableModel, tree));
 
@@ -110,10 +115,11 @@ public class JTreeTable extends JTable {
 	private void udpateColumn()
 	{
 		int col=this.getColumnCount();
-		this.getColumnModel().getColumn(0).setPreferredWidth(400);;
-		for(int i=1;i<col;i++)
+		
+		for(int i=0;i<col;i++)
 		{
-			this.getColumnModel().getColumn(i).setPreferredWidth(100);;
+			this.getColumnModel().getColumn(i).setPreferredWidth(i==0?600:100);
+			this.getColumnModel().getColumn(i).setHeaderRenderer(new GridHeaderRenderer());
 		}
 		
 	}
@@ -479,4 +485,5 @@ public class JTreeTable extends JTable {
 			tree.collapsePath(path);
 		}
 	}
+
 }

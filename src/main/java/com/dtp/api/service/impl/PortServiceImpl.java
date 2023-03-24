@@ -24,10 +24,10 @@ public class PortServiceImpl implements PortService{
         dao = new PortDAO();
     
     }
-    public PortInfo selectById(String id)
+    public PortInfo selectById(String port_name) throws SQLException
     {
-        log.debug("id:{}",id);
-        return dao.selectById(id);
+        log.debug("id:{}",port_name);
+        return dao.selectById(port_name);
     }
 
     public List<PortInfo> selectAll()
@@ -38,7 +38,6 @@ public class PortServiceImpl implements PortService{
     public List<PortInfo> selectListByCondtion(PortInfo param) throws SQLException
     {
         List result = dao.selectListByCondition(param);
-
         
         return result;
     }
@@ -70,7 +69,7 @@ public class PortServiceImpl implements PortService{
         PortInfo selectOne= dao.selectById(id);
         if(selectOne==null)
         {
-            throw new ResourceNotFoundException("해당 선사가 없습니다.");  
+            throw new ResourceNotFoundException("해당 항구가 없습니다.");  
         }
         dao.deletePort(id);
 
@@ -83,17 +82,32 @@ public class PortServiceImpl implements PortService{
         PortInfo selectOne= dao.selectById(id);
         if(selectOne==null)
         {
-            throw new ResourceNotFoundException("해당 선사가 없습니다.");  
+            throw new ResourceNotFoundException("해당 항구가 없습니다.");  
         }
         dao.deletePortDetail(id);
 
         return selectOne;
     }
+    
+    @Override
+	public PortInfo deleteDetail(PortInfo port) throws Exception {
+    	 log.debug("detail port:{}",port);
+    	 
+         PortInfo selectOne= dao.selectDetailByKey(port);
+         
+         if(selectOne==null)
+         {
+             throw new ResourceNotFoundException("해당 항구가 없습니다.");  
+         }
+         dao.deletePortDetail(port);
+
+         return selectOne;
+	}
 
     public PortInfo insert(PortInfo param) throws Exception
     {
         log.debug("param:{}",param);
-        PortInfo selectOne= dao.selectByKey(param.getPort_name());
+        PortInfo selectOne= dao.selectById(param.getPort_name());
         if(selectOne!=null)
             throw new AlreadyExistException("("+param.getPort_name()+")존재하는 항구명입니다.");
 
@@ -105,11 +119,12 @@ public class PortServiceImpl implements PortService{
     public PortInfo insertDetail(PortInfo param) throws Exception
     {
         log.debug("param:{}",param);
-        PortInfo selectOne= dao.selectByKey(param.getPort_name());
-        if(selectOne!=null)
-            throw new AlreadyExistException("("+param.getPort_name()+")존재하는 항구명입니다.");
+        
+        PortInfo selectOne= dao.selectDetailByKey(param);
+        
+        if(selectOne!=null) throw new AlreadyExistException("("+param.getPort_name()+")존재하는 항구명입니다.");
 
-        int result = dao.insertPortDetail(param);
+        Object result = dao.insertPortDetail(param);
 
         return selectOne;
     }
@@ -117,11 +132,12 @@ public class PortServiceImpl implements PortService{
     public PortInfo update(PortInfo param) throws Exception
     {
         log.debug("param:{}",param);
-        PortInfo selectOne= dao.selectById(param.getPort_abbr());
-        if(selectOne==null)
-            throw new ResourceNotFoundException("("+param.getPort_name()+")항구명이 존재하지 않습니다.");
+        
+        PortInfo selectOne= dao.selectById(param.getPort_name());
+        
+        if(selectOne==null) throw new ResourceNotFoundException("("+param.getPort_name()+")항구명이 존재하지 않습니다.");
 
-        int result = dao.updatePort(param);
+        dao.updatePort(param);
 
         return selectOne;
     }
@@ -136,6 +152,7 @@ public class PortServiceImpl implements PortService{
 
         return selectOne;
     }
+	
 
 
 }

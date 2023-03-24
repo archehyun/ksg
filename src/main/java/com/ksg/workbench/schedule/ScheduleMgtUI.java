@@ -188,8 +188,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		KSGPanel pnNorth 		= buildNorthPn();	
 
-		KSGPanel pnSouth		= buildSouthPn();
-
 		KSGPanel pnLeftMenu		= buildLeftMenu();	
 
 		KSGPanel pnCenter		= buildCenter();
@@ -555,14 +553,16 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnInland2 = new PnInland2();
 
 		pnNomalByTree = new PnNormalByTree();
+		
+		tabPane.add(pnNomalByTree, "TreeTable");
 
-		tabPane.add(pnNormal2, "NORMAL")
-		;
+		tabPane.add(pnNormal2, "NORMAL");
+		
 		tabPane.add(pnConsole2, "CONSOLE");
 		
 		tabPane.add(pnInland2, "INLAND");
 		
-		tabPane.add(pnNomalByTree, "TreeTable");
+		
 
 		pnMain.add(tabPane);
 

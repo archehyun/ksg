@@ -200,8 +200,6 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 		// 지역 순회
 		for(Object strArea:areakeyList)
 		{	
-			firstIndex++;
-			
 			writeArea(firstIndex, (String) strArea);
 
 			Map<String, List<ScheduleData>> vesselList = areaList.get(strArea);
@@ -251,7 +249,7 @@ public class RouteScheduleJointV4 extends RouteAbstractScheduleJoint implements 
 				fw.write(String.format("%s%s - %s (%s)\r\n%s%s\r\n%s%s\r\n\r\n",WORLD_F,vesselName, strVoyage, strCompanys,WORLD_INPORT, strFromPorts,WORLD_OUTPORT, strToPorts));
 				
 			}
-			
+			fw.write(WORLD_E);
 			current++;
 			
 			firstIndex++;

@@ -27,7 +27,7 @@ public class ImageButton extends JButton{
         this.setFocusPainted(false);
         this.setRolloverEnabled(true);
         this.setIcon(newIcon);
-        this.setBorderPainted(true);
+//        this.setBorderPainted(true);
         
         //this.setContentAreaFilled(false);
         this.setPreferredSize(new Dimension(25,25));

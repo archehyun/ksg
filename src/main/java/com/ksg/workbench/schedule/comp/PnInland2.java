@@ -1,6 +1,7 @@
 package com.ksg.workbench.schedule.comp;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import javax.swing.JTextField;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
+import com.ksg.workbench.common.comp.button.GradientButton;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
@@ -51,7 +53,7 @@ public class PnInland2 extends PnSchedule{
 
 	private KSGComboBox cbxNormalInOut;
 
-	private JComboBox<KSGTableColumn> cbxNormalSearch;
+	private KSGComboBox cbxNormalSearch;
 
 	private JTextField txfNoramlSearch;
 
@@ -118,7 +120,7 @@ public class PnInland2 extends PnSchedule{
 		
 		cbxNormalInOut.initComp();
 
-		cbxNormalSearch = new JComboBox<KSGTableColumn>();
+		cbxNormalSearch = new KSGComboBox();
 		cbxNormalSearch.addItem(new KSGTableColumn("", "전체"));
 		cbxNormalSearch.addItem(new KSGTableColumn("table_id", "테이블 ID"));
 		cbxNormalSearch.addItem(new KSGTableColumn("company_abbr", "선사명"));
@@ -133,7 +135,13 @@ public class PnInland2 extends PnSchedule{
 
 
 		txfNoramlSearch = new JTextField(15);
-		JButton butSearch = new JButton("검색");
+
+		GradientButton butSearch = new GradientButton("검색", "images/search3.png");
+		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		GradientButton butCancel = new GradientButton("",  "images/init.png");
+		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		
 		butSearch.addActionListener(this);
 		//butSearch.setActionCommand("Normal 검색");
 
@@ -143,9 +151,19 @@ public class PnInland2 extends PnSchedule{
 		pnNormalSearchCenter.add(new JLabel("항목:"));
 		pnNormalSearchCenter.add(cbxNormalSearch);
 		pnNormalSearchCenter.add(txfNoramlSearch);
-		pnNormalSearchCenter.add(butSearch);
+//		pnNormalSearchCenter.add(butSearch);
+
+		KSGPanel pnNormalSeawrchEast = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+
+		pnNormalSeawrchEast.add(butSearch);
+
+//		pnNormalSeawrchEast.add(butCancel);
 
 		pnNormalSearchMain.add(pnNormalSearchCenter);
+
+		pnNormalSearchMain.add(pnNormalSeawrchEast,BorderLayout.EAST);
+
+//		pnNormalSearchMain.add(pnNormalSearchCenter);
 		
 		return pnNormalSearchMain;
 		

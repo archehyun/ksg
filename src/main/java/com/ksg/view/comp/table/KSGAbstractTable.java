@@ -18,6 +18,7 @@ import javax.swing.table.TableRowSorter;
 
 import com.ksg.view.comp.KSGViewUtil;
 import com.ksg.view.comp.table.model.TableModel;
+import com.ksg.view.comp.table.renderer.GridHeaderRenderer;
 
 /**
 
@@ -61,6 +62,8 @@ public class KSGAbstractTable extends JTable{
 	private static Color GRID_COLOR;
 	
 	private static Color ODD_COLOR;
+	
+	private Color selectedBackgroundColor;
 
 	public KSGAbstractTable() {
 
@@ -72,9 +75,11 @@ public class KSGAbstractTable extends JTable{
 		
 		GRID_COLOR = getColor(propeties.getProperty("table.girdcolor"));
 		
-		ODD_COLOR = getColor(propeties.getProperty("table.oddcolor"));
+		ODD_COLOR = Color.decode(propeties.getProperty("grid.body.row.cell.odd"));
 		
 		FONT_SIZE = Integer.parseInt(propeties.getProperty("table.font.size"));
+		
+		selectedBackgroundColor = Color.decode(propeties.getProperty("grid.body.row.cell.selected"));
 		
 		isOdd =Boolean.parseBoolean(propeties.getProperty("table.row.odd"));
 		
@@ -183,6 +188,8 @@ public class KSGAbstractTable extends JTable{
 			{
 				namecol.setPreferredWidth(col.size);
 			}
+			
+			namecol.setHeaderRenderer(new GridHeaderRenderer());
 		}		
 
 		DefaultTableCellRenderer renderer =  
@@ -248,6 +255,18 @@ public class KSGAbstractTable extends JTable{
 		int rightPadding = 10;
 		
 		Border padding = BorderFactory.createEmptyBorder(0, leftPadding, 0, rightPadding);
+		
+//		Color selectedBackgroundColor = new Color(242, 249, 255);
+		
+//		Color selectedBackgroundColor = new Color(255, 255, 229);
+		
+		Color mouseoverBackgroundColor = new Color(246, 246, 246);
+		
+		Color foregoundColor = new Color(102, 102, 102);
+		
+		public KSGTableCellRenderer() {
+			
+		}
 
 		/**
 		 *
@@ -260,15 +279,22 @@ public class KSGAbstractTable extends JTable{
 			((JLabel) renderer).setOpaque(true);
 			Color foreground, background;
 			
+			foreground = foregoundColor;
+			
 			
 			
 			if(isOdd)
 			{
 				if (isSelected) {
-					foreground = Color.WHITE;
-					background = new Color(51, 153, 255);
+					
+					foreground = foregoundColor;
+					
+					
+					background = selectedBackgroundColor;
+					
 				} else {
-
+					
+//					background = Color.white;
 					if (row % 2 == 0) {
 						foreground = Color.black;
 						background = Color.WHITE;
@@ -303,6 +329,8 @@ public class KSGAbstractTable extends JTable{
 		}
 
 	}
+	
+	
 
 	public Object getValueAt(int rowIndex, String columnField) {
 		return model.getValueAt(rowIndex, columnField);

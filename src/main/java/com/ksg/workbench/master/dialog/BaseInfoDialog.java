@@ -185,6 +185,11 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		if(this.controller!=null)
 			this.controller.call(serviceId, param, this);
 	}
+	public void callApi(String serviceId)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, new CommandMap(),this);
+	}
 	
 	@Override
 	public void updateView() {

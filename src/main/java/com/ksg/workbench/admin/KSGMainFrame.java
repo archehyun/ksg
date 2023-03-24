@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.swing.BorderFactory;
@@ -49,11 +50,14 @@ import javax.swing.JToolBar;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.dtp.api.control.AbstractController;
+import com.dtp.api.control.MainController;
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildXMLInboundCommand;
 import com.ksg.commands.schedule.BuildXMLOutboundCommand;
 import com.ksg.commands.schedule.BuildXMLRouteScheduleCommand;
 import com.ksg.common.dao.DAOManager;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.Configure;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
@@ -67,8 +71,10 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
+import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.KSGLogin;
 import com.ksg.workbench.adv.ADVManageUI;
+import com.ksg.workbench.common.comp.View;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.dialog.SearchADVCountDialog;
 import com.ksg.workbench.common.comp.dialog.WebScheduleCreateDialog;
@@ -82,25 +88,33 @@ import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
 /**
 
-  * @FileName : KSGMainFrame.java
+ * @FileName : KSGMainFrame.java
 
-  * @Date : 2021. 4. 17. 
+ * @Date : 2021. 4. 17. 
 
-  * @작성자 : 박창현
+ * @작성자 : 박창현
 
-  * @변경이력 :
+ * @변경이력 :
 
-  * @프로그램 설명 :
+ * @프로그램 설명 :
 
-  */
-public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
-	
+ */
+public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, View{
+
+	private AbstractController controller;
+
+	public void setController(AbstractController constroller)
+	{
+		this.controller =constroller;
+	}
+	private CommandMap model;
+
 	private static final String MONDAY = "월요일";
 	private static final String SCHEDULE_WORLDWIDE	= "항로별 스케줄 생성";
 	private static final String SCHEDULE_INBOUND	= "Inbound 스케줄 생성";
 	private static final String SCHEDULE_OUTBOUND	= "Outbound 스케줄 생성";
 	private static final String ADV_INPUT_SEARCH	= "광고입력 조회";
-	
+
 	private static final String SCHEDULE_DELETE 	= "Schedule 삭제";
 	private static final String SCHEDULE_SEARCH 	= "Schedule 확인";
 	private static final String ADV_PRINT 			= "광고정보 출력";
@@ -119,7 +133,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private LookAheadTextField txfImportDate;
 
 	private static String TITLE="KSG DTP System";
@@ -127,57 +141,59 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	private KSGModelManager modelManager = KSGModelManager.getInstance();
 
 	protected Logger logger = LogManager.getLogger(this.getClass());
-	
+
 	private CardLayout cardLayout= new CardLayout();
-	
+
 	ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
 
+	private ScheduleSubService scheduleService= new ScheduleServiceImpl();
+
 	private KSGPanel pnCenter,pnSearch,pnPrintADV,pnSchedule;
-	
+
 	private BaseInfoUI pnBaseInfo;
 
 	private ADVManageUI pnAdvAdd;
 
 	private KSGModelManager manager;
-	
+
 	private JMenuBar menuBar;
 
 	private JToolBar toolbar;
-	
-	private ScheduleSubService scheduleService= new ScheduleServiceImpl();
 
 	private KSGLogin login;
 
 	private JProgressBar workprocess;
 
 	private JLabel lblWorkProcessText;
-	
+
 	public static String NAME="ksgframe";
 
 	private TableService tableService;
 
 	String cardTable[]={ADV_SEARCH,ADV_INPUT,SCHEDULE_SEARCH,BASE_MAIN,ADV_PRINT};
-	
+
 	private BaseActionListener baseAction = new BaseActionListener();
-	
+
 	private AdvertisementActionListener advActionListener = new AdvertisementActionListener();
-	
+
 	private ScheduleActionListener scheduleActionListener = new ScheduleActionListener();
-	
+
 	private SortActionListenr sortActionListenr = new SortActionListenr();
-	
+
 	private BuildActionListenr buildActionListenr = new BuildActionListenr();
-	
+
 	Configure config = Configure .getInstance();
-	
+
 	public KSGMainFrame(KSGLogin login) 
 	{	
 		this.setName(NAME);
-	
+
+		this.setController(new MainController());
+
 		manager = KSGModelManager.getInstance();
-		
+
 		manager.addObservers(this);
-		
+
 		tableService = DAOManager.getInstance().createTableService();
 
 		this.login = login;
@@ -188,53 +204,53 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		new Thread(){
 			public void run()
 			{
-				
+
 				logger.debug("init frame start");
-	
+
 				pnAdvAdd 	= new ADVManageUI();
-				
+
 				pnBaseInfo 	= new BaseInfoUI();
-				
+
 				pnSearch 	= new ShipperTableMgtUI2();
-				
+
 				pnPrintADV 	= new PrintADVUI();
-				
+
 				pnSchedule  = new ScheduleMgtUI();
-				
+
 				pnCenter.add(pnSearch,ADV_SEARCH);
-				
+
 				pnCenter.add(pnAdvAdd,ADV_INPUT);
-				
+
 				pnCenter.add(pnSchedule,SCHEDULE_SEARCH);
-				
+
 				pnCenter.add(pnBaseInfo,BASE_MAIN);
-				
+
 				pnCenter.add(pnPrintADV,ADV_PRINT);
 
 				manager.execute(pnSearch.getName());
-				
+
 				KSGMainFrame.this.setVisible(false);
-				
+
 				KSGMainFrame.this.setResizable(true);
 
 				KSGMainFrame.this.setDefaultLookAndFeelDecorated(true);		
-				
+
 				KSGMainFrame.this.setMinimumSize(new Dimension(1300,800));
-				
+
 				menuBar.setVisible(true);
 
 				ViewUtil.center(KSGMainFrame.this, true);
-				
+
 				cardLayout.show(pnCenter,  ADV_SEARCH);
-				
+
 				login.setVisible(false);
-				
+
 				login.dispose();				
-				
+
 				KSGMainFrame.this.setVisible(true);
-				
+
 				KSGMainFrame.this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-				
+
 				logger.debug("init frame end");
 
 			}
@@ -245,13 +261,13 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	private KSGPanel buildCenter() 
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout(0,10));
-		
+
 		pnCenter = new KSGPanel();
-		
+
 		pnCenter.setLayout(cardLayout);
-		
+
 		pnMain.add(pnCenter);
-		
+
 		pnMain.add(buildButtom(),BorderLayout.SOUTH);
 
 		return pnMain;
@@ -262,23 +278,21 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	 */
 	public void createAndUpdateUI()
 	{
-		
+
 		logger.debug("create frame start");
 
-		
-		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		
+
 		Image img = toolkit.getImage("images/img_logo.png");
-		
+
 		this.setIconImage(img);		
 
 		this.setJMenuBar(crateMenuBar());
-		
+
 		this.setLayout(new BorderLayout(0,5 ));
 
 		this.getContentPane().add(buildToolBar(),BorderLayout.NORTH);
-		
+
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -286,55 +300,54 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		this.setTitle(TITLE);
 
 		this.setVisible(false);
-		
-		
-		
+
+
 		logger.debug("create frame end");
 
 	}
 
 	private KSGPanel buildButtom() {
-		
+
 		int inst = 10;
 
 		KSGPanel pnButtom = new KSGPanel();
 
 		pnButtom.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		
+
 		pnButtom.setPreferredSize(new Dimension(0,inst+15));
-		
+
 		workprocess = new JProgressBar();
-		
+
 		workprocess.setVisible(manager.isWorkMoniter);
-		
+
 		lblWorkProcessText = new JLabel();
-		
+
 		lblWorkProcessText.setVisible(manager.isWorkMoniter);
-		
+
 		pnButtom.add(lblWorkProcessText);
-		
+
 		pnButtom.add(workprocess);
-		
+
 		KSGPanel pnMain = new KSGPanel();
 
 		pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		
+
 		pnMain.setLayout(new BorderLayout());
-		
+
 		KSGPanel pnLeft = new KSGPanel();
-		
+
 		pnLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
+
 		JLabel label = new JLabel("DB : "+config.getProperty("mssql.db"));
-		
+
 		label.setFont(KSGModelManager.getInstance().defaultFont);
-		
+
 		pnLeft.add(label);
-		
+
 		pnMain.add(pnButtom,BorderLayout.EAST);
-		
+
 		pnMain.add(pnLeft,BorderLayout.WEST);
-		
+
 		return pnMain;
 	}
 
@@ -344,7 +357,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		JLabel lbl = new JLabel("v2010_04_06_01");
 		return pnMain;
 	}
-	
+
 	private void addToolBarButton(String butName, String img, String action)
 	{
 		JButton butSearch = new JButton(butName,new ImageIcon(img));
@@ -352,7 +365,16 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		butSearch.setActionCommand(action);
 		butSearch.setBorderPainted(false);
 		butSearch.setVerticalAlignment(0);
-		butSearch.addActionListener(this);
+		butSearch.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				CommandMap param = new CommandMap();
+				param.put("menuId", e.getActionCommand());
+				callApi("showMenu", param);
+
+			}
+		});
 		toolbar.add(butSearch);
 	}
 
@@ -364,7 +386,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		toolbar = new JToolBar();
 		toolbar.setPreferredSize(new Dimension(-1,45));
 		toolbar.setBorderPainted(true);
-		
+
 		addToolBarButton("광고 조회","images/menu_search.gif",ADV_SEARCH);
 		addToolBarButton("광고 입력","images/importxls8.gif",ADV_INPUT);
 		addToolBarButton("광고 출력","images/export.gif",ADV_PRINT);
@@ -387,19 +409,21 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 					if(!KSGDateUtil.isDashFomatt(date))
 					{
 						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "입력 형식(2000.1.1)이 틀렸습니다. "+date);
+
 						toolbar.requestFocus();
+
 						return;
 					}
+
+
 					try {
-						int result=tableService.getTableCount(KSGDateUtil.toDate3(date).toString());
-						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, date+" : "+result+"건");
-						toolbar.requestFocus();
-						return;
-					} catch (SQLException e1) 
-					{
-						e1.printStackTrace();
-						JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
-					} catch (DateFormattException e2) {
+						String searchDate = KSGDateUtil.toDate3(date).toString();
+						CommandMap param = new CommandMap();
+						param.put("searchDate", searchDate);
+						callApi("searchTableCount", param);
+
+					} 
+					catch (DateFormattException e2) {
 						JOptionPane.showMessageDialog(null, "error:"+e2.getMessage());
 						e2.printStackTrace();
 					}
@@ -430,8 +454,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	 * @return
 	 */
 	private IFCommand scheduleCommand;
+	
 	protected JDialog optionDialog;
+	
 	private LookAheadTextField txfDate;
+	
 	private JMenuBar crateMenuBar() 
 	{
 		menuBar = new JMenuBar();
@@ -449,8 +476,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		fileMenu.add(ExitMenu);
 
 		menuBar.add(fileMenu);
-		
-		
+
+
 		//광고정보관리 메뉴 ================================
 
 		BiggerMenu AdvMenu = new BiggerMenu("광고정보관리");
@@ -473,7 +500,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		this.addMenuItem(BaseInfoMenu, BASE_VESSEL,baseAction);
 		this.addMenuItem(BaseInfoMenu, BASE_VESSEL_ABBR,baseAction);
 		//===============================================
-		
+
 		BiggerMenu schduleMenu = new BiggerMenu("Schedule정보 관리");
 
 
@@ -482,54 +509,54 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		schduleMenu.addSeparator();
 
 		JMenu menuScheduleBuild=(JMenu) addMenu(schduleMenu, "Schedule Build");	
-		
-		
+
+
 		//====================================================================	
 		JMenuItem subMenuBuildTotal =new JMenuItem("Out/Inbound");
-		
+
 		JMenuItem subMenuBuildConsole =new JMenuItem("Console");
-		
+
 		subMenuBuildTotal.addActionListener(buildActionListenr);
-		
+
 		subMenuBuildConsole.addActionListener(buildActionListenr);
-		
+
 		menuScheduleBuild.add(subMenuBuildTotal);
 
 		menuScheduleBuild.add(subMenuBuildConsole);	
-		
-	//====================================================================	
+
+		//====================================================================	
 		JMenu menuScheduleSort=(JMenu) addMenu(schduleMenu, "Schedule Sort");
-		
+
 		JMenuItem subMenuSortOutbound =new JMenuItem("Outbound");
-		
+
 		JMenuItem subMenuSortInbound =new JMenuItem("Inbound");
-		
+
 		JMenuItem subMenuSortWorld =new JMenuItem("항로별");		
-		
+
 		subMenuSortOutbound.addActionListener(sortActionListenr);
-		
+
 		subMenuSortInbound.addActionListener(sortActionListenr);
-		
+
 		subMenuSortWorld.addActionListener(sortActionListenr);
-		
+
 		menuScheduleSort.add(subMenuSortOutbound);
-		
+
 		menuScheduleSort.add(subMenuSortInbound);
-		
+
 		menuScheduleSort.add(subMenuSortWorld);		
 
 		schduleMenu.addSeparator();
 
 		schduleMenu.addSeparator();
-		
+
 		JMenuItem menuItem1=addMenuItem(schduleMenu, "일괄작업(Build_Sort)");
-		
+
 		menuItem1.setEnabled(false);
-		
+
 		addMenuItem(schduleMenu, "일괄작업(Sort)",scheduleActionListener);		
-		
+
 		addMenuItem(schduleMenu, "일괄작업(전송용)",scheduleActionListener);
-		
+
 		addMenuItem(schduleMenu, "일괄작업(전송용New)",scheduleActionListener);
 
 		schduleMenu.addSeparator();
@@ -539,9 +566,13 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		this.addMenuItem(optionMenu, PREFERENCE);
 
 		menuBar.add(AdvMenu);
+
 		menuBar.add(schduleMenu);
-		menuBar.add(BaseInfoMenu);		
+
+		menuBar.add(BaseInfoMenu);	
+
 		menuBar.add(optionMenu);
+
 		menuBar.setVisible(false);
 
 		return menuBar;
@@ -587,31 +618,38 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 	public void actionPerformed(ActionEvent e) {
 
 		cardLayout.show(pnCenter,  e.getActionCommand());
-		
+
 		if(e.getActionCommand().equals(PREFERENCE))
 		{
 			PreferenceDialog preferenceDialog = new PreferenceDialog(PREFERENCE,true);
 			preferenceDialog.createAndUpdateUI(this);
-			
+
 
 		}
 	}
 	private void sort()
 	{
 		optionDialog = new JDialog(KSGModelManager.getInstance().frame);
+		
 		optionDialog.setModal(true);
+		
 		optionDialog.setTitle("Sorting");
+		
 		KSGPanel pnMain = new KSGPanel();
 
 
 		KSGPanel pnInput = new KSGPanel();
+		
 		pnInput.setLayout( new FlowLayout(FlowLayout.LEADING));
 
 		StringArrayLookAhead lookAhead = new StringArrayLookAhead(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
+		
 		txfDate = new LookAheadTextField("생성 날짜 입력",15,lookAhead);
+		
 		txfDate.setFocus_lost(false);
 
 		JCheckBox cbxMondya = new JCheckBox(MONDAY);
+		
 		cbxMondya.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
@@ -619,7 +657,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				if(bo.isSelected())
 				{
 					txfDate.setText(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
-					
+
 				}
 
 			}});
@@ -646,8 +684,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				} catch (ParseException e1) {
 					e1.printStackTrace();
 				}
-				
-				
+
+
 			}});
 		JButton butCancel = new JButton("취소");
 		butCancel.addActionListener(new ActionListener(){
@@ -657,7 +695,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				optionDialog.dispose();
 
 			}});
-	
+
 
 		pnControl.add(butOk);
 		pnControl.add(butCancel);
@@ -673,7 +711,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		pnMain.add(box);
 
 		optionDialog.getContentPane().add(pnMain);
+		
 		optionDialog.getContentPane().add(pnControl,BorderLayout.SOUTH);
+		
 		ViewUtil.center(optionDialog, true);
 
 		optionDialog.setVisible(true);
@@ -741,10 +781,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 		}
 
 	}
-	
+
 	class BuildActionListenr implements ActionListener
 	{
-
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("Out/Inbound"))
 			{
@@ -759,8 +798,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				}
 			}
 		}
-		
+
 	}
+	
 	class SortActionListenr implements ActionListener
 	{
 
@@ -768,9 +808,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			if(e.getActionCommand().equals("Inbound"))
 			{
 				cardLayout.show(KSGMainFrame.this.pnCenter, SCHEDULE_SEARCH);
-				
+
 				scheduleCommand = new BuildXMLInboundCommand();
-				
+
 				scheduleCommand.execute();
 
 			}
@@ -778,22 +818,27 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			{
 
 				cardLayout.show(KSGMainFrame.this.pnCenter, SCHEDULE_SEARCH);
-				
+
 				scheduleCommand = new BuildXMLOutboundCommand();
-				
+
 				scheduleCommand.execute();
 
 			}
 			else if(e.getActionCommand().equals("항로별"))
 			{
 				cardLayout.show(KSGMainFrame.this.pnCenter, SCHEDULE_SEARCH);
+				
 				optionDialog = new JDialog(KSGModelManager.getInstance().frame);
+				
 				optionDialog.setModal(true);
+				
 				optionDialog.setTitle("스케줄 생성");
+				
 				KSGPanel pnMain = new KSGPanel();
 
 
 				KSGPanel pnInput = new KSGPanel();
+				
 				pnInput.setLayout( new FlowLayout(FlowLayout.LEADING));
 
 				StringArrayLookAhead lookAhead = new StringArrayLookAhead(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
@@ -813,13 +858,13 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 					}});
 
 				pnInput.add(txfDate);
-				
+
 				pnInput.add(cbxMondya);
 
 				KSGPanel pnOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-				
+
 				pnOption.setVisible(false);
-				
+
 				KSGPanel pnControl = new KSGPanel();
 
 				JButton butOk = new JButton("확인");
@@ -877,9 +922,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				}
 			}
 		}
-		
+
 	}
-	
+
 	// 기초 정보 관련 액션
 	/**
 	 * @author archehyun
@@ -899,7 +944,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			else if(e.getActionCommand().equals(BASE_AREA))
 			{
 				modelManager.menu_command=BaseInfoUI.STRING_AREA_INFO;
-				
+
 				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_AREA_INFO);
 			}
 			else if(e.getActionCommand().equals(BASE_PORT))
@@ -917,11 +962,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				modelManager.menu_command=BaseInfoUI.STRING_COMPANY_INFO;
 				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_COMPANY_INFO);
 			}
-			
+
 			else if(e.getActionCommand().equals(BASE_VESSEL))
 			{
 				modelManager.menu_command=BaseInfoUI.STRING_VESSEL_INFO;
-				
+
 				//pnBaseInfo
 				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_VESSEL_INFO);
 			}
@@ -931,17 +976,16 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_VESSEL_ABBR);
 			}
 		}
-		
+
 	}
-	
+
 	// 광고정보 관련 액션
 	class AdvertisementActionListener implements ActionListener
 	{
-
 		public void actionPerformed(ActionEvent e) {
-			
+
 			cardLayout.show(pnCenter,  e.getActionCommand());
-			
+
 			if(e.getActionCommand().equals(ADV_INPUT))
 			{
 				modelManager.execute(pnAdvAdd.getName());
@@ -957,11 +1001,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			{
 				modelManager.execute(pnPrintADV.getName());
 			}
-			
 		}
-		
 	}
-	
+
 	// 스케줄정보 관련 액션
 	class ScheduleActionListener implements ActionListener
 	{
@@ -976,10 +1018,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			else if(e.getActionCommand().equals(SCHEDULE_INBOUND))
 			{
 				cardLayout.show(KSGMainFrame.this.pnCenter, SCHEDULE_SEARCH);
-				
+
 				scheduleCommand = new BuildXMLInboundCommand();
 				scheduleCommand.execute();
-				
+
 
 
 			}
@@ -1022,17 +1064,17 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 					}});
 
 				pnInput.add(txfDate);
-				
+
 				pnInput.add(cbxMondya);
 
 				KSGPanel pnOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-				
+
 				pnOption.setVisible(false);
 
 				KSGPanel pnControl = new KSGPanel();
 
 				JButton butOk = new JButton("확인");
-				
+
 				butOk.addActionListener(new ActionListener(){
 
 					public void actionPerformed(ActionEvent e) {
@@ -1090,8 +1132,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			{
 				try {
 					int result=scheduleService.deleteSchedule();
+
 					modelManager.execute(pnSchedule.getName());
-					
+
 					if(result==0)
 					{
 						JOptionPane.showMessageDialog(KSGMainFrame.this, "삭제 할 스케줄 정보가 없습니다.");
@@ -1099,7 +1142,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 					{
 						JOptionPane.showMessageDialog(KSGMainFrame.this, result+"건을 삭제 했습니다.");	
 					}
-					
+
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
@@ -1114,14 +1157,14 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 					e1.printStackTrace();
 				}
 			}
-			
+
 			else if(e.getActionCommand().equals("일괄작업(Sort)"))
 			{
 				new Thread(){
 					public void run()
 					{
 						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "Sorting을 시작 합니다.");
-						
+
 						sort();
 					}
 
@@ -1131,7 +1174,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			{
 				try {
 					serviceManager.buildWebSchedule();
-					
+
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
@@ -1139,13 +1182,71 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver{
 			else if(e.getActionCommand().equals("일괄작업(전송용New)"))
 			{
 				WebScheduleCreateDialog createDialog = new WebScheduleCreateDialog();
-				
+
 				createDialog.createAndUpdateUI(KSGMainFrame.this);
-				
+
 			}
-			
 		}
-		
+	}
+
+
+	@Override
+	public void updateView() {
+		CommandMap result= this.getModel();
+
+		boolean success = (boolean) result.get("success");
+
+		if(success)
+		{
+			String serviceId = (String) result.get("serviceId");
+
+			if("showMenu".equals(serviceId)) {
+
+				String menuId=(String) result.get("menuId");
+
+				cardLayout.show(pnCenter,  menuId);
+
+			}
+			else if("searchTableCount".equals(serviceId)) {
+
+				String  date=(String) result.get("searchDate");
+
+				int count=(int) result.get("count");
+
+				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, date+" : "+count+"건");
+
+				toolbar.requestFocus();
+
+
+			}
+		}
+		else{  
+			String error = (String) result.get("error");
+			JOptionPane.showMessageDialog(this, error);
+		}
+
+	}
+
+	@Override
+	public void setModel(CommandMap model) {
+		this. model = model;
+
+	}
+	public CommandMap getModel() {
+
+		return model;
+	}
+
+	public void callApi(String serviceId, CommandMap param)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, param, this);
+	}
+
+	public void callApi(String serviceId)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, new CommandMap(),this);
 	}
 
 }
