@@ -134,16 +134,10 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 			// 출발일 기준으로 정렬
 			Collections.sort(areaScheduleNodeList, sortType.equals("date")?dateComparator:vesselComparator);
 			
-			
 			// 출력			
 			int count =(int) areaScheduleNodeList.stream().filter(o ->isAddValidate?true:!o.getType().equals(NodeType.JOINT_SCHEDULE)).count();
 			
-			
-			if(count==0)
-			{
-//				logger.info("", root);
-				continue;
-			}
+			if(count==0) continue;
 			
 			DefaultMutableTreeNode area = new AreaTreeNode(String.format("%s(%d)", strArea, count));
 

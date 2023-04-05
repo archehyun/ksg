@@ -159,16 +159,20 @@ public class ScheduleController extends AbstractController{
 				.collect(Collectors.toList());
 
 		CommandMap vesselParam = new CommandMap();
+		
 		vesselParam.put("vesselNameList", vesselNames);
+		
 		List<Vessel> vesselList = vesselService.selectVesselListByNameList(vesselNames);
+		
 		Map<String, Vessel> vesselMap = vesselList.stream().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));
+		
 		li.forEach(o -> o.setVesselInfo(vesselMap.get(o.getVessel())));
 
 
 		Map<String, Map<String, Map<String, List<ScheduleData>>>> areaList =  li.stream().collect(
 				Collectors.groupingBy(ScheduleData::getArea_name, // 지역
-						Collectors.groupingBy(ScheduleData::getFromPort, // 출발항
-								Collectors.groupingBy(ScheduleData::getPort))));// 도착항
+						Collectors.groupingBy(ScheduleData::getPort, // 도착항
+								Collectors.groupingBy(ScheduleData::getFromPort))));// 출발항
 
 		CommandMap returnValue = new CommandMap();
 		for(String area : areaList.keySet() ) {
@@ -502,7 +506,6 @@ public class ScheduleController extends AbstractController{
 				routeparam.put("sortType", param.get("sortType"));
 				
 				routeparam.put("isAddValidate", param.get("isAddValidate"));
-				
 				
 				
 				returnMap.put("count", li.size());

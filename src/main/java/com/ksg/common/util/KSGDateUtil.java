@@ -981,6 +981,15 @@ public class KSGDateUtil {
 			return date;
 		}
 	}
+	
+	public static String convertDateFormatYYYY_MM_DDToMMDD(String date)
+	{
+		try {
+			return outputDateFormat.format(dateFormat5.parse(String.valueOf(date)));
+		} catch (ParseException e) {
+			return date;
+		}
+	}
 	public static SimpleDateFormat createInputDateFormat() {
 		return new SimpleDateFormat("yyyy/MM/dd");
 	}

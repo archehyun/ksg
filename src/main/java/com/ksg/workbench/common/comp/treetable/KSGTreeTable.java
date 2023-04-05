@@ -22,6 +22,7 @@ public class KSGTreeTable extends JTreeTable{
 	Image changeShipImg;
 	Image changeShipRedImg;
 	Image changeAreaImg;
+	Image changeShipGreenImg;
 
 	public KSGTreeTable(TreeTableModel treeTableModel) {
 		super(treeTableModel);
@@ -36,6 +37,9 @@ public class KSGTreeTable extends JTreeTable{
 		
 		Image img4 = new ImageIcon("images/internet.png").getImage();
 		changeAreaImg = img4.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		
+		Image img5 = new ImageIcon("images/ship_group_green.png").getImage();
+		changeShipGreenImg = img5.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 
 
 		this.setCellRenderer(new ScheduleCellRenderer());
@@ -75,6 +79,11 @@ public class KSGTreeTable extends JTreeTable{
 				else if(treeNode.getType() == NodeType.JOINT_SCHEDULE)
 				{
 					setIcon(new ImageIcon(changeShipRedImg));	
+				}
+				
+				else if(treeNode.getType() == NodeType.SPLITED_SCHEDULE)
+				{
+					setIcon(new ImageIcon(changeShipGreenImg));	
 				}
 			}
 

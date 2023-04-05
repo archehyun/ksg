@@ -11,6 +11,7 @@ public class ScheduleTreeNode extends DefaultMutableTreeNode{
 	NodeType type;
 	
 	public ScheduleTreeNode() {};
+	
 	public ScheduleTreeNode(String string, NodeType type) {
 		super(string);
 		this.type = type;

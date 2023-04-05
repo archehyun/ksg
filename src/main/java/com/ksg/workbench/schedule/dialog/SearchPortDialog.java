@@ -18,17 +18,23 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import com.dtp.api.control.PortController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.PortService;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.workbench.common.comp.button.GradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.workbench.master.dialog.BaseInfoDialog;
+import com.ksg.workbench.master.dialog.UpdatePortInfoDialog;
 
 /**
 
@@ -45,19 +51,27 @@ import com.ksg.workbench.common.comp.panel.KSGPanel;
  * @프로그램 설명 : 항구 정보 조회 팝업
 
  */
-public class SearchPortDialog extends KSGDialog implements ActionListener{
+public class SearchPortDialog extends BaseInfoDialog{
 
 	PortService service;
+
 	private JLabel lblTitle;
+
 	private JButton butOK;
+
 	private JButton butCancel;
+
 	private KSGAbstractTable tableH;
+
 	private KSGAbstractTable tableD;
+
 	private JTextField txfInput;
 
 	public String result;
+
 	public SearchPortDialog() {
-		service = new PortServiceImpl();
+		this.setController(new PortController());
+
 	}
 
 	@Override
@@ -66,7 +80,9 @@ public class SearchPortDialog extends KSGDialog implements ActionListener{
 		this.setTitle(title);
 
 		this.getContentPane().add(buildTitle("항구 조회"),BorderLayout.NORTH);
+
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 
 		this.pack();
@@ -89,13 +105,12 @@ public class SearchPortDialog extends KSGDialog implements ActionListener{
 
 	public KSGPanel buildCenter()
 	{
-
 		tableH = new KSGAbstractTable();
-		
+
 		tableH.addColumn(new KSGTableColumn("port_name","항구명"));
-		
+
 		tableH.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		
+
 		tableH.initComp();
 
 		tableH.addMouseListener(new MouseAdapter() {
@@ -113,36 +128,28 @@ public class SearchPortDialog extends KSGDialog implements ActionListener{
 				if(e.getClickCount()>0)
 				{
 
-					HashMap<String, Object> param = (HashMap<String, Object>) tableH.getValueAt(row);
+					HashMap<String, Object> selectedItem = (HashMap<String, Object>) tableH.getValueAt(row);
 
-					HashMap<String, Object> commandMap = new HashMap<String, Object>();
+					CommandMap param = new CommandMap();
 
-					commandMap.put("port_name", param.get("port_name"));
+					param.put("port_name", selectedItem.get("port_name"));
 
-					try {
-						result = (String) param.get("port_name");
-						List li=service.selectPortAbbrList(commandMap);
+					result = (String) selectedItem.get("port_name");
 
-						tableD.setResultData(li);
-
-					} catch (SQLException e1) {
-
-						e1.printStackTrace();
-					}
+					callApi("selectPortDetailList", param);
 				}
 			}
 
 		});
 
 		tableD = new KSGAbstractTable();
-		
-		
+
 		tableD.addColumn(new KSGTableColumn("port_abbr","약어"));
-		
+
 		tableD.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		
+
 		tableD.initComp();
-		
+
 		tableD.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) 
@@ -150,19 +157,19 @@ public class SearchPortDialog extends KSGDialog implements ActionListener{
 				JTable es = (JTable) e.getSource();
 
 				int row=es.getSelectedRow();
-				if(row<0)
-					return;
+				
+				if(row<0) return;
 
 				tableH.clearSelection();
+
 				HashMap<String, Object> param = (HashMap<String, Object>) tableD.getValueAt(row);
+
 				if(e.getClickCount()>0)
 				{					
-					System.out.println("close1");
 					result = (String) param.get("port_abbr");
 				}
 				else if(e.getClickCount()>1)
 				{
-					System.out.println("close");
 					result = (String) param.get("port_abbr");
 					SearchPortDialog.this.close();
 				}
@@ -177,89 +184,48 @@ public class SearchPortDialog extends KSGDialog implements ActionListener{
 		txfInput.addKeyListener(new KeyAdapter() {
 
 			@Override
-			public void keyTyped(KeyEvent e) {
-				char keycode = e.getKeyChar();
-
-				System.out.println("key inpuit:"+keycode);
-				if(keycode == KeyEvent.VK_ENTER)
-				{	
-					fnSearch();
-				}
+			public void keyReleased(KeyEvent e) {
+				
+				fnSearch();
 			}
 
 		});
 		pnMain.add(new JScrollPane(tableH));
-		
+
 		tableH.getParent().setBackground(Color.white);
-		
+
 		JScrollPane compDetail = new JScrollPane(tableD);
-		
+
 		compDetail.setBackground(Color.white);
+
 		tableD.getParent().setBackground(Color.white);
-		
+
 		compDetail.setPreferredSize(new Dimension(200,200));
-		
+
 		pnMain.add(compDetail,BorderLayout.EAST);
-		
+
 		pnMain.add(txfInput,BorderLayout.NORTH);
-		
+
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		return pnMain;
 	}
 
-	protected KSGPanel buildControl()
-	{
-		KSGPanel pnMain =  new KSGPanel(new BorderLayout());
-		KSGPanel pnControl =  new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-
-
-		butOK = new JButton("저장");
-
-		butCancel = new JButton("취소");
-		
-		butOK.addActionListener(this);
-		
-		butCancel.addActionListener(this);
-		
-		pnControl.add(butOK);
-		
-		pnControl.add(butCancel);
-
-
-		KSGPanel pnS = new KSGPanel();
-		
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		
-		pnS.setPreferredSize(new Dimension(0,1));
-		
-		KSGPanel pnS1 = new KSGPanel();
-		
-		pnS1.setPreferredSize(new Dimension(0,15));
-
-		pnMain.add(pnControl);
-
-		pnMain.add(pnS,BorderLayout.NORTH);
-
-		return pnMain;
-	}
+	
 	private void fnSearch()
 	{
-		try {
+		//		try {
 
 
-			HashMap<String, Object> param = new HashMap<String, Object>();
-			String input =txfInput.getText();
-			if(!"".equals(input))
-			{
-				param.put("port_name", input);
-			}
-			HashMap<String, Object> result = (HashMap<String, Object>)service.selectListByCondition(param);
-			tableH.setResultData((List) result.get("master"));
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		CommandMap param = new CommandMap();
+
+		String input =txfInput.getText();
+
+		if(!"".equals(input)) param.put("port_name", input);
+		
+		
+		callApi("selectPort", param);
+		
 	}
 
 	@Override
@@ -278,5 +244,41 @@ public class SearchPortDialog extends KSGDialog implements ActionListener{
 		}
 
 	}
+
+	@Override
+	public void updateView() {
+
+		CommandMap resultMap= this.getModel();
+
+		boolean success = (boolean) resultMap.get("success");
+
+		if(success)
+		{
+			String serviceId=(String) resultMap.get("serviceId");
+
+			if("selectPort".equals(serviceId))
+			{	
+				List data = (List )resultMap.get("data");
+
+				tableH.setResultData(data);
+
+			}
+
+			else if("selectPortDetailList".equals(serviceId))
+			{	
+				List data = (List )resultMap.get("data");
+
+				tableD.setResultData(data);
+
+			}
+		}
+		else{  
+			String error = (String) resultMap.get("error");
+
+			JOptionPane.showMessageDialog(this, error);
+		}
+
+	}
+
 
 }

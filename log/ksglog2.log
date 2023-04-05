@@ -1,2 +1,6 @@
-2023-03-24 11:45:45,480  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
-2023-03-24 11:45:45,723  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-04-05 16:43:22,134  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
+2023-04-05 16:43:22,289  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-04-05 16:44:01,083  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=O, sortType=date, isAddValidate=false, date_issue=2023-04-10, gubun=Normal}
+2023-04-05 16:45:43,553  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=O, sortType=date, isAddValidate=false, date_issue=2023-04-10, gubun=Normal}
+2023-04-05 16:45:51,153  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=O, sortType=date, isAddValidate=false, date_issue=2023-04-10, gubun=Normal}
+2023-04-05 16:45:54,555  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=O, sortType=date, isAddValidate=false, vessel=Pancon Cha, date_issue=2023-04-10, gubun=Normal}

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -15,7 +16,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -37,7 +38,6 @@ import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.common.comp.View;
 import com.ksg.workbench.common.comp.button.GradientButton;
-import com.ksg.workbench.common.comp.button.ImageButton;
 import com.ksg.workbench.common.comp.label.BoldLabel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.textfield.SearchTextField;
@@ -68,6 +68,12 @@ public class PnNormalByTree extends PnSchedule implements View {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	Image changePortImg;
+	Image changeShipImg;
+	Image changeShipRedImg;
+	Image changeAreaImg;
+	Image changeShipGreenImg;
 
 	private KSGComboBox cbxNormalInOut;
 
@@ -101,9 +107,32 @@ public class PnNormalByTree extends PnSchedule implements View {
 	
 	private SearchTextField toPort;
 
+	private JLabel lblNoramlSchedule;
+
+	private JLabel lblJointedSchedule;
+
+	private JLabel lblSpiltedSchedule;
+
+	private JLabel lblLegend;
+
 	public PnNormalByTree() {
 
 		super();
+		
+		Image img = new ImageIcon("images/port.png").getImage();
+		changePortImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+
+		Image img2 = new ImageIcon("images/ship_group.png").getImage();
+		changeShipImg = img2.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		
+		Image img3 = new ImageIcon("images/ship_group_red.png").getImage();
+		changeShipRedImg = img3.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		
+		Image img4 = new ImageIcon("images/internet.png").getImage();
+		changeAreaImg = img4.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		
+		Image img5 = new ImageIcon("images/ship_group_green.png").getImage();
+		changeShipGreenImg = img5.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 
 		codeService = new CodeServiceImpl();
 
@@ -196,6 +225,27 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 
 		pnMain.add(pnTitle,BorderLayout.LINE_START);
+		
+		KSGPanel pnOutboundLegend = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		lblLegend = new JLabel("범례:");
+		pnOutboundLegend.add(lblLegend);
+		
+		lblNoramlSchedule = new JLabel( "일반스케줄");
+		lblNoramlSchedule.setIcon(new ImageIcon(changeShipImg));
+		
+		lblJointedSchedule = new JLabel( "공동배선");
+		lblJointedSchedule.setIcon(new ImageIcon(changeShipRedImg));
+		
+		lblSpiltedSchedule = new JLabel( "분할스케줄");
+		lblSpiltedSchedule.setIcon(new ImageIcon(changeShipGreenImg));
+		
+		pnOutboundLegend.add(lblNoramlSchedule);
+		pnOutboundLegend.add(lblJointedSchedule);
+		pnOutboundLegend.add(lblSpiltedSchedule);
+		
+		pnMain.add(pnOutboundLegend,BorderLayout.LINE_END);
+		
+		
 
 
 		return pnMain;
@@ -211,6 +261,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		cbxNormalInOut = new KSGComboBox("inOutType");
+		
 		cbxNormalInOut.setPreferredSize(new Dimension(100,23));
 
 		cbxNormalSearch = new KSGComboBox();
@@ -220,7 +271,9 @@ public class PnNormalByTree extends PnSchedule implements View {
 		cbxNormalSearch.addItem(new KSGTableColumn("table_id", "테이블 ID"));
 		
 		cbxNormalSearch.addItem(new KSGTableColumn("company_abbr", "선사명"));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("agent", "에이전트"));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("vessel", "선박명"));
 
 
@@ -235,10 +288,29 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 				chkRoute.setEnabled("OUTBOUND".equals(selectedValue));
 
-				pnRouteSerchOption.setVisible("ROUTE".equals(selectedValue));			}
+				pnRouteSerchOption.setVisible("ROUTE".equals(selectedValue));
+				
+				lblJointedSchedule.setVisible(!"INBOUND".equals(selectedValue));
+				
+				lblNoramlSchedule.setVisible(!"INBOUND".equals(selectedValue));
+				lblSpiltedSchedule.setVisible(!"INBOUND".equals(selectedValue));
+				
+				lblLegend.setVisible(!"INBOUND".equals(selectedValue));
+				
+				if("OUTBOUND".equals(selectedValue))
+				{
+					lblJointedSchedule.setText("공동배선");
+				}
+				else if("ROUTE".equals(selectedValue))
+				{
+					lblJointedSchedule.setText("제외스케줄");
+					lblSpiltedSchedule.setVisible(false);
+				}
+			}
 		});
 
 		chkRoute = new JCheckBox("Route");
+		
 		chkRoute.setBackground(Color.white);
 
 		cbxIsAddValidate = new JCheckBox("제외 항구 추가");
@@ -246,6 +318,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 		cbxIsAddValidate.setBackground(Color.white);
 
 		cbxArea = new KSGComboBox();
+		
 		cbxArea.setPreferredSize(new Dimension(250,23));
 
 		JLabel lblFromPort = new JLabel("출발항");
@@ -260,9 +333,11 @@ public class PnNormalByTree extends PnSchedule implements View {
 		toPort = new SearchTextField();
 		
 		toPort.setActionCommand("SEARCH_TO_PORT");
+		
 		toPort.setPreferredSize(new Dimension(150,25));
+		
 		toPort.addActionListener(this);
-
+		
 		JLabel lblToPort = new JLabel("도착항");
 
 
@@ -326,6 +401,9 @@ public class PnNormalByTree extends PnSchedule implements View {
 		pnNormalSearchCenter.add(cbxNormalSearch);
 
 		pnNormalSearchCenter.add(txfNoramlSearch);
+		
+		pnNormalSearchCenter.add(cbxIsAddValidate);
+
 
 		pnRouteSerchOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -351,8 +429,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		pnRouteSerchOption.add(rbtRouteVesselSorted);
 
-		pnRouteSerchOption.add(cbxIsAddValidate);
-
+		
 		rbtRouteDateSorted.setSelected(true);
 
 		rbtRouteVesselSorted.setSelected(false);
@@ -390,6 +467,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 			KSGTableColumn item=(KSGTableColumn) cbxArea.getSelectedItem();
 			param.put("area_name", item.columnField);
 		}
+		
 		if(cbxNormalSearch.getSelectedIndex()>0) {
 
 			KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
