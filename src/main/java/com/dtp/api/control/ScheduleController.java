@@ -24,19 +24,22 @@ import com.ksg.commands.schedule.SortInlandCommnad;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.AreaInfo;
+import com.ksg.domain.PortInfo;
 import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.ScheduleServiceManager;
-import com.ksg.schedule.logic.ScheduleJoint;
+import com.ksg.schedule.logic.SchedulePrint;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.AreaService;
+import com.ksg.service.PortService;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.service.impl.CodeServiceImpl;
+import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.common.comp.treetable.nodemager.TreeNodeManager;
@@ -56,6 +59,8 @@ public class ScheduleController extends AbstractController{
 	private ScheduleSubService service;
 
 	private VesselServiceV2 vesselService;
+	
+	private PortService portService;
 
 	private ShipperTableService tableService = new ShipperTableServiceImpl();
 	
@@ -63,13 +68,15 @@ public class ScheduleController extends AbstractController{
 	
 	protected Logger logger = LogManager.getLogger(this.getClass());
 	
-	private ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
+//	private ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
 
 	public ScheduleController()
 	{
 		service = new ScheduleServiceImpl();
 		
 		vesselService = new VesselServiceImpl();
+		
+		portService = new PortServiceImpl();
 		
 		objectMapper = new ObjectMapper();
 
@@ -149,14 +156,46 @@ public class ScheduleController extends AbstractController{
 
 	public CommandMap selectOutboundScheduleGroupList(CommandMap param) throws SQLException {
 
-		List<ScheduleData>  li = service.selecteScheduleListByCondition(param);
+		List<ScheduleData>  scheduleList = service.selecteScheduleListByCondition(param);
 
-		if(li.isEmpty()) return new CommandMap();
+		if(scheduleList.isEmpty()) return new CommandMap();
 
 
-		List<String> vesselNames=li.stream().map(ScheduleData::getVessel)
+		Map<String, Vessel> vesselMap = extractedVesselMap(scheduleList);
+		
+		Map<String, PortInfo> portMap = extractedPortMap(scheduleList);
+		
+		
+		scheduleList.forEach(o -> o.setVesselInfo(vesselMap.get(o.getVessel())));
+
+
+		Map<String, Map<String, List<ScheduleData>>> areaList =  scheduleList.stream().collect(
+				
+						Collectors.groupingBy(ScheduleData::getPort, // 도착항
+								Collectors.groupingBy(ScheduleData::getFromPort)));// 출발항
+
+		CommandMap returnValue = new CommandMap();
+		for(String area : areaList.keySet() ) {
+			returnValue.put(area, areaList.get(area));
+		}
+		
+		CommandMap result = new CommandMap();
+		
+		result.put("areaList", returnValue);
+		
+		result.put("portMap", portMap);
+		result.put("vesselMap", vesselMap);
+
+		return result;
+
+	}
+
+	private Map<String, Vessel> extractedVesselMap(List<ScheduleData> scheduleList) throws SQLException {
+		List<String> vesselNames=scheduleList.stream().map(ScheduleData::getVessel)
 				.distinct()
 				.collect(Collectors.toList());
+		
+
 
 		CommandMap vesselParam = new CommandMap();
 		
@@ -164,23 +203,10 @@ public class ScheduleController extends AbstractController{
 		
 		List<Vessel> vesselList = vesselService.selectVesselListByNameList(vesselNames);
 		
-		Map<String, Vessel> vesselMap = vesselList.stream().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));
+
 		
-		li.forEach(o -> o.setVesselInfo(vesselMap.get(o.getVessel())));
-
-
-		Map<String, Map<String, Map<String, List<ScheduleData>>>> areaList =  li.stream().collect(
-				Collectors.groupingBy(ScheduleData::getArea_name, // 지역
-						Collectors.groupingBy(ScheduleData::getPort, // 도착항
-								Collectors.groupingBy(ScheduleData::getFromPort))));// 출발항
-
-		CommandMap returnValue = new CommandMap();
-		for(String area : areaList.keySet() ) {
-			returnValue.put(area, areaList.get(area));
-		}
-
-		return returnValue;
-
+		Map<String, Vessel> vesselMap = vesselList.stream().collect(Collectors.toMap(Vessel::getVessel_name, Function.identity()));
+		return vesselMap;
 	}
 
 
@@ -304,8 +330,6 @@ public class ScheduleController extends AbstractController{
 	 */
 
 	public Map<String, Object> selectRouteScheduleGroupList(List<ScheduleData> li) throws SQLException {
-
-		
 		
 		logger.info("schedule size:{}", li.size());
 		
@@ -319,8 +343,6 @@ public class ScheduleController extends AbstractController{
 		
 		List<ScheduleData> schedulelist = li.stream().filter(schedule ->vesselNameMap.containsKey(schedule.getVessel())).collect(Collectors.toList());
 		
-		System.out.println("vessel filtered size:"+schedulelist.size());
-
 		Map<String, Map<String, List<ScheduleData>>> areaList =  schedulelist.stream().collect(
 				Collectors.groupingBy(ScheduleData::getArea_name, // 지역
 						Collectors.groupingBy(ScheduleData::getVessel))
@@ -388,7 +410,6 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "createSchedule")
 	public CommandMap scheduleCreate(CommandMap param) throws Exception
 	{	
-		
 		ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
 		
 		String inputDate= (String) param.get("inputDate");
@@ -412,10 +433,12 @@ public class ScheduleController extends AbstractController{
 		
 		String gubun = (String) param.get("gubun");
 		
+		String date_issue = (String) param.get("date_issue");
+		
 		// 콘솔 스케줄 생성
 		if(gubun.equals(ShippersTable.GUBUN_CONSOLE))
 		{	
-			ScheduleJoint console=scheduleManager.getConsoleSchedudle(op);
+			SchedulePrint console=scheduleManager.getConsoleSchedudle(op);
 
 			scheduleManager.addBulid(console);
 
@@ -426,20 +449,49 @@ public class ScheduleController extends AbstractController{
 		// 인랜드 스케줄
 		else if(gubun.equals(ShippersTable.GUBUN_INLAND))
 		{	
-
 			new SortInlandCommnad(op).execute();
 		}
 
 		else //normal: 아웃바운드, 인바운드, 항로별
 		{
+			
+			CommandMap searchParam = new CommandMap();
+			
+			String OUTBOUND = "O";
+			
+			searchParam.put("gubun", gubun);
+			
+			searchParam.put("inOutType", OUTBOUND);
+			
+			searchParam.put("date_issue", date_issue);
+			
+			List<ScheduleData> scheduleList=service.selecteScheduleListByCondition(searchParam);
+			
+			Map<String, PortInfo> portMap = extractedPortMap(scheduleList);
+			
+			Map<String, Vessel> vesselMap = extractedVesselMap(scheduleList);
+			
+			param.put("scheduleList", scheduleList);
+			
+			param.put("portMap", portMap);
+			param.put("vesselMap", vesselMap);
+			
 			new SortAllCommand(param).execute();
 		}
-		
-		
 		
 		CommandMap returnMap = new CommandMap();
 		
 		return returnMap;
+	}
+
+	private Map<String, PortInfo>  extractedPortMap(List<ScheduleData> scheduleList) throws SQLException {
+		List<String> portNames=scheduleList.stream().map(ScheduleData::getPort)
+				.distinct()
+				.collect(Collectors.toList());
+		
+		List<PortInfo> portList = portService.selectPortListByNameList(portNames);
+		
+		return  portList.stream().collect(Collectors.toMap(PortInfo::getPort_name, Function.identity()));
 	}
 	
 	@ControlMethod(serviceId = "pnNormalByTree.init")
@@ -466,8 +518,6 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "pnNormalByTree.fnSearch")
 	public CommandMap fnSearch(CommandMap param) throws Exception
 	{
-		
-		
 		CommandMap returnMap = new CommandMap();
 		
 		String inOutType = (String)param.get("inOutType");
@@ -486,6 +536,7 @@ public class ScheduleController extends AbstractController{
 			if(inOutType.equals(ScheduleEnum.OUTBOUND.getSymbol()))
 			{
 				CommandMap result = (CommandMap) selectOutboundScheduleGroupList(param);
+				
 				returnMap.put("treeNode", nodeManager.getOutboundTreeNode(result));
 				
 			}

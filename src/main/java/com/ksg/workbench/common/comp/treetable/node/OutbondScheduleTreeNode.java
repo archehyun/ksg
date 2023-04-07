@@ -35,6 +35,12 @@ public class OutbondScheduleTreeNode extends ScheduleTreeNode implements IFCompa
 		formatter = new OutboundFormatter();
 		formatter.setParam(treeTableNode.getParam());
 	}
+	
+	public OutbondScheduleTreeNode(String name,TreeTableNode treeTableNode, NodeType nodeType) {
+		super(name,treeTableNode,  nodeType);
+		
+		
+	}
 	public String getDate()
 	{
 		return date;

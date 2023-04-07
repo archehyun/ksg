@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.management.RuntimeErrorException;
-
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.model.CommandMap;
@@ -327,6 +325,12 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 			throw new RuntimeException(e.getMessage());
 		}		
 
+	}
+
+	@Override
+	public List<PortInfo> selectPortListByNameList(List<String> nameList) throws SQLException {
+		// TODO Auto-generated method stub
+		return portDAO.selectPortListByNameList(nameList);
 	}
 
 

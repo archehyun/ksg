@@ -46,5 +46,7 @@ public interface PortService extends PageService{
 
 	public Object insert(PortInfo t) throws Exception;
 
+	public List<PortInfo> selectPortListByNameList(List<String> portNames) throws SQLException;
+
 
 }

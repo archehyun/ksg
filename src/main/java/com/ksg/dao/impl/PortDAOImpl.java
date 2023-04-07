@@ -110,6 +110,12 @@ public class PortDAOImpl extends AbstractDAO implements PortDAO{
 	public PortInfo selectDetail(PortInfo param) throws SQLException {
 		return (PortInfo) selectOne("port.selectPortDetail", param);
 	}
+
+	@Override
+	public List<PortInfo> selectPortListByNameList(List<String> nameList) throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList(this.namespace+".selectPortListByNameList", nameList);
+	}
 	
 
 }

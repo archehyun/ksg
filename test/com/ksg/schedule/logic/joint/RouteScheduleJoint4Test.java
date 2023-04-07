@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
+import com.ksg.schedule.logic.print.route.RouteScheduleJoint;
+import com.ksg.schedule.logic.print.route.RouteSchedulePrintV4;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
 
@@ -33,7 +35,7 @@ public class RouteScheduleJoint4Test {
 		
 		op.setDate_isusse("2023-03-06");
 		
-		RouteScheduleJointV4 jointV4 = new RouteScheduleJointV4("2023-03-06",RouteScheduleJoint.ORDER_BY_DATE);
+		RouteSchedulePrintV4 jointV4 = new RouteSchedulePrintV4("2023-03-06",RouteScheduleJoint.ORDER_BY_DATE);
 		
 //		jointV4.initTag();
 		
@@ -48,7 +50,7 @@ public class RouteScheduleJoint4Test {
 		
 		op.setDate_isusse("2023-02-13");
 		
-		RouteScheduleJointV4 jointV4 = new RouteScheduleJointV4("2023-02-27",RouteScheduleJoint.ORDER_BY_DATE);
+		RouteSchedulePrintV4 jointV4 = new RouteSchedulePrintV4("2023-02-27",RouteScheduleJoint.ORDER_BY_DATE);
 		
 		jointV4.initTag();
 		

@@ -313,5 +313,14 @@
 <!-- ********************************************* -->	
 
 
+	<select id="selectPortListByNameList" resultClass="com.ksg.domain.PortInfo" parameterClass="java.util.List">
+		SELECT 	* 
+		FROM 	TB_PORT
+		WHERE 	port_name in
+		<iterate open="(" close=")" conjunction=",">
+			#[]#	
+		</iterate>
+	</select>
+
 				
 </sqlMap>

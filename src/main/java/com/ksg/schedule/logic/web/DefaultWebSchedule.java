@@ -37,10 +37,10 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
-import com.ksg.schedule.logic.ScheduleJoint;
+import com.ksg.schedule.logic.SchedulePrint;
+import com.ksg.schedule.logic.print.DefaultSchedulePrint;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.service.ADVService;
 import com.ksg.service.ScheduleService;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
@@ -49,7 +49,7 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
  * @author archehyun
  *
  */
-public class DefaultWebSchedule extends DefaultScheduleJoint {
+public class DefaultWebSchedule extends DefaultSchedulePrint {
 	
 	private SimpleDateFormat format = new SimpleDateFormat("M/d");
 	
@@ -451,13 +451,13 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 			printWebSchedule();
 			
 			JOptionPane.showMessageDialog(processDialog, "웹 스케줄 생성 완료");
-			return ScheduleJoint.SUCCESS;
+			return SchedulePrint.SUCCESS;
 
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			return ScheduleJoint.FAILURE;
+			return SchedulePrint.FAILURE;
 		}
 		finally{
 			processDialog.setVisible(false);

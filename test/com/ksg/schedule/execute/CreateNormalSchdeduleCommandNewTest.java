@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 
 public class CreateNormalSchdeduleCommandNewTest {
 

@@ -2,14 +2,14 @@ package com.ksg.schedule.logic.joint.route;
 
 import java.sql.SQLException;
 
-import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
-import com.ksg.schedule.logic.joint.RouteAbstractScheduleJoint;
+import com.ksg.schedule.logic.print.DefaultSchedulePrint;
+import com.ksg.schedule.logic.print.route.RouteAbstractSchedulePrint;
 
-public class RouteSchedulePrint extends DefaultScheduleJoint{
+public class RouteSchedulePrint extends DefaultSchedulePrint{
 	
-	RouteAbstractScheduleJoint joint;
+	RouteAbstractSchedulePrint joint;
 	
-	public RouteSchedulePrint(RouteAbstractScheduleJoint joint) throws SQLException
+	public RouteSchedulePrint(RouteAbstractSchedulePrint joint) throws SQLException
 	{
 		super();
 		this.joint = joint;

@@ -60,4 +60,6 @@ public interface PortDAO {
 
 	public PortInfo selectDetail(PortInfo item) throws SQLException;
 
+	public List<PortInfo> selectPortListByNameList(List<String> portNames) throws SQLException;
+
 }

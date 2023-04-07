@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ScheduleData;
@@ -16,7 +13,6 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.service.ADVService;
-import com.ksg.service.ScheduleService;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.ADVServiceImpl;

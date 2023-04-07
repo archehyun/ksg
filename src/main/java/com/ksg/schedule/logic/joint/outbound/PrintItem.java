@@ -37,15 +37,15 @@ public class PrintItem implements Comparable<PrintItem>{
 	
 	
 	private String 	BOLD_TAG_F="",
-			BOLD_TAG_B="",
-			TAG_VERSION0="",
-			TAG_VERSION2="",
-			TAG_VERSION3="",
-			TAG_VERSION4="",
-			TAG_VERSION5="";
+					BOLD_TAG_B="",
+					TAG_VERSION0="",
+					TAG_VERSION2="",
+					TAG_VERSION3="",
+					TAG_VERSION4="",
+					TAG_VERSION5="";
 
 	
-	protected SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
+	protected SimpleDateFormat inputDateFormat 	= KSGDateUtil.inputDateFormat;
 
 	protected SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
 	

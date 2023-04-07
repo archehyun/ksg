@@ -212,7 +212,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		String title = "스케줄 목록";
 
-
 		lblTotalCount = new JLabel("0");
 
 		lblTotalCount.setForeground(Color.red);
@@ -223,30 +222,33 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		pnTitle.add(new JLabel("건"));
 
-
 		pnMain.add(pnTitle,BorderLayout.LINE_START);
 		
 		KSGPanel pnOutboundLegend = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		
 		lblLegend = new JLabel("범례:");
+		
 		pnOutboundLegend.add(lblLegend);
 		
 		lblNoramlSchedule = new JLabel( "일반스케줄");
+		
 		lblNoramlSchedule.setIcon(new ImageIcon(changeShipImg));
 		
 		lblJointedSchedule = new JLabel( "공동배선");
+		
 		lblJointedSchedule.setIcon(new ImageIcon(changeShipRedImg));
 		
 		lblSpiltedSchedule = new JLabel( "분할스케줄");
+		
 		lblSpiltedSchedule.setIcon(new ImageIcon(changeShipGreenImg));
 		
 		pnOutboundLegend.add(lblNoramlSchedule);
+		
 		pnOutboundLegend.add(lblJointedSchedule);
+		
 		pnOutboundLegend.add(lblSpiltedSchedule);
 		
 		pnMain.add(pnOutboundLegend,BorderLayout.LINE_END);
-		
-		
-
 
 		return pnMain;
 	}
@@ -293,6 +295,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 				lblJointedSchedule.setVisible(!"INBOUND".equals(selectedValue));
 				
 				lblNoramlSchedule.setVisible(!"INBOUND".equals(selectedValue));
+				
 				lblSpiltedSchedule.setVisible(!"INBOUND".equals(selectedValue));
 				
 				lblLegend.setVisible(!"INBOUND".equals(selectedValue));
@@ -306,6 +309,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 					lblJointedSchedule.setText("제외스케줄");
 					lblSpiltedSchedule.setVisible(false);
 				}
+				cbxIsAddValidate.setVisible("ROUTE".equals(selectedValue));
 			}
 		});
 
@@ -314,6 +318,8 @@ public class PnNormalByTree extends PnSchedule implements View {
 		chkRoute.setBackground(Color.white);
 
 		cbxIsAddValidate = new JCheckBox("제외 항구 추가");
+		
+		cbxIsAddValidate.setVisible(false);
 
 		cbxIsAddValidate.setBackground(Color.white);
 
@@ -326,6 +332,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 		fromPort = new SearchTextField();
 		
 		fromPort.setActionCommand("SEARCH_FROM_PORT");
+		
 		fromPort.setPreferredSize(new Dimension(150,25));
 		
 		fromPort.addActionListener(this);
@@ -504,7 +511,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 		// inbound 호출시
 		if(col.columnField.equals(ScheduleEnum.OUTBOUND.getSymbol()))
 		{	
-			param.put("depth", 5);
+			param.put("depth", 4);
 		}
 		// outbound 호출시
 		else
@@ -597,8 +604,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 				table.setTreeExpandedState(true);
 
 				table.updateUI();
-
-
 
 			}
 

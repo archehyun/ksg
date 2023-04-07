@@ -23,10 +23,10 @@ import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.logic.joint.ConsoleScheduleJoint;
-import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
-import com.ksg.schedule.logic.joint.InboundScheduleJoint;
-import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
+import com.ksg.schedule.logic.print.ConsoleScheduleJoint;
+import com.ksg.schedule.logic.print.DefaultSchedulePrint;
+import com.ksg.schedule.logic.print.InboundScheduleJoint;
+import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintV2;
 import com.ksg.service.BaseService;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.BaseServiceImpl;
@@ -49,7 +49,7 @@ public class ScheduleManager {
 
 	private static ScheduleManager instance;
 
-	private ArrayList<ScheduleJoint> scheduleBuilds;
+	private ArrayList<SchedulePrint> scheduleBuilds;
 
 	private ScheduleBuildMessageDialog di;
 
@@ -70,7 +70,7 @@ public class ScheduleManager {
 	private CompanyDAO companyDAO;
 
 	private ScheduleManager() {
-		scheduleBuilds = new ArrayList<ScheduleJoint>();
+		scheduleBuilds = new ArrayList<SchedulePrint>();
 		
 		baseService = new BaseServiceImpl();
 		
@@ -103,19 +103,18 @@ public class ScheduleManager {
 	/**
 	 * @설명 아웃바운드 스케줄 생성
 	 * @return
-	 * @throws SQLException 
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public ScheduleJoint getOutboundSchedule() throws SQLException, IOException
+	public SchedulePrint getOutboundSchedule() throws Exception
 	{
-		return new OutboundScheduleJointV2();
+		return new OutboundSchedulePrintV2();
 	}
 	/**
 	 * @설명 인바운드 스케줄 생성
 	 * @return
 	 * @throws SQLException 
 	 */
-	public ScheduleJoint getInboundSchedule() throws SQLException
+	public SchedulePrint getInboundSchedule() throws SQLException
 	{
 		return new InboundScheduleJoint();
 	}
@@ -136,7 +135,7 @@ public class ScheduleManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public ScheduleJoint getConsoleSchedudle(ScheduleData op) throws SQLException
+	public SchedulePrint getConsoleSchedudle(ScheduleData op) throws SQLException
 	{
 		return new ConsoleScheduleJoint(op);
 	}
@@ -145,7 +144,7 @@ public class ScheduleManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public ScheduleJoint getInlandSchedule() throws SQLException
+	public SchedulePrint getInlandSchedule() throws SQLException
 	{
 		return new InboundScheduleJoint();
 	}
@@ -255,14 +254,14 @@ public class ScheduleManager {
 				
 				di.createAndUpdateUI();
 				
-				Iterator<ScheduleJoint>iter = scheduleBuilds.iterator();
+				Iterator<SchedulePrint>iter = scheduleBuilds.iterator();
 				
 				initMasterData();
 				
 				try {
 					while(iter.hasNext())
 					{
-						DefaultScheduleJoint build = (DefaultScheduleJoint) iter.next();
+						DefaultSchedulePrint build = (DefaultSchedulePrint) iter.next();
 						di.setTask(build);
 						build.initTag();
 						build.execute();
@@ -283,7 +282,7 @@ public class ScheduleManager {
 	/**
 	 * @param build
 	 */
-	public void addBulid(ScheduleJoint build)
+	public void addBulid(SchedulePrint build)
 	{
 		scheduleBuilds.add(build);
 	}

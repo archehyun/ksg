@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.ksg.domain.AreaEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
+import com.ksg.schedule.logic.print.route.RouteScheduleJoint;
 import com.ksg.schedule.logic.route.RouteScheduleUtil;
 
 public class RouteScheduleJointTest {

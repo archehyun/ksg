@@ -70,11 +70,7 @@ public class TreeNodeManager {
 	public DefaultMutableTreeNode getInboundTreeNode(CommandMap areaList) {
 
 		return inboundNodeManager.getTreeNode(areaList);
-
 	}
-
-	
-
 
 	/**
 	 * 지역 - 선박

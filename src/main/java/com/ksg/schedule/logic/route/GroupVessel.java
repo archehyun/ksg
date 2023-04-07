@@ -20,8 +20,8 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.joint.RouteScheduleJoint;
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
+import com.ksg.schedule.logic.print.route.RouteScheduleJoint;
 
 public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<GroupVessel>{
 	

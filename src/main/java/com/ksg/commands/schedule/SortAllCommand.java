@@ -2,8 +2,6 @@ package com.ksg.commands.schedule;
 
 import javax.swing.JOptionPane;
 
-import org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration;
-
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.task.SortAllTask;
 import com.ksg.common.model.CommandMap;

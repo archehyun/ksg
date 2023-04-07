@@ -14,7 +14,7 @@ public class InboundJointedFormatter extends JointFormatter
 	
 	InboundCodeMap inboundCodeMap;
 	
-	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
+	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.inputDateFormat;
 
 	private SimpleDateFormat outputDateFormat 	= KSGDateUtil.createOutputDateFormat();
 	

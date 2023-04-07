@@ -35,9 +35,9 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.logic.ScheduleJoint;
+import com.ksg.schedule.logic.SchedulePrint;
+import com.ksg.schedule.logic.print.DefaultSchedulePrint;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
 import com.ksg.service.ScheduleService;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
@@ -45,7 +45,7 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
  * @author 박창현
  *
  */
-public class DefaultWebScheduleV2 extends DefaultScheduleJoint {
+public class DefaultWebScheduleV2 extends DefaultSchedulePrint {
 
 	private int format_type;
 
@@ -511,7 +511,7 @@ public class DefaultWebScheduleV2 extends DefaultScheduleJoint {
 		{
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
-			return ScheduleJoint.FAILURE; 
+			return SchedulePrint.FAILURE; 
 
 		}
 		finally{
@@ -524,7 +524,7 @@ public class DefaultWebScheduleV2 extends DefaultScheduleJoint {
 		}
 
 		logger.info("전송용 스케줄 생성 종료...");
-		return ScheduleJoint.SUCCESS;
+		return SchedulePrint.SUCCESS;
 	}
 
 	private void makeInlandWebSchedule(String inOutType,int[] fromPortIndexList, int[] toPortIndexList,int[] inlandIndexList,

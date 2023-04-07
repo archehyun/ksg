@@ -12,7 +12,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.service.ScheduleService;
 
 public class CreateNomalSchedule {

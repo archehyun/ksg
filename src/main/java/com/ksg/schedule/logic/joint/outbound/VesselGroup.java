@@ -19,7 +19,7 @@ import com.ksg.common.util.StringCompare;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 
 
 /**

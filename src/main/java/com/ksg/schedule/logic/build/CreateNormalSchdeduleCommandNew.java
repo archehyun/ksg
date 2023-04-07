@@ -44,7 +44,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.service.ScheduleService;
 import com.ksg.view.ui.ErrorLogManager;
 

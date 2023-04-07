@@ -1,28 +1,36 @@
 package com.ksg.commands.schedule.task;
 
+import java.util.List;
+
 import com.ksg.commands.LongTask;
 import com.ksg.commands.schedule.route.RouteTaskNewVessel;
 import com.ksg.common.model.CommandMap;
+import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.joint.InboundScheduleJoint;
-import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
-import com.ksg.schedule.logic.joint.RouteAbstractScheduleJoint;
-import com.ksg.schedule.logic.joint.RouteScheduleJoint;
-import com.ksg.schedule.logic.joint.RouteScheduleJointV4;
 import com.ksg.schedule.logic.joint.route.RouteSchedulePrint;
+import com.ksg.schedule.logic.print.InboundScheduleJoint;
+import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintV2;
+import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintV3;
+import com.ksg.schedule.logic.print.route.RouteAbstractSchedulePrint;
+import com.ksg.schedule.logic.print.route.RouteScheduleJoint;
+import com.ksg.schedule.logic.print.route.RouteSchedulePrintV4;
 
 public class SortAllTask implements LongTask {
 
-	int orderBy;
+	private int orderBy;
 
-	boolean isRouteNew;
+	private boolean isRouteNew;
 
-	boolean isPrintNewRoute;
+	private boolean isPrintNewRoute;
 	
 	private ShippersTable op;
 	
 	private String date_isusse;
+
+	private boolean isPrintNewOutbound;
+	
+	CommandMap param =new CommandMap();
 
 	public SortAllTask(ShippersTable op,int orderBy,boolean isNew,boolean isPrintInbound, boolean isPrintOutbound, boolean isPrintRoute) throws Exception {
 		this.op = op;
@@ -36,19 +44,24 @@ public class SortAllTask implements LongTask {
 	}
 	public SortAllTask(CommandMap param) throws Exception
 	{	
-		date_isusse = (String) param.get("date_isusse");
 		
-		boolean isPrintInbound = (boolean) param.get("isPrintInbound");
+		this.param = param;
+		
+		date_isusse 			= (String) param.get("date_isusse");
+		
+		boolean isPrintInbound 	= (boolean) param.get("isPrintInbound");
 
 		boolean isPrintOutbound = (boolean) param.get("isPrintOutbound");
 
-		boolean isPrintRoute = (boolean) param.get("isPrintRoute");
+		boolean isPrintRoute 	= (boolean) param.get("isPrintRoute");
 
-		orderBy = (int) param.get("orderBy");
+		orderBy 				= (int) param.get("orderBy");
 
-		isPrintNewRoute = (boolean) param.get("isPrintNewRoute");
+		isPrintNewRoute 		= (boolean) param.get("isPrintNewRoute");
+		
+		isPrintNewOutbound 		= (boolean) param.get("isPrintNewOutbound");
 
-		isRouteNew = (boolean) param.get("isNew");
+		isRouteNew 				= (boolean) param.get("isNew");
 		
 		initPrintSchedule(isPrintOutbound, isPrintInbound, isPrintRoute);
 
@@ -58,7 +71,12 @@ public class SortAllTask implements LongTask {
 	{
 		if(isPrintInbound) ScheduleManager.getInstance().addBulid(new InboundScheduleJoint());
 		
-		if(isPrintOutbound) ScheduleManager.getInstance().addBulid(new OutboundScheduleJointV2());
+		if(isPrintOutbound)
+		{
+//			List<ScheduleData> scheduleList = (List<ScheduleData>) param.get("scheduleList");
+			
+			ScheduleManager.getInstance().addBulid(isPrintNewOutbound?new OutboundSchedulePrintV3(param):new OutboundSchedulePrintV2());
+		}
 		
 		if(isPrintRoute)
 		{
@@ -68,7 +86,10 @@ public class SortAllTask implements LongTask {
 			}
 			else
 			{
-				RouteAbstractScheduleJoint joint = isPrintNewRoute?new RouteScheduleJointV4(date_isusse, orderBy):new RouteScheduleJoint(date_isusse, orderBy);
+				List<ScheduleData> scheduleList = (List<ScheduleData>) param.get("scheduleList");
+				
+				
+				RouteAbstractSchedulePrint joint = isPrintNewRoute?new RouteSchedulePrintV4(scheduleList, orderBy):new RouteScheduleJoint(scheduleList, orderBy);
 
 				ScheduleManager.getInstance().addBulid(new RouteSchedulePrint(joint));
 			}

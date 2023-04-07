@@ -21,7 +21,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.build.CreateScheduleCommand;
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.service.ScheduleService;
 
 import lombok.extern.slf4j.Slf4j;

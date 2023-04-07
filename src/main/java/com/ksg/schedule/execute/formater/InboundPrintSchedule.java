@@ -31,7 +31,7 @@ public class InboundPrintSchedule<E> extends PrintSchedule
 {
 	
 	
-	SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
+	SimpleDateFormat inputDateFormat 	= KSGDateUtil.inputDateFormat;
 
 	SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
 	
