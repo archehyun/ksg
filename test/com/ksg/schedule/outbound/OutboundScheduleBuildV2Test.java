@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
-import com.ksg.schedule.logic.print.DefaultSchedulePrint;
+import com.ksg.schedule.logic.print.AbstractSchedulePrint;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintV2;
 

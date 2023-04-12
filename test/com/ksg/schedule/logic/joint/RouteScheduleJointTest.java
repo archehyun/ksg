@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.ksg.domain.AreaEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.print.route.RouteScheduleJoint;
+import com.ksg.schedule.logic.print.route.RouteScheduleJointV1;
 import com.ksg.schedule.logic.route.RouteScheduleUtil;
 
 public class RouteScheduleJointTest {
@@ -29,8 +29,8 @@ public class RouteScheduleJointTest {
 		ScheduleManager.getInstance().initMasterData();
 		ShippersTable op = new ShippersTable();
 		op.setDate_isusse("2023-01-30");
-		RouteScheduleJoint schedule= new RouteScheduleJoint(op, 1);
-		schedule.initTag();
+		RouteScheduleJointV1 schedule= new RouteScheduleJointV1(op, 1);
+		schedule.init();
 		schedule.execute();
 	}
 	

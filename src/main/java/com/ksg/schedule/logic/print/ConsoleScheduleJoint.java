@@ -1,6 +1,7 @@
 package com.ksg.schedule.logic.print;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import com.ksg.commands.schedule.XML_INFO;
+import com.ksg.common.dao.DAOManager;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.SortUtil;
@@ -23,6 +25,7 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ScheduleType;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.SchedulePrint;
+import com.ksg.service.BaseService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 
   */
 @Slf4j
-public class ConsoleScheduleJoint extends DefaultSchedulePrint{
+public class ConsoleScheduleJoint extends AbstractSchedulePrint{
 
 	/**
 	 * @설명 도착항 그룹 클래스
@@ -51,7 +54,7 @@ public class ConsoleScheduleJoint extends DefaultSchedulePrint{
 	 * @author archehyun
 	 *
 	 */
-
+	protected BaseService baseService;
 
 
 	//
@@ -352,7 +355,7 @@ public class ConsoleScheduleJoint extends DefaultSchedulePrint{
 
 	public ConsoleScheduleJoint(ScheduleData op) throws SQLException {
 		super();
-
+		baseService 	= DAOManager.getInstance().createBaseService();
 		this.op=op;
 
 		try {
@@ -398,7 +401,7 @@ public class ConsoleScheduleJoint extends DefaultSchedulePrint{
 	/**
 	 * 태그 정보 초기화
 	 */
-	public void initTag() {
+	public void init() {
 		logger.debug("디자인 태그 초기화");
 		TAG_BODY_AGENT ="<ct:><cs:><chs:><cl:><cf:><ptr:><ptr:8\\,Left\\,.\\,0\\,\\;63\\,Left\\,.\\,0\\,\\;86\\,Left\\,.\\,0\\,\\;107\\,Left\\,.\\,0\\,\\;><cc:C\\=0 M\\=0 Y\\=0 K\\=60><ct:30><cs:6.000000><chs:0.900000><cl:8.000000><cf:Yoon가변 윤고딕100\\_TT>";
 		TAG_BODY_AGENT_CLOSE="<cc:>";
@@ -610,6 +613,13 @@ public class ConsoleScheduleJoint extends DefaultSchedulePrint{
 		{
 			throw new ScheduleJointError(e, data);
 		}
+	}
+
+
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

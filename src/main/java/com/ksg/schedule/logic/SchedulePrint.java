@@ -1,5 +1,7 @@
 package com.ksg.schedule.logic;
 
+import com.ksg.commands.ScheduleExecute;
+
 /**
  * 스케줄 조인트 인터페이스
  * 
@@ -13,7 +15,8 @@ package com.ksg.schedule.logic;
  * @author 박창현
  *
  */
-public interface SchedulePrint extends ScheduleBuild{
+public interface SchedulePrint extends ScheduleExecute{
+	public void initTag();
 	
 }
 

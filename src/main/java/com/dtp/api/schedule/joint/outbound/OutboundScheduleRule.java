@@ -1,6 +1,7 @@
 package com.dtp.api.schedule.joint.outbound;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,13 +14,28 @@ import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.workbench.schedule.comp.treenode.SortedSchedule;
 
-public class OutboundSchedule {
+/**
+
+  * @FileName : OutboundSchedule.java
+
+  * @Project : KSG2
+
+  * @Date : 2023. 4. 10. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+
+  */
+public class OutboundScheduleRule {
 	
 	private Map<String, Vessel> vesselMap;
 	
 	private static final int DIVIED_SCHEDULE = 3;
 	
-	public OutboundSchedule(Map<String, Vessel> vesselMap) {
+	public OutboundScheduleRule(Map<String, Vessel> vesselMap) {
 		this.vesselMap =vesselMap;
 	}
 
@@ -49,8 +65,6 @@ public class OutboundSchedule {
 		partitions.forEach(o -> sortedOutboundScheduleGroupList.add(new OutboundScheduleGroup(jointScheduleItemList, (ArrayList) o)));
 		
 		if(partitions.isEmpty()) sortedOutboundScheduleGroupList.add(jointScheduleItemList);
-		
-		sortedOutboundScheduleGroupList.forEach(o -> o.joinnted());
 		
 		return sortedOutboundScheduleGroupList;
 	}
@@ -102,12 +116,9 @@ public class OutboundSchedule {
 	 */
 	public void addNewOutboundScheduleGroup(HashMap<String, OutboundScheduleGroup> scheduleList, SortedSchedule scheduleMap,
 			String scheduleKey) {
-		OutboundScheduleGroup jointScheduleItemList = new OutboundScheduleGroup();
-
-		jointScheduleItemList.setVesselName(scheduleMap.getData().getVessel());
 		
-		jointScheduleItemList.setVessel_type(this.vesselMap.get(jointScheduleItemList.getVesselName()).getVessel_type());
-
+		OutboundScheduleGroup jointScheduleItemList = new OutboundScheduleGroup(this.vesselMap.get(scheduleMap.getData().getVessel()));
+		
 		jointScheduleItemList.add(scheduleMap);
 
 		scheduleList.put(scheduleKey, jointScheduleItemList);
@@ -166,10 +177,39 @@ public class OutboundSchedule {
 		ArrayList<OutboundScheduleGroup> outboundScheduleGroupList 	= new ArrayList<OutboundScheduleGroup>();
 
 		fillteredList.forEach(scheduleGroup -> outboundScheduleGroupList.addAll( getSplitedOutboundScheduleGroupNode(scheduleGroup)));
-
-		Collections.sort(outboundScheduleGroupList);
-
+		
+		
+		outboundScheduleGroupList.forEach(o -> o.joinnted());
+		
+//		outboundScheduleGroupList.stream().sorted();
+		
 		return outboundScheduleGroupList;
+	}
+	
+	/**출발항구 정렬
+	 * @param outboundFromPortArray
+	 * @return
+	 */
+	private String[] arrangeFromPort(String[]arrangeFromPortArray, String[] outboundFromPortArray) 
+	{	
+
+		List<String> arragedFromPortList =Arrays.asList(arrangeFromPortArray);
+		
+		List<String> fromPortList =Arrays.asList(outboundFromPortArray);
+		
+		for(int i=0;i<arrangeFromPortArray.length;i++)
+		{
+			// 국내항 항목이 없으면
+			if(!fromPortList.contains(arrangeFromPortArray[i]))
+			{
+				//정렬된 항국 목록 에서 제외
+				arragedFromPortList.remove(arrangeFromPortArray[i]);
+			}
+		}
+		String[] newArray = arragedFromPortList.toArray(new String[arragedFromPortList.size()]);
+		
+		
+		return newArray;
 	}
 
 

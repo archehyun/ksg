@@ -56,7 +56,7 @@ import lombok.extern.slf4j.Slf4j;
 
  */
 @Slf4j
-public class RouteScheduleJoint extends RouteAbstractSchedulePrint{
+public class RouteScheduleJointV1 extends AbstractRouteSchedulePrint{
 
 	/**
 	 * @¼³¸í ÃÖ»óÀ§ ±×·ì
@@ -119,7 +119,7 @@ public class RouteScheduleJoint extends RouteAbstractSchedulePrint{
 	
 	private int totalCount;
 	
-	public RouteScheduleJoint(int orderBy) throws Exception {
+	public RouteScheduleJointV1(int orderBy) throws Exception {
 		super();
 		
 		this.orderByType =orderBy;
@@ -128,13 +128,13 @@ public class RouteScheduleJoint extends RouteAbstractSchedulePrint{
 		
 	}
 	
-	public RouteScheduleJoint(String date_issue, int orderBy) throws Exception {
+	public RouteScheduleJointV1(String date_issue, int orderBy) throws Exception {
 		this(orderBy);
 		
 		this.date_issue = date_issue;
 	}
 	
-	public RouteScheduleJoint(List<ScheduleData> scheduleList, int orderBy) throws Exception {
+	public RouteScheduleJointV1(List<ScheduleData> scheduleList, int orderBy) throws Exception {
 
 		this(orderBy);
 		
@@ -142,7 +142,7 @@ public class RouteScheduleJoint extends RouteAbstractSchedulePrint{
 	}
 	
 
-	public RouteScheduleJoint(ShippersTable op, int orderBy) throws Exception {
+	public RouteScheduleJointV1(ShippersTable op, int orderBy) throws Exception {
 
 		super(op);
 		
@@ -167,7 +167,7 @@ public class RouteScheduleJoint extends RouteAbstractSchedulePrint{
 
 	
 
-	public void initTag() {
+	public void init() {
 
 		WORLD_F="<cc:><ct:><cs:><cf:><cc:60.100.0.0.><ct:30><cs:7.500000><cf:Yoon°¡º¯ À±°íµñ100\\_TT>¡ã<ct:><cf:><ct:Bold><cf:Helvetica LT Std>";
 		WORLD_B="<cc:><ct:><cs:><cf:><cc:60.100.0.0.><ct:30><cs:7.500000><cf:Yoon°¡º¯ À±°íµñ100\\_TT>¡ã<ct:><cf:><ct:Bold><cf:Helvetica LT Std>";

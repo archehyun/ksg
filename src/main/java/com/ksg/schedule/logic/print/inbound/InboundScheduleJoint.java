@@ -1,4 +1,4 @@
-package com.ksg.schedule.logic.print;
+package com.ksg.schedule.logic.print.inbound;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +35,7 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.SchedulePrint;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 
 /**
  * ScheduelDateFResult
@@ -47,23 +49,13 @@ import com.ksg.schedule.logic.SchedulePrint;
  * @author 박창현
  *
  */
-public class InboundScheduleJoint extends DefaultSchedulePrint{
+public class InboundScheduleJoint extends AbstractInboundSchedulePrint{
 
 
-	private static final String INBOUND_PRINT_TXT = "inbound_print.txt";
 
 	private XTGManager xtgmanager = new XTGManager();
 
 	private Element schedule_row;
-
-	private String 	BOLD_TAG_F;
-	private String 	BOLD_TAG_B;
-	private String 	TAG_VERSION0;	
-	private String 	TAG_VERSION2;
-	private String 	TAG_VERSION3;
-	private String 	TAG_VERSION6;
-
-	private HashMap<String, String> portMap;	
 
 	// 항구 리스트
 	private List portlist;
@@ -72,6 +64,8 @@ public class InboundScheduleJoint extends DefaultSchedulePrint{
 	private PortInfo port_abbr;
 
 	private String inbound_source_filename;
+
+	private HashMap<String, String> portNameMap;
 
 	public InboundScheduleJoint() throws SQLException {
 		super();
@@ -97,26 +91,11 @@ public class InboundScheduleJoint extends DefaultSchedulePrint{
 	 */
 	private String getTagedPortCode(String attributeValue) {
 
-		String fport=portMap.get(attributeValue);
+		String fport=portNameMap.get(attributeValue);
 
 		return fport!=null?"[<ct:><cf:><cf:Helvetica Neue LT Std>"+BOLD_TAG_F+fport+BOLD_TAG_B+"<cf:><cf:Helvetica LT Std><ct:Roman>]":"[<ct:><cf:><cf:Helvetica Neue LT Std>"+BOLD_TAG_F+attributeValue+BOLD_TAG_B+"<cf:><cf:Helvetica LT Std><ct:Roman>]";
 	}
-
-	public void initTag() {
-
-		BOLD_TAG_B="<ct:>";
-
-		BOLD_TAG_F="<ct:77 Bold Condensed>";
-
-		TAG_VERSION0="<KSC5601-WIN>";
-
-		TAG_VERSION2="<vsn:8><fset:InDesign-Roman><ctable:=<검정:COLOR:CMYK:Process:0,0,0,1>>";
-
-		TAG_VERSION3="<dps:정규=<Nextstyle:정규><cc:검정><cs:7.500000><clig:0><cbs:-0.000000><phll:0><pli:21.543304><pfli:-21.543305><palp:1.199996><clang:Neutral><ph:0><pmcbh:3><phc:0><pswh:6><phz:0.000000><ptr:21.543304443359375\\,Left\\,.\\,0\\,\\;138.89764404296875\\,Right\\,.\\,0\\,\\;><cf:Helvetica LT Std><pmaws:1.500000><pmiws:1.000000><pmaxl:0.149993><prac:검정><prat:100.000000><prbc:검정><prbt:100.000000><blf:\\<TextFont\\>><bltf:\\<TextStyle\\>>>";
-
-		TAG_VERSION6="<pstyle:정규><pli:21.543289><pfli:-21.543290><ptr:158\\,Char\\,\\[\\,0\\,\\;><cl:6.750000><chs:0.800003><cs:8.000000><cf:Helvetica LT Std><ct:Roman>";
-
-	}	
+		
 	/** IN 항구 초기화
 	 *  CODE 필드에서 IN항구를 조회하여 할당
 	 * 
@@ -132,12 +111,12 @@ public class InboundScheduleJoint extends DefaultSchedulePrint{
 
 		Iterator<Code> iter = li.iterator();
 
-		portMap = new HashMap<String, String>();
+		portNameMap = new HashMap<String, String>();
 
 		while(iter.hasNext())
 		{
 			Code info = iter.next();
-			portMap.put(info.getCode_field(), info.getCode_name());
+			portNameMap.put(info.getCode_field(), info.getCode_name());
 		}
 	}
 
@@ -898,7 +877,7 @@ public class InboundScheduleJoint extends DefaultSchedulePrint{
 	 */
 	private String getPortCodeInfo(String port)
 	{
-		String fport=portMap.get(port);
+		String fport=portNameMap.get(port);
 
 		//*****		return fport!=null?"["+fport+"]":null;
 		return fport!=null?"[====="+fport+"=====]":null;
@@ -1197,5 +1176,11 @@ public class InboundScheduleJoint extends DefaultSchedulePrint{
 		
 		return SchedulePrint.SUCCESS;
 
+	}
+
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 }

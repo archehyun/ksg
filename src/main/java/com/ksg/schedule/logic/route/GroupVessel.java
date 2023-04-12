@@ -21,7 +21,7 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
-import com.ksg.schedule.logic.print.route.RouteScheduleJoint;
+import com.ksg.schedule.logic.print.route.RouteScheduleJointV1;
 
 public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<GroupVessel>{
 	
@@ -205,7 +205,7 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 
 		int result;
 		switch (orderByType) {
-		case RouteScheduleJoint.ORDER_BY_DATE:// 날짜 정렬
+		case RouteScheduleJointV1.ORDER_BY_DATE:// 날짜 정렬
 			try {
 				if(KSGDateUtil.daysDiff(PortDateUtil.parse(this.getFirstInScheduleDate()), PortDateUtil.parse(one.getFirstInScheduleDate()))<=0)
 				{
@@ -221,7 +221,7 @@ public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<G
 			}
 
 			break;
-		case RouteScheduleJoint.ORDER_BY_VESSEL:// 선박명 정렬
+		case RouteScheduleJointV1.ORDER_BY_VESSEL:// 선박명 정렬
 			if(this.vessel_name.compareTo(one.getVessel_name())>0)
 			{
 				result= 1;

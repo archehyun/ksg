@@ -15,10 +15,12 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.SortUtil;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.ScheduleBuild;
+import com.ksg.service.BaseService;
 
 
 /**
@@ -37,7 +39,7 @@ import com.ksg.schedule.logic.ScheduleBuild;
   * @프로그램 설명 :
 
   */
-public class InlnandScheduleJoint extends DefaultSchedulePrint{
+public class InlnandScheduleJoint extends AbstractSchedulePrint{
 	private String TAG_VERSION;
 	private String TAG_DOCUMENT_INFO_1;
 	private String TAG_DOCUMENT_INFO_2;
@@ -47,6 +49,7 @@ public class InlnandScheduleJoint extends DefaultSchedulePrint{
 	private String TAG_BODY_AGENT_HEAD;
 	private String TAG_BODY_AGENT_DATE;
 	private String TAG_BODY_AGENT_BODY;
+	private BaseService baseService;
 	
 	/**
 	 * @param option
@@ -55,7 +58,7 @@ public class InlnandScheduleJoint extends DefaultSchedulePrint{
 	public InlnandScheduleJoint(ScheduleData option) throws SQLException {
 		super();
 		this.option=option;
-
+		baseService 	= DAOManager.getInstance().createBaseService();
 		// 생성 파일 이름 지정
 			
 		try {
@@ -78,7 +81,7 @@ public class InlnandScheduleJoint extends DefaultSchedulePrint{
 
 
 	}
-	public void initTag() {
+	public void init() {
 		logger.debug("디자인 태그 초기화");
 		TAG_VERSION="<KSC5601-WIN>";
 		TAG_DOCUMENT_INFO_1="<vsn:8><fset:InDesign-Roman><ctable:=<Black:COLOR:CMYK:Process:0,0,0,1>>";
@@ -448,6 +451,11 @@ public class InlnandScheduleJoint extends DefaultSchedulePrint{
 
 		}
 
+	}
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 

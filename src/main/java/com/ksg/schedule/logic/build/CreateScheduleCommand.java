@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ksg.commands.IFCommand;
+import com.ksg.commands.ScheduleExecute;
 import com.ksg.commands.schedule.ErrorLog;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.common.dao.DAOManager;
@@ -39,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public abstract class CreateScheduleCommand implements IFCommand, ScheduleBuild{
+public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecute{
 
 
 	public static final int TYPE_INBOUND=1;

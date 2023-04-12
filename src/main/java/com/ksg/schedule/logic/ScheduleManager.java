@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.ksg.commands.ScheduleExecute;
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.exception.VesselNullException;
@@ -24,8 +25,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.print.ConsoleScheduleJoint;
-import com.ksg.schedule.logic.print.DefaultSchedulePrint;
-import com.ksg.schedule.logic.print.InboundScheduleJoint;
+import com.ksg.schedule.logic.print.inbound.InboundScheduleJoint;
+import com.ksg.schedule.logic.print.AbstractSchedulePrint;
 import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintV2;
 import com.ksg.service.BaseService;
 import com.ksg.service.VesselService;
@@ -49,7 +50,7 @@ public class ScheduleManager {
 
 	private static ScheduleManager instance;
 
-	private ArrayList<SchedulePrint> scheduleBuilds;
+	private ArrayList<ScheduleExecute> scheduleBuilds;
 
 	private ScheduleBuildMessageDialog di;
 
@@ -70,7 +71,7 @@ public class ScheduleManager {
 	private CompanyDAO companyDAO;
 
 	private ScheduleManager() {
-		scheduleBuilds = new ArrayList<SchedulePrint>();
+		scheduleBuilds = new ArrayList<ScheduleExecute>();
 		
 		baseService = new BaseServiceImpl();
 		
@@ -105,7 +106,7 @@ public class ScheduleManager {
 	 * @return
 	 * @throws Exception 
 	 */
-	public SchedulePrint getOutboundSchedule() throws Exception
+	public ScheduleExecute getOutboundSchedule() throws Exception
 	{
 		return new OutboundSchedulePrintV2();
 	}
@@ -114,7 +115,7 @@ public class ScheduleManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public SchedulePrint getInboundSchedule() throws SQLException
+	public ScheduleExecute getInboundSchedule() throws SQLException
 	{
 		return new InboundScheduleJoint();
 	}
@@ -135,7 +136,7 @@ public class ScheduleManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public SchedulePrint getConsoleSchedudle(ScheduleData op) throws SQLException
+	public ScheduleExecute getConsoleSchedudle(ScheduleData op) throws SQLException
 	{
 		return new ConsoleScheduleJoint(op);
 	}
@@ -144,7 +145,7 @@ public class ScheduleManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public SchedulePrint getInlandSchedule() throws SQLException
+	public ScheduleExecute getInlandSchedule() throws SQLException
 	{
 		return new InboundScheduleJoint();
 	}
@@ -254,18 +255,28 @@ public class ScheduleManager {
 				
 				di.createAndUpdateUI();
 				
-				Iterator<SchedulePrint>iter = scheduleBuilds.iterator();
+				Iterator<ScheduleExecute>iter = scheduleBuilds.iterator();
 				
 				initMasterData();
 				
 				try {
 					while(iter.hasNext())
 					{
-						DefaultSchedulePrint build = (DefaultSchedulePrint) iter.next();
+						long startTime = System.currentTimeMillis();
+						
+						AbstractSchedulePrint build = (AbstractSchedulePrint) iter.next();
+						
 						di.setTask(build);
-						build.initTag();
+						
+						build.init();
+						
 						build.execute();
+						
 						build.setDone(true);
+						
+						long endTime = System.currentTimeMillis();
+						
+						logger.info("스케줄 생성 종료({}s)",(endTime-startTime));
 					}
 				}
 				catch (Exception e) {
@@ -282,7 +293,7 @@ public class ScheduleManager {
 	/**
 	 * @param build
 	 */
-	public void addBulid(SchedulePrint build)
+	public void addBulid(ScheduleExecute build)
 	{
 		scheduleBuilds.add(build);
 	}

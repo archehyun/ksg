@@ -39,7 +39,7 @@ import com.ksg.schedule.logic.print.ScheduleBuildUtil;
  *   GroupInOutPort    
  *       
  */
-public class RouteScheduleJointV3_1 extends RouteAbstractSchedulePrint{
+public class RouteScheduleJointV3_1 extends AbstractRouteSchedulePrint{
 
 
 	/**
@@ -630,7 +630,7 @@ public class RouteScheduleJointV3_1 extends RouteAbstractSchedulePrint{
 		super(op);
 		this.orderByType =orderBy;
 	}
-	public void initTag() {
+	public void init() {
 
 		WORLD_F="<cc:><ct:><cs:><cf:><cc:60.100.0.0.><ct:30><cs:7.500000><cf:Yoon°¡º¯ À±°íµñ100\\_TT>¡ã<ct:><cf:><ct:Bold><cf:Helvetica LT Std>";
 		WORLD_B="<cc:><ct:><cs:><cf:><cc:60.100.0.0.><ct:30><cs:7.500000><cf:Yoon°¡º¯ À±°íµñ100\\_TT>¡ã<ct:><cf:><ct:Bold><cf:Helvetica LT Std>";

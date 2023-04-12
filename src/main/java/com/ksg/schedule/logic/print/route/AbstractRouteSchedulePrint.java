@@ -3,14 +3,14 @@ package com.ksg.schedule.logic.print.route;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-import com.dtp.api.schedule.comparator.DateComparator;
+import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.schedule.logic.print.DefaultSchedulePrint;
+import com.ksg.schedule.logic.print.AbstractSchedulePrint;
+import com.ksg.service.BaseService;
 
 /**
 
@@ -25,7 +25,7 @@ import com.ksg.schedule.logic.print.DefaultSchedulePrint;
   * @프로그램 설명 : 항로별 스케줄 생성 추상 클래스
 
   */
-public abstract class RouteAbstractSchedulePrint extends DefaultSchedulePrint{
+public abstract class AbstractRouteSchedulePrint extends AbstractSchedulePrint{
 	
 	
 	protected String WORLD_B="";
@@ -56,8 +56,6 @@ public abstract class RouteAbstractSchedulePrint extends DefaultSchedulePrint{
 	
 	protected  String saveLoaction;
 	
-	protected String fileName;
-
 	protected String errorOutPortfileName;
 	
 	protected String commonInPortfileName;
@@ -68,17 +66,18 @@ public abstract class RouteAbstractSchedulePrint extends DefaultSchedulePrint{
 	
 	SimpleDateFormat dateFormat =new SimpleDateFormat("yyyyMMddHHmmss");
 	
+	protected BaseService baseService;
+	
 	protected List<ScheduleData> scheduleList;
 
-	public RouteAbstractSchedulePrint(ShippersTable op) throws Exception {
+	public AbstractRouteSchedulePrint(ShippersTable op) throws Exception {
 		this();
 		
 		this.op = op;
-		
-		
+		baseService 	= DAOManager.getInstance().createBaseService();
 	}
 	
-	public RouteAbstractSchedulePrint() throws Exception {
+	public AbstractRouteSchedulePrint() throws Exception {
 		super();
 		
 		this.saveLoaction = ksgPropertiey.getProperty(KSGPropertis.SAVE_LOCATION);
@@ -89,8 +88,6 @@ public abstract class RouteAbstractSchedulePrint extends DefaultSchedulePrint{
 		
 		this.commonInPortfileName = ksgPropertiey.getProperty("schedule.route.commoninport");
 
-//		fw = new FileWriter(saveLoaction+"/"+String.format("%s_%s.txt", fileName, dateFormat.format(new Date())));
-		
 		fw = new FileWriter(saveLoaction+"/"+String.format("%s.txt", fileName ));
 
 		errorOutfw = new FileWriter(saveLoaction+"/"+errorOutPortfileName);
@@ -98,7 +95,7 @@ public abstract class RouteAbstractSchedulePrint extends DefaultSchedulePrint{
 		commonInfw = new FileWriter(saveLoaction+"/"+commonInPortfileName);
 	}
 
-	protected void close() throws IOException
+	public void close() throws IOException
 	{
 		fw.close();
 		errorOutfw.close();

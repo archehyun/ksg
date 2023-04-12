@@ -38,10 +38,11 @@ import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.SchedulePrint;
-import com.ksg.schedule.logic.print.DefaultSchedulePrint;
+import com.ksg.schedule.logic.print.AbstractSchedulePrint;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.ADVService;
+import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
@@ -49,7 +50,7 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
  * @author archehyun
  *
  */
-public class DefaultWebSchedule extends DefaultSchedulePrint {
+public class DefaultWebSchedule extends AbstractSchedulePrint {
 	
 	private SimpleDateFormat format = new SimpleDateFormat("M/d");
 	
@@ -147,6 +148,8 @@ public class DefaultWebSchedule extends DefaultSchedulePrint {
 	
 	private String inlnad_date;
 
+	private BaseService baseService;
+
 	private void init(int format_type) throws SQLException {
 
 		tableService = DAOManager.getInstance().createTableService();
@@ -222,6 +225,7 @@ public class DefaultWebSchedule extends DefaultSchedulePrint {
 	private DefaultWebSchedule(ShippersTable op) throws SQLException {
 		super();
 		this.op= op;
+		baseService 	= DAOManager.getInstance().createBaseService();
 	}
 
 
@@ -1510,7 +1514,12 @@ public class DefaultWebSchedule extends DefaultSchedulePrint {
 		return arrayDatas;
 	}
 	@Override
-	public void initTag() {
+	public void init() {
+		
+	}
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
 		
 	}
 

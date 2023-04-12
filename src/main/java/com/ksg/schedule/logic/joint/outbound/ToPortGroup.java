@@ -8,7 +8,7 @@ import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.print.DefaultSchedulePrint;
+import com.ksg.schedule.logic.print.AbstractSchedulePrint;
 
 /**
  * @author 박창현
@@ -55,9 +55,9 @@ public class ToPortGroup extends HashMap<String,FromPortGroup>{
 		 */
 		PortInfo info=scheduleManager.searchPort(data.getFromPort());
 
-		if(info.getPort_name().equals(DefaultSchedulePrint.BUSAN_NEW_PORT))
+		if(info.getPort_name().equals(AbstractSchedulePrint.BUSAN_NEW_PORT))
 		{
-			data.setFromPort(DefaultSchedulePrint.BUSAN);
+			data.setFromPort(AbstractSchedulePrint.BUSAN);
 		}				
 
 		// 스케줄이 존재할 경우 추가

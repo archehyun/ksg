@@ -30,7 +30,6 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.ScheduleBuild;
-import com.ksg.schedule.logic.print.DefaultSchedulePrint;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 
 /**
@@ -38,7 +37,7 @@ import com.ksg.schedule.logic.print.ScheduleBuildUtil;
  * @author archehyun
  *
  */
-public class OutboundSchedulePrintV1 extends OutboundAbstractSchedulePrint{
+public class OutboundSchedulePrintV1 extends AbstractOutboundSchedulePrint{
 
 	XTGManager xtgmanager = new XTGManager();
 	
@@ -64,7 +63,7 @@ public class OutboundSchedulePrintV1 extends OutboundAbstractSchedulePrint{
 	}
 
 
-	public void initTag() {
+	public void init() {
 
 		logger.info("태그정보 초기화");
 

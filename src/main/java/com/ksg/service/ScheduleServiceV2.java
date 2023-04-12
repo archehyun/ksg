@@ -1,7 +1,6 @@
 package com.ksg.service;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 
 import com.ksg.common.model.CommandMap;

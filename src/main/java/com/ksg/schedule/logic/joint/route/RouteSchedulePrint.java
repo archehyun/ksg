@@ -1,15 +1,15 @@
 package com.ksg.schedule.logic.joint.route;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
-import com.ksg.schedule.logic.print.DefaultSchedulePrint;
-import com.ksg.schedule.logic.print.route.RouteAbstractSchedulePrint;
+import com.ksg.schedule.logic.print.AbstractSchedulePrint;
 
-public class RouteSchedulePrint extends DefaultSchedulePrint{
+public class RouteSchedulePrint extends AbstractSchedulePrint{
 	
-	RouteAbstractSchedulePrint joint;
+	AbstractSchedulePrint joint;
 	
-	public RouteSchedulePrint(RouteAbstractSchedulePrint joint) throws SQLException
+	public RouteSchedulePrint(AbstractSchedulePrint joint) throws SQLException
 	{
 		super();
 		this.joint = joint;
@@ -22,8 +22,8 @@ public class RouteSchedulePrint extends DefaultSchedulePrint{
 	}
 
 	@Override
-	public void initTag() {
-		joint.initTag();
+	public void init() throws Exception {
+		joint.init();
 	}
 	
 	@Override
@@ -51,6 +51,12 @@ public class RouteSchedulePrint extends DefaultSchedulePrint{
 	@Override
 	public String getMessage() {
 		return joint.getMessage();
+	}
+
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

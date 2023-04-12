@@ -1,39 +1,58 @@
 package com.ksg.schedule.logic.print.outbound;
 
 import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
-import com.ksg.schedule.logic.print.DefaultSchedulePrint;
+import com.dtp.api.schedule.joint.outbound.OutboundScheduleRule;
+import com.ksg.commands.schedule.XML_INFO;
+import com.ksg.common.dao.DAOManager;
+import com.ksg.domain.Code;
+import com.ksg.domain.PortInfo;
+import com.ksg.domain.Vessel;
+import com.ksg.schedule.logic.print.AbstractSchedulePrint;
+import com.ksg.service.BaseService;
 
-public abstract class OutboundAbstractSchedulePrint extends DefaultSchedulePrint{
-	
-	
+public abstract class AbstractOutboundSchedulePrint extends AbstractSchedulePrint{
+
+	protected OutboundScheduleRule outboundSchedule;
+
 	protected static final String PORT_NAME = "outbound_port.txt";
 
 	protected static final String FILE_NAME = "outbound_new.txt";
 
 	protected static final String ERROR_NAME = "outbound_error.txt";	
-	
-	protected FileWriter fw;
 
-	protected FileWriter errorfw;
-
-	protected FileWriter portfw;
 	protected String errorFileName;
-	protected String portName;
-	
-	protected boolean isApplyTag=true;// 태그 적용 여부
-	
-	protected String 	BOLD_TAG_F="",
-						BOLD_TAG_B="",
-						TAG_VERSION0="",
-						TAG_VERSION1="",
-						TAG_VERSION2="",
-						TAG_VERSION3="",
-						TAG_VERSION4="",
-						TAG_VERSION5="";
 
-	public OutboundAbstractSchedulePrint() throws Exception {
+	protected BaseService baseService;
+
+	protected String portName;
+
+	protected String[] fromPort;
+
+	protected  Map<String, PortInfo> portMap;
+
+	protected  Map<String, Vessel> vesselMap;
+
+	protected boolean isApplyTag=true;// 태그 적용 여부
+
+	protected String 	BOLD_TAG_F="",
+			BOLD_TAG_B="",
+			TAG_VERSION0="",
+			TAG_VERSION1="",
+			TAG_VERSION2="",
+			TAG_VERSION3="",
+			TAG_VERSION4="",
+			TAG_VERSION5="";
+
+	public AbstractOutboundSchedulePrint() throws Exception {
 		super();
+		baseService 	= DAOManager.getInstance().createBaseService();
+	}
+	public void initFile() throws IOException {
 		fileName = fileLocation+"/"+FILE_NAME;
 
 		errorFileName = fileLocation+"/"+ERROR_NAME;
@@ -45,12 +64,24 @@ public abstract class OutboundAbstractSchedulePrint extends DefaultSchedulePrint
 		errorfw = new FileWriter(errorFileName);
 
 		portfw = new FileWriter(portName);
-
-		
 	}
-	public void initTag() {
+	public void init() throws Exception {
 		logger.info("태그정보 초기화");
 
+		Code param = new Code();
+
+		param.setCode_type(XML_INFO.XML_TAG_FROM_PORT);
+
+
+
+		List<Code> li = baseService.getCodeInfoList(param);
+		fromPort = new String[li.size()];
+
+		for(int i=0;i<li.size();i++)
+		{
+			Code info = li.get(i);
+			fromPort[i] =info.getCode_name();
+		}
 
 		if(isApplyTag)
 		{
@@ -59,7 +90,7 @@ public abstract class OutboundAbstractSchedulePrint extends DefaultSchedulePrint
 			BOLD_TAG_F="<ct:Bold Condensed>";
 
 			TAG_VERSION0="<KSC5601-WIN>";
-			
+
 			TAG_VERSION1="";
 
 			TAG_VERSION2="<vsn:8><fset:InDesign-Roman><ctable:=<검정:COLOR:CMYK:Process:0,0,0,1>>";
@@ -70,6 +101,12 @@ public abstract class OutboundAbstractSchedulePrint extends DefaultSchedulePrint
 
 			TAG_VERSION5="<pstyle:Body Text><ptr:19.842498779296875\\,Left\\,.\\,0\\,\\;211.3332977294922\\,Right\\,.\\,0\\,\\;><cs:8.000000><cl:5.479995><cf:Helvetica LT Std><ct:Roman>\r\n";			
 		}
+
+		initFile();
+	}
+	public void close()
+	{
+
 	}
 
 }

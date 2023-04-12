@@ -9,12 +9,10 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.joint.route.RouteSchedulePrint;
-import com.ksg.schedule.logic.print.InboundScheduleJoint;
+import com.ksg.schedule.logic.print.AbstractSchedulePrint;
+import com.ksg.schedule.logic.print.inbound.InboundScheduleJoint;
 import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintV2;
-import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintV3;
-import com.ksg.schedule.logic.print.route.RouteAbstractSchedulePrint;
-import com.ksg.schedule.logic.print.route.RouteScheduleJoint;
-import com.ksg.schedule.logic.print.route.RouteSchedulePrintV4;
+import com.ksg.schedule.logic.print.route.RouteScheduleJointV1;
 
 public class SortAllTask implements LongTask {
 
@@ -73,9 +71,7 @@ public class SortAllTask implements LongTask {
 		
 		if(isPrintOutbound)
 		{
-//			List<ScheduleData> scheduleList = (List<ScheduleData>) param.get("scheduleList");
-			
-			ScheduleManager.getInstance().addBulid(isPrintNewOutbound?new OutboundSchedulePrintV3(param):new OutboundSchedulePrintV2());
+			ScheduleManager.getInstance().addBulid(isPrintNewOutbound? AbstractSchedulePrint.createSchedulePrint("Outbound", param):new OutboundSchedulePrintV2());
 		}
 		
 		if(isPrintRoute)
@@ -86,15 +82,13 @@ public class SortAllTask implements LongTask {
 			}
 			else
 			{
-				List<ScheduleData> scheduleList = (List<ScheduleData>) param.get("scheduleList");
+				List<ScheduleData> scheduleList = (List<ScheduleData>) param.get("outboundScheduleList");
 				
-				
-				RouteAbstractSchedulePrint joint = isPrintNewRoute?new RouteSchedulePrintV4(scheduleList, orderBy):new RouteScheduleJoint(scheduleList, orderBy);
+				AbstractSchedulePrint joint = isPrintNewRoute?AbstractSchedulePrint.createSchedulePrint("Route", param):new RouteScheduleJointV1(scheduleList, orderBy);
 
 				ScheduleManager.getInstance().addBulid(new RouteSchedulePrint(joint));
 			}
 		}
-
 	}
 	
 	public Object startBuild()

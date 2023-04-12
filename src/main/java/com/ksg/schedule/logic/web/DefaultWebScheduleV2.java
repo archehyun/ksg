@@ -26,7 +26,6 @@ import org.jdom.input.SAXBuilder;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.ResourceNotFoundException;
-import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ADVData;
@@ -35,9 +34,10 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.logic.SchedulePrint;
-import com.ksg.schedule.logic.print.DefaultSchedulePrint;
 import com.ksg.schedule.logic.ScheduleManager;
+import com.ksg.schedule.logic.SchedulePrint;
+import com.ksg.schedule.logic.print.AbstractSchedulePrint;
+import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
@@ -45,7 +45,7 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
  * @author ¹ÚÃ¢Çö
  *
  */
-public class DefaultWebScheduleV2 extends DefaultSchedulePrint {
+public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 
 	private int format_type;
 
@@ -127,6 +127,8 @@ public class DefaultWebScheduleV2 extends DefaultSchedulePrint {
 
 	private int inlandPortIndexLists[];
 
+	private BaseService baseService;
+
 	public DefaultWebScheduleV2(int type,ShippersTable parameter) throws SQLException {
 		super();
 
@@ -137,6 +139,8 @@ public class DefaultWebScheduleV2 extends DefaultSchedulePrint {
 		tableService = DAOManager.getInstance().createTableService();
 
 		advService = DAOManager.getInstance().createADVService();
+		
+		baseService 	= DAOManager.getInstance().createBaseService();
 
 		builder = new SAXBuilder();		
 
@@ -1353,7 +1357,13 @@ public class DefaultWebScheduleV2 extends DefaultSchedulePrint {
 	}
 
 	@Override
-	public void initTag() {
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void close() throws IOException {
 		// TODO Auto-generated method stub
 		
 	}

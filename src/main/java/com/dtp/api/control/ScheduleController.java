@@ -16,14 +16,18 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.dtp.api.annotation.ControlMethod;
+import com.dtp.api.service.CodeService;
 import com.dtp.api.service.ShipperTableService;
 import com.dtp.api.service.impl.ShipperTableServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ksg.commands.ScheduleExecute;
 import com.ksg.commands.schedule.SortAllCommand;
 import com.ksg.commands.schedule.SortInlandCommnad;
+import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.AreaInfo;
+import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
@@ -61,6 +65,7 @@ public class ScheduleController extends AbstractController{
 	private VesselServiceV2 vesselService;
 	
 	private PortService portService;
+	
 
 	private ShipperTableService tableService = new ShipperTableServiceImpl();
 	
@@ -155,6 +160,21 @@ public class ScheduleController extends AbstractController{
 	 */
 
 	public CommandMap selectOutboundScheduleGroupList(CommandMap param) throws SQLException {
+		
+		
+		Code codeParam = new Code();
+
+		codeParam.setCode_type(XML_INFO.XML_TAG_FROM_PORT);
+
+		List<Code> li = codeService.selectCodeDetailList(codeParam);
+
+		String[] fromPort = new String[li.size()];
+
+		for(int i=0;i<li.size();i++)
+		{
+			Code info = li.get(i);
+			fromPort[i] =info.getCode_name();
+		}
 
 		List<ScheduleData>  scheduleList = service.selecteScheduleListByCondition(param);
 
@@ -185,6 +205,7 @@ public class ScheduleController extends AbstractController{
 		
 		result.put("portMap", portMap);
 		result.put("vesselMap", vesselMap);
+		result.put("fromPort", fromPort);
 
 		return result;
 
@@ -252,7 +273,6 @@ public class ScheduleController extends AbstractController{
 				{
 					//스케줄 목록
 					CommandMap vessels =(CommandMap) fromPorts.get(fromPort);
-
 
 					//vessel 있을 경우
 					if(vessels.containsKey(vessel+"$$"+dateF))					  
@@ -438,7 +458,7 @@ public class ScheduleController extends AbstractController{
 		// 콘솔 스케줄 생성
 		if(gubun.equals(ShippersTable.GUBUN_CONSOLE))
 		{	
-			SchedulePrint console=scheduleManager.getConsoleSchedudle(op);
+			ScheduleExecute console=scheduleManager.getConsoleSchedudle(op);
 
 			scheduleManager.addBulid(console);
 
@@ -457,11 +477,7 @@ public class ScheduleController extends AbstractController{
 			
 			CommandMap searchParam = new CommandMap();
 			
-			String OUTBOUND = "O";
-			
 			searchParam.put("gubun", gubun);
-			
-			searchParam.put("inOutType", OUTBOUND);
 			
 			searchParam.put("date_issue", date_issue);
 			
@@ -471,9 +487,23 @@ public class ScheduleController extends AbstractController{
 			
 			Map<String, Vessel> vesselMap = extractedVesselMap(scheduleList);
 			
+			List<ScheduleData>outboundScheduleList= scheduleList.stream()
+																.filter(o->o.getInOutType().equals("O"))
+																.collect(Collectors.toList());
+			
+			List<ScheduleData>inboundScheduleList= scheduleList.stream()
+																.filter(o->o.getInOutType().equals("I"))
+																.collect(Collectors.toList());
+			
+			
+			param.put("outboundScheduleList", outboundScheduleList);
+			
+			param.put("inboundScheduleList", inboundScheduleList);
+			
 			param.put("scheduleList", scheduleList);
 			
 			param.put("portMap", portMap);
+			
 			param.put("vesselMap", vesselMap);
 			
 			new SortAllCommand(param).execute();
@@ -536,6 +566,7 @@ public class ScheduleController extends AbstractController{
 			if(inOutType.equals(ScheduleEnum.OUTBOUND.getSymbol()))
 			{
 				CommandMap result = (CommandMap) selectOutboundScheduleGroupList(param);
+				result.put("isAddValidate", param.get("isAddValidate"));
 				
 				returnMap.put("treeNode", nodeManager.getOutboundTreeNode(result));
 				

@@ -684,4 +684,5 @@ public class RouteTaskNewVessel extends DefaultRouteTask{
 			di.dispose();
 		}
 	}
+
 }

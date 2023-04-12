@@ -3,7 +3,10 @@ package com.test;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
@@ -67,10 +70,35 @@ public class TestString {
 		
 		System.out.println(partitions);
 	}
-	@Test
+//	@Test
 	public void testDate()
 	{
 		System.out.println( KSGDateUtil.isThreeDayUnder("2023/4/13","2023/4/17"));
+		
+	}
+	
+	@Test
+	public void testDate2()
+	{
+		String[] a = {"A","C","B","D","F"};
+		
+		String[] b = {"B,D"};
+		
+		List<String> arragedFromPortList =Arrays.asList(a);
+
+		
+		List<String> fromPortList =Arrays.asList(b);
+		
+		
+		
+
+
+		    List<String> resultList1 = arragedFromPortList.stream()
+		                            .filter(old -> fromPortList.stream().noneMatch(Predicate.isEqual(b)))
+		                            .collect(Collectors.toList());
+		
+		
+		    System.out.println(resultList1);
 		
 	}
 }

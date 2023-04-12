@@ -51,7 +51,7 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
   * @프로그램 설명 :
 
   */
-public class RouteScheduleJointV2 extends RouteAbstractSchedulePrint {
+public class RouteScheduleJointV2 extends AbstractRouteSchedulePrint {
 	
 	final int FORWARD =0;
 	
@@ -73,7 +73,7 @@ public class RouteScheduleJointV2 extends RouteAbstractSchedulePrint {
 
 	}
 
-	public void initTag(){
+	public void init(){
 		logger.debug("start");
 		try {
 			Code code_info = new Code();

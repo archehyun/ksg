@@ -50,9 +50,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RouteNodeManager extends AbstractNodeManager implements RouteJointSubject{
 	
-	RouteJoint joint;
+	private RouteJoint joint;
 
-	private DateComparator dateComparator 	= new DateComparator(new SimpleDateFormat("yyyy/MM/dd"));
+	private DateComparator dateComparator 			= new DateComparator(new SimpleDateFormat("yyyy/MM/dd"));
 
 	private VesselComparator vesselComparator 		= new VesselComparator();
 	
@@ -79,6 +79,7 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 	 */
 	public DefaultMutableTreeNode getTreeNode(CommandMap param) {
 		
+		log.info("param:{}",param);
 
 		CommandMap areaList=(CommandMap) param.get("data"); 
 
@@ -130,7 +131,6 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 
 				}
 			}
-
 			// 출발일 기준으로 정렬
 			Collections.sort(areaScheduleNodeList, sortType.equals("date")?dateComparator:vesselComparator);
 			
@@ -141,10 +141,11 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 			
 			DefaultMutableTreeNode area = new AreaTreeNode(String.format("%s(%d)", strArea, count));
 
-			areaScheduleNodeList.stream().filter(o -> isAddValidate?true:!o.getType().equals(NodeType.JOINT_SCHEDULE)).forEach(o ->area.add(o));
+			areaScheduleNodeList.stream()
+								.filter(o -> isAddValidate?true:!o.getType().equals(NodeType.JOINT_SCHEDULE))
+								.forEach(o ->area.add(o));
 			
 			root.add(area);
-
 		}
 
 		return root;
@@ -170,7 +171,11 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 		
 		String strToPorts 	= group.toToPortString();
 		
-		OutbondScheduleTreeNode schedule 	= new OutbondScheduleTreeNode(String.format("%s - %s (%s)", vesselName, strVoyage, strCompanys), (group.isRouteScheduleValidation(strArea)?NodeType.SCHEDULE:NodeType.JOINT_SCHEDULE)  );
+		String nodeName = String.format("%s - %s (%s)", vesselName, strVoyage, strCompanys);
+		
+		NodeType nodeType = group.isRouteScheduleValidation(strArea)?NodeType.SCHEDULE:NodeType.JOINT_SCHEDULE;
+		
+		OutbondScheduleTreeNode schedule 	= new OutbondScheduleTreeNode(nodeName, nodeType  );
 
 		DefaultMutableTreeNode toPort 		=  new PortTreeNode( strToPorts);				
 

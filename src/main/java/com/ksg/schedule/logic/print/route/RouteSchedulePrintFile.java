@@ -22,6 +22,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.SchedulePrint;
 import com.ksg.schedule.logic.joint.route.RouteScheduleGroup;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
+import com.ksg.schedule.logic.print.SchedulePrintParam;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
 
@@ -40,7 +41,7 @@ import com.ksg.service.impl.VesselServiceImpl;
 
   * @프로그램 설명 : 라우트 스케줄 출력
  */
-public class RouteSchedulePrintV4 extends RouteAbstractSchedulePrint implements RouteJointSubject{
+public class RouteSchedulePrintFile extends AbstractRouteSchedulePrint implements RouteJointSubject{
 	
 	private RouteJoint routeJoint;
 	
@@ -56,12 +57,12 @@ public class RouteSchedulePrintV4 extends RouteAbstractSchedulePrint implements 
 	
 	private List<Vessel>allVesselList;
 
-	public RouteSchedulePrintV4(ShippersTable op, int orderBy) throws Exception {
+	public RouteSchedulePrintFile(ShippersTable op, int orderBy) throws Exception {
 		
 		super(op);
 	}
 	
-	public RouteSchedulePrintV4(String date_isusse, int orderBy) throws Exception {
+	public RouteSchedulePrintFile(String date_isusse, int orderBy) throws Exception {
 		
 		super();
 		
@@ -86,7 +87,7 @@ public class RouteSchedulePrintV4 extends RouteAbstractSchedulePrint implements 
 		
 	}
 
-	public RouteSchedulePrintV4(List<ScheduleData> scheduleList, int orderBy) throws Exception {
+	public RouteSchedulePrintFile(List<ScheduleData> scheduleList, int orderBy) throws Exception {
 		super();
 		
 		routeJoint = new RouteJoint(this);
@@ -95,14 +96,26 @@ public class RouteSchedulePrintV4 extends RouteAbstractSchedulePrint implements 
 		
 		this.orderBy = orderBy;
 	}
+	
+	public RouteSchedulePrintFile(SchedulePrintParam param) throws Exception {
+		
+		this(param.getScheduleList(), param.getOrderBy());
+	}
+	
+	public RouteSchedulePrintFile(CommandMap param) throws Exception {
+		
+		this( (List) param.get("scheduleList"), (int) param.get("orderBy"));
+	}
+
+	public RouteSchedulePrintFile() throws Exception {
+		super();
+	}
 
 	@Override
 	public int execute() throws Exception {
 		
 		
 		if(scheduleList== null || scheduleList.isEmpty()) return SchedulePrint.FAILURE;
-		
-		long startTime = System.currentTimeMillis();
 		
 		message = "항로별 스케줄 출력..";		
 		
@@ -135,16 +148,12 @@ public class RouteSchedulePrintV4 extends RouteAbstractSchedulePrint implements 
 			
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			throw new Exception(e);
 		}
 		
 		finally
 		{
 			close();
-			
-			long endTime = System.currentTimeMillis();
-
-			logger.info("항로별 스케줄 생성 종료({}s)",(endTime-startTime));
 		}
 
 		return SchedulePrint.SUCCESS;
@@ -165,7 +174,7 @@ public class RouteSchedulePrintV4 extends RouteAbstractSchedulePrint implements 
 			joiner.add((String)area);
 		}
 
-		logger.info("\n- 지역목록- \n{}",joiner.toString());
+		logger.debug("\n- 지역목록- \n{}",joiner.toString());
 	}
 
 
@@ -176,7 +185,7 @@ public class RouteSchedulePrintV4 extends RouteAbstractSchedulePrint implements 
 	}
 
 	@Override
-	public void initTag() {
+	public void init() {
 		WORLD_F="<cc:><ct:><cs:><cf:><cc:60.100.0.0.><ct:30><cs:7.500000><cf:Yoon가변 윤고딕100\\_TT>▲<ct:><cf:><ct:Bold><cf:Helvetica LT Std>";
 		WORLD_B="<cc:><ct:><cs:><cf:><cc:60.100.0.0.><ct:30><cs:7.500000><cf:Yoon가변 윤고딕100\\_TT>▲<ct:><cf:><ct:Bold><cf:Helvetica LT Std>";
 		WORLD_VERSION1="<KSC5601-WIN>\r\n<vsn:8><fset:InDesign-Roman><ctable:=<Black:COLOR:CMYK:Process:0,0,0,1><60.100.0.0.:COLOR:CMYK:Process:0.6,1,0,0><30.60.0.0.:COLOR:CMYK:Process:0.3,0.6,0,0>>";
@@ -213,7 +222,7 @@ public class RouteSchedulePrintV4 extends RouteAbstractSchedulePrint implements 
 
 			Map<String, List<ScheduleData>> vesselList = areaList.get(strArea);
 			
-			logger.info("Area: "+strArea+ ", 스케줄 그룹 사이즈:"+vesselList.keySet().size());
+			logger.debug("Area: "+strArea+ ", 스케줄 그룹 사이즈:"+vesselList.keySet().size());
 		
 			Object[] vesselArray = vesselList.keySet().toArray();
 			
@@ -240,7 +249,7 @@ public class RouteSchedulePrintV4 extends RouteAbstractSchedulePrint implements 
 			}
 			
 			// 출발일, 선박명 기준으로 정렬
-			Collections.sort(scheduleGroupList, orderBy==RouteAbstractSchedulePrint.ORDER_BY_DATE ?dateComparator:vesselComparator);
+			Collections.sort(scheduleGroupList, orderBy==AbstractRouteSchedulePrint.ORDER_BY_DATE ?dateComparator:vesselComparator);
 			
 			// 출력
 			for(RouteScheduleGroup group:scheduleGroupList ){

@@ -253,9 +253,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 		return pnMain;
 	}
 
-
-
-
 	public KSGPanel buildSearch()
 	{
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
@@ -309,7 +306,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 					lblJointedSchedule.setText("제외스케줄");
 					lblSpiltedSchedule.setVisible(false);
 				}
-				cbxIsAddValidate.setVisible("ROUTE".equals(selectedValue));
+				cbxIsAddValidate.setVisible(!"INBOUND".equals(selectedValue));
 			}
 		});
 
@@ -346,8 +343,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 		toPort.addActionListener(this);
 		
 		JLabel lblToPort = new JLabel("도착항");
-
-
 
 		KSGPanel pnPortSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 

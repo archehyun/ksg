@@ -39,7 +39,7 @@ import com.ksg.schedule.logic.print.ScheduleJointError;
   * @프로그램 설명 :
 
   */
-public class OutboundSchedulePrintV2 extends OutboundAbstractSchedulePrint{
+public class OutboundSchedulePrintV2 extends AbstractOutboundSchedulePrint{
 
 
 	private ScheduleData op;
@@ -57,6 +57,8 @@ public class OutboundSchedulePrintV2 extends OutboundAbstractSchedulePrint{
 		logger.info("outbound build");
 
 		message = "Outbound 생성중...";
+		
+		initFile();
 		
 		printList = new ArrayList<PrintItem>();
 
@@ -179,8 +181,7 @@ public class OutboundSchedulePrintV2 extends OutboundAbstractSchedulePrint{
 					toPort = toPortIter.next();
 					logger.info("도착항: "+toPort);
 
-					if(checkFromPort(toPort))
-						continue;
+					if(checkFromPort(toPort)) continue;
 
 					portfw.write(toPort+"\n");
 					
@@ -194,7 +195,9 @@ public class OutboundSchedulePrintV2 extends OutboundAbstractSchedulePrint{
 
 					// 도착항구명 기준으로 그룹 생성
 					ToPortGroup toPortgroup = new ToPortGroup(toPort);
+					
 					Iterator<ScheduleData> scheduleList = outboundScheduleListByToPort.iterator();
+					
 					while(scheduleList.hasNext())
 					{
 						try{
@@ -245,14 +248,6 @@ public class OutboundSchedulePrintV2 extends OutboundAbstractSchedulePrint{
 						{
 							ArrayList<PrintItem> li = vesselArrays[y].getJointedVesselList();
 							
-							
-
-//							Iterator<PrintItem> iterator = li.iterator();
-//							
-//							while(iterator.hasNext())
-//							{
-//								printList.add(iterator.next());
-//							}
 							li.stream().forEach(o -> printList.add(o));
 							
 						}
@@ -345,4 +340,5 @@ public class OutboundSchedulePrintV2 extends OutboundAbstractSchedulePrint{
 			return (j==0?" \r\n \r\n- ":" \r\n- ")+fromPort+" -\r\n";
 		}
 	}
+
 }

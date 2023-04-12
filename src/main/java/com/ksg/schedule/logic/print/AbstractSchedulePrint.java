@@ -1,25 +1,26 @@
 package com.ksg.schedule.logic.print;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ksg.commands.schedule.XML_INFO;
-import com.ksg.common.dao.DAOManager;
+import com.ksg.commands.ScheduleExecute;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.KSGPropertis;
-import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.logic.SchedulePrint;
 import com.ksg.schedule.logic.ScheduleManager;
+import com.ksg.schedule.logic.print.inbound.InboundSchedulePrintFile;
+import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintFile;
+import com.ksg.schedule.logic.print.route.RouteSchedulePrintFile;
 import com.ksg.service.ADVService;
-import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.ScheduleServiceImpl;
@@ -29,10 +30,16 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
  * @author archehyun
  *
  */
-public abstract class DefaultSchedulePrint implements SchedulePrint{
-	
+public abstract class AbstractSchedulePrint implements ScheduleExecute{
+
+	protected FileWriter fw;
+
+	protected FileWriter errorfw;
+
+	protected FileWriter portfw;
+
 	protected ScheduleData data;
-	
+
 	public ScheduleManager scheduleManager = ScheduleManager.getInstance();
 
 	public static final String BUSAN = "BUSAN";
@@ -48,16 +55,14 @@ public abstract class DefaultSchedulePrint implements SchedulePrint{
 	protected SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
 
 	protected String fileName, portFileName;
-	
+
 	protected String fileLocation;
 
 	protected boolean done = false;
 
 	protected ScheduleBuildMessageDialog processDialog;
 
-	protected BaseService baseService;
-
-	protected ScheduleSubService scheduleService;
+	protected ScheduleSubService scheduleService	= new ScheduleServiceImpl();
 
 	protected TableService tableService;
 
@@ -79,34 +84,34 @@ public abstract class DefaultSchedulePrint implements SchedulePrint{
 
 	protected ArrayList<Vessel> allVessellist;
 
-	protected String[] fromPort;
 
 	/**
 	 * @throws SQLException
 	 */
-	public DefaultSchedulePrint() throws SQLException {
-
-		baseService 	= DAOManager.getInstance().createBaseService();
-
-		scheduleService	= new ScheduleServiceImpl();
-
-		Code param = new Code();
-
-		param.setCode_type(XML_INFO.XML_TAG_FROM_PORT);
-
-		List<Code> li = baseService.getCodeInfoList(param);
-
-		fromPort = new String[li.size()];
-
-		for(int i=0;i<li.size();i++)
-		{
-			Code info = li.get(i);
-			fromPort[i] =info.getCode_name();
-		}
+	public AbstractSchedulePrint() {
 		
 		fileLocation=KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION);
 
+	}
 
+	public static AbstractSchedulePrint createSchedulePrint(String scheduleType,SchedulePrintParam param) throws Exception
+	{
+		switch (scheduleType) {
+		case "Outbound": return new OutboundSchedulePrintFile(param);
+		case "Inbound": return new InboundSchedulePrintFile(param);
+		case "Route": return new RouteSchedulePrintFile(param);
+		default: throw new IllegalArgumentException(param.getScheduleType());
+		}
+	}
+	
+	public static AbstractSchedulePrint createSchedulePrint(String scheduleType, CommandMap param) throws Exception
+	{
+		switch (scheduleType) {
+		case "Outbound": return new OutboundSchedulePrintFile(param);
+		case "Inbound": return new InboundSchedulePrintFile(param);
+		case "Route": return new RouteSchedulePrintFile(param);
+		default: throw new IllegalArgumentException(scheduleType);
+		}
 	}
 
 	@Override
@@ -130,13 +135,15 @@ public abstract class DefaultSchedulePrint implements SchedulePrint{
 	public String getMessage() {
 		return message;
 	}
-	
-	public abstract void initTag();
 
 	public void setDone(boolean b) {
 		this.done =b;
-		
+
 	}
+	public abstract void close() throws IOException;
+
+	public abstract void init() throws Exception;
+
 
 
 
