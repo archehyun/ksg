@@ -19,25 +19,48 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 {
 	public OutboundScheduleGroup parent;
 	
-	private boolean isJointted=false;		
-	
 	private String dateF;
+	
 	private String dateT;
 	
 	private String jointedDateF;
+	
+	private Vessel vessel;
+	
+	private String jointedDateT;
+	
+	private String jointed_company_abbr;
+	
+	/* YYYYMMdd */
+	private  SimpleDateFormat formatYYYYMMDD = KSGDateUtil.dateFormat5;
+	
+	public ArrayList<SortedSchedule> scheduleList;
+	
+	public OutboundScheduleGroup(OutboundScheduleGroup parent, ArrayList<SortedSchedule> scheduleList) throws Exception
+	{
+		this.vessel = parent.getVessel();
+		
+		this.scheduleList  = scheduleList;
+		
+		this.parent = parent;
+		
+		if(vessel == null) throw new Exception("vessel is null");
+	}
+	
+	public OutboundScheduleGroup(Vessel vessel) throws Exception
+	{
+		scheduleList = new ArrayList<SortedSchedule>();
+		
+		this.vessel =vessel;
+		
+		if(vessel == null) throw new Exception("vessel is null");
+	}
+	
 	
 	public String getJointedDateF()
 	{
 		return jointedDateF;
 	}
-	private Vessel vessel;
-	
-	public void setVessel(Vessel vessel)
-	{
-		this.vessel = vessel;
-	}
-	
-	private String jointedDateT;
 	
 	public String getJointedDateT()
 	{
@@ -49,11 +72,6 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 		return jointed_company_abbr;
 	}
 	
-	private String jointed_company_abbr;
-	/* YYYYMMdd */
-	private  SimpleDateFormat formatYYYYMMDD = KSGDateUtil.dateFormat5;
-	
-	public ArrayList<SortedSchedule> scheduleList;
 	
 	public void setParent(OutboundScheduleGroup parent)
 	{
@@ -64,6 +82,10 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 	{
 		return dateF;
 	}
+	public String getDateT()
+	{
+		return dateT;
+	}
 	public String getForrmatedDate(String date)
 	{
 		try {
@@ -72,26 +94,51 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 			return date;
 		}
 	}
+	
+	/**
+	 *   부산항과 부산항 신항이 같이 있을 경우
+	 *   
+	 * @return
+	 */
+	private boolean bothBusanAndBusanNew(List<ScheduleData> originScheduleList)
+	{	
+		Optional<ScheduleData> busanList= originScheduleList.stream().filter(o -> o.getFromPort().equals("BUSAN")).findFirst();
+		
+		Optional<ScheduleData> busanNewList= originScheduleList.stream().filter(o -> o.getFromPort().equals("BUSAN NEW")).findFirst();
+		
+		return busanList.isPresent()&&busanNewList.isPresent();
+	}
+	
 	public void joinnted() 
 	{
-		ArrayList<ScheduleData> list1 = new ArrayList<ScheduleData>();
+		ArrayList<ScheduleData> originScheduleList = new ArrayList<ScheduleData>();
 		// 출발일 목록
-		scheduleList.stream().forEach(o -> list1.add(o.getData()));
+		scheduleList.stream().forEach(o -> originScheduleList.add(o.getData()));
 		
+		boolean bothBusan = bothBusanAndBusanNew(originScheduleList);		
+		
+		if(vessel == null) 
+			System.out.println();
 		String re_company_abbr = vessel.getVessel_company();
 
 		// 출발일 정렬(늦은 날짜)
-		Optional<String> lastDateF=list1.stream().map( o -> getForrmatedDate(o.getDateF()))
+		// 부산항과 부산항이 같이 존재 할 경우 부산 신항 스케줄로 표시
+		Optional<String> lastDateF=originScheduleList.stream()
+				.filter(o->bothBusan?o.getFromPort().equals("BUSAN NEW"):true)
+				.map( o -> getForrmatedDate(o.getDateF()))
 				.sorted(Collections.reverseOrder()) 
 				.findFirst();
 
 		// 도착일 정렬(빠른 날짜)
-		Optional<String> firstDateT=list1.stream().map(o -> getForrmatedDate(o.getDateT()))
+		// 부산항과 부산항이 같이 존재 할 경우 부산 신항 스케줄로 표시
+		Optional<String> firstDateT=originScheduleList.stream()
+				.filter(o->bothBusan?o.getFromPort().equals("BUSAN NEW"):true)
+				.map(o -> getForrmatedDate(o.getDateT()))
 				.sorted()
 				.findFirst();
 
 		// 선사명 정렬(오름 차순)
-		List<String> companyAbbrList=list1.stream()
+		List<String> companyAbbrList=originScheduleList.stream()
 											.filter(o -> !re_company_abbr.equals(o))
 											.map( data-> (data.getCompany_abbr().equals(data.getAgent())?data.getCompany_abbr():data.getCompany_abbr()+"/"+data.getAgent()))
 											.distinct()
@@ -99,6 +146,9 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 											.collect(Collectors.toList());
 		
 		dateF = lastDateF.get();
+		
+		dateT = firstDateT.get();
+		
 		// 출발일
 		this.jointedDateF = KSGDateUtil.convertDateFormatYYYY_MM_DDToMMDD(dateF);
 
@@ -129,26 +179,12 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 		}
 	}
 
-	public OutboundScheduleGroup(Vessel vessel)
-	{
-		scheduleList = new ArrayList<SortedSchedule>();
-		this.vessel =vessel;
-	}
-	
 	
 	public boolean isMulti()
 	{
 		return scheduleList.size()>1;
 	}
-	public OutboundScheduleGroup(OutboundScheduleGroup parent, ArrayList<SortedSchedule> scheduleList)
-	{
-		this.vessel = parent.getVessel();
-		
-		this.scheduleList  = scheduleList;
-		
-		this.parent = parent;
-		
-	}
+
 
 	public Vessel getVessel() {
 		return this.vessel;
@@ -171,8 +207,14 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 	@Override
 	public int compareTo(OutboundScheduleGroup o) {
 		try {
-
-			return formatYYYYMMDD.parse(getDateF()).compareTo(formatYYYYMMDD.parse(o.getDateF()))>=0?1:-1;
+			int fromDateGap = formatYYYYMMDD.parse(getDateF()).compareTo(formatYYYYMMDD.parse(o.getDateF()));
+			
+			int toDateGap = formatYYYYMMDD.parse(getDateT()).compareTo(formatYYYYMMDD.parse(o.getDateT()));
+			
+			int vessel = this.getVesselName().compareTo(o.getVesselName());
+			// 정렬 기준
+			//출발일 -> 도착일 -> 선박명
+			return fromDateGap>0?1:(fromDateGap==0)?(toDateGap>0?1:(toDateGap==0?(vessel>0?1:-1):-1)):-1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return -1;
@@ -192,7 +234,6 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 		
 		return String.format("%-8s%-15s%s(%s)   %s", this.jointedDateF,getVesselName(),formatedVesselType, jointed_company_abbr, jointedDateT);
 
-//		return String.format("%s %s%s(%s) %s " , this.jointedDateF, getVesselName(), formatedVesselType , jointed_company_abbr, jointedDateT);
 	}
 
 	public boolean isDateValidate() {
@@ -209,6 +250,4 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 	{
 		return  toJointedOutboundScheduleString();
 	}
-
-	
 }
