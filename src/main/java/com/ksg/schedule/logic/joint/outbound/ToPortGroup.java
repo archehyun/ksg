@@ -3,12 +3,12 @@ package com.ksg.schedule.logic.joint.outbound;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.print.AbstractSchedulePrint;
 
 /**
  * @author ¹ÚÃ¢Çö

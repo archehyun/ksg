@@ -10,10 +10,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 
+import com.dtp.api.schedule.joint.tree.node.NodeType;
+import com.dtp.api.schedule.joint.tree.node.ScheduleTreeNode;
 import com.ksg.view.comp.treetable.JTreeTable;
 import com.ksg.view.comp.treetable.TreeTableModel;
-import com.ksg.workbench.common.comp.treetable.node.NodeType;
-import com.ksg.workbench.common.comp.treetable.node.ScheduleTreeNode;
 
 @SuppressWarnings("serial")
 public class KSGTreeTable extends JTreeTable{

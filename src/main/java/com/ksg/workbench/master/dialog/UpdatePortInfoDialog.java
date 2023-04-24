@@ -39,13 +39,13 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import com.dtp.api.control.PortController;
+import com.dtp.api.schedule.joint.tree.node.AreaTreeNode;
+import com.dtp.api.schedule.joint.tree.node.NodeType;
+import com.dtp.api.schedule.joint.tree.node.ScheduleTreeNode;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
-import com.ksg.workbench.common.comp.treetable.node.AreaTreeNode;
-import com.ksg.workbench.common.comp.treetable.node.NodeType;
-import com.ksg.workbench.common.comp.treetable.node.ScheduleTreeNode;
 
 /**
  * 항구 정보 수정 다이어그램

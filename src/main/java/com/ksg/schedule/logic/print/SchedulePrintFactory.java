@@ -1,11 +1,13 @@
 package com.ksg.schedule.logic.print;
 
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
+import com.dtp.api.schedule.joint.print.SchedulePrintParam;
+import com.dtp.api.schedule.joint.print.inbound.InboundSchedulePrintFile;
+import com.dtp.api.schedule.joint.print.outbound.OutboundSchedulePrintFile;
+import com.dtp.api.schedule.joint.print.outbound.OutboundSchedulePrintV2;
+import com.dtp.api.schedule.joint.print.route.RouteScheduleJointV1;
+import com.dtp.api.schedule.joint.print.route.RouteSchedulePrintFile;
 import com.ksg.common.model.CommandMap;
-import com.ksg.schedule.logic.print.inbound.InboundSchedulePrintFile;
-import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintFile;
-import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintV2;
-import com.ksg.schedule.logic.print.route.RouteScheduleJointV1;
-import com.ksg.schedule.logic.print.route.RouteSchedulePrintFile;
 
 public class SchedulePrintFactory {
 	public static AbstractSchedulePrint createSchedulePrint(String scheduleType,SchedulePrintParam param) throws Exception

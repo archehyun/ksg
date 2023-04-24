@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.dtp.api.schedule.joint.print.route.RouteScheduleJointV1;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
 
@@ -21,7 +22,6 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
-import com.ksg.schedule.logic.print.route.RouteScheduleJointV1;
 
 public class GroupVessel extends ArrayList<ScheduleData> implements Comparable<GroupVessel>{
 	

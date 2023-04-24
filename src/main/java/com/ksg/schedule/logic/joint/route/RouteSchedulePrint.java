@@ -3,7 +3,7 @@ package com.ksg.schedule.logic.joint.route;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import com.ksg.schedule.logic.print.AbstractSchedulePrint;
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 
 public class RouteSchedulePrint extends AbstractSchedulePrint{
 	

@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.dtp.api.schedule.joint.tree.RouteNodeManager;
+import com.dtp.api.schedule.joint.tree.TreeNodeManager;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.AreaEnum;
 import com.ksg.domain.ScheduleData;
-import com.ksg.schedule.logic.node.RouteNodeManager;
-import com.ksg.schedule.logic.node.TreeNodeManager;
 import com.ksg.schedule.logic.route.RouteScheduleUtil;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.ScheduleServiceImpl;

@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.dtp.api.schedule.joint.tree.node.ScheduleDateComparator;
 import com.ksg.domain.ScheduleData;
-import com.ksg.workbench.common.comp.treetable.node.ScheduleDateComparator;
 
 public class RouteNodeManagerTest {
 

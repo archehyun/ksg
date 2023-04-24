@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.dtp.api.schedule.joint.print.route.RouteScheduleJointV1;
 import com.ksg.domain.AreaEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.print.route.RouteScheduleJointV1;
 import com.ksg.schedule.logic.route.RouteScheduleUtil;
 
 public class RouteScheduleJointTest {

@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.dtp.api.schedule.joint.print.route.RouteScheduleJointV1;
+import com.dtp.api.schedule.joint.print.route.RouteSchedulePrintFile;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.logic.print.route.RouteScheduleJointV1;
-import com.ksg.schedule.logic.print.route.RouteSchedulePrintFile;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
 

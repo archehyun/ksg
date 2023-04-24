@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
+import com.dtp.api.schedule.create.CreateNormalSchdeduleCommandNew;
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildInboundCommand;
 import com.ksg.commands.schedule.BuildWebSchdeduleCommand;
@@ -33,7 +34,6 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.build.CreateNormalSchdeduleCommandNew;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 import com.ksg.workbench.schedule.dialog.ScheduleCreateOptionDialog;
 

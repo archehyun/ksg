@@ -23,6 +23,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.ResourceNotFoundException;
@@ -36,7 +37,6 @@ import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.SchedulePrint;
-import com.ksg.schedule.logic.print.AbstractSchedulePrint;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;

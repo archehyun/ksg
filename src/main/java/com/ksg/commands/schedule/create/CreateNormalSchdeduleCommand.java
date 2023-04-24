@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 
 import org.jdom.JDOMException;
 
+import com.dtp.api.schedule.create.CreateScheduleCommand;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.commands.schedule.SwingWorker;
 import com.ksg.common.model.KSGModelManager;
@@ -33,7 +34,6 @@ import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
-import com.ksg.schedule.logic.build.CreateScheduleCommand;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.service.ScheduleService;
 import com.ksg.view.ui.ErrorLogManager;

@@ -23,6 +23,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.exception.PortNullException;
@@ -38,7 +39,6 @@ import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.SchedulePrint;
-import com.ksg.schedule.logic.print.AbstractSchedulePrint;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.ADVService;

@@ -26,6 +26,7 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import com.dtp.api.schedule.create.CreateNormalSchdeduleCommandNew;
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildWebSchdeduleCommand;
 import com.ksg.commands.schedule.create.CreateInlandScheduleCommand;
@@ -35,7 +36,6 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.build.CreateNormalSchdeduleCommandNew;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;

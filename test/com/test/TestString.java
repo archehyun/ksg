@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import com.dtp.api.schedule.joint.outbound.OutboundScheduleGroup;
-import com.dtp.api.schedule.joint.outbound.OutboundScheduleRule;
+import com.dtp.api.schedule.joint.print.outbound.OutboundScheduleGroup;
+import com.dtp.api.schedule.joint.print.outbound.OutboundScheduleRule;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
