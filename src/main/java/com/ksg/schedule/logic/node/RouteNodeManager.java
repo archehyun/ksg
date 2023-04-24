@@ -1,4 +1,4 @@
-package com.ksg.workbench.common.comp.treetable.nodemager;
+package com.ksg.schedule.logic.node;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RouteNodeManager extends AbstractNodeManager implements RouteJointSubject{
 	
-	private RouteJoint joint;
+	private RouteJoint routeJoint;
 
 	private DateComparator dateComparator 			= new DateComparator(new SimpleDateFormat("yyyy/MM/dd"));
 
@@ -65,7 +65,7 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 	public RouteNodeManager()
 	{
 		super();
-		joint = new RouteJoint(this);
+		routeJoint = new RouteJoint(this);
 	}
 
 	/**
@@ -80,77 +80,44 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 	public DefaultMutableTreeNode getTreeNode(CommandMap param) {
 		
 		log.info("param:{}",param);
+		logger.info("param:{}",param);
 
-		CommandMap areaList=(CommandMap) param.get("data"); 
+		Map<String, Map<String, List<ScheduleData>>> areaList= (Map<String, Map<String, List<ScheduleData>>>) param.get("data"); 
 
 		String sortType = (String) param.get("sortType");
 		
 		isAddValidate = (boolean) param.get("isAddValidate");
-
-		Set<String> areaKeySet=areaList.keySet();
-
-		areaKeySet.stream().sorted();
-
-		Object[] areaKeyList = areaList.keySet().toArray();
-		
-		Arrays.sort(areaKeyList);
 		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("area");
 		
-		// 지역
-		for(Object strArea:areaKeyList)
-		{
-			HashMap<String, Object> vesselList =  (HashMap<String, Object>) areaList.get(strArea);
-			
-			logger.info("Area: "+strArea+ ", 스케줄 그룹 사이즈:"+vesselList.keySet().size());
-			
-			// 선박
-			Object[] vesselArray = vesselList.keySet().toArray();
-			
-			List<OutbondScheduleTreeNode> areaScheduleNodeList = new ArrayList<OutbondScheduleTreeNode>();
-
-			for (Object vesselKey : vesselArray)
-			{	
-				// 요소조회
-				List<ScheduleData> scheduleList = (List<ScheduleData>) vesselList.get(vesselKey);
-				
-				// 항차번호(숫자)로 그룹화
-				Map<Integer, List<ScheduleData>> voyageList =  scheduleList.stream().collect(
-						Collectors.groupingBy(o -> ScheduleBuildUtil. getNumericVoyage(o.getVoyage_num()) ));// 항차
-
-				// 항차 번호로 정렬
-				Object[] voyageArray = voyageList.keySet().toArray();
-
-				Arrays.sort(voyageArray);
-				
-				for(Object voyagekey:voyageArray)
-				{
-					List<ScheduleData> subscheduleList = voyageList.get(voyagekey);
+		areaList.keySet().stream()
+						.sorted()
+						.forEach(strArea ->{
+							Map<String, List<ScheduleData>> vesselList =  (Map<String, List<ScheduleData>>) areaList.get(strArea);
+							
+							// 선박
+							List<OutbondScheduleTreeNode> areaScheduleNodeList = routeJoint.createRouteScheduleGroupList(	vesselList , strArea,this);
+							// 출발일 기준으로 정렬
+							Collections.sort(areaScheduleNodeList, sortType.equals("date")?dateComparator:vesselComparator);
+							
+							// 출력			
+							int count =(int) areaScheduleNodeList.stream().filter(o ->isAddValidate?true:!o.getType().equals(NodeType.JOINT_SCHEDULE)).count();
+							
+							if(count>0) {			
+								DefaultMutableTreeNode area = new AreaTreeNode(String.format("%s(%d)", strArea, count));
 					
-					joint.createScheduleAndAddGroup(areaScheduleNodeList, subscheduleList, (String)strArea, (String)vesselKey);
-
-				}
-			}
-			// 출발일 기준으로 정렬
-			Collections.sort(areaScheduleNodeList, sortType.equals("date")?dateComparator:vesselComparator);
-			
-			// 출력			
-			int count =(int) areaScheduleNodeList.stream().filter(o ->isAddValidate?true:!o.getType().equals(NodeType.JOINT_SCHEDULE)).count();
-			
-			if(count==0) continue;
-			
-			DefaultMutableTreeNode area = new AreaTreeNode(String.format("%s(%d)", strArea, count));
-
-			areaScheduleNodeList.stream()
-								.filter(o -> isAddValidate?true:!o.getType().equals(NodeType.JOINT_SCHEDULE))
-								.forEach(o ->area.add(o));
-			
-			root.add(area);
-		}
-
+								areaScheduleNodeList.stream()
+													.filter(o -> isAddValidate?true:!o.getType().equals(NodeType.JOINT_SCHEDULE))
+													.forEach(o ->area.add(o));
+								
+								root.add(area);
+							}
+						});
+		
 		return root;
 	}
-	
+
+
 	
 	/**
 	 * 
@@ -202,7 +169,7 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 	@Override
 	public void createScheduleAndAddGroup(List group, List scheduleList, String areaName, String vesselName) {
 		// 예외 사항 적용된 스캐줄 그룹 생성
-		List<RouteScheduleGroup> validScheduleGroupList = joint.getValidatedScheduleGroupList(areaName,vesselName, scheduleList, isAddValidate);
+		List<RouteScheduleGroup> validScheduleGroupList = routeJoint.getValidatedScheduleGroupList(areaName,vesselName, scheduleList, isAddValidate);
 
 		// 스케줄 노드에 추가 
 		validScheduleGroupList.stream().forEach(o -> group.add( (OutbondScheduleTreeNode) makeScheduleNode(areaName,o, scheduleList)));

@@ -141,6 +141,15 @@ public class RouteScheduleJointV1 extends AbstractRouteSchedulePrint{
 		this.scheduleList = scheduleList;
 	}
 	
+	public RouteScheduleJointV1(CommandMap param) throws Exception {
+		super();
+		
+		
+		this.scheduleList = (List<ScheduleData>) param.get("scheduleList");
+		
+		this.orderByType = (int) param.get("orderBy");
+	}
+	
 
 	public RouteScheduleJointV1(ShippersTable op, int orderBy) throws Exception {
 

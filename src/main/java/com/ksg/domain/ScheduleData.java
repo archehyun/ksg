@@ -60,6 +60,8 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	private String inland_date;
 	private String inland_date_back;
 	private String vessel_mmsi; //선박 MMSI 코드
+	
+	private String convertedFromPort;
 
 	private String inland_port;// 중간 기항지
 	private String InOutType;//구분

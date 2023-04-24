@@ -1,5 +1,6 @@
 package com.ksg.schedule.logic.print.outbound;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,8 @@ public class OutboundSchedulePrintFile extends AbstractOutboundSchedulePrint{
 		this.vesselMap 			= param.getVesselMap();
 
 		this.outboundSchedule 	= new OutboundScheduleRule(vesselMap);
+		
+		
 	}
 
 	@Override
@@ -75,36 +78,34 @@ public class OutboundSchedulePrintFile extends AbstractOutboundSchedulePrint{
 
 		try
 		{
+			
 			logger.info("스케줄 프린트 시작");
 			
-			initFile();
+			Map<String, Map<String, List<ScheduleData>>> scheduleGroupMap = outboundSchedule.groupedOutboundSchedule(this.scheduleList);
 			
-			Map<String, Map<String, List<ScheduleData>>> toPortList =  scheduleList.stream().collect(
-					Collectors.groupingBy(ScheduleData::getPort, // 도착항
-							Collectors.groupingBy(ScheduleData::getFromPort)));// 출발항
+			lengthOfTask = scheduleGroupMap.keySet().size();
 
-			toPortList.keySet().stream()
+			scheduleGroupMap.keySet().stream()
 								.sorted()// 도착항 정렬
 								.forEach(toPortKey->{
 									//도착항 출력
 									printList.add((printList.size()>0?"\r\n":"")+ buildToPortXTG((String)toPortKey,portMap.get(toPortKey).getPort_nationality()));
 					
-									Map<String, List<ScheduleData>> fromPortItems=toPortList.get(toPortKey);
+									Map<String, List<ScheduleData>> fromPortItems=scheduleGroupMap.get(toPortKey);
 									
 									for(String fromPortKey:fromPort)
 									{
-										if(fromPortItems.containsKey(fromPortKey)) createFormPortPrintItem(fromPortKey, fromPortItems);	
+										if(fromPortItems.containsKey(fromPortKey)) createFormPortPrintItem(fromPortKey, fromPortItems.get(fromPortKey));	
 									}
+									current++;
 								});
-
-			fw.write(buildVersionXTG());
-
-			for(String print:printList)
-			{
-				fw.write(print);
-			}
+			
+			writeFile(printList);
+			
+			this.message = "아웃바운드 생성완료";
 
 			logger.info("스케줄 프린트 종료");
+			
 			return ScheduleExecute.SUCCESS;
 		}
 		catch(Exception e)
@@ -112,26 +113,45 @@ public class OutboundSchedulePrintFile extends AbstractOutboundSchedulePrint{
 			e.printStackTrace();
 			throw new Exception(e);
 		}
+		
+	}
+
+	private void writeFile(ArrayList<String> printList) throws Exception  {
+		
+		try {
+			initFile();
+			
+			fw.write(buildVersionXTG());
+
+			for(String print:printList)
+			{
+				fw.write(print);
+			}
+		} catch (IOException e) {
+			throw new Exception(e);
+		}
 		finally
 		{
 			fw.close();
 			errorfw.close();
 			portfw.close();
-		}
+		}		
 	}
+
+	
 
 	/**
 	 * @param fromPortKey
 	 * @param fromPortItems
 	 */
-	private void createFormPortPrintItem(String fromPortKey, Map<String, List<ScheduleData>> fromPortItems) {
+	private void createFormPortPrintItem(String fromPortKey, List<ScheduleData> scheduleList) {
 
 		//출발항 출력값
 		printList.add(buildFromXTG((String)fromPortKey));
 
-		List<ScheduleData>  scheduleList=fromPortItems.get(fromPortKey);
-
 		ArrayList<OutboundScheduleGroup> outboundScheduleGroupList = (ArrayList<OutboundScheduleGroup>) outboundSchedule. createFromPortOutboundScheduleGroup(scheduleList);
+		
+		outboundScheduleGroupList.forEach(o -> o.joinnted());
 
 		// 출력 스트링 생성 후 리스트에 저장
 		outboundScheduleGroupList.stream()

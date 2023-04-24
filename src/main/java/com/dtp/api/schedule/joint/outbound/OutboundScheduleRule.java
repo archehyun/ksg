@@ -2,7 +2,6 @@ package com.dtp.api.schedule.joint.outbound;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,7 @@ import com.ksg.workbench.schedule.comp.treenode.SortedSchedule;
 
   * @변경이력 :
 
-  * @프로그램 설명 :
+  * @프로그램 설명 : 아웃 바운드 룰 정의
 
   */
 public class OutboundScheduleRule {
@@ -40,6 +39,7 @@ public class OutboundScheduleRule {
 	}
 
 	/**
+	 * 스케줄 분리
 	 * @param jointScheduleItemList
 	 * @return
 	 */
@@ -62,7 +62,14 @@ public class OutboundScheduleRule {
 			if(index==indexList.size()-1) partitions.add(new ArrayList<>(jointScheduleItemList.scheduleList.subList(startIndex,jointScheduleItemList.scheduleList.size())));
 		}
 		
-		partitions.forEach(o -> sortedOutboundScheduleGroupList.add(new OutboundScheduleGroup(jointScheduleItemList, (ArrayList) o)));
+		partitions.forEach(o -> {
+			try {
+				sortedOutboundScheduleGroupList.add(new OutboundScheduleGroup(jointScheduleItemList, (ArrayList) o));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 		
 		if(partitions.isEmpty()) sortedOutboundScheduleGroupList.add(jointScheduleItemList);
 		
@@ -113,18 +120,29 @@ public class OutboundScheduleRule {
 	 * @param scheduleList
 	 * @param scheduleMap
 	 * @param scheduleKey
+	 * @throws Exception 
 	 */
 	public void addNewOutboundScheduleGroup(HashMap<String, OutboundScheduleGroup> scheduleList, SortedSchedule scheduleMap,
-			String scheduleKey) {
+			String scheduleKey)  {
 		
+		try {
 		OutboundScheduleGroup jointScheduleItemList = new OutboundScheduleGroup(this.vesselMap.get(scheduleMap.getData().getVessel()));
 		
 		jointScheduleItemList.add(scheduleMap);
 
 		scheduleList.put(scheduleKey, jointScheduleItemList);
+		}catch(Exception e)
+		{
+			System.out.println(scheduleMap.getData().getVessel());
+			e.printStackTrace();
+		}
 	}
 	
-
+	/**
+	 * 
+	 * @param map
+	 * @return
+	 */
 	public String getOutboundScheduleKey(SortedSchedule map)
 	{
 		String vessel 	= map.getData().getVessel();
@@ -138,10 +156,12 @@ public class OutboundScheduleRule {
 	 * outbound공동배선 적용 
 	 * @param schedule
 	 * @return
+	 * @throws Exception 
 	 */
 	public List<OutboundScheduleGroup> createFromPortOutboundScheduleGroup(List<ScheduleData> schedule)
 	{
 		HashMap<String, OutboundScheduleGroup> scheduleList = new HashMap<String,OutboundScheduleGroup>();
+		
 		//====================================
 		// 선박명-항차번호 그룹 생성
 		//
@@ -181,8 +201,6 @@ public class OutboundScheduleRule {
 		
 		outboundScheduleGroupList.forEach(o -> o.joinnted());
 		
-//		outboundScheduleGroupList.stream().sorted();
-		
 		return outboundScheduleGroupList;
 	}
 	
@@ -192,7 +210,6 @@ public class OutboundScheduleRule {
 	 */
 	private String[] arrangeFromPort(String[]arrangeFromPortArray, String[] outboundFromPortArray) 
 	{	
-
 		List<String> arragedFromPortList =Arrays.asList(arrangeFromPortArray);
 		
 		List<String> fromPortList =Arrays.asList(outboundFromPortArray);
@@ -211,7 +228,34 @@ public class OutboundScheduleRule {
 		
 		return newArray;
 	}
+	
+	public Map<String, Map<String, List<ScheduleData>>> groupedOutboundSchedule(List<ScheduleData> scheduleList) {
+		
+		return this.groupedOutboundSchedule(false, scheduleList);
+	}
+	
+	/**
+	 * 
+	 * @param newBusanMerge 부산 신항 공동 배선 유무
+	 * @param scheduleList
+	 * @return
+	 */
+	public Map<String, Map<String, List<ScheduleData>>> groupedOutboundSchedule(boolean newBusanMerge, List<ScheduleData> scheduleList) {
+		
+		scheduleList.stream()
+					.forEach(schedule1 -> schedule1.setConvertedFromPort(schedule1.getFromPort()));
+		
+		scheduleList.stream()
+					.filter(schedule-> "BUSAN NEW".equals(schedule.getFromPort()))
+					.forEach(schedule -> {if(!newBusanMerge) schedule.setConvertedFromPort("BUSAN");});
+		
+		Map<String, Map<String, List<ScheduleData>>> toPortList =  scheduleList.stream().collect(
+				Collectors.groupingBy(ScheduleData::getPort, // 도착항
+						Collectors.groupingBy(ScheduleData::getConvertedFromPort)));// 출발항
+		
 
+		return toPortList;
+	}
 
 
 }

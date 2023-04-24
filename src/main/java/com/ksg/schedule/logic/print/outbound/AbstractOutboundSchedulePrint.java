@@ -2,7 +2,6 @@ package com.ksg.schedule.logic.print.outbound;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +18,11 @@ public abstract class AbstractOutboundSchedulePrint extends AbstractSchedulePrin
 
 	protected OutboundScheduleRule outboundSchedule;
 
-	protected static final String PORT_NAME = "outbound_port.txt";
+	protected static final String PORT_NAME 	= "outbound_port.txt";
 
-	protected static final String FILE_NAME = "outbound_new.txt";
+	protected static final String FILE_NAME 	= "outbound_new.txt";
 
-	protected static final String ERROR_NAME = "outbound_error.txt";	
+	protected static final String ERROR_NAME 	= "outbound_error.txt";	
 
 	protected String errorFileName;
 
@@ -72,9 +71,8 @@ public abstract class AbstractOutboundSchedulePrint extends AbstractSchedulePrin
 
 		param.setCode_type(XML_INFO.XML_TAG_FROM_PORT);
 
-
-
 		List<Code> li = baseService.getCodeInfoList(param);
+		
 		fromPort = new String[li.size()];
 
 		for(int i=0;i<li.size();i++)

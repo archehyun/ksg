@@ -1,10 +1,9 @@
-package com.ksg.workbench.common.comp.treetable.nodemager;
+package com.ksg.schedule.logic.node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -68,6 +67,7 @@ public class OutboundNodeManager extends AbstractNodeManager{
 	public OutboundNodeManager()
 	{
 		super();
+		objectMapper = new ObjectMapper();
 		
 	}
 
@@ -80,11 +80,8 @@ public class OutboundNodeManager extends AbstractNodeManager{
 	 * @return
 	 */
 	public DefaultMutableTreeNode getTreeNode(CommandMap result) {
-
 		
-		objectMapper = new ObjectMapper();
-		
-		CommandMap scheduleGroupMap 		= (CommandMap) result.get("areaList");
+		List<ScheduleData> scheduleList =(List<ScheduleData>) result.get("scheduleList");
 
 		portMap 					= (HashMap<String, PortInfo>) result.get("portMap");
 
@@ -96,32 +93,33 @@ public class OutboundNodeManager extends AbstractNodeManager{
 
 		outboundSchedule 			= new OutboundScheduleRule(vesselMap);
 		
+		boolean mergeBusan 			= (boolean) result.get("mergeBusan");
+		
+		
+		if(scheduleList==null) return new DefaultMutableTreeNode();
+		
+		Map<String, Map<String, List<ScheduleData>>> scheduleGroupMap  = outboundSchedule.groupedOutboundSchedule(mergeBusan,scheduleList);
+		
 		DefaultMutableTreeNode root = new AreaTreeNode("AREA");
 		
 		if(scheduleGroupMap== null) return  root;
 
-		Set<String> areaKeySet=scheduleGroupMap.keySet();
-
-		areaKeySet.stream()
-					.sorted()
-					.forEach(toPortKey ->
-					{
-						PortInfo port =(PortInfo) portMap.get(toPortKey);
-			
-						DefaultMutableTreeNode toPort = new PortTreeNode(String.format("%s, %s", toPortKey, port.getPort_nationality()) );
-			
-						Map<String, List<ScheduleData>> fromPortItems = (Map<String, List<ScheduleData>>) scheduleGroupMap.get(toPortKey);
+		scheduleGroupMap.keySet().stream()
+								.sorted()
+								.forEach(toPortKey ->
+								{
+									PortInfo port =(PortInfo) portMap.get(toPortKey);
 						
-						for(String fromPortKey:fromPort)
-						{
-							if(!fromPortItems.containsKey(fromPortKey)) continue;
-							
-							toPort.add(createFromPortNodeItem( fromPortKey, fromPortItems.get(fromPortKey)));	
-						}
-						
-						root.add(toPort);
-			
-					});
+									DefaultMutableTreeNode toPort = new PortTreeNode(String.format("%s, %s", toPortKey, port.getPort_nationality()) );
+									root.add(toPort);
+									
+									Map<String, List<ScheduleData>> fromPortItems = (Map<String, List<ScheduleData>>) scheduleGroupMap.get(toPortKey);
+									
+									for(String fromPortKey:fromPort)
+									{
+										if(fromPortItems.containsKey(fromPortKey)) toPort.add(createFromPortNodeItem( fromPortKey, fromPortItems.get(fromPortKey)));	
+									}
+								});
 
 		return root;
 	}
@@ -136,18 +134,18 @@ public class OutboundNodeManager extends AbstractNodeManager{
 
 		DefaultMutableTreeNode fromPort = new PortTreeNode(fromPortName);
 
-		ArrayList<OutboundScheduleGroup> list = (ArrayList<OutboundScheduleGroup>) outboundSchedule. createFromPortOutboundScheduleGroup(scheduleList);
+		ArrayList<OutboundScheduleGroup> outboundScheduleGroupList = (ArrayList<OutboundScheduleGroup>) outboundSchedule. createFromPortOutboundScheduleGroup(scheduleList);
 		
-		list.forEach(o -> o.joinnted());
+		outboundScheduleGroupList.forEach(o -> o.joinnted());
 
-		ArrayList<DefaultMutableTreeNode> nodeList = new ArrayList<DefaultMutableTreeNode>();
+		ArrayList<DefaultMutableTreeNode> vesselNodeList = new ArrayList<DefaultMutableTreeNode>();
 		
-		list.stream()
-			.filter(o -> isAddValidate?true:!o.isDateValidate())
-			.sorted()
-			.forEach(o -> nodeList.add(o.isMulti()? createJointOutboundScheduleGroupNode(o):createScheduleNode(o)));
+		outboundScheduleGroupList.stream()
+								.filter(o -> isAddValidate?true:!o.isDateValidate())
+								.sorted()
+								.forEach(o -> vesselNodeList.add(o.isMulti()? createJointOutboundScheduleGroupNode(o):createScheduleNode(o)));
 
-		nodeList.forEach(scheduleNode ->fromPort.add(scheduleNode ));
+		vesselNodeList.forEach(scheduleNode ->fromPort.add(scheduleNode ));
 
 		// 도착항 그룹에 추가
 		return fromPort;
@@ -174,7 +172,13 @@ public class OutboundNodeManager extends AbstractNodeManager{
 
 		DefaultMutableTreeNode node = new ScheduleTreeNode(jointScheduleItemList.toJointedOutboundScheduleString(), jointScheduleItemList.parent==null?NodeType.JOINT_SCHEDULE:NodeType.SPLITED_SCHEDULE);
 
-		jointScheduleItemList.scheduleList.forEach(item -> node.add(new OutbondScheduleTreeNode(jointScheduleItemList.toJointedOutboundScheduleString(),new TreeTableNode(objectMapper.convertValue(item.getData(), CommandMap.class)), NodeType.SCHEDULE)));
+		jointScheduleItemList.scheduleList.forEach(item -> {
+			
+			CommandMap param = objectMapper.convertValue(item.getData(), CommandMap.class);
+			param.put("vessel_type", jointScheduleItemList.getVesselType());
+			
+			node.add(new OutbondScheduleTreeNode(new TreeTableNode(param), NodeType.SCHEDULE));
+			});
 
 		return node;
 	}

@@ -32,6 +32,21 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 
+/**
+ * 
+
+  * @FileName : ScheduleBuildMessageDialog.java
+
+  * @Project : KSG2
+
+  * @Date : 2023. 4. 18. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 스케줄 생성 프로그래스 바
+ */
 public class ScheduleBuildMessageDialog extends KSGDialog{
 
 	/**
@@ -175,7 +190,6 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 	}
 
 	public void createAndUpdateUI() {
-		
 		
 		this.setContentPane(buildCenter());
 		

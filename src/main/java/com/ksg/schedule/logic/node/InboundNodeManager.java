@@ -1,4 +1,4 @@
-package com.ksg.workbench.common.comp.treetable.nodemager;
+package com.ksg.schedule.logic.node;
 
 import java.util.ArrayList;
 import java.util.Arrays;

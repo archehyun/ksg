@@ -1,18 +1,12 @@
 package com.ksg.commands.schedule.task;
 
-import java.util.List;
-
 import com.ksg.commands.LongTask;
-import com.ksg.commands.schedule.route.RouteTaskNewVessel;
 import com.ksg.common.model.CommandMap;
-import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.joint.route.RouteSchedulePrint;
-import com.ksg.schedule.logic.print.AbstractSchedulePrint;
+import com.ksg.schedule.logic.print.SchedulePrintFactory;
 import com.ksg.schedule.logic.print.inbound.InboundScheduleJoint;
-import com.ksg.schedule.logic.print.outbound.OutboundSchedulePrintV2;
-import com.ksg.schedule.logic.print.route.RouteScheduleJointV1;
 
 public class SortAllTask implements LongTask {
 
@@ -69,26 +63,10 @@ public class SortAllTask implements LongTask {
 	{
 		if(isPrintInbound) ScheduleManager.getInstance().addBulid(new InboundScheduleJoint());
 		
-		if(isPrintOutbound)
-		{
-			ScheduleManager.getInstance().addBulid(isPrintNewOutbound? AbstractSchedulePrint.createSchedulePrint("Outbound", param):new OutboundSchedulePrintV2());
-		}
+		if(isPrintOutbound) ScheduleManager.getInstance().addBulid(SchedulePrintFactory.createSchedulePrint("Outbound", param));
 		
-		if(isPrintRoute)
-		{
-			if(isRouteNew)
-			{
-				new RouteTaskNewVessel(op,orderBy).start();
-			}
-			else
-			{
-				List<ScheduleData> scheduleList = (List<ScheduleData>) param.get("outboundScheduleList");
-				
-				AbstractSchedulePrint joint = isPrintNewRoute?AbstractSchedulePrint.createSchedulePrint("Route", param):new RouteScheduleJointV1(scheduleList, orderBy);
+		if(isPrintRoute) ScheduleManager.getInstance().addBulid(new RouteSchedulePrint(SchedulePrintFactory.createSchedulePrint("Route", param)));
 
-				ScheduleManager.getInstance().addBulid(new RouteSchedulePrint(joint));
-			}
-		}
 	}
 	
 	public Object startBuild()

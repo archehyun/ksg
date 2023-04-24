@@ -72,7 +72,7 @@ public abstract class AbstractSchedulePrint implements ScheduleExecute{
 
 	protected Thread thread;
 
-	protected int lengthOfTask;
+	protected int lengthOfTask=0;
 
 	protected int current;
 
@@ -92,27 +92,7 @@ public abstract class AbstractSchedulePrint implements ScheduleExecute{
 		
 		fileLocation=KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION);
 
-	}
-
-	public static AbstractSchedulePrint createSchedulePrint(String scheduleType,SchedulePrintParam param) throws Exception
-	{
-		switch (scheduleType) {
-		case "Outbound": return new OutboundSchedulePrintFile(param);
-		case "Inbound": return new InboundSchedulePrintFile(param);
-		case "Route": return new RouteSchedulePrintFile(param);
-		default: throw new IllegalArgumentException(param.getScheduleType());
-		}
-	}
-	
-	public static AbstractSchedulePrint createSchedulePrint(String scheduleType, CommandMap param) throws Exception
-	{
-		switch (scheduleType) {
-		case "Outbound": return new OutboundSchedulePrintFile(param);
-		case "Inbound": return new InboundSchedulePrintFile(param);
-		case "Route": return new RouteSchedulePrintFile(param);
-		default: throw new IllegalArgumentException(scheduleType);
-		}
-	}
+	}	
 
 	@Override
 	public int getLengthOfTask() {

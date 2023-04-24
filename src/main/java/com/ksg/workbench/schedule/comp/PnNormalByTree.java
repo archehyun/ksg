@@ -69,11 +69,15 @@ public class PnNormalByTree extends PnSchedule implements View {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	Image changePortImg;
-	Image changeShipImg;
-	Image changeShipRedImg;
-	Image changeAreaImg;
-	Image changeShipGreenImg;
+	private Image changePortImg;
+	
+	private Image changeShipImg;
+	
+	private Image changeShipRedImg;
+	
+	private Image changeAreaImg;
+	
+	private Image changeShipGreenImg;
 
 	private KSGComboBox cbxNormalInOut;
 
@@ -275,7 +279,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 		
 		cbxNormalSearch.addItem(new KSGTableColumn("vessel", "¼±¹Ú¸í"));
 
-
 		cbxNormalInOut.addItemListener(new ItemListener() {
 
 			@Override
@@ -430,7 +433,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 		pnRouteSerchOption.add(rbtRouteDateSorted);
 
 		pnRouteSerchOption.add(rbtRouteVesselSorted);
-
 		
 		rbtRouteDateSorted.setSelected(true);
 
@@ -500,6 +502,8 @@ public class PnNormalByTree extends PnSchedule implements View {
 		param.put("sortType", rbtRouteDateSorted.isSelected()?"date":"vessel");
 
 		param.put("isAddValidate", cbxIsAddValidate.isSelected());
+		
+		param.put("mergeBusan", cbxIsAddValidate.isSelected());
 
 		logger.info("param:"+param);
 

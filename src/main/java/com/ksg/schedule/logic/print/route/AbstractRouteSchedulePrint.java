@@ -88,6 +88,10 @@ public abstract class AbstractRouteSchedulePrint extends AbstractSchedulePrint{
 		
 		this.commonInPortfileName = ksgPropertiey.getProperty("schedule.route.commoninport");
 
+		initFile();
+	}
+
+	private void initFile() throws IOException {
 		fw = new FileWriter(saveLoaction+"/"+String.format("%s.txt", fileName ));
 
 		errorOutfw = new FileWriter(saveLoaction+"/"+errorOutPortfileName);

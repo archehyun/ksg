@@ -925,6 +925,7 @@ public class OutboundSchedulePrintV1 extends AbstractOutboundSchedulePrint{
 				// 날짜 체크
 
 				String checkDateT=oneData.getAttributeValue(XML_INFO.XML_TAG_DATE_T);
+				
 				String checkDateF=oneData.getAttributeValue(XML_INFO.XML_TAG_COMMON_DATE_F);
 
 				// 공동배선 일때 앞에 날짜가 뒤에 날짜 보다 클때

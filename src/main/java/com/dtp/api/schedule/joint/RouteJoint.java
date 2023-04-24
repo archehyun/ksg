@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.dtp.api.schedule.comparator.DateComparator;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.joint.route.PortAndDay;
 import com.ksg.schedule.logic.joint.route.RouteScheduleGroup;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.schedule.logic.route.RouteScheduleUtil;
 import com.ksg.workbench.common.comp.treetable.node.ScheduleDateComparator;
 
@@ -92,6 +94,29 @@ public class RouteJoint {
 	public void createScheduleAndAddGroup(List group, List scheduleList, String areaName, String vesselName)
 	{
 		subject.createScheduleAndAddGroup(group, scheduleList, areaName, vesselName);
+	}
+	
+	public List createRouteScheduleGroupList(Map<String, List<ScheduleData>> vesselList,
+			String strArea, RouteJointSubject delegate) {
+		
+		List scheduleGroupList = new ArrayList();
+		
+		Object[] vesselArray = vesselList.keySet().toArray();
+		
+		for (Object vesselKey : vesselArray)
+		{	
+			List<ScheduleData> scheduleList = (List<ScheduleData>) vesselList.get(vesselKey);
+			
+			// 항차번호(숫자)로 그룹화
+			Map<Integer, List<ScheduleData>> voyageList =  scheduleList.stream().collect(
+					Collectors.groupingBy(o -> ScheduleBuildUtil. getNumericVoyage(o.getVoyage_num()) ));// 항차
+			
+			// 항차번호로 정렬(오름차순)								
+			voyageList.keySet().stream()
+								.forEach(voyagekey ->delegate.createScheduleAndAddGroup(scheduleGroupList, voyageList.get(voyagekey), (String)strArea, (String)vesselKey));
+			
+		}
+		return scheduleGroupList;
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -15,8 +16,27 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.workbench.schedule.comp.treenode.SortedSchedule;
 
+/**
+ * 
+
+  * @FileName : OutboundScheduleGroup.java
+
+  * @Project : KSG2
+
+  * @Date : 2023. 4. 22. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 : 아웃바운스 스케줄 공동배선 단위
+ */
 public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 {
+	private static final String BUSAN_NEW 	= "BUSAN NEW";
+
+	private static final String BUSAN 		= "BUSAN";
+
 	public OutboundScheduleGroup parent;
 	
 	private String dateF;
@@ -56,7 +76,10 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 		if(vessel == null) throw new Exception("vessel is null");
 	}
 	
-	
+	/**
+	 * 
+	 * @return jointedDateF
+	 */
 	public String getJointedDateF()
 	{
 		return jointedDateF;
@@ -102,13 +125,17 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 	 */
 	private boolean bothBusanAndBusanNew(List<ScheduleData> originScheduleList)
 	{	
-		Optional<ScheduleData> busanList= originScheduleList.stream().filter(o -> o.getFromPort().equals("BUSAN")).findFirst();
+		Optional<ScheduleData> busanList= originScheduleList.stream().filter(o -> o.getFromPort().equals(BUSAN)).findFirst();
 		
-		Optional<ScheduleData> busanNewList= originScheduleList.stream().filter(o -> o.getFromPort().equals("BUSAN NEW")).findFirst();
+		Optional<ScheduleData> busanNewList= originScheduleList.stream().filter(o -> o.getFromPort().equals(BUSAN_NEW)).findFirst();
 		
 		return busanList.isPresent()&&busanNewList.isPresent();
 	}
 	
+	
+	/**
+	 * 부산항과 부산 신항이 같이 있다면 선사명 기준으로 부산 신항이 있는 스케줄을 골라 내고 부산 신항 날짜로 묶은 다음 나머지 스케줄과 병합
+	 */
 	public void joinnted() 
 	{
 		ArrayList<ScheduleData> originScheduleList = new ArrayList<ScheduleData>();
@@ -117,14 +144,26 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 		
 		boolean bothBusan = bothBusanAndBusanNew(originScheduleList);		
 		
-		if(vessel == null) 
-			System.out.println();
 		String re_company_abbr = vessel.getVessel_company();
+		
+		// 부산항과 부산항 신항이 같이 있는 선사
+		
+		
+		 Map<String, List<ScheduleData>> companymap =  originScheduleList.stream().collect(
+				Collectors.groupingBy(ScheduleData::getCompany_abbr)); // 선사명
+		 
+		 for(String company:companymap.keySet())
+		 {
+			 List<ScheduleData> sc= companymap.get(company);
+			 
+//			 sc.stream()
+		 }
+				
 
 		// 출발일 정렬(늦은 날짜)
 		// 부산항과 부산항이 같이 존재 할 경우 부산 신항 스케줄로 표시
 		Optional<String> lastDateF=originScheduleList.stream()
-				.filter(o->bothBusan?o.getFromPort().equals("BUSAN NEW"):true)
+				.filter(o->bothBusan?o.getFromPort().equals(BUSAN_NEW):true)
 				.map( o -> getForrmatedDate(o.getDateF()))
 				.sorted(Collections.reverseOrder()) 
 				.findFirst();
@@ -132,7 +171,7 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 		// 도착일 정렬(빠른 날짜)
 		// 부산항과 부산항이 같이 존재 할 경우 부산 신항 스케줄로 표시
 		Optional<String> firstDateT=originScheduleList.stream()
-				.filter(o->bothBusan?o.getFromPort().equals("BUSAN NEW"):true)
+				.filter(o->bothBusan?o.getFromPort().equals(BUSAN_NEW):true)
 				.map(o -> getForrmatedDate(o.getDateT()))
 				.sorted()
 				.findFirst();
@@ -178,7 +217,6 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 			System.out.println(String.format("%s %s - %s",this.getVesselName(), sortedCompanyist, jointed_company_abbr));
 		}
 	}
-
 	
 	public boolean isMulti()
 	{
@@ -189,11 +227,19 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 	public Vessel getVessel() {
 		return this.vessel;
 	}
+	/**
+	 * 
+	 * @return vesselName
+	 */
 	public String getVesselName()
 	{
 		return vessel.getVessel_name();
 	}
 	
+	/**
+	 * 
+	 * @return vesselType
+	 */
 	public String getVesselType()
 	{
 		return vessel.getVessel_type();
@@ -209,12 +255,16 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 		try {
 			int fromDateGap = formatYYYYMMDD.parse(getDateF()).compareTo(formatYYYYMMDD.parse(o.getDateF()));
 			
-			int toDateGap = formatYYYYMMDD.parse(getDateT()).compareTo(formatYYYYMMDD.parse(o.getDateT()));
+			int toDateGap 	= formatYYYYMMDD.parse(getDateT()).compareTo(formatYYYYMMDD.parse(o.getDateT()));
 			
 			int vessel = this.getVesselName().compareTo(o.getVesselName());
-			// 정렬 기준
-			//출발일 -> 도착일 -> 선박명
+			
+			/*
+			 * 정렬기준 : 출발일 -> 도착일 -> 선박명
+			 */
+			
 			return fromDateGap>0?1:(fromDateGap==0)?(toDateGap>0?1:(toDateGap==0?(vessel>0?1:-1):-1)):-1;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return -1;
@@ -223,8 +273,8 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 	
 	/**
 	 * 
-	 * @param scheduleList
-	 * @return
+	 * 
+	 * @return 공동배선이 적용된 스케줄 정보
 	 */
 	public String toJointedOutboundScheduleString()	{
 		
@@ -235,7 +285,10 @@ public class OutboundScheduleGroup implements Comparable<OutboundScheduleGroup>
 		return String.format("%-8s%-15s%s(%s)   %s", this.jointedDateF,getVesselName(),formatedVesselType, jointed_company_abbr, jointedDateT);
 
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isDateValidate() {
 		
 		try {

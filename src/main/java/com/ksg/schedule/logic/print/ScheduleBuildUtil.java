@@ -20,6 +20,7 @@ public class ScheduleBuildUtil {
 
 	
 	private static SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+	
 	private static SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
 	
 	public static int getNumericVoyage(String voyage_num)

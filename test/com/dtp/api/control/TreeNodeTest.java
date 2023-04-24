@@ -15,11 +15,11 @@ import org.junit.Test;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.AreaEnum;
 import com.ksg.domain.ScheduleData;
+import com.ksg.schedule.logic.node.RouteNodeManager;
+import com.ksg.schedule.logic.node.TreeNodeManager;
 import com.ksg.schedule.logic.route.RouteScheduleUtil;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.workbench.common.comp.treetable.nodemager.RouteNodeManager;
-import com.ksg.workbench.common.comp.treetable.nodemager.TreeNodeManager;
 import com.ksg.workbench.schedule.comp.treenode.SortedSchedule;
 
 public class TreeNodeTest {
