@@ -37,7 +37,7 @@ import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.label.BoldLabel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
@@ -46,6 +46,7 @@ import com.ksg.workbench.master.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.workbench.master.dialog.UpdatePortInfoDialog;
 
 import lombok.extern.slf4j.Slf4j;
+import mycomp.comp.MyTable;
 
 
 /**
@@ -78,7 +79,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private KSGTablePanel tableH;
 
-	private KSGAbstractTable tableD;
+	private MyTable tableD;
 
 	private JLabel lblPortName;
 
@@ -133,7 +134,7 @@ public class PnPort extends PnBase implements ActionListener{
 		});
 
 
-		GradientButton butUpSearch = new GradientButton("검색", "images/search3.png");
+		KSGGradientButton butUpSearch = new KSGGradientButton("검색", "images/search3.png");
 		
 		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
@@ -266,11 +267,11 @@ public class PnPort extends PnBase implements ActionListener{
 
 		KSGPanel pnControl = new KSGPanel(new FlowLayout());
 
-		JButton butNewAbbr = new GradientButton("추가");
+		JButton butNewAbbr = new KSGGradientButton("추가");
 
 		butNewAbbr.setActionCommand("약어 등록");
 
-		JButton butDelAbbr = new GradientButton("삭제");
+		JButton butDelAbbr = new KSGGradientButton("삭제");
 
 		butDelAbbr.setActionCommand("약어 삭제");
 

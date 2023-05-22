@@ -36,7 +36,7 @@ import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
@@ -202,7 +202,7 @@ public class PnCompany extends PnBase implements ActionListener{
 		});
 
 
-		GradientButton butUpSearch = new GradientButton("검색", "images/search3.png");
+		KSGGradientButton butUpSearch = new KSGGradientButton("검색", "images/search3.png");
 		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 		
 		butUpSearch.addActionListener(this);

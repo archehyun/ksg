@@ -13,15 +13,19 @@ public class PortAndDay implements IFComparator{
 		this.port = port;
 		this.date = date;
 	}
+	public String getPort()
+	{
+		return port;
+	}
 	public String toString()
 	{
 		return  port+" "+KSGDateUtil.convertDateFormatYYYYMMDDToMMDD(date);
 	}
-	public String getDate()
+	public String getDateF()
 	{
 		return date;
 	}
-	public String getVessel()
+	public String getVesselName()
 	{
 		return vessel;
 	}

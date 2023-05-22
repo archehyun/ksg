@@ -2,6 +2,7 @@ package com.ksg.schedule.logic.joint.route;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 
@@ -55,6 +56,12 @@ public class RouteSchedulePrint extends AbstractSchedulePrint{
 
 	@Override
 	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void writeFile(ArrayList<String> printList) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

@@ -69,7 +69,7 @@ import com.ksg.view.comp.KSGCheckBox;
 import com.ksg.view.comp.KSGRadioButton;
 import com.ksg.view.comp.table.model.KSGTableModel;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.tree.KSGTree;
 import com.ksg.workbench.common.comp.tree.KSGTreeDefault;
@@ -111,7 +111,7 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 	
 	DAOManager daomanager = DAOManager.getInstance();
 
-	int inD_flag=1;
+	private int inD_flag=1;
 	
 	private TableService tableService;
 	
@@ -291,7 +291,7 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 		
 		pnSub.add(chckbxNewCheckBox);
 		
-		GradientButton butExport = new GradientButton("파일출력", "images/print.png",25,20);
+		KSGGradientButton butExport = new KSGGradientButton("파일출력", "images/print.png",25,20);
 		pnSub.add(butExport);
 
 		butExport.setToolTipText("출력하기");
@@ -423,15 +423,15 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 		ButtonGroup group = new ButtonGroup();
 
 
-		JRadioButton button = new KSGRadioButton("선사별");
+		JRadioButton butCompany = new KSGRadioButton("선사별");
 		
-		JRadioButton button1 = new KSGRadioButton("페이지별",true);
+		JRadioButton butPage = new KSGRadioButton("페이지별",true);
 		
-		group.add(button);
-		group.add(button1);
+		group.add(butCompany);
+		group.add(butPage);
 
-		panel.add(button);
-		panel.add(button1);
+		panel.add(butCompany);
+		panel.add(butPage);
 
 		ItemListener itemListener= new ItemListener(){
 
@@ -452,10 +452,10 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 					manager.execute(tree2.getName());
 				}
 			}};
-			button.addItemListener(itemListener);
-			button1.addItemListener(itemListener);
+			butCompany.addItemListener(itemListener);
+			butPage.addItemListener(itemListener);
 			panel.add(new JSeparator(JSeparator.HORIZONTAL));
-			JButton butADDTable = new JButton(new ImageIcon("images/plus.gif"));
+			JButton butADDTable = new KSGGradientButton("","images/plus.gif");
 
 			butADDTable.setPreferredSize(new Dimension(35,25));
 			butADDTable.setFocusPainted(false);
@@ -464,7 +464,7 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 			butADDTable.addActionListener(this);
 
 			panel.add(butADDTable);
-			JButton butDelTable = new JButton(new ImageIcon("images/minus.gif"));
+			JButton butDelTable = new KSGGradientButton("","images/minus.gif");
 			butDelTable.setPreferredSize(new Dimension(35,25));
 			butDelTable.setFocusPainted(false);
 			butDelTable.setActionCommand("삭제");

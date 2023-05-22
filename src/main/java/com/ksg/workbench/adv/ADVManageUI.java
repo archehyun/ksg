@@ -64,15 +64,15 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.TablePort;
 import com.ksg.service.TableService;
-import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.FileInfo;
 import com.ksg.view.comp.KSGCheckBox;
 import com.ksg.view.comp.KSGRadioButton;
 import com.ksg.view.comp.table.KSGTableImpl;
+import com.ksg.workbench.adv.comp.ADVListPanel;
+import com.ksg.workbench.adv.comp.KSGXLSImportPanel;
+import com.ksg.workbench.adv.comp.SearchPanel;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
-import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.tree.CustomTree;
@@ -101,7 +101,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 {	
-
+	
 	private static int _tableViewCount = 10;
 
 	private static final String SEARCH_TYPE_COMPANY = "선사";
@@ -128,7 +128,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	_txfVessel,
 	txfImportDate;
 
-	CommandMap viewModel = new CommandMap();
+	private CommandMap viewModel = new CommandMap();
 
 	public JTextField		_txfXLSFile,_txfSearchedTableCount,_txfCompany,_txfDate;
 
@@ -138,7 +138,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 	private JButton 		butAdjust,butCompanyAdd,butPre;
 
-	public JButton			butNext;
+	private JButton			butNext;
 
 	private JList 			companyLi;
 
@@ -174,7 +174,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 	private SearchPanel searchPanel;
 
-	private ADVServiceImpl _advService;
 
 	public ADVManageUI() {
 
@@ -192,8 +191,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 		tableService = new TableServiceImpl();
 
-		_advService = new ADVServiceImpl();
-
 		this.addComponentListener(this);
 
 		createAndUpdateUI();
@@ -202,7 +199,9 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
 		String command = e.getActionCommand();
+		
 		if(command.equals("이전"))
 		{
 			if(currentPage<=pageCount&&currentPage>0)
@@ -268,8 +267,8 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 		searchPanel.setAdvListPanel(advListPanel);
 
-
 		pnTab.addTab("입력정보", searchPanel);
+		
 		pnTab.addTab("결과", advListPanel);
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
@@ -333,9 +332,11 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		pnMain.add(buildSouthPn(),BorderLayout.SOUTH);
 		return pnMain;
 	}
+	
 	private KSGPanel buildLeftMenu() 
 	{
 		pnLeftMenu = new KSGPanel();
+		
 		KSGPanel pnSearch =  new KSGPanel();
 		pnSearch.setLayout(new BorderLayout());
 
@@ -440,7 +441,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 					if(te.equals("선사별"))
 					{
 						tree.changeState(CustomTree.COMPAY_LIST);
-
 					}
 					else if(te.equals("페이지별"))
 					{
@@ -495,9 +495,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	public DefaultMutableTreeNode searchTreeNode(boolean isPage, Object param)
 	{
 		return tree.searchNode( isPage? Integer.parseInt((String) param):(String) param);
-
 	}
-
 
 	/**
 	 * @return
@@ -513,13 +511,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		JButton butADD = new JButton("광고불러오기",new ImageIcon("images/importxls.gif"));
 		butADD.setToolTipText("광고정보추가");
 		butADD.setPreferredSize(new Dimension(100,20));
-		butADD.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-
-
-			}});
-
+		
 		JButton butCancel = new JButton(new ImageIcon("images/cancel.gif"));
 		butCancel.setPreferredSize(new Dimension(35,25));
 		butCancel.addActionListener(new ActionListener(){
@@ -544,6 +536,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		txfImportDate = new JTextField(8);
 
 		JCheckBox cbxImportDate = new JCheckBox("월요일",false);
+		
 		cbxImportDate.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
@@ -712,25 +705,25 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		menu.add(xlsMenu);
 		return menu;
 	}
-	private JPopupMenu createXLSListPopup() {
-		JPopupMenu menu =  new JPopupMenu();
-		JMenuItem viewMenu = new JMenuItem("보기");
-		viewMenu.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-
-				FileInfo info = (FileInfo) fileLi.getSelectedValue();
-
-				if(info==null)
-					return;
-				ViewXLSFileDialog dialog = new ViewXLSFileDialog(info);
-				dialog.createAndUpdateUI();
-
-			}});
-
-		menu.add(viewMenu);
-		return menu;
-	}
+//	private JPopupMenu createXLSListPopup() {
+//		JPopupMenu menu =  new JPopupMenu();
+//		JMenuItem viewMenu = new JMenuItem("보기");
+//		viewMenu.addActionListener(new ActionListener(){
+//
+//			public void actionPerformed(ActionEvent e) {
+//
+//				FileInfo info = (FileInfo) fileLi.getSelectedValue();
+//
+//				if(info==null)
+//					return;
+//				ViewXLSFileDialog dialog = new ViewXLSFileDialog(info);
+//				dialog.createAndUpdateUI();
+//
+//			}});
+//
+//		menu.add(viewMenu);
+//		return menu;
+//	}
 
 
 	/**
@@ -820,7 +813,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 			if("aDVManageUI.init".equals(serviceId)) {				
 
-
 				viewModel = (CommandMap) result.clone();
 
 				tree.loadModel(viewModel);
@@ -828,7 +820,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 			}
 			else if("shipperTableMgtUI2.fnSearch".equals(serviceId)) {
-
 
 
 			}

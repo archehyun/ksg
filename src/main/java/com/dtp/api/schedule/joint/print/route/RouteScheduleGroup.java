@@ -9,9 +9,11 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 
 import com.dtp.api.schedule.comparator.IFComparator;
+import com.dtp.api.schedule.joint.print.ScheduleGroup;
 import com.dtp.api.schedule.joint.tree.node.ScheduleDateComparator;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.route.RouteScheduleUtil;
 /**
  * 
@@ -28,13 +30,9 @@ import com.ksg.schedule.logic.route.RouteScheduleUtil;
 
   * @프로그램 설명 :
  */
-public class RouteScheduleGroup implements IFComparator{
+public class RouteScheduleGroup extends ScheduleGroup implements IFComparator{
 	
-	private List<ScheduleData> scheduleList;
-
-	private String date;
-
-	private String vesselName;
+	private String date;	
 	
 	private Map<String, List<ScheduleData>> fromPorts;
 	
@@ -44,14 +42,13 @@ public class RouteScheduleGroup implements IFComparator{
 	
 	private int fromPortCount;
 	
-	RouteJoint joint = new RouteJoint();
+	private RouteJoint joint = new RouteJoint();
 	
-	SimpleDateFormat dateformat = new SimpleDateFormat("yyyy/MM/dd");
+	private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy/MM/dd");
 	
-	List<PortAndDay> inboundPort;
+	private List<PortAndDay> inboundPort;
 	
-	List<PortAndDay> outboundPort;
-	
+	private List<PortAndDay> outboundPort;
 	
 	public RouteScheduleGroup() {}
 	
@@ -61,20 +58,18 @@ public class RouteScheduleGroup implements IFComparator{
 	}
 	
 
-	public RouteScheduleGroup(String vesselName, List<ScheduleData> scheduleList)		
+	public RouteScheduleGroup(Vessel vessel, List<ScheduleData> scheduleList)		
 	{
-		this.vesselName = vesselName;
-		
-		this.scheduleList = scheduleList;
+		super(vessel, scheduleList);
 
 		fromPorts 	= scheduleList.stream().collect(Collectors.groupingBy(ScheduleData::getFromPort));
 		
 		fromPortCount = fromPorts.keySet().size();
 		
 		
-		List<PortAndDay> fromPortlist = joint.makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE);
+		List<PortAndDay> fromPortlist = joint.makeDayList(fromPorts, new ScheduleDateComparator(ScheduleDateComparator.FROM_DATE), ScheduleDateComparator.FROM_DATE);
 		
-		this.date = fromPortlist.get(0).getDate();
+		this.date = fromPortlist.get(0).getDateF();
 		
 		// 첫번째 출발일 보다 늦은 항구 제외
 		toPorts 	= scheduleList.stream()
@@ -83,9 +78,9 @@ public class RouteScheduleGroup implements IFComparator{
 		
 		toPortCount = toPorts.keySet().size();
 		
-		inboundPort = joint.makeDayList(fromPorts, ScheduleDateComparator.FROM_DATE);
+		inboundPort = joint.makeDayList(fromPorts,new ScheduleDateComparator(ScheduleDateComparator.FROM_DATE), ScheduleDateComparator.FROM_DATE);
 		
-		outboundPort = joint.makeDayList(toPorts, ScheduleDateComparator.TO_DATE);
+		outboundPort = joint.makeDayList(toPorts, new ScheduleDateComparator(ScheduleDateComparator.TO_DATE).reversed(), ScheduleDateComparator.TO_DATE);
 		
 	}
 	
@@ -98,14 +93,11 @@ public class RouteScheduleGroup implements IFComparator{
 		}
 	}
 	
-	public String getDate()
+	public String getDateF()
 	{
 		return date;
 	}
-	public String getVessel()
-	{
-		return vesselName;
-	}
+
 	
 	public String toCompanyString()
 	{
@@ -155,7 +147,19 @@ public class RouteScheduleGroup implements IFComparator{
 		// 외국항 첫번째		
 		PortAndDay outboundFirstPortAndDate=outboundPort.get(0);
 		
-		return KSGDateUtil.dayDiff(inboundLastPortAndDate.getDate(), outboundFirstPortAndDate.getDate())>0;
+		return KSGDateUtil.dayDiff(inboundLastPortAndDate.getDateF(), outboundFirstPortAndDate.getDateF())>0;
+	}
+
+	@Override
+	public int compareTo(ScheduleGroup o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getVesselName() {
+		// TODO Auto-generated method stub
+		return vessel.getVessel_name();
 	}
 
 }

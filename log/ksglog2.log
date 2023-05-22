@@ -1,4 +1,5 @@
-2023-04-22 08:50:05,684  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
-2023-04-22 08:50:05,818  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
-2023-04-22 08:50:20,968  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=O, sortType=date, isAddValidate=false, vessel=DONGJIN, mergeBusan=false, date_issue=2023-04-24, gubun=Normal}
-2023-04-22 08:50:24,074  INFO [com.ksg.workbench.schedule.comp.PnNormalByTree] param:{inOutType=O, sortType=date, isAddValidate=false, vessel=DONGJIN F, mergeBusan=false, date_issue=2023-04-24, gubun=Normal}
+2023-05-22 14:05:24,347  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
+2023-05-22 14:05:24,584  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-05-22 14:12:46,767  INFO [com.ksg.schedule.logic.ScheduleManager] 스케줄 생성 마스터 초기화
+2023-05-22 14:12:47,029  INFO [com.ksg.schedule.logic.ScheduleManager] 스케줄 생성 마스터 초기화 종료
+2023-05-22 14:12:47,162  INFO [com.ksg.schedule.logic.ScheduleManager] 스케줄 생성 종료(133s)

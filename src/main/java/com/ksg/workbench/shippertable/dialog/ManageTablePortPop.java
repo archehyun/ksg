@@ -10,7 +10,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,7 +20,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -52,7 +50,9 @@ import com.ksg.workbench.common.comp.panel.KSGPanel;
 public class ManageTablePortPop extends KSGDialog implements ActionListener{
 
 	private static final String ACTION_UP = "UP";
+	
 	private static final String ACTION_DOWN = "DOWN";
+	
 	JButton butSave;
 	JButton butDelete;
 	JButton butSearch;
@@ -176,7 +176,9 @@ public class ManageTablePortPop extends KSGDialog implements ActionListener{
 		KSGTableColumn ksgTableColumn = new KSGTableColumn("port_index", "¼ø¼­");
 
 		ksgTableColumn.size=50;
+		
 		ksgTableColumn.minSize=50;
+		
 		ksgTableColumn.maxSize=50;
 
 		tableH.addColumn(ksgTableColumn);	
@@ -189,8 +191,10 @@ public class ManageTablePortPop extends KSGDialog implements ActionListener{
 
 		tableH.addMouseListener(portSelectionEventHandler);		
 
-		pnMain.add(createCenterNorth(),BorderLayout.NORTH);		
+		pnMain.add(createCenterNorth(),BorderLayout.NORTH);	
+		
 		pnMain.add(tableH);
+		
 		pnMain.add(createCenterEast(),BorderLayout.EAST);
 
 		return pnMain;
@@ -417,10 +421,7 @@ public class ManageTablePortPop extends KSGDialog implements ActionListener{
 			{
 				int port_index = (Integer) item.get("port_index");				
 
-				if(seletedIndex==port_index)
-				{
-					isExistSameIndex=true;
-				}
+				if(seletedIndex==port_index) isExistSameIndex=true;
 			}
 
 			if(!isExistSameIndex) {

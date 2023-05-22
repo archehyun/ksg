@@ -33,11 +33,10 @@ import com.dtp.api.control.ScheduleController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ScheduleEnum;
-import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.label.BoldLabel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.textfield.SearchTextField;
@@ -123,22 +122,20 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		super();
 		
-		Image img = new ImageIcon("images/port.png").getImage();
-		changePortImg = img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		Image img 			= new ImageIcon("images/port.png").getImage();
+		changePortImg 		= img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 
-		Image img2 = new ImageIcon("images/ship_group.png").getImage();
-		changeShipImg = img2.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		Image img2 			= new ImageIcon("images/ship_group.png").getImage();
+		changeShipImg 		= img2.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		
-		Image img3 = new ImageIcon("images/ship_group_red.png").getImage();
-		changeShipRedImg = img3.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		Image img3 			= new ImageIcon("images/ship_group_red.png").getImage();
+		changeShipRedImg 	= img3.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		
-		Image img4 = new ImageIcon("images/internet.png").getImage();
-		changeAreaImg = img4.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+		Image img4 			= new ImageIcon("images/internet.png").getImage();
+		changeAreaImg 		= img4.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 		
-		Image img5 = new ImageIcon("images/ship_group_green.png").getImage();
-		changeShipGreenImg = img5.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
-
-		codeService = new CodeServiceImpl();
+		Image img5 			= new ImageIcon("images/ship_group_green.png").getImage();
+		changeShipGreenImg 	= img5.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 
 		objectMapper = new ObjectMapper();
 
@@ -371,10 +368,10 @@ public class PnNormalByTree extends PnSchedule implements View {
 			}
 		});
 
-		GradientButton butSearch = new GradientButton("검색", "images/search3.png");
+		KSGGradientButton butSearch = new KSGGradientButton("검색", "images/search3.png");
 		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
-		GradientButton butCancel = new GradientButton("",  "images/init.png");
+		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
 		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 		butCancel.addActionListener(new ActionListener() {
 
@@ -408,7 +405,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 		pnNormalSearchCenter.add(txfNoramlSearch);
 		
 		pnNormalSearchCenter.add(cbxIsAddValidate);
-
 
 		pnRouteSerchOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -508,11 +504,16 @@ public class PnNormalByTree extends PnSchedule implements View {
 		logger.info("param:"+param);
 
 		// inbound 호출시
-		if(col.columnField.equals(ScheduleEnum.OUTBOUND.getSymbol()))
+		if(col.columnField.equals(ScheduleEnum.INBOUND.getSymbol()))
 		{	
-			param.put("depth", 4);
+			param.put("depth", 3);
 		}
 		// outbound 호출시
+		
+		else if(col.columnField.equals(ScheduleEnum.OUTBOUND.getSymbol()))
+		{
+			param.put("depth", 4);
+		}
 		else
 		{
 			param.put("depth", 4);

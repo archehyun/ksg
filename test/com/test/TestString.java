@@ -118,6 +118,14 @@ public class TestString {
 
 		test.print();
 	}
+	
+	@Test
+	public void testDate44()
+	{
+		
+
+		System.out.println(String.format("%d%02d", 2023,4));
+	}
 	@Test
 	public void testDate4()
 	{
@@ -156,11 +164,19 @@ public class TestString {
 		
 		OutboundScheduleGroup group = new OutboundScheduleGroup(Vessel.builder().vessel_type("C").vessel_company("").build());
 		
+		
+		SortedSchedule scheduleBusanNew1 = new SortedSchedule(ScheduleData.builder()
+																.company_abbr("Dongjin")
+																.agent("Dongjin")
+																.DateF("4/26")
+																.DateT("4/25")																
+																.fromPort("BUSAN").build());
+		
 		SortedSchedule scheduleBusanNew = new SortedSchedule(ScheduleData.builder()
 																.company_abbr("Dongjin")
 																.agent("Dongjin")
 																.DateF("4/23")
-																.DateT("4/25")																
+																.DateT("4/26")																
 																.fromPort("BUSAN NEW").build());
 		
 		SortedSchedule scheduleBusan1 = new SortedSchedule(ScheduleData.builder()
@@ -177,14 +193,26 @@ public class TestString {
 																.DateT("4/25")
 																.fromPort("BUSAN").build());		
 		
-		group.add(scheduleBusanNew);
-		group.add(scheduleBusan1);
-		group.add(scheduleBusan2);
+		group.add(scheduleBusanNew1);
 		
+		group.add(scheduleBusanNew);
+		
+		group.add(scheduleBusan1);
+		
+		group.add(scheduleBusan2);		
 		
 		group.joinnted();
 		
-		System.out.println(group.toJointedOutboundScheduleString());
+
+		String vessel_type = group.getVesselType();
+		
+		String formatedVesselType =  (vessel_type.equals("")||vessel_type.equals(" "))?"   ":String.format("   [%s]   ", vessel_type);   
+		
+		String str= String.format("%-8s%-15s%s(%s)   %s", group.getJointedDateF(), group.getVesselName(),formatedVesselType, group.getJointedCompanyName(), group.getJointedDateT());
+		
+		System.out.println(str);
+		
+		//System.out.println(group.toJointedOutboundScheduleString());
 		
 	}
 	

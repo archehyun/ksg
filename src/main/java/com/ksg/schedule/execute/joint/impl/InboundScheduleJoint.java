@@ -16,7 +16,6 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.execute.formater.InboundPrintSchedule;
-import com.ksg.schedule.execute.formater.TagedPrintSchedule;
 import com.ksg.schedule.execute.joint.JointSchedule;
 
 import lombok.extern.slf4j.Slf4j;

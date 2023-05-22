@@ -55,7 +55,9 @@ public class KSGViewUtil extends Properties{
 	 public static Color[] getGradientColor(String param)
 		{
 			String index[] = param.split(",");
+			
 			Color colors[] = new Color[index.length];
+			
 			for(int i=0;i<index.length;i++)
 			{
 				colors[i] = Color.decode(index[i].trim());

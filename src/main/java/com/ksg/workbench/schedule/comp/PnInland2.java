@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.button.PageAction;
 import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
@@ -136,10 +136,10 @@ public class PnInland2 extends PnSchedule{
 
 		txfNoramlSearch = new JTextField(15);
 
-		GradientButton butSearch = new GradientButton("검색", "images/search3.png");
+		KSGGradientButton butSearch = new KSGGradientButton("검색", "images/search3.png");
 		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
-		GradientButton butCancel = new GradientButton("",  "images/init.png");
+		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
 		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 		
 		butSearch.addActionListener(this);

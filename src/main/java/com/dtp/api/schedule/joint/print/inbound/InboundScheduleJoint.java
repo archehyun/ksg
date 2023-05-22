@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -77,7 +78,7 @@ public class InboundScheduleJoint extends AbstractInboundSchedulePrint{
 
 		message = "Inbound 积己吝...";
 
-		logger.debug("searched inbound port list size:"+lengthOfTask);
+		logger.info("searched inbound port list size:"+lengthOfTask);
 
 	}
 
@@ -934,6 +935,9 @@ public class InboundScheduleJoint extends AbstractInboundSchedulePrint{
 
 		current=0;
 
+		String FROM_PORT_TAG1 = "<ct:><cf:><cs:><cs:8.000000><cf:Helvetica LT Std><ct:Bold>";
+		
+		String company_tag = "<cf:Helvetica LT Std><ct:Roman>";
 		/*
 		 * 搬苞 积己
 		 */
@@ -941,7 +945,8 @@ public class InboundScheduleJoint extends AbstractInboundSchedulePrint{
 		{
 			Element schedule_row = (Element) schedule_list.get(i);
 
-			buffer.append((i!=0?"<ct:><cf:><cs:><cs:8.000000><cf:Helvetica LT Std><ct:Bold>":"<ct:><cf:><cs:><cs:8.000000><cf:Helvetica LT Std><ct:Bold>")+schedule_row.getAttributeValue("name")+" , "+schedule_row.getAttributeValue("nationality"));		
+			
+			buffer.append((i!=0?FROM_PORT_TAG1:FROM_PORT_TAG1)+schedule_row.getAttributeValue("name")+" , "+schedule_row.getAttributeValue("nationality"));		
 			buffer.append("\r\n\r\n");
 			List dataLi=schedule_row.getChildren("data");
 			for(int j=0;j<dataLi.size();j++)
@@ -1177,6 +1182,12 @@ public class InboundScheduleJoint extends AbstractInboundSchedulePrint{
 
 	@Override
 	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void writeFile(ArrayList<String> printList) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

@@ -56,6 +56,7 @@ import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
@@ -293,13 +294,13 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		
 		KSGPanel pnPass = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		JButton btnNext = new JButton("저장");
+		JButton btnNext = new KSGGradientButton("저장");
 		
 		btnNext.addActionListener(this);
 
 		pnPass.add(btnNext);
 		
-		JButton btnCancel = new JButton("취소");
+		JButton btnCancel = new KSGGradientButton("취소");
 		
 		btnCancel.addActionListener(new ActionListener(){
 
@@ -371,7 +372,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		
 		pnFromCompany.add(createForm("선사명 약어: ", txfCompany));
 		
-		JButton button = new JButton("검색");
+		JButton button = new KSGGradientButton("검색");
 		
 		button.addActionListener(new ActionListener(){
 
@@ -459,7 +460,9 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 
 		Box boxTableInfo = Box.createVerticalBox();
 		boxTableInfo.setBackground(Color.white);
-		boxTableInfo.setBorder(BorderFactory.createTitledBorder("테이블 정보"));
+		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("테이블 정보");
+		createTitledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
+		boxTableInfo.setBorder(createTitledBorder);
 		boxTableInfo.add(createForm(createForm("테이블 ID : ", txfTableID),vgap));
 		boxTableInfo.add(createForm(createForm("테이블 구분 : ", cbxGubun),vgap));
 		boxTableInfo.add(pnFromCompany);
@@ -558,6 +561,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		pnInBound.add(createForm("국내항 : ", txfInPort));
 		pnInBound.add(createForm("외국항 : ", txfInToPort));
 		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수입항 등록");
+		createTitledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
 		pnInBound.setBorder(createTitledBorder);
 
 		KSGPanel pnInBoundSub = new KSGPanel();
@@ -572,6 +576,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		pnOutBound.setLayout(gridLayout);
 
 		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수출항 등록");
+		createTitledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
 		pnOutBound.setBorder(createTitledBorder);
 
 

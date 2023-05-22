@@ -96,7 +96,7 @@ import com.ksg.view.comp.table.KSGTableSelectListner;
 import com.ksg.view.comp.table.groupable.ColumnGroup;
 import com.ksg.view.comp.table.groupable.GroupableTableHeader;
 import com.ksg.workbench.common.comp.KSGDatePickerImpl;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.textfield.SearchTextField;
 import com.ksg.workbench.common.comp.tree.CustomTree;
@@ -109,7 +109,6 @@ import com.ksg.workbench.shippertable.dialog.SearchCompanyDialog;
 import com.ksg.workbench.shippertable.dialog.UpdateShipperTableDateDialog;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 /**
@@ -220,7 +219,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	private JToggleButton butEdit; //
 
 	private boolean 			close=true;	
-	
+
 	private SearchTextField stfCompanyAbbr;
 
 	private JMenuItem delMenu;
@@ -381,11 +380,11 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			{
 				list.add(tableH.getValueAt(i));
 			}
-			
+
 			if(list.size()==0)return;
 
 			updateAllDateDialog = new UpdateShipperTableDateDialog(list, this);
-			
+
 			updateAllDateDialog.createAndUpdateUI();
 		}
 
@@ -436,9 +435,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 
 		tableH = new KSGTablePanel("광고목록");
-		
-		
-		
+
+
+
 		tableH.addColumn(new KSGTableColumn("page", "페이지"));
 		tableH.addColumn(new KSGTableColumn("table_index", "인덱스"));
 		tableH.addColumn(new KSGTableColumn("table_id", "테이블ID", 125));
@@ -460,23 +459,23 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		tableH.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		tableH.initComp();
-		
-		
-		  TableColumnModel cm = tableH.getTable().getColumnModel();
-	        ColumnGroup inbound = new ColumnGroup("Inbound");
-	        inbound.add(cm.getColumn(11));
-	        inbound.add(cm.getColumn(12));
-	        ColumnGroup outbound = new ColumnGroup("Outbound");
-	        outbound.add(cm.getColumn(13));
-	        outbound.add(cm.getColumn(14));
-	        
-	        
-	        
-	        GroupableTableHeader header = (GroupableTableHeader)tableH.getTable().getTableHeader();
-	        header.addColumnGroup(inbound);
-	        header.addColumnGroup(outbound);
-		
-		
+
+
+		TableColumnModel cm = tableH.getTable().getColumnModel();
+		ColumnGroup inbound = new ColumnGroup("Inbound");
+		inbound.add(cm.getColumn(11));
+		inbound.add(cm.getColumn(12));
+		ColumnGroup outbound = new ColumnGroup("Outbound");
+		outbound.add(cm.getColumn(13));
+		outbound.add(cm.getColumn(14));
+
+
+
+		GroupableTableHeader header = (GroupableTableHeader)tableH.getTable().getTableHeader();
+		header.addColumnGroup(inbound);
+		header.addColumnGroup(outbound);
+
+
 		tableH.setName("tableH");
 
 
@@ -533,9 +532,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		KSGPanel pnSouth = new KSGPanel(new BorderLayout());
 
 		butEdit = new JToggleButton("편집(E)",new ImageIcon("images/editClose.gif"));
-		
+
 		butEdit.setMnemonic(KeyEvent.VK_E);
-		
+
 		butEdit.setSelectedIcon(new ImageIcon("images/editOpen.gif"));
 
 		butEdit.addChangeListener(new ChangeListener(){
@@ -550,9 +549,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 
 		JButton butCreateADV = new JButton("광고 등록( + N)");
-		
+
 		butCreateADV.setActionCommand("광고 등록");
-		
+
 		butCreateADV.addActionListener(this);
 
 		KSGPanel pnRightControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -578,9 +577,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		pnUpdateTable.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		pnUpdateTable.setVisible(false);
-		
+
 		pnUpdateTable.setMinimumSize(new Dimension(200,0));
-		
+
 		pnUpdateTable.setMaximumSize(new Dimension(300,0));
 
 
@@ -662,9 +661,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		ItemListener itemListener= new ItemListener(){
 
 			public void itemStateChanged(ItemEvent e) {
-				
+
 				AbstractButton but = (AbstractButton) e.getSource();
-				
+
 				if(ItemEvent.SELECTED==e.getStateChange())
 				{
 					String te = but.getActionCommand();
@@ -676,71 +675,71 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 					else if(te.equals("페이지별"))
 					{
 						tree.changeState(CustomTree.PAGE_LIST);
-						
+
 					}
 
 				}
 			}};
-		rbtCompany.addItemListener(itemListener);
-		
-		rbtPage.addItemListener(itemListener);
-		
-		panel.add(new JSeparator(JSeparator.HORIZONTAL));
-		
-		JButton butADDTable = new JButton(new ImageIcon("images/plus.gif"));
-		
+			rbtCompany.addItemListener(itemListener);
 
-		butADDTable.setPreferredSize(new Dimension(35,25));
-		
-		butADDTable.setFocusPainted(false);
-		
-		butADDTable.setActionCommand("신규등록");
-		
-		butADDTable.setToolTipText("신규 테이블 등록");
-		
-		butADDTable.addActionListener(this);
+			rbtPage.addItemListener(itemListener);
 
-		panel.add(butADDTable);
-		
-		JButton butDelTable = new JButton(new ImageIcon("images/minus.gif"));
-		butDelTable.setPreferredSize(new Dimension(35,25));
-		butDelTable.setFocusPainted(false);
-		butDelTable.setActionCommand("테이블삭제");
-		butDelTable.addActionListener(this);
-		panel.add(butDelTable);
+			panel.add(new JSeparator(JSeparator.HORIZONTAL));
+
+			JButton butADDTable = new JButton(new ImageIcon("images/plus.gif"));
 
 
-		KSGPanel pnTitle = new KSGPanel();
-		pnTitle.setBackground(new Color(88,141,250));
+			butADDTable.setPreferredSize(new Dimension(35,25));
+
+			butADDTable.setFocusPainted(false);
+
+			butADDTable.setActionCommand("신규등록");
+
+			butADDTable.setToolTipText("신규 테이블 등록");
+
+			butADDTable.addActionListener(this);
+
+			panel.add(butADDTable);
+
+			JButton butDelTable = new JButton(new ImageIcon("images/minus.gif"));
+			butDelTable.setPreferredSize(new Dimension(35,25));
+			butDelTable.setFocusPainted(false);
+			butDelTable.setActionCommand("테이블삭제");
+			butDelTable.addActionListener(this);
+			panel.add(butDelTable);
 
 
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		JLabel label = new JLabel("테이블 목록");
-
-		label.setForeground(Color.white);
-
-		pnTitle.add(label);
-		
-		pnTitle.setPreferredSize( new Dimension(0,22));
+			KSGPanel pnTitle = new KSGPanel();
+			pnTitle.setBackground(new Color(88,141,250));
 
 
-		pnMain.add(pnSearch,BorderLayout.NORTH);
-		
-		pnMain.add(panel,BorderLayout.SOUTH);
+			pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-		KSGPanel pnArrow = new KSGPanel()
-				;
-		JButton butA = new JButton("");
-		
-		pnArrow.setPreferredSize(new Dimension(15,0));
-		
-		pnArrow.add(butA);
-		
-		pnMain.setPreferredSize(new Dimension(220,0));
+			JLabel label = new JLabel("테이블 목록");
+
+			label.setForeground(Color.white);
+
+			pnTitle.add(label);
+
+			pnTitle.setPreferredSize( new Dimension(0,22));
 
 
-		return pnMain;
+			pnMain.add(pnSearch,BorderLayout.NORTH);
+
+			pnMain.add(panel,BorderLayout.SOUTH);
+
+			KSGPanel pnArrow = new KSGPanel()
+					;
+			JButton butA = new JButton("");
+
+			pnArrow.setPreferredSize(new Dimension(15,0));
+
+			pnArrow.add(butA);
+
+			pnMain.setPreferredSize(new Dimension(220,0));
+
+
+			return pnMain;
 	}
 	/**
 	 * @param isSelected
@@ -824,19 +823,19 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		txfPage.setEditable(false);
 		txfPage.setBorder(BorderFactory.createEtchedBorder());
 		txfPage.setBackground(Color.white);
-		
+
 		stfCompanyAbbr = new SearchTextField();
 		stfCompanyAbbr.setPreferredSize(new Dimension(150,23));
 		stfCompanyAbbr.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SearchCompanyDialog dialog = new SearchCompanyDialog();
-				
+
 				dialog.createAndUpdateUI();
-				
+
 				stfCompanyAbbr.setText(dialog.result);
-				
+
 			}
 		});
 
@@ -903,8 +902,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		KSGDatePickerImpl jdatePicker = new KSGDatePickerImpl(datePanel);
 
 		jdatePicker.setPreferredSize(new Dimension(150,23));
-		
-		GradientButton butDateSearch = new GradientButton("검색", "images/search3.png");
+
+		KSGGradientButton butDateSearch = new KSGGradientButton("검색", "images/search3.png");
 
 		butDateSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
@@ -961,11 +960,11 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 
 			}});
-		
+
 		cbxGubun = new KSGComboBox("tableType");
 		cbxGubun.setShowTotal(true);
 		cbxGubun.setPreferredSize(new Dimension(150,23));
-		
+
 
 		cbxGubun.initComp();
 
@@ -985,9 +984,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		lblPage = new JLabel("  페이지: ");
 		lblIndex = new JLabel("  인덱스: ");
 		lblItem = new JLabel("  항목: ");
-		
+
 		JLabel lblCompany = new JLabel("선사: ");
-		
+
 		Font font = new Font("맑은고딕",Font.BOLD,12);
 
 		lblDivision.setFont(font);
@@ -997,19 +996,19 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		lblCompany.setFont(font);
 
 		pnSearchMainDown.add(lblDivision);
-		
+
 		pnSearchMainDown.add(cbxGubun);
-		
+
 		pnSearchMainDown.add(lblCompany);
-		
+
 		pnSearchMainDown.add(stfCompanyAbbr);
 
 		pnSearchMainDown.add(lblItem);
-		
+
 		pnSearchMainDown.add(cbbOption);
-		
+
 		pnSearchMainDown.add(txfSearchInput);
-		
+
 		pnSearchMainDown.add(lblDateSearch);
 		//		pnSearchMainDown.add(txfDateSearch);
 		pnSearchMainDown.add(jdatePicker);
@@ -1486,7 +1485,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	public void fnUpdate()
 	{
 		try {
-//			int page_size = tableH.getPageSize();
+			//			int page_size = tableH.getPageSize();
 
 			searchParamHash.put("PAGE_SIZE", 0);
 
@@ -1518,16 +1517,16 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 			param.put("gubun", item.columnName);
 		}
-		
+
 		String strParam=txfSearchInput.getText();
 		if(!strParam.equals(""))
 		{
 			KSGTableColumn col = (KSGTableColumn) cbbOption.getSelectedItem();
 			param.put(col.columnField, strParam);
 		}
-		
+
 		String company_abbr= stfCompanyAbbr.getText();
-		
+
 		if(!company_abbr.equals("")) {
 			param.put("company_abbr", company_abbr);
 		}
@@ -1826,7 +1825,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			if("shipperTableMgtUI2.init".equals(serviceId)) {
 
 				viewModel = (CommandMap) result.clone();
-				
+
 				tree.loadModel(viewModel);
 
 			}
@@ -1836,7 +1835,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 				tableH.setResultData(data);
 
-//				tableH.setTotalCount(data.size());
+				//				tableH.setTotalCount(data.size());
 
 				tableH.requestFocus();
 

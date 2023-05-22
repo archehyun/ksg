@@ -34,6 +34,7 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.CompanyService;
 import com.ksg.service.impl.CompanyServiceImpl;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 
@@ -191,7 +192,7 @@ public class SearchCompanyDialog extends KSGDialog{
 	{
 		KSGPanel pnSubPnControl = new KSGPanel();
 		pnSubPnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butOK = new JButton("확인");
+		JButton butOK = new KSGGradientButton("확인");
 
 		butOK.addActionListener(new ActionListener(){
 
@@ -207,12 +208,10 @@ public class SearchCompanyDialog extends KSGDialog{
 				{
 					JOptionPane.showMessageDialog(SearchCompanyDialog.this, "선택된 선사명 약어가 없습니다.");
 				}
-
-
 			}});
 		butOK.setPreferredSize(new Dimension(80,28));
 		pnSubPnControl.add(butOK);
-		JButton butCancel = new JButton("취소");
+		JButton butCancel = new KSGGradientButton("취소");
 
 		butCancel.addActionListener(new ActionListener(){
 
@@ -227,12 +226,7 @@ public class SearchCompanyDialog extends KSGDialog{
 	}
 	private void updateTree(List list) throws SQLException	
 	{
-
-
 		this.root.removeAllChildren();
-
-		
-
 		Iterator<CommandMap> iter =list.iterator();
 		while(iter.hasNext())
 		{

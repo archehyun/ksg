@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,6 +59,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.dao.DAOManager;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Company;
@@ -70,8 +72,10 @@ import com.ksg.service.CompanyService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
+import com.ksg.workbench.shippertable.dialog.SearchCompanyDialog;
 import com.ksg.workbench.shippertable.dialog.UpdateTableInOutDialog;
 
 /**
@@ -345,12 +349,13 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		gridLayout.setVgap(10);
 		pnTable.setLayout(gridLayout);
 		TitledBorder boderTable = BorderFactory.createTitledBorder("테이블 정보");
+		boderTable.setTitleFont(getFont().deriveFont(Font.BOLD));
 		pnTable.setBorder(boderTable);
 		
 		
-		KSGPanel pnCompanySearch = new KSGPanel(new BorderLayout());
+		KSGPanel pnCompanySearch = new KSGPanel(new BorderLayout(5,0));
 		pnCompanySearch.add(txfCompany_Abbr);
-		JButton button = new JButton("검색");
+		JButton button = new KSGGradientButton("검색");
 		pnCompanySearch.add(button,BorderLayout.EAST);
 		
 		
@@ -358,114 +363,141 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				final JDialog dialog = new JDialog();
-
+				
+				SearchCompanyDialog companyDialog = new SearchCompanyDialog();
+				
+				companyDialog.createAndUpdateUI();
+				
+				String company_abbr = companyDialog.result;
+				
+				if(company_abbr == null)return;
+				
+				CommandMap param = new CommandMap();
+				
+				param.put("company_abbr", company_abbr);
 				try {
-					List li=advService.getCompanyList();
-
-					DefaultMutableTreeNode root = new DefaultMutableTreeNode("전체선사:"+li.size());
-					Iterator iter =li.iterator();
-					while(iter.hasNext())
-					{
-						Company company = (Company) iter.next();
-						DefaultMutableTreeNode sub = new DefaultMutableTreeNode(company.getCompany_abbr());
-						root.add(sub);						
-					}
-
-					dialog.setTitle("Company Selection");
-					KSGPanel pnMain = new KSGPanel();
-					pnMain.setLayout( new BorderLayout());
-					final JTree tree = new JTree(root);
-					tree.addMouseListener(new MouseAdapter() {
-
-						public void mouseClicked(MouseEvent arg0) {
-							if(arg0.getClickCount()>1)
-							{
-								TreePath path=tree.getSelectionPath();
-								if(path.getPathCount()!=1)
-								{
-									String company=path.getLastPathComponent().toString();
-									//setTableIndex(company);										
-									txfCompany_Abbr.setText(company);
-									
-
-									dialog.setVisible(false);
-									dialog.dispose();
-								}
-							}
-
-						}
-					});
-					tree.addTreeSelectionListener(new TreeSelectionListener(){
-
-						public void valueChanged(TreeSelectionEvent e) {
-							TreePath path=e.getNewLeadSelectionPath();
-
-							if(path.getPathCount()!=1)
-								System.out.println(path.getLastPathComponent());	
-
-						}});
-
-
-					pnMain.add(new JScrollPane(tree),BorderLayout.CENTER);
-					KSGPanel pnSubPnControl = new KSGPanel();
-					pnSubPnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-					JButton butOK = new JButton("OK");
-
-					butOK.addActionListener(new ActionListener(){
-
-						public void actionPerformed(ActionEvent e) 
-						{
-							TreePath path=tree.getSelectionPath();
-							if(path.getPathCount()!=1)
-							{
-
-								String company=path.getLastPathComponent().toString();
-								try {
-									
-//									Company companyInfo=baseService.getCompanyInfo(company);
-									
-									Company companyInfo =companyService.select(company);
-									txfCompany_Abbr.setText(companyInfo.getCompany_abbr());
-									txfAgent.setText(companyInfo.getAgent_abbr());
-									
-									
-								} catch (SQLException e1) {
-									JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
-									e1.printStackTrace();
-								}
-							}
-
-							dialog.setVisible(false);
-							dialog.dispose();							
-						}});
-					butOK.setPreferredSize(new Dimension(80,28));
-					pnSubPnControl.add(butOK);
-					JButton butCancel = new JButton("Cancel");
-
-					butCancel.addActionListener(new ActionListener(){
-
-						public void actionPerformed(ActionEvent e) {
-							dialog.setVisible(false);
-							dialog.dispose();
-
-						}});
-					pnSubPnControl.add(butCancel);
-					butCancel.setPreferredSize(new Dimension(80,28));
-					KSGPanel pnTitleInfo = new KSGPanel();
-					pnTitleInfo.setLayout(new FlowLayout(FlowLayout.LEFT));
-					pnTitleInfo.add(new JLabel("Chose the Company"));
-					pnMain.add(pnTitleInfo,BorderLayout.NORTH);
-					pnMain.add(pnSubPnControl,BorderLayout.SOUTH);
-					dialog.add(pnMain);					
-					dialog.setSize(400, 400);
-					ViewUtil.center(dialog, false);
-					dialog.setVisible(true);
-
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Company companyInfo=companyService.select(param );
+					
+					setTableIndex(companyInfo.getCompany_abbr());
+					
+					txfCompany_Abbr.setText(companyInfo.getCompany_abbr());
+					txfAgent.setText(companyInfo.getAgent_abbr());
+					txaCommon.setText(companyInfo.getCompany_abbr());
 				}
+				catch(Exception ee)
+				{
+					ee.printStackTrace();
+				}
+				
+				
+//				final JDialog dialog = new JDialog();
+//
+//				try {
+//					List li=advService.getCompanyList();
+//
+//					DefaultMutableTreeNode root = new DefaultMutableTreeNode("전체선사:"+li.size());
+//					Iterator iter =li.iterator();
+//					while(iter.hasNext())
+//					{
+//						Company company = (Company) iter.next();
+//						DefaultMutableTreeNode sub = new DefaultMutableTreeNode(company.getCompany_abbr());
+//						root.add(sub);						
+//					}
+//
+//					dialog.setTitle("Company Selection");
+//					KSGPanel pnMain = new KSGPanel();
+//					pnMain.setLayout( new BorderLayout());
+//					final JTree tree = new JTree(root);
+//					tree.addMouseListener(new MouseAdapter() {
+//
+//						public void mouseClicked(MouseEvent arg0) {
+//							if(arg0.getClickCount()>1)
+//							{
+//								TreePath path=tree.getSelectionPath();
+//								if(path.getPathCount()!=1)
+//								{
+//									String company=path.getLastPathComponent().toString();
+//									//setTableIndex(company);										
+//									txfCompany_Abbr.setText(company);
+//									
+//
+//									dialog.setVisible(false);
+//									dialog.dispose();
+//								}
+//							}
+//
+//						}
+//					});
+//					tree.addTreeSelectionListener(new TreeSelectionListener(){
+//
+//						public void valueChanged(TreeSelectionEvent e) {
+//							TreePath path=e.getNewLeadSelectionPath();
+//
+//							if(path.getPathCount()!=1)
+//								System.out.println(path.getLastPathComponent());	
+//
+//						}});
+//
+//
+//					pnMain.add(new JScrollPane(tree),BorderLayout.CENTER);
+//					KSGPanel pnSubPnControl = new KSGPanel();
+//					pnSubPnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
+//					JButton butOK = new GradientButton("OK");
+//
+//					butOK.addActionListener(new ActionListener(){
+//
+//						public void actionPerformed(ActionEvent e) 
+//						{
+//							TreePath path=tree.getSelectionPath();
+//							if(path.getPathCount()!=1)
+//							{
+//
+//								String company=path.getLastPathComponent().toString();
+//								try {
+//									
+////									Company companyInfo=baseService.getCompanyInfo(company);
+//									
+//									Company companyInfo =companyService.select(company);
+//									txfCompany_Abbr.setText(companyInfo.getCompany_abbr());
+//									txfAgent.setText(companyInfo.getAgent_abbr());
+//									
+//									
+//								} catch (SQLException e1) {
+//									JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
+//									e1.printStackTrace();
+//								}
+//							}
+//
+//							dialog.setVisible(false);
+//							dialog.dispose();							
+//						}});
+//					butOK.setPreferredSize(new Dimension(80,28));
+//					pnSubPnControl.add(butOK);
+//					JButton butCancel = new GradientButton("Cancel");
+//
+//					butCancel.addActionListener(new ActionListener(){
+//
+//						public void actionPerformed(ActionEvent e) {
+//							dialog.setVisible(false);
+//							dialog.dispose();
+//
+//						}});
+//					pnSubPnControl.add(butCancel);
+//					butCancel.setPreferredSize(new Dimension(80,28));
+//					KSGPanel pnTitleInfo = new KSGPanel();
+//					pnTitleInfo.setLayout(new FlowLayout(FlowLayout.LEFT));
+//					pnTitleInfo.add(new JLabel("Chose the Company"));
+//					pnMain.add(pnTitleInfo,BorderLayout.NORTH);
+//					pnMain.add(pnSubPnControl,BorderLayout.SOUTH);
+//					dialog.add(pnMain);					
+//					dialog.setSize(400, 400);
+//					ViewUtil.center(dialog, false);
+//					dialog.setVisible(true);
+//
+//				} catch (SQLException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 			}});
 		
 		
@@ -559,6 +591,23 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		this.add(buildButtom(),BorderLayout.SOUTH);
 
 	}
+	
+	private void setTableIndex(String company_abbr) {
+		if(company_abbr!=null)
+		{
+			try 
+			{
+				int last=tableService.getLastTableIndex(company_abbr);				
+				txfIndex.setText(String.valueOf((last+1)));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}catch (NullPointerException e1) 
+			{
+				txfIndex.setText("0");
+			}
+			txfCompany_Abbr.setText(company_abbr);
+		}
+	}
 	/**@ 콘솔 정보 저장 화면
 	 * @return
 	 */
@@ -595,12 +644,13 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		pnInBound.setLayout(gridLayout);
 		pnInBound.add(createForm("국내항 : ", txfInPort));
 		pnInBound.add(createForm("외국항 : ", txfInToPort));
-		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수입항 등록");
+		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수입항 Index");
+		createTitledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
 		pnInBound.setBorder(createTitledBorder);
 
 		KSGPanel pnInBoundSub = new KSGPanel();
 		pnInBoundSub.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butUpdateInbound = new JButton("등록/수정");
+		JButton butUpdateInbound = new KSGGradientButton("등록/수정");
 		butUpdateInbound.addActionListener(this);
 
 		return pnInBound;
@@ -609,7 +659,8 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		KSGPanel pnOutBound = new KSGPanel();
 		pnOutBound.setLayout(gridLayout);
 
-		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수출항 등록");
+		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수출항 Index");
+		createTitledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
 		pnOutBound.setBorder(createTitledBorder);
 
 
@@ -617,7 +668,7 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		pnOutBound.add(createForm("외국항: ", txfOutToPort));
 		KSGPanel pnOutboundSub = new KSGPanel();
 		pnOutboundSub.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		JButton butUpdate = new JButton("등록/수정");
+		JButton butUpdate = new KSGGradientButton("등록/수정");
 		butUpdate.addActionListener(this);
 		return pnOutBound;
 	}
@@ -744,7 +795,7 @@ public class UpdateTablePanel extends KSGPanel implements ActionListener,FocusLi
 		pnButtom.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 
-		JButton btnNext = new JButton("저장하기");
+		JButton btnNext = new KSGGradientButton("저장하기");
 		btnNext.setPreferredSize(new Dimension(90,23));
 		btnNext.addActionListener(this);
 		lblSaveInfo = new JLabel();  

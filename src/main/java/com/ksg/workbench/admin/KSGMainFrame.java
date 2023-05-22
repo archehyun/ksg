@@ -28,7 +28,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.swing.BorderFactory;
@@ -71,7 +70,6 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
-import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.workbench.KSGLogin;
 import com.ksg.workbench.adv.ADVManageUI;
 import com.ksg.workbench.common.comp.View;
@@ -351,12 +349,12 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		return pnMain;
 	}
 
-	private Component buildVersion() {
-		KSGPanel pnMain = new KSGPanel();
-		pnMain.setLayout(new FlowLayout());
-		JLabel lbl = new JLabel("v2010_04_06_01");
-		return pnMain;
-	}
+//	private Component buildVersion() {
+//		KSGPanel pnMain = new KSGPanel();
+//		pnMain.setLayout(new FlowLayout());
+//		JLabel lbl = new JLabel("v2010_04_06_01");
+//		return pnMain;
+//	}
 
 	private void addToolBarButton(String butName, String img, String action)
 	{
@@ -430,8 +428,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 				}
 			}
 		});
+		
 		JCheckBox cbxImportDate = new JCheckBox(MONDAY,false);
+		
 		cbxImportDate.setFont(KSGModelManager.getInstance().defaultFont);
+		
 		cbxImportDate.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
@@ -502,7 +503,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		//===============================================
 
 		BiggerMenu schduleMenu = new BiggerMenu("Schedule정보 관리");
-
 
 		addMenuItem(schduleMenu, SCHEDULE_DELETE,scheduleActionListener);
 
@@ -600,18 +600,12 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		menu.add(item);
 		return item;
 	}
-	private JMenuItem addMenuItem(JMenu menu,String label,int numeric)
-	{
-		JMenuItem item = new JMenuItem(label,numeric);
-		item.addActionListener(this);
-		menu.add(item);
-		return item;
-	}
+	
 	private JMenuItem addMenuItem(JMenu menu,String label,int numeric,ActionListener ac)
-	{
-		JMenuItem item = new JMenuItem(label,numeric);
-		item.addActionListener(ac);
-		menu.add(item);
+	{	
+		JMenuItem item = this.addMenuItem(menu, label, ac);		
+		item.setMnemonic(numeric);
+		
 		return item;
 	}
 

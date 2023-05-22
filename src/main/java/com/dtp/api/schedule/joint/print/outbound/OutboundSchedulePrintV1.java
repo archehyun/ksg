@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
@@ -1144,5 +1145,12 @@ public class OutboundSchedulePrintV1 extends AbstractOutboundSchedulePrint{
 			e.printStackTrace();
 			return ScheduleBuild.FAILURE;
 		}
+	}
+
+
+	@Override
+	public void writeFile(ArrayList<String> printList) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

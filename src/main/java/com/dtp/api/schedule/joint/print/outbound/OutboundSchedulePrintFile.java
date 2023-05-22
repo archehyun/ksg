@@ -1,17 +1,18 @@
 package com.dtp.api.schedule.joint.print.outbound;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.dtp.api.schedule.joint.print.SchedulePrintParam;
+import org.apache.commons.lang3.StringUtils;
+
 import com.ksg.commands.ScheduleExecute;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
+import com.ksg.schedule.logic.print.ScheduleJointError;
 
 /**
  * 
@@ -30,19 +31,9 @@ import com.ksg.domain.Vessel;
  */
 public class OutboundSchedulePrintFile extends AbstractOutboundSchedulePrint{
 
-	private List<ScheduleData> scheduleList;
-
-	private ArrayList<String> printList = new ArrayList<String>();
-	
 	public OutboundSchedulePrintFile() throws Exception {
 		super();
 
-	}
-
-	public OutboundSchedulePrintFile(List<ScheduleData> scheduleList) throws Exception {
-		super();
-
-		this.scheduleList = scheduleList;
 	}
 
 	public OutboundSchedulePrintFile(CommandMap param) throws Exception {
@@ -56,51 +47,23 @@ public class OutboundSchedulePrintFile extends AbstractOutboundSchedulePrint{
 
 		this.outboundSchedule 	= new OutboundScheduleRule(vesselMap);
 	}
-	
-	public OutboundSchedulePrintFile(SchedulePrintParam param) throws Exception {
-		super();
-
-		this.scheduleList 		= param.getScheduleList();
-
-		this.portMap 			= param.getPortMap();
-
-		this.vesselMap 			= param.getVesselMap();
-
-		this.outboundSchedule 	= new OutboundScheduleRule(vesselMap);
-		
-		
-	}
 
 	@Override
 	public int execute() throws Exception {
 
 		try
-		{
+		{	
+			logger.info("아웃바운드 스케줄 프린트 시작");
 			
-			logger.info("스케줄 프린트 시작");
+			initFile();
 			
-			Map<String, Map<String, List<ScheduleData>>> scheduleGroupMap = outboundSchedule.groupedOutboundSchedule(this.scheduleList);
+			ArrayList<String> printList =createPrintList();
 			
-			lengthOfTask = scheduleGroupMap.keySet().size();
-
-			scheduleGroupMap.keySet().stream()
-								.sorted()// 도착항 정렬
-								.forEach(toPortKey->{
-									//도착항 출력
-									printList.add((printList.size()>0?"\r\n":"")+ buildToPortXTG((String)toPortKey,portMap.get(toPortKey).getPort_nationality()));
-					
-									Map<String, List<ScheduleData>> fromPortItems=scheduleGroupMap.get(toPortKey);
-									
-									for(String fromPortKey:fromPort)
-									{
-										if(fromPortItems.containsKey(fromPortKey)) createFormPortPrintItem(fromPortKey, fromPortItems.get(fromPortKey));	
-									}
-									current++;
-								});
+			fw.write(getHeader());
 			
-			writeFile(printList);
+			fw.write(getBoday(printList));
 			
-			this.message = "아웃바운드 생성완료";
+			this.message = "아웃바운드 생성종료";
 
 			logger.info("스케줄 프린트 종료");
 			
@@ -109,43 +72,59 @@ public class OutboundSchedulePrintFile extends AbstractOutboundSchedulePrint{
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			throw new Exception(e);
-		}
-		
-	}
-
-	private void writeFile(ArrayList<String> printList) throws Exception  {
-		
-		try {
-			initFile();
 			
-			fw.write(buildVersionXTG());
-
-			for(String print:printList)
-			{
-				fw.write(print);
-			}
-		} catch (IOException e) {
-			throw new Exception(e);
+			throw new ScheduleJointError(e,data);
 		}
+		
 		finally
 		{
-			fw.close();
-			errorfw.close();
-			portfw.close();
-		}		
+			close();
+		}	
 	}
 
+
+	private ArrayList<String> createPrintList() {
+		
+		ArrayList<String> printList = new ArrayList<String>();
+		
+		Map<String, Map<String, List<ScheduleData>>> scheduleGroupMap = outboundSchedule.groupedOutboundSchedule(this.scheduleList);
+		
+		lengthOfTask = scheduleGroupMap.keySet().size();
+
+		scheduleGroupMap.keySet().stream()
+							.sorted()// 도착항 정렬
+							.forEach(toPortKey->{
+								
+								StringBuffer buffer = new StringBuffer();
+								
+								buffer.append(buildToPortXTG((String)toPortKey,portMap.get(toPortKey).getPort_nationality()));
+				
+								Map<String, List<ScheduleData>> fromPortItems=scheduleGroupMap.get(toPortKey);
+								
+								for(String fromPortKey:fromPort)
+								{
+									if(fromPortItems.containsKey(fromPortKey)) {
+										buffer.append( createFormPortPrintItem(fromPortKey, fromPortItems.get(fromPortKey)));
+									}
+								}
+								
+								printList.add(buffer.toString());
+								
+								current++;
+							});
+		return printList;
+	}	
 	
 
 	/**
 	 * @param fromPortKey
 	 * @param fromPortItems
 	 */
-	private void createFormPortPrintItem(String fromPortKey, List<ScheduleData> scheduleList) {
-
+	private String createFormPortPrintItem(String fromPortKey, List<ScheduleData> scheduleList) {
+		
+		StringBuffer buffer = new StringBuffer();
 		//출발항 출력값
-		printList.add(buildFromXTG((String)fromPortKey));
+		buffer.append(buildFromXTG((String)fromPortKey));
 
 		ArrayList<OutboundScheduleGroup> outboundScheduleGroupList = (ArrayList<OutboundScheduleGroup>) outboundSchedule. createFromPortOutboundScheduleGroup(scheduleList);
 		
@@ -156,9 +135,9 @@ public class OutboundSchedulePrintFile extends AbstractOutboundSchedulePrint{
 								.filter(o->!o.isDateValidate())
 								.sorted()
 								.map(schedule -> makeScheduleStr(schedule))
-								
 								.collect(Collectors.toList())
-								.forEach(item ->printList.add(item));
+								.forEach(item ->buffer.append(item));
+		return buffer.toString();
 	}
 
 	/**
@@ -189,9 +168,7 @@ public class OutboundSchedulePrintFile extends AbstractOutboundSchedulePrint{
 	 */
 	private String buildToPortXTG( String portName,String portNationality) {
 
-		return (isApplyTag?"<ct:><cs:><ct:Bold><cs:8.000000>":"")
-				+portName +" , "+portNationality
-				+(isApplyTag?" \r\n":" ");	
+		return (isApplyTag?"<ct:><cs:><ct:Bold><cs:8.000000>":"") +portName +" , "+portNationality +(isApplyTag?" \r\n":" ");	
 
 	}
 	private String buildFromXTG(String fromPort) {
@@ -200,13 +177,24 @@ public class OutboundSchedulePrintFile extends AbstractOutboundSchedulePrint{
 				+fromPort+" -\r\n";
 
 	}
-	private String buildVersionXTG() {
+	private String getHeader() {
 		String buffer = TAG_VERSION0+"\r\n"+
 				TAG_VERSION2+"\r\n"+
 				TAG_VERSION3+"\r\n"+
 				TAG_VERSION4+"\r\n"+
 				TAG_VERSION5;
 		return buffer;
+	}
+	
+	private String getBoday(ArrayList<String> printList) {
+		return StringUtils.join(printList,"\r\n");
+	}
+
+
+	@Override
+	public void writeFile(ArrayList<String> printList) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 
 

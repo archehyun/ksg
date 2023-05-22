@@ -103,12 +103,7 @@
 		</dependency>
   
 
-		<dependency>
-			<groupId>jdom</groupId>
-			<artifactId>jdom</artifactId>
-			<version>1.0</version>
-		</dependency>
-		
+
 		
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
@@ -160,11 +155,19 @@
 		    <version>1.3.2</version>
 		</dependency>
 		
+		
+		<!-- JSON -->
 		<dependency>
 		    <groupId>com.googlecode.json-simple</groupId>
 		    <artifactId>json-simple</artifactId>
 		    <version>1.1.1</version>
-		</dependency>		
+		</dependency>
+		<dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.0</version>
+		</dependency>
+				
 
 	</dependencies>
 

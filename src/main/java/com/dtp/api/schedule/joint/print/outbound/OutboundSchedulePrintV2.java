@@ -341,4 +341,10 @@ public class OutboundSchedulePrintV2 extends AbstractOutboundSchedulePrint{
 		}
 	}
 
+	@Override
+	public void writeFile(ArrayList<String> printList) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

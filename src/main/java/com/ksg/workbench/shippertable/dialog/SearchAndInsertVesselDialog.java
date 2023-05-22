@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +47,11 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 	 * 
 	 */
 	private JTextField txfSearch;
+	
 	private JList liVessel;
+	
 	private String vesselName;
+	
 	public VesselInfo info;
 
 	public static final int OK_OPTION=1;

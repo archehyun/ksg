@@ -2,6 +2,7 @@ package com.dtp.api.schedule.joint.tree;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import com.dtp.api.schedule.joint.tree.node.OutbondScheduleTreeNode;
 import com.dtp.api.schedule.joint.tree.node.PortTreeNode;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.Vessel;
 import com.ksg.view.comp.treetable.TreeTableNode;
 
 import lombok.extern.slf4j.Slf4j;
@@ -76,7 +78,9 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 		log.info("param:{}",param);
 		logger.info("param:{}",param);
 
-		Map<String, Map<String, List<ScheduleData>>> areaList= (Map<String, Map<String, List<ScheduleData>>>) param.get("data"); 
+		Map<String, Map<String, List<ScheduleData>>> areaList= (Map<String, Map<String, List<ScheduleData>>>) param.get("data");
+		
+		vesselMap 					= (HashMap<String, Vessel>) param.get("vesselMap");
 
 		String sortType = (String) param.get("sortType");
 		
@@ -126,7 +130,7 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 		
 		String strVoyage 	= group.getVoyage();
 		
-		String vesselName 	= group.getVessel();
+		String vesselName 	= group.getVesselName();
 		
 		String strFromPorts = group.toFromPortString();
 		
@@ -146,9 +150,9 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 		schedule.add(new PortTreeNode( strFromPorts));
 
 		// 출발항은 늦은 날짜
-		schedule.date = group.getDate();
+		schedule.date = group.getDateF();
 
-		schedule.vessel = group.getVessel();
+		schedule.vessel = group.getVesselName();
 
 		// 도착항 목록
 		schedule.add(toPort);
@@ -163,7 +167,7 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 	@Override
 	public void createScheduleAndAddGroup(List group, List scheduleList, String areaName, String vesselName) {
 		// 예외 사항 적용된 스캐줄 그룹 생성
-		List<RouteScheduleGroup> validScheduleGroupList = routeJoint.getValidatedScheduleGroupList(areaName,vesselName, scheduleList, isAddValidate);
+		List<RouteScheduleGroup> validScheduleGroupList = routeJoint.getValidatedScheduleGroupList(areaName,vesselMap.get(vesselName), scheduleList, isAddValidate);
 
 		// 스케줄 노드에 추가 
 		validScheduleGroupList.stream().forEach(o -> group.add( (OutbondScheduleTreeNode) makeScheduleNode(areaName,o, scheduleList)));

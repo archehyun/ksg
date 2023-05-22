@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import com.dtp.api.control.AbstractController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
@@ -133,9 +133,9 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	{	
 		KSGPanel pnControl =  new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		butOK = new GradientButton("历厘");
+		butOK = new KSGGradientButton("历厘");
 
-		butCancel = new GradientButton("秒家");
+		butCancel = new KSGGradientButton("秒家");
 		butOK.addActionListener(this);
 		butCancel.addActionListener(this);
 		pnControl.add(butOK);

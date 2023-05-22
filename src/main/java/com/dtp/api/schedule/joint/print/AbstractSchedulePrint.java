@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,12 +33,16 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 public abstract class AbstractSchedulePrint implements ScheduleExecute{
 
 	protected FileWriter fw;
-
+	
+	protected FileWriter errorOutfw,commonInfw;
+	
 	protected FileWriter errorfw;
 
 	protected FileWriter portfw;
 
 	protected ScheduleData data;
+	
+	protected PrintAble print;
 
 	public ScheduleManager scheduleManager = ScheduleManager.getInstance();
 
@@ -84,6 +90,11 @@ public abstract class AbstractSchedulePrint implements ScheduleExecute{
 	
 	protected BaseService baseService;
 
+	protected Map<String, PortInfo> portMap;
+
+	protected Map<String, Vessel> vesselMap;
+
+	protected List<ScheduleData> scheduleList;
 
 	/**
 	 * @throws SQLException
@@ -122,9 +133,21 @@ public abstract class AbstractSchedulePrint implements ScheduleExecute{
 		this.done =b;
 
 	}
-	public abstract void close() throws IOException;
+	
+	public void close() throws IOException
+	{
+		if(fw!=null) fw.close();
+		if(errorOutfw!=null)errorOutfw.close();
+		if(commonInfw!=null)commonInfw.close();
+		if(portfw!=null)portfw.close();
+	}
+	
 
 	public abstract void init() throws Exception;
+	
+	public abstract void writeFile(ArrayList<String> printList) throws Exception;
+	
+
 
 
 

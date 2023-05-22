@@ -19,9 +19,11 @@ import javax.swing.table.JTableHeader;
 
 import com.ksg.view.comp.table.groupable.GroupableTableHeader;
 import com.ksg.view.comp.table.model.TableModel;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.label.BoldLabel;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
+
+import mycomp.comp.MyTable;
 
 
 
@@ -52,7 +54,7 @@ public class KSGTablePanel extends KSGPanel{
 
 	protected int total;
 
-	private KSGAbstractTable table;
+	private MyTable table;
 
 	private String title;
 
@@ -66,7 +68,7 @@ public class KSGTablePanel extends KSGPanel{
 
 	private KSGPanel pnControl;
 	
-	public KSGAbstractTable getTable()
+	public MyTable getTable()
 	{
 		return table;
 	}
@@ -166,9 +168,9 @@ public class KSGTablePanel extends KSGPanel{
 
 		BoldLabel lblTitle = new BoldLabel(title + " 총");
 
-		butInsert = new GradientButton("추가");
+		butInsert = new KSGGradientButton("추가");
 
-		butDelete = new GradientButton("삭제");
+		butDelete = new KSGGradientButton("삭제");
 
 		//butUpdate = new JButton("수정");
 

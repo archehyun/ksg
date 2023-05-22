@@ -458,6 +458,11 @@ public class InlnandScheduleJoint extends AbstractSchedulePrint{
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void writeFile(ArrayList<String> printList) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

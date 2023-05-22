@@ -11,17 +11,12 @@ import com.ksg.view.comp.treetable.TreeTableNode;
 @SuppressWarnings("serial")
 public class InboundGroupTreeNode extends ScheduleTreeNode
 {
-	
 	protected String nodeName;
-	
-	private ArrayList<CommandMap> scheduleList;
 	
 	public InboundGroupTreeNode (String vesselName,ArrayList<CommandMap> scheduleList) {
 		super(vesselName,NodeType.SCHEDULE);
 	
 		nodeName = vesselName;
-		
-		this.scheduleList = scheduleList;
 		
 		this.formatter = new InboundJointedFormatter();
 		

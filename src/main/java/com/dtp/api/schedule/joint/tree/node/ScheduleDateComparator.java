@@ -32,6 +32,13 @@ public class ScheduleDateComparator implements Comparator<ScheduleData> {
 	{
 		this.dateType =dateType;
 	}
+	
+	public int getDateType()
+	{
+		return this.dateType;
+	}
+	
+	
 
 	private  SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
 	
@@ -50,10 +57,8 @@ public class ScheduleDateComparator implements Comparator<ScheduleData> {
 				// 출발일 같은 경우 도착일 기준으로 정렬
 				return formatYYYYMMDD.parse(f1.getDateT()).compareTo(formatYYYYMMDD.parse(f2.getDateT()));
 
-
-
 			case TO_DATE:
-				return formatYYYYMMDD.parse(f1.getDateT()).compareTo(formatYYYYMMDD.parse(f2.getDateT()))*-1;
+				return formatYYYYMMDD.parse(f1.getDateT()).compareTo(formatYYYYMMDD.parse(f2.getDateT()));
 
 
 			default:
@@ -64,6 +69,4 @@ public class ScheduleDateComparator implements Comparator<ScheduleData> {
 			return 0;
 		}
 	}
-
-
 }

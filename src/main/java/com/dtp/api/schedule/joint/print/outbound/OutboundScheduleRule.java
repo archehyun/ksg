@@ -15,25 +15,25 @@ import com.ksg.workbench.schedule.comp.treenode.SortedSchedule;
 
 /**
 
-  * @FileName : OutboundSchedule.java
+ * @FileName : OutboundSchedule.java
 
-  * @Project : KSG2
+ * @Project : KSG2
 
-  * @Date : 2023. 4. 10. 
+ * @Date : 2023. 4. 10. 
 
-  * @작성자 : pch
+ * @작성자 : pch
 
-  * @변경이력 :
+ * @변경이력 :
 
-  * @프로그램 설명 : 아웃 바운드 룰 정의
+ * @프로그램 설명 : 아웃 바운드 룰 정의
 
-  */
+ */
 public class OutboundScheduleRule {
-	
+
 	private Map<String, Vessel> vesselMap;
-	
+
 	private static final int DIVIED_SCHEDULE = 3;
-	
+
 	public OutboundScheduleRule(Map<String, Vessel> vesselMap) {
 		this.vesselMap =vesselMap;
 	}
@@ -46,22 +46,22 @@ public class OutboundScheduleRule {
 	public List<OutboundScheduleGroup> getSplitedOutboundScheduleGroupNode(OutboundScheduleGroup jointScheduleItemList)
 	{
 		ArrayList<Integer> indexList = getSplitedScheduleIndex(jointScheduleItemList);
-		
+
 		List<OutboundScheduleGroup> sortedOutboundScheduleGroupList = new ArrayList<>();
 		// 인덱스 리스트 기준으로 새로운 리스트 생성
 		List<ArrayList<SortedSchedule>> partitions 	= new ArrayList<>();
-		
+
 		for(int index =0,startIndex=0;index<indexList.size();index++)
 		{
 			int splitIndex 	= indexList.get(index);
 
-			partitions.add(new ArrayList<>(jointScheduleItemList.scheduleList.subList(startIndex,splitIndex)));
+			partitions.add(new ArrayList<>(jointScheduleItemList.sortedScheduleList.subList(startIndex,splitIndex)));
 
 			startIndex = splitIndex;
 
-			if(index==indexList.size()-1) partitions.add(new ArrayList<>(jointScheduleItemList.scheduleList.subList(startIndex,jointScheduleItemList.scheduleList.size())));
+			if(index==indexList.size()-1) partitions.add(new ArrayList<>(jointScheduleItemList.sortedScheduleList.subList(startIndex,jointScheduleItemList.sortedScheduleList.size())));
 		}
-		
+
 		partitions.forEach(o -> {
 			try {
 				sortedOutboundScheduleGroupList.add(new OutboundScheduleGroup(jointScheduleItemList, (ArrayList) o));
@@ -70,12 +70,12 @@ public class OutboundScheduleRule {
 				e.printStackTrace();
 			}
 		});
-		
+
 		if(partitions.isEmpty()) sortedOutboundScheduleGroupList.add(jointScheduleItemList);
-		
+
 		return sortedOutboundScheduleGroupList;
 	}
-	
+
 	/**
 	 * @param jointScheduleItemList
 	 * @return
@@ -85,16 +85,16 @@ public class OutboundScheduleRule {
 		ArrayList<Integer> indexList = new ArrayList<Integer>();
 
 		// 3일 차이 나는 인덱스 조회
-		for(int i=0;i<jointScheduleItemList.scheduleList.size()-1;i++)
+		for(int i=0;i<jointScheduleItemList.sortedScheduleList.size()-1;i++)
 		{
-			SortedSchedule sc1 = jointScheduleItemList.scheduleList.get(i);
-			
-			SortedSchedule sc2 = jointScheduleItemList.scheduleList.get(i+1);
-			
+			SortedSchedule sc1 = jointScheduleItemList.sortedScheduleList.get(i);
+
+			SortedSchedule sc2 = jointScheduleItemList.sortedScheduleList.get(i+1);
+
 			String firstFromDate 	= sc1.getData().getDateF();
-			
+
 			String secondFromDate 	= sc2.getData().getDateF();
-			
+
 			//3일 이상
 			if(!KSGDateUtil.isDayUnder(DIVIED_SCHEDULE,firstFromDate,secondFromDate))
 			{
@@ -103,7 +103,7 @@ public class OutboundScheduleRule {
 		}
 		return indexList;
 	}
-	
+
 	/**
 	 * @param scheduleList
 	 * @param scheduleMap
@@ -124,20 +124,20 @@ public class OutboundScheduleRule {
 	 */
 	public void addNewOutboundScheduleGroup(HashMap<String, OutboundScheduleGroup> scheduleList, SortedSchedule scheduleMap,
 			String scheduleKey)  {
-		
-		try {
-		OutboundScheduleGroup jointScheduleItemList = new OutboundScheduleGroup(this.vesselMap.get(scheduleMap.getData().getVessel()));
-		
-		jointScheduleItemList.add(scheduleMap);
 
-		scheduleList.put(scheduleKey, jointScheduleItemList);
+		try {
+			OutboundScheduleGroup jointScheduleItemList = new OutboundScheduleGroup(this.vesselMap.get(scheduleMap.getData().getVessel()));
+
+			jointScheduleItemList.add(scheduleMap);
+
+			scheduleList.put(scheduleKey, jointScheduleItemList);
 		}catch(Exception e)
 		{
 			System.out.println(scheduleMap.getData().getVessel());
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param map
@@ -151,7 +151,7 @@ public class OutboundScheduleRule {
 
 		return String.format("%s-%s", vessel, n_voyage);
 	}
-	
+
 	/**
 	 * outbound공동배선 적용 
 	 * @param schedule
@@ -161,7 +161,7 @@ public class OutboundScheduleRule {
 	public List<OutboundScheduleGroup> createFromPortOutboundScheduleGroup(List<ScheduleData> schedule)
 	{
 		HashMap<String, OutboundScheduleGroup> scheduleList = new HashMap<String,OutboundScheduleGroup>();
-		
+
 		//====================================
 		// 선박명-항차번호 그룹 생성
 		//
@@ -191,19 +191,19 @@ public class OutboundScheduleRule {
 
 		List<OutboundScheduleGroup> list 			= new ArrayList<OutboundScheduleGroup>(scheduleList.values());
 
-		List<OutboundScheduleGroup> fillteredList 	= list.stream().filter(o -> o.scheduleList.size()>0)
-																	.collect(Collectors.toList());
-		
+		List<OutboundScheduleGroup> fillteredList 	= list.stream().filter(o -> o.sortedScheduleList.size()>0)
+				.collect(Collectors.toList());
+
 		ArrayList<OutboundScheduleGroup> outboundScheduleGroupList 	= new ArrayList<OutboundScheduleGroup>();
 
 		fillteredList.forEach(scheduleGroup -> outboundScheduleGroupList.addAll( getSplitedOutboundScheduleGroupNode(scheduleGroup)));
-		
-		
+
+
 		outboundScheduleGroupList.forEach(o -> o.joinnted());
-		
+
 		return outboundScheduleGroupList;
 	}
-	
+
 	/**출발항구 정렬
 	 * @param outboundFromPortArray
 	 * @return
@@ -211,9 +211,9 @@ public class OutboundScheduleRule {
 	private String[] arrangeFromPort(String[]arrangeFromPortArray, String[] outboundFromPortArray) 
 	{	
 		List<String> arragedFromPortList =Arrays.asList(arrangeFromPortArray);
-		
+
 		List<String> fromPortList =Arrays.asList(outboundFromPortArray);
-		
+
 		for(int i=0;i<arrangeFromPortArray.length;i++)
 		{
 			// 국내항 항목이 없으면
@@ -224,16 +224,16 @@ public class OutboundScheduleRule {
 			}
 		}
 		String[] newArray = arragedFromPortList.toArray(new String[arragedFromPortList.size()]);
-		
-		
+
+
 		return newArray;
 	}
-	
+
 	public Map<String, Map<String, List<ScheduleData>>> groupedOutboundSchedule(List<ScheduleData> scheduleList) {
-		
+
 		return this.groupedOutboundSchedule(false, scheduleList);
 	}
-	
+
 	/**
 	 * 
 	 * @param newBusanMerge 부산 신항 공동 배선 유무
@@ -241,18 +241,18 @@ public class OutboundScheduleRule {
 	 * @return
 	 */
 	public Map<String, Map<String, List<ScheduleData>>> groupedOutboundSchedule(boolean newBusanMerge, List<ScheduleData> scheduleList) {
-		
+
 		scheduleList.stream()
-					.forEach(schedule1 -> schedule1.setConvertedFromPort(schedule1.getFromPort()));
-		
+		.forEach(schedule1 -> schedule1.setConvertedFromPort(schedule1.getFromPort()));
+
 		scheduleList.stream()
-					.filter(schedule-> "BUSAN NEW".equals(schedule.getFromPort()))
-					.forEach(schedule -> {if(!newBusanMerge) schedule.setConvertedFromPort("BUSAN");});
-		
+		.filter(schedule-> "BUSAN NEW".equals(schedule.getFromPort()))
+		.forEach(schedule -> {if(!newBusanMerge) schedule.setConvertedFromPort("BUSAN");});
+
 		Map<String, Map<String, List<ScheduleData>>> toPortList =  scheduleList.stream().collect(
 				Collectors.groupingBy(ScheduleData::getPort, // 도착항
 						Collectors.groupingBy(ScheduleData::getConvertedFromPort)));// 출발항
-		
+
 
 		return toPortList;
 	}

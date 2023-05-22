@@ -56,10 +56,6 @@ public class OutboundNodeManager extends AbstractNodeManager{
 
 	private OutboundScheduleRule outboundSchedule;
 	
-	private HashMap<String, PortInfo> portMap;
-	
-	private HashMap<String, Vessel> vesselMap;
-
 	private String[] fromPort;
 
 	private boolean isAddValidate;
@@ -94,7 +90,6 @@ public class OutboundNodeManager extends AbstractNodeManager{
 		outboundSchedule 			= new OutboundScheduleRule(vesselMap);
 		
 		boolean mergeBusan 			= (boolean) result.get("mergeBusan");
-		
 		
 		if(scheduleList==null) return new DefaultMutableTreeNode();
 		
@@ -157,11 +152,11 @@ public class OutboundNodeManager extends AbstractNodeManager{
 	 */
 	private OutbondScheduleTreeNode createScheduleNode(OutboundScheduleGroup jointScheduleItemList) {
 
-		CommandMap item = objectMapper.convertValue(jointScheduleItemList.scheduleList.get(0).getData(), CommandMap.class);
+		CommandMap item = objectMapper.convertValue(jointScheduleItemList.sortedScheduleList.get(0).getData(), CommandMap.class);
 
 		item.put("vessel_type", jointScheduleItemList.getVesselType());
 
-		return new OutbondScheduleTreeNode(new TreeTableNode(item), jointScheduleItemList.parent!=null?NodeType.SPLITED_SCHEDULE: NodeType.SCHEDULE);
+		return new OutbondScheduleTreeNode(new TreeTableNode(item), jointScheduleItemList.getParent()!=null?NodeType.SPLITED_SCHEDULE: NodeType.SCHEDULE);
 	}
 
 	/**
@@ -170,9 +165,9 @@ public class OutboundNodeManager extends AbstractNodeManager{
 	 */
 	private DefaultMutableTreeNode createJointOutboundScheduleGroupNode(OutboundScheduleGroup jointScheduleItemList) {
 
-		DefaultMutableTreeNode node = new ScheduleTreeNode(jointScheduleItemList.toJointedOutboundScheduleString(), jointScheduleItemList.parent==null?NodeType.JOINT_SCHEDULE:NodeType.SPLITED_SCHEDULE);
+		DefaultMutableTreeNode node = new ScheduleTreeNode(toJointedOutboundScheduleString(jointScheduleItemList), jointScheduleItemList.getParent()==null?NodeType.JOINT_SCHEDULE:NodeType.SPLITED_SCHEDULE);
 
-		jointScheduleItemList.scheduleList.forEach(item -> {
+		jointScheduleItemList.sortedScheduleList.forEach(item -> {
 			
 			CommandMap param = objectMapper.convertValue(item.getData(), CommandMap.class);
 			param.put("vessel_type", jointScheduleItemList.getVesselType());
@@ -182,4 +177,20 @@ public class OutboundNodeManager extends AbstractNodeManager{
 
 		return node;
 	}
+	
+	/**
+	 * 
+	 * 
+	 * @return 공동배선이 적용된 스케줄 정보
+	 */
+	public String toJointedOutboundScheduleString(OutboundScheduleGroup group)	{
+		
+		String vessel_type = group.getVesselType();
+		
+		String formatedVesselType =  (vessel_type.equals("")||vessel_type.equals(" "))?"   ":String.format("   [%s]   ", vessel_type);   
+		
+		return String.format("%-8s%-15s%s(%s)   %s", group.getJointedDateF(), group.getVesselName(),formatedVesselType, group.getJointedCompanyName(), group.getJointedDateT());
+
+	}
+	
 }

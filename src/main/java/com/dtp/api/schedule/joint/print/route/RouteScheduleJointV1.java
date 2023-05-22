@@ -543,5 +543,11 @@ public class RouteScheduleJointV1 extends AbstractRouteSchedulePrint{
 		return buffer.toString();
 	}
 
+	@Override
+	public void writeFile(ArrayList<String> printList) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

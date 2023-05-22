@@ -24,6 +24,8 @@ public class SortAllTask implements LongTask {
 	
 	CommandMap param =new CommandMap();
 
+	private boolean isPrintNewInbound;
+
 	public SortAllTask(ShippersTable op,int orderBy,boolean isNew,boolean isPrintInbound, boolean isPrintOutbound, boolean isPrintRoute) throws Exception {
 		this.op = op;
 		
@@ -52,6 +54,8 @@ public class SortAllTask implements LongTask {
 		isPrintNewRoute 		= (boolean) param.get("isPrintNewRoute");
 		
 		isPrintNewOutbound 		= (boolean) param.get("isPrintNewOutbound");
+		
+		isPrintNewInbound 		= (boolean) param.get("isPrintNewInbound");
 
 		isRouteNew 				= (boolean) param.get("isNew");
 		
@@ -61,7 +65,9 @@ public class SortAllTask implements LongTask {
 
 	private void initPrintSchedule(boolean isPrintOutbound, boolean isPrintInbound, boolean isPrintRoute) throws Exception
 	{
-		if(isPrintInbound) ScheduleManager.getInstance().addBulid(new InboundScheduleJoint());
+//		if(isPrintInbound) ScheduleManager.getInstance().addBulid(new InboundScheduleJoint());
+		
+		if(isPrintInbound) ScheduleManager.getInstance().addBulid(SchedulePrintFactory.createSchedulePrint("Inbound", param));
 		
 		if(isPrintOutbound) ScheduleManager.getInstance().addBulid(SchedulePrintFactory.createSchedulePrint("Outbound", param));
 		

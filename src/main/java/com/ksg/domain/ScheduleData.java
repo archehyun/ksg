@@ -227,10 +227,7 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 		return this.getFromPort()+"\t"+this.getDateF()+"\t"+this.getVessel()+"\t"+this.getVoyage_num()+"\t"+this.getDateT()+"\t"+this.getPort();
 	}
 	
-	public String toString()
-	{
-		return toTotalString();
-	}
+
 	public String  toTotalString()
 	{
 		String dateT="";

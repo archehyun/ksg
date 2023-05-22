@@ -31,7 +31,7 @@ import com.ksg.domain.Table_Property;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.KSGCheckBox;
 import com.ksg.view.comp.KSGRadioButton;
-import com.ksg.workbench.adv.KSGXLSImportPanel;
+import com.ksg.workbench.adv.comp.KSGXLSImportPanel;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 

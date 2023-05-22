@@ -25,7 +25,10 @@ import com.ksg.common.util.ViewUtil;
 
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
+
+import mycomp.comp.MyTable;
 
 /**@설명 선사 검색 화면
  * 
@@ -42,7 +45,7 @@ public class SearchCompanyInfoDialog extends BaseInfoDialog {
 	
 	private JTextField txfCompanyName;
 	
-	private KSGAbstractTable tableH;
+	private MyTable tableH;
 	
 	public SearchCompanyInfoDialog(Dialog dialog,JTextField textField) {
 		
@@ -89,7 +92,7 @@ public class SearchCompanyInfoDialog extends BaseInfoDialog {
 		
 		KSGPanel pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		JButton butOk = new JButton("확인");
+		JButton butOk = new KSGGradientButton("확인");
 		
 		butOk.addActionListener(new ActionListener(){
 	
@@ -111,7 +114,7 @@ public class SearchCompanyInfoDialog extends BaseInfoDialog {
 				
 			}});
 		
-		JButton butCancel = new JButton("취소");
+		JButton butCancel = new KSGGradientButton("취소");
 		
 		
 		
@@ -166,52 +169,7 @@ public class SearchCompanyInfoDialog extends BaseInfoDialog {
 		
 		return pnMain;
 	}
-//	
-//	public JComponent buildControl()
-//	{
-//		KSGPanel pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-//		
-//		JButton butOk = new JButton("확인");
-//		
-//		butOk.addActionListener(new ActionListener(){
-//	
-//			public void actionPerformed(ActionEvent e) {
-//				
-//				int result=tableH.getSelectedRow();
-//				if(result==-1)
-//				{
-//					JOptionPane.showMessageDialog(SearchCompanyInfoDialog.this, "선택된 선사명이 없습니다.");
-//				}else
-//				{
-//					String company_abbr=(String) tableH.getValueAt(result, 1);
-//					String agent_abbr=(String) tableH.getValueAt(result, 3);
-//					txfCompanyName.setText(company_abbr.compareToIgnoreCase(agent_abbr)==0?company_abbr:company_abbr+"/"+agent_abbr);
-//					txfCompanyName.setText(company_abbr);
-//					setVisible(false);
-//					dispose();
-//				}
-//				
-//			}});
-//		
-//		JButton butCancel = new JButton("취소");
-//		
-//		
-//		tableH.getParent().setBackground(Color.white);
-//		
-//		butCancel.addActionListener(new ActionListener(){
-//	
-//			public void actionPerformed(ActionEvent e) {
-//				txfCompanyName.setText("");
-//				setVisible(false);
-//				dispose();
-//			}});
-//		
-//		pnControl.add(butOk);
-//		
-//		pnControl.add(butCancel);
-//		return pnControl
-//	}
-	
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

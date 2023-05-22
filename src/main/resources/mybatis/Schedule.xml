@@ -554,7 +554,7 @@ select fromPort from TB_SCHEDULE_INFO where inOutType='O'
 </select>
 
 <select id="selectInboundScheduleList" resultClass="com.ksg.domain.ScheduleData" >
-	select * from TB_SCHEDULE_INFO, TB_VESSEL where inOutType='I' and TB_SCHEDULE_INFO.vessel=TB_VESSEL.vessel_name
+	select * from TB_SCHEDULE_INFO, TB_VESSEL_H where inOutType='I' and TB_SCHEDULE_INFO.vessel=TB_VESSEL_H.vessel_name
 	<isNotNull prepend="and" property="fromPort">
 	fromPort=#fromPort#
 	</isNotNull>		

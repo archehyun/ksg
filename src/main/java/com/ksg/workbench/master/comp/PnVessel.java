@@ -54,7 +54,7 @@ import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.adv.comp.SimpleFileFilter;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.label.BoldLabel;
 import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
@@ -66,6 +66,7 @@ import com.ksg.workbench.master.dialog.UpdateVesselInfoDialog;
 import com.ksg.workbench.master.dialog.VesselImportDialog;
 
 import lombok.extern.slf4j.Slf4j;
+import mycomp.comp.MyTable;
 
 
 /**
@@ -129,7 +130,7 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	private CodeServiceImpl codeService= new CodeServiceImpl();
 
-	private KSGAbstractTable tableD;
+	private MyTable tableD;
 
 	private JLabel lblVesselName;
 
@@ -274,7 +275,7 @@ public class PnVessel extends PnBase implements ActionListener {
 			}
 		});
 
-		GradientButton butUpSearch = new GradientButton(STRING_SEARCH, "images/search3.png");
+		KSGGradientButton butUpSearch = new KSGGradientButton(STRING_SEARCH, "images/search3.png");
 		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUpSearch.addActionListener(this);
@@ -629,11 +630,11 @@ public class PnVessel extends PnBase implements ActionListener {
 
 		KSGPanel pnControl = new KSGPanel(new FlowLayout());
 
-		JButton butNewAbbr = new GradientButton("추가");
+		JButton butNewAbbr = new KSGGradientButton("추가");
 		
 		butNewAbbr.setActionCommand("약어등록");
 		
-		JButton butDelAbbr = new GradientButton("삭제");
+		JButton butDelAbbr = new KSGGradientButton("삭제");
 		
 		butDelAbbr.setActionCommand("약어삭제");
 

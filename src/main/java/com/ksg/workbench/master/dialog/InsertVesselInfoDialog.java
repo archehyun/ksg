@@ -43,6 +43,7 @@ import com.ksg.domain.Vessel;
 import com.ksg.view.comp.KSGCheckBox;
 import com.ksg.view.comp.KSGComboBox;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.comp.PnVessel;
@@ -143,7 +144,7 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 		});
 
 
-		JButton butSearchCompany = new JButton("조회");
+		JButton butSearchCompany = new KSGGradientButton("조회");
 		butSearchCompany.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) {

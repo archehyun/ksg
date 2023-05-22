@@ -51,7 +51,7 @@ import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
   */
 @SuppressWarnings("serial")
-public class SearchPortDialog extends KSGDialog implements ActionListener, ComponentListener{
+public class SearchPortDialog extends KSGDialog implements ActionListener{
 
 	public String result;
 	
@@ -383,13 +383,7 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 		{
 			close();
 		}
-	}
-
-	@Override
-	public void componentResized(ComponentEvent e) {}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {}
+	}	
 
 	@Override
 	public void componentShown(ComponentEvent e) {
@@ -419,9 +413,4 @@ public class SearchPortDialog extends KSGDialog implements ActionListener, Compo
 		}
 
 	}
-
-	@Override
-	public void componentHidden(ComponentEvent e) {}
-
-
 }

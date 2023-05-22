@@ -60,13 +60,15 @@ import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.ui.ErrorLogManager;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.schedule.comp.PnConsole2;
 import com.ksg.workbench.schedule.comp.PnInland2;
 import com.ksg.workbench.schedule.comp.PnNormal2;
 import com.ksg.workbench.schedule.comp.PnNormalByTree;
 import com.ksg.workbench.schedule.dialog.ScheduleResultDialog;
+
+import mycomp.comp.MyTable;
 
 /**
  * 스케줄 정보 조회
@@ -99,7 +101,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 	private static final long serialVersionUID = 1L;	
 
-	private KSGAbstractTable tblScheduleDateList;
+	private MyTable tblScheduleDateList;
 
 	private JLabel lblNTop;
 
@@ -168,7 +170,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		createAndUpdateUI();
 	}
 
-
 	/**
 	 *@설명 화면 생성 및 업데이트 
 	 */
@@ -183,10 +184,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		this.add(buildCenter(),BorderLayout.CENTER);
 
 		this.add(buildNorthPn(),BorderLayout.NORTH);
-		
-		callApi("scheduleViewUpdate");
-		
-
 	}
 
 	private KSGPanel buildLeftMenu() {
@@ -231,7 +228,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		cbxTableDateList = new JComboBox();
 		
-		JButton butUpdate = new GradientButton("갱신");
+		JButton butUpdate = new KSGGradientButton("갱신");
 		
 		butUpdate.addActionListener(this);
 
@@ -246,9 +243,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnDate.add(cbxTableDateList);
 
 		pnDate.add(butUpdate,BorderLayout.EAST);
-		
-		
-		
 
 		GridLayout butlayout = new GridLayout(0,1);
 
@@ -336,8 +330,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnTblScheduleDateList.add(new JScrollPane(tblScheduleDateList));
 		
 		tblScheduleDateList.getParent().setBackground(Color.white);
-		
-		
 
 
 		pnTblScheduleDateList.add(createOptionPn(),BorderLayout.SOUTH);
@@ -420,7 +412,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		
 		cbxOutboundSchedule = new KSGCheckBox("Outbound",true);
 		
-		
 		cbxOutboundSchedule.addActionListener(new ActionListener() {
 
 			@Override
@@ -440,8 +431,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			}
 		});
 		
-		
-		
 		cbxInboundSchedule.addActionListener(printAble);
 		
 		cbxInboundSchedule.addActionListener(new ActionListener() {
@@ -460,6 +449,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		cbxOutboundLogic = new JComboBox<String>();
 		
 		chxOutboundLogic = new JCheckBox("신규",true);
+		
 		chxOutboundLogic.setBackground(Color.white);
 		
 		cbxOutboundLogic.addItem("기존");
@@ -470,16 +460,18 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		cbxRouteLogic = new JComboBox<String>();
 		
 		chxRouteLogic = new JCheckBox("신규",true);
+		
 		chxRouteLogic.setBackground(Color.white);
 		
 		cbxRouteLogic.addItem("기존");
 		
 		cbxRouteLogic.addItem("신규");
 		
-		chxInboundLogic = new JCheckBox("신규",false);
+		chxInboundLogic = new JCheckBox("신규",true);
+		
 		chxInboundLogic.setBackground(Color.white);
 		
-		chxInboundLogic.setEnabled(false);
+		
 		
 
 		KSGPanel pnOutboundScheduleOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
@@ -500,6 +492,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		
 		
 		pnInboundScheduleOption.add(cbxInboundSchedule);
+		
 		pnInboundScheduleOption.add(chxInboundLogic);
 		
 		pnNormalSelectionOption.add(pnOutboundScheduleOption);
@@ -541,6 +534,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnOption.add(pnNormalOption,ShippersTable.GUBUN_NORMAL);
 
 		pnOption.setVisible(false);
+		
 		return pnOption;
 	}
 
@@ -581,7 +575,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 	 */
 	private void updateScheduleDateList(List scheduleDateLists) throws SQLException {
 
-
 		List scheduleDateList = scheduleService.selectScheduleDateList();
 
 		List inlandScheduleDateList = scheduleService.getInlandScheduleDateList();
@@ -591,7 +584,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			butDelete.setEnabled(false);
 			butPrint.setEnabled(false);
 		}
-
 		else
 		{
 			butDelete.setEnabled(true);
@@ -599,7 +591,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		}		
 
 		tblScheduleDateList.setResultData(scheduleDateLists);
-
 	}
 
 	/**
@@ -745,7 +736,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		}
 	}
 
-
 	public void actionPerformed(ActionEvent arg0) {
 		String command = arg0.getActionCommand();
 		try {
@@ -776,7 +766,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			else if(command.equals(ACTION_CREATE))
 			{		
 				// 스케줄 생성일자 선택
-				
 				CommandMap param = new CommandMap();
 				
 				String inputDate = toDateformat.format(consoleDateformat.parse((String)cbxTableDateList.getSelectedItem()));
@@ -784,7 +773,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 				param.put("inputDate", inputDate);
 				
 				callApi("createSchedule");
-
 			}
 		}
 		 catch (ParseException e) {
@@ -792,7 +780,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(ScheduleMgtUI.this, e.getMessage());
 		}
-
 	}
 
 	@Override
@@ -842,12 +829,10 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			String error = (String) result.get("error");
 			JOptionPane.showMessageDialog(this, error);
 		}
-		
 	}
 	
 	class PrintAble implements ActionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			

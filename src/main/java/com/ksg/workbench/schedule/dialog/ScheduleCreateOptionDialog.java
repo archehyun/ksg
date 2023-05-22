@@ -1,6 +1,7 @@
 package com.ksg.workbench.schedule.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+
 import javax.swing.JRadioButton;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
@@ -38,7 +39,9 @@ import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.view.comp.LookAheadTextField;
 import com.ksg.view.comp.StringArrayLookAhead;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 
 /**
@@ -63,8 +66,6 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 	 */
 	private static final long serialVersionUID = 1L;
 
-
-
 	/**
 	 * 
 	 */
@@ -83,7 +84,7 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 
 	private LookAheadTextField txfDateInput;
 
-	private JPanel pnOption;
+	private KSGPanel pnOption;
 
 	private boolean isOption=false;
 
@@ -91,7 +92,8 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 
 	private String inputDate;
 
-	ScheduleServiceManager scheduleServiceManager = ScheduleServiceManager.getInstance();
+	private ScheduleServiceManager scheduleServiceManager = ScheduleServiceManager.getInstance();
+	
 	public int getGubun()
 	{
 		return cbxType.getSelectedIndex();
@@ -138,9 +140,9 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 	{	
 		setModal(true);
 		setTitle("스케줄 생성");
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 
-		JPanel pnInput = new JPanel();
+		KSGPanel pnInput = new KSGPanel();
 		pnInput.setLayout( new FlowLayout(FlowLayout.LEADING));
 
 		StringArrayLookAhead lookAhead = new StringArrayLookAhead(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
@@ -150,10 +152,14 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 			txfDateInput.setText(inputDate);
 
 		JCheckBox cbxMondya = new JCheckBox("월요일");
+		cbxMondya.setBackground(Color.white);
+		
 		cbxMondya.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
+				
 				JCheckBox bo =(JCheckBox) e.getSource();
+				
 				if(bo.isSelected())
 				{
 					txfDateInput.setText(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
@@ -170,7 +176,7 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 		pnInput.add(txfDateInput);
 		pnInput.add(cbxMondya);
 
-		pnOption = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		pnOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		pnOption.setVisible(false);
 
 		rdoPage = new JRadioButton("페이지",true);
@@ -201,17 +207,18 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 		});
 		pnOption.add(txfOptionInput);
 
-		JPanel pnControl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
-		JButton butOk = new JButton("확인(D)");
+		KSGPanel pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		
+		JButton butOk = new KSGGradientButton("확인(D)");
 
 		butOk.setActionCommand("확인");
 
 		butOk.setMnemonic(KeyEvent.VK_D);
+		
 
-		JButton butCancel = new JButton("취소");	
+		JButton butCancel = new KSGGradientButton("취소");	
 
-		JButton butOption = new JButton("옵션>>");
+		JButton butOption = new KSGGradientButton("옵션>>");
 
 		butOption.setActionCommand("옵션");		
 
@@ -221,7 +228,6 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 
 		butOption.addActionListener(this);
 
-
 		pnControl.add(butOk);
 
 		pnControl.add(butCancel);
@@ -229,8 +235,11 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 		pnControl.add(butOption);
 
 		Box box = Box.createVerticalBox();
-		JPanel pn1 = new JPanel();
+		
+		KSGPanel pn1 = new KSGPanel();
+		
 		pn1.setLayout(new FlowLayout(FlowLayout.LEADING));
+		
 		box.setBorder(BorderFactory.createTitledBorder("스케줄을 생성할 날짜를 입력 하세요"));
 
 		box.add(pn1);
@@ -253,10 +262,10 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 	private void buildSchedule()
 	{
 		final String inputDate=txfDateInput.getText();
+		
 		String optionData = txfOptionInput.getText();
+		
 		boolean isPage = rdoPage.isSelected();
-
-
 
 		/*
 		 * 유효성 체크
@@ -329,8 +338,6 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 	 */
 	private void startScheduleMake(final boolean isOption, final boolean isPage,
 			final String optionData, final String inputDate,final String gubun, final int scheduleType) {
-
-
 
 		new Thread(){
 			public void run()

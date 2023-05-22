@@ -1,11 +1,8 @@
 package com.dtp.api.schedule.joint.print.inbound;
 
 import java.sql.SQLException;
-import java.util.Map;
 
 import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
-import com.ksg.domain.PortInfo;
-import com.ksg.domain.Vessel;
 
 public abstract class AbstractInboundSchedulePrint extends AbstractSchedulePrint{
 	
@@ -16,19 +13,11 @@ public abstract class AbstractInboundSchedulePrint extends AbstractSchedulePrint
 	protected String 	TAG_VERSION3;
 	protected String 	TAG_VERSION6;
 	
-	protected  Map<String, PortInfo> portMap;
-
-	protected  Map<String, Vessel> vesselMap;
-	
-	
-	
 	protected final String INBOUND_PRINT_TXT = "inbound_print.txt";
 
 	public AbstractInboundSchedulePrint() throws SQLException {
 		super();
-		
 	}
-
 
 	@Override
 	public void init() {

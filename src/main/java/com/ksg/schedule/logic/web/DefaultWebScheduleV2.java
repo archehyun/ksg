@@ -1368,4 +1368,10 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 		
 	}
 
+	@Override
+	public void writeFile(ArrayList<String> printList) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

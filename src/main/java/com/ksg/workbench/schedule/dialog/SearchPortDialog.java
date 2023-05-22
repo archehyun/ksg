@@ -30,11 +30,13 @@ import com.ksg.service.PortService;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.common.comp.button.GradientButton;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.dialog.BaseInfoDialog;
 import com.ksg.workbench.master.dialog.UpdatePortInfoDialog;
+
+import mycomp.comp.MyTable;
 
 /**
 
@@ -61,9 +63,9 @@ public class SearchPortDialog extends BaseInfoDialog{
 
 	private JButton butCancel;
 
-	private KSGAbstractTable tableH;
+	private MyTable tableH;
 
-	private KSGAbstractTable tableD;
+	private MyTable tableD;
 
 	private JTextField txfInput;
 

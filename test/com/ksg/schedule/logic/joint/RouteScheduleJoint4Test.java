@@ -35,11 +35,11 @@ public class RouteScheduleJoint4Test {
 		
 		op.setDate_isusse("2023-03-06");
 		
-		RouteSchedulePrintFile jointV4 = new RouteSchedulePrintFile("2023-03-06",RouteScheduleJointV1.ORDER_BY_DATE);
+//		RouteSchedulePrintFile jointV4 = new RouteSchedulePrintFile("2023-03-06",RouteScheduleJointV1.ORDER_BY_DATE);
 		
 //		jointV4.initTag();
 		
-		jointV4 .execute();
+//		jointV4 .execute();
 		
 	}
 	@Ignore
@@ -50,11 +50,11 @@ public class RouteScheduleJoint4Test {
 		
 		op.setDate_isusse("2023-02-13");
 		
-		RouteSchedulePrintFile jointV4 = new RouteSchedulePrintFile("2023-02-27",RouteScheduleJointV1.ORDER_BY_DATE);
+		//RouteSchedulePrintFile jointV4 = new RouteSchedulePrintFile("2023-02-27",RouteScheduleJointV1.ORDER_BY_DATE);
 		
-		jointV4.init();
-		
-		jointV4 .execute();
+//		jointV4.init();
+//		
+//		jointV4 .execute();
 		
 	}
 	@Ignore

@@ -51,6 +51,8 @@ public class InboundJointedFormatter extends JointFormatter
 		{
 			String portCode = (String) inboundCodeMap.get(item.get("port"));
 			String toDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateT"))));
+			
+//			strPots.append(String.format("[%s]%s", portCode, toDate));
 			strPots.append("["+portCode+"]"+toDate);
 		}
 		return strPots.toString();

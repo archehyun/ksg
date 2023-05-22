@@ -3,6 +3,7 @@ package com.dtp.api.schedule.joint.print.route;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import com.dtp.api.schedule.comparator.DateComparator;
 import com.dtp.api.schedule.joint.tree.node.ScheduleDateComparator;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.schedule.logic.route.RouteScheduleUtil;
 
@@ -18,6 +20,7 @@ public class RouteJoint {
 	public RouteJoint()
 	{}
 	RouteJointSubject subject;
+	
 	public RouteJoint(RouteJointSubject subject) {
 		this.subject = subject;
 	}
@@ -35,7 +38,7 @@ public class RouteJoint {
 	 * @see RouteScheduleUtil#isRouteScheduleValidation
 	 * @return
 	 */
-	public List getValidatedScheduleGroupList(String areaName,String vesselName, List<ScheduleData> subscheduleList, boolean isValid)
+	public List getValidatedScheduleGroupList(String areaName,Vessel vessel, List<ScheduleData> subscheduleList, boolean isValid)
 	{
 		Collections.sort(subscheduleList, new ScheduleDateComparator(ScheduleDateComparator.FROM_DATE));
 
@@ -45,7 +48,7 @@ public class RouteJoint {
 
 		for(List listItem:li)
 		{
-			RouteScheduleGroup routeScheduleGroup = new RouteScheduleGroup(vesselName,listItem);
+			RouteScheduleGroup routeScheduleGroup = new RouteScheduleGroup(vessel,listItem);
 
 			// 도착항 수에 따라 판단
 			if(routeScheduleGroup.isRouteScheduleValidation(areaName))
@@ -66,8 +69,10 @@ public class RouteJoint {
 	 * @param dateType
 	 * @return
 	 */
-	public List<PortAndDay> makeDayList(Map<String, List<ScheduleData>> ports,  int dateType)
+	public List<PortAndDay> makeDayList(Map<String, List<ScheduleData>> ports, Comparator<ScheduleData> comparator , int DateType)
 	{
+		
+		
 		ArrayList<PortAndDay> list = new ArrayList<PortAndDay>();
 
 		ports.entrySet().stream()
@@ -75,12 +80,12 @@ public class RouteJoint {
 
 			List<ScheduleData> ll =entry.getValue();
 
-			Collections.sort(ll, new ScheduleDateComparator(dateType));
+			Collections.sort(ll, comparator);
 
 			ScheduleData lastSchedule = ll.get(ll.size()-1);
 			
 			// 도착항은 빠른 날짜로 정렬
-			list.add(new PortAndDay(entry.getKey(), dateType==ScheduleDateComparator.FROM_DATE?lastSchedule.getDateF():lastSchedule.getDateT()));
+			list.add(new PortAndDay(entry.getKey(), DateType ==ScheduleDateComparator.FROM_DATE?lastSchedule.getDateF():lastSchedule.getDateT()));
 
 		});
 

@@ -245,11 +245,7 @@ public class ScheduleManager {
 
 				File file = new File(fileLocation);
 
-				if(!file.exists())
-				{
-					file.mkdirs();
-					log.info("폴더 생성:"+fileLocation);
-				}
+				if(!file.exists()) file.mkdirs();
 				
 				di = new ScheduleBuildMessageDialog();
 				

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -1519,6 +1520,11 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 	}
 	@Override
 	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void writeFile(ArrayList<String> printList) throws Exception {
 		// TODO Auto-generated method stub
 		
 	}

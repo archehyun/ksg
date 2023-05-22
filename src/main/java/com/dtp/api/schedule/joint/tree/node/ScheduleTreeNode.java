@@ -11,7 +11,7 @@ public class ScheduleTreeNode extends DefaultMutableTreeNode{
 	
 	private String name;
 	
-	NodeType type;
+	private NodeType type;
 	
 	public ScheduleTreeNode() {};
 	
@@ -19,8 +19,6 @@ public class ScheduleTreeNode extends DefaultMutableTreeNode{
 		super(string);
 		this.type = type;
 	}
-
-	
 
 	public ScheduleTreeNode(TreeTableNode treeTableNode, NodeType type) {
 		super(treeTableNode);

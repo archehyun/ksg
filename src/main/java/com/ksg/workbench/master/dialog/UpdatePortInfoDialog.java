@@ -44,6 +44,7 @@ import com.dtp.api.schedule.joint.tree.node.NodeType;
 import com.dtp.api.schedule.joint.tree.node.ScheduleTreeNode;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
+import com.ksg.workbench.common.comp.button.KSGGradientButton;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 
@@ -291,7 +292,9 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 
 		private KSGPanel buildCenter()
 		{
-			KSGPanel pnMain = new KSGPanel();
+			KSGPanel pnMain = new KSGPanel(new BorderLayout());
+			
+			pnMain.setBorder(BorderFactory.createEmptyBorder(5,7,5,7));
 
 			DefaultMutableTreeNode root = new DefaultMutableTreeNode("전체지역");
 			
@@ -359,7 +362,9 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 				}
 			});
 			
-			pnMain.add(new JScrollPane(tree),BorderLayout.CENTER);
+			JScrollPane comp = new JScrollPane(tree);
+			
+			pnMain.add(comp,BorderLayout.CENTER);
 			
 			return pnMain;
 		}
@@ -370,7 +375,7 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 			
 			pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			
-			butOk = new JButton("확인");
+			butOk = new KSGGradientButton("확인");
 			
 			butOk.addActionListener(new ActionListener(){
 
@@ -379,7 +384,7 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 
 				}});
 			butOk.setEnabled(false);
-			butCancel = new JButton("취소");
+			butCancel = new KSGGradientButton("취소");
 			butCancel.addActionListener(new ActionListener(){
 
 
@@ -408,7 +413,9 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 			
 			getContentPane().add(buildCenter(),BorderLayout.CENTER);
 			
-			setSize(400,350);
+			
+			
+			setSize(400,510);
 			
 			setLocation(UpdatePortInfoDialog.this.getX()+UpdatePortInfoDialog.this.getWidth(), UpdatePortInfoDialog.this.getY());
 			

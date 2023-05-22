@@ -217,9 +217,9 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 			{
 				logger.info("선박명:"+vessel+", 항차:"+datas.get(0).getVoyage_num()+ " 공동배선 적용:"+datas.size());
 				// 전체 목록 출력
-				logger.info(datas);
+				
 				Collections.sort(datas);
-
+				logger.info(datas);
 
 				isGroupedFormerSchedule=false;
 
@@ -273,7 +273,7 @@ public class VesselGroup extends  ArrayList<ScheduleData> implements Comparable<
 						{
 							commonSchedule.setDateT(commonDateT);
 							commonSchedule.setDateF(commonDateF);
-							logger.info("!공동배선:"+commonDateT);
+							logger.info("!공동배선:"+commonDateF+" - "+commonDateT);
 
 							String company=null;
 							if(this.getVessel_company()!=null)

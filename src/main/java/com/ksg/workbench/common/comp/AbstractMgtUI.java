@@ -45,6 +45,7 @@ public abstract class AbstractMgtUI extends KSGView implements View{
 	}	
 	
 	protected KSGPanel buildNorthPn() {
+		
 		KSGPanel pnNorth = new KSGPanel(new BorderLayout());
 		
 		pnNorth.setPreferredSize(new Dimension(0,35));

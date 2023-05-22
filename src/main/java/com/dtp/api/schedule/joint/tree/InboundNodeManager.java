@@ -1,16 +1,31 @@
 package com.dtp.api.schedule.joint.tree;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.dtp.api.schedule.comparator.DateComparator;
+import com.dtp.api.schedule.joint.print.inbound.InboundScheduleGroup;
+import com.dtp.api.schedule.joint.print.inbound.InboundScheduleRule;
+import com.dtp.api.schedule.joint.print.route.PortAndDay;
 import com.dtp.api.schedule.joint.tree.node.AreaTreeNode;
 import com.dtp.api.schedule.joint.tree.node.InboundGroupTreeNode;
+import com.dtp.api.schedule.joint.tree.node.NodeType;
 import com.dtp.api.schedule.joint.tree.node.PortTreeNode;
+import com.dtp.api.schedule.joint.tree.node.ScheduleTreeNode;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.domain.PortInfo;
+import com.ksg.domain.ScheduleData;
+import com.ksg.domain.Vessel;
+import com.ksg.view.comp.treetable.TreeTableNode;
+import com.ksg.workbench.schedule.comp.treenode.InboundCodeMap;
 
 public class InboundNodeManager extends AbstractNodeManager{
 	
@@ -27,7 +42,24 @@ public class InboundNodeManager extends AbstractNodeManager{
 	 * @param areaList
 	 * @return
 	 */
-	public DefaultMutableTreeNode getTreeNode(CommandMap areaList) {
+	
+	protected DateComparator dateComparator 			= new DateComparator(new SimpleDateFormat("yyyy/MM/dd"));
+	
+	protected  Map<String, Vessel> vesselMap;
+	
+	protected  Map<String, PortInfo> portMap;
+	
+	Map<String, Map<String, List<ScheduleData>>> inboundScheduleMap;
+	
+	protected SimpleDateFormat inputDateFormat 	= KSGDateUtil.inputDateFormat;
+
+	protected SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
+	
+	private InboundScheduleRule inboundScheduleRule;
+	
+	private InboundCodeMap inboundCodeMap = InboundCodeMap.getInstance();
+	
+	public DefaultMutableTreeNode getTreeNode2(CommandMap areaList) {
 
 		//inbound port 약어 목록 조회
 		
@@ -39,7 +71,6 @@ public class InboundNodeManager extends AbstractNodeManager{
 
 		for(String strArea: areaList.keySet())		
 		{	
-
 			DefaultMutableTreeNode area = new AreaTreeNode(strArea);
 
 			//출발항
@@ -80,10 +111,102 @@ public class InboundNodeManager extends AbstractNodeManager{
 			}
 			root.add(area);
 		}
-
-
 		return root;
 
+	}
+	
+	
+	public DefaultMutableTreeNode getTreeNode(CommandMap areaList) 
+	{	
+		DefaultMutableTreeNode root = new AreaTreeNode("AREA");
+		
+		inboundScheduleMap=(Map<String, Map<String, List<ScheduleData>>>) areaList.get("inboundScheduleMap");
+		
+		vesselMap=(Map<String, Vessel>) areaList.get("vesselMap");
+		
+		portMap=(Map<String, PortInfo>) areaList.get("portMap");
+		
+		inboundScheduleRule = new InboundScheduleRule(vesselMap);
+		
+		Object[] mapkey = inboundScheduleMap.keySet().toArray();
+		
+		Arrays.sort(mapkey);
+		
+		for(Object strFromPort: mapkey)		
+		{
+			Map<String, List<ScheduleData>> vesselList = inboundScheduleMap.get(strFromPort);
+			
+			PortInfo portInfo = portMap.get(strFromPort);
+			
+			DefaultMutableTreeNode port = new PortTreeNode(String.valueOf(strFromPort)+" - "+portInfo.getPort_nationality());
+			
+			List<InboundScheduleGroup> groupList = inboundScheduleRule.getInboundScheduleGroup(vesselList,false);
+			
+			groupList.stream()
+					.sorted()
+					.forEach(o ->{
+						
+						ScheduleTreeNode child = new ScheduleTreeNode(toPrintString(o),NodeType.SCHEDULE);
+						
+						port.add(child); 
+						
+						o.getScheduleList() .forEach(item -> {
+							
+							CommandMap param = objectMapper.convertValue(item, CommandMap.class);
+							
+							String fromDate = formatedDate(item.getDateF());							
+							
+							String vessel = item.getVessel();
+							
+							String company = item.getCompany_abbr();
+							
+							String portAndDAy = String.format("%s%s",String.format("[%s]", inboundCodeMap.get( item.getPort())), formatedDate(item.getDateF()));
+							
+							child.add(new ScheduleTreeNode(toFormattedString(fromDate, vessel, company, portAndDAy, false),new TreeTableNode(param), NodeType.SCHEDULE));
+						});
+					});
+			// 항차 번호로 그룹 화
+			
+			
+
+			root.add(port);
+		}
+		return root;
+	}
+	
+	
+	public String toPrintString(InboundScheduleGroup group) {
+		
+		
+		String dateF 			=  formatedDate(group.getDateF());
+		
+		String sortedCompanyist = group.toJointedCompanyString();
+		
+		List<PortAndDay> list 	= group.getJointedInboundPortList();
+		
+		StringBuffer jointedInboundPort = new StringBuffer();
+		
+		list.stream().sorted(dateComparator)
+		
+		.forEach(o -> jointedInboundPort.append(String.format("%s%s",String.format("[%s]", inboundCodeMap.get( o.getPort())), formatedDate(o.getDateF()))));		
+		
+		String vesselName = group.getVessel().getVessel_name();
+
+		return toFormattedString(dateF, vesselName, sortedCompanyist, jointedInboundPort.toString(), true);
+	}
+	
+	private String formatedDate(String date)
+	{
+		try {
+			return  outputDateFormat.format(inputDateFormat.parse(date));
+		} catch (ParseException e) {
+			return date;
+		}
+	}
+	
+	public String toFormattedString(String dateF,String vesselName, String company, String ports, boolean taged)
+	{	
+			return String.format("%-8s %s (%s) %-15s", dateF, vesselName , company, ports);
 	}
 	
 
@@ -114,7 +237,8 @@ public class InboundNodeManager extends AbstractNodeManager{
 				String fromDateOne = o1[1];
 				String fromDateTwo = o2[1];;
 
-				return KSGDateUtil.dayDiff(fromDateOne, fromDateTwo)>0?-1:1;
+				int dayDiff = KSGDateUtil.dayDiff(fromDateOne, fromDateTwo);
+				return dayDiff>0?-1:dayDiff==0?-1:1;
 
 			}
 		});

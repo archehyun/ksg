@@ -8,7 +8,7 @@ import com.ksg.view.comp.treetable.TreeTableNode;
 public class OutbondScheduleTreeNode extends ScheduleTreeNode implements IFComparator
 {
 	
-	public String getVessel() {
+	public String getVesselName() {
 		return vessel;
 	}
 	public String vessel;
@@ -41,7 +41,7 @@ public class OutbondScheduleTreeNode extends ScheduleTreeNode implements IFCompa
 		
 		
 	}
-	public String getDate()
+	public String getDateF()
 	{
 		return date;
 	}

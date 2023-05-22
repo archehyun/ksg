@@ -45,13 +45,18 @@ public class ManageTablePortDialog extends KSGDialog implements ActionListener
 {
 
 	private static final long serialVersionUID = 1L;
+	
 	private JTable tblPortList;
+	
 	private String table_id;
 
 	public ManageTablePortDialog(String table_id) {
 		this.table_id = table_id;
+		
 		DAOManager manager = DAOManager.getInstance();
+		
 		tableService = new TableServiceImpl();
+		
 		this.addComponentListener(this);
 
 	}

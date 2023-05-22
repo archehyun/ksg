@@ -144,8 +144,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 	public void createAndUpdateUI() {
 
-
-
 		setTitle(this.table_id+"테이블 항구 관리");
 
 		setModal(true);
@@ -347,9 +345,11 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		pnMainCenter.add(txfIndex);
 
 		pnMainCenter.add(txfUpdatePortName);
+		
 		pnMainCenter.add(butUpdate);
 
 		pnMain.add(pnMainCenter);
+		
 		pnMain.add(pnLeftNorthControl,BorderLayout.EAST);
 
 		return pnMain;
@@ -361,10 +361,13 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	 */
 	private Component buildCenter() {
 		JPanel pnMain = new JPanel(new BorderLayout());
+		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(10 , 10 , 10 , 10));
 
 		JPanel pnPortMain = new JPanel();
+		
 		GridLayout gridLayout = new GridLayout(1,0);
+		
 		gridLayout.setHgap(5);
 		pnPortMain.setLayout(gridLayout);
 
