@@ -17,9 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.dtp.api.control.CodeController;
+import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.workbench.common.comp.dialog.KSGDialog;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
 

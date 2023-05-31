@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ksg.service.impl.CodeServiceImpl;
+import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.master.comp.PnCommonCode;
 

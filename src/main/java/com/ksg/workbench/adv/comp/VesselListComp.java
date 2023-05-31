@@ -204,7 +204,7 @@ public class VesselListComp extends JList{
 				else
 				{
 					//선박명이 있는지 조회
-					Vessel itemHead=vesselService.select(vesselName);
+					Vessel itemHead=vesselService.selectVesselById(vesselName);
 					// 선박명이 있으면 선박명 사용
 					if(itemHead==null)
 					{

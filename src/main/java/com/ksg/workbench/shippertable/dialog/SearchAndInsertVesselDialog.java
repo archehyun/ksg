@@ -310,7 +310,7 @@ public class SearchAndInsertVesselDialog extends KSGDialog{
 				vesselModel.setValueAt(vessel_name, row, 0);
 				vesselModel.setValueAt(vessel_abbr, row, 1);
 
-				vesselService.insert(vessel);
+				vesselService.insertVessel(vessel);
 				advTable.setValue( vessel.getVessel_abbr().toUpperCase(), row, 0);
 				JOptionPane.showMessageDialog(null, vessel_abbr+" 추가했습니다.");
 				txfSearch.setText("");

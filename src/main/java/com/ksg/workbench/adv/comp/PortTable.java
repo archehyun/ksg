@@ -25,6 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jdom.Element;
 
+import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ksg.commands.DelPortExceptionCommand;
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.SearchPortCommand;
@@ -38,7 +39,6 @@ import com.ksg.domain.TablePort;
 import com.ksg.service.BaseService;
 import com.ksg.service.PortService;
 import com.ksg.service.TableService;
-import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.adv.dialog.AddPortDialog;

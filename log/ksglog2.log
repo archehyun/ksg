@@ -1,5 +1,9 @@
-2023-05-22 14:05:24,347  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
-2023-05-22 14:05:24,584  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
-2023-05-22 14:12:46,767  INFO [com.ksg.schedule.logic.ScheduleManager] 스케줄 생성 마스터 초기화
-2023-05-22 14:12:47,029  INFO [com.ksg.schedule.logic.ScheduleManager] 스케줄 생성 마스터 초기화 종료
-2023-05-22 14:12:47,162  INFO [com.ksg.schedule.logic.ScheduleManager] 스케줄 생성 종료(133s)
+2023-05-31 10:37:49,017  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
+2023-05-31 10:37:49,157  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-05-31 10:38:44,550  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:0
+2023-05-31 10:38:45,611  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:2
+2023-05-31 10:38:45,966  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:1
+2023-05-31 10:38:48,023  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:2
+2023-05-31 10:38:48,387  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:5
+2023-05-31 10:38:49,230  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:0
+2023-05-31 10:38:57,279  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START

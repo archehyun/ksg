@@ -174,7 +174,7 @@ public class AddVesselDialog extends KSGDialog {
 				vessel.setVessel_type(con.getTypeField());
 				
 				try {
-					vesselService.insert(vessel);
+					vesselService.insertVessel(vessel);
 					
 					
 					JOptionPane.showMessageDialog(null, "선박명: "+vessel.getVessel_name()+"이(가) 추가 되었습니다.");

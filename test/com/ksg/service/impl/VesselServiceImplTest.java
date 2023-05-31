@@ -118,7 +118,7 @@ public class VesselServiceImplTest {
 		item.setVessel_use(1);
 		item.setVessel_type("C");
 		try {
-			vesselService.insert(item);
+			vesselService.insertVessel(item);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

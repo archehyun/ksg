@@ -169,7 +169,7 @@ public class AddVesselDialog extends KSGDialog {
 				vessel.setVessel_type(con.getTypeField());
 
 				try {
-					vesselService.insert(vessel);
+					vesselService.insertVessel(vessel);
 
 					if(advTable!=null)
 					{

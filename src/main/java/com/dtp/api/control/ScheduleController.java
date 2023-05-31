@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.dtp.api.annotation.ControlMethod;
 import com.dtp.api.schedule.joint.tree.TreeNodeManager;
 import com.dtp.api.service.ShipperTableService;
+import com.dtp.api.service.impl.CodeServiceImpl;
 import com.dtp.api.service.impl.ShipperTableServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.commands.ScheduleExecute;
@@ -41,7 +42,6 @@ import com.ksg.service.PortService;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.AreaServiceImpl;
-import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
@@ -85,6 +85,7 @@ public class ScheduleController extends AbstractController{
 	public CommandMap selectScheduleList(String inOoutType, String date) throws Exception
 	{
 		log.info("param:{},{}", inOoutType, date);
+		
 		CommandMap result = new CommandMap();
 
 		Schedule param = new Schedule();
@@ -93,13 +94,14 @@ public class ScheduleController extends AbstractController{
 
 		List li=service.selecteScheduleListByCondition(param);
 
-		result.put("success", true);
 		result.put("data", li);
 
 		return result;
 	}
 	public CommandMap selectScheduleMapList(CommandMap param) throws Exception
 	{
+		log.info("param:{}", param);
+		
 		CommandMap result = new CommandMap();
 
 		List li  = service.selecteScheduleListMapByCondition(param);
@@ -111,8 +113,8 @@ public class ScheduleController extends AbstractController{
 
 	public CommandMap createSchedule(String scheduleType, String date) throws Exception
 	{
+		log.info("param:{},{}", scheduleType, date);
 		CommandMap result = new CommandMap();
-		result.put("success", true);
 		result.put("data", null);
 
 		return result;
@@ -120,6 +122,7 @@ public class ScheduleController extends AbstractController{
 
 	public CommandMap createScheduleFile(String scheduleType, String date) throws Exception
 	{
+		log.info("param:{},{}", scheduleType, date);
 		CommandMap result = new CommandMap();
 		result.put("success", true);
 		result.put("data", null);
@@ -129,8 +132,8 @@ public class ScheduleController extends AbstractController{
 
 	public CommandMap createWebScheduleFile(String scheduleType, String date) throws Exception
 	{
+		log.info("param:{},{}", scheduleType, date);
 		CommandMap result = new CommandMap();
-		result.put("success", true);
 		result.put("data", null);
 
 		return result;
@@ -152,14 +155,13 @@ public class ScheduleController extends AbstractController{
 	 *------------선박
 	 */
 
-	public CommandMap selectOutboundScheduleGroupList(List<ScheduleData>  scheduleList) throws SQLException {
-		
+	public CommandMap selectOutboundScheduleGroupList(List<ScheduleData>  scheduleList) throws Exception {
 		
 		Code codeParam = new Code();
 
 		codeParam.setCode_type(XML_INFO.XML_TAG_FROM_PORT);
 
-		List<Code> li = codeService.selectCodeDetailList(codeParam);
+		List<Code> li = codeService.selectCodeDetailListByCondition(codeParam);
 
 		String[] fromPort = new String[li.size()];
 
@@ -263,8 +265,6 @@ public class ScheduleController extends AbstractController{
 						scheduleList.add(item);
 						vessels.put(vessel+"$$"+dateF, scheduleList);
 					}
-
-
 				}
 				//출발항 없을 경우
 				else
@@ -314,9 +314,6 @@ public class ScheduleController extends AbstractController{
 		//정렬 및 공동 배선
 
 		return areaList;
-
-
-
 	}
 
 	/**
@@ -350,6 +347,8 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "deleteSchedule")
 	public CommandMap deleteSchedule(CommandMap param) throws Exception
 	{
+		log.info("param:{}", param);
+		
 		CommandMap returnMap = new CommandMap();
 		
 		int result=service.deleteSchedule();
@@ -364,6 +363,7 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "scheduleViewUpdate")
 	public CommandMap updateView(CommandMap param) throws Exception
 	{	
+		log.info("param:{}", param);
 		
 		List<ShippersTable> tableDateTarget = tableService.selectTableAll();
 		
@@ -398,6 +398,8 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "createSchedule")
 	public CommandMap scheduleCreate(CommandMap param) throws Exception
 	{	
+		log.info("param:{}", param);
+		
 		ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
 		
 		String inputDate= (String) param.get("inputDate");
@@ -412,6 +414,8 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "schedulePrint")
 	public CommandMap schedulePrint(CommandMap param) throws Exception
 	{	
+		log.info("param:{}", param);
+		
 		ScheduleManager scheduleManager = ScheduleManager.getInstance();
 		
 		ScheduleData op = (ScheduleData) param.get("op");
@@ -474,10 +478,6 @@ public class ScheduleController extends AbstractController{
 									Collectors.groupingBy(ScheduleData::getVessel))
 							);// 선박
 			
-			
-			
-			
-			
 			param.put("outboundScheduleList", outboundScheduleList);
 			
 			param.put("inboundScheduleList", inboundScheduleList);
@@ -519,6 +519,8 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "pnNormalByTree.init")
 	public CommandMap initView(CommandMap param) throws Exception
 	{	
+		log.info("param:{}", param);
+		
 		List<AreaInfo> trgetList=areaService.selectAll();
 		
 		List<String>areaList= trgetList.stream()
@@ -540,6 +542,8 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "pnNormalByTree.fnSearch")
 	public CommandMap fnSearch(CommandMap param) throws Exception
 	{
+		log.info("param:{}", param);
+		
 		CommandMap returnMap = new CommandMap();
 		
 		String inOutType = (String)param.get("inOutType");
@@ -631,9 +635,5 @@ public class ScheduleController extends AbstractController{
 		
 		return returnMap;
 	}
-
-
-
-
 }
 

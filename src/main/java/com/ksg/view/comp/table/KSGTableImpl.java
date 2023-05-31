@@ -305,7 +305,7 @@ public class KSGTableImpl extends KSGTable implements KeyListener{
 							Vessel vessel = new Vessel();
 							vessel.setVessel_name(txf.getText());
 							try {
-								vesselService.insert(vessel);
+								vesselService.insertVessel(vessel);
 								JOptionPane.showMessageDialog(null, "선박명: "+vessel.getVessel_name()+"이(가) 추가 되었습니다.");
 								di.setVisible(false);
 								di.dispose();

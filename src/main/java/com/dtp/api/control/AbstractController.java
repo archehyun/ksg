@@ -64,19 +64,17 @@ public abstract class AbstractController {
 				 if (method.isAnnotationPresent(ControlMethod.class))
 				 {
 					 ControlMethod methoAnnotation = method.getAnnotation(ControlMethod.class);
+					 
 					 if(methoAnnotation.serviceId().equals(serviceId))
 					 {   
-
 						 model=(CommandMap)method.invoke(this, param );                            
 						 if(model==null) model = new CommandMap();
 						 model.put("serviceId", serviceId);
 						 model.put("success", true);
 						 return;
 					 }
-
 				 }
 			 }
-
 
 			 throw new ApiCallException("service not founded : "+serviceId);
 

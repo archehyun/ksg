@@ -53,7 +53,7 @@ public class VesselInfoExportCommand extends ExportCommand{
 			
 			wb = (Workbook) new HSSFWorkbook();
 			
-			HashMap<String,Object> result = service.selectList(new HashMap<String, Object>());
+			HashMap<String,Object> result =null;
 			
 			List vesselList = (List) result.get("master");
 			//vesselList = baseService.selectList(new Vessel());		

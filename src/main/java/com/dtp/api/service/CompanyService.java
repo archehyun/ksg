@@ -6,14 +6,14 @@ import com.ksg.domain.Company;
 
 public interface CompanyService {
 	
-	public List<Company> selectListByCondition(Company param) throws Exception;
+	public List<Company> selectCompanyListByCondition(Company param) throws Exception;
 
-	public Company delete(String companyAbbr) throws Exception;
+	public Company deleteCompany(String companyAbbr) throws Exception;
 
-	public Company insert(Company company) throws Exception;
+	public Company insertCompany(Company company) throws Exception;
 
-	public Company update(Company company)throws Exception;
+	public Company updateCompay(Company company)throws Exception;
 
-	public Company selectById(String id)throws Exception;
+	public Company selectCompanyById(String id)throws Exception;
 
 }

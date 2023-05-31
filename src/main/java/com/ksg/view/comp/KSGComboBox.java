@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 
-import com.ksg.service.impl.CodeServiceImpl;
+import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.table.KSGTableColumn;
 
 import mycomp.comp.MyComboBox;

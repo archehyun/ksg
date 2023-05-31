@@ -1,4 +1,4 @@
-package com.ksg.service.impl;
+package com.dtp.api.service.impl;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.dtp.api.exception.AlreadyExistException;
+import com.dtp.api.service.CodeService;
 import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.CodeDAOImpl;
 import com.ksg.domain.Code;
+import com.ksg.service.impl.AbstractServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
   */
 @Slf4j
-public class CodeServiceImpl extends AbstractServiceImpl{
+public class CodeServiceImpl extends AbstractServiceImpl implements CodeService{
 	
 	private CodeDAOImpl codeDAO;
 	
@@ -37,17 +39,19 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 		codeDAO = new CodeDAOImpl();
 	}
 	
-	public List selectCodeHList(Code param) throws SQLException
+	@Override
+	public List selectCodeHListByCondition(Code param) throws Exception
 	{
 		return codeDAO.selectCodeListByCondition(param);
 	}
 	
-	public List selectCodeDetailList(Code param) throws SQLException
+	@Override	
+	public List selectCodeDetailListByCondition(Code param) throws Exception
 	{
 		return codeDAO.selectCodeDetailListByCondition(param);
 	}
 	
-	public Map<String, Object> selectCodeHList(Map<String, Object> param) throws SQLException {
+	public Map<String, Object> selectCodeHList(Map<String, Object> param) throws Exception {
 		
 		log.debug("param:{}"+param);
 		
@@ -61,7 +65,8 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 
 	}
 	
-	public CommandMap selectCodeDList(Map<String, Object> param) throws SQLException {
+	public CommandMap selectCodeDList(Map<String, Object> param) throws Exception {
+		
 		log.debug("param:{}"+param);
 		
 		CommandMap resultMap = new CommandMap();
@@ -75,14 +80,16 @@ public class CodeServiceImpl extends AbstractServiceImpl{
 	}
 	
 	
-	public CommandMap selectInboundPortMap() throws SQLException
+	public CommandMap selectInboundPortMap() throws Exception
 	{
 		CommandMap param = new CommandMap();
+		
 		param.put("code_type", "inPort");
 		
 		List<Map<String, Object>> list =codeDAO.selectDetailList(param);
 		
 		CommandMap result = new CommandMap();
+		
 		for (Map<String, Object> item : list) {
 		    result.put(String.valueOf(item.get("code_field")), item.get("code_name"));
 		}

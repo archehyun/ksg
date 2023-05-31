@@ -95,9 +95,10 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 		
 		vesselParam.put("vessel_use", Vessel.NON_USE);
 		
-		HashMap<String, Object> result=vesselService.selectList(vesselParam);		
-		NO_VESSEL = (List) result.get("master");
-		
+//		HashMap<String, Object> result=vesselService.selectList(vesselParam);
+//		
+//		NO_VESSEL = (List) result.get("master");
+//		
 	}
 	public int getLengthOfTask() {
 		return lengthOfTask;

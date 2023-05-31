@@ -29,8 +29,8 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ibatis.sqlmap.client.SqlMapException;
-import com.ksg.service.impl.CodeServiceImpl;
 import com.ksg.view.comp.IconData;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.common.comp.panel.KSGPanel;
@@ -186,8 +186,8 @@ public class BaseInfoUI extends AbstractMgtUI{
 			});
 
 
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null,"트리 정보생성에 실패 했습니다.=>"+e.getMessage()+", "+e.getErrorCode() );
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,"트리 정보생성에 실패 했습니다.=>"+e.getMessage());
 			e.printStackTrace();
 		}
 		return tree;
@@ -232,7 +232,7 @@ public class BaseInfoUI extends AbstractMgtUI{
 		panelList.put(panelName, insertPanel);
 
 	}
-	private void updateTree() throws SQLException
+	private void updateTree() throws Exception
 	{
 		logger.debug("update tree model");
 		

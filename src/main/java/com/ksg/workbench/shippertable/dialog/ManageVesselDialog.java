@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -160,7 +161,7 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 				return;
 			String vesselAbbr = (String) _tblVesselList.getValueAt(row, 1);
 			
-			try {
+			
 				
 				HashMap<String, Object> param = new HashMap<String, Object>();
 				
@@ -168,9 +169,10 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 
 				log.info("Param:{}",param);
 				
-				HashMap<String, Object> result =  vesselService.selectDetailListByLike(param);
+				//HashMap<String, Object> result =  vesselService.selectDetailListByLike(param);
 				
-				SearchVesselDialog searchVesselDialog = new SearchVesselDialog((List) result.get("master"));
+				//TODO 
+				SearchVesselDialog searchVesselDialog = new SearchVesselDialog(new ArrayList<>());
 				
 				searchVesselDialog.createAndUpdateUI();
 
@@ -181,10 +183,7 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 					model.setValueAt(searchVesselDialog.result, row, 0);
 				}
 
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 		}
 	}
 }

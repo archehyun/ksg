@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
  * @변경이력 :
 
- * @프로그램 설명 :
+ * @프로그램 설명 : 항구 정보 관리
 
  */
 @Slf4j
@@ -88,8 +88,6 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 		}
 		else
 		{
-			//objectMapper.
-
 			resultMap=(HashMap<String, Object>) objectMapper.convertValue(result, Map.class);
 		}
 
@@ -142,9 +140,6 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 		}
 	}
 
-
-	
-
 	@Override
 	public Object selectPortAbbr(HashMap<String, Object> param) throws SQLException {
 		log.debug("param:{}", param);
@@ -184,8 +179,6 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 		{
 			throw new RuntimeException(e.getMessage());
 		}
-
-
 	}
 
 	@Override

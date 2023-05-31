@@ -20,6 +20,10 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.CharUtil;
 import com.ksg.domain.ShippersTable;
 
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 public class ShipperTableController extends AbstractController{
 
 
@@ -50,6 +54,8 @@ public class ShipperTableController extends AbstractController{
 	@ControlMethod(serviceId = "shipperTableMgtUI2.init")
 	public CommandMap select(CommandMap param) throws SQLException
 	{	
+		log.info("param:{}", param);
+		
 		groupCount = param.containsKey("groupCount")?(int) param.get("groupCount"):10;
 		// 알파뱃 정렬
 		List<ShippersTable> tableList=service.selectTableAll();
@@ -61,9 +67,9 @@ public class ShipperTableController extends AbstractController{
 
 		// 페이지 목록 조회
 		List<Integer> pageList= tableList.stream()
-				.map(ShippersTable::getPage)
-				.distinct()
-				.collect(Collectors.toList());
+										.map(ShippersTable::getPage)
+										.distinct()
+										.collect(Collectors.toList());
 
 
 
@@ -182,6 +188,8 @@ public class ShipperTableController extends AbstractController{
 	@ControlMethod(serviceId = "aDVManageUI.init")
 	public CommandMap aDVManageUIInit(CommandMap param) throws SQLException
 	{	
+		log.info("param:{}", param);
+		
 		groupCount = param.containsKey("groupCount")?(int) param.get("groupCount"):10;
 		// 알파뱃 정렬
 		List<ShippersTable> tableList=service.selectTableAll();

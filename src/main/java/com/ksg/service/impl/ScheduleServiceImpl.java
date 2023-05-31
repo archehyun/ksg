@@ -88,7 +88,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 	}
 
-
 	public List getScheduleList() throws SQLException
 	{
 		return scheduleDAO.getScheduleList();
@@ -188,6 +187,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		return scheduleDAO.getScheduleList(param);
 	}
 
+	@Deprecated
 	public List selectScheduleDateList() throws SQLException {
 
 		List li1 = scheduleDAO.selectScheduleDateList();
@@ -195,6 +195,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		List li2 = scheduleDAO.selectInlandScheduleDateList();
 
 		li1.addAll(li2);
+		
 		return li1;
 	}
 
@@ -235,8 +236,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		return scheduleDAO.getInlandScheduleDateList();
 	}
 
-
-
 	@Override
 	public List<String> getOutboundAreaList() throws SQLException {
 		return scheduleDAO.getOutboundAreaList();
@@ -269,8 +268,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		return resultMap;
 
 	}
-
-
 
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectScheduledAreaList(Map<String, Object> commandMap) throws SQLException {
@@ -339,11 +336,10 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 			returnList.add(param);
 		}
 
-
-
 		return returnList;
 	}
 
+	@Deprecated
 	private List<Map<String, Object>> selectScheduledPortList(String portType,Map<String, Object> commandMap) throws SQLException {
 		if(portType.equals("toPort"))
 		{
@@ -409,9 +405,8 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 	 *------------¼±¹Ú
 	 */
 
+	@Deprecated
 	private HashMap<String, Object> selectOutboundScheduleGroupList1(CommandMap param) throws SQLException {
-
-
 
 		String inOutType  = (String) param.get("inOutType");
 
@@ -515,7 +510,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 			String fromDateTwo = String.valueOf(two.get("DateF"));
 
 			return KSGDateUtil.dayDiff(fromDateOne, fromDateTwo)>0?-1:1;
-
 		} 
 	}
 
@@ -531,8 +525,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 		} 
 	}
-
-
 
 	@Override
 	public List<CommandMap> selecteScheduleListMapByCondition(CommandMap param) {

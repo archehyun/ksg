@@ -256,14 +256,7 @@ public class PnCompany extends PnBase implements ActionListener{
 	
 				if(result==JOptionPane.OK_OPTION)
 				{	
-					
-					int count=companyService.delete(data);
-
-					if(count>0)
-					{
-						fnSearch();
-						JOptionPane.showMessageDialog(this, "삭제되었습니다.");
-					}
+					callApi("deleteCompany", data);
 				}	
 			}
 			else if(command.equals(KSGPageTablePanel.INSERT))
@@ -355,9 +348,6 @@ public class PnCompany extends PnBase implements ActionListener{
 	@Override
 	public void fnSearch() {
 
-		
-		System.out.println("select");
-
 		CommandMap param = new CommandMap();
 
 		String field = (String) cbxField.getSelectedItem();
@@ -383,7 +373,6 @@ public class PnCompany extends PnBase implements ActionListener{
 		}
 
 		callApi("selectCompany", param);
-
 	}
 
 
@@ -401,14 +390,26 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		if(success)
 		{
-			List data = (List )result.get("data");
-
-			tableH.setResultData(data);
 			
-			tableH.setTotalCount(String.valueOf(data.size()));
+			String serviceId=(String) result.get("serviceId");
 
-			if(data.size()==0)tableH.changeSelection(0,0,false,false);
+			if("selectCompany".equals(serviceId))
+			{
+				List data = (List )result.get("data");
 
+				tableH.setResultData(data);
+				
+				tableH.setTotalCount(String.valueOf(data.size()));
+
+				if(data.size()==0)tableH.changeSelection(0,0,false,false);
+			}
+			else if("deleteCompany".equals(serviceId))
+			{
+				JOptionPane.showMessageDialog(this, "삭제되었습니다.");
+				
+				fnSearch();
+				
+			}
 		}
 		else{  
 			String error = (String) result.get("error");

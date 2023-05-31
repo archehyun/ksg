@@ -3,42 +3,32 @@ package com.ksg.service;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.ksg.domain.Vessel;
 
 public interface VesselService extends PageService{
 	
-	public Map<String, String> selectAll()throws SQLException;
+	public List<Vessel> selectAllList() throws SQLException;
 	
-	public HashMap<String, Object> selectList(Map<String, Object> commandMap) throws SQLException;
+	public Vessel selectVesselById(String vessel_name) throws SQLException;
 	
-	public HashMap<String, Object> selectDetailList(Map<String, Object> commandMap) throws SQLException;
-	
-	public HashMap<String, Object> selectDetailListByLike(Map<String, Object> commandMap) throws SQLException;
-	
-//	public List<Vessel> selectListByCondition(HashMap<String, Object> param) throws SQLException;
+	public List<Vessel> selectVesselListByCondition(Vessel param) throws SQLException;
 	
 	public List<Vessel> selectVesselListByNameList(List<String>nameList)throws SQLException;
-
 	
-	
-	
-	
-	//--insert--//
-	public Object update(HashMap<String, Object> param) throws SQLException;
-	
-	public Object updateDetail(HashMap<String, Object> param) throws SQLException;	
+	//--update--//	
+	public Object update(Vessel vessel) throws SQLException;
 
 	//--delete--//
 	public Object delete(HashMap<String, Object> param) throws SQLException;
 	
-	public Object deleteDetail(HashMap<String, Object> param) throws RuntimeException;
+	public Object deleteDetail(HashMap<String, Object> param) throws SQLException;
 
 	//--insert--//
-	public void insert(HashMap<String, Object> param) throws RuntimeException;	
+	public void insertVessel(Vessel vessel) throws SQLException;
 	
-	public void insertDetail(HashMap<String, Object> param) throws RuntimeException;
+	
+
 
 	
 	
