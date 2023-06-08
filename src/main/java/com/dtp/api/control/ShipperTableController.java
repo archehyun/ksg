@@ -71,8 +71,6 @@ public class ShipperTableController extends AbstractController{
 										.distinct()
 										.collect(Collectors.toList());
 
-
-
 		HashMap<String,List<String>> apabetList = new HashMap<String,List<String>>();
 
 		for(char ch:ALPA)
@@ -133,7 +131,6 @@ public class ShipperTableController extends AbstractController{
 	@ControlMethod(serviceId = "shipperTableMgtUI2.fnSearch")
 	public CommandMap fnSelect(CommandMap param) throws SQLException
 	{
-
 		logger.info("param:{}",param);
 
 		ShippersTable shipperTable= null;
@@ -205,8 +202,6 @@ public class ShipperTableController extends AbstractController{
 				.distinct()
 				.collect(Collectors.toList());
 
-
-
 		HashMap<String,List<String>> apabetList = new HashMap<String,List<String>>();
 
 		for(char ch:ALPA)
@@ -230,8 +225,6 @@ public class ShipperTableController extends AbstractController{
 		Map<Integer, Map<String,List<ShippersTable>>> pageMap= tableList.stream()
 				.collect(Collectors.groupingBy(table -> (int)(table.getPage()/groupCount),
 						Collectors.groupingBy(o ->o.getPage()+":"+o.getCompany_abbr())));
-
-
 
 		Object keys[]=pageMap.keySet().toArray();
 

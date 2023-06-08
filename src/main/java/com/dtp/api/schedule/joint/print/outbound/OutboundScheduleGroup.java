@@ -37,13 +37,7 @@ public class OutboundScheduleGroup extends ScheduleGroup
 	private static final String BUSAN_NEW 	= "BUSAN NEW";
 
 	private static final String BUSAN 		= "BUSAN";
-
-	private ScheduleGroup parent;
 	
-	public ScheduleGroup getParent() {
-		return parent;
-	}
-
 	private String dateT;
 	
 	private String jointedDateF;

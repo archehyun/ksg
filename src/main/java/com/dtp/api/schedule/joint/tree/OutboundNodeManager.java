@@ -129,7 +129,7 @@ public class OutboundNodeManager extends AbstractNodeManager{
 
 		DefaultMutableTreeNode fromPort = new PortTreeNode(fromPortName);
 
-		ArrayList<OutboundScheduleGroup> outboundScheduleGroupList = (ArrayList<OutboundScheduleGroup>) outboundSchedule. createFromPortOutboundScheduleGroup(scheduleList);
+		ArrayList<OutboundScheduleGroup> outboundScheduleGroupList = (ArrayList<OutboundScheduleGroup>) outboundSchedule. createScheduleGroup(scheduleList);
 		
 		outboundScheduleGroupList.forEach(o -> o.joinnted());
 

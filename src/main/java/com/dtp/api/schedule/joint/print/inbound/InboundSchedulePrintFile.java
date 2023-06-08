@@ -129,7 +129,7 @@ public class InboundSchedulePrintFile extends AbstractInboundSchedulePrint{
 
 			Map<String, List<ScheduleData>> vesselList= resultMap.get(fromPortName);
 
-			List<InboundScheduleGroup> groupList = inboundScheduleRule.getInboundScheduleGroup(vesselList, true);
+			List<InboundScheduleGroup> groupList = inboundScheduleRule.createScheduleGroup(vesselList, true);
 			
 			List<String> strList = groupList.stream().sorted().map(o -> o.toPrintString()).collect(Collectors.toList());
 			

@@ -510,11 +510,11 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			}
 		});
 
-		MyPopupMenuListener listener = new MyPopupMenuListener();
+//		MyPopupMenuListener listener = new MyPopupMenuListener();
 
 		JPopupMenu popMenu = createPopupMenu();
 
-		popMenu.addPopupMenuListener(listener);		
+//		popMenu.addPopupMenuListener(listener);		
 
 		tableH.addMouseListener(new UpdateMouseAdapter());
 
@@ -1485,7 +1485,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	public void fnUpdate()
 	{
 		try {
-			//			int page_size = tableH.getPageSize();
 
 			searchParamHash.put("PAGE_SIZE", 0);
 
@@ -1519,6 +1518,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		}
 
 		String strParam=txfSearchInput.getText();
+		
 		if(!strParam.equals(""))
 		{
 			KSGTableColumn col = (KSGTableColumn) cbbOption.getSelectedItem();
@@ -1541,116 +1541,116 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	}
 
 
+//
+//	private void selectGubun(ShippersTable searchParam, int gubunIndex )
+//	{
+//		switch (gubunIndex) {
+//		case 0:
+//			searchParam.setGubun(null);
+//			break;
+//		case 1:
+//			searchParam.setGubun(ShippersTable.GUBUN_NORMAL);// 수정 필요
+//			break;
+//		case 2:
+//			searchParam.setGubun(ShippersTable.GUBUN_NNN);
+//			break;
+//		case 3:
+//			searchParam.setGubun(ShippersTable.GUBUN_TS);
+//			break;
+//		case 4:
+//			searchParam.setGubun(ShippersTable.GUBUN_CONSOLE);
+//			break;	
+//		case 5:
+//			searchParam.setGubun(ShippersTable.GUBUN_INLAND);
+//			break;	
+//		default:
+//			break;
+//		}
+//	}
 
-	private void selectGubun(ShippersTable searchParam, int gubunIndex )
-	{
-		switch (gubunIndex) {
-		case 0:
-			searchParam.setGubun(null);
-			break;
-		case 1:
-			searchParam.setGubun(ShippersTable.GUBUN_NORMAL);// 수정 필요
-			break;
-		case 2:
-			searchParam.setGubun(ShippersTable.GUBUN_NNN);
-			break;
-		case 3:
-			searchParam.setGubun(ShippersTable.GUBUN_TS);
-			break;
-		case 4:
-			searchParam.setGubun(ShippersTable.GUBUN_CONSOLE);
-			break;	
-		case 5:
-			searchParam.setGubun(ShippersTable.GUBUN_INLAND);
-			break;	
-		default:
-			break;
-		}
-	}
 
-
-
-	/**
-	 * @param param
-	 * @param index
-	 */
-	private void selectOption(String param, int index) {
-
-		if(param== null||param.equals("")) return;
-
-		switch (index) {
-
-		case 0://페이지
-
-			searchParam.setPage(Integer.parseInt(param));
-
-			manager.selectedPage = Integer.parseInt(param);
-
-			break;
-		case 1:// 테이블 아이디
-			searchParam.setTable_id(param);
-			break;
-		case 5://테이블 인덱스
-
-			searchParam.setTable_index(Integer.parseInt(param));
-
-			break;
-		case 2://선사명
-			searchParam.setCompany_abbr(param);
-			break;
-		case 3:// 제목
-			searchParam.setTitle(param);
-			break;
-		case 4:// 에이전트
-			searchParam.setAgent(param);
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	/**
-	 * @param param
-	 * @param index
-	 */
-	private void selectOptionHash(HashMap<String, Object> searchOption,String param, int index) {
-
-		if(param== null||param.equals("")) return;
-
-		switch (index) {
-
-		case 0://페이지
-
-			searchOption.put("page", Integer.parseInt(param));
-
-			break;
-		case 1:// 테이블 아이디
-
-			searchOption.put("table_id", param);
-
-			break;
-		case 5://테이블 인덱스
-			searchOption.put("table_index", Integer.parseInt(param));			
-
-			break;
-		case 2://선사명
-			searchOption.put("company_abbr", param);
-
-			break;
-		case 3:// 제목
-			searchOption.put("title", param);
-
-			break;
-		case 4:// 에이전트
-			searchOption.put("agent", param);
-
-			break;
-
-		default:
-			break;
-		}
-	}
+//
+//	/**
+//	 * @param param
+//	 * @param index
+//	 */
+//	private void selectOption(String param, int index) {
+//
+//		if(param== null||param.equals("")) return;
+//
+//		switch (index) {
+//
+//		case 0://페이지
+//
+//			searchParam.setPage(Integer.parseInt(param));
+//
+//			manager.selectedPage = Integer.parseInt(param);
+//
+//			break;
+//		case 1:// 테이블 아이디
+//			searchParam.setTable_id(param);
+//			break;
+//		case 5://테이블 인덱스
+//
+//			searchParam.setTable_index(Integer.parseInt(param));
+//
+//			break;
+//		case 2://선사명
+//			searchParam.setCompany_abbr(param);
+//			break;
+//		case 3:// 제목
+//			searchParam.setTitle(param);
+//			break;
+//		case 4:// 에이전트
+//			searchParam.setAgent(param);
+//			break;
+//
+//		default:
+//			break;
+//		}
+//	}
+//
+//	/**
+//	 * @param param
+//	 * @param index
+//	 */
+//	private void selectOptionHash(HashMap<String, Object> searchOption,String param, int index) {
+//
+//		if(param== null||param.equals("")) return;
+//
+//		switch (index) {
+//
+//		case 0://페이지
+//
+//			searchOption.put("page", Integer.parseInt(param));
+//
+//			break;
+//		case 1:// 테이블 아이디
+//
+//			searchOption.put("table_id", param);
+//
+//			break;
+//		case 5://테이블 인덱스
+//			searchOption.put("table_index", Integer.parseInt(param));			
+//
+//			break;
+//		case 2://선사명
+//			searchOption.put("company_abbr", param);
+//
+//			break;
+//		case 3:// 제목
+//			searchOption.put("title", param);
+//
+//			break;
+//		case 4:// 에이전트
+//			searchOption.put("agent", param);
+//
+//			break;
+//
+//		default:
+//			break;
+//		}
+//	}
 
 	class UpdateDateDialog extends JDialog implements ActionListener
 	{
@@ -1783,18 +1783,18 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			}
 		}
 	}
-	class MyPopupMenuListener implements PopupMenuListener {
-		public void popupMenuCanceled(PopupMenuEvent popupMenuEvent) {
-		}
-
-		public void popupMenuWillBecomeInvisible(PopupMenuEvent popupMenuEvent) {
-		}
-
-		public void popupMenuWillBecomeVisible(PopupMenuEvent popupMenuEvent) {
-
-
-		}
-	}
+//	class MyPopupMenuListener implements PopupMenuListener {
+//		public void popupMenuCanceled(PopupMenuEvent popupMenuEvent) {
+//		}
+//
+//		public void popupMenuWillBecomeInvisible(PopupMenuEvent popupMenuEvent) {
+//		}
+//
+//		public void popupMenuWillBecomeVisible(PopupMenuEvent popupMenuEvent) {
+//
+//
+//		}
+//	}
 	class ColorComboBoxListCellRenderer implements ListCellRenderer
 	{
 		protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();

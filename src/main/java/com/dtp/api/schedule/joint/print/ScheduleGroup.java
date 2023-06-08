@@ -12,11 +12,13 @@ import com.ksg.domain.Vessel;
 
 public abstract class ScheduleGroup implements Comparable<ScheduleGroup>, IFComparator{
 	
+	protected ScheduleGroup parent;
+	
 	protected DateComparator dateComparator 			= new DateComparator(new SimpleDateFormat("yyyy/MM/dd"));
 	
 	protected List<ScheduleData> scheduleList;
 	
-	protected String dateF;
+	protected String dateF, dateT;
 	
 	protected Vessel vessel;
 	
@@ -41,6 +43,10 @@ public abstract class ScheduleGroup implements Comparable<ScheduleGroup>, IFComp
 	{
 		return dateF;
 	}
+	public String getDateT()
+	{
+		return dateT;
+	}
 
 	public List<ScheduleData> getScheduleList() {
 		return this.scheduleList;
@@ -56,5 +62,9 @@ public abstract class ScheduleGroup implements Comparable<ScheduleGroup>, IFComp
 		} catch (ParseException e) {
 			return date;
 		}
+	}
+
+	public ScheduleGroup getParent() {
+		return parent;
 	};
 }

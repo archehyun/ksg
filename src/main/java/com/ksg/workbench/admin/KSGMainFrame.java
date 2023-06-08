@@ -349,13 +349,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		return pnMain;
 	}
 
-//	private Component buildVersion() {
-//		KSGPanel pnMain = new KSGPanel();
-//		pnMain.setLayout(new FlowLayout());
-//		JLabel lbl = new JLabel("v2010_04_06_01");
-//		return pnMain;
-//	}
-
 	private void addToolBarButton(String butName, String img, String action)
 	{
 		JButton butSearch = new JButton(butName,new ImageIcon(img));
@@ -382,13 +375,19 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	private Component buildToolBar() 
 	{
 		toolbar = new JToolBar();
+		
 		toolbar.setPreferredSize(new Dimension(-1,45));
+		
 		toolbar.setBorderPainted(true);
 
 		addToolBarButton("광고 조회","images/menu_search.gif",ADV_SEARCH);
+		
 		addToolBarButton("광고 입력","images/importxls8.gif",ADV_INPUT);
+		
 		addToolBarButton("광고 출력","images/export.gif",ADV_PRINT);
+		
 		addToolBarButton("스케줄 관리","images/menu_schedule.gif",SCHEDULE_SEARCH);
+		
 		addToolBarButton(BASE_MAIN,"images/db_table8.gif",BASE_MAIN);
 
 
@@ -412,7 +411,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 						return;
 					}
-
 
 					try {
 						String searchDate = KSGDateUtil.toDate3(date).toString();
@@ -617,8 +615,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		{
 			PreferenceDialog preferenceDialog = new PreferenceDialog(PREFERENCE,true);
 			preferenceDialog.createAndUpdateUI(this);
-
-
 		}
 	}
 	private void sort()
@@ -693,8 +689,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 		pnControl.add(butOk);
 		pnControl.add(butCancel);
-
-
 
 		Box box = Box.createVerticalBox();
 		KSGPanel pn1 = new KSGPanel();
@@ -916,7 +910,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 				}
 			}
 		}
-
 	}
 
 	// 기초 정보 관련 액션
@@ -1052,7 +1045,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 						if(bo.isSelected())
 						{
 							txfDate.setText(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
-
 						}
 
 					}});
@@ -1178,11 +1170,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 				WebScheduleCreateDialog createDialog = new WebScheduleCreateDialog();
 
 				createDialog.createAndUpdateUI(KSGMainFrame.this);
-
 			}
 		}
 	}
-
 
 	@Override
 	public void updateView() {
@@ -1210,8 +1200,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, date+" : "+count+"건");
 
 				toolbar.requestFocus();
-
-
 			}
 		}
 		else{  

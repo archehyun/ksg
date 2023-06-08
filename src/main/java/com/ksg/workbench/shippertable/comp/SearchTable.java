@@ -19,10 +19,13 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.model.KSGTableModel;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author ¹ÚÃ¢Çö
  *
  */
+@Slf4j
 public class SearchTable extends KSGTable
 {
 	/**

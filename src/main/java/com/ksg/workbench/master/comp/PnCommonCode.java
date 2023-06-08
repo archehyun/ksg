@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -54,13 +53,11 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 	private KSGTablePanel tableD;
 
-
-	SelectionListner selectionListner = new SelectionListner();
+	private SelectionListner selectionListner = new SelectionListner();
 
 	public PnCommonCode(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
-
 
 		this.setController(new CodeController());
 
@@ -146,7 +143,6 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 	private KSGPanel createSerch()
 	{
-
 		txfCodeName = new JTextField(10);		
 
 		KSGPanel pnSearchAndCount = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -156,6 +152,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		pnSearchAndCount.add(txfCodeName);
 
 		KSGGradientButton butSearch = new KSGGradientButton("Á¶È¸", "images/search3.png");
+		
 		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butSearch.addActionListener(this);
@@ -172,8 +169,6 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 		return pnMain;
 	}
-
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -197,13 +192,10 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		callApi("selectCodeDetailList", param);
 	}
 
-
-
 	@Override
 	public void fnSearch() {
 
 		CommandMap param = new CommandMap();
-
 
 		if(!"".equals(txfCodeName.getText()))
 		{
@@ -211,9 +203,8 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		}
 
 		callApi("selectCodeList", param);
-
-
 	}
+	
 	class CommonCodeAction implements ActionListener
 	{
 
@@ -351,7 +342,6 @@ public class PnCommonCode extends PnBase implements ActionListener{
 	
 
 	public void fnSearchDetail()
-	
 	{
 		int row = tableH.getSelectedRow();
 		
@@ -364,12 +354,10 @@ public class PnCommonCode extends PnBase implements ActionListener{
 	@Override
 	public void componentShown(ComponentEvent e) {
 		fnSearch();
-
 	}
 
 	@Override
 	public void updateView() {
-
 
 		CommandMap result= this.getModel();
 
@@ -377,7 +365,6 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 		if(success)
 		{
-
 			String serviceId=(String) result.get("serviceId");
 
 			List data = (List )result.get("data");
@@ -433,9 +420,5 @@ public class PnCommonCode extends PnBase implements ActionListener{
 			String error = (String) result.get("error");
 			JOptionPane.showMessageDialog(this, error);
 		}
-
 	}
-
-
-
 }

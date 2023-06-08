@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import com.dtp.api.annotation.ControlMethod;
@@ -67,8 +65,6 @@ public class ScheduleController extends AbstractController{
 	private ShipperTableService tableService = new ShipperTableServiceImpl();
 	
 	private TreeNodeManager nodeManager = new TreeNodeManager();
-	
-	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public ScheduleController()
 	{
@@ -325,7 +321,7 @@ public class ScheduleController extends AbstractController{
 
 	public Map<String, Map<String, List<ScheduleData>>> selectRouteScheduleGroupList(List<ScheduleData> li) throws SQLException {
 		
-		logger.info("schedule size:{}", li.size());
+		log.info("schedule size:{}", li.size());
 		
 		li.stream().forEach(schedule -> schedule.setArea_name(schedule.getArea_name().toUpperCase()));
 		
@@ -505,9 +501,10 @@ public class ScheduleController extends AbstractController{
 				.distinct()
 				.collect(Collectors.toList());
 		
-		List<String> fromportNames=scheduleList.stream().map(ScheduleData::getFromPort)
-				.distinct()
-				.collect(Collectors.toList());
+		List<String> fromportNames=scheduleList.stream()
+												.map(ScheduleData::getFromPort)
+												.distinct()
+												.collect(Collectors.toList());
 		
 		portNames.addAll(fromportNames);
 		

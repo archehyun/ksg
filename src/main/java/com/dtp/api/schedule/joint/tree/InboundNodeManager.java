@@ -102,15 +102,16 @@ public class InboundNodeManager extends AbstractNodeManager{
 					//TODO 스케줄 INBOUND 공동배선 적용 룰 검토
 					ArrayList<CommandMap> scheduleList =  (ArrayList<CommandMap>) vesselitems.get(str);
 
-
 					fromPort.add(new InboundGroupTreeNode(vesselName,scheduleList ));	
 				}
 
 				area.add(fromPort);
 
 			}
+			
 			root.add(area);
 		}
+		
 		return root;
 
 	}
@@ -140,17 +141,17 @@ public class InboundNodeManager extends AbstractNodeManager{
 			
 			DefaultMutableTreeNode port = new PortTreeNode(String.valueOf(strFromPort)+" - "+portInfo.getPort_nationality());
 			
-			List<InboundScheduleGroup> groupList = inboundScheduleRule.getInboundScheduleGroup(vesselList,false);
+			List<InboundScheduleGroup> groupList = inboundScheduleRule.createScheduleGroup(vesselList,false);
 			
 			groupList.stream()
 					.sorted()
-					.forEach(o ->{
+					.forEach(group ->{
 						
-						ScheduleTreeNode child = new ScheduleTreeNode(toPrintString(o),NodeType.SCHEDULE);
+						ScheduleTreeNode child = new ScheduleTreeNode(toPrintString(group),group.getParent()!=null?NodeType.SPLITED_SCHEDULE: NodeType.SCHEDULE);
 						
 						port.add(child); 
 						
-						o.getScheduleList() .forEach(item -> {
+						group.getScheduleList() .forEach(item -> {
 							
 							CommandMap param = objectMapper.convertValue(item, CommandMap.class);
 							
@@ -176,7 +177,6 @@ public class InboundNodeManager extends AbstractNodeManager{
 	
 	
 	public String toPrintString(InboundScheduleGroup group) {
-		
 		
 		String dateF 			=  formatedDate(group.getDateF());
 		

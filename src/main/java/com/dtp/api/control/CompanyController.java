@@ -165,8 +165,5 @@ public class CompanyController extends AbstractController{
         returnMap.put("data", result);
         
         return returnMap;
-        
     }
-	
-
 }

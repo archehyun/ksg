@@ -80,7 +80,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private String query;
 
-	CompanyServiceImpl companyService = new CompanyServiceImpl();
+	private CompanyServiceImpl companyService = new CompanyServiceImpl();
 
 	private List<HashMap<String, Object>> master;
 
@@ -235,7 +235,6 @@ public class PnCompany extends PnBase implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-
 		try {
 			
 			String command = e.getActionCommand();
@@ -278,23 +277,18 @@ public class PnCompany extends PnBase implements ActionListener{
 		}
 	}
 
-
-
 	class TableSelectListner extends MouseAdapter
 	{
 		KSGDialog dialog;
 
 		public void mouseClicked(MouseEvent e) 
 		{
-
 			if(e.getClickCount()>1)
 			{
 				JTable es = (JTable) e.getSource();
 				int row=es.getSelectedRow();
 
-				if(row<0)
-					return;
-
+				if(row<0) return;
 
 				HashMap<String, Object> port=(HashMap<String, Object>) tableH.getValueAt(row);
 
@@ -310,9 +304,7 @@ public class PnCompany extends PnBase implements ActionListener{
 				}
 			}
 		}
-
 	}
-
 
 	class MyTableColumnModelListener implements TableColumnModelListener {
 		
@@ -390,7 +382,6 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		if(success)
 		{
-			
 			String serviceId=(String) result.get("serviceId");
 
 			if("selectCompany".equals(serviceId))
@@ -408,7 +399,6 @@ public class PnCompany extends PnBase implements ActionListener{
 				JOptionPane.showMessageDialog(this, "삭제되었습니다.");
 				
 				fnSearch();
-				
 			}
 		}
 		else{  

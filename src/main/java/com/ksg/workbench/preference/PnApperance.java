@@ -89,8 +89,6 @@ public class PnApperance extends PnOption {
 		    	  String value = (String) propeties.get(selectedKey);
 		    	
 		      }
-
-			
 		    };
 		    
 		    tree.addTreeSelectionListener(treeSelectionListener);
@@ -108,7 +106,7 @@ public class PnApperance extends PnOption {
 
 		ROW_HEIGHT=Integer.parseInt(propeties.getProperty("table.row.height"));
 		
-		GRID_COLOR = getColor(propeties.getProperty("table.girdcolor"));
+		GRID_COLOR =  Color.decode(propeties.getProperty("table.girdcolor"));
 		
 		FONT_SIZE = Integer.parseInt(propeties.getProperty("table.font.size"));
 		

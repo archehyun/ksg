@@ -35,7 +35,9 @@ public class OutboundScheduleRule {
 	private static final int DIVIED_SCHEDULE = 3;
 
 	public OutboundScheduleRule(Map<String, Vessel> vesselMap) {
+		
 		this.vesselMap =vesselMap;
+		
 	}
 
 	/**
@@ -158,7 +160,7 @@ public class OutboundScheduleRule {
 	 * @return
 	 * @throws Exception 
 	 */
-	public List<OutboundScheduleGroup> createFromPortOutboundScheduleGroup(List<ScheduleData> schedule)
+	public List<OutboundScheduleGroup> createScheduleGroup(List<ScheduleData> schedule)
 	{
 		HashMap<String, OutboundScheduleGroup> scheduleList = new HashMap<String,OutboundScheduleGroup>();
 

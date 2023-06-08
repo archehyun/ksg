@@ -126,7 +126,7 @@ public class OutboundSchedulePrintFile extends AbstractOutboundSchedulePrint{
 		//출발항 출력값
 		buffer.append(buildFromXTG((String)fromPortKey));
 
-		ArrayList<OutboundScheduleGroup> outboundScheduleGroupList = (ArrayList<OutboundScheduleGroup>) outboundSchedule. createFromPortOutboundScheduleGroup(scheduleList);
+		ArrayList<OutboundScheduleGroup> outboundScheduleGroupList = (ArrayList<OutboundScheduleGroup>) outboundSchedule. createScheduleGroup(scheduleList);
 		
 		outboundScheduleGroupList.forEach(o -> o.joinnted());
 

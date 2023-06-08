@@ -74,7 +74,6 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private JTextField txfSearch;
 
-
 	private AreaServiceImpl areaService = new AreaServiceImpl();
 
 	private KSGTablePanel tableH;
@@ -133,7 +132,6 @@ public class PnPort extends PnBase implements ActionListener{
 			}
 		});
 
-
 		KSGGradientButton butUpSearch = new KSGGradientButton("검색", "images/search3.png");
 		
 		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
@@ -153,7 +151,6 @@ public class PnPort extends PnBase implements ActionListener{
 		cbxPortArea.setPreferredSize(new Dimension(300,25));
 
 		cbxAreaCode.setPreferredSize(new Dimension(80,25));
-
 
 		pnSearch.add(lblArea);
 
@@ -264,7 +261,6 @@ public class PnPort extends PnBase implements ActionListener{
 
 		pnTitle.add(new BoldLabel("항구상세정보"),BorderLayout.WEST);
 
-
 		KSGPanel pnControl = new KSGPanel(new FlowLayout());
 
 		JButton butNewAbbr = new KSGGradientButton("추가");
@@ -290,8 +286,11 @@ public class PnPort extends PnBase implements ActionListener{
 		KSGPanel pnPortInfo = new KSGPanel(new GridLayout(4,1,2,2));
 
 		pnPortInfo.add(addComp("항구명",lblPortName));
+		
 		pnPortInfo.add(addComp("나라",lblPationality));
+		
 		pnPortInfo.add(addComp("지역",lblArea));
+		
 		pnPortInfo.add(addComp("지역코드",lblAreaCode));
 
 		tableD = new KSGAbstractTable();
@@ -299,22 +298,27 @@ public class PnPort extends PnBase implements ActionListener{
 		tableD.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 		KSGTableColumn dcolumns = new KSGTableColumn();
+		
 		dcolumns.columnField = "port_abbr";
+		
 		dcolumns.columnName = "항구명 약어";
 
 		tableD.addColumn(dcolumns);
+		
 		tableD.initComp();
 
 		pnSubMain.add(pnPortInfo,BorderLayout.NORTH);
+		
 		pnSubMain.add(new JScrollPane(tableD));
 
 		pnMain.add(pnTitle,BorderLayout.NORTH);
+		
 		pnMain.add(pnSubMain);
+		
 		tableD.getParent().setBackground(Color.white);
 
 		return pnMain;
 	}
-
 
 	private JComponent buildCenter()
 	{
@@ -393,8 +397,6 @@ public class PnPort extends PnBase implements ActionListener{
 		columns[4].columnName = "상세수";
 		columns[4].size = 50;
 
-
-
 		tableH.setColumnName(columns);
 
 		tableH.initComp();
@@ -452,7 +454,6 @@ public class PnPort extends PnBase implements ActionListener{
 				param.put("port_name", port_name);
 
 				callApi("selectPortDetailList", param);
-
 			}
 		}
 		else if(command.equals(KSGTablePanel.DELETE))
@@ -496,14 +497,14 @@ public class PnPort extends PnBase implements ActionListener{
 			if(result==JOptionPane.OK_OPTION)
 			{	
 				CommandMap param = new CommandMap();
+				
 				param.put("port_name", port_name);
+				
 				param.put("port_abbr", port_abbr);
 
 				callApi("deletePortDetail", param);
-				
 			}
 		}
-
 	}
 	class TableSelectListner extends MouseAdapter
 	{
@@ -563,15 +564,12 @@ public class PnPort extends PnBase implements ActionListener{
 				ee.printStackTrace();
 				JOptionPane.showMessageDialog(PnPort.this, ee.getMessage());
 			}
-
 		}
-
 	}
 
 
 	@Override
 	public void fnSearch() {
-
 
 		CommandMap param = new CommandMap();
 

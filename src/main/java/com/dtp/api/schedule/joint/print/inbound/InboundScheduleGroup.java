@@ -19,9 +19,7 @@ import com.ksg.workbench.schedule.comp.treenode.InboundCodeMap;
 
 public class InboundScheduleGroup extends ScheduleGroup{
 	
-
 	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.inputDateFormat;
-
 	
 	/* YYYYMMdd */
 
@@ -41,22 +39,37 @@ public class InboundScheduleGroup extends ScheduleGroup{
 
 	private boolean isTaged;
 
+	private List<PortAndDay> portAndDayList;
+
+	private String sortedCompanyist;
+	
+	public InboundScheduleGroup(ScheduleGroup parent, ArrayList<ScheduleData> scheduleList) throws Exception
+	{
+		this(parent.getVessel(), scheduleList, false);
+		
+		this.parent = parent;
+	}
 
 	public InboundScheduleGroup(Vessel vessel, List<ScheduleData>scheduleList, boolean isTaged)
 	{
-		super(vessel, scheduleList);		
+		super(vessel, scheduleList);
 		
-		Collections.sort(this.scheduleList);		
-				
-		this.dateF =this.scheduleList.get(0).getDateF();
+		Collections.sort(this.scheduleList, new ScheduleDateComparator(ScheduleDateComparator.FROM_DATE));
+		
+		//외국항 출발일은 늦은 일자 적용
+		this.dateF =this.scheduleList.get(scheduleList.size()-1).getDateF();
+		
+		portAndDayList 		= getJointedInboundPortList();
+		
+		this.dateT = portAndDayList.get(0).getDateF();
+		
+		sortedCompanyist 	= toJointedCompanyString();
 		
 		this.isTaged =isTaged;
 	}
 
 	
 	public List<PortAndDay> getJointedInboundPortList() {
-		
-		StringBuffer jointedInboundPort = new StringBuffer();
 		
 		// 국내항 그룹화
 		Map<String, List<ScheduleData>> portList =  scheduleList.stream().collect(
@@ -71,7 +84,6 @@ public class InboundScheduleGroup extends ScheduleGroup{
 			Collections.sort(li, new ScheduleDateComparator(ScheduleDateComparator.TO_DATE));
 			
 			list.add(new PortAndDay(String.valueOf(key), li.get(0).getDateT()));
-			
 		}
 			
 		list.stream().sorted(dateComparator);
@@ -93,18 +105,17 @@ public class InboundScheduleGroup extends ScheduleGroup{
 		return sortedCompanyist;
 	}
 	
-	
 	public String toPrintString(boolean taged) {
 		
 		String dateF 			= KSGDateUtil.convertDateFormatYYYY_MM_DDToMMDD2(getDateF());
 		
-		String sortedCompanyist = toJointedCompanyString();
 		
-		List<PortAndDay> list 	= getJointedInboundPortList();
+		
+		
 		
 		StringBuffer jointedInboundPort = new StringBuffer();
 		
-		list.stream().sorted(dateComparator)
+		portAndDayList.stream().sorted(dateComparator)
 		
 		.forEach(o -> jointedInboundPort.append(String.format("\t%s%s", getTagedPortCode( o.getPort(), taged),  KSGDateUtil.convertDateFormatYYYY_MM_DDToMMDD2(o.getDateF()))));		
 		
@@ -115,9 +126,7 @@ public class InboundScheduleGroup extends ScheduleGroup{
 	
 	public String toPrintString() {
 		return toPrintString(true);
-	
 	}
-
 	
 	public String toFormattedString(String dateF,String vesselName, String company, String ports, boolean taged)
 	{
@@ -133,16 +142,12 @@ public class InboundScheduleGroup extends ScheduleGroup{
 		}
 	}
 	
-
-	
 	public String toString()
 	{
 		return toPrintString(false);
 	}
-
 	
 	private String getTagedPortCode(String fport, boolean isTaged) {
-		
 		
 		String port =inboundCodeMap.get(fport);
 		
@@ -166,6 +171,10 @@ public class InboundScheduleGroup extends ScheduleGroup{
 			
 			int fromDateGap = inputDateFormat.parse(getDateF()).compareTo(inputDateFormat.parse(o.getDateF()));
 			
+			int toDateGap = inputDateFormat.parse(getDateT()).compareTo(inputDateFormat.parse(o.getDateT()));
+						
+			if(fromDateGap==0) return toDateGap>0?1:-1;
+			
 			return fromDateGap>0?1:-1;
 			
 		} catch (Exception e) {
@@ -173,5 +182,4 @@ public class InboundScheduleGroup extends ScheduleGroup{
 			return -1;
 		}
 	}
-
 }
