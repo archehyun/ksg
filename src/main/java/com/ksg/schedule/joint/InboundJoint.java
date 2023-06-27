@@ -101,7 +101,7 @@ public class InboundJoint extends KSGScheduleJoint{
 			
 			commandMapCode.put("code_type", "inPort");
 			
-			inPortCodeList=(List<Map<String, Object>>) codeService.selectCodeDList(commandMapCode).get("master");
+//			inPortCodeList=(List<Map<String, Object>>) codeService.selectCodeDList(commandMapCode).get("master");
 			
 			System.out.println(inPortCodeList);
 			

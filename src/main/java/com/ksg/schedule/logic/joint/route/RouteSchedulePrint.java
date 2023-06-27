@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 
+@Deprecated
 public class RouteSchedulePrint extends AbstractSchedulePrint{
 	
 	AbstractSchedulePrint joint;

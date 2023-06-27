@@ -138,7 +138,6 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 		setRowHeight(KSGViewParameter.TABLE_ROW_HEIGHT);
 
-
 		tableService = new TableServiceImpl();
 
 		vesselService = new VesselServiceImpl();
@@ -242,6 +241,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		
 		JTable table = (JTable) e.getSource();
 		{
 			int row=table.getSelectedRow();
@@ -249,7 +249,6 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			int col = table.getSelectedColumn();
 			
 			if(row==-1||col==-1) return;
-
 			
 			if(e.getKeyCode()==KeyEvent.VK_TAB)
 			{
@@ -448,6 +447,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 		model.addTableModelListener(new TableModelListener(){
 
 			public void tableChanged(TableModelEvent e) {
+				
 				if(e.getColumn()==0)
 				{
 					autoVesselWrite( e.getFirstRow());
@@ -476,10 +476,6 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 
 			op.setVessel_name(String.valueOf(value));
 
-
-
-			//List li=baseService.getVesselAbbrInfoByPatten(String.valueOf(value)+"%");
-
 			HashMap<String, Object> param = new HashMap<String, Object>();
 
 			param.put("vessel_name", value);
@@ -493,34 +489,41 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 			{
 				HashMap<String, Object> vessel = (HashMap<String, Object>) li.get(0);
 
-
 				String obj = ((String)vessel.get("vessel_name")).toUpperCase();
 
 				setValue(obj, selectedVesselrow, col);
+				
 				vesselModel.setRowCount(vesselModel.getRowCount()+1);
+				
 				vesselModel.setValueAt(vessel.get("vessel_name"), selectedVesselrow, 0);
+				
 				vesselModel.setValueAt(vessel.get("vessel_abbr"), selectedVesselrow, 1);
+				
 				return;
 
 
 			}else if(li.size()>1)
 			{
-				SearchVesselDialog searchVesselDialog = new SearchVesselDialog(li);
+				SearchVesselDialog searchVesselDialog = new SearchVesselDialog((String) value,li);
+				
 				searchVesselDialog.createAndUpdateUI();
-
 
 				if(searchVesselDialog.result!=null)
 				{
 					setValue(searchVesselDialog.result, selectedVesselrow, col);
 
 					vesselModel.setRowCount(vesselModel.getRowCount()+1);
+					
 					vesselModel.setValueAt(searchVesselDialog.result, selectedVesselrow, 0);
+					
 					vesselModel.setValueAt(searchVesselDialog.resultAbbr, selectedVesselrow, 1);
+					
 					return;
 
 				}else
 				{
 					setValue(null, selectedVesselrow, col);
+					
 					return;
 				}
 
@@ -531,6 +534,7 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 				if(result == JOptionPane.YES_OPTION)
 				{
 					SearchAndInsertVesselDialog dialog = new SearchAndInsertVesselDialog(this,selectedVesselrow,col,value.toString(),vesselModel );
+					
 					dialog .createAndUpdateUI();
 
 				}else
@@ -1064,8 +1068,6 @@ public class AdvertiseTable extends JTable implements KeyListener, ClipboardOwne
 					String vessel_abbr =String.valueOf(table.getValueAt(row,0));
 
 					//선박약어 기준
-					//					Vessel result=baseService.getVesselAbbrInfo(vessel_abbr);
-					
 					Vessel result = vesselService.selectDetail(vessel_abbr);
 
 					if(result==null) foreground = Color.RED;

@@ -31,6 +31,7 @@ import javax.swing.tree.TreePath;
 
 import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ibatis.sqlmap.client.SqlMapException;
+import com.ksg.domain.Code;
 import com.ksg.view.comp.IconData;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
@@ -242,10 +243,10 @@ public class BaseInfoUI extends AbstractMgtUI{
 		HashMap<String, Object> param = new HashMap<String, Object>();
 
 		param.put("code_type", "table");
+		
+		Code codeParam = Code.builder().code_type("table").build();
 
-		HashMap<String, Object> resultMap=(HashMap<String, Object>) codeService.selectCodeDList(param);
-
-		List master = (List) resultMap.get("master");
+		List<Code>result= codeService.selectCodeDetailListByCondition(codeParam);		
 
 		DefaultMutableTreeNode root 	= new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16.png"),null,"기초정보"));
 
@@ -253,17 +254,14 @@ public class BaseInfoUI extends AbstractMgtUI{
 
 		DefaultMutableTreeNode table 	= new DefaultMutableTreeNode("기초 정보");
 
-		Iterator<HashMap> iter2 =master.iterator();
 
 		DefaultMutableTreeNode commonCode = new DefaultMutableTreeNode(STRING_COMMONCODE_INFO);
 
 		code.add(commonCode);
-
-		while(iter2.hasNext())
+		
+		for(Code codeItem:result)
 		{
-			HashMap<String, Object> d =iter2.next(); 
-
-			table.add(new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16_2.png"),null,d.get("code_name_kor"))));
+			table.add(new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16_2.png"),null,codeItem.getCode_name_kor())));
 		}
 
 

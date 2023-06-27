@@ -201,10 +201,7 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	}
 	
 	@Override
-	public void updateView() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void updateView() {}
 
 	
 

@@ -28,6 +28,11 @@ import lombok.Setter;
 @Getter @Setter
 public class Code {
 	
+	
+	private String cd_id;
+	private String cd_nm;
+	private String cd_eng;
+	
 	private String code_id;
 	
 	private String code_field;

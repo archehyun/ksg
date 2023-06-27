@@ -48,16 +48,16 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 	private JTable _tblVesselList;
 
 	private DefaultTableModel model;
-	
+
 	private VesselService vesselService;
-	
+
 	public ManageVesselDialog(String selectedTableId, ShipperTableAbstractMgtUI base) {
 		this.base =base;
-		
+
 		this.table_id=selectedTableId;
-		
+
 		DAOManager manager = DAOManager.getInstance();
-		
+
 		tableService = manager.createTableService();
 
 		vesselService = new VesselServiceImpl();
@@ -71,21 +71,21 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 
 
 	public void createAndUpdateUI() {
-		
+
 		setTitle(this.table_id+"테이블 선박 관리");
-		
+
 		setModal(true);
 
 		getContentPane().add(buildCenter());	
-		
+
 		getContentPane().add(buildControl(),BorderLayout.SOUTH);
 
 		setSize(520,550);
-		
+
 		this.setMinimumSize(new Dimension(400,400));
-		
+
 		ViewUtil.center(this, false);
-		
+
 		setVisible(true);
 
 	}
@@ -129,21 +129,21 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 	 * @return
 	 */
 	private Component buildCenter() {
-		
+
 		KSGPanel pnMain = new KSGPanel();
-		
+
 		_tblVesselList = new JTable();
-		
+
 		_tblVesselList.setRowHeight(25);
-		
+
 		_tblVesselList.setModel(model);
-		
+
 		_tblVesselList.updateUI();
-		
+
 		pnMain.add(new JScrollPane(_tblVesselList));
-		
+
 		_tblVesselList.getParent().setBackground(Color.white);
-		
+
 		return pnMain;
 	}
 
@@ -157,33 +157,28 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 		else if(command.equals("수정"))
 		{
 			int row = _tblVesselList.getSelectedRow();
-			if(row==-1)
-				return;
+			
+			if(row==-1) return;
+			
 			String vesselAbbr = (String) _tblVesselList.getValueAt(row, 1);
-			
-			
-				
-				HashMap<String, Object> param = new HashMap<String, Object>();
-				
-				param.put("vessel_name", vesselAbbr);
 
-				log.info("Param:{}",param);
-				
-				//HashMap<String, Object> result =  vesselService.selectDetailListByLike(param);
-				
-				//TODO 
-				SearchVesselDialog searchVesselDialog = new SearchVesselDialog(new ArrayList<>());
-				
-				searchVesselDialog.createAndUpdateUI();
+			HashMap<String, Object> param = new HashMap<String, Object>();
+
+			param.put("vessel_name", vesselAbbr);
+
+			//TODO 
+			SearchVesselDialog searchVesselDialog = new SearchVesselDialog("",new ArrayList<>());
+
+			searchVesselDialog.createAndUpdateUI();
 
 
-				if(searchVesselDialog.result!=null)
-				{
+			if(searchVesselDialog.result!=null)
+			{
 
-					model.setValueAt(searchVesselDialog.result, row, 0);
-				}
+				model.setValueAt(searchVesselDialog.result, row, 0);
+			}
 
-			
+
 		}
 	}
 }

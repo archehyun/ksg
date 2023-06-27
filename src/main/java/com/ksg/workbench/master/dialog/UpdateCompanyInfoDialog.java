@@ -15,7 +15,6 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -24,11 +23,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.dtp.api.control.CompanyController;
-import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.impl.CompanyServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
 
@@ -84,8 +81,6 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 	}
 
-
-
 	public UpdateCompanyInfoDialog(int type, HashMap<String, Object> company)
 	{
 		this(type);
@@ -94,7 +89,9 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 
 	public void actionPerformed(ActionEvent e) {
+
 		String command = e.getActionCommand();
+
 		if(command.equals("수정"))
 		{
 			CommandMap param = new CommandMap();
@@ -113,13 +110,12 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 			callApi("updateCompany", param);
 
-
-
 		}else if(command.equals("취소"))
 		{
 			result = FAILE;
 
 			this.setVisible(false);
+
 			this.dispose();
 
 		}
@@ -142,11 +138,10 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			callApi("insertCompany", param);
 
 		}
-
 	}
 
 	public void createAndUpdateUI() {
-		
+
 		this.setModal(true);
 
 		this.getContentPane().add(buildTitle("Add a Company Field"),BorderLayout.NORTH);
@@ -157,23 +152,16 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 		this.setSize(400, 350);
 
-		//		this.pack
-
 		ViewUtil.center(this);
 
 		this.setResizable(false);
 
 		this.setVisible(true);
-
 	}
-
-
-
 
 	public KSGPanel buildCenter()
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-
 
 		txfCompany_name = new JTextField(20);
 
@@ -206,9 +194,6 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		return pnMain;
 	}
 
-
-
-
 	@Override
 	public void componentShown(ComponentEvent e) {
 
@@ -218,13 +203,13 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		if(company!=null)
 		{
 			this.txfCompany_abbr.setText((String) company.get("company_abbr"));
-			
+
 			this.txfCompany_name.setText((String) company.get("company_name"));
-			
+
 			this.txfAgent_abbr.setText((String) company.get("agent_abbr"));
-			
+
 			this.txfAgent_name.setText((String) company.get("agent_name"));
-			
+
 			this.txaContents.setText((String) company.get("contents"));
 		}
 		switch (type) {
@@ -240,50 +225,38 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			break;
 
 		}
-
 	}
 
 	@Override
 	public void updateView() {
 		CommandMap resultMap= this.getModel();
 
-		boolean success = (boolean) resultMap.get("success");
 
-		if(success)
-		{
+		String serviceId=(String) resultMap.get("serviceId");
 
-			String serviceId=(String) resultMap.get("serviceId");
+		if("insertCompany".equals(serviceId))
+		{	
+			result = SUCCESS;
 
-			if("insertCompany".equals(serviceId))
-			{	
-				result = SUCCESS;
-				
-				NotificationManager.showNotification("추가했습니다.");
+			NotificationManager.showNotification("추가했습니다.");
 
-				this.setVisible(false);
+			this.setVisible(false);
 
-				this.dispose();
-
-			}
-
-			if("updateCompany".equals(serviceId))
-			{	
-				result = SUCCESS;
-
-				NotificationManager.showNotification("수정했습니다.");
-
-				this.setVisible(false);
-
-				this.dispose();
-
-			}
-
+			this.dispose();
 		}
-		else{  
-			String error = (String) resultMap.get("error");
 
-			JOptionPane.showMessageDialog(this, error);
+		if("updateCompany".equals(serviceId))
+		{	
+			result = SUCCESS;
+
+			NotificationManager.showNotification("수정했습니다.");
+
+			this.setVisible(false);
+
+			this.dispose();
 		}
+
+
 
 	}
 

@@ -11,10 +11,9 @@ import com.ksg.workbench.common.comp.AbstractMgtUI;
 @SuppressWarnings("serial")
 public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements ActionListener, KeyListener{
 	
-	public final String ADV_CANCEL = "ADV_CANCEL";
+	public final String ADV_CANCEL 		= "ADV_CANCEL";
 
-	public final String SAVE_ADV_DATA = "SAVE_ADV_DATA";
-	
+	public final String SAVE_ADV_DATA 	= "SAVE_ADV_DATA";
 	
 	protected boolean isShowData=true;
 	

@@ -282,8 +282,10 @@ public class PortTable extends JTable implements ActionListener
 				param.put("code_type", "port_check");
 				param.put("code_field", ii.getPort_name());
 				
+				Code code = Code.builder().code_type("port_check").code_field(ii.getPort_name()).build();
 				
-				info_code.setType(codeServiceImpl.selectCodeD(param)==null?PortTableInfo.TYPE_NOMAL:PortTableInfo.TYPE_BLUE);
+				
+				info_code.setType(codeServiceImpl.selectCodeDetailByKey(code)==null?PortTableInfo.TYPE_NOMAL:PortTableInfo.TYPE_BLUE);
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -949,7 +951,8 @@ public class PortTable extends JTable implements ActionListener
 				info_code.setArea_code(info.getArea_code());
 
 				try {
-					info_code.setCheckType(codeServiceImpl.selectCodeD(param)==null?PortTableInfo.TYPE_NOMAL:PortTableInfo.TYPE_BLUE);
+					Code code = Code.builder().code_type("port_check").code_field(info.getPort_name()).build();
+					info_code.setCheckType(codeServiceImpl.selectCodeDetailByKey(code)==null?PortTableInfo.TYPE_NOMAL:PortTableInfo.TYPE_BLUE);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

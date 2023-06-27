@@ -20,6 +20,7 @@ import com.ksg.schedule.execute.joint.JointSchedule;
 
 import lombok.extern.slf4j.Slf4j;
 
+@Deprecated
 @Slf4j
 public class InboundScheduleJoint extends JointSchedule{
 

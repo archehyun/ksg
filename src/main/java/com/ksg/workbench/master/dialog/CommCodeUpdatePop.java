@@ -16,7 +16,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.dtp.api.control.CodeController;
 import com.dtp.api.service.impl.CodeServiceImpl;
+import com.ksg.common.model.CommandMap;
 import com.ksg.workbench.master.comp.PnCommonCode;
 
 /**
@@ -33,38 +35,41 @@ import com.ksg.workbench.master.comp.PnCommonCode;
 
  */
 @SuppressWarnings("serial")
-public class CommCodeUpdatePop extends BasePop implements ActionListener{
+public class CommCodeUpdatePop extends BaseInfoDialog implements ActionListener{
 
-	CodeServiceImpl codeService;
-
-	JButton butOk;
-
-	JButton butCancel;
-
-	JTextField txfCodeID;
-
-	JTextField txfCodeNM;
-
-	JTextField txfCodeENG;
+	private	CodeServiceImpl codeService;
+	
+	private	JButton butOk;
+	
+	private	JButton butCancel;
+	
+	private	JTextField txfCodeID;
+	
+	private	JTextField txfCodeNM;
+	
+	private	JTextField txfCodeENG;
 
 	private PnCommonCode pnCommonCode;
 
 	public CommCodeUpdatePop() {
+		
+		this.setController(new CodeController());
+		
 		codeService = new CodeServiceImpl();
-		this.getContentPane().add(createCenter());
+		
 
-		this.getContentPane().add(createNorth(),BorderLayout.SOUTH);
-		this.setTitle("코드 수정");
 
 	}
 
 	public CommCodeUpdatePop(HashMap<String, Object> item) {
 
 		this();
+		
 		txfCodeID.setText((String)item.get("CD_ID"));
+		
 		txfCodeNM.setText((String)item.get("CD_NM"));
+		
 		txfCodeENG.setText((String)item.get("CD_ENG"));
-
 	}
 
 	public JPanel createCenter()
@@ -108,14 +113,14 @@ public class CommCodeUpdatePop extends BasePop implements ActionListener{
 
 		JPanel pnMain = new JPanel(new BorderLayout());
 
-
 		JPanel pnCenter = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		butOk = new JButton("확인");
+		butOk 		= new JButton("확인");
 
-		butCancel = new JButton("취소");
+		butCancel 	= new JButton("취소");
 
 		butOk.addActionListener(this);
+		
 		butCancel.addActionListener(this);
 
 		pnCenter.add(butOk);
@@ -126,7 +131,6 @@ public class CommCodeUpdatePop extends BasePop implements ActionListener{
 
 
 		return pnMain;
-
 
 	}
 
@@ -153,32 +157,44 @@ public class CommCodeUpdatePop extends BasePop implements ActionListener{
 			}
 
 
-			HashMap<String, Object> param = new HashMap<String, Object>();
+			CommandMap param = new CommandMap();
+			
 			param.put("CD_NM", codeNM);
 			param.put("CD_ID", codeID);
 
 
-			try {
-				codeService.updateCodeH(param);
+//			try {
+				
+				callApi("updateCode",param);
+//				codeService.updateCodeH(param);
+				
 				result = BasePop.OK;
+				
 				pnCommonCode.fnSearch();
+				
 				close();
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				result = BasePop.CANCEL;
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(this, e1.getMessage());
-			}
-
-
+				
+//			} catch (SQLException e1) {
+//				// TODO Auto-generated catch block
+//				result = BasePop.CANCEL;
+//				e1.printStackTrace();
+//				JOptionPane.showMessageDialog(this, e1.getMessage());
+//			}
 		}
-
 	}
 
 	public void showPop(PnCommonCode pnCommonCode) {
-		super.showPop();
 		this.pnCommonCode=pnCommonCode;
 		
+	}
+
+	@Override
+	public void createAndUpdateUI() {
+		this.getContentPane().add(createCenter());
+
+		this.getContentPane().add(createNorth(),BorderLayout.SOUTH);
+		
+		this.setTitle("코드 수정");
 	}
 
 

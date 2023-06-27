@@ -527,7 +527,7 @@ public class PnVessel extends PnBase implements ActionListener {
 
 		log.debug("insert");
 
-		KSGDialog dialog = new InsertVesselInfoDialog(this);
+		KSGDialog dialog = new InsertVesselInfoDialog();
 
 		dialog.createAndUpdateUI();
 
@@ -831,7 +831,9 @@ public class PnVessel extends PnBase implements ActionListener {
 			if("selectVessel".equals(serviceId))
 			{	
 				List data = (List )result.get("data");
+				
 				tableH.setResultData(data);
+				
 				tableH.setTotalCount(String.valueOf(data.size()));
 
 				if(data.size()==0)tableH.changeSelection(0,0,false,false);

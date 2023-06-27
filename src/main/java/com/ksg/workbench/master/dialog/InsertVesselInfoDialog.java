@@ -46,7 +46,6 @@ import com.ksg.view.comp.combobox.KSGComboBox;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.master.comp.PnVessel;
 
 @SuppressWarnings("serial")
 public class InsertVesselInfoDialog extends BaseInfoDialog{
@@ -64,6 +63,8 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 	private KSGComboBox cbxConType;
 
 	private JCheckBox cbxMMSICheck;
+	
+	private String vessel_name;
 
 	public InsertVesselInfoDialog()
 	{
@@ -74,13 +75,13 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 		this.setController(new VesselController());
 
 		this.addComponentListener(this);
-
-
 	}
-	PnVessel pnVessel;
-	public InsertVesselInfoDialog(PnVessel pnVessel) {
+	
+	public InsertVesselInfoDialog(String vessel_name)
+	{
 		this();
-		this.pnVessel = pnVessel;
+		
+		this.vessel_name = vessel_name;
 	}
 
 	public void createAndUpdateUI() 
@@ -129,7 +130,9 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 		});
 
 		cbxMMSICheck = new JCheckBox("없음",true);
+		
 		cbxMMSICheck.setBackground(Color.white);
+		
 		cbxMMSICheck.addActionListener(new ActionListener() {
 
 			@Override
@@ -160,7 +163,6 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 
 			public void actionPerformed(ActionEvent e) {
 				txfCompanyName.setText("");
-
 
 			}});
 
@@ -247,7 +249,6 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 				param.put("vessel_mmsi", "");
 			}
 
-
 			callApi("insertVessel", param);
 
 
@@ -261,27 +262,26 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		cbxConType.initComp();		
+		cbxConType.initComp();
+		
+		if(!vessel_name.isEmpty()) txfVesselName.setText(vessel_name);
 
 	}
 	class MMISLimit extends PlainDocument
 	{
 		private int limit;
-		MMISLimit(int limit) {
+		
+		public MMISLimit(int limit) {
 			super();
 			this.limit = limit;
-		}
-
-		MMISLimit(int limit, boolean upper) {
-			super();
-			this.limit = limit;
-		}
+		}		
 
 		public void insertString(int offset, String str, AttributeSet attr) throws BadLocationException {
-			if (str == null)
-				return;
+			
+			if (str == null) return;
 
 			if ((getLength() + str.length()) <= limit) {
+				
 				super.insertString(offset, str, attr);
 			}
 		}
@@ -291,34 +291,15 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 	public void updateView() {
 		CommandMap resultMap= this.getModel();
 
-		boolean success = (boolean) resultMap.get("success");
+		String serviceId=(String) resultMap.get("serviceId");
 
-		if(success)
-		{
+		if("insertVessel".equals(serviceId))
+		{	
+			result = KSGDialog.SUCCESS;
 
-			String serviceId=(String) resultMap.get("serviceId");
+			JOptionPane.showMessageDialog(this, "추가했습니다.");	
 
-			if("insertVessel".equals(serviceId))
-			{	
-				result = KSGDialog.SUCCESS;
-
-				JOptionPane.showMessageDialog(this, "추가했습니다.");	
-
-				close();
-
-			}
-
+			close();
 		}
-		else{  
-			String error = (String) resultMap.get("error");
-
-			JOptionPane.showMessageDialog(this, error);
-		}
-
-
-
 	}
-
-
-
 }

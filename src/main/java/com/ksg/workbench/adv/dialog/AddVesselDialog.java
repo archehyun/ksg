@@ -33,27 +33,44 @@ import com.ksg.workbench.shippertable.comp.AdvertiseTable;
 public class AddVesselDialog extends KSGDialog {
 
 	private DAOManager daoManager;
+	
 	private static final long serialVersionUID = 1L;
 
 	private Object vesselName;
+	
 	private JCheckBox box;
+	
 	private JComboBox cbxType;
+	
 	private BaseService baseService;
+	
 	private VesselServiceV2 vesselService;
+	
 	public AddVesselDialog(Object vesselName) {
+		
 		this.vesselName=vesselName;
-		daoManager =DAOManager.getInstance();
-		baseService = daoManager.createBaseService();
-		vesselService = new VesselServiceImpl();
+		
+		this.daoManager 		= DAOManager.getInstance();
+		
+		this.baseService 		= daoManager.createBaseService();
+		
+		this.vesselService 		= new VesselServiceImpl();
+		
 		this.addComponentListener(this);
 
 	}
 	private AdvertiseTable advTable;
+	
 	private DefaultTableModel  vesselModel;
+	
 	private int col;
+	
 	private int row;
+	
 	private JTextField txfMMSI;
+	
 	private JCheckBox cbxMMSICheck;
+	
 	private JTextField txfInput;
 
 	public AddVesselDialog(AdvertiseTable advTable, int row,

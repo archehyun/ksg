@@ -28,7 +28,7 @@ import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.BasePop;
 import com.ksg.workbench.master.dialog.CommCodeUpdatePop;
-import com.ksg.workbench.master.dialog.CommonCodeInsertPop;
+import com.ksg.workbench.master.dialog.CommonCodeInsertDialog;
 import com.ksg.workbench.master.dialog.InsertCommonCodeDetailDialog;
 
 
@@ -153,7 +153,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		pnSearchAndCount.add(txfCodeName);
 
 		KSGGradientButton butSearch = new KSGGradientButton("조회", "images/search3.png");
-		
+
 		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butSearch.addActionListener(this);
@@ -205,7 +205,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 		callApi("selectCodeList", param);
 	}
-	
+
 	class CommonCodeAction implements ActionListener
 	{
 
@@ -215,7 +215,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 			if(command.equals(KSGTablePanel.INSERT))
 			{
-				CommonCodeInsertPop codeInsertPop = new CommonCodeInsertPop();
+				CommonCodeInsertDialog codeInsertPop = new CommonCodeInsertDialog();
 
 				codeInsertPop.createAndUpdateUI();
 
@@ -236,21 +236,21 @@ public class PnCommonCode extends PnBase implements ActionListener{
 			{
 
 				int row = tableH.getSelectedRow();
-				
+
 				if(row<0)
 					return;
-				
+
 				HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(row);
 
 				CommCodeUpdatePop codeInsertPop = new CommCodeUpdatePop(item);
-				
+
 				codeInsertPop.showPop(PnCommonCode.this);
 
 				switch (codeInsertPop.result) {
 				case BasePop.OK:
-					
+
 					fnSearch();
-					
+
 					break;
 				case BasePop.CANCEL:					
 					break;	
@@ -273,7 +273,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 				callApi("deleteCode", param);
 
-				
+
 			}
 		}
 	}
@@ -290,11 +290,11 @@ public class PnCommonCode extends PnBase implements ActionListener{
 				int row=tableH.getSelectedRow();
 				if(row<0)
 					return;
-				
+
 				InsertCommonCodeDetailDialog codeInsertPop = new InsertCommonCodeDetailDialog((HashMap<String, Object>) tableH.getValueAt(row));
-				
+
 				codeInsertPop.createAndUpdateUI();
-				
+
 				if(codeInsertPop.result == KSGDialog.SUCCESS) fnSearchDetail();
 			}
 
@@ -331,7 +331,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 			if(!e.getValueIsAdjusting())
 			{
 				int row = tableH.getSelectedRow();
-				
+
 				logger.info("select row:{}",row);
 
 				String CDENG = (String) tableH.getValueAt(tableH.getSelectedRow(), 2);
@@ -340,12 +340,12 @@ public class PnCommonCode extends PnBase implements ActionListener{
 			}
 		}
 	}
-	
+
 
 	public void fnSearchDetail()
 	{
 		int row = tableH.getSelectedRow();
-		
+
 		logger.info("select row:{}",row);
 
 		String CDENG = (String) tableH.getValueAt(tableH.getSelectedRow(), 2);
@@ -362,65 +362,57 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 		CommandMap result= this.getModel();
 
-		boolean success = (boolean) result.get("success");
+		String serviceId=(String) result.get("serviceId");
 
-		if(success)
+		List data = (List )result.get("data");
+
+		if("selectCodeList".equals(serviceId))
+		{	
+
+			tableH.getSelectionModel().removeListSelectionListener(selectionListner);
+
+			tableH.setResultData(data);
+
+			tableH.setTotalCount(String.valueOf(data.size()));
+
+			if(data.size()==0)tableH.changeSelection(0,0,false,false);
+
+			if(data.size()==0)
+			{
+				//					lblArea.setText("");
+				//					lblAreaCode.setText("");
+				//					lblPationality.setText("");
+				//					lblPortName.setText("");
+				//					tableD.clearReslult();
+			}
+			else
+			{
+				tableH.changeSelection(0,0,false,false);
+			}
+			tableH.getSelectionModel().addListSelectionListener(selectionListner);
+		}
+		else if("deleteCode".equals(serviceId))
 		{
-			String serviceId=(String) result.get("serviceId");
+			String code_filed = (String) result.get("code_field");
 
-			List data = (List )result.get("data");
+			NotificationManager.showNotification(String.format("(%s) 삭제 되었습니다.", code_filed));
 
-			if("selectCodeList".equals(serviceId))
-			{	
-
-				tableH.getSelectionModel().removeListSelectionListener(selectionListner);
-				
-				tableH.setResultData(data);
-
-				tableH.setTotalCount(String.valueOf(data.size()));
-
-				if(data.size()==0)tableH.changeSelection(0,0,false,false);
-
-				if(data.size()==0)
-				{
-					//					lblArea.setText("");
-					//					lblAreaCode.setText("");
-					//					lblPationality.setText("");
-					//					lblPortName.setText("");
-					//					tableD.clearReslult();
-				}
-				else
-				{
-					tableH.changeSelection(0,0,false,false);
-				}
-				tableH.getSelectionModel().addListSelectionListener(selectionListner);
-			}
-			else if("deleteCode".equals(serviceId))
-			{
-				String code_filed = (String) result.get("code_field");
-				
-				NotificationManager.showNotification(String.format("(%s) 삭제 되었습니다.", code_filed));
-				
-				fnSearch();
-			}
-
-			else if("selectCodeDetailList".equals(serviceId))
-			{	
-				tableD.setResultData(data);
-			}
-			else if("deleteCodeDetail".equals(serviceId))
-			{
-				String code_name = (String) result.get("code_name");
-				
-				NotificationManager.showNotification(String.format("(%s) 삭제 되었습니다.", code_name));
-				
-				
-				fnSearchDetail();
-			}
+			fnSearch();
 		}
-		else{  
-			String error = (String) result.get("error");
-			JOptionPane.showMessageDialog(this, error);
+
+		else if("selectCodeDetailList".equals(serviceId))
+		{	
+			tableD.setResultData(data);
 		}
+		else if("deleteCodeDetail".equals(serviceId))
+		{
+			String code_name = (String) result.get("code_name");
+
+			NotificationManager.showNotification(String.format("(%s) 삭제 되었습니다.", code_name));
+
+
+			fnSearchDetail();
+		}
+
 	}
 }

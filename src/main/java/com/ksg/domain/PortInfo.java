@@ -55,7 +55,6 @@ public class PortInfo extends BaseInfo {
 	}
 	
 	public String toInfoString() {
-		// TODO Auto-generated method stub
 		return "["+this.getPort_name()+","+getPort_nationality()+"]";
 	}
 	

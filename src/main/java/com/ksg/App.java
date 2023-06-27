@@ -19,10 +19,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.ColorUIResource;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import com.dtp.view.workwench.ViewConfiguration;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.PropertiManager;
 import com.ksg.workbench.KSGLogin;

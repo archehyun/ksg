@@ -128,12 +128,13 @@ public class TableServiceImpl extends AbstractServiceImpl implements TableServic
 		return tableDAO.getTableListBycompany(table);
 	}
 
+	@Deprecated
 	public List<ShippersTable> getTableListOrderByCompany(ShippersTable table)
 			throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@Deprecated
 	public List<ShippersTable> getTableListOrderByPage(ShippersTable table)
 			throws SQLException {
 		// TODO Auto-generated method stub

@@ -29,6 +29,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.dtp.api.service.impl.CodeServiceImpl;
+import com.ksg.domain.Code;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGTableColumn;
@@ -295,7 +296,10 @@ public class SearchPortDialog extends KSGDialog implements ActionListener{
 						
 						param.put("code_name", val);
 						
-						HashMap<String, Object> result=(HashMap<String, Object>) codeService.selectCodeDList(param);
+						
+						Code codeParam = Code.builder().code_type("port_exception").code_name(val).build();
+						
+						HashMap<String, Object> result=(HashMap<String, Object>) codeService.selectCodeDetailListByCondition(codeParam);
 
 						this.table.setResultData(result);
 					}
@@ -391,11 +395,18 @@ public class SearchPortDialog extends KSGDialog implements ActionListener{
 		try {
 			
 			cbxSamePort.setVisible(isSamePortView);
+			
 			HashMap<String, Object> commandMap = new HashMap<String, Object>();
 
 			commandMap.put("code_type", "port_exception");
 			
-			HashMap<String, Object> resultMap=(HashMap<String, Object>) codeService.selectCodeDList(commandMap);
+			Code codeParam = Code.builder().code_type("port_exception").build();
+			
+			List li=codeService.selectCodeDetailListByCondition(codeParam);
+			
+			
+			
+			HashMap<String, Object> resultMap=(HashMap<String, Object>) codeService.selectCodeDetailListByCondition(codeParam);
 
 			eTable.setResultData(resultMap);		
 

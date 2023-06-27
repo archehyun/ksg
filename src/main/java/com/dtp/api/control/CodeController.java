@@ -100,10 +100,10 @@ public class CodeController extends AbstractController{
     public CommandMap insertCode(CommandMap param) throws Exception
     {	
 		Code codeParam = Code.builder()
-							.code_name((String) param.get("code_name"))
-							.code_type((String) param.get("code_type"))
-							.code_field((String) param.get("code_field"))
-							.code_name_kor((String) param.get("code_name_kor"))
+							.cd_id((String) param.get("cd_id"))
+							.cd_nm((String) param.get("cd_nm"))
+							.cd_eng((String) param.get("cd_eng"))
+							
 							.build();
 		
 		service.insertCode(codeParam);

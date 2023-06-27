@@ -114,7 +114,7 @@ public class PnPort extends PnBase implements ActionListener{
 		JLabel lbl = new JLabel("필드명 : ");
 
 		cbxField = new KSGComboBox();
-		
+
 		cbxField.setPreferredSize(new Dimension(100,23));
 
 		cbxField.addItem("항구명");
@@ -134,22 +134,22 @@ public class PnPort extends PnBase implements ActionListener{
 		});
 
 		KSGGradientButton butUpSearch = new KSGGradientButton("검색", "images/search3.png");
-		
+
 		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUpSearch.addActionListener(this);
-		
-		
+
+
 
 		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
-		
+
 		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
-		
+
 		butCancel.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				cbxAreaCode.setSelectedIndex(0);
 				cbxPortArea.setSelectedIndex(0);
 				cbxField.setSelectedIndex(0);
@@ -186,7 +186,7 @@ public class PnPort extends PnBase implements ActionListener{
 		pnSearch.add(txfSearch);
 
 		pnSearch.add(butUpSearch);
-		
+
 		pnSearch.add(butCancel);
 
 		Box pnSearchAndCount = Box.createVerticalBox();
@@ -307,11 +307,11 @@ public class PnPort extends PnBase implements ActionListener{
 		KSGPanel pnPortInfo = new KSGPanel(new GridLayout(4,1,2,2));
 
 		pnPortInfo.add(addComp("항구명",lblPortName));
-		
+
 		pnPortInfo.add(addComp("나라",lblPationality));
-		
+
 		pnPortInfo.add(addComp("지역",lblArea));
-		
+
 		pnPortInfo.add(addComp("지역코드",lblAreaCode));
 
 		tableD = new KSGAbstractTable();
@@ -319,23 +319,23 @@ public class PnPort extends PnBase implements ActionListener{
 		tableD.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 		KSGTableColumn dcolumns = new KSGTableColumn();
-		
+
 		dcolumns.columnField = "port_abbr";
-		
+
 		dcolumns.columnName = "항구명 약어";
 
 		tableD.addColumn(dcolumns);
-		
+
 		tableD.initComp();
 
 		pnSubMain.add(pnPortInfo,BorderLayout.NORTH);
-		
+
 		pnSubMain.add(new JScrollPane(tableD));
 
 		pnMain.add(pnTitle,BorderLayout.NORTH);
-		
+
 		pnMain.add(pnSubMain);
-		
+
 		tableD.getParent().setBackground(Color.white);
 
 		return pnMain;
@@ -365,17 +365,17 @@ public class PnPort extends PnBase implements ActionListener{
 					String areaCode = (String) tableH.getValueAt(e.getFirstIndex(), 3);
 
 					lblPortName.setText(portName);
-					
+
 					lblPationality.setText(pationality);
-					
+
 					lblArea.setText(area);
-					
+
 					lblAreaCode.setText(areaCode);
 
 					CommandMap commandMap = new CommandMap();
 
 					commandMap.put("port_name", portName);
-					
+
 					callApi("selectPortDetailList", commandMap);					
 
 				}
@@ -518,9 +518,9 @@ public class PnPort extends PnBase implements ActionListener{
 			if(result==JOptionPane.OK_OPTION)
 			{	
 				CommandMap param = new CommandMap();
-				
+
 				param.put("port_name", port_name);
-				
+
 				param.put("port_abbr", port_abbr);
 
 				callApi("deletePortDetail", param);
@@ -659,66 +659,59 @@ public class PnPort extends PnBase implements ActionListener{
 	public void updateView() {
 		CommandMap result= this.getModel();
 
-		boolean success = (boolean) result.get("success");
 
-		if(success)
+		String serviceId=(String) result.get("serviceId");
+
+		if("selectPort".equals(serviceId))
+		{	
+			List data = (List )result.get("data");
+
+			tableH.setResultData(data);
+
+			tableH.setTotalCount(String.valueOf(data.size()));
+
+			if(data.size()==0)tableH.changeSelection(0,0,false,false);
+
+			if(data.size()==0)
+			{
+				lblArea.setText("");
+				lblAreaCode.setText("");
+				lblPationality.setText("");
+				lblPortName.setText("");
+				tableD.clearReslult();
+			}
+			else
+			{
+				tableH.changeSelection(0,0,false,false);
+			}
+		}
+		else if("selectPortDetailList".equals(serviceId))
 		{
-			String serviceId=(String) result.get("serviceId");
-
-			if("selectPort".equals(serviceId))
-			{	
-				List data = (List )result.get("data");
-				
-				tableH.setResultData(data);
-				
-				tableH.setTotalCount(String.valueOf(data.size()));
-
-				if(data.size()==0)tableH.changeSelection(0,0,false,false);
-
-				if(data.size()==0)
-				{
-					lblArea.setText("");
-					lblAreaCode.setText("");
-					lblPationality.setText("");
-					lblPortName.setText("");
-					tableD.clearReslult();
-				}
-				else
-				{
-					tableH.changeSelection(0,0,false,false);
-				}
-			}
-			else if("selectPortDetailList".equals(serviceId))
-			{
-				List data = (List )result.get("data");
-				tableD.setResultData(data);
-
-			}
-			else if("deletePort".equals(serviceId))
-			{
-				fnSearch();
-
-			}
-			else if("deletePortDetail".equals(serviceId))
-			{
-				int row=tableH.getSelectedRow();
-
-				String port_name=(String) tableH.getValueAt(row, 0);
-
-				CommandMap param = new CommandMap();
-
-				param.put("port_name", port_name);
-				
-				NotificationManager.showNotification("삭제되었습니다.");
-
-				callApi("selectPortDetailList", param);
-			}
+			List data = (List )result.get("data");
+			tableD.setResultData(data);
 
 		}
-		else{  
-			String error = (String) result.get("error");
-			JOptionPane.showMessageDialog(this, error);
+		else if("deletePort".equals(serviceId))
+		{
+			fnSearch();
+
 		}
+		else if("deletePortDetail".equals(serviceId))
+		{
+			int row=tableH.getSelectedRow();
+
+			String port_name=(String) tableH.getValueAt(row, 0);
+
+			CommandMap param = new CommandMap();
+
+			param.put("port_name", port_name);
+
+			NotificationManager.showNotification("삭제되었습니다.");
+
+			callApi("selectPortDetailList", param);
+		}
+
+
 
 	}
 

@@ -28,6 +28,7 @@ import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ksg.commands.DelPortExceptionCommand;
 import com.ksg.commands.SearchPortCommand;
 import com.ksg.commands.base.ADDPortExceptionCommand;
+import com.ksg.domain.Code;
 import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.view.comp.table.KSGAbstractTable;
@@ -182,8 +183,11 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 				HashMap<String, Object> codeParam = new HashMap<String, Object>();
 
 				codeParam.put("code_field", port_name);
-
-				param.put("area_code", codeService.selectCodeD(codeParam)!=null?"예외":"-");
+				
+				Code code = Code.builder().code_field(port_name).build();
+				
+				//TODO 오류 확인
+				param.put("area_code", codeService.selectCodeDetailByKey(code)!=null?"예외":"-");
 			}
 			catch(SQLException e)
 			{
@@ -236,7 +240,10 @@ public class SearchedPortTable extends JPanel implements ComponentListener, Acti
 				codeParam.put("code_field", port_name);
 				newItem.put("port_name", port_name);
 				newItem.put("parent_port", port_name);
-				newItem.put("area_code", codeService.selectCodeD(codeParam)!=null?"예외":"-");
+				
+				Code code =Code.builder().code_field(port_name).build();
+				
+				newItem.put("area_code", codeService.selectCodeDetailByKey(code)!=null?"예외":"-");
 			}
 			catch(SQLException e)
 			{

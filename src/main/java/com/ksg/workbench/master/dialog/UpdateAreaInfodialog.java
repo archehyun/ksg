@@ -45,19 +45,25 @@ public class UpdateAreaInfodialog extends BaseInfoDialog implements ActionListen
 	
 //	Area
 	private JLabel lblInfo;
-	HashMap<String, Object> param;
+	
+	private HashMap<String, Object> param;
+	
 	private JTextField txfAreaName;
+	
 	private JTextField txfAreaCode;
+	
 	private JTextField txfAreaBookCode;
 	
-	BaseInfoUI baseInfoUI;
+	private BaseInfoUI baseInfoUI;
 	
-	String title;
+	private String title;
 	
-	AreaInfo selectedInfo;
+	private AreaInfo selectedInfo;
 
-	AreaServiceImpl areaService = new AreaServiceImpl();
+	private AreaServiceImpl areaService = new AreaServiceImpl();
+	
 	private JLabel lblTitleInfo;
+	
 	public UpdateAreaInfodialog(int type) {
 		super();
 		title = "지역 정보 관리";

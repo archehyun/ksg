@@ -3,8 +3,12 @@ package com.ksg.view.comp.combobox;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.dtp.api.service.impl.CodeServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ksg.common.model.CommandMap;
+import com.ksg.domain.Code;
 import com.ksg.view.comp.table.KSGTableColumn;
 
 import mycomp.comp.MyComboBox;
@@ -62,13 +66,24 @@ public class KSGComboBox extends MyComboBox<KSGTableColumn>{
 			
 			param.put("code_type", codeType);
 			
-			HashMap<String,Object> resullt = (HashMap<String, Object>) service.selectCodeDList(param);
+			ObjectMapper objectMapper = new ObjectMapper();
 			
-			List<HashMap<String,Object> > li = (List<HashMap<String, Object>>) resullt.get("master");
+			Code codeParam = Code.builder().code_type(codeType).build();
+			
+			List li= service.selectCodeDetailListByCondition(codeParam);
+			
+			
+	        List<CommandMap> resultArry=(List<CommandMap>) li.stream()
+					                    .map(o -> objectMapper.convertValue(o, CommandMap.class))
+					                    .collect(Collectors.toList());
+			
+//			HashMap<String,Object> resullt = (HashMap<String, Object>) service.selectCodeDList(param);
+			
+//			List<HashMap<String,Object> > li = (List<HashMap<String, Object>>) resullt.get("master");
 			
 			if(isShowTotal) 			addItem(new KSGTableColumn("","ÀüÃ¼"));
 			
-			for(HashMap<String, Object> item:li)
+			for(HashMap<String, Object> item:resultArry)
 			{
 				this.addItem(new KSGTableColumn(String.valueOf(item.get("code_field")), String.valueOf(item.get("code_name"))));
 			}

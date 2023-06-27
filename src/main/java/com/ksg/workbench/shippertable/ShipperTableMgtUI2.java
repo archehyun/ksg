@@ -125,10 +125,10 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 @Slf4j
 public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 {	
-	private static final String ACTION_SEARCH = "조회";
+	private static final String ACTION_SEARCH 		= "조회";
 
-	private static final String ACTION_UPDATE_DATE = "입력일자 수정";
-	
+	private static final String ACTION_UPDATE_DATE 	= "입력일자 수정";
+
 	private KSGViewUtil propeties = KSGViewUtil.getInstance();
 
 	/**
@@ -867,9 +867,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 		txfTable_id.setBackground(Color.white);
 
-		
 
-		
+
+
 
 		txfDate = new HintTextField("2000.1.1",8);
 
@@ -920,29 +920,29 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		butDateSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butDateSearch.addActionListener(this);
-		
+
 		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
-		
+
 		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
-		
+
 		butCancel.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
+
+
 				txfSearchInput.setText("");
-				
+
 				stfCompanyAbbr.setText("");
-				
+
 				cbxGubun.setSelectedIndex(0);
-				
+
 				cbbOption.setSelectedIndex(0);
-				
-//				
+
+				//				
 			}
 		});
-		
+
 
 		cbbOption = new KSGComboBox();
 
@@ -998,13 +998,13 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 		cbxGubun.initComp();
 
-//		cbxGubun.addActionListener(new ActionListener() {
-//
-//			public void actionPerformed(ActionEvent arg0) 
-//			{
-//				fnSearch();
-//			}
-//		});		
+		//		cbxGubun.addActionListener(new ActionListener() {
+		//
+		//			public void actionPerformed(ActionEvent arg0) 
+		//			{
+		//				fnSearch();
+		//			}
+		//		});		
 
 		KSGPanel pnSearchMainDown = new KSGPanel();
 
@@ -1412,7 +1412,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-//		fnSearch();
+		//		fnSearch();
 		//if(isShowData)
 	}
 	class SearchOptionKeyAdapter extends KeyAdapter
@@ -1425,11 +1425,11 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			txf.setForeground(Color.black);
 
 			String str = txf.getText();
-			
+
 			if(str.isEmpty() ) return;
-			
+
 			try{
-				
+
 				Integer.parseInt(str);
 
 			}catch(NumberFormatException ee)
@@ -1462,100 +1462,83 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 		CommandMap result= this.getModel();
 
-		boolean success = (boolean) result.get("success");
 
-		if(success)
+		String serviceId = (String) result.get("serviceId");
+
+		try 
 		{
-			String serviceId = (String) result.get("serviceId");
+			if("shipperTableMgtUI2.init".equals(serviceId)) {
 
-			try 
-			{
+				CommandMap viewModel = (CommandMap) result.clone();
 
-				if("shipperTableMgtUI2.init".equals(serviceId)) {
+				tree.loadModel(viewModel);
 
-					CommandMap viewModel = (CommandMap) result.clone();
-
-					tree.loadModel(viewModel);
-					
-					fnSearch();
-
-				}
-				else if("shipperTableMgtUI2.fnSearch".equals(serviceId)) {
-
-					List data = (List )result.get("data");
-
-					tableH.setResultData(data);
-
-					tableH.requestFocus();
-
-//					txfSearchInput.setText("");	
-				}
-
-				else if("shipperTableMgtUI2.update".equals(serviceId)) {
-
-					pnUpdateTable.setSaveInfo("저장 되었습니다.");
-
-				}
-
-				else if("shipperTableMgtUI2.delete".equals(serviceId)) {
-
-					fnSearch();
-
-					JOptionPane.showMessageDialog(this, "삭제 했습니다.");
-
-				}
-				else if("shipperTableMgtUI2.selectOne".equals(serviceId)) {
-
-					CommandMap viewModel = (CommandMap) result.clone();
-
-					ShippersTable shippersTable= (ShippersTable) viewModel.get("selectedTable");
-
-					if(shippersTable != null) pnUpdateTable.setShipperTableData(shippersTable);
-
-				}
-
-				else if("KSGADVTablePanel.save".equals(serviceId)) {
-
-					fnSearch();
-
-					pnADVInfo.setVisible(false);		
-
-					tableLayout.show(pnTable, tableH.getName());
-				}
-
-				else if("deleteSchedule".equals(serviceId)) {
-
-					int deleteCount = (int) result.get("deleteCount");
-
-					JOptionPane.showMessageDialog(this, deleteCount+"건을 삭제 했습니다.");
-
-					callApi("scheduleViewUpdate");
-				}
-
-				else if("showADVTable".equals(serviceId)) {
-
-					ShippersTable shipperTable 	= (ShippersTable) result.get("shpperTable");				
-
-					advTablePanel.setSelectedTable(shipperTable);
-
-					advTablePanel.retrive();
-
-					pnADVInfo.setVisible(true);
-
-					tableLayout.show(pnTable, advTablePanel.getName());
-
-
-				}
-			}catch(Exception e)
-			{	
-				e.printStackTrace();
-				JOptionPane.showMessageDialog(ShipperTableMgtUI2.this, "error : "+e.getMessage());
+				fnSearch();
 			}
-		}
-		else{  
-			String error = (String) result.get("error");
+			else if("shipperTableMgtUI2.fnSearch".equals(serviceId)) {
 
-			JOptionPane.showMessageDialog(this, error);
+				List data = (List )result.get("data");
+
+				tableH.setResultData(data);
+
+				tableH.requestFocus();
+			}
+
+			else if("shipperTableMgtUI2.update".equals(serviceId)) {
+
+				pnUpdateTable.setSaveInfo("저장 되었습니다.");
+			}
+
+			else if("shipperTableMgtUI2.delete".equals(serviceId)) {
+
+				fnSearch();
+
+				JOptionPane.showMessageDialog(this, "삭제 했습니다.");
+
+			}
+			else if("shipperTableMgtUI2.selectOne".equals(serviceId)) {
+
+				CommandMap viewModel = (CommandMap) result.clone();
+
+				ShippersTable shippersTable= (ShippersTable) viewModel.get("selectedTable");
+
+				if(shippersTable != null) pnUpdateTable.setShipperTableData(shippersTable);
+			}
+
+			else if("KSGADVTablePanel.save".equals(serviceId)) {
+
+				fnSearch();
+
+				pnADVInfo.setVisible(false);		
+
+				tableLayout.show(pnTable, tableH.getName());
+			}
+
+			else if("deleteSchedule".equals(serviceId)) {
+
+				int deleteCount = (int) result.get("deleteCount");
+
+				JOptionPane.showMessageDialog(this, deleteCount+"건을 삭제 했습니다.");
+
+				callApi("scheduleViewUpdate");
+			}
+
+			else if("showADVTable".equals(serviceId)) {
+
+				ShippersTable shipperTable 	= (ShippersTable) result.get("shpperTable");				
+
+				advTablePanel.setSelectedTable(shipperTable);
+
+				advTablePanel.retrive();
+
+				pnADVInfo.setVisible(true);
+
+				tableLayout.show(pnTable, advTablePanel.getName());
+			}
+		}catch(Exception e)
+		{	
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(ShipperTableMgtUI2.this, "error : "+e.getMessage());
 		}
 	}
 
