@@ -158,7 +158,6 @@ public class RouteScheduleGroup extends ScheduleGroup implements IFComparator{
 
 	@Override
 	public String getVesselName() {
-		// TODO Auto-generated method stub
 		return vessel.getVessel_name();
 	}
 

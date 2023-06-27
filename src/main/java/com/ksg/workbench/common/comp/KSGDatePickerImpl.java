@@ -22,7 +22,8 @@ import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.ksg.workbench.common.comp.button.ImageButton;
+import com.ksg.view.comp.KSGViewUtil;
+import com.ksg.view.comp.button.ImageButton;
 
 import net.sourceforge.jdatepicker.DateModel;
 import net.sourceforge.jdatepicker.JDatePanel;
@@ -37,6 +38,7 @@ public class KSGDatePickerImpl extends JPanel implements JDatePicker {
 	private Popup popup;
 	private JFormattedTextField formattedTextField;
 	private JButton button;
+	private KSGViewUtil propeties = KSGViewUtil.getInstance();
 	
 	private JDatePanelImpl datePanel;
 	private InternalEventHandler internalEventHandler;
@@ -73,7 +75,8 @@ public class KSGDatePickerImpl extends JPanel implements JDatePicker {
 		setTextFieldValue(formattedTextField, model.getYear(), model.getMonth(), model.getDay(), model.isSelected());
 		formattedTextField.setEditable(false);	
 		formattedTextField.setBorder(BorderFactory.createEmptyBorder());
-		formattedTextField.setBackground(Color.white);
+		formattedTextField.setBackground(propeties.getColor("searchtextfield.readonly") );
+//		formattedTextField.setBackground(Color.white);
 		add(formattedTextField);
         layout.putConstraint(SpringLayout.WEST, formattedTextField, 0, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.SOUTH, this, 0, SpringLayout.SOUTH, formattedTextField);

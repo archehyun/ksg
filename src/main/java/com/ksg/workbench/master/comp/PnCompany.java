@@ -33,13 +33,14 @@ import javax.swing.event.TableColumnModelListener;
 import com.dtp.api.control.CompanyController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.service.impl.CompanyServiceImpl;
-import com.ksg.view.comp.KSGComboBox;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPageTablePanel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.UpdateCompanyInfoDialog;
 
@@ -99,7 +100,6 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private JComponent buildCenter()
 	{
-		log.debug("화면 초기화");
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());	
 
 		KSGTableColumn columns[] = new KSGTableColumn[5];
@@ -151,8 +151,6 @@ public class PnCompany extends PnBase implements ActionListener{
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
-
-		log.debug("화면 초기화 종료");
 		
 		return pnMain;
 
@@ -208,6 +206,22 @@ public class PnCompany extends PnBase implements ActionListener{
 		butUpSearch.addActionListener(this);
 
 		cbxField.setPreferredSize(new Dimension(150,23));
+		
+		
+		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
+		
+		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		
+		butCancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				cbxField.setSelectedIndex(0);
+				txfSearch.setText("");
+			}
+		});
+		
 
 		pnSearch.add(lbl);
 		
@@ -216,6 +230,7 @@ public class PnCompany extends PnBase implements ActionListener{
 		pnSearch.add(txfSearch);
 		
 		pnSearch.add(butUpSearch);
+		pnSearch.add(butCancel);
 		
 		Box pnSearchAndCount = Box.createVerticalBox();
 		
@@ -396,7 +411,10 @@ public class PnCompany extends PnBase implements ActionListener{
 			}
 			else if("deleteCompany".equals(serviceId))
 			{
-				JOptionPane.showMessageDialog(this, "삭제되었습니다.");
+				
+				
+				NotificationManager.showNotification("삭제되었습니다.");
+				
 				
 				fnSearch();
 			}

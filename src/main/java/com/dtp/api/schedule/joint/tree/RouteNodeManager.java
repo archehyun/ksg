@@ -157,12 +157,9 @@ public class RouteNodeManager extends AbstractNodeManager implements RouteJointS
 		// 도착항 목록
 		schedule.add(toPort);
 
-		// TODO 출발항 빠른 날짜 기준으로 정렬
-
 		return schedule;
 
 	}
-
 
 	@Override
 	public void createScheduleAndAddGroup(List group, List scheduleList, String areaName, String vesselName) {

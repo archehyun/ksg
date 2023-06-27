@@ -21,6 +21,7 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.dao.AdvDAO;
 import com.ksg.dao.impl.AdvDAOImpl;
 import com.ksg.domain.ADVData;
+import com.ksg.domain.ADVDataParser;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.ADVService;
 
@@ -61,12 +62,12 @@ public class ADVServiceImpl extends AbstractServiceImpl implements ADVService{
 		log.debug("data:\n"+data);
 		
 //		StringTokenizer st = new StringTokenizer(data,"\n\n");
-		String words[] = data.split(ADVData.ROW_DIVIDER);
+		String words[] = data.split(ADVDataParser.ROW_DIVIDER);
 //		log.debug("data row:"+st.countTokens());
 		String[][] a = new String[words.length][];
 		for(int i=0;i<a.length;i++)
 		{
-			StringTokenizer st2= new StringTokenizer(words[i],ADVData.COL_DIVIDER);
+			StringTokenizer st2= new StringTokenizer(words[i],ADVDataParser.COL_DIVIDER);
 			a[i]=new String[st2.countTokens()];
 			for(int j=0;j<a[i].length;j++)
 			{

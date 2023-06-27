@@ -7,26 +7,22 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
-import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.dtp.api.control.CodeController;
-import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
-import com.ksg.workbench.master.comp.PnCommonCode;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPanel;
 
 
 /**
@@ -94,11 +90,11 @@ public class InsertCommonCodeDetailDialog extends BaseInfoDialog {
 		
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		
+		pnCenter.add(createFormItem(txfCodeType,"코드타입"));
+		
 		pnCenter.add(createFormItem(txfCodeField,"코드Field"));
 		
 		pnCenter.add(createFormItem(txfCodeNameEng, "코드영문명"));
-		
-		pnCenter.add(createFormItem(txfCodeType,"코드타입"));
 		
 		pnCenter.add(createFormItem(txfCodeNameKor,"코드명"));
 
@@ -230,6 +226,9 @@ public class InsertCommonCodeDetailDialog extends BaseInfoDialog {
 
 			if("insertCodeDetail".equals(serviceId))
 			{	
+				
+				NotificationManager.showNotification("추가했습니다.");
+				
 				result = KSGDialog.SUCCESS;
 				
 				close();

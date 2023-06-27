@@ -43,6 +43,6 @@ public interface VesselService {
 
 	public Vessel deleteVessel(String id) throws Exception;
 
-	public Vessel deleteVesselDetail(String id) throws Exception;
+	public int deleteVesselDetail(Vessel param) throws Exception;
 
 }

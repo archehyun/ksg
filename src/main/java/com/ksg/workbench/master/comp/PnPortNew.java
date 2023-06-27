@@ -2,9 +2,9 @@ package com.ksg.workbench.master.comp;
 
 import java.awt.BorderLayout;
 
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 
 public class PnPortNew extends PnBase{

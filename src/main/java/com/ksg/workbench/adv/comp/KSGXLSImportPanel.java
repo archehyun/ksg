@@ -72,12 +72,12 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Table_Property;
 import com.ksg.service.TableService;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGXMLTable;
 import com.ksg.workbench.adv.dialog.SearchVesselDialog;
 import com.ksg.workbench.adv.dialog.TableInfoDialog;
 import com.ksg.workbench.adv.xls.XLSTableInfo;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 /**
  * @author ¹ÚÃ¢Çö

@@ -53,15 +53,15 @@ import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.view.comp.KSGCheckBox;
-import com.ksg.view.comp.KSGRadioButton;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.checkbox.KSGCheckBox;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.radiobutton.KSGRadioButton;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.ui.ErrorLogManager;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.schedule.comp.PnConsole2;
 import com.ksg.workbench.schedule.comp.PnInland2;
 import com.ksg.workbench.schedule.comp.PnNormal2;
@@ -70,11 +70,6 @@ import com.ksg.workbench.schedule.dialog.ScheduleResultDialog;
 
 import mycomp.comp.MyTable;
 
-/**
- * 스케줄 정보 조회
- * @author 박창현
- *
- */
 /**
 
  * @FileName : ScheduleMgtUI.java
@@ -85,11 +80,10 @@ import mycomp.comp.MyTable;
 
  * @변경이력 :
 
- * @프로그램 설명 :
+ * @프로그램 설명 : 스케줄 정보 조회
 
  */
 public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, ComponentListener, View {
-
 
 	private static final String ACTION_CREATE = "스케줄 생성";
 
@@ -841,7 +835,5 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 
 		}
-		
 	}
-
 }

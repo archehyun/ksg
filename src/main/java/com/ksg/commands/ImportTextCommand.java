@@ -98,12 +98,12 @@ public class ImportTextCommand extends AbstractCommand{
 		String d = new String();
 		for(int i=0;i<data.length;i++)
 		{
-			for(int j=0;j<data[i].length;j++)
-			{
-				d+=data[i][j]+ADVData.COL_DIVIDER;
-			}
-			if(data.length>i)
-				d+=ADVData.ROW_DIVIDER;
+//			for(int j=0;j<data[i].length;j++)
+//			{
+//				d+=data[i][j]+ADVData.COL_DIVIDER;
+//			}
+//			if(data.length>i)
+//				d+=ADVData.ROW_DIVIDER;
 		}
 		JOptionPane.showMessageDialog(null, "table:"+count+"\n"+d);
 		KSGModelManager.getInstance().tableCount=count;

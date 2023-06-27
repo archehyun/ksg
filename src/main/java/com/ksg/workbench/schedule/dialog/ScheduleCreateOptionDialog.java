@@ -37,11 +37,11 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.view.comp.LookAheadTextField;
-import com.ksg.view.comp.StringArrayLookAhead;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.textfield.LookAheadTextField;
+import com.ksg.view.comp.textfield.StringArrayLookAhead;
 
 
 /**
@@ -270,8 +270,7 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 		/*
 		 * 유효성 체크
 		 */
-		if(inputDate==null)
-			return;
+		if(inputDate==null) return;
 
 		String datePattern = "\\d{4}.\\d{1,2}.\\d{1,2}";
 

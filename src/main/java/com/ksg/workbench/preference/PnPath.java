@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.Code;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 
 public class PnPath extends PnOption{
 	private JTextField txfXLSFolder;

@@ -34,9 +34,9 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.CompanyService;
 import com.ksg.service.impl.CompanyServiceImpl;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 
 
 /**
@@ -126,8 +126,11 @@ public class SearchCompanyDialog extends KSGDialog{
 		KSGPanel pnTitleInfo = new KSGPanel();
 
 		pnTitleInfo.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		pnTitleInfo.add(new JLabel("선사명을 선택하세요"));
+		
 		JTextField txfSearch = new JTextField(20);
+		
 		txfSearch.addKeyListener(new KeyListener() {
 
 			@Override
@@ -145,17 +148,13 @@ public class SearchCompanyDialog extends KSGDialog{
 					CommandMap param = new CommandMap();
 
 					List<CommandMap> data = new ArrayList<CommandMap>();
-					if("".equals(str)||str==null) {
-						param.put("company_abbr", str);
-						CommandMap result= (CommandMap) companyService.selectListByCondition(param);
-						data = (List<CommandMap>) result.get("master");
-					}
-					else
-					{
-						param.put("company_abbr", str);
-						CommandMap result= (CommandMap) companyService.selectListByLike(param);
-						data = (List<CommandMap>) result.get("master");
-					}
+					
+					param.put("company_abbr", str);
+					
+					CommandMap result= (CommandMap) (str.isEmpty()?companyService.selectListByCondition(param):companyService.selectListByLike(param));
+					
+					data = (List<CommandMap>) result.get("master");
+					
 					if(data==null) data = new ArrayList<CommandMap>();
 
 					updateTree(data);
@@ -175,7 +174,9 @@ public class SearchCompanyDialog extends KSGDialog{
 		pnTitleInfo.add(txfSearch);
 
 		pnMain.add(new JScrollPane(tree));
+		
 		pnMain.add(pnTitleInfo,BorderLayout.NORTH);
+		
 		pnMain.add(buildControl(),BorderLayout.SOUTH);
 
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -183,7 +184,9 @@ public class SearchCompanyDialog extends KSGDialog{
 		this.getContentPane().add(pnMain);
 
 		setSize(400, 400);
+		
 		ViewUtil.center(this);
+		
 		this.setVisible(true);
 
 	}
@@ -191,7 +194,9 @@ public class SearchCompanyDialog extends KSGDialog{
 	private KSGPanel buildControl()
 	{
 		KSGPanel pnSubPnControl = new KSGPanel();
+		
 		pnSubPnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
 		JButton butOK = new KSGGradientButton("확인");
 
 		butOK.addActionListener(new ActionListener(){
@@ -209,8 +214,11 @@ public class SearchCompanyDialog extends KSGDialog{
 					JOptionPane.showMessageDialog(SearchCompanyDialog.this, "선택된 선사명 약어가 없습니다.");
 				}
 			}});
+		
 		butOK.setPreferredSize(new Dimension(80,28));
+		
 		pnSubPnControl.add(butOK);
+		
 		JButton butCancel = new KSGGradientButton("취소");
 
 		butCancel.addActionListener(new ActionListener(){
@@ -221,18 +229,25 @@ public class SearchCompanyDialog extends KSGDialog{
 
 			}});
 		pnSubPnControl.add(butCancel);
+		
 		butCancel.setPreferredSize(new Dimension(80,28));
+		
 		return pnSubPnControl;
 	}
 	private void updateTree(List list) throws SQLException	
 	{
 		this.root.removeAllChildren();
+		
 		Iterator<CommandMap> iter =list.iterator();
+		
 		while(iter.hasNext())
 		{
 			CommandMap company = (CommandMap) iter.next();
+			
 			String company_abbr = (String) company.get("company_abbr");
-			DefaultMutableTreeNode sub = new DefaultMutableTreeNode(company_abbr);			
+			
+			DefaultMutableTreeNode sub = new DefaultMutableTreeNode(company_abbr);
+			
 			root.add(sub);						
 		}
 

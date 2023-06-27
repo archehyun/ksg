@@ -15,7 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.PageInfoCheckBox;
+import com.ksg.view.comp.checkbox.PageInfoCheckBox;
 
 public class PageCellRenderer extends JCheckBox implements ActionListener,ListCellRenderer, ListSelectionListener{
 	/**

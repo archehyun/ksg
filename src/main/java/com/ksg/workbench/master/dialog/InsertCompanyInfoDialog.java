@@ -31,8 +31,8 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.CompanyService;
 import com.ksg.service.impl.CompanyServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 
 
@@ -136,7 +136,7 @@ public class InsertCompanyInfoDialog extends BaseInfoDialog{
 		this.setTitle(title);
 
 		this.getContentPane().add(buildTitle("선사정보수정"),BorderLayout.NORTH);
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.getContentPane().add(buildCenter());
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 		
 		this.pack();

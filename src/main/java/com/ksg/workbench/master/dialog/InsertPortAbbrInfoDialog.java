@@ -26,7 +26,8 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.service.PortService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**
@@ -148,8 +149,9 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 			if("insertPortDetail".equals(serviceId))
 			{	
 				result = SUCCESS;
-
-				JOptionPane.showMessageDialog(InsertPortAbbrInfoDialog.this,"추가했습니다.");
+				
+				
+				NotificationManager.showNotification("추가했습니다.");
 
 				close();
 

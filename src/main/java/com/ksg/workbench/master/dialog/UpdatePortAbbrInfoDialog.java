@@ -23,8 +23,8 @@ import javax.swing.JTextField;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.PortInfo;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 
 public class UpdatePortAbbrInfoDialog extends BaseInfoDialog{
 	/**

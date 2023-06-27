@@ -13,7 +13,7 @@ import javax.swing.border.Border;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 public class ProcessDialog extends KSGDialog implements ActionListener{
 

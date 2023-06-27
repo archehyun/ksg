@@ -29,11 +29,14 @@ import lombok.Setter;
 @Getter @Setter
 public class ShippersTable extends BaseInfo{
 	
-	
 	public static final String GUBUN_CONSOLE 	= "Console";
+	
 	public static final String GUBUN_INLAND 	= "Inland";
+	
 	public static final String GUBUN_NNN 		= "NNN";
+	
 	public static final String GUBUN_NORMAL 	= "Normal";
+	
 	public static final String GUBUN_TS 		= "TS";
 	
 	private String agent;
@@ -55,6 +58,8 @@ public class ShippersTable extends BaseInfo{
 	private int d_time=-1;
 
 	private String date_isusse;
+	
+	private String table_date;
 	
 	private String gubun; 	
 	// 구분	 
@@ -100,28 +105,20 @@ public class ShippersTable extends BaseInfo{
 	
 	private String data;
 	
-	private List tablePortList;
+	private List<TablePort> tablePortList;
+	
+	private ADVData advData;
 	
 	
-	
-	/**
-	 * outbound 출발항 인덱스 문자
-	 * 1#2#3#4
-	 * @return
-	 */
-	
-	
-
-
 	public String toString()
 	{
+		
 		return "[table_id:"+table_id+",page:"+page+",date:"+date_isusse+","+this.getGubun()+"]";
 	}
+
 	@Override
 	public String toInfoString() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-
 }

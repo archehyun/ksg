@@ -8,15 +8,20 @@ import java.util.stream.Collectors;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.KSGViewUtil;
 
 public class InboundScheduleRule {
 	
-	private static final int DIVIED_SCHEDULE = 3;
+	private KSGViewUtil propeties = KSGViewUtil.getInstance();
 	
-	Map<String, Vessel> vesselMap;
+	private int DIVIED_SCHEDULE = 3;
+	
+	private Map<String, Vessel> vesselMap;
 	
 	public InboundScheduleRule(Map<String, Vessel> vesselMap)
-	{
+	{	
+		DIVIED_SCHEDULE=Integer.parseInt(propeties.getProperty("schedule.inbound.dividedate"));
+		
 		this.vesselMap = vesselMap;
 	}
 	
@@ -106,15 +111,15 @@ public class InboundScheduleRule {
 		// 3일 차이 나는 인덱스 조회
 		for(int i=0;i<scheduleList.size()-1;i++)
 		{
-			ScheduleData sc1 = scheduleList.get(i);
+			ScheduleData sc1 		= scheduleList.get(i);
 
-			ScheduleData sc2 = scheduleList.get(i+1);
+			ScheduleData sc2 		= scheduleList.get(i+1);
 
 			String firstFromDate 	= sc1.getDateF();
 
 			String secondFromDate 	= sc2.getDateF();
 
-			//3일 이상
+			//3일 이상, 2일까지 허용
 			if(!KSGDateUtil.isDayUnder(DIVIED_SCHEDULE,firstFromDate,secondFromDate))
 			{
 				indexList.add(i+1);
@@ -122,5 +127,4 @@ public class InboundScheduleRule {
 		}
 		return indexList;
 	}
-
 }

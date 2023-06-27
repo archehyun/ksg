@@ -18,8 +18,6 @@ public class AreaServiceImpl extends AbstractServiceImpl implements AreaService{
 	
 	private AreaDAOImpl areaDAO;
 	
-	
-	
 	public AreaServiceImpl() {
 		super();
 		areaDAO = new AreaDAOImpl();
@@ -28,12 +26,16 @@ public class AreaServiceImpl extends AbstractServiceImpl implements AreaService{
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectAreaList(Map<String, Object> commandMap) throws SQLException {
+		
+		log.debug("param:{}", commandMap);
 		return areaDAO.selectAreaList(commandMap);
 
 	}
 	
 	public List<AreaInfo> selectAll() throws SQLException
 	{
+		log.debug("");
+		
 		return areaDAO.selectAll();
 	}
 
@@ -62,6 +64,7 @@ public class AreaServiceImpl extends AbstractServiceImpl implements AreaService{
 
 	@Override
 	public List<CommandMap> selectAreaInfoList() throws SQLException {
+		log.debug("");
 		
 		List<AreaInfo> re =areaDAO.selectAreaList2(new CommandMap()); 
 		ArrayList<CommandMap> map = new ArrayList<CommandMap>();

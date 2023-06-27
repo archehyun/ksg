@@ -32,7 +32,11 @@ import lombok.Setter;
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Getter @Setter
-public class ScheduleData extends BaseInfo implements Comparable<Object>{
+public class ScheduleData implements Comparable<Object>{
+
+	public static final String INBOUND = "I";
+	public static final String OUTBOUND = "O";
+
 	private String agent; // 에이전트
 	private String area_code; // 지역 코드
 	private String area_name; // 지역 이름
@@ -60,14 +64,12 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	private String inland_date;
 	private String inland_date_back;
 	private String vessel_mmsi; //선박 MMSI 코드
-	
 	private String convertedFromPort;
-
 	private String inland_port;// 중간 기항지
 	private String InOutType;//구분
 	private int n_voyage_num;
 	private int ntop;
-	public int page; // 페이지
+	private int page; // 페이지
 	private String port; // 항구명
 	private String table_id; // 테이블 아이디
 	private String TS;
@@ -83,6 +85,11 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 	private String majorCompany="";// 지면 페이지
 	private String orderby;
 
+	private String fromDate;
+	private String toDate;
+
+	private String table_date; 
+
 	public void setBookPage(String bookPage) {
 		if(bookPage==null)
 		{
@@ -92,7 +99,7 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 		{
 			this.bookPage = bookPage;	
 		}
-		
+
 	}
 	public int compareTo(Object o) {
 		ScheduleData table1 =(ScheduleData) o;
@@ -107,34 +114,10 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 		}
 	}
 	
-	public String getDateF2() {
-
-		try {
-			return KSGDateUtil.format2(KSGDateUtil.toDate(this.getDateF()));
-
-		} catch (ParseException e) {
-			return this.getDateF();
-
-		}
-	}
-
-	public String getDateT2() {
-
-		try 
-		{
-			return KSGDateUtil.format2(KSGDateUtil.toDate(this.getDateT()));
-
-		}
-		catch (ParseException e) 
-		{
-			return this.getDateT();
-
-		}
-	}
-	
 	public int getIntVoyage_num() {
 		return this.getNumericVoyage(voyage_num);
 	}
+	
 	private int getNumericVoyage(String voyage_num)
 	{
 
@@ -161,37 +144,37 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 
 		return result;
 	}
-	
-	
+
+
 
 	public void setDateF(String dateF) 
 	{
-		
+
 		StringTokenizer stringTokenizer = new StringTokenizer(dateF,"-");
 		if(stringTokenizer.countTokens()==2)
 		{
 			stringTokenizer.nextToken();
 			DateF = stringTokenizer.nextToken().trim();
-			
-			
+
+
 		}else
 		{
 			DateF = dateF;	
 		}
-		
+
 	}
-	
-	
+
+
 	public void setScheduleID(int page) {
 		this.page=page;
 	}
-	
+
 
 	public String toInlandScheduleString()
 	{
 		return "["+this.getTable_id()+","+this.getDateF()+","+this.getFromPort()+","+this.getPort()+","+this.getDateT()+","+this.getInland_port()+"]";
 	}
-	
+
 	public String toRouteDesc()
 	{
 		String dateT="";
@@ -226,7 +209,7 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 
 		return this.getFromPort()+"\t"+this.getDateF()+"\t"+this.getVessel()+"\t"+this.getVoyage_num()+"\t"+this.getDateT()+"\t"+this.getPort();
 	}
-	
+
 
 	public String  toTotalString()
 	{
@@ -257,11 +240,11 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 			dateT=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(this.getDateT()));
 			dateFBack=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(this.getDateFBack()));
 			dateTBack=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(this.getDateTBack()));
-			
+
 			if(this.getTs_date()!=null)
 			{
-			dateTS=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(this.getTs_date()));
-//			System.out.println(this.getTs_date()+","+dateTBack);
+				dateTS=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(this.getTs_date()));
+				//			System.out.println(this.getTs_date()+","+dateTBack);
 			}
 		} catch (ParseException e) {
 			dateF=this.getDateF();
@@ -308,29 +291,24 @@ public class ScheduleData extends BaseInfo implements Comparable<Object>{
 		this.getPort()+this.getDateT()+this.getDateT()+this.getVessel()+this.getVoyage_num()+this.getCompany_abbr()
 		;
 	}
+
 	private String operator;
-	
-	@Override
-	public String toInfoString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+
 	public String toKey()
 	{
 		return String.format("ScheduleData{tableId='%s', company_abbr='%s',vessel='%s', voyage_num='%s', fromPort='%s', toPort='%s', DateF='%s', DateT='%s', date_issue='%s'}", 
-						this.getTable_id(), 
-						this.getCompany_abbr(), 
-						this.getVessel(),
-						this.getVoyage_num(),
-						this.getFromPort(), 
-						this.getPort(),
-						this.getDateF(),
-						this.getDateT(),
-						this.getDate_issue()
-						);
+				this.getTable_id(), 
+				this.getCompany_abbr(), 
+				this.getVessel(),
+				this.getVoyage_num(),
+				this.getFromPort(), 
+				this.getPort(),
+				this.getDateF(),
+				this.getDateT(),
+				this.getDate_issue()
+				);
 	}
 
-	
-	
+
+
 }

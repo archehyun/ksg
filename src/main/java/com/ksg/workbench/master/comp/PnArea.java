@@ -27,13 +27,14 @@ import javax.swing.JTextField;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.AreaDAOImpl;
 import com.ksg.service.impl.AreaServiceImpl;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPageTablePanel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.UpdateAreaInfodialog;
 
@@ -87,10 +88,9 @@ public class PnArea extends PnBase implements ActionListener{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
 		tableH = new KSGTablePanel("지역 정보");
+		
 		tableH.addMouseListener(new TableSelectListner());
 		
-		
-		//  TODO 컬럼 정렬
 		KSGTableColumn columns[] = new KSGTableColumn[3];
 
 		columns[0] = new KSGTableColumn();
@@ -191,12 +191,14 @@ public class PnArea extends PnBase implements ActionListener{
 		else if(command.equals(KSGPageTablePanel.DELETE))
 		{
 			
-			
 			int row =tableH.getSelectedRow();
-			if(row<0)
-				return;
+			
+			if(row<0) return;
+			
 			String data = (String) tableH.getValueAt(row, 1);
+			
 			int result=JOptionPane.showConfirmDialog(null, data+"를 삭제 하시겠습니까?", "지역 정보 삭제", JOptionPane.YES_NO_OPTION);
+			
 			if(result==JOptionPane.OK_OPTION)
 			{						
 				try {
@@ -302,9 +304,12 @@ public class PnArea extends PnBase implements ActionListener{
 	@Override
 	public void fnSearch() {
 		try {
-			List li = areaService.selectAreaList(null);
+			List li = areaService.selectAreaList(new CommandMap());
+			
 			tableH.setResultData(li);
+			
 			lblTotal.setText(li.size()+" ");
+			
 		} catch (SQLException ee) {
 			// TODO Auto-generated catch block
 			ee.printStackTrace();

@@ -27,8 +27,8 @@ import javax.swing.JTextField;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**선박 양어 정보 추가 다이어그램

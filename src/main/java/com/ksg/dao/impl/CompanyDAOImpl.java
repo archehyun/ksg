@@ -43,7 +43,6 @@ public class CompanyDAOImpl extends AbstractDAO implements CompanyDAO{
 	public int update(HashMap<String, Object> param) throws SQLException{
 
 		return (Integer) update(namespace+".updateCompany", param);
-
 	}
 	
 	@Override
@@ -56,9 +55,7 @@ public class CompanyDAOImpl extends AbstractDAO implements CompanyDAO{
 	@Override
 	public List<Company> selectList(Company commandMap) throws SQLException {
 		
-		
 		return selectList(namespace+".selectCompanyList", commandMap);
-
 	}
 
 	@Override

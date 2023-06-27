@@ -17,11 +17,11 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.JTableHeader;
 
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.label.BoldLabel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.groupable.GroupableTableHeader;
 import com.ksg.view.comp.table.model.TableModel;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.label.BoldLabel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 import mycomp.comp.MyTable;
 

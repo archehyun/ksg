@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 
 /**
  * @author ¹ÚÃ¢Çö

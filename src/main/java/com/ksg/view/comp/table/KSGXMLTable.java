@@ -18,6 +18,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import com.ksg.common.model.KSGModelManager;
+import com.ksg.view.comp.table.renderer.KSGTableCellRenderer;
 
 /**
  * @author ¹ÚÃ¢Çö

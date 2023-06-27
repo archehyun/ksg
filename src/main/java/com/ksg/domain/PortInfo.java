@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.ksg.domain;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,6 +46,8 @@ public class PortInfo extends BaseInfo {
 	private String port_abbr;
 	
 	private int abbr_count;
+	
+	private List<PortInfo> portAbbrList;
 	
 	public String toString()
 	{

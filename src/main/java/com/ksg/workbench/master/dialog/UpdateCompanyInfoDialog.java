@@ -28,8 +28,9 @@ import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.impl.CompanyServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPanel;
 
 public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 	/**
@@ -256,8 +257,8 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			if("insertCompany".equals(serviceId))
 			{	
 				result = SUCCESS;
-
-				JOptionPane.showMessageDialog(UpdateCompanyInfoDialog.this,"추가했습니다.");
+				
+				NotificationManager.showNotification("추가했습니다.");
 
 				this.setVisible(false);
 
@@ -269,7 +270,7 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			{	
 				result = SUCCESS;
 
-				JOptionPane.showMessageDialog(UpdateCompanyInfoDialog.this,"수정했습니다.");
+				NotificationManager.showNotification("수정했습니다.");
 
 				this.setVisible(false);
 

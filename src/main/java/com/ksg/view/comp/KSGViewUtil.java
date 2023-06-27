@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import org.apache.ibatis.io.Resources;
 
+@SuppressWarnings("serial")
 public class KSGViewUtil extends Properties{
 
     private static KSGViewUtil ksgPropeties;
@@ -38,12 +39,15 @@ public class KSGViewUtil extends Properties{
 
 		return ksgPropeties;
 	}
+	public Color getColor( String name)
+	{	
+		return Color.decode( getProperty(name));
+	}
 	public void store()
 	{
 		try {
 			//TODO 저장 위치 확인
 			 URL url=Resources.getResourceURL(resource);
-			 System.out.println("url:"+url);
 			this.store(new FileOutputStream(url.getPath()), "no commments");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

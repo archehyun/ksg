@@ -11,6 +11,10 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.dtp.api.service.DTPScheduleService;
+import com.dtp.api.service.ShipperTableService;
+import com.dtp.api.service.impl.DTPScheduleServiceImpl;
+import com.dtp.api.service.impl.ShipperTableServiceImpl;
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.ScheduleExecute;
 import com.ksg.commands.schedule.ErrorLog;
@@ -23,12 +27,14 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.service.VesselService;
+import com.ksg.service.impl.ADVServiceImpl;
+import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
@@ -46,12 +52,12 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 	public static final int TYPE_INBOUND=1;
 
 	public static final int TYPE_OUTBOUND=2;
-	
+	private ShipperTableService shipperTableService;
 	private TableService 		tableService;
 	protected ADVService 		advService;
 	protected ScheduleSubService 	scheduleService;
 	protected BaseService 		baseService;
-	
+	private DTPScheduleService dtpScheduleService;
 	private VesselService vesselService = new VesselServiceImpl();
 	
 	protected Vector errorlist ;
@@ -73,11 +79,18 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 	protected ADVData advData;
 	protected Date selectedDate;
 	public CreateScheduleCommand() throws SQLException {
-
-		tableService 	= new TableServiceImpl();
-		scheduleService = DAOManager.getInstance().createScheduleService();
-		advService		= DAOManager.getInstance().createADVService();
-		baseService 	= DAOManager.getInstance().createBaseService();
+		
+		shipperTableService = new ShipperTableServiceImpl();
+		
+		dtpScheduleService 	= new DTPScheduleServiceImpl();
+		
+		tableService 		= new TableServiceImpl();
+		
+		scheduleService 	= new ScheduleServiceImpl();
+		
+		advService			= new ADVServiceImpl();
+		
+		baseService 		= new BaseServiceImpl();
 
 		errorlist= new Vector();
 
@@ -95,10 +108,6 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 		
 		vesselParam.put("vessel_use", Vessel.NON_USE);
 		
-//		HashMap<String, Object> result=vesselService.selectList(vesselParam);
-//		
-//		NO_VESSEL = (List) result.get("master");
-//		
 	}
 	public int getLengthOfTask() {
 		return lengthOfTask;
@@ -129,6 +138,25 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 	 */
 	public String getMessage() {
 		return statMessage;
+	}
+	
+	/**
+	 * 테이블 리스트 조회
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	protected List selectShipperTableListAllByCondition() throws SQLException
+	{
+		List li =shipperTableService.selectShipperTableListAllByCondition(searchOption);
+
+		this.total =li.size();
+
+		lengthOfTask=total;
+
+		log.info("스케줄 처리용 테이블 수 : "+total);
+
+		return li;
 	}
 	
 	/**
@@ -223,6 +251,9 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 	private String datePattern2_1 = "(\\d{1,2})/(\\d{1,2})-(\\d{1,2})\\w+";
 	private int yearF;
 	private int yearT;
+	
+	
+	
 	/**
 	 * @param dateF
 	 * @param dateT
@@ -232,14 +263,10 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 	 */
 	protected String[] adjestDateYear(String dateF, String dateT, String inOutBoundType) throws NotSupportedDateTypeException{
 
-
-
-		dateT = dateT.replace(" ", "");
-
-		dateF = dateF.replace(" ", "");
-
-		int monthAndDayF[]=getETD(dateF);
-		int monthAndDayT[]=getETA(dateT);
+		
+		int monthAndDayF[]=getETD(dateF.replace(" ", ""));
+		
+		int monthAndDayT[]=getETA(dateT.replace(" ", ""));
 
 		// 날짜 유효성 체크 2020-01-28
 		if(monthAndDayF[0]==0||monthAndDayF[1]==0)
@@ -266,15 +293,15 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 
 		 */
 
-		yearF =selectYear(currentMonth, monthAndDayF[0], Integer.valueOf(currentYear));
-		yearT =selectYear(currentMonth, monthAndDayT[0], Integer.valueOf(currentYear));
-
+		yearF = selectYear(currentMonth, monthAndDayF[0], Integer.valueOf(currentYear));
+		
+		yearT = selectYear(currentMonth, monthAndDayT[0], Integer.valueOf(currentYear));
 
 		String newDate[] = new String[2];
 
 		newDate[0] = yearF+"/"+monthAndDayF[0]+"/"+monthAndDayF[1];
+		
 		newDate[1] = yearT+"/"+monthAndDayT[0]+"/"+monthAndDayT[1];
-
 
 		return newDate;
 	}

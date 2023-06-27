@@ -128,6 +128,8 @@ public interface TableService {
 	
 	public List<TablePort> getTablePortList(TablePort tablePort) throws SQLException;
 	
+	public List<TablePort> getTablePortList(String table_id) throws SQLException;
+	
 	public TablePort getTablePort(TablePort port) throws SQLException;
 	
 	public TablePort getTablePortByIndex(TablePort port)throws SQLException;

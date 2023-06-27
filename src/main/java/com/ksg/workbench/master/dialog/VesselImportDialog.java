@@ -42,7 +42,7 @@ import com.ksg.dao.impl.BaseDAOManager;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
  * @author ¹ÚÃ¢Çö

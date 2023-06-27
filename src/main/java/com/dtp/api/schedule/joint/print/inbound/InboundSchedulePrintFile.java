@@ -131,7 +131,9 @@ public class InboundSchedulePrintFile extends AbstractInboundSchedulePrint{
 
 			List<InboundScheduleGroup> groupList = inboundScheduleRule.createScheduleGroup(vesselList, true);
 			
-			List<String> strList = groupList.stream().sorted().map(o -> o.toPrintString()).collect(Collectors.toList());
+			List<String> strList = groupList.stream()
+											.filter(o -> o.isValidateDate())
+											.sorted().map(o -> o.toPrintString()).collect(Collectors.toList());
 			
 			printList.add(StringUtils.join(strList,"\r\n"));
 			

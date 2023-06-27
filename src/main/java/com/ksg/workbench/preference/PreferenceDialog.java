@@ -27,7 +27,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
@@ -39,8 +38,9 @@ import javax.swing.tree.TreePath;
 
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 
 public class PreferenceDialog extends KSGDialog implements ActionListener {
 
@@ -222,16 +222,25 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 	}
 	
 	private KSGPanel buildControl() {
+		
 		KSGPanel pnButtom = new KSGPanel();
+		
 		pnButtom.setPreferredSize(new Dimension(0,45));
+		
 		pnButtom.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
-		JButton butOK = new JButton("확인");
+		JButton butOK = new KSGGradientButton("확인");
+		
+		JButton butCancel = new KSGGradientButton("취소");
+		
 		butOK.addActionListener(this);
-		pnButtom.add(butOK);
-		JButton butCancel = new JButton("취소");
+		
 		butCancel.addActionListener(this);
+		
+		pnButtom.add(butOK);
+		
 		pnButtom.add(butCancel);
+		
 		return pnButtom;
 	}
 	public void createAndUpdateUI()

@@ -23,7 +23,7 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 
 public class PnPortExcpetion extends PnOption{
 

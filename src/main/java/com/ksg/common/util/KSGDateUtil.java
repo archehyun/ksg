@@ -1007,7 +1007,4 @@ public class KSGDateUtil {
 	public static SimpleDateFormat createOutputDateFormat() {
 		return new SimpleDateFormat("M/d");
 	}
-	
-
-
 }

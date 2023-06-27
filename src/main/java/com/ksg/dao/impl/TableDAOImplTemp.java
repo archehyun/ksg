@@ -393,6 +393,13 @@ public class TableDAOImplTemp implements TableDAO{
 	}
 
 
+	@Override
+	public List getTablePortListById(String table_id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 
 

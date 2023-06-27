@@ -29,8 +29,8 @@ import javax.swing.JTextField;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.AreaInfo;
 import com.ksg.service.impl.AreaServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**

@@ -73,16 +73,16 @@ public class VesselServiceImpl implements VesselService{
 		return selectOne;
 	}
 	@Override
-	public Vessel deleteVesselDetail(String id) throws Exception
+	public int deleteVesselDetail(Vessel param) throws Exception
 	{
-		Vessel selectOne= dao.selectById(id);
+		Vessel selectOne= dao.selectDetailByKey(param);
+		
 		if(selectOne==null)
 		{
 			throw new ResourceNotFoundException("해당 선박이 없습니다.");  
 		}
-		dao.deleteVessel(id);
 
-		return selectOne;
+		return (int) dao.deleteVesselDetail(param);
 	}
 	@Override
 	public Vessel insertVessel(Vessel param) throws Exception

@@ -11,8 +11,8 @@ import javax.swing.JLabel;
 
 import com.dtp.api.control.AbstractController;
 import com.ksg.common.model.CommandMap;
-import com.ksg.view.comp.CurvedBorder;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.border.CurvedBorder;
+import com.ksg.view.comp.panel.KSGPanel;
 
 /**
 

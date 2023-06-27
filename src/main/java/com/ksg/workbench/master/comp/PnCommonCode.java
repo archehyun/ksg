@@ -19,11 +19,12 @@ import javax.swing.event.ListSelectionListener;
 
 import com.dtp.api.control.CodeController;
 import com.ksg.common.model.CommandMap;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.BasePop;
 import com.ksg.workbench.master.dialog.CommCodeUpdatePop;
@@ -398,7 +399,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 			{
 				String code_filed = (String) result.get("code_field");
 				
-				JOptionPane.showMessageDialog(this, String.format("(%s) 삭제 되었습니다.", code_filed));
+				NotificationManager.showNotification(String.format("(%s) 삭제 되었습니다.", code_filed));
 				
 				fnSearch();
 			}
@@ -411,7 +412,8 @@ public class PnCommonCode extends PnBase implements ActionListener{
 			{
 				String code_name = (String) result.get("code_name");
 				
-				JOptionPane.showMessageDialog(this, String.format("(%s) 삭제 되었습니다.", code_name));
+				NotificationManager.showNotification(String.format("(%s) 삭제 되었습니다.", code_name));
+				
 				
 				fnSearchDetail();
 			}

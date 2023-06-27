@@ -49,8 +49,8 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.dialog.PortSearchDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.workbench.dialog.PortSearchDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 
 /**
@@ -140,7 +140,6 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		portIndexController = new PortIndexController();
 
 	}
-
 
 	public void createAndUpdateUI() {
 

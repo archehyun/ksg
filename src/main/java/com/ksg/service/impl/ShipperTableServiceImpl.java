@@ -126,9 +126,13 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 	
 	@Override
 	public int updateTableDateByTableIDs(List table,String updateDate) throws SQLException {
+		
 		log.info("update by "+updateDate+", "+table);
+		
 		Iterator<HashMap<String, Object>> iter = table.iterator();
+		
 		int count=0;
+		
 		while(iter.hasNext())
 		{
 			HashMap<String, Object> item = iter.next();
@@ -136,6 +140,7 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 			HashMap<String, Object> param = new HashMap<String, Object>();
 			
 			param.put("table_id", item.get("table_id"));
+			
 			param.put("date_isusse", updateDate);
 			
 			shipperTableDao.updateDate(param);

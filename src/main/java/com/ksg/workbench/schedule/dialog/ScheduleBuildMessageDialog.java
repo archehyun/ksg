@@ -29,8 +29,8 @@ import javax.swing.table.DefaultTableModel;
 
 import com.ksg.commands.LongTask;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 
 /**
  * 

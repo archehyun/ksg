@@ -35,8 +35,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.model.KSGTableModel;
+import com.ksg.view.comp.table.renderer.KSGTableCellRenderer;
 
 public class SearchBaseInfoCommand implements IFCommand {
 

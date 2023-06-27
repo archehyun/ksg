@@ -621,6 +621,13 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		return scheduleDAO.insertScheduleBulkData(scheduleList);
 	}
 
+	@Override
+	public int deleteScheduleById(String table_id) throws SQLException {
+		
+		return scheduleDAO.deleteScheduleById(table_id);
+		
+	}
+
 
 
 }

@@ -51,10 +51,10 @@ import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.admin.KSGViewParameter;
 import com.ksg.workbench.adv.comp.ADVTableData;
 import com.ksg.workbench.adv.xls.XLSTableInfo;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * @author ¹ÚÃ¢Çö

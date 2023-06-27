@@ -114,8 +114,11 @@ public abstract class AbstractController {
 		 finally
 		 {
 			 model.setService_id(serviceId);
+			 if(view != null)
+			 {
 			 view.setModel( model);
 			 view.updateView();
+			 }
 		 }
 
 	 }

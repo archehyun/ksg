@@ -22,8 +22,8 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 
 import lombok.extern.slf4j.Slf4j;

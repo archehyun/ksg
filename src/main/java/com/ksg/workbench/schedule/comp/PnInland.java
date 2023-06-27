@@ -21,7 +21,7 @@ import javax.swing.table.TableColumnModel;
 
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 
 /**
  * @author archehyun

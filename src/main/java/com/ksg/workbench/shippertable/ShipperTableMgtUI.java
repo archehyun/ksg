@@ -85,11 +85,11 @@ import com.ksg.service.ShipperTableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.CurvedBorder;
+import com.ksg.view.comp.border.CurvedBorder;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableSelectListner;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
-import com.ksg.workbench.common.comp.tree.KSGTreeDefault;
-import com.ksg.workbench.common.comp.tree.KSGTreeImpl;
+import com.ksg.view.comp.tree.KSGTreeDefault;
+import com.ksg.view.comp.tree.KSGTreeImpl;
 import com.ksg.workbench.master.dialog.UpdateTableInfoDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 import com.ksg.workbench.shippertable.comp.SearchTable;
@@ -141,7 +141,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI
 
 				if(selectedshippersTable!=null)
 				{
-					pnUpdateTable.setShipperTableData(shippersTable);
+//					pnUpdateTable.setShipperTableData(shippersTable);
 					if(dialog!=null)
 						dialog.setShipperTableData(shippersTable);
 				}
@@ -1357,14 +1357,14 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI
 	 */
 	public void searchADVTable() {
 
-		try{			
-			advTablePanel.retrive();
-
-		}catch(Exception e)
-		{
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(ShipperTableMgtUI.this, "error : "+e.getMessage());
-		}
+//		try{			
+//			advTablePanel.retrive();
+//
+//		}catch(Exception e)
+//		{
+//			e.printStackTrace();
+//			JOptionPane.showMessageDialog(ShipperTableMgtUI.this, "error : "+e.getMessage());
+//		}
 	}
 	/**
 	 * @param colum
@@ -1505,7 +1505,7 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI
 
 		advTablePanel.setSelectedTable(st);
 
-		advTablePanel.retrive();
+//		advTablePanel.retrive();
 
 		pnADVInfo.setVisible(true);
 
@@ -1525,11 +1525,6 @@ public class ShipperTableMgtUI extends ShipperTableAbstractMgtUI
 		{
 			ManagePortDialog dialog = new ManagePortDialog(selectedshippersTable.getTable_id(),this);
 			dialog.createAndUpdateUI();
-			
-			
-			
-			
-			
 			
 		}
 	}

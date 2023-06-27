@@ -19,6 +19,7 @@ import com.ksg.commands.ScheduleExecute;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.print.ScheduleJointError;
 
 /**
@@ -77,7 +78,9 @@ public class RouteSchedulePrintFile extends AbstractRouteSchedulePrint implement
 		
 		this( (List) param.get("scheduleList"), (int) param.get("orderBy"));
 		
-		this.routeScheduleMap = (Map<String, Map<String, List<ScheduleData>>>) param.get("routeScheduleMap"); 
+		this.routeScheduleMap = (Map<String, Map<String, List<ScheduleData>>>) param.get("routeScheduleMap");
+		
+		this.vesselMap = (Map<String, Vessel>) param.get("vesselMap");
 	}
 
 	public RouteSchedulePrintFile() throws Exception {

@@ -31,7 +31,7 @@ import javax.swing.JTextField;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Vessel;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**

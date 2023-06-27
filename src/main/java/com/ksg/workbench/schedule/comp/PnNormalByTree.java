@@ -33,15 +33,17 @@ import com.dtp.api.control.ScheduleController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ScheduleEnum;
-import com.ksg.view.comp.KSGComboBox;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.label.BoldLabel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.textfield.SearchTextField;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.label.BoldLabel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
-import com.ksg.workbench.common.comp.textfield.SearchTextField;
 import com.ksg.workbench.common.comp.treetable.KSGTreeTable;
 import com.ksg.workbench.schedule.dialog.SearchPortDialog;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -59,7 +61,7 @@ import com.ksg.workbench.schedule.dialog.SearchPortDialog;
  * @프로그램 설명 : 스케줄 조회 후 트리 형태로 표시 , 공동 배선 적용
 
  */
-
+@Slf4j
 @Component("schedule")
 public class PnNormalByTree extends PnSchedule implements View {
 
@@ -289,24 +291,24 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 				pnRouteSerchOption.setVisible("ROUTE".equals(selectedValue));
 				
-				lblJointedSchedule.setVisible(!"INBOUND".equals(selectedValue));
+//				lblJointedSchedule.setVisible(!"INBOUND".equals(selectedValue));
+//				
+//				lblNoramlSchedule.setVisible(!"INBOUND".equals(selectedValue));
+//				
+//				lblSpiltedSchedule.setVisible(!"INBOUND".equals(selectedValue));
 				
-				lblNoramlSchedule.setVisible(!"INBOUND".equals(selectedValue));
-				
-				lblSpiltedSchedule.setVisible(!"INBOUND".equals(selectedValue));
-				
-				lblLegend.setVisible(!"INBOUND".equals(selectedValue));
+//				lblLegend.setVisible(!"INBOUND".equals(selectedValue));
 				
 				if("OUTBOUND".equals(selectedValue))
 				{
 					lblJointedSchedule.setText("공동배선");
 				}
-				else if("ROUTE".equals(selectedValue))
+				else if("ROUTE".equals(selectedValue)||"INBOUND".equals(selectedValue))
 				{
 					lblJointedSchedule.setText("제외스케줄");
 					lblSpiltedSchedule.setVisible(false);
 				}
-				cbxIsAddValidate.setVisible(!"INBOUND".equals(selectedValue));
+				//cbxIsAddValidate.setVisible(!"INBOUND".equals(selectedValue));
 			}
 		});
 
@@ -316,7 +318,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		cbxIsAddValidate = new JCheckBox("제외 항구 추가");
 		
-		cbxIsAddValidate.setVisible(false);
+//		cbxIsAddValidate.setVisible(false);
 
 		cbxIsAddValidate.setBackground(Color.white);
 
@@ -382,7 +384,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 				txfNoramlSearch.setText("");
 				cbxArea.setSelectedIndex(0);
 				cbxNormalSearch.setSelectedIndex(0);
-
 			}
 		});
 
@@ -448,11 +449,20 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		return pnNormalSearchMain;
 	}
-	
 
 	public void fnSearch()
 	{	
 		CommandMap param = new CommandMap();
+		
+		if(input_date!=null&&!input_date.equals(""))
+		{
+			param.put("date_issue", input_date);
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(PnNormalByTree.this, "스케줄 생성 일자를 선택하십시요");
+			return;
+		}
 
 		param.put("gubun", gubun);
 
@@ -468,13 +478,11 @@ public class PnNormalByTree extends PnSchedule implements View {
 			param.put("area_name", item.columnField);
 		}
 		
-		if(cbxNormalSearch.getSelectedIndex()>0) {
-
-			KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
-			if(!"".equals(searchOption))
-			{
-				param.put(item.columnField, searchOption);
-			}
+		KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
+		
+		if(!"".equals(searchOption))
+		{
+			param.put(item.columnField, searchOption);
 		}
 
 		if(!"".equals(fromPort.getText())){
@@ -483,16 +491,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		if(!"".equals(toPort.getText())){
 			param.put("port", toPort.getText());
-		}
-
-		if(input_date!=null&&!input_date.equals(""))
-		{
-			param.put("date_issue", input_date);
-		}
-		else
-		{
-			JOptionPane.showMessageDialog(PnNormalByTree.this, "스케줄 생성 일자를 선택하십시요");
-			return;
 		}
 
 		param.put("sortType", rbtRouteDateSorted.isSelected()?"date":"vessel");
@@ -522,7 +520,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 	}
 
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
@@ -550,12 +547,10 @@ public class PnNormalByTree extends PnSchedule implements View {
 		}		
 	}
 
-
 	@Override
 	public void componentShown(ComponentEvent e) {
-
+		log.debug("init");
 		callApi("pnNormalByTree.init");
-
 	}
 
 	@Override
@@ -580,7 +575,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 				cbxArea.addItem(new KSGTableColumn("", "전체"));
 
 				List<String> areaList=(List<String>) result.get("areaList");
-
 
 				areaList.stream()
 				.forEach(areaName->cbxArea.addItem(new KSGTableColumn(areaName, areaName)));

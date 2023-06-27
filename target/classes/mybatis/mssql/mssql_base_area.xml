@@ -10,14 +10,14 @@
         IBM Corporation - initial API and implementation
  -->
 
-<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="area">
 
 
 <!-- *** AREA *** -->
 	<sql id="AreaList">
-		select * from TB_AREA
+		SELECT * FROM TB_AREA
 	</sql>
 
 <!-- select -->
@@ -35,8 +35,7 @@
 	</select>
 	
 	<select id="selectAll" resultClass="com.ksg.domain.AreaInfo">
-		select * from TB_AREA
-			 
+		SELECT * FROM TB_AREA
 	</select>
 	
 	<select id="selectAreaList2" resultClass="com.ksg.domain.AreaInfo">
@@ -54,7 +53,7 @@
 <!-- insert -->
 
 	<insert id="insertArea" parameterClass="java.util.HashMap">
-		insert into TB_AREA(
+		INSERT INTO TB_AREA(
 		
 			area_code,
 			area_name,
@@ -71,15 +70,15 @@
 <!-- update -->
 	
 	<update id="updateArea" parameterClass="java.util.HashMap">
-		update TB_AREA 
-			set 
-				area_code=#area_code#, 
-				area_book_code=#area_book_code#, 
-				area_name=#area_name#
-			where 
-			(
-				area_name=#base_area_name#
-			)
+		UPDATE TB_AREA 
+		SET 
+			area_code=#area_code#, 
+			area_book_code=#area_book_code#, 
+			area_name=#area_name#
+		WHERE 
+		(
+			area_name=#base_area_name#
+		)
 	</update>
 
 <!-- delete -->

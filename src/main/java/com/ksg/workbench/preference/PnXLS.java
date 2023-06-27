@@ -22,7 +22,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 
 public class PnXLS extends PnOption{
 	

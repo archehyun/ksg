@@ -6,17 +6,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -26,15 +23,10 @@ import javax.swing.JTextField;
 import com.dtp.api.control.PortController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.service.PortService;
-import com.ksg.service.impl.PortServiceImpl;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.dialog.BaseInfoDialog;
-import com.ksg.workbench.master.dialog.UpdatePortInfoDialog;
 
 import mycomp.comp.MyTable;
 
@@ -55,13 +47,7 @@ import mycomp.comp.MyTable;
  */
 public class SearchPortDialog extends BaseInfoDialog{
 
-	PortService service;
-
 	private JLabel lblTitle;
-
-	private JButton butOK;
-
-	private JButton butCancel;
 
 	private MyTable tableH;
 
@@ -72,8 +58,8 @@ public class SearchPortDialog extends BaseInfoDialog{
 	public String result;
 
 	public SearchPortDialog() {
+		
 		this.setController(new PortController());
-
 	}
 
 	@Override
@@ -88,8 +74,11 @@ public class SearchPortDialog extends BaseInfoDialog{
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
 
 		this.pack();
+		
 		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+		
 		this.setResizable(false);
+		
 		this.setVisible(true);
 
 	}
@@ -97,11 +86,17 @@ public class SearchPortDialog extends BaseInfoDialog{
 	public KSGPanel buildTitle(String title)
 	{
 		KSGPanel pnTitle = new KSGPanel();
+		
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		pnTitle.setBackground(Color.white);
+		
 		lblTitle = new JLabel(title);
+		
 		lblTitle.setFont(new Font("area",Font.BOLD,16));
+		
 		pnTitle.add(lblTitle);
+		
 		return pnTitle;
 	}
 
@@ -117,19 +112,16 @@ public class SearchPortDialog extends BaseInfoDialog{
 
 		tableH.addMouseListener(new MouseAdapter() {
 
-
 			public void mouseClicked(MouseEvent e) 
 			{			
-
 				JTable es = (JTable) e.getSource();
 
 				int row=es.getSelectedRow();
-				if(row<0)
-					return;
+				
+				if(row<0) return;
 
 				if(e.getClickCount()>0)
 				{
-
 					HashMap<String, Object> selectedItem = (HashMap<String, Object>) tableH.getValueAt(row);
 
 					CommandMap param = new CommandMap();
@@ -141,7 +133,6 @@ public class SearchPortDialog extends BaseInfoDialog{
 					callApi("selectPortDetailList", param);
 				}
 			}
-
 		});
 
 		tableD = new KSGAbstractTable();
@@ -213,18 +204,13 @@ public class SearchPortDialog extends BaseInfoDialog{
 		return pnMain;
 	}
 
-	
 	private void fnSearch()
 	{
-		//		try {
-
-
 		CommandMap param = new CommandMap();
 
 		String input =txfInput.getText();
 
 		if(!"".equals(input)) param.put("port_name", input);
-		
 		
 		callApi("selectPort", param);
 		
@@ -244,7 +230,6 @@ public class SearchPortDialog extends BaseInfoDialog{
 			result = "";
 			this.close();
 		}
-
 	}
 
 	@Override
@@ -263,9 +248,7 @@ public class SearchPortDialog extends BaseInfoDialog{
 				List data = (List )resultMap.get("data");
 
 				tableH.setResultData(data);
-
 			}
-
 			else if("selectPortDetailList".equals(serviceId))
 			{	
 				List data = (List )resultMap.get("data");

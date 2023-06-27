@@ -58,6 +58,8 @@ public class InboundNodeManager extends AbstractNodeManager{
 	private InboundScheduleRule inboundScheduleRule;
 	
 	private InboundCodeMap inboundCodeMap = InboundCodeMap.getInstance();
+
+	private boolean isAddValidate;
 	
 	public DefaultMutableTreeNode getTreeNode2(CommandMap areaList) {
 
@@ -123,6 +125,8 @@ public class InboundNodeManager extends AbstractNodeManager{
 		
 		inboundScheduleMap=(Map<String, Map<String, List<ScheduleData>>>) areaList.get("inboundScheduleMap");
 		
+		isAddValidate = 			(boolean) areaList.get("isAddValidate");
+		
 		vesselMap=(Map<String, Vessel>) areaList.get("vesselMap");
 		
 		portMap=(Map<String, PortInfo>) areaList.get("portMap");
@@ -147,9 +151,9 @@ public class InboundNodeManager extends AbstractNodeManager{
 					.sorted()
 					.forEach(group ->{
 						
-						ScheduleTreeNode child = new ScheduleTreeNode(toPrintString(group),group.getParent()!=null?NodeType.SPLITED_SCHEDULE: NodeType.SCHEDULE);
+						NodeType nodeType = group.isValidateDate()?NodeType.SCHEDULE:NodeType.JOINT_SCHEDULE;
 						
-						port.add(child); 
+						ScheduleTreeNode child = new ScheduleTreeNode(toPrintString(group),group.getParent()!=null?NodeType.SPLITED_SCHEDULE: nodeType);
 						
 						group.getScheduleList() .forEach(item -> {
 							
@@ -157,14 +161,26 @@ public class InboundNodeManager extends AbstractNodeManager{
 							
 							String fromDate = formatedDate(item.getDateF());							
 							
-							String vessel = item.getVessel();
+							String vessel 	= item.getVessel();
 							
-							String company = item.getCompany_abbr();
+							String company 	= item.getCompany_abbr();
 							
-							String portAndDAy = String.format("%s%s",String.format("[%s]", inboundCodeMap.get( item.getPort())), formatedDate(item.getDateF()));
+							String portAndDAy = String.format("%s%s",String.format("[%s]", inboundCodeMap.get( item.getPort())), formatedDate(item.getDateT()));
 							
 							child.add(new ScheduleTreeNode(toFormattedString(fromDate, vessel, company, portAndDAy, false),new TreeTableNode(param), NodeType.SCHEDULE));
 						});
+						
+						if(group.isValidateDate())
+						{
+							port.add(child);
+						}
+						else
+						{
+							if(isAddValidate) port.add(child);;
+						}
+								
+						
+						
 					});
 			// 항차 번호로 그룹 화
 			

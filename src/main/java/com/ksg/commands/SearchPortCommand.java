@@ -44,8 +44,8 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.PortInfo;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.master.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.workbench.master.dialog.InsertPortInfoDialog;
 

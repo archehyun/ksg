@@ -30,10 +30,10 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.comp.VesselInfo;
 import com.ksg.workbench.adv.dialog.AddVesselDialog;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.comp.AdvertiseTable;
 
 /**

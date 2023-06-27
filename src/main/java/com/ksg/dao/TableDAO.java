@@ -292,6 +292,6 @@ public interface TableDAO {
 	Object selectCount(HashMap<String, Object> param) throws SQLException;
 
 	public int delete(Map<String, Object> param);
-	
+	public List getTablePortListById(String table_id)throws SQLException;
 
 }

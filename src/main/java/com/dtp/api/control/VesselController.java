@@ -165,9 +165,13 @@ public class VesselController extends AbstractController{
     {
         log.info("param:{}",param);
         
-        String id = (String) param.get("id");
+        String vessel_name = (String) param.get("vessel_name");
         
-        Vessel result=service.deleteVessel(id);
+        String vessel_abbr = (String) param.get("vessel_abbr");
+        
+        Vessel vesselparam = Vessel.builder().vessel_name(vessel_name).vessel_abbr(vessel_abbr).build();
+        
+        int result=service.deleteVesselDetail(vesselparam);
         
         CommandMap returnMap = new CommandMap();
         

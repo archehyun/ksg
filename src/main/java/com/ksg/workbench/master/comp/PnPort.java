@@ -33,14 +33,15 @@ import javax.swing.event.ListSelectionListener;
 import com.dtp.api.control.PortController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.service.impl.AreaServiceImpl;
-import com.ksg.view.comp.KSGComboBox;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.label.BoldLabel;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.label.BoldLabel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.workbench.master.dialog.UpdatePortInfoDialog;
@@ -137,6 +138,24 @@ public class PnPort extends PnBase implements ActionListener{
 		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUpSearch.addActionListener(this);
+		
+		
+
+		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
+		
+		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		
+		butCancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				cbxAreaCode.setSelectedIndex(0);
+				cbxPortArea.setSelectedIndex(0);
+				cbxField.setSelectedIndex(0);
+				txfSearch.setText("");
+			}
+		});
 
 		cbxField.setPreferredSize(new Dimension(150,23));
 
@@ -167,6 +186,8 @@ public class PnPort extends PnBase implements ActionListener{
 		pnSearch.add(txfSearch);
 
 		pnSearch.add(butUpSearch);
+		
+		pnSearch.add(butCancel);
 
 		Box pnSearchAndCount = Box.createVerticalBox();
 
@@ -601,10 +622,7 @@ public class PnPort extends PnBase implements ActionListener{
 
 		log.info("param:"+param);
 
-
 		callApi("selectPort", param);
-
-
 
 	}
 
@@ -631,7 +649,7 @@ public class PnPort extends PnBase implements ActionListener{
 	{
 		combox.removeAllItems();
 
-		combox.addItem("선택");
+		combox.addItem("전체");
 
 		list.stream().forEach(item -> combox.addItem(item));
 
@@ -690,6 +708,8 @@ public class PnPort extends PnBase implements ActionListener{
 				CommandMap param = new CommandMap();
 
 				param.put("port_name", port_name);
+				
+				NotificationManager.showNotification("삭제되었습니다.");
 
 				callApi("selectPortDetailList", param);
 			}

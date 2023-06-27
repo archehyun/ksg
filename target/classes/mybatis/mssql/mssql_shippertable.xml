@@ -10,50 +10,106 @@
         IBM Corporation - initial API and implementation
  -->
 
-<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="shippertable">
 
-<sql id="WHERE">
-		<dynamic prepend="where">
-		<isNotEmpty prepend="and" property="table_id">
-		table_id = #table_id#
-		</isNotEmpty>
-		<isGreaterThan prepend="and" property="page" compareValue="-1">
-		page = #page#
-		</isGreaterThan>
-		<isGreaterThan prepend="and" property="table_index" compareValue="-1">
-		table_index = #table_index#
-		</isGreaterThan>
-		<isNotEmpty prepend="and" property="company_abbr">
-		company_abbr = #company_abbr#
-		</isNotEmpty>
-		<isNotEmpty prepend="and" property="title">
-		title = #title#
-		</isNotEmpty>
-		<isNotNull prepend="and" property="agent">
-		agent = #agent#
-		</isNotNull>
-		<isNotNull prepend="and" property="gubun">
-		gubun = #gubun#
-		</isNotNull>
-		<isNotNull prepend="and" property="date_isusse">
-			 date_isusse=#date_isusse#
-		</isNotNull>
-		
-		
-		</dynamic>
+	<parameterMap  id="shipperTableMap" class="com.ksg.domain.ShippersTable">
+		   	<parameter property="table_id" javaType="java.lang.String"/>
+			<parameter property="port_col" />
+		   	<parameter property="vsl_row" />
+		   	<parameter property="table_index"/>
+		   	<parameter property="date_isusse"/>
+		   	<parameter property="title" />
+		   	<parameter property="out_port" />
+		   	<parameter property="common_shipping" />
+		   	<parameter property="company_abbr" />
+		   	<parameter property="TS" />
+		   	<parameter property="company_name" />
+			<parameter property="gubun"/>
+			<parameter property="page" />
+			<parameter property="agent"/>
+			<parameter property="out_to_port"/>
+			<parameter property="in_to_port" />
+			<parameter property="in_port" />
+			<parameter property="othercell"/>
+			<parameter property="console_cfs" javaType="java.lang.String" />
+			<parameter property="d_time"/>
+			<parameter property="c_time" />
+			<parameter property="console_page" />
+			<parameter property="inland_indexs" />
+			<parameter property="bookPage" />
+			
+			<parameter property="quark_format" javaType="java.lang.String" />
+	</parameterMap>
 	
-
-</sql>
-
-
+	<resultMap id = "allTableMap" class="com.ksg.domain.ShippersTable">
+			<result property="table_id" column = "table_id" javaType="java.lang.String"/>
+			<result property="port_col" column = "port_col" />
+		   	<result property="vsl_row"  column = "vsl_row" />
+		   	<result property="table_index" column = "table_index" />
+		   	<result property="date_isusse" column = "date_isusse" />
+		   	<result property="table_date" column = "table_date" />
+		   	<result property="title" column = "title" />
+		   	<result property="out_port" column = "out_port" />
+		   	<result property="common_shipping" column = "common_shipping"  />
+		   	<result property="company_abbr"  column = "company_abbr" />
+		   	<result property="TS" column = "TS" />
+		   	<result property="company_name" column = "company_name" />
+			<result property="gubun" column = "gubun" />
+			<result property="page" column = "page" />
+			<result property="agent" column = "agent" />
+			<result property="out_to_port" column = "out_to_port" />
+			<result property="in_to_port" column = "in_to_port" />
+			<result property="in_port" column = "in_port" />
+			<result property="othercell" column = "othercell" />
+			<result property="console_cfs" javaType="java.lang.String" column = "console_cfs" />
+			<result property="d_time" column = "d_time" />
+			<result property="c_time" column = "c_time" />
+			<result property="console_page" column = "console_page" />
+			<result property="inland_indexs" column = "inland_indexs" />
+			<result property="bookPage" column = "bookPage" />
+			<result property="data" column = "data" />
+			<result property="tablePortList" column="table_id" javaType="java.util.List" select="shippertable.getPortList" />			
+	
+	</resultMap>
+	
+	
+	<sql id="WHERE">
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="table_id">
+				table_id = #table_id#
+			</isNotEmpty>
+			<isGreaterThan prepend="and" property="page" compareValue="-1">
+				page = #page#
+			</isGreaterThan>
+			<isGreaterThan prepend="and" property="table_index" compareValue="-1">
+				table_index = #table_index#
+			</isGreaterThan>
+			<isNotEmpty prepend="and" property="company_abbr">
+				company_abbr = #company_abbr#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="title">
+				title = #title#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="agent">
+				agent = #agent#
+			</isNotNull>
+			<isNotNull prepend="and" property="gubun">
+				gubun = #gubun#
+			</isNotNull>
+			<isNotNull prepend="and" property="date_isusse">
+				date_isusse=#date_isusse#
+			</isNotNull>
+		</dynamic>
+	</sql>
 
 	<sql id="TableList">
 	SELECT 
 		table_id
 		,table_index
 		,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
+		
 		,vsl_row
 		,title
 		,out_port
@@ -79,9 +135,125 @@
 	FROM TB_TABLE_INFO
 	</sql>
 	
+	<select id="selectADVDataById" resultClass="com.ksg.domain.ADVData">
+	SELECT 
+	* 
+	FROM TB_ADV_INFO
+	WHERE 
+	table_id=#table_id#
+	</select>
 	
-	<select id="selectShipperTableListAll" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
-		<include refid="TableList"/>
+	<select id="selectShipperTableListAll" resultMap="allTableMap" parameterClass="com.ksg.domain.ShippersTable">
+		SELECT 
+			A.table_id,
+			A.table_index,
+			CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse,
+			A.table_date,
+			A.vsl_row,
+			A.title,
+			A.out_port,
+			A.common_shipping,
+			A.company_abbr,
+			A.TS,
+			A.company_name,
+			A.gubun,
+			A.page,
+			A.agent,
+			A.quark_format,
+			A.port_col,
+			A.out_to_port,
+			A.in_to_port,
+			A.in_port,
+			A.othercell,
+			A.console_cfs,
+			A.d_time,
+			A.c_time,
+			A.console_page,
+			A.inland_indexs,
+			A.bookPage,
+			B.data as data 
+		FROM TB_TABLE_INFO A JOIN TB_ADV_INFO B
+		ON A. table_id= B.table_id
+		
+	</select>
+	
+	<select id="selectShipperTableListAllByCondition" resultMap="allTableMap" parameterClass="com.ksg.domain.ShippersTable">
+		SELECT 
+			A.table_id,
+			A.table_index,
+			CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse,
+			A.table_date,
+			A.vsl_row,
+			A.title,
+			A.out_port,
+			A.common_shipping,
+			A.company_abbr,
+			A.TS,
+			A.company_name,
+			A.gubun,
+			A.page,
+			A.agent,
+			A.quark_format,
+			A.port_col,
+			A.out_to_port,
+			A.in_to_port,
+			A.in_port,
+			A.othercell,
+			A.console_cfs,
+			A.d_time,
+			A.c_time,
+			A.console_page,
+			A.inland_indexs,
+			A.bookPage,
+			B.data as data 
+		FROM TB_TABLE_INFO A JOIN TB_ADV_INFO B
+		ON A. table_id= B.table_id
+		WHERE A.date_isusse=#date_isusse#
+		AND A.gubun  NOT IN ('NNN')
+		<isNotEmpty prepend="AND" property="gubun">
+		A.gubun= #gubun#
+		</isNotEmpty>
+		<isGreaterThan prepend="AND" property="page" compareValue="0">
+		A.page= #page#
+		</isGreaterThan>
+		<isNotEmpty prepend="and" property="table_id">
+		A.table_id = #table_id#
+		</isNotEmpty>
+		
+	</select>
+	
+	<select id="selectShipperTableAllById" resultMap="allTableMap">
+		SELECT 
+			A.table_id,
+			A.table_index,
+			CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse,
+			A.table_date,
+			A.vsl_row,
+			A.title,
+			A.out_port,
+			A.common_shipping,
+			A.company_abbr,
+			A.TS,
+			A.company_name,
+			A.gubun,
+			A.page,
+			A.agent,
+			A.quark_format,
+			A.port_col,
+			A.out_to_port,
+			A.in_to_port,
+			A.in_port,
+			A.othercell,
+			A.console_cfs,
+			A.d_time,
+			A.c_time,
+			A.console_page,
+			A.inland_indexs,
+			A.bookPage,
+			B.data as data 
+		FROM TB_TABLE_INFO A JOIN TB_ADV_INFO B
+		ON A. table_id= B.table_id
+		WHERE A.table_id = #table_id#
 	</select>
 	
 	<select id="selectShipperTableListByCondition" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
@@ -112,34 +284,35 @@
 			A.bookPage   ,
 			B.data  
 		FROM TB_TABLE_INFO AS A LEFT JOIN TB_ADV_INFO AS B
+		
 		ON A.table_id = B.table_id 
 		<dynamic prepend="where">
-		<isNotEmpty prepend="and" property="table_id">
-		A.table_id like '%$table_id$%'
-		</isNotEmpty>
-		<isGreaterThan prepend="and" property="page" compareValue="-1">
-		A.page = #page#
-		</isGreaterThan>
-		<isGreaterThan prepend="and" property="table_index" compareValue="-1">
-		A.table_index = #table_index#
-		</isGreaterThan>
-		<isNotEmpty prepend="and" property="company_abbr">
-		A.company_abbr like '%$company_abbr$%'
-		</isNotEmpty>
-		<isNotEmpty prepend="and" property="title">
-		A.title  like '%$title$%'
-		</isNotEmpty>
-		<isNotNull prepend="and" property="agent">
-		A.agent  like '%$agent$%'
-		</isNotNull>
-		<isNotNull prepend="and" property="gubun">
-		A.gubun = #gubun#
-		</isNotNull>
-		<isNotNull prepend="and" property="date_isusse">
-		A.date_isusse=#date_isusse#
-		</isNotNull>
+			<isNotEmpty prepend="and" property="table_id">
+				A.table_id like '%$table_id$%'
+			</isNotEmpty>
+			<isGreaterThan prepend="and" property="page" compareValue="-1">
+				A.page = #page#
+			</isGreaterThan>
+			<isGreaterThan prepend="and" property="table_index" compareValue="-1">
+				A.table_index = #table_index#
+			</isGreaterThan>
+			<isNotEmpty prepend="and" property="company_abbr">
+				A.company_abbr like '%$company_abbr$%'
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="title">
+				A.title  like '%$title$%'
+			</isNotEmpty>
+			<isNotNull prepend="and" property="agent">
+				A.agent  like '%$agent$%'
+			</isNotNull>
+			<isNotNull prepend="and" property="gubun">
+				A.gubun = #gubun#
+			</isNotNull>
+			<isNotNull prepend="and" property="date_isusse">
+				A.date_isusse=#date_isusse#
+			</isNotNull>
 		</dynamic>
-	order by A.page, A.table_index 
+		order by A.page, A.table_index 
 	</select>
 	
 	<select id="selectShipperTablePortListByID" resultClass="com.ksg.domain.TablePort">
@@ -148,43 +321,46 @@
 		WHERE table_id=#table_id#	
 	</select>
 	
+	<select id="selectShipperTableByID" resultClass="com.ksg.domain.ShippersTable">
+		SELECT * 
+		FROM TB_TABLE_INFO 
+		WHERE table_id=#table_id#	
+	</select>
+	
 	<select id="selectList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		<include refid="TableList"/>
 		
 		<dynamic prepend="where">
-		<isNotEmpty prepend="and" property="table_id">
-		table_id = #table_id#
-		</isNotEmpty>
-		<isGreaterThan prepend="and" property="page" compareValue="-1">
-		page = #page#
-		</isGreaterThan>
-		<isGreaterThan prepend="and" property="table_index" compareValue="-1">
-		table_index = #table_index#
-		</isGreaterThan>
-		<isNotEmpty prepend="and" property="company_abbr">
-		company_abbr = #company_abbr#
-		</isNotEmpty>
-		<isNotEmpty prepend="and" property="title">
-		title = #title#
-		</isNotEmpty>
-		<isNotNull prepend="and" property="agent">
-		agent = #agent#
-		</isNotNull>
-		<isNotNull prepend="and" property="gubun">
-		gubun = #gubun#
-		</isNotNull>
-		<isNotNull prepend="and" property="date_isusse">
-			 date_isusse=#date_isusse#
-		</isNotNull>
-		
-		
+			<isNotEmpty prepend="and" property="table_id">
+				table_id = #table_id#
+			</isNotEmpty>
+			<isGreaterThan prepend="and" property="page" compareValue="-1">
+				page = #page#
+			</isGreaterThan>
+			<isGreaterThan prepend="and" property="table_index" compareValue="-1">
+				table_index = #table_index#
+			</isGreaterThan>
+			<isNotEmpty prepend="and" property="company_abbr">
+				company_abbr = #company_abbr#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="title">
+				title = #title#
+			</isNotEmpty>
+			<isNotNull prepend="and" property="agent">
+				agent = #agent#
+			</isNotNull>
+			<isNotNull prepend="and" property="gubun">
+				gubun = #gubun#
+			</isNotNull>
+			<isNotNull prepend="and" property="date_isusse">
+				 date_isusse=#date_isusse#
+			</isNotNull>
 		</dynamic>
 	order by page, table_index 
 	</select>
 
 	<select id="selectShipperTableListByPage" resultClass="java.util.HashMap">
-		SELECT ROWNUM 
-		
+		SELECT ROWNUM
 				,table_id
 				,table_index
 				,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
@@ -210,7 +386,6 @@
 				,console_page
 				,inland_indexs
 				,bookPage
-		
 		
 		FROM ( SELECT ROW_NUMBER() OVER (ORDER BY page, table_index) 
 		
@@ -240,8 +415,8 @@
 	</select>
 	
 	
-	<insert id="insert" parameterClass="java.util.HashMap">
-		insert TB_TABLE_INFO(
+	<insert id="insert" parameterClass="com.ksg.domain.ShippersTable">
+		INSERT TB_TABLE_INFO(
 			table_id,
 			port_col,
 			vsl_row,
@@ -292,6 +467,38 @@
 			CONVERT(date,GETDATE())
 		)
 	</insert>
+	
+	<insert id="insertADV" parameterClass="com.ksg.domain.ADVData">
+		INSERT TB_ADV_INFO(
+		
+		table_id,
+		data
+		<isNotEmpty prepend="," property="date_isusse">
+		date_isusse
+		</isNotEmpty>
+		,company_abbr
+		<isNotEmpty prepend="," property="page">
+		page
+		</isNotEmpty>
+		)values(
+		
+		#table_id#,
+		
+		#data#
+		
+		<isNotEmpty prepend="," property="date_isusse">
+		#date_isusse#
+		</isNotEmpty>
+		
+		,#company_abbr#
+		
+		<isNotEmpty prepend="," property="page">
+		#page#
+		</isNotEmpty>
+		)
+	</insert>
+	
+	
 	<delete id="deleteTableInfo" parameterClass="com.ksg.domain.ShippersTable">
 		DELETE FROM TB_TABLE_INFO 
 		WHERE 
@@ -300,51 +507,66 @@
 			table_id=#table_id#
 	</delete>
 	
-	<delete id="delete" parameterClass="java.util.HashMap">
+	<delete id="delete">
 		DELETE FROM TB_TABLE_INFO 
-		WHERE 
-			table_index=#table_index# and 
-			company_abbr=#company_abbr# and 
-			table_id=#table_id#
+		WHERE table_id=#table_id#
+			
 	</delete>
 	
-	<update id="update" parameterClass="java.util.HashMap">
-		update TB_TABLE_INFO set
-		table_id=#table_id#
+	<delete id="deleteADV">
+		DELETE FROM TB_ADV_INFO 
+		WHERE table_id=#table_id#
+	</delete>
+	
+	<update id="update2" parameterClass="com.ksg.domain.ShippersTable">
+		UPDATE TB_TABLE_INFO 
+		SET
+			table_id=#table_id#
+			
 		<isNotEqual compareValue="-1" prepend="," property="port_col">
-		port_col=#port_col#
+			port_col=#port_col#
 		</isNotEqual>
+		
 		<isNotEqual compareValue="-1" prepend="," property="vsl_row">
-		vsl_row=#vsl_row#
+			vsl_row=#vsl_row#
 		</isNotEqual>
+		
 		<isNotEqual compareValue="-1" prepend="," property="othercell">
-		othercell=#othercell#				
+			othercell=#othercell#				
 		</isNotEqual>
 		
 		<isNotEqual compareValue="-1" prepend="," property="page">
-		page=#page#
+			page=#page#
 		</isNotEqual>
+		
 		<isNotNull prepend="," property="bookPage">
-		bookPage=#bookPage#		
+			bookPage=#bookPage#		
 		</isNotNull>		
+		
 		<isNotNull prepend="," property="quark_format">
-		quark_format=#quark_format#		
+			quark_format=#quark_format#		
 		</isNotNull>		 
+		
 		<isNotEmpty prepend="," property="title">
-		title=#title#		
+			title=#title#		
 		</isNotEmpty>
+		
 		<isNotEmpty prepend="," property="company_abbr">
-		company_abbr=#company_abbr#		
+			company_abbr=#company_abbr#		
 		</isNotEmpty>
+		
 		<isNotEmpty prepend="," property="agent">
-		agent=#agent#		
+			agent=#agent#		
 		</isNotEmpty> 
+		
 		<isNotEqual compareValue="-1" prepend="," property="table_index">
 		table_index=#table_index#		
 		</isNotEqual>
+		
 		<isNotEmpty prepend="," property="company_name">
 		company_name=#company_name#				
 		</isNotEmpty>
+		
 		<isNotEmpty prepend="," property="common_shipping">
 		common_shipping=#common_shipping#				
 		</isNotEmpty>
@@ -371,9 +593,7 @@
 		
 		<isEmpty prepend="," property="gubun">
 		gubun=#gubun#				
-		</isEmpty>
-
-		
+		</isEmpty>		
 		
 		<isNotNull prepend="," property="console_cfs">
 		console_cfs=#console_cfs#
@@ -398,51 +618,115 @@
 		where table_id=#table_id#
 	</update>
 	
+	<update id="update" parameterClass="com.ksg.domain.ShippersTable">
+		UPDATE TB_TABLE_INFO 
+		SET
+			table_id 		= #table_id#,
+			port_col		= #port_col#,
+			vsl_row			= #vsl_row#,
+			othercell 		= #othercell#,
+			page			= #page#,
+			bookPage		= #bookPage#,
+			quark_format	= #quark_format#,
+			title			= #title#,
+			company_abbr	= #company_abbr#,
+			agent			= #agent#,
+			table_index		= #table_index#,
+			company_name	= #company_name#,
+			common_shipping	= #common_shipping#,
+			out_to_port		= #out_to_port#,
+			in_to_port		= #in_to_port#,
+			out_port		= #out_port#,
+			in_port			= #in_port#,
+			gubun			= #gubun#,
+			console_cfs		= #console_cfs#,
+			console_page	= #console_page#,
+			inland_indexs	= #inland_indexs#,
+			c_time			= #c_time#,
+			d_time			= #d_time#,
+			date_isusse		= #date_isusse#,
+			table_date		= #table_date#		
+		WHERE table_id		= #table_id#
+	</update>
+	
 	
 	<update id="updateDate" parameterClass="java.util.HashMap">
-		update TB_TABLE_INFO set
+		UPDATE TB_TABLE_INFO set
 		
 		date_isusse=#date_isusse#
 
+		WHERE table_id=#table_id#
+	</update>
+	
+	<update id="updateShipperTableDate" parameterClass="java.util.HashMap">
+		UPDATE TB_TABLE_INFO
+		 
+		SET date_isusse = #date_isusse#
+
+		WHERE table_id IN
+		
+		<iterate property="tableIDList" open="(" close=")" conjunction=",">
+			#tableIDList[]#	
+		</iterate>
+	</update>
+	<update id="updateTableDate" parameterClass="com.ksg.domain.ADVData">
+		update TB_TABLE_INFO 
+		SET
+			date_isusse=#date_isusse#,
+			table_date =#table_date#
+		 
 		where table_id=#table_id#
 	</update>
-
-
 	
 
 	<insert id="insertShipperPort" parameterClass="java.util.HashMap">
-	insert TB_TABLE_PORTLIST (
-		 table_id,
-		 port_name, 
-		 port_index, 
-		 parent_port,
-		 port_type)
-	values(
-		  #table_id#,
-		  #port_name#,
-		  #port_index#,
-		  #parent_port#,
-		  #port_type#
-		  )
+		INSERT TB_TABLE_PORTLIST (
+			 table_id,
+			 port_name, 
+			 port_index, 
+			 parent_port,
+			 port_type)
+		
+		VALUES(
+			  #table_id#,
+			  #port_name#,
+			  #port_index#,
+			  #parent_port#,
+			  #port_type#
+			  )
 	 </insert>
 	
 	 	
 	<delete id="deleteShipperPortList"  parameterClass="java.util.HashMap">
 		
-		delete from TB_TABLE_PORTLIST where table_id = #table_id#
+		DELETE 
+		FROM TB_TABLE_PORTLIST
+		WHERE table_id = #table_id#
 
 	</delete>
 	
 	<!-- count -->
 
 	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
-		select count(*) from TB_TABLE_INFO	
+		SELECT count(*) FROM TB_TABLE_INFO	
 	</select>
 	
 	
 	
-	<select id="getPortList" resultClass="com.ksg.domain.TablePort">
-		select * from TB_TABLE_PORTLIST where table_id=#table_id#
+	<select id="getPortList" resultClass="com.ksg.domain.TablePort" parameterClass="java.lang.String">
+		SELECT /*getPortList */
+			A.port_name,
+			A.port_index,
+			A.port_type,
+			A.parent_port,
+			A.table_id,
+			B.port_area,
+			B.area_code 
+		FROM TB_TABLE_PORTLIST A LEFT JOIN TB_PORT B
+		ON A.port_name = B.port_name
+		
+		WHERE table_id=#table_id#
+		ORDER BY port_index
 	 </select>	
 
 </sqlMap>

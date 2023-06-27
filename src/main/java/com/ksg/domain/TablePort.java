@@ -1,107 +1,95 @@
 package com.ksg.domain;
 
 import java.io.Serializable;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author 박창현
  *
  */
+@SuppressWarnings("serial")
+@AllArgsConstructor
+@Builder
+@Getter @Setter
 public class TablePort extends BaseInfo implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	
 	public static final String TYPE_CHAILD="C";
+	
 	public static final String TYPE_PARENT="P";
+	
 	private String parent_port;
+	
 	private int port_index;
+	
 	private int new_port_index;
+	
 	private String port_name;
+	
 	private String new_port_name;
+	
 	private String port_type;
-	private Vector subPort;
+	
+	private List<TablePort> subPortList;
+	
 	private String table_id;
+	
+	private String port_area;
+	
+	private String area_code;
+	
 	public TablePort() {
-		subPort = new Vector();
+		subPortList = new ArrayList<TablePort>();
 	}
 	public void addSubPort(TablePort sup) {
-		subPort.add(sup);
-
+		subPortList.add(sup);
 	}
-	public String getParent_port() {
-		return parent_port;
-	}
-	public int getPort_index() {
-		return port_index;
-	}
-	public String getPort_name() {
-		return port_name;
-	}
-	public String getPort_type() {
-		return port_type;
-	}
+	
 	/**
 	 * 하위 항구 존재시
 	 * @return
 	 */
-	public String[] getPortArray() {
-		if(this.subPort.size()==0)
-		{
-			String p[] = new String[1];
-			p[0]=this.getPort_name();
-			return p;
-		}else
-		{
-			String p[] = new String[subPort.size()];
-			for(int i=0;i<subPort.size();i++)
-			{
-				TablePort pp=(TablePort) subPort.get(i);
-				if(!pp.getPort_name().equals(null))
-				p[i]=pp.getPort_name();	
-			}
-			
-			return p;
-		}
+	public String[] getSubPortNameArray() {
+		
+		if(subPortList.isEmpty()) return new String[]{this.getPort_name()};
+		
+		List subPortNameList=subPortList.stream()
+										.map(TablePort::getPort_name)
+										.collect(Collectors.toList());
+		
+		return (String[]) subPortNameList.toArray(new String[subPortNameList.size()]);
 	}
-	public String getTable_id() {
-		return table_id;
+	
+	public TablePort[] getSubPortArray() {
+		
+		if(subPortList.isEmpty()) return new TablePort[]{this};
+		
+		return (TablePort[]) subPortList.toArray(new TablePort[subPortList.size()]);
 	}
-	public void setParent_port(String parentPort) {
-		parent_port = parentPort;
-	}
-	public void setPort_index(int portIndex) {
-		port_index = portIndex;
-	}
-	public void setPort_name(String portName) {
-		port_name = portName;
-	}
-	public void setPort_type(String portType) {
-		port_type = portType;
-	}
-	public void setTable_id(String tableId) {
-		table_id = tableId;
-	}
-
+	
 	public String toString()
 	{
-		return port_name;
+		return "["+port_name+", "+port_index+", "+port_area+", "+area_code+", "+port_type+"]";
+		
 	}
-	public int getNew_port_index() {
-		return new_port_index;
-	}
-	public void setNew_port_index(int new_port_index) {
-		this.new_port_index = new_port_index;
-	}
-	public String getNew_port_name() {
-		return new_port_name;
-	}
-	public void setNew_port_name(String new_port_name) {
-		this.new_port_name = new_port_name;
-	}
+	
 	@Override
 	public String toInfoString() {
 		return null;
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (o instanceof TablePort) {
+            return port_name.equals(((TablePort) o).port_name);
+        }
+        return false;
+    }
 
 }

@@ -371,6 +371,8 @@ public class TableServiceImpl extends AbstractServiceImpl implements TableServic
 		return count;
 	}
 
-
-	
+	@Override
+	public List<TablePort> getTablePortList(String table_id) throws SQLException {
+		return tableDAO.getTablePortListById(table_id);
+	}
 }

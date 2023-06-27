@@ -30,9 +30,9 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.adv.comp.ADVListPanel;
 import com.ksg.workbench.adv.xls.XLSTableInfo;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * @author pch

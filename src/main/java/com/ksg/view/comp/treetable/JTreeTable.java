@@ -458,9 +458,9 @@ public class JTreeTable extends JTable {
 	}
 
 	public void setNodeExpandedState(JTree tree, DefaultMutableTreeNode node, boolean expanded) {
-		ArrayList<DefaultMutableTreeNode> list = Collections.list(node.children());
-		for (DefaultMutableTreeNode treeNode : list) {
-			setNodeExpandedState(tree, treeNode, expanded);
+		ArrayList<TreeNode> list = Collections.list(node.children());
+		for (TreeNode treeNode : list) {
+			setNodeExpandedState(tree, (DefaultMutableTreeNode) treeNode, expanded);
 		}
 		if (!expanded && node.isRoot()) {
 			return;

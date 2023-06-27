@@ -153,7 +153,9 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 		col.setCellRenderer(renderer);
 
 		col.setCellEditor(new DefaultCellEditor(new JTextField()));
+		
 		col.getCellEditor().addCellEditorListener(new MyCellEditerListner());
+		
 		try {
 			retrive();
 		}catch(Exception e)

@@ -31,16 +31,27 @@ public abstract class DefaultScheduleBuild implements ScheduleBuild{
 	protected ShippersTable searchOption;
 	
 	private TableService 		tableService;
+	
 	protected ADVService 		advService;
+	
 	protected ScheduleSubService 	scheduleService;
+	
 	protected List scheduleList;
+	
 	protected int lengthOfTask, current;
+	
 	protected Date selectedDate;
+	
 	private Vector portDataArray;
+	
 	protected String[] vesselArray;
+	
 	protected ADVData advData;
+	
 	protected String[][] arrayDatas;
+	
 	protected String[][] vslDatas;
+	
 	public DefaultScheduleBuild(ShippersTable searchOption) throws SQLException
 	{
 		tableService = new TableServiceImpl();

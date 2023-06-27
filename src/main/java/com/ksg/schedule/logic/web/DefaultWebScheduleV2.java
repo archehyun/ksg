@@ -32,6 +32,7 @@ import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
@@ -462,21 +463,21 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 							if(format_type==FORMAT_INLNAD)
 							{
 								logger.debug("<outbound>");
-								makeInlandWebSchedule(ScheduleService.OUTBOUND,outboundFromPortIndexList, outboundToPortIndexList,inlandPortIndexLists,outboundBusanPortIndex, outbundBusanNewPortIndex,
+								makeInlandWebSchedule(ScheduleEnum.OUTBOUND.getSymbol(),outboundFromPortIndexList, outboundToPortIndexList,inlandPortIndexLists,outboundBusanPortIndex, outbundBusanNewPortIndex,
 										vslIndex);
 
 								logger.debug("<inbound>");
-								makeInlandWebSchedule(ScheduleService.INBOUND,inboundFromPortIndexList, inboundToPortIndexList,inlandPortIndexLists,inboundBusanPortIndex, inbundBusanNewPortIndex,
+								makeInlandWebSchedule(ScheduleEnum.INBOUND.getSymbol(),inboundFromPortIndexList, inboundToPortIndexList,inlandPortIndexLists,inboundBusanPortIndex, inbundBusanNewPortIndex,
 										vslIndex);
 							}
 							else
 							{
 								logger.debug("<outbound>");
-								makeWebSchedule(ScheduleService.OUTBOUND,outboundFromPortIndexList, outboundToPortIndexList,outboundBusanPortIndex, outbundBusanNewPortIndex,
+								makeWebSchedule(ScheduleEnum.OUTBOUND.getSymbol(),outboundFromPortIndexList, outboundToPortIndexList,outboundBusanPortIndex, outbundBusanNewPortIndex,
 										vslIndex);
 
 								logger.debug("<inbound>");
-								makeWebSchedule(ScheduleService.INBOUND,inboundFromPortIndexList, inboundToPortIndexList,inboundBusanPortIndex, inbundBusanNewPortIndex,
+								makeWebSchedule(ScheduleEnum.INBOUND.getSymbol(),inboundFromPortIndexList, inboundToPortIndexList,inboundBusanPortIndex, inbundBusanNewPortIndex,
 										vslIndex);
 							}
 
@@ -541,7 +542,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 			// 출발항 설정
 			try{
 				// 아웃바운드, 부산항, 부산 신항 둘다 있는 경우 수정
-				if(inOutType.equals(ScheduleService.OUTBOUND)&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
+				if(inOutType.equals(ScheduleEnum.OUTBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
 				{	
 					// 부산항 인덱스를 부산 신항으로 적용
 					/* skip하기 위한 기준
@@ -565,7 +566,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 				fromPortTableInfo = this.getTablePort(portDataArray, fromPortIndexA);
 				
 				// 아웃바운드, 부산항, 부산 신항 둘다 있는 경우 수정
-				if(inOutType.equals(ScheduleService.OUTBOUND)&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
+				if(inOutType.equals(ScheduleEnum.OUTBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
 				{
 					
 					//부산신항 항구명을 부산항으로 변경 
@@ -626,7 +627,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 				try{
 
 					// 인바운드, 부산항, 부산 신항 둘다 있는 경우
-					if(inOutType.equals(ScheduleService.INBOUND)&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
+					if(inOutType.equals(ScheduleEnum.INBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
 					{	
 						// 부산항 인덱스를 부산 신항으로 적용
 						/* skip하기 위한 기준
@@ -650,7 +651,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 					toTablePortInfo = this.getTablePort(portDataArray, toPortIndexA);
 					
 					// 인바운드, 부산항, 부산 신항 둘다 있는 경우
-					if(inOutType.equals(ScheduleService.INBOUND)&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
+					if(inOutType.equals(ScheduleEnum.INBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
 					{
 						//부산 신항 항구명을 부산항으로 지정
 						if(toPortIndexA==busanNewPortIndex)
@@ -746,7 +747,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 			// 출발항 설정
 			try{
 				// 아웃바운드, 부산항, 부산 신항 둘다 있는 경우 수정
-				if(inOutType.equals(ScheduleService.OUTBOUND)&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
+				if(inOutType.equals(ScheduleEnum.OUTBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
 				{	
 					// 부산항 인덱스를 부산 신항으로 적용
 					/* skip하기 위한 기준
@@ -770,7 +771,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 				fromPortTableInfo = this.getTablePort(portDataArray, fromPortIndexA);
 				
 				// 아웃바운드, 부산항, 부산 신항 둘다 있는 경우
-				if(inOutType.equals(ScheduleService.OUTBOUND)&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
+				if(inOutType.equals(ScheduleEnum.OUTBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
 				{
 					// 부산 신항 항구 명을 부산항으로 지정
 					if(fromPortIndexA==busanNewPortIndex)
@@ -826,7 +827,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 				try{
 
 					// 인바운드, 부산항, 부산 신항 둘다 있는 경우 수정
-					if(inOutType.equals(ScheduleService.INBOUND)&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
+					if(inOutType.equals(ScheduleEnum.INBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
 					{	
 						// 부산항 인덱스를 부산 신항으로 적용
 						/* skip하기 위한 기준
@@ -850,7 +851,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 					toTablePortInfo = this.getTablePort(portDataArray, toPortIndexA);
 					
 					// 인바운드, 부산항, 부산 신항 둘다 있는 경우 수정
-					if(inOutType.equals(ScheduleService.INBOUND)&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
+					if(inOutType.equals(ScheduleEnum.INBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
 					{
 						// 부산 신항 항구 명을 부산항으로 지정
 						if(toPortIndexA==busanNewPortIndex)

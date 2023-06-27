@@ -19,10 +19,6 @@ import com.ksg.domain.ScheduleData;
 
 public interface ScheduleService extends PageService{
 	
-	public static final String INBOUND = "I";
-	
-	public static final String OUTBOUND = "O";	
-	
 	public List<Schedule> selecteScheduleListByCondition(Schedule param) throws SQLException;
 	
 	public List<Schedule> selecteAll(CommandMap param) throws SQLException;
@@ -40,10 +36,6 @@ public interface ScheduleService extends PageService{
 	public int deleteSchedule()												throws SQLException;
 
 	List<ScheduleData> selecteScheduleListByCondition(ScheduleData param) throws SQLException;
-	
-	
-	
-
 	
 }
 

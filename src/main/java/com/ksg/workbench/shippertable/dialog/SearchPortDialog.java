@@ -30,9 +30,9 @@ import javax.swing.event.ChangeListener;
 
 import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ksg.service.impl.PortServiceImpl;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 
 /**

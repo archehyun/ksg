@@ -322,7 +322,6 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 
 	@Override
 	public List<PortInfo> selectPortListByNameList(List<String> nameList) throws SQLException {
-		// TODO Auto-generated method stub
 		return portDAO.selectPortListByNameList(nameList);
 	}
 

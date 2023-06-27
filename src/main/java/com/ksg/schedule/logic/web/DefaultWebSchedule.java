@@ -35,6 +35,7 @@ import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
@@ -611,10 +612,10 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 				try {
 					vesselInfo = getVesselInfo(vslDatas[vslIndex][0]);
 					// 인바운드 스케줄 조합
-					makeSchedule(tableData, vslIndex,a_inbound_port_index,a_inbound_toport_index,a_inland_port_index,ScheduleService.INBOUND,advData);
+					makeSchedule(tableData, vslIndex,a_inbound_port_index,a_inbound_toport_index,a_inland_port_index,ScheduleEnum.INBOUND.getSymbol(),advData);
 
 					// 아웃바운드 스케줄 조합
-					makeSchedule(tableData, vslIndex,a_outbound_port_index,a_outbound_toport_index,a_inland_port_index,ScheduleService.OUTBOUND,advData);
+					makeSchedule(tableData, vslIndex,a_outbound_port_index,a_outbound_toport_index,a_inland_port_index,ScheduleEnum.OUTBOUND.getSymbol(),advData);
 
 
 					processDialog.setMessage(message);
@@ -682,8 +683,8 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 					TablePort toPort = this.getTablePort(portDataArray, outPort[outToPortIndex]);
 
 
-					String fromPortArray[]	= fromPort.getPortArray();
-					String toPortArray[]	= toPort.getPortArray();
+					String fromPortArray[]	= fromPort.getSubPortNameArray();
+					String toPortArray[]	= toPort.getSubPortNameArray();
 
 
 					for(int fromPortIndex =0;fromPortIndex<fromPortArray.length;fromPortIndex++)
@@ -697,12 +698,12 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 								for(int inlnadIndex=0;inlnadIndex<inlnadPortIndex.length;inlnadIndex++)
 								{
 									TablePort inlnadPorts = this.getTablePort(portDataArray, inlnadPortIndex[inlnadIndex]);
-									String inlnadPortArray[]	= inlnadPorts.getPortArray();
+									String inlnadPortArray[]	= inlnadPorts.getSubPortNameArray();
 
 									for(int inlnadPortNum=0;inlnadPortNum<inlnadPortArray.length;inlnadPortNum++)
 									{	
 										//출발항, 도착항 지정
-										if(InOutBoundType.equals(ScheduleService.INBOUND))
+										if(InOutBoundType.equals(ScheduleEnum.INBOUND.getSymbol()))
 										{
 											if(arrayDatas[vslIndex][outPort[outPortIndex]-1].equals("-")||arrayDatas[vslIndex][ports[outToPortIndex]-1].equals("-"))
 												continue;
@@ -714,7 +715,7 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 											toDates   = KSGDateUtil.getDates(arrayDatas[vslIndex][ports[outToPortIndex]-1],currentMonth,currentYear);
 
 										}
-										else if(InOutBoundType.equals(ScheduleService.OUTBOUND))
+										else if(InOutBoundType.equals(ScheduleEnum.OUTBOUND.getSymbol()))
 										{
 											// 하이픈 처리된 스케줄은 패스
 											if(arrayDatas[vslIndex][ports[outPortIndex]-1].equals("-")||arrayDatas[vslIndex][outPort[outToPortIndex]-1].equals("-"))
@@ -749,7 +750,7 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 										
 										
 										// outbound 스케줄:
-										if(InOutBoundType.equals(ScheduleService.OUTBOUND)&&isOutToBusanAndNewBusan)
+										if(InOutBoundType.equals(ScheduleEnum.OUTBOUND.getSymbol())&&isOutToBusanAndNewBusan)
 										{	
 											/* 무시하기 위한 기준
 											 * 1. 부산항, 부산신항이 동시에 존재하는 경우
@@ -767,7 +768,7 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 											}
 										}
 										// inbound 스케줄
-										if(InOutBoundType.equals(ScheduleService.INBOUND)&&isOutBusanAndNewBusan)
+										if(InOutBoundType.equals(ScheduleEnum.INBOUND.getSymbol())&&isOutBusanAndNewBusan)
 										{									
 											if(toPort.equals(BUSAN)&&isOutNewBusanPortScheduleAdd)
 											{
@@ -995,7 +996,7 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 			{
 				try 
 				{
-					makeWebSchedule(tableData, vslIndex,a_outport,ScheduleService.OUTBOUND,advData);
+					makeWebSchedule(tableData, vslIndex,a_outport,ScheduleEnum.OUTBOUND.getSymbol(),advData);
 				}
 				catch (PortIndexNotMatchException e) 
 				{
@@ -1272,9 +1273,9 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 
 				TablePort _outtoport = this.getTablePort(portDataArray, outToPortIndex);
 
-				String subFromPortArray[]=_outport.getPortArray();
+				String subFromPortArray[]=_outport.getSubPortNameArray();
 
-				String subToPortArray[]=_outtoport.getPortArray();
+				String subToPortArray[]=_outtoport.getSubPortNameArray();
 
 				outToPortData = arrayDatas[vslIndex][outToPortIndex-1];
 
@@ -1310,7 +1311,7 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 						try{
 
 							// outbound 스케줄:
-							if(InOutBoundType.equals(ScheduleService.OUTBOUND)&&isOutToBusanAndNewBusan)
+							if(InOutBoundType.equals(ScheduleEnum.OUTBOUND.getSymbol())&&isOutToBusanAndNewBusan)
 							{	
 								/* 무시하기 위한 기준
 								 * 1. 부산항, 부산신항이 동시에 존재하는 경우
@@ -1328,7 +1329,7 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 								}
 							}
 							// inbound 스케줄
-							if(InOutBoundType.equals(ScheduleService.INBOUND)&&isOutBusanAndNewBusan)
+							if(InOutBoundType.equals(ScheduleEnum.INBOUND.getSymbol())&&isOutBusanAndNewBusan)
 							{									
 								if(toPort.equals(BUSAN)&&isOutNewBusanPortScheduleAdd)
 								{

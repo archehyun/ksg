@@ -1,7 +1,6 @@
 package com.ksg.schedule.logic;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -76,6 +75,7 @@ public class ScheduleManager {
 		baseService = new BaseServiceImpl();
 		
 		vesselDAO = new VesselDAOImpl();
+		
 		companyDAO = new CompanyDAOImpl();
 		
 	}

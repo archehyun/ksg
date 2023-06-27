@@ -145,6 +145,7 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	@Override
 	public HashMap<String, Object> selectListByPage(HashMap<String, Object> param) throws SQLException {
 		
+		log.info("param:{}", param);
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("total", vesselDAO.selectCount(param));
@@ -159,7 +160,7 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 	@Override
 	public HashMap<String, Object> selectDetailListByLike(Map<String, Object> param) throws SQLException {
 		
-		log.debug("param:"+param);
+		log.info("param:"+param);
 		
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 

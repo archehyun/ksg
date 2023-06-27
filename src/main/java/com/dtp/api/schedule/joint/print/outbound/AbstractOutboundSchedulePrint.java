@@ -99,9 +99,5 @@ public abstract class AbstractOutboundSchedulePrint extends AbstractSchedulePrin
 
 		initFile();
 	}
-	public void close()
-	{
-
-	}
-
+	
 }

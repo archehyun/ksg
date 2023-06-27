@@ -34,8 +34,6 @@ public interface MemberDAO {
 	public int delete(Map<String, Object> commandMap) throws SQLException;
 	
 	public Object insert(HashMap<String, Object> param) throws SQLException;
-	
-	
 
 	public Object selectListByPage(HashMap<String, Object> param)throws SQLException;
 

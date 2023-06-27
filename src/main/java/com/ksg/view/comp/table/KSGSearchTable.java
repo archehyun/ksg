@@ -35,12 +35,14 @@ import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.ColorData;
 import com.ksg.view.comp.table.model.KSGTableModel;
+import com.ksg.view.comp.table.renderer.KSGTableCellRenderer;
 import com.ksg.workbench.admin.KSGViewParameter;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI;
 /**
  * @author archehyun
  *
  */
+@Deprecated
 public class KSGSearchTable extends KSGTable{
 
 	/**

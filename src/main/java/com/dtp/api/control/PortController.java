@@ -25,7 +25,7 @@ public class PortController  extends AbstractController{
     {
         super();
         
-        service = new PortServiceImpl();
+        service 	= new PortServiceImpl();
         
         areaService = new AreaServiceImpl();
 
@@ -168,11 +168,9 @@ public class PortController  extends AbstractController{
         							.port_abbr(port_abbr)
         							.build();
         
-       service.deletePortDetail(portParam);
+       int result =service.deletePortDetail(portParam);
         
         CommandMap returnMap = new CommandMap();
-        
-        //returnMap.put("data", result);
 
         return returnMap;
     }

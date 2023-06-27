@@ -26,8 +26,8 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.comp.AdvertiseTable;
 
 public class AddVesselDialog extends KSGDialog {

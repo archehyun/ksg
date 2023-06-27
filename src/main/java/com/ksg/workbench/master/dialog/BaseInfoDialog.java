@@ -15,10 +15,10 @@ import javax.swing.JLabel;
 
 import com.dtp.api.control.AbstractController;
 import com.ksg.common.model.CommandMap;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**
@@ -136,18 +136,26 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		butOK = new KSGGradientButton("저장");
 
 		butCancel = new KSGGradientButton("취소");
+		
 		butOK.addActionListener(this);
+		
 		butCancel.addActionListener(this);
+		
 		pnControl.add(butOK);
+		
 		pnControl.add(butCancel);
 		
 		
 		KSGPanel pnLine = new KSGPanel();
+		
 		pnLine.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		
 		pnLine.setPreferredSize(new Dimension(0,1));		
 		
 		KSGPanel pnMain =  new KSGPanel(new BorderLayout());
+		
 		pnMain.add(pnControl);
+		
 		pnMain.add(pnLine,BorderLayout.NORTH);		
 		
 		
@@ -160,7 +168,7 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		pnTitle.setBackground(Color.white);
+		
 		
 		lblTitle = new JLabel(title);
 		

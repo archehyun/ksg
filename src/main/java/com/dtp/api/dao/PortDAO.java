@@ -13,43 +13,55 @@ public class PortDAO extends AbstractDAO {
 		super();
 		this.namespace ="port";
 	}
-
-	public PortInfo selectById(String port_name) throws SQLException {
-		return (PortInfo) selectOne(this.namespace+".selectPortById", port_name);
-	}
-
-	public List<PortInfo> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List selectListByCondition(PortInfo param) throws SQLException {
-		// TODO Auto-generated method stub
+	
+	// -- select List -- //
+	
+	public List<PortInfo> selectListByCondition(PortInfo param) throws SQLException {
 		return selectList(this.namespace+".selectPortListByCondition", param);
 	}
-
-	public Object deletePort(String port_name) throws SQLException {
-		return delete(this.namespace+".deletePortInfo", port_name);
+	
+	public List<PortInfo> selectPortDetailListByPortName(String port_name) throws SQLException {
+		return selectList(this.namespace+".selectPortDetailListByPortName", port_name);
+	}
+	
+	
+	// -- select List -- //
+	
+	public PortInfo selectPortById(String port_name) throws SQLException {
+		return (PortInfo) selectOne(this.namespace+".selectPortById", port_name);
+	}
+	
+	public PortInfo selectDetailById(String id) throws SQLException {
+		
+		return (PortInfo) selectOne(this.namespace+".selectPortDetailById", id);
 	}
 
-	public void deletePortDetail(String id) {
-		// TODO Auto-generated method stub
+	public PortInfo selectDetailByKey(PortInfo param) throws SQLException {
+		return (PortInfo) selectOne(this.namespace+".selectPortDetailByKey", param);
+	}
+
+	@Deprecated
+	public PortInfo selectDetail(PortInfo param) throws SQLException {
 		
+		return (PortInfo) selectOne(this.namespace+".selectPortDetail", param);
+	}
+
+	// -- delete -- //
+	
+	public Object deletePort(String port_name) throws SQLException {
+		return delete(this.namespace+".deletePortInfo", port_name);
 	}
 	
 	public Object deletePortDetail(PortInfo port) throws SQLException {
 		return delete(this.namespace+".deletePortDetail", port);
 		
 	}
+	
+	// -- insert -- //
 
 	public Object insertPort(PortInfo param) throws SQLException {
 		return insert(this.namespace+".insertPortInfo", param);
 		
-	}
-
-	public PortInfo selectByKey(String port_name) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public Object insertPortDetail(PortInfo param) throws SQLException {
@@ -57,26 +69,9 @@ public class PortDAO extends AbstractDAO {
 		return insert(this.namespace+".insertPortInfoDetail", param);
 	}
 
+	// -- update -- //
+	
 	public Object updatePort(PortInfo param) throws SQLException {
-		// TODO Auto-generated method stub
 		return update(this.namespace+".updatePortInfo", param);
 	}
-
-	public void updatePortDetail(PortInfo param) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public List<PortInfo> selectPortDetailListByPortName(String port_name) throws SQLException {
-		// TODO Auto-generated method stub
-		return selectList(this.namespace+".selectPortDetailListByPortName", port_name);
-	}
-
-	public PortInfo selectDetailByKey(PortInfo param) throws SQLException {
-		// TODO Auto-generated method stub
-		return (PortInfo) selectOne(this.namespace+".selectPortDetailByKey", param);
-	}
-
-	
-
 }

@@ -36,6 +36,7 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
+import com.ksg.domain.ADVDataParser;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
@@ -66,7 +67,7 @@ public class BuildWebSchdeduleCommand implements IFCommand
 	private Vector portDataArray;
 	ScheduleBuildMessageDialog processMessageDialog;
 	private Vector scheduleDataList;
-	
+
 	private Vector totalScheduleList;
 
 	private ScheduleService scheduleService;
@@ -119,26 +120,26 @@ public class BuildWebSchdeduleCommand implements IFCommand
 
 	private int result=IFCommand.PROCESS;
 	public int execute() {
-		
-			
-			SwingWorker worker = new SwingWorker() {
 
-			
-				public Object construct() {
 
-					return new WebScheduleTask(searchOption);
-				}
-			};
-			worker.start();
-			
-			
-		
+		SwingWorker worker = new SwingWorker() {
+
+
+			public Object construct() {
+
+				return new WebScheduleTask(searchOption);
+			}
+		};
+		worker.start();
+
+
+
 		logger.debug("<==start build schedule ==>");
 		return result;
-		
+
 
 	}
-	
+
 
 
 	/**
@@ -213,12 +214,17 @@ public class BuildWebSchdeduleCommand implements IFCommand
 	 * @param adv 광고정보
 	 * @throws SQLException
 	 * @throws ArrayIndexOutOfBoundsException
+	 * @throws IOException 
+	 * @throws JDOMException 
+	 * @throws NullPointerException 
 	 */
 	private void insertWebSchedule(ShippersTable table, int vslIndex,
-			String InOutBoundType, int outPortIndex, int outToPortIndex, String outPort, String outToPort,ADVData adv) throws SQLException,ArrayIndexOutOfBoundsException {
+			String InOutBoundType, int outPortIndex, int outToPortIndex, String outPort, String outToPort,ADVData adv) throws SQLException,ArrayIndexOutOfBoundsException, NullPointerException, JDOMException, IOException {
 
 		outToPortData = arrayDatas[vslIndex][outToPortIndex-1];
 		outPortData = arrayDatas[vslIndex][outPortIndex-1];
+		
+		ADVDataParser parser = new ADVDataParser(adv);
 
 		if(!outToPortData.equals("-")&&!outPortData.equals("-")&&
 				!outToPortData.equals("_")&&!outPortData.equals("_")&&
@@ -227,8 +233,8 @@ public class BuildWebSchdeduleCommand implements IFCommand
 			ScheduleData scheduledata = new ScheduleData();
 			scheduledata.setTable_id(table.getTable_id());
 			scheduledata.setGubun(table.getGubun());
-			
-//			 선박명이 - 이면 스케줄 처리 안함
+
+			//			 선박명이 - 이면 스케줄 처리 안함
 			if(vslDatas[vslIndex][0]==null)
 				return;
 			// 선박명이 - 이면 스케줄 처리 안함
@@ -237,9 +243,10 @@ public class BuildWebSchdeduleCommand implements IFCommand
 
 
 			scheduledata.setVessel(vslDatas[vslIndex][0]);
+			
 			if(table.getGubun().equals(TS))
 			{
-				String vsl[][] = adv.getFullVesselArray(true);
+				String vsl[][] = parser.getFullVesselArray(true);
 				scheduledata.setTs_vessel(vsl[vslIndex][0]);
 				scheduledata.setTs_voyage_num(vsl[vslIndex][1]);
 				TablePort tablePort = new TablePort();
@@ -250,9 +257,9 @@ public class BuildWebSchdeduleCommand implements IFCommand
 				scheduledata.setTS(info.getPort_name());
 
 				String date[][]=null;
-				
-					date = adv.getDataArray();
-				
+
+				date = parser.getDataArray();
+
 				//scheduledata.setTs_date(date[vslIndex][table.getDirection()-1]);
 			}
 			scheduledata.setAgent(table.getAgent());
@@ -272,7 +279,7 @@ public class BuildWebSchdeduleCommand implements IFCommand
 			}
 			scheduledata.setDateF(dateFs[0]);
 			scheduledata.setDateFBack(dateFs[1]);
-			
+
 			scheduledata.setDateT(dateTs[0]);
 			scheduledata.setDateTBack(dateTs[1]);
 			scheduledata.setFromPort(outPort);
@@ -431,7 +438,7 @@ public class BuildWebSchdeduleCommand implements IFCommand
 			Pattern patt = Pattern.compile(datePattern1);
 			Matcher matcher = patt.matcher(dateF);			
 			matcher.lookingAt();
-		
+
 
 			yearF = Integer.valueOf(strYear);
 			monthF=Integer.valueOf(matcher.group(1));
@@ -622,7 +629,7 @@ public class BuildWebSchdeduleCommand implements IFCommand
 		return indexlist;
 	}
 	private void makeWebSchedule(ShippersTable table, int vslIndex, int portList[],String InOutBoundType,ADVData adv)
-	throws ArrayIndexOutOfBoundsException,NullPointerException, ParseException
+			throws Exception
 	{
 		portDataArray=getPortList(table);
 		for(int i=0;i<portList.length;i++)
@@ -633,8 +640,8 @@ public class BuildWebSchdeduleCommand implements IFCommand
 				int ToPortIndex = portList[j];
 				TablePort _outport = this.getPort(portDataArray, FromPortIndex);
 				TablePort _outtoport = this.getPort(portDataArray, ToPortIndex);
-				String outportarray[]=_outport.getPortArray();
-				String outtoportarray[]=_outtoport.getPortArray();
+				String outportarray[]=_outport.getSubPortNameArray();
+				String outtoportarray[]=_outtoport.getSubPortNameArray();
 				for(int z =0;z<outportarray.length;z++)
 				{
 					for(int c =0;c<outtoportarray.length;c++)

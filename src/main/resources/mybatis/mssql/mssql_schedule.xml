@@ -10,7 +10,7 @@
         IBM Corporation - initial API and implementation
  -->
 
-<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="schedule">
 
@@ -124,7 +124,8 @@
 </select>
 
 	<select id="selectScheduleListByCondition" resultClass="com.ksg.domain.ScheduleData" parameterClass="com.ksg.domain.ScheduleData">
-		SELECT * FROM TB_SCHEDULE_INFO
+		SELECT * 
+		FROM TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 				<isNotNull property="gubun" prepend="and">
 					gubun=#gubun#
@@ -169,7 +170,8 @@
 	</select>
 	
 		<select id="selectScheduleListByCondition2" resultClass="com.ksg.domain.Schedule" parameterClass="com.ksg.domain.Schedule">
-			SELECT * FROM TB_SCHEDULE_INFO
+			SELECT * 
+			FROM TB_SCHEDULE_INFO
 			<dynamic prepend="where">
 					<isNotNull property="gubun" prepend="and">
 						gubun=#gubun#
@@ -194,7 +196,8 @@
 		</select>
 	
 	<select id="selectAll" resultClass="com.ksg.domain.Schedule" parameterClass="com.ksg.domain.Schedule">
-		SELECT * FROM TB_SCHEDULE_INFO
+		SELECT * 
+		FROM TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 				<isNotNull property="gubun" prepend="and">
 					gubun=#gubun#
@@ -219,7 +222,8 @@
 	</select>
 	
 	<select id="selectScheduleList" resultClass="com.ksg.common.model.CommandMap" parameterClass="com.ksg.common.model.CommandMap">
-		select * from TB_SCHEDULE_INFO
+		SELECT * 
+		FROM TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 		    	<isNotNull property="table_id" prepend="and">
 					table_id=#table_id#
@@ -262,17 +266,17 @@
 	</select>
 	
 	<select id="selectScheduleDateList" resultClass="java.util.HashMap" >
-		select date_issue, gubun, count(case when inOutType='I' then 1 end) cnt_i, 
+		SELECT date_issue, gubun, count(case when inOutType='I' then 1 end) cnt_i, 
 		count(case when inOutType='O' then 1 end) cnt_o 
 		
-		from TB_SCHEDULE_INFO group by date_issue,gubun
+		FROM TB_SCHEDULE_INFO group by date_issue,gubun
 	</select>
 	<select id="selectInlandScheduleDateList" resultClass="java.util.HashMap" >
-		select date_issue, gubun, count(*) cnt from TB_INLAND_SCHEDULE_INFO group by date_issue,gubun
+		SELECT date_issue, gubun, count(*) cnt from TB_INLAND_SCHEDULE_INFO group by date_issue,gubun
 	</select>
 	
 	<select id="selectInlandList" resultClass="java.util.HashMap">
-	select * from TB_INLAND_SCHEDULE_INFO where gubun='inland'
+		select * FROM TB_INLAND_SCHEDULE_INFO where gubun='inland'
 				<isNotNull property="table_id" prepend="and">
 					table_id=#table_id#
 				</isNotNull>
@@ -286,9 +290,11 @@
 				<isNotNull property="inOutType" prepend="and">
 					inOutType=#inOutType#
 				</isNotNull>
+				
 				<isNotNull property="vessel" prepend="and">
 					vessel=#vessel#
 				</isNotNull>
+				
 				<isNotNull property="voyage_num" prepend="and">
 					voyage_num=#voyage_num#
 				</isNotNull>
@@ -296,26 +302,31 @@
 				<isNotNull property="fromPort" prepend="and">
 					fromPort=#fromPort#
 				</isNotNull>
+				
 				<isNotNull property="port" prepend="and">
 					port=#port#
 				</isNotNull>
+				
 				<isNotNull property="inland_port" prepend="and">
 					inland_port=#inland_port#
-				</isNotNull>					
-	
+				</isNotNull>				
 
-	<isNotNull property="date_issue" prepend="and">
-	date_issue=#date_issue#
-	</isNotNull>
+				<isNotNull property="date_issue" prepend="and">
+				date_issue=#date_issue#
+				</isNotNull>
 		
-	order by port, fromPort, DateF,DateT
-</select>
+		order by port, fromPort, DateF,DateT
+	</select>
 	
 	
 	
 	<select id="selectScheduledAreaList" resultClass="java.util.HashMap">
 	
-	select area_name from TB_SCHEDULE_INFO group by area_name order by area_name
+	SELECT 
+		area_name 
+	FROM TB_SCHEDULE_INFO 
+	group by area_name order by area_name
+	
 	</select>
 	
 	<select id="selectScheduledPortList" resultClass="java.util.HashMap">
@@ -343,9 +354,7 @@
 		<isNotNull property="inOutType" prepend="and">
 			inOutType=#inOutType#
 		</isNotNull>
-	</dynamic>
-	
-	
+	</dynamic>	
 	group by fromPort order by fromPort
 	</select>
 	
@@ -404,12 +413,16 @@
 	
 
 <!-- delete -->
-<delete id="deleteSchedule">
-	delete from TB_SCHEDULE_INFO
-</delete>
-<delete id="deleteInlnadSchedule">
-	delete from TB_INLAND_SCHEDULE_INFO
-</delete>
+	<delete id="deleteSchedule">
+		DELETE FROM TB_SCHEDULE_INFO
+	</delete>
+	<delete id="deleteScheduleById">
+		DELETE FROM TB_SCHEDULE_INFO
+		WHERE table_id=#table_id#
+	</delete>
+	<delete id="deleteInlnadSchedule">
+		DELETE FROM TB_INLAND_SCHEDULE_INFO
+	</delete>
 	
 	
 	
@@ -459,13 +472,15 @@
 <!-- ********************************************* -->	
 
 <insert id="insertScheduleBulk" parameterClass="java.util.List">
-		insert TB_SCHEDULE_INFO(
+		INSERT TB_SCHEDULE_INFO(
 		table_id,
 		vessel,
 		voyage_num,
 		port,
 		dateF,
 		dateT,
+		fromDate,
+		toDate,
 		company_abbr,
 		agent,
 		TS,
@@ -498,13 +513,14 @@
 		#[].port#,
 		#[].dateF#,
 		#[].dateT#,
+		#[].fromDate#,
+		#[].toDate#,
 		#[].company_abbr#,
 		#[].agent#,
 		#[].TS#,
 		#[].common_shipping#,
 		
 		#[].area_code#,
-		
 		
 		#[].inOutType#,
 		#[].fromPort#,
@@ -529,8 +545,5 @@
 		)
 		</iterate>
 </insert>
-
-
-
 				
 </sqlMap>

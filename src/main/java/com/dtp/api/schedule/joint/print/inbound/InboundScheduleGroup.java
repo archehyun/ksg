@@ -1,5 +1,6 @@
 package com.dtp.api.schedule.joint.print.inbound;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,7 +58,7 @@ public class InboundScheduleGroup extends ScheduleGroup{
 		Collections.sort(this.scheduleList, new ScheduleDateComparator(ScheduleDateComparator.FROM_DATE));
 		
 		//외국항 출발일은 늦은 일자 적용
-		this.dateF =this.scheduleList.get(scheduleList.size()-1).getDateF();
+		this.dateF = this.scheduleList.get(scheduleList.size()-1).getDateF();
 		
 		portAndDayList 		= getJointedInboundPortList();
 		
@@ -66,6 +67,17 @@ public class InboundScheduleGroup extends ScheduleGroup{
 		sortedCompanyist 	= toJointedCompanyString();
 		
 		this.isTaged =isTaged;
+	}
+	
+	public boolean isValidateDate() 
+	{
+		try
+		{
+			return inputDateFormat.parse(dateT).compareTo(inputDateFormat.parse(dateF))>0;
+		}catch(Exception e)
+		{
+			return false;
+		}
 	}
 
 	
@@ -92,26 +104,24 @@ public class InboundScheduleGroup extends ScheduleGroup{
 	}	
 
 	public String toJointedCompanyString() {
+		
 		String re_company_abbr = vessel.getVessel_company();
 		
 		List<String> companyAbbrList=this.scheduleList.stream()
 				.filter(o -> !re_company_abbr.equals(o))
 				.map( data-> (data.getCompany_abbr().equals(data.getAgent())?data.getCompany_abbr():data.getCompany_abbr()+"/"+data.getAgent()))
 				.distinct()
-				.sorted()
+				.sorted(String.CASE_INSENSITIVE_ORDER)
 				.collect(Collectors.toList());
 		
 		String sortedCompanyist =StringUtils.join(companyAbbrList.toArray(new String[companyAbbrList.size()]),",");
+		
 		return sortedCompanyist;
 	}
 	
 	public String toPrintString(boolean taged) {
 		
 		String dateF 			= KSGDateUtil.convertDateFormatYYYY_MM_DDToMMDD2(getDateF());
-		
-		
-		
-		
 		
 		StringBuffer jointedInboundPort = new StringBuffer();
 		

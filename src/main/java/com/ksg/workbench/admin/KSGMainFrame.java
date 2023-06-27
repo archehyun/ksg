@@ -68,15 +68,16 @@ import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.ScheduleServiceImpl;
-import com.ksg.view.comp.LookAheadTextField;
-import com.ksg.view.comp.StringArrayLookAhead;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.textfield.LookAheadTextField;
+import com.ksg.view.comp.textfield.StringArrayLookAhead;
 import com.ksg.workbench.KSGLogin;
 import com.ksg.workbench.adv.ADVManageUI;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.dialog.SearchADVCountDialog;
-import com.ksg.workbench.common.comp.dialog.WebScheduleCreateDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.workbench.dialog.SearchADVCountDialog;
+import com.ksg.workbench.dialog.WebScheduleCreateDialog;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.preference.PreferenceDialog;
 import com.ksg.workbench.print.PrintADVUI;
@@ -185,6 +186,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	public KSGMainFrame(KSGLogin login) 
 	{	
 		this.setName(NAME);
+		
+		NotificationManager.getInstance().setFrame(this);
 
 		this.setController(new MainController());
 

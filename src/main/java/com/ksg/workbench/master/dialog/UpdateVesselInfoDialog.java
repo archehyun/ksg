@@ -43,11 +43,11 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.view.comp.KSGCheckBox;
-import com.ksg.view.comp.KSGComboBox;
+import com.ksg.view.comp.checkbox.KSGCheckBox;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 
 /**

@@ -10,7 +10,7 @@
         IBM Corporation - initial API and implementation
  -->
 
-<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="Table">
 
@@ -494,7 +494,15 @@
 		  #port_type#
 		  )
 	 </insert>
-	  <select id="getTablePortList" resultClass="com.ksg.domain.TablePort">
+	 
+	 <select id="getTablePortListById" resultClass="com.ksg.domain.TablePort">
+		select * from TB_TABLE_PORTLIST where table_id=#table_id#
+		
+		order by port_index
+	 </select>
+	 
+	 
+	<select id="getTablePortList" resultClass="com.ksg.domain.TablePort">
 		select * from TB_TABLE_PORTLIST where table_id=#table_id#
 	
 	 	<isNotEmpty prepend="and" property="port_name">
@@ -688,8 +696,10 @@
 	 </update>
 	 
 	 <sql id="TableListByDate">
-	 select *, (select count(*) from TB_TABLE_PORTLIST where TB_TABLE_PORTLIST.table_id=TB_TABLE_INFO.table_id) as r_port_col 
-	 from TB_TABLE_INFO where date_isusse=#date_isusse#
+	 SELECT *, (select count(*) 
+	 FROM TB_TABLE_PORTLIST 
+	 WHERE TB_TABLE_PORTLIST.table_id=TB_TABLE_INFO.table_id) as r_port_col 
+	 FROM TB_TABLE_INFO where date_isusse=#date_isusse#
 	 <isNotEmpty prepend="AND" property="company_abbr">
 		company_abbr= #company_abbr#
 	</isNotEmpty>

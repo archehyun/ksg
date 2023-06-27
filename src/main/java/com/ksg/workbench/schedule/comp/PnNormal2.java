@@ -24,12 +24,12 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.domain.AreaInfo;
 import com.ksg.service.AreaService;
 import com.ksg.service.impl.AreaServiceImpl;
-import com.ksg.view.comp.KSGComboBox;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
-import com.ksg.workbench.common.comp.textfield.SearchTextField;
+import com.ksg.view.comp.textfield.SearchTextField;
 import com.ksg.workbench.schedule.dialog.SearchPortDialog;
 
 
@@ -75,7 +75,6 @@ public class PnNormal2 extends PnSchedule{
 	
 	private SearchTextField txfToPort;
 
-
 	private CommandMap searchParam;
 	
 	public PnNormal2() {
@@ -83,6 +82,8 @@ public class PnNormal2 extends PnSchedule{
 		super();
 		
 		this.setLayout(new BorderLayout());
+		
+		this.setController(new ScheduleController());
 		
 		this.addComponentListener(this);
 
@@ -94,18 +95,34 @@ public class PnNormal2 extends PnSchedule{
 
 	public KSGPanel buildCenter()
 	{
-		tableH = new KSGTablePanel("스케줄 목록");		
+		tableH = new KSGTablePanel("스케줄 목록");	
+		
 		tableH.addColumn(new KSGTableColumn("gubun", "구분"));
+		
 		tableH.addColumn(new KSGTableColumn("table_id", "테이블 ID",100));
+		
 		tableH.addColumn(new KSGTableColumn("company_abbr", "선사명",150));
+		
 		tableH.addColumn(new KSGTableColumn("agent", "에이전트",150));
+		
 		tableH.addColumn(new KSGTableColumn("vessel", "선박명",200));
+		
 		tableH.addColumn(new KSGTableColumn("date_issue", "출력일자",100));
+		
 		tableH.addColumn(new KSGTableColumn("voyage_num", "항차번호"));
+		
 		tableH.addColumn(new KSGTableColumn("area_name", "지역명"));
+		
 		tableH.addColumn(new KSGTableColumn("fromPort", "출발항",200));
+		
 		tableH.addColumn(new KSGTableColumn("dateF", "출발일", 90));
+		
+//		tableH.addColumn(new KSGTableColumn("fromDate", "출발일", 90));
+		
 		tableH.addColumn(new KSGTableColumn("dateT", "도착일", 90));
+		
+//		tableH.addColumn(new KSGTableColumn("toDate", "도착일", 90));
+		
 		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
 
 		tableH.initComp();
@@ -124,25 +141,42 @@ public class PnNormal2 extends PnSchedule{
 	public KSGPanel buildSearch()
 	{
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
+		
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
 		cbxNormalInOut = new KSGComboBox("inOutType");
+		
 		cbxNormalInOut.setPreferredSize(new Dimension(100,23));
-		cbxNormalInOut.setShowTotal(true);		
+		
+		cbxNormalInOut.setShowTotal(true);
+		
 		cbxNormalInOut.initComp();
 
 		cbxNormalSearch = new KSGComboBox();
+		
 		cbxNormalSearch.setPreferredSize(new Dimension(150,25));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("", "전체"));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("table_id", "테이블 ID"));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("company_abbr", "선사명"));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("agent", "에이전트"));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("vessel", "선박명"));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("voyage_num", "항차명"));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("n_voyage_num", "항차번호"));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("fromPort", "출발항"));
+		
 		cbxNormalSearch.addItem(new KSGTableColumn("toPort", "도착항"));
-		cbxNormalSearch.addItem(new KSGTableColumn("DateF", "출발일"));
-		cbxNormalSearch.addItem(new KSGTableColumn("DateT", "도착일"));	
+		
+		cbxNormalSearch.addItem(new KSGTableColumn("fromDate", "출발일"));
+		
+		cbxNormalSearch.addItem(new KSGTableColumn("toDate", "도착일"));	
 
 
 		txfNoramlSearch = new JTextField(15);
@@ -155,10 +189,7 @@ public class PnNormal2 extends PnSchedule{
 					fnSearch();
 				}
 			}
-			
 		});
-		
-		
 		
 		cbxArea = new KSGComboBox();
 		
@@ -167,6 +198,7 @@ public class PnNormal2 extends PnSchedule{
 		JLabel lblFromPort = new JLabel("출발항");
 
 		txfFromPort = new SearchTextField();
+		
 		txfFromPort.setPreferredSize(new Dimension(150,25));
 
 		txfFromPort.setActionCommand("SEARCH_FROM_PORT");
@@ -174,25 +206,35 @@ public class PnNormal2 extends PnSchedule{
 		JLabel lblToPort = new JLabel("도착항");
 		
 		txfToPort = new SearchTextField();
-		txfToPort.setPreferredSize(new Dimension(150,25));
-		txfToPort.setActionCommand("SEARCH_TO_PORT");
-		txfFromPort.addActionListener(this);
-		txfToPort.addActionListener(this);
 		
+		txfToPort.setPreferredSize(new Dimension(150,25));
+		
+		txfToPort.setActionCommand("SEARCH_TO_PORT");
+		
+		txfFromPort.addActionListener(this);
+		
+		txfToPort.addActionListener(this);		
 		
 		KSGPanel pnPortSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		pnPortSearch.add(lblFromPort);
+		
 		pnPortSearch.add(txfFromPort);
+		
 		pnPortSearch.add(lblToPort);
+		
 		pnPortSearch.add(txfToPort);
 		
 		KSGGradientButton butSearch = new KSGGradientButton("검색", "images/search3.png");
+		
 		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
+		
 		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		
 		butSearch.addActionListener(this);
+		
 		butCancel.addActionListener(new ActionListener() {
 			
 			@Override
@@ -205,17 +247,24 @@ public class PnNormal2 extends PnSchedule{
 			}
 		});
 		
-		
-
 		pnNormalSearchCenter.add(new JLabel("구분:"));
+		
 		pnNormalSearchCenter.add(cbxNormalInOut);
+		
 		pnNormalSearchCenter.add(new JLabel("지역:"));
+		
 		pnNormalSearchCenter.add(cbxArea);
+		
 		pnNormalSearchCenter.add(pnPortSearch);
+		
 		pnNormalSearchCenter.add(new JLabel("항목:"));
+		
 		pnNormalSearchCenter.add(cbxNormalSearch);
+		
 		pnNormalSearchCenter.add(txfNoramlSearch);
+		
 		pnNormalSearchCenter.add(butSearch);
+		
 		pnNormalSearchCenter.add(butCancel);
 		
 		KSGPanel pnNormalSeawrchEast = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -227,7 +276,6 @@ public class PnNormal2 extends PnSchedule{
 		pnNormalSearchMain.add(pnNormalSearchCenter);
 
 		pnNormalSearchMain.add(pnNormalSeawrchEast,BorderLayout.EAST);
-		
 
 		pnNormalSearchMain.add(pnNormalSearchCenter);
 
@@ -238,25 +286,31 @@ public class PnNormal2 extends PnSchedule{
 	{
 		try {
 			searchParam = new CommandMap();
+			
 			searchParam.put("gubun", "Normal");			
 
 			String searchOption  = txfNoramlSearch.getText();
 
 			if(cbxNormalInOut.getSelectedIndex()>0) {
+				
 				KSGTableColumn col = (KSGTableColumn)cbxNormalInOut.getSelectedItem();
+				
 				searchParam.put("inOutType", col.columnField);
 
 			}
 			if(cbxArea.getSelectedIndex()>0)
 			{
 				KSGTableColumn item=(KSGTableColumn) cbxArea.getSelectedItem();
+				
 				searchParam.put("area_name", item.columnField);
 			}
 
 			if(cbxNormalSearch.getSelectedIndex()>0) {
 
 				KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
+				
 				if(!searchOption.equals(""))
+					
 					searchParam.put(item.columnField, searchOption);
 			}
 			
@@ -274,39 +328,19 @@ public class PnNormal2 extends PnSchedule{
 				searchParam.put("date_issue", input_date);
 			}
 			
-			searchParam.put("TABLE_NAME", "TB_SCHEDULE_INFO");
-
-
-			searchParam.put("PAGE_NO", 1);
-
-			logger.info("param:"+searchParam);
-
-			
-			CommandMap result =control.selectScheduleMapList(searchParam);
-
-			result.put("PAGE_NO", 1);
-
-			tableH.setResultData(result);
-
-			master = (List) result.get("master");
-
-			if(master.size()==0)
-			{
-
-			}
-			else
-			{
-				tableH.changeSelection(0,0,false,false);
-			}
+			callApi("pnNormal2.fnSearch", searchParam);
 
 		}
 		catch (Exception e) {
+			
 			e.printStackTrace();
+			
 			JOptionPane.showMessageDialog(this, "error:"+e.getMessage());
 		}
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		String command = e.getActionCommand();
 
 		if(command.equals("검색"))
@@ -329,7 +363,6 @@ public class PnNormal2 extends PnSchedule{
 
 			txfToPort.setText(portDialog.result);
 		}		
-
 	}
 	@Override
 	public void componentShown(ComponentEvent e) {
@@ -351,6 +384,33 @@ public class PnNormal2 extends PnSchedule{
 			e1.printStackTrace();
 		}
 
+	}
+	
+	@Override
+	public void updateView() {
+
+		CommandMap result= this.getModel();
+
+		boolean success = (boolean) result.get("success");
+
+		if(success)
+		{
+			String serviceId = (String) result.get("serviceId");
+
+			if("pnNormal2.fnSearch".equals(serviceId)) {
+
+				List data = (List )result.get("data");
+
+				tableH.setResultData(data);
+				
+			}
+
+			
+		}
+		else{  
+			String error = (String) result.get("error");
+			JOptionPane.showMessageDialog(this, error);
+		}
 	}
 
 }

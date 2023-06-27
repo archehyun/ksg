@@ -22,11 +22,10 @@ import javax.swing.JTextField;
 import com.dtp.api.control.CompanyController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
-
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.common.comp.button.KSGGradientButton;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 
 import mycomp.comp.MyTable;
 

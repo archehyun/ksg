@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
-import com.dtp.api.schedule.create.CreateNormalSchdeduleCommandNew;
+import com.dtp.api.schedule.create.CreateNormalSchdeduleCommandNew2;
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildInboundCommand;
 import com.ksg.commands.schedule.BuildWebSchdeduleCommand;
@@ -59,8 +59,9 @@ public class ScheduleServiceManager {
 	private JProgressBar bar =new JProgressBar();
 	
 	public static ScheduleServiceManager getInstance() {
-		if(serviceManager==null)
-			serviceManager = new ScheduleServiceManager();
+		
+		if(serviceManager==null) serviceManager = new ScheduleServiceManager();
+		
 		return serviceManager;
 	}
 	private ScheduleCreateOptionDialog optionDialog;
@@ -137,11 +138,14 @@ public class ScheduleServiceManager {
 
 	public String getDate(String da)
 	{
-		if(da.length()!=8)
-			JOptionPane.showMessageDialog(null, "입력자리수가 다릅니다.");
-		String year=da.substring(0,4);
-		String month=da.substring(4,6);
-		String day=da.substring(6,8);
+		if(da.length()!=8) JOptionPane.showMessageDialog(null, "입력자리수가 다릅니다.");
+		
+		String year		= da.substring(0,4);
+		
+		String month	= da.substring(4,6);
+		
+		String day		= da.substring(6,8);
+		
 		return year+"-"+month+"-"+day;
 	}
 	
@@ -226,7 +230,7 @@ public class ScheduleServiceManager {
 							command = new CreateInlandScheduleCommand(op);
 						}else
 						{
-							command = new CreateNormalSchdeduleCommandNew(op);								
+							command = new CreateNormalSchdeduleCommandNew2(op);								
 						}
 						break;
 					case WEB:
@@ -240,19 +244,13 @@ public class ScheduleServiceManager {
 					command.execute();
 
 				}
-				catch (DateFormattException e1) {
-					e1.printStackTrace();
-					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
-					return ;
-				}catch (NumberFormatException e1) {
-					e1.printStackTrace();
-					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
-					return ;
-				}
+				
 				catch (Exception e1) 
 				{
 					e1.printStackTrace();
+					
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
+					
 					return ;
 				}
 			}

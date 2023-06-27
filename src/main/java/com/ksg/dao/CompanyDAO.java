@@ -12,10 +12,6 @@ public interface CompanyDAO {
 	// -- select List -- //
 	
 	public List<Company> selectList(Company commandMap) throws SQLException;
-	
-	public int selectCount(Map<String, Object> commandMap) throws SQLException;
-	
-	public Object selectListByPage(HashMap<String, Object> param) throws SQLException;
 
 	public Company select(Company param) throws SQLException;
 	
@@ -30,6 +26,10 @@ public interface CompanyDAO {
 	// -- insert -- //
 	
 	public Object insert(Company param) throws SQLException;
+	
+	
+	public Object selectListByPage(HashMap<String, Object> param) throws SQLException;
+	public int selectCount(Map<String, Object> commandMap) throws SQLException;
 	
 	
 

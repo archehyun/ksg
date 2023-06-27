@@ -65,18 +65,19 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.TablePort;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.KSGCheckBox;
-import com.ksg.view.comp.KSGRadioButton;
+import com.ksg.view.comp.checkbox.KSGCheckBox;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.radiobutton.KSGRadioButton;
 import com.ksg.view.comp.table.KSGTableImpl;
+import com.ksg.view.comp.tree.CustomTree;
+import com.ksg.view.comp.tree.KSGTreeDefault;
 import com.ksg.workbench.adv.comp.ADVListPanel;
 import com.ksg.workbench.adv.comp.KSGXLSImportPanel;
 import com.ksg.workbench.adv.comp.SearchPanel;
 import com.ksg.workbench.adv.comp.SheetModel;
 import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
-import com.ksg.workbench.common.comp.tree.CustomTree;
-import com.ksg.workbench.common.comp.tree.KSGTreeDefault;
+import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 
 import lombok.extern.slf4j.Slf4j;
@@ -195,7 +196,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 		createAndUpdateUI();
 
-		callApi("aDVManageUI.init");
+//		callApi("aDVManageUI.init");
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -223,7 +224,8 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 		}else if(command.equals("신규등록"))
 		{
-			AddTableInfoDialog_temp addTableInfoDialog = new AddTableInfoDialog_temp(this,manager.selectedCompany);
+			AddTableInfoDialog addTableInfoDialog = new AddTableInfoDialog();
+			
 			addTableInfoDialog.createAndUpdateUI();
 		}
 	}
