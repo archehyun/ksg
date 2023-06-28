@@ -26,6 +26,8 @@ import lombok.extern.slf4j.Slf4j;
  * @프로그램 설명 :
 
  */
+
+@Deprecated
 @Slf4j
 public class ShipperTableServiceImpl extends AbstractServiceImpl implements ShipperTableService{
 
@@ -56,16 +58,12 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 		return resultMap;
 	}
 
-
-
-
 	@SuppressWarnings("unchecked")
 	public CommandMap selectPortList(Map<String, Object> param) {
 		log.info("param:{}",param);
 		CommandMap resultMap = new CommandMap();
 
 		try {
-
 			resultMap.put("total", 0);
 
 			resultMap.put("master", shipperTableDao.selectPortList(param));
@@ -76,7 +74,6 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 		}
 
 		return resultMap;
-
 	}
 
 	public void deleteShipperPortList(HashMap<String, Object> param) throws SQLException
@@ -105,10 +102,10 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 		for(int i=0;i<master.size();i++)
 		{
 			HashMap<String, Object> port = master.get(i);
+			
 			port.put("table_id", table_id);
 
 			insertShipperPort(port);			
-
 		}		
 	}
 
@@ -151,8 +148,6 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 		return count;
 	}
 
-	
-
 	@Override
 	public void insert(Map<String, Object> param) throws Exception{
 		log.info("param:{}",param);
@@ -170,7 +165,6 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 				throw new AlreadyExistException("exist");
 			}
 		}
-		
 	}
 
 	@Override
@@ -185,11 +179,8 @@ public class ShipperTableServiceImpl extends AbstractServiceImpl implements Ship
 		return resultMap;
 	}
 
-	
-
 	@Override
 	public List getPortList(String table_id) throws SQLException {
-		// TODO Auto-generated method stub
 		return shipperTableDao.getPortList(table_id);
 	}
 

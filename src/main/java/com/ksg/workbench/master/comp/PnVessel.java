@@ -425,9 +425,14 @@ public class PnVessel extends PnBase implements ActionListener {
 			if(row<0) return;
 
 			HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(tableH.getSelectedRow());
-			KSGDialog dialog = new InsertVesselAbbrInfoDialog(item);
+			
+			String vessel_name = (String)item.get("vessel_name");
+			
+			KSGDialog dialog = new InsertVesselAbbrInfoDialog(vessel_name);
+			
 			dialog.createAndUpdateUI();
-			fnSearchDetail((String)item.get("vessel_name"));
+			
+			fnSearchDetail(vessel_name);
 
 		}
 		else if(command.equals(STRING_EXPORT))

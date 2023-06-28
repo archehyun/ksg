@@ -101,7 +101,6 @@ public class CodeDAOImpl extends AbstractDAO implements CodeDAO{
 	}
 
 	public List selectCodeListByCondition(Code param) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList(namespace+".selectCodeHListByCondition", param);
 	}
 
@@ -110,22 +109,18 @@ public class CodeDAOImpl extends AbstractDAO implements CodeDAO{
 	}
 
 	public Object insertCodeDetail(Code codeParam) throws SQLException {
-		// TODO Auto-generated method stub
 		return insert(namespace+".insertCodeDetail",codeParam);
 	}
 
 	public Code selectCodeDetailByKey(Code codeParam) throws SQLException {
-		// TODO Auto-generated method stub
 		return  (Code) selectOne(namespace+".selectCodeDetailByKey", codeParam);
 	}
 
 	public Object insertCode(Code codeParam) throws SQLException {
-		// TODO Auto-generated method stub
 		return insert(namespace+".insertCode",codeParam);
 	}
 
 	public Code selectCodeByKey(Code codeParam) throws SQLException {
-		// TODO Auto-generated method stub
 		return  (Code) selectOne(namespace+".selectCodeByKey", codeParam);
 	}
 

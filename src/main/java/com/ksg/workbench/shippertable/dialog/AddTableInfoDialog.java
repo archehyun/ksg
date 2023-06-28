@@ -56,6 +56,7 @@ import com.ksg.view.comp.combobox.KSGComboBox;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.workbench.common.dialog.SearchCompanyDialog;
 import com.ksg.workbench.master.dialog.BaseInfoDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 

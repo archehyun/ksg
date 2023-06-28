@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class AbstractController {
 
-
 	protected CommandMap model = new CommandMap();
 
 	protected ObjectMapper objectMapper = new ObjectMapper();
@@ -42,7 +41,6 @@ public abstract class AbstractController {
 		{	
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
-
 	}
 
 	public CommandMap getModel()
@@ -97,7 +95,9 @@ public abstract class AbstractController {
 		catch(InvocationTargetException e)
 		{
 			e.printStackTrace();
+			
 			Exception targetExcpetion=(Exception) e.getTargetException();
+			
 			if(targetExcpetion instanceof AlreadyExistException || targetExcpetion instanceof ResourceNotFoundException)
 			{
 
@@ -111,12 +111,10 @@ public abstract class AbstractController {
 				model.put("error", errMessage);
 
 			}
-			throw new RuntimeException(e.getMessage());
+			throw new RuntimeException(errMessage);
 		}
-
 		catch (Exception e) {
 
-			e.printStackTrace();
 			errMessage ="unhandeld error:"+e.getMessage();                          
 			model.put("success", false);
 			model.put("error", errMessage);

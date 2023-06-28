@@ -1,4 +1,4 @@
-package com.ksg.workbench.shippertable.dialog;
+package com.ksg.workbench.common.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -44,7 +44,6 @@ import com.ksg.workbench.master.dialog.BaseInfoDialog;
   */
 @SuppressWarnings("serial")
 public class SearchVesselDialog extends BaseInfoDialog{
-	
 	
 	public String result=null;
 	
@@ -166,6 +165,7 @@ public class SearchVesselDialog extends BaseInfoDialog{
 	}
 
 	private Component buildNorth() {
+		
 		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		txf = new JTextField(20);
@@ -177,13 +177,14 @@ public class SearchVesselDialog extends BaseInfoDialog{
 
 	private void setResult(final JTable jTable) {
 		
-		int row=jTable.getSelectedRow();
+		int row = jTable.getSelectedRow();
 		
-		int col =jTable.getSelectedColumn();
+		int col = jTable.getSelectedColumn();
 		
 		if(row==-1)
 		{
 			JOptionPane.showMessageDialog(SearchVesselDialog.this, "선택된 선박이 없습니다.");
+			
 			return;
 		}
 		Object obj = jTable.getValueAt(row, 0);

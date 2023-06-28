@@ -45,4 +45,6 @@ public interface VesselService {
 
 	public int deleteVesselDetail(Vessel param) throws Exception;
 
+	Vessel selectVesselDetailByKey(Vessel param) throws Exception;
+
 }

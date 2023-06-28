@@ -143,6 +143,30 @@ public class VesselController extends AbstractController{
         
         return returnMap;
     }
+    
+    @ControlMethod(serviceId = "insertVesselDetail")
+    public CommandMap insertVesselDetail(CommandMap param) throws Exception
+    {
+        log.info("param:{}",param);
+        
+        String vessel_name 		= (String) param.get("vessel_name");
+        
+        String vessel_abbr 		= (String) param.get("vessel_abbr");
+
+        Vessel vessel = Vessel.builder()
+                                .vessel_name(vessel_name)
+                                .vessel_abbr(vessel_abbr)
+                                .build();
+        
+
+        Vessel result =service.insertVesselDetail(vessel);
+        
+        CommandMap returnMap = new CommandMap();
+        
+        returnMap.put("data", result);
+        
+        return returnMap;
+    }
 
     @ControlMethod(serviceId = "deleteVessel")
     public CommandMap deleteVessel(CommandMap param) throws Exception

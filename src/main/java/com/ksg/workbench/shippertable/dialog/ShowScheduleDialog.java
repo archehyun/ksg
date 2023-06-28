@@ -8,10 +8,9 @@ import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;import java.util.stream.Collector;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.TreeSelectionEvent;
@@ -29,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -53,14 +53,16 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 	public ShowScheduleDialog() {
 
 		shipperTableService = new ShipperTableServiceImpl();
-
+		
+		this.scheduleList = new ArrayList<ScheduleData>();
+		
 		this.addComponentListener(this);
 	}
 
 	public ShowScheduleDialog(String table_id) {
 
 		this();
-
+		
 		try {
 			this.selectedTable = shipperTableService.selectShipperTableAllById(table_id);
 		} catch (SQLException e) {
@@ -103,7 +105,6 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 	private Component buildCenter() {
 
 		pnTabMain = new JTabbedPane();
-
 
 		return pnTabMain;
 	}
@@ -216,15 +217,21 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 
 			ScheduleManager.getInstance().initMasterData(); 
 
-			scheduleList=scheduleData.getInboundScheduleList();
+			List inboundScheduleList=scheduleData.getInboundScheduleList();
+			
+			List outboundScheduleList=scheduleData.getOutboundScheduleList();
+			
+			this.scheduleList.addAll(outboundScheduleList);
+			
+			this.scheduleList.addAll(inboundScheduleList);
 
 			Map<String, List<ScheduleData>> companymap =  scheduleList.stream().collect(
 					Collectors.groupingBy(ScheduleData::getInOutType)); // ¼±»ç
 
 
-			List<ScheduleData> inbound =companymap.get("I");
+			List<ScheduleData> inbound =companymap.get(ScheduleEnum.INBOUND.getSymbol());
 			
-			List<ScheduleData> outbound =companymap.get("O");
+			List<ScheduleData> outbound =companymap.get(ScheduleEnum.OUTBOUND.getSymbol());
 			
 			if(inbound!=null)
 			pnTabMain.addTab("Inbound", updateOutbound(inbound, "Inbound","I"));
@@ -252,3 +259,4 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 	}
 
 }
+

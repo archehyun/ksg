@@ -90,7 +90,7 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 
 	protected Logger logger = LogManager.getLogger(this.getClass());
 
-	protected TableService tableService;
+	
 
 	private TablePortTransable portTransable;
 
@@ -103,8 +103,12 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 	private DropTarget dtg;	
 
 	protected BaseService baseService;
+	
+	protected TableService tableService;
 
 	PortListTableModel portTableModel;
+	
+	private TablePort changePort;
 
 	private int portMaxIndex;
 
@@ -127,7 +131,6 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 		setName(TablePort.TYPE_PARENT);
 
 		initTable();	
-
 	}
 
 	/**
@@ -173,7 +176,6 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 	 * @throws SQLException
 	 */
 	public void retrive() throws SQLException {
-
 
 		portTableModel.setPortli(tableService.getParentPortList(this.table_id));
 
@@ -339,13 +341,12 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 	public void delete(boolean isDeleteSubPort) throws SQLException{
 
 		int row=getSelectedRow();
-		if(row<-1)
-			return;
-
+		
+		if(row<-1) return;
 
 		String port_name= (String) getValueAt(row, PORT_NAME_COLUM);
-		if(port_name==null)
-			return;
+		
+		if(port_name==null) return;
 
 		TablePort port = new TablePort();
 
@@ -354,6 +355,7 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 		port.setTable_id(table_id);
 
 		Object temp_port_index = getValueAt(row, PORT_INDEX_COLUM);
+		
 		if(temp_port_index instanceof Integer)
 		{
 			port.setPort_index((Integer) temp_port_index);
@@ -444,7 +446,7 @@ public class PortListTable extends JTable implements DropTargetListener,  DragGe
 		System.out.println("exit");
 	}
 
-	TablePort changePort;
+	
 
 	public void dragOver(DropTargetDragEvent dtde) {
 

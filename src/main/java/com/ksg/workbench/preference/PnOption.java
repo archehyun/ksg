@@ -43,31 +43,19 @@ public abstract class PnOption extends KSGPanel implements ActionListener, Compo
 	public abstract void saveAction();
 	
 	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentResized(ComponentEvent e) {}
 
 
 	@Override
-	public void componentMoved(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentMoved(ComponentEvent e) {}
 
 
 	@Override
-	public void componentShown(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentShown(ComponentEvent e) {}
 
 
 	@Override
-	public void componentHidden(ComponentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void componentHidden(ComponentEvent e) {}
 	
 
 }

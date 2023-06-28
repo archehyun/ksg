@@ -8,10 +8,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -24,6 +22,7 @@ import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.SearchVesselDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 
 import lombok.extern.slf4j.Slf4j;

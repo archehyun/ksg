@@ -64,7 +64,7 @@ public class CreateSchedule {
 
 	public void setShipperTable(ShippersTable tableData) throws Exception
 	{
-		log.info("set:{}", tableData.getTable_id());
+		log.info("init start:{}", tableData.getTable_id());
 		
 		this.tableData 						= tableData;
 
@@ -95,6 +95,8 @@ public class CreateSchedule {
 
 		// 인바운드 도착항 인덱스
 		this.index_inbound_toport 			= ScheduleBuildUtil.makePortArraySub(tableData.getIn_to_port());
+		
+		log.info("init end:{}", tableData.getTable_id());
 	}
 
 	public List<TablePort> getPortList()
@@ -282,6 +284,7 @@ public class CreateSchedule {
 	
 	public List<ScheduleData> getScheduleList(int fromPortIndex[], int toPortIndex[], String inOutType) throws Exception
 	{
+		
 		ArrayList<ScheduleData> insertList = new ArrayList<ScheduleData>();
 
 		for(int vslIndex=0;vslIndex<this.vslDatas.length;vslIndex++)

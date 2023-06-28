@@ -59,6 +59,12 @@ public class VesselServiceImpl implements VesselService{
 		
 		return result;
 	}
+	
+	@Override
+	public Vessel selectVesselDetailByKey(Vessel param) throws Exception
+	{
+		return dao.selectVesselDetailByKey(param);
+	}
 	@Override
 	public Vessel deleteVessel(String id) throws Exception
 	{
@@ -75,7 +81,7 @@ public class VesselServiceImpl implements VesselService{
 	@Override
 	public int deleteVesselDetail(Vessel param) throws Exception
 	{
-		Vessel selectOne= dao.selectDetailByKey(param);
+		Vessel selectOne= dao.selectVesselDetailByKey(param);
 		
 		if(selectOne==null)
 		{
@@ -99,13 +105,13 @@ public class VesselServiceImpl implements VesselService{
 	@Override
 	public Vessel insertVesselDetail(Vessel param) throws Exception
 	{
-		Vessel selectOne= dao.selectById(param.getVessel_name());
-		if(selectOne!=null)
-			throw new AlreadyExistException("("+param.getVessel_name()+")존재하는 선박명입니다.");
+		Vessel selectOne= dao.selectVesselDetailByKey(param);
+		
+		if(selectOne!=null) throw new AlreadyExistException("("+param.getVessel_name()+")존재하는 선박명입니다.");
 
-		dao.insertVessel(param);
+		dao.insertVesselDetail(param);
 
-		return selectOne;
+		return param;
 	}
 	@Override
 	public Vessel updateVessel(Vessel param) throws Exception

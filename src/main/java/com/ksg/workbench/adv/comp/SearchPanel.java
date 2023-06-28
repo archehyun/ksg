@@ -31,7 +31,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -72,7 +71,6 @@ import com.ksg.domain.Table_Property;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.FileInfo;
-import com.ksg.view.comp.button.KSGButton;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.checkbox.KSGCheckBox;
 import com.ksg.view.comp.checkbox.PageInfoCheckBox;
@@ -81,13 +79,11 @@ import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableImpl;
-import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.admin.KSGViewParameter;
 import com.ksg.workbench.adv.ADVManageUI;
 import com.ksg.workbench.adv.dialog.SearchCompanyAndPageDialog;
 import com.ksg.workbench.adv.dialog.SheetSelectDialog;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
-import com.ksg.workbench.shippertable.comp.SearchTable;
 
 /**
 
@@ -205,7 +201,6 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 
 	private JComboBox cbxKeyWordType;
 
-	private SearchTable searchTable;
 
 	private JTabbedPane mainTab;
 

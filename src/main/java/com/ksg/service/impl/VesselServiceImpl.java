@@ -253,7 +253,6 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 
 			}else
 			{
-
 				e1.printStackTrace();
 			}
 		}
@@ -268,9 +267,6 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 
 		return vesselDAO.selectVessel(vessel);
 	}
-
-
-
 
 	/**
 	 *선박명 약어 기준으로 전체 선박 목록 반환
@@ -312,7 +308,6 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 
 	@Override
 	public List<Vessel> selectVesselListByNameList(List<String> nameList) throws SQLException {
-		// TODO Auto-generated method stub
 		return vesselDAO.selectVesselListByNameList(nameList);
 	}
 

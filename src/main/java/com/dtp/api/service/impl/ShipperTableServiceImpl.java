@@ -9,6 +9,7 @@ import com.dtp.api.service.ShipperTableService;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.domain.TablePort;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -137,6 +138,19 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 	@Override
 	public ShippersTable selectShipperTableAllById(String table_id) throws SQLException {
 		return shipperTableDAO.selectShipperTableAllById(table_id);
+	}
+
+
+	@Override
+	public void saveTablePort(String table_id, List<TablePort> param) throws Exception {
+		
+		int deleteCount = (int) shipperTableDAO.deleteShipperTablePortById(table_id);
+		
+		for(TablePort item:param)
+		{
+			shipperTableDAO.insertShipperTablePort(item);
+		}
+		
 	}
 
 }

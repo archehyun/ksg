@@ -1,4 +1,4 @@
-package com.ksg.workbench.shippertable.dialog;
+package com.ksg.workbench.common.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -117,7 +117,6 @@ public class SearchCompanyDialog extends KSGDialog{
 				if(path!=null&&path.getPathCount()!=1)
 
 					result = path.getLastPathComponent().toString();
-
 
 			}});
 
@@ -252,11 +251,12 @@ public class SearchCompanyDialog extends KSGDialog{
 		}
 
 		TreeNode root = (TreeNode) tree.getModel().getRoot();
+		
 		expandAll(tree, new TreePath(root), true);
 		
 		tree.clearSelection();
+		
 		tree.updateUI();
-
 	}
 	@Override
 	public void componentShown(ComponentEvent e) {

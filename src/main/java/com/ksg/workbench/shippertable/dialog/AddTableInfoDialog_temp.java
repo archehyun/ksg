@@ -859,7 +859,6 @@ public class AddTableInfoDialog_temp extends KSGDialog implements ActionListener
 
 	}
 	public void focusLost(FocusEvent arg0) {
-		// TODO Auto-generated method stub
 
 	}
 	private void setTableIndex(String company_abbr) {

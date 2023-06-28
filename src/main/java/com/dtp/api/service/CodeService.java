@@ -1,15 +1,14 @@
 package com.dtp.api.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.ksg.domain.Code;
 
 public interface CodeService {
 	
-	public List selectCodeHListByCondition(Code param) throws Exception;
+	public List<Code> selectCodeHListByCondition(Code param) throws Exception;
 	
-	public List selectCodeDetailListByCondition(Code param) throws Exception;
+	public List<Code> selectCodeDetailListByCondition(Code param) throws Exception;
 	
 	public Code selectCodeDetailByKey(Code param) throws Exception;
 	

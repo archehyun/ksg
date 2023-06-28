@@ -619,14 +619,12 @@ public class ConsoleScheduleJoint extends AbstractSchedulePrint{
 
 	@Override
 	public void close() throws IOException {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
 	public void writeFile(ArrayList<String> printList) throws Exception {
-		// TODO Auto-generated method stub
 		
 	}
 }

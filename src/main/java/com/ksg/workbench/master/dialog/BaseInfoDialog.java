@@ -38,10 +38,15 @@ import com.ksg.workbench.master.BaseInfoUI;
   */
 public abstract class BaseInfoDialog extends KSGDialog implements ActionListener, View{
 	
+	public static final String ACTION_SAVE 		= "저장";
 	
-	protected static String INSERT_ACTION = "추가";
-	protected static String UPDATE_ACTION = "저장";
-	protected static String CANCEL_ACTION = "취소";
+	public static final String ACTION_DELETE 	= "삭제";
+	
+	public static final String ACTION_CANCEL 	= "취소";
+	
+	public static final String ACTION_INSERT 	= "추가";
+	
+	public static final String ACTION_UPDATE 	= "수정";
 	
 	
 	protected JLabel lblTitle;
@@ -60,6 +65,7 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 
 	public BaseInfoDialog(BaseInfoUI baseInfoUI) {
 		super();
@@ -167,8 +173,6 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		KSGPanel pnTitle = new KSGPanel();
 		
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		
 		
 		lblTitle = new JLabel(title);
 		

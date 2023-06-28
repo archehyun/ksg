@@ -59,7 +59,7 @@ public class VesselDAO extends AbstractDAO{
 		return (Vessel) selectOne("vessel.selectVesselById", vessel_name);
 	}
 	
-	public Vessel selectDetailByKey(Vessel param) throws SQLException {
+	public Vessel selectVesselDetailByKey(Vessel param) throws SQLException {
 		return (Vessel) selectOne("vessel.selectVesselDetailByKey", param);
 	}
 
@@ -84,5 +84,10 @@ public class VesselDAO extends AbstractDAO{
 	public Object deleteVessel(String vessel_name) throws SQLException {
 		return delete("vessel.deleteVesselInfo",vessel_name);
 	}
+
+	public Object insertVesselDetail(Vessel param) throws SQLException {
+		return insert("vessel.insertVesselDetail", param);		
+	}
+
 
 }

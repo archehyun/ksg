@@ -87,19 +87,18 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.radiobutton.KSGRadioButton;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.view.comp.table.KSGTableSelectListner;
 import com.ksg.view.comp.table.groupable.ColumnGroup;
 import com.ksg.view.comp.table.groupable.GroupableTableHeader;
 import com.ksg.view.comp.textfield.HintTextField;
 import com.ksg.view.comp.textfield.SearchTextField;
 import com.ksg.view.comp.tree.CustomTree;
 import com.ksg.workbench.common.comp.KSGDatePickerImpl;
+import com.ksg.workbench.common.dialog.SearchCompanyDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 import com.ksg.workbench.shippertable.comp.UpdateTablePanel;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog_temp;
 import com.ksg.workbench.shippertable.dialog.ManageTablePortPop;
-import com.ksg.workbench.shippertable.dialog.SearchCompanyDialog;
 import com.ksg.workbench.shippertable.dialog.UpdateShipperTableDateDialog;
 
 import lombok.extern.slf4j.Slf4j;
@@ -232,7 +231,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 	private UpdateShipperTableDateDialog updateAllDateDialog; //날짜 일괄 수정 창		
 
-	public KSGTableSelectListner listner;
+	//public KSGTableSelectListner listner;
 
 	public List 				_searchedList, selectedList;
 
@@ -354,7 +353,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			{
 				ManageTablePortPop pop = new ManageTablePortPop(advTablePanel.getTable_id());
 
-				pop.showPop();
+				pop.createAndUpdateUI();
 
 				if(pop.RESLULT!=ManageTablePortPop.OK) return;
 
@@ -410,25 +409,25 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			{
 				updateAndSaveShipperTableInfo();
 			}
-			else if(command.equals("SEARCH_COMPANY"))
-			{
-				SearchCompanyDialog companyDialog = new SearchCompanyDialog();
-
-				companyDialog.createAndUpdateUI();
-
-				String company_abbr = companyDialog.result;
-
-				if(company_abbr == null)return;
-
-				CommandMap param = new CommandMap();
-
-				param.put("company_abbr", company_abbr);
-
-				Company companyInfo=companyService.select(param );
-
-				pnUpdateTable. setCompanyInfo(companyInfo);	
-
-			}
+//			else if(command.equals("SEARCH_COMPANY"))
+//			{
+//				SearchCompanyDialog companyDialog = new SearchCompanyDialog();
+//
+//				companyDialog.createAndUpdateUI();
+//
+//				String company_abbr = companyDialog.result;
+//
+//				if(company_abbr == null)return;
+//
+//				CommandMap param = new CommandMap();
+//
+//				param.put("company_abbr", company_abbr);
+//
+//				Company companyInfo=companyService.select(param );
+//
+//				pnUpdateTable. setCompanyInfo(companyInfo);	
+//
+//			}
 
 		} catch (Exception e1)
 		{
@@ -998,14 +997,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 		cbxGubun.initComp();
 
-		//		cbxGubun.addActionListener(new ActionListener() {
-		//
-		//			public void actionPerformed(ActionEvent arg0) 
-		//			{
-		//				fnSearch();
-		//			}
-		//		});		
-
 		KSGPanel pnSearchMainDown = new KSGPanel();
 
 		pnSearchMainDown.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -1171,6 +1162,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	 * @return
 	 */
 	private KSGPanel createSearchPanel() {
+		
 		KSGPanel pnSearchByCompany = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		return pnSearchByCompany;
@@ -1371,8 +1363,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	}
 
 	public void setPortCount(int count) {
+		
 		pnUpdateTable.setPortCount(count);
-
 	}
 
 	public void fnSearch()
@@ -1461,7 +1453,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	public void updateView() {
 
 		CommandMap result= this.getModel();
-
 
 		String serviceId = (String) result.get("serviceId");
 

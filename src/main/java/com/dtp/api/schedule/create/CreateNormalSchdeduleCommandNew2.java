@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
-import com.dtp.api.service.DTPScheduleService;
-import com.dtp.api.service.impl.DTPScheduleServiceImpl;
 import com.dtp.api.util.KSGListUtil;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.commands.schedule.SwingWorker;
@@ -122,16 +120,6 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 
 					notifyMessage("Make:"+tableDataItem.getCompany_abbr()+","+tableDataItem.getTable_id());
 
-					// 날짜 정보 배열
-
-					// 선박 정보 배열
-
-					//항구 정보 배열
-					/**
-					 * 각 항구 인덱스를 이용해서 
-					 * 스케줄에서 불러와 배열을 생성함
-					 */
-
 				}catch(NumberFormatException e)
 				{
 					log.error("ID({}) port index number foramt error:", tableDataItem.getTable_id(), e.getMessage());
@@ -148,7 +136,6 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 					errorlist.add(createError("error", tableDataItem.getTable_id(), e.getMessage()));
 
 					continue;
-
 				}
 
 				// 스케줄 생성
@@ -192,7 +179,6 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 					log.error(e.getMessage());
 
 					throw new RuntimeException("table id : "+tableDataItem.getTable_id()+", "+e.getMessage());
-
 				}
 			}
 
@@ -225,7 +211,6 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 	}
 	private void insertList(String table_id, List<ScheduleData> insertList) throws SQLException {
 
-
 		scheduleService.deleteScheduleById(table_id);
 
 		List<ScheduleData> newList=insertList.stream().filter(KSGListUtil.distinctByKey(m -> m.toKey())).collect(Collectors.toList());;
@@ -236,7 +221,6 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 		{
 			scheduleService.insertScheduleBulkData(items);
 		}
-
 	}
 
 	private void close() {

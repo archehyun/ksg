@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.dtp.api.annotation.ControlMethod;
+import com.dtp.api.service.CodeService;
 import com.dtp.api.service.PortService;
+import com.dtp.api.service.impl.CodeServiceImpl;
 import com.dtp.api.service.impl.PortServiceImpl;
 import com.ksg.common.model.CommandMap;
+import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
 import com.ksg.service.AreaService;
 import com.ksg.service.impl.AreaServiceImpl;
@@ -19,7 +22,9 @@ public class PortController  extends AbstractController{
 	private AreaService areaService;
 	
     /* 항구정보관리 서비스 */
-    private PortService service;    
+    private PortService service;
+    
+    private CodeService codeService;
     
     public PortController()
     {
@@ -28,6 +33,8 @@ public class PortController  extends AbstractController{
         service 	= new PortServiceImpl();
         
         areaService = new AreaServiceImpl();
+        
+        codeService = new CodeServiceImpl();
 
     }
     @ControlMethod(serviceId = "selectPort")
@@ -255,4 +262,77 @@ public class PortController  extends AbstractController{
 		
     	return returnMap;
     }
+    
+    @ControlMethod(serviceId = "searchPortDialog.init")
+    public CommandMap searchPortDialogInit(CommandMap param) throws Exception
+    {
+    	CommandMap returnMap = new CommandMap();
+    	
+    	
+    	Code codeParam = Code.builder().code_type("port_exception").build();
+		
+		List li=codeService.selectCodeDetailListByCondition(codeParam);
+		
+		log.info("code list:{}", li.size());
+		
+        List portExceptionList=(List) li.stream()
+						                .map(o -> objectMapper.convertValue(o, CommandMap.class))
+						                .collect(Collectors.toList());
+        
+		
+		returnMap.put("portExceptionList", portExceptionList);
+		
+    	return returnMap;
+    }
+    
+    @ControlMethod(serviceId = "searchPortDialog.searchPortException")
+    public CommandMap ssearchPortException(CommandMap param) throws Exception
+    {
+    	CommandMap returnMap = new CommandMap();
+    	
+    	String code_type = (String) param.get("code_type");
+    	
+    	String code_name = (String) param.get("code_name");
+    	
+		Code codeParam = Code.builder().code_type(code_type).code_name(code_name).build();
+		
+		List<Code> li=codeService.selectCodeDetailListByCondition(codeParam);
+		
+		log.info("code list:{}", li.size());
+		
+        List portExceptionList=(List) li.stream()
+						                .map(o -> objectMapper.convertValue(o, CommandMap.class))
+						                .collect(Collectors.toList());
+        
+		
+		returnMap.put("portExceptionList", portExceptionList);
+		
+    	return returnMap;
+    }
+    
+    @ControlMethod(serviceId = "searchPortDialog.searchPort")
+    public CommandMap ssearchPort(CommandMap param) throws Exception
+    {
+    	CommandMap returnMap = new CommandMap();
+    	
+    	String port_name = (String) param.get("port_name");
+    	
+    	PortInfo  portParam = PortInfo.builder().port_name(port_name).build();
+    	
+		
+		List<PortInfo> li=service.selectListByCondtion(portParam);
+		
+		log.info("code list:{}", li.size());
+		
+        List portExceptionList=(List) li.stream()
+						                .map(o -> objectMapper.convertValue(o, CommandMap.class))
+						                .collect(Collectors.toList());
+        
+		
+		returnMap.put("portList", portExceptionList);
+		
+    	return returnMap;
+    }
+    
+   
 }

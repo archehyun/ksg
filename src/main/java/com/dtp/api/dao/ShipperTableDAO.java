@@ -7,6 +7,7 @@ import java.util.List;
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.domain.TablePort;
 
 public class ShipperTableDAO extends AbstractDAO{
 	
@@ -79,5 +80,18 @@ public class ShipperTableDAO extends AbstractDAO{
 
 	public ShippersTable selectShipperTableAllById(String table_id) throws SQLException {
 		return (ShippersTable) selectOne(namespace+".selectShipperTableAllById", table_id);
+	}
+	public Object deleteShipperTablePortById(String table_id) throws SQLException
+	{
+		return delete(namespace+".deleteShipperTablePortById" , table_id);
+	}
+	public Object insertShipperTablePort(TablePort tablePort) throws SQLException
+	{
+		return insert("shippertable.insertShipperPort", tablePort);
+	}
+	
+	public Object insertShipperTablePort(List tablePortList) throws SQLException
+	{
+		return insert("shippertable.insertShipperPort", tablePortList);
 	}
 }

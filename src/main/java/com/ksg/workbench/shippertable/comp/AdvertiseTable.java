@@ -66,8 +66,8 @@ import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.renderer.KSGTableCellRenderer;
 import com.ksg.workbench.admin.KSGViewParameter;
+import com.ksg.workbench.common.dialog.SearchVesselDialog;
 import com.ksg.workbench.shippertable.dialog.SearchAndInsertVesselDialog;
-import com.ksg.workbench.shippertable.dialog.SearchVesselDialog;
 
 import lombok.extern.slf4j.Slf4j;
 

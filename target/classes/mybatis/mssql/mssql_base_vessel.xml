@@ -326,6 +326,23 @@
 		);
 	</insert>
 	
+	<insert id="insertVesselDetail" parameterClass="com.ksg.domain.Vessel">
+		insert into TB_VESSEL_ABBR(			
+			vessel_name,
+			vessel_abbr,			
+			
+			input_date
+		
+		)values
+		(
+			
+			#vessel_name#,
+			#vessel_abbr#,
+			getdate()
+		);
+	</insert>
+	
+	
 	<insert id="insertVesselAbbr" parameterClass="com.ksg.domain.Vessel">
 		insert into TB_VESSEL_ABBR(			
 			vessel_name,

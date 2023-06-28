@@ -125,7 +125,6 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 			public void keyTyped(KeyEvent e) {
 				if(((JFormattedTextField)e.getSource()).getText().length()>8)
 					e.consume();
-
 			}
 		});
 
@@ -146,7 +145,6 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 			}
 		});
 
-
 		JButton butSearchCompany = new KSGGradientButton("조회");
 		butSearchCompany.addActionListener(new ActionListener()
 		{
@@ -154,7 +152,6 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 				KSGDialog dialog = new SearchCompanyInfoDialog(InsertVesselInfoDialog.this, txfCompanyName);
 				dialog.createAndUpdateUI();
 			}
-
 		});
 
 		JButton butCancelCompany = new JButton("취소");
@@ -163,7 +160,6 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 
 			public void actionPerformed(ActionEvent e) {
 				txfCompanyName.setText("");
-
 			}});
 
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
@@ -181,7 +177,6 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 		KSGPanel pnMain = new KSGPanel();
 		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));
-		
 		
 		pnMain.add(pnCenter);
 		
@@ -221,7 +216,6 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 
 			KSGTableColumn con =(KSGTableColumn) cbxConType.getSelectedItem();
 
-
 			CommandMap param = new CommandMap();
 
 			param.put("vessel_name",vesselName);
@@ -250,8 +244,6 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 			}
 
 			callApi("insertVessel", param);
-
-
 		}else
 		{
 			result = KSGDialog.FAILE;
@@ -262,6 +254,7 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 
 	@Override
 	public void componentShown(ComponentEvent e) {
+		
 		cbxConType.initComp();
 		
 		if(!vessel_name.isEmpty()) txfVesselName.setText(vessel_name);
@@ -285,8 +278,8 @@ public class InsertVesselInfoDialog extends BaseInfoDialog{
 				super.insertString(offset, str, attr);
 			}
 		}
-
 	}
+	
 	@Override
 	public void updateView() {
 		CommandMap resultMap= this.getModel();

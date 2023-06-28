@@ -23,9 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 
@@ -33,13 +30,21 @@ import com.ksg.view.comp.dialog.KSGDialog;
 public class PortSearchDialog extends KSGDialog implements ActionListener{
 	
 	public String portName;
-	int x,y,h;
+	
+	private int x,y,h;
+	
 	private BaseServiceImpl baseService;
+	
 	public PortSearchDialog(Dialog dialog) {	
+		
 		super(dialog);
+		
 		x=dialog.getX()+dialog.getWidth();
+		
 		y=dialog.getY();
+		
 		h=dialog.getHeight();
+		
 		baseService = new BaseServiceImpl();
 	}
 	
@@ -50,14 +55,16 @@ public class PortSearchDialog extends KSGDialog implements ActionListener{
 		this.getContentPane().add(buildCenter());
 		
 		this.getContentPane().add(buildInfo(),BorderLayout.NORTH);
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-		this.setSize(250, h);
-		this.setLocation(x, y);
-		this.setVisible(true);
 		
+		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		
+		this.setSize(250, h);
+		
+		this.setLocation(x, y);
+		
+		this.setVisible(true);
 	}
 	private Component buildCenter() {
-		
 		
 		Box pnMain = new Box(BoxLayout.Y_AXIS);
 		txfPortName = new JTextField(10);
@@ -130,12 +137,16 @@ public class PortSearchDialog extends KSGDialog implements ActionListener{
 	{
 		JPanel pnMain = new JPanel();
 		
-		
 		JButton butOk = new JButton("확인");
+		
 		butOk.addActionListener(this);
+		
 		JButton butCancel = new JButton("취소");
+		
 		butCancel.addActionListener(this);
+		
 		pnMain.add(butOk);
+		
 		pnMain.add(butCancel);
 		
 		return pnMain;
@@ -143,8 +154,11 @@ public class PortSearchDialog extends KSGDialog implements ActionListener{
 	public Component buildInfo()
 	{
 		JPanel pnMain = new JPanel();
+		
 		pnMain.setBackground(Color.white);
+		
 		pnMain.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		pnMain.add(new JLabel("항구 명을 검색합니다."));
 		
 		return pnMain;

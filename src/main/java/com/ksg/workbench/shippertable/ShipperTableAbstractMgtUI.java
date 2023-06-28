@@ -29,14 +29,6 @@ public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements
 	public abstract void searchADVTable() throws SQLException;
 
 	public abstract  void setPortCount(int count);
-	
-	
-
-	@Deprecated
-	public void updateSubTable() throws SQLException {}
-
-	@Deprecated
-	public void searchByOption() throws SQLException {}
 
 	public void fnUpdate() {}
 	
@@ -48,7 +40,4 @@ public abstract class ShipperTableAbstractMgtUI extends AbstractMgtUI implements
 
 	@Override
 	public void keyReleased(KeyEvent e) {}	
-	
-	
-
 }

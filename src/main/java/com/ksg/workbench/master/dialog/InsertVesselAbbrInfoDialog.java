@@ -11,154 +11,145 @@
 package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.awt.event.ComponentEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ksg.common.exception.AlreadyExistException;
+import com.dtp.api.control.VesselController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.master.BaseInfoUI;
 
 /**선박 양어 정보 추가 다이어그램
  * @author 박창현
  *
  */
+@SuppressWarnings("serial")
 public class InsertVesselAbbrInfoDialog extends BaseInfoDialog{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private JTextField txfVesselAbbr = new JTextField(20);
-	BaseInfoUI baseInfoUI;
-	private String vessel_name;
-	private String vessel_abbr="";
-	HashMap<String, Object> info;
-	
-	VesselServiceImpl vesselService;
 
-	public InsertVesselAbbrInfoDialog(String vessel_name) {
+	private JTextField txfVesselAbbr = new JTextField(20);
+
+	private String vessel_name;
+	
+	private String vessel_abbr;
+
+	public InsertVesselAbbrInfoDialog() {
+
 		super();
-		this.vessel_name = vessel_name;
+		
+		this.addComponentListener(this);
+
+		this.setController(new VesselController());
+
 		this.title="선박명 약어 추가";
 	}
 
-	public InsertVesselAbbrInfoDialog(HashMap<String, Object> info) {
-		super();
-		this.info = info;
-		this.title="선박명 약어 추가";
-		vesselService = new VesselServiceImpl();
+	public InsertVesselAbbrInfoDialog(String vessel_name) {
+
+		this();
+
+		this.vessel_name = vessel_name;
+	}
+	
+	public InsertVesselAbbrInfoDialog(String vessel_name, String vessel_abbr) {
+
+		this(vessel_name);
+
+		this.vessel_abbr = vessel_abbr;
 	}
 
 	public void createAndUpdateUI() {
 
 		this.setModal(true);
+
 		this.addComponentListener(this);
+
 		this.setTitle(title);
 
-		JPanel pnCode = new JPanel();
-		pnCode.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblVesselAbbr = new JLabel("선박명 약어");
-		
-		lblVesselAbbr.setPreferredSize(new Dimension(80,25));
-		
-		pnCode.add(lblVesselAbbr);
-		
-		pnCode.add(txfVesselAbbr);
+		this.getContentPane().add(buildTitle("선박명: "+vessel_name),BorderLayout.NORTH);
 
-		this.getContentPane().add(buildTitle("선박명: "+info.get("vessel_name")),BorderLayout.NORTH);
 		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+
 		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-		
+
 		ViewUtil.center(this, true);
+
 		this.setResizable(false);
+
 		this.setVisible(true);
 	}
-	
+
 	public KSGPanel buildCenter()
 	{
 		KSGPanel pnMain= new KSGPanel(new BorderLayout());
-		
+
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+
 		pnCenter.add(createFormItem(txfVesselAbbr, "선박명 약어"));
-		
+
 		pnMain.add(pnCenter);
+		
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));
 		return pnMain;
+	}
+
+	private void fnInsertDetail()
+	{
+		CommandMap param = new CommandMap();
+
+		if(txfVesselAbbr.getText().equals(""))
+		{
+			JOptionPane.showMessageDialog(this, "선박명 약어를 입력 하십시요");
+			return;
+		}
+
+		param.put("vessel_name", vessel_name);
+		
+		param.put("vessel_abbr", txfVesselAbbr.getText());
+
+		callApi("insertVesselDetail", param);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if(command.equals("저장"))
 		{
+			fnInsertDetail();
 
-			if(txfVesselAbbr.getText().equals(""))
-			{
-				JOptionPane.showMessageDialog(this, "선박명 약어를 입력 하십시요");
-				return;
-			}
-			
-			
-			info.put("vessel_abbr", txfVesselAbbr.getText());
-
-			try {
-				vesselService.insertDetail(info);
-				
-				result = KSGDialog.SUCCESS;
-				this.setVisible(false);
-				this.dispose();
-			}
-			catch (NullPointerException e1)
-			{
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(this, e1.getMessage());
-			}
-			
-			catch(AlreadyExistException e1)
-			{
-				JOptionPane.showMessageDialog(this, "존재하는 선박명입니다.");
-			}
 		}else
 		{
 			result = KSGDialog.FAILE;
+			
 			this.setVisible(false);
+			
 			this.dispose();
 		}
-
 	}
-	class ConType
-	{
-		private String typeName;
-		private String typeField;
-		public String getTypeName() {
-			return typeName;
-		}
-		public String toString()
-		{
-			return typeField+" : "+typeName;
-		}
-		public void setTypeName(String typeName) {
-			this.typeName = typeName;
-		}
-		public String getTypeField() {
-			return typeField;
-		}
-		public void setTypeField(String typeField) {
-			this.typeField = typeField;
-		}
-
-
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+		txfVesselAbbr.setText(vessel_abbr);
 	}
-	
+	@Override
+	public void updateView() {
+		
+		CommandMap resultMap= this.getModel();
 
+		String serviceId=(String) resultMap.get("serviceId");
+
+		if("insertVesselDetail".equals(serviceId))
+		{	
+			result = KSGDialog.SUCCESS;
+			
+			this.setVisible(false);
+			
+			this.dispose();
+		}
+	}
 }

@@ -56,12 +56,7 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	public int deleteDetail(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete("vessel.deleteVesselAbbr", param);
 	}
-	
-//	@Override
-//	public Object insert(HashMap<String, Object> param) throws SQLException{		
-//		return insert("vessel.insertVessel", param);
-//	}
-//	
+
 	@Override
 	public Object insert(Vessel param) throws SQLException{		
 		return insert("vessel.insertVessel", param);
@@ -135,13 +130,11 @@ public class VesselDAOImpl extends AbstractDAO implements VesselDAO{
 	}
 
 	public List<Vessel> selectVesselListByCondition(Object object) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("vessel.selectVesselListByCondition", object);
 	}
 
 	@Override
 	public List<Vessel> selectVesselListByNameList(List<String> nameList) throws SQLException {
-		// TODO Auto-generated method stub
 		return selectList("vessel.selectVesselListByNameList", nameList);
 	}
 }

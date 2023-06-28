@@ -318,13 +318,16 @@
 	<select id="selectShipperTablePortListByID" resultClass="com.ksg.domain.TablePort">
 		SELECT * 
 		FROM TB_TABLE_PORTLIST 
-		WHERE table_id=#table_id#	
+		WHERE table_id=#table_id#
+	
+		ORDER BY port_index	
 	</select>
 	
 	<select id="selectShipperTableByID" resultClass="com.ksg.domain.ShippersTable">
 		SELECT * 
 		FROM TB_TABLE_INFO 
-		WHERE table_id=#table_id#	
+		WHERE table_id=#table_id#
+			
 	</select>
 	
 	<select id="selectList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
@@ -679,7 +682,24 @@
 	</update>
 	
 
-	<insert id="insertShipperPort" parameterClass="java.util.HashMap">
+	<insert id="insertShipperPort_temp" parameterClass="java.util.HashMap">
+		INSERT TB_TABLE_PORTLIST (
+			 table_id,
+			 port_name, 
+			 port_index, 
+			 parent_port,
+			 port_type)
+		
+		VALUES(
+			  #table_id#,
+			  #port_name#,
+			  #port_index#,
+			  #parent_port#,
+			  #port_type#
+			  )
+	 </insert>
+	 
+	 	<insert id="insertShipperPort" parameterClass="com.ksg.domain.TablePort">
 		INSERT TB_TABLE_PORTLIST (
 			 table_id,
 			 port_name, 
@@ -698,6 +718,14 @@
 	
 	 	
 	<delete id="deleteShipperPortList"  parameterClass="java.util.HashMap">
+		
+		DELETE 
+		FROM TB_TABLE_PORTLIST
+		WHERE table_id = #table_id#
+
+	</delete>
+	
+	<delete id="deleteShipperTablePortById">
 		
 		DELETE 
 		FROM TB_TABLE_PORTLIST

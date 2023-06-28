@@ -209,6 +209,8 @@ public class KSGTablePanel extends KSGPanel{
 	public void setResultData(List resultData) {
 
 		table.setResultData(resultData);
+		
+		if(lblTotalCount!=null)
 		lblTotalCount.setText(String.valueOf(resultData.size()));
 	}
 
