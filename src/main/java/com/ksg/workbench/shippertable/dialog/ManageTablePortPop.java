@@ -50,7 +50,6 @@ public class ManageTablePortPop extends BaseInfoDialog implements ActionListener
 
 	private static final String ACTION_DOWN = "DOWN";
 
-	private JButton butSave;
 	private JButton butDelete;
 	private JButton butUpdate;
 	private JButton butInsert;
@@ -157,10 +156,13 @@ public class ManageTablePortPop extends BaseInfoDialog implements ActionListener
 		butDown.addActionListener(indexChangeAction);
 
 		butInsert.addActionListener(this);
+		
 		butDelete.addActionListener(this);
+		
 		butUpdate.addActionListener(this);
 
 		GroupLayout layout = new GroupLayout (pnMain);
+		
 		pnMain.setLayout (layout);
 
 		layout.setHorizontalGroup(
@@ -257,10 +259,10 @@ public class ManageTablePortPop extends BaseInfoDialog implements ActionListener
 			searchPortDialog.createAndUpdateUI();
 
 			String port_name = searchPortDialog.result;
-
+			
 			boolean isSamePort = searchPortDialog.isSamePort;
 
-			if(port_name==null||"".equals(port_name)) return;			
+			if(port_name==null||"".equals(port_name)) return;
 
 			HashMap<String, Object> newPort = new HashMap<String, Object>();
 
