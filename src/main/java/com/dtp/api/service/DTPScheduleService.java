@@ -10,6 +10,10 @@ public interface DTPScheduleService {
 	
 	public List<ScheduleData> selecteScheduleListByCondition(ScheduleData param) throws SQLException;
 
-	public List<ScheduleData> selectShipperTableListAllByCondition(ShippersTable param)throws SQLException;;
+	public List<ScheduleData> selectShipperTableListAllByCondition(ShippersTable param)throws SQLException;
+
+	List<ScheduleData> selectInlandScheduleListByCondition(ScheduleData param) throws SQLException;;
+	
+	
 
 }

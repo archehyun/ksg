@@ -1,4 +1,4 @@
-package com.ksg.workbench.base.dialog;
+package com.ksg.workbench.common.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

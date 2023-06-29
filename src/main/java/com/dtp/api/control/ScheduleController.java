@@ -577,6 +577,22 @@ public class ScheduleController extends AbstractController{
 		return returnMap;
 	}
 	
+	@ControlMethod(serviceId = "pnNormal2.init")
+	public CommandMap pnNormal2Init(CommandMap param) throws Exception
+	{	
+		log.info("param:{}", param);
+		
+		List<AreaInfo> areaList=areaService.selectAll();
+		
+		HashMap<String, Object> inboundCodeMap = (HashMap<String, Object>) codeService.selectInboundPortMap();
+		
+		CommandMap returnMap = new CommandMap();
+		
+		returnMap.put("areaList", areaList);
+		
+		return returnMap;
+	}
+	
 	@ControlMethod(serviceId = "pnNormal2.fnSearch")
 	public CommandMap pnNormalfnSearch(CommandMap param) throws Exception
 	{
@@ -608,6 +624,40 @@ public class ScheduleController extends AbstractController{
 		
 		return returnMap;
 	}
+	
+	@ControlMethod(serviceId = "pnInland2.fnSearch")
+	public CommandMap pnInland2FnSearch(CommandMap param) throws Exception
+	{
+		log.info("param:{}", param);
+		
+		CommandMap returnMap = new CommandMap();
+		
+		ScheduleData scheduleParam = ScheduleData.builder()
+				.date_issue((String) param.get("date_issue"))
+				.table_id((String) param.get("table_id"))
+				.InOutType((String) param.get("inOutType"))
+				.gubun((String) param.get("gubun"))
+				.vessel((String) param.get("vessel"))
+				.company_abbr((String) param.get("company_abbr"))
+				.agent((String) param.get("agent"))
+				.area_name((String) param.get("area_name"))
+				.port((String) param.get("port"))
+				.fromPort((String) param.get("fromPort"))
+				.build();
+		
+		List<ScheduleData>  rawScheduleList = dtpScheduleService.selectInlandScheduleListByCondition(scheduleParam);
+		
+		List<CommandMap> result=rawScheduleList.stream()
+				.map(o -> objectMapper.convertValue(o, CommandMap.class))
+				.collect(Collectors.toList());
+		
+		returnMap.put("data", result);
+		
+		return returnMap;
+	}
+	
+	
+	
 	@ControlMethod(serviceId = "pnNormalByTree.fnSearch")
 	public CommandMap fnSearch(CommandMap param) throws Exception
 	{
@@ -700,6 +750,25 @@ public class ScheduleController extends AbstractController{
 				returnMap.put("inOutType","O");
 			}
 		}
+		return returnMap;
+	}
+	
+	
+	
+	@ControlMethod(serviceId = "showScheduleDialog.init")
+	public CommandMap showScheduleDialogInit(CommandMap param) throws Exception
+	{	
+		log.info("param:{}", param);
+		
+		
+		String table_id =  (String) param.get("table_id");
+		
+		ShippersTable selectedTable = tableService.selectShipperTableAllById(table_id);
+		
+		CommandMap returnMap = new CommandMap();
+		
+		returnMap.put("selectedTable", selectedTable);
+		
 		return returnMap;
 	}
 }

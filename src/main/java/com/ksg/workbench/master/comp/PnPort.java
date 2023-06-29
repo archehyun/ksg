@@ -657,8 +657,8 @@ public class PnPort extends PnBase implements ActionListener{
 	}
 	@Override
 	public void updateView() {
-		CommandMap result= this.getModel();
 
+		CommandMap result= this.getModel();
 
 		String serviceId=(String) result.get("serviceId");
 
@@ -710,10 +710,5 @@ public class PnPort extends PnBase implements ActionListener{
 
 			callApi("selectPortDetailList", param);
 		}
-
-
-
 	}
-
-
 }

@@ -205,7 +205,7 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	}
 	
 	@Override
-	public void updateView() {}
+	public void updateView() {};
 
 	
 

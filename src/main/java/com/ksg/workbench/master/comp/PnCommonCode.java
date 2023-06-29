@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -368,7 +367,6 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 		if("selectCodeList".equals(serviceId))
 		{	
-
 			tableH.getSelectionModel().removeListSelectionListener(selectionListner);
 
 			tableH.setResultData(data);
@@ -410,9 +408,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 			NotificationManager.showNotification(String.format("(%s) 삭제 되었습니다.", code_name));
 
-
 			fnSearchDetail();
 		}
-
 	}
 }

@@ -178,28 +178,17 @@ public class UpdateShipperTableDateDialog extends BaseInfoDialog implements Acti
 
 		CommandMap resultMap= this.getModel();
 
-		boolean success = (boolean) resultMap.get("success");
+		String serviceId=(String) resultMap.get("serviceId");
 
-		if(success)
-		{
-			String serviceId=(String) resultMap.get("serviceId");
+		if("updateShipperTableDateDialog.updateDate".equals(serviceId))
+		{	
+			int result=(int) resultMap.get("result");
 
-			if("updateShipperTableDateDialog.updateDate".equals(serviceId))
-			{	
-				
-				int result=(int) resultMap.get("result");
+			JOptionPane.showMessageDialog(UpdateShipperTableDateDialog.this, result+" 건 수정했습니다.");
+			
+			result = KSGDialog.SUCCESS;
 
-				JOptionPane.showMessageDialog(UpdateShipperTableDateDialog.this, result+" 건 수정했습니다.");
-				
-				result = KSGDialog.SUCCESS;
-
-				close();
-			}
-		}
-		else{  
-			String error = (String) resultMap.get("error");
-
-			JOptionPane.showMessageDialog(this, error);
+			close();
 		}
 	}
 

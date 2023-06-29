@@ -4,25 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.service.VesselService;
-import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.dialog.SearchVesselDialog;
+import com.ksg.workbench.master.dialog.BaseInfoDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public class ManageVesselDialog extends KSGDialog implements ActionListener {
+public class ManageVesselDialog extends BaseInfoDialog implements ActionListener {
 	/**
 	 * 
 	 */
@@ -48,23 +42,18 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 
 	private DefaultTableModel model;
 
-	private VesselService vesselService;
-
 	public ManageVesselDialog(String selectedTableId, ShipperTableAbstractMgtUI base) {
+		
 		this.base =base;
 
 		this.table_id=selectedTableId;
-
-		DAOManager manager = DAOManager.getInstance();
-
-		tableService = manager.createTableService();
-
-		vesselService = new VesselServiceImpl();
 	}
 
 
 	public ManageVesselDialog(String table_id, ShipperTableAbstractMgtUI base, DefaultTableModel vesselModel) {
+		
 		this(table_id, base);
+		
 		this.model =vesselModel;
 	}
 
@@ -88,40 +77,6 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 		setVisible(true);
 
 	}
-
-	/**
-	 * view
-	 * 
-	 * @return
-	 */
-	private Component buildControl() {
-		KSGPanel pnMain = new KSGPanel();
-		pnMain.setLayout(new BorderLayout());
-		KSGPanel pnRight = new KSGPanel();
-		pnRight.setLayout( new FlowLayout(FlowLayout.RIGHT));
-
-		KSGPanel pnLeft = new KSGPanel();
-
-
-		pnLeft.setLayout( new FlowLayout(FlowLayout.LEFT));
-		JButton butDel = new JButton("¼öÁ¤");
-
-		butDel.addActionListener(this);
-
-		JButton butCancel = new JButton("´Ý±â(S)");
-		butCancel.setActionCommand("´Ý±â");
-		butCancel.setMnemonic(KeyEvent.VK_S);
-		butCancel.addActionListener(this);
-
-		pnRight.add(butDel);
-		pnRight.add(butCancel);
-
-		pnMain.add(pnLeft,BorderLayout.WEST);
-		pnMain.add(pnRight,BorderLayout.EAST);
-		return pnMain;
-	}
-
-
 
 	/**
 	 * view
@@ -173,11 +128,15 @@ public class ManageVesselDialog extends KSGDialog implements ActionListener {
 
 			if(searchVesselDialog.result!=null)
 			{
-
 				model.setValueAt(searchVesselDialog.result, row, 0);
 			}
-
-
 		}
+	}
+
+
+	@Override
+	public void updateView() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -44,14 +44,9 @@ public abstract class PnSchedule extends KSGView implements View{
 		this.input_date = input_date;
 	}
 	
-	protected CodeServiceImpl codeService;
-
-	protected ScheduleSubService scheduleService;
-	
 	public PnSchedule()
 	{
 		super();
-		scheduleService = new ScheduleServiceImpl();
 	}
 	
 	@Override

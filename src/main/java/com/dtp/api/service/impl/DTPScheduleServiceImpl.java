@@ -27,4 +27,9 @@ public class DTPScheduleServiceImpl implements DTPScheduleService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public List<ScheduleData> selectInlandScheduleListByCondition(ScheduleData param) throws SQLException {
+		return dao.selectInlandScheduleListByCondition(param);
+	}
 }

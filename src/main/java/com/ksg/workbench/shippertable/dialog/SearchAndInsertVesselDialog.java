@@ -15,7 +15,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -24,8 +23,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.dtp.api.control.VesselController;
-import com.ksg.common.exception.AlreadyExistException;
-import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselServiceV2;
@@ -349,5 +346,10 @@ public class SearchAndInsertVesselDialog extends BaseInfoDialog{
 				addVesselAction(vesselName);
 			}
 		}
+	}
+	@Override
+	public void updateView() {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -270,7 +270,7 @@ public class ManageTablePortPop extends BaseInfoDialog implements ActionListener
 			// 동일 인덱스, 다른 항구명 추가
 			if(isSamePort)
 			{	
-				int row =tableH.getSelectedRow();
+				int row = tableH.getSelectedRow();
 
 				HashMap<String, Object> seletedPort = (HashMap<String, Object>) master.get(row);
 

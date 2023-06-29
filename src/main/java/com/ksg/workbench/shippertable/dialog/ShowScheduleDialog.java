@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +20,8 @@ import javax.swing.tree.TreePath;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.dtp.api.control.ScheduleController;
 import com.dtp.api.schedule.create.CreateSchedule;
-import com.dtp.api.service.ShipperTableService;
-import com.dtp.api.service.impl.ShipperTableServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
@@ -45,17 +43,17 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 	private static final long serialVersionUID = 1L;
 
 	private ShippersTable selectedTable;
-	
+
 	private List<ScheduleData> scheduleList;
-	
-	ShipperTableService shipperTableService;
+
+	private String table_id;
 
 	public ShowScheduleDialog() {
 
-		shipperTableService = new ShipperTableServiceImpl();
-		
+		this.setController(new ScheduleController());
+
 		this.scheduleList = new ArrayList<ScheduleData>();
-		
+
 		this.addComponentListener(this);
 	}
 
@@ -63,17 +61,13 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 
 		this();
 		
-		try {
-			this.selectedTable = shipperTableService.selectShipperTableAllById(table_id);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.table_id = table_id;
 
 	}
 
 	public ShowScheduleDialog(ShippersTable selectedTable) {
-		this();
+		
+		this(selectedTable.getTable_id());
 
 		this.selectedTable = selectedTable;
 
@@ -118,13 +112,14 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 		}
 	}
 
-	private KSGPanel updateOutbound(List<ScheduleData> inbound, String name, String inOutType)	
+	private KSGPanel createBoundPanel(List<ScheduleData> inbound, String name, String inOutType)	
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		// tree
 		CustomTree outboundTree = new CustomTree();
+
 		outboundTree.setPreferredSize(new Dimension(200, 100));
-		
+
 		// table
 		KSGTablePanel tableOutbound = new KSGTablePanel(name+" 목록");
 
@@ -137,21 +132,21 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 		tableOutbound.addColumn(new KSGTableColumn("port", "도착항",150));
 		tableOutbound.addColumn(new KSGTableColumn("toDate", "도착일", 85));
 		tableOutbound.initComp();
-		
+
 		pnMain.add(tableOutbound);
 
 		pnMain.add(outboundTree,BorderLayout.WEST);
-		
+
 		// data init		
-		
+
 		if(inbound == null) return pnMain;
-		
+
 		List<String>  inboundTreeData = inbound.stream()
-												
-												.map(ScheduleData::getVessel)
-												.distinct()
-												.collect(Collectors.toList());
-		
+
+				.map(ScheduleData::getVessel)
+				.distinct()
+				.collect(Collectors.toList());
+
 		DefaultMutableTreeNode inboundRoot = new DefaultMutableTreeNode("전체");
 
 		inboundTreeData.forEach(item -> inboundRoot.add(new DefaultMutableTreeNode(item)));
@@ -163,7 +158,7 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 		List<CommandMap> inboundList=convert(inbound);
 
 		tableOutbound.setResultData(inboundList);
-		
+
 		outboundTree.addTreeSelectionListener(new TreeSelectionListener(){
 
 			public void valueChanged(TreeSelectionEvent e) {
@@ -173,25 +168,25 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 				if(path!=null)
 				{
 					int pathCount = path.getPathCount();
-					
+
 
 					switch (pathCount) {
 
 					case 2:
 
 						String pa = path.getLastPathComponent().toString();
-						
+
 						List selectedList = ShowScheduleDialog.this.scheduleList.stream()
-																				.filter(schedule -> schedule.getInOutType().equals(inOutType))
-																				.filter(schedule -> schedule.getVessel().equals(pa))
-																				.collect(Collectors.toList());
+								.filter(schedule -> schedule.getInOutType().equals(inOutType))
+								.filter(schedule -> schedule.getVessel().equals(pa))
+								.collect(Collectors.toList());
 						tableOutbound.setResultData(convert(selectedList));
-						
+
 						break;
 					case 1:
 						List selectedList1 = ShowScheduleDialog.this.scheduleList.stream()
-																	.filter(schedule -> schedule.getInOutType().equals(inOutType))						
-																	.collect(Collectors.toList());
+						.filter(schedule -> schedule.getInOutType().equals(inOutType))						
+						.collect(Collectors.toList());
 						tableOutbound.setResultData(convert(selectedList1));
 						break;
 
@@ -207,46 +202,16 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	private JTabbedPane pnTabMain;
+
 	@Autowired
 	@Override
 	public void componentShown(ComponentEvent e) {
-		try {
-			CreateSchedule scheduleData = new CreateSchedule();
+		
+		CommandMap param = new CommandMap();
 
-			scheduleData.setShipperTable(selectedTable);			
+		param.put("table_id", table_id);
 
-			ScheduleManager.getInstance().initMasterData(); 
-
-			List inboundScheduleList=scheduleData.getInboundScheduleList();
-			
-			List outboundScheduleList=scheduleData.getOutboundScheduleList();
-			
-			this.scheduleList.addAll(outboundScheduleList);
-			
-			this.scheduleList.addAll(inboundScheduleList);
-
-			Map<String, List<ScheduleData>> companymap =  scheduleList.stream().collect(
-					Collectors.groupingBy(ScheduleData::getInOutType)); // 선사
-
-
-			List<ScheduleData> inbound =companymap.get(ScheduleEnum.INBOUND.getSymbol());
-			
-			List<ScheduleData> outbound =companymap.get(ScheduleEnum.OUTBOUND.getSymbol());
-			
-			if(inbound!=null)
-			pnTabMain.addTab("Inbound", updateOutbound(inbound, "Inbound","I"));
-			
-			if(outbound!=null)
-			pnTabMain.addTab("Outbound", updateOutbound(outbound, "Outbound","O"));
-
-
-
-		} catch (Exception e1) {
-			e1.printStackTrace();
-
-			JOptionPane.showMessageDialog(this, e1.getMessage());
-		}
-
+		callApi("showScheduleDialog.init",param);
 	}
 	private List convert(List<ScheduleData> list)
 	{
@@ -258,5 +223,52 @@ public class ShowScheduleDialog extends BaseInfoDialog{
 
 	}
 
-}
+	@Override
+	public void updateView() {
 
+		CommandMap result= this.getModel();
+
+		String serviceId = (String) result.get("serviceId");
+
+
+		if("showScheduleDialog.init".equals(serviceId)) {
+			
+			try {
+				this.selectedTable = (ShippersTable) result.get("selectedTable");
+
+				CreateSchedule scheduleData = new CreateSchedule();
+
+				scheduleData.setShipperTable(selectedTable);			
+
+				ScheduleManager.getInstance().initMasterData(); 
+
+				List inboundScheduleList 	= scheduleData.getInboundScheduleList();
+
+				List outboundScheduleList 	= scheduleData.getOutboundScheduleList();
+
+				this.scheduleList.addAll(outboundScheduleList);
+
+				this.scheduleList.addAll(inboundScheduleList);
+
+				Map<String, List<ScheduleData>> companymap =  scheduleList.stream().collect(
+						Collectors.groupingBy(ScheduleData::getInOutType)); // 선사
+
+
+				List<ScheduleData> inbound =companymap.get(ScheduleEnum.INBOUND.getSymbol());
+
+				List<ScheduleData> outbound =companymap.get(ScheduleEnum.OUTBOUND.getSymbol());
+
+				if(inbound!=null)
+					pnTabMain.addTab("Inbound", createBoundPanel(inbound, "Inbound","I"));
+
+				if(outbound!=null)
+					pnTabMain.addTab("Outbound", createBoundPanel(outbound, "Outbound","O"));
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+
+				JOptionPane.showMessageDialog(this, e1.getMessage());
+			}
+		}
+	}
+}

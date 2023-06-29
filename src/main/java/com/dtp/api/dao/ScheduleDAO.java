@@ -17,6 +17,10 @@ public class ScheduleDAO extends AbstractDAO{
 		return selectList(namespace+"."+ "selectScheduleListByCondition2", schedule);
 	}
 	
+	public List<ScheduleData> selectInlandScheduleListByCondition(ScheduleData schedule) throws SQLException {
+		return selectList(namespace+"."+ "selectInlandScheduleListByCondition", schedule);
+	}
+	
 	public int deleteScheduleById(String table_id) throws SQLException
 	{
 		return (int) delete("schedule.deleteScheduleById", table_id);

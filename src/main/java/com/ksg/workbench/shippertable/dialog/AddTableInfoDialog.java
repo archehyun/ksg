@@ -119,8 +119,6 @@ public class AddTableInfoDialog extends BaseInfoDialog implements FocusListener{
 
 	private JTextField txfInland;
 
-//	private ShipperTableService service;
-
 	private CompanyService companyService;
 
 	private JLabel lblTitle;

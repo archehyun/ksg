@@ -77,10 +77,6 @@ public class KSGComboBox extends MyComboBox<KSGTableColumn>{
 					                    .map(o -> objectMapper.convertValue(o, CommandMap.class))
 					                    .collect(Collectors.toList());
 			
-//			HashMap<String,Object> resullt = (HashMap<String, Object>) service.selectCodeDList(param);
-			
-//			List<HashMap<String,Object> > li = (List<HashMap<String, Object>>) resullt.get("master");
-			
 			if(isShowTotal) 			addItem(new KSGTableColumn("","ÀüÃ¼"));
 			
 			for(HashMap<String, Object> item:resultArry)

@@ -219,4 +219,9 @@ public class SearchVesselDialog extends BaseInfoDialog{
 		txf.setText(searchText);
 	}
 
+	@Override
+	public void updateView() {
+		
+	}
+
 }

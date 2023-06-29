@@ -390,8 +390,8 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	@Override
 	public void updateView() {
+		
 		CommandMap result= this.getModel();
-
 
 		String serviceId=(String) result.get("serviceId");
 
@@ -411,9 +411,5 @@ public class PnCompany extends PnBase implements ActionListener{
 
 			fnSearch();
 		}
-
-
-
 	}
-
 }

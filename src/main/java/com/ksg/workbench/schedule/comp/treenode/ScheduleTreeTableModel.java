@@ -1,4 +1,4 @@
-package com.ksg.workbench.schedule.comp;
+package com.ksg.workbench.schedule.comp.treenode;
 
 import java.util.Arrays;
 import java.util.LinkedList;

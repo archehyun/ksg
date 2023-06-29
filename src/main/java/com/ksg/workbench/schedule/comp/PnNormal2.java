@@ -35,7 +35,7 @@ import com.ksg.workbench.schedule.dialog.SearchPortDialog;
 
 /**
 
- * @FileName : PnOutbound.java
+ * @FileName : PnNormal2.java
 
  * @Project : KSG2
 
@@ -57,17 +57,11 @@ public class PnNormal2 extends PnSchedule{
 
 	private KSGTablePanel tableH;
 
-	private List<HashMap<String, Object>> master;
-
 	private KSGComboBox cbxNormalInOut;
 
 	private KSGComboBox cbxArea;
 
-	private AreaService areaService = new AreaServiceImpl();
-
 	private KSGComboBox cbxNormalSearch;
-
-	private ScheduleController control = new ScheduleController(); 
 
 	private JTextField txfNoramlSearch;
 
@@ -117,11 +111,7 @@ public class PnNormal2 extends PnSchedule{
 
 		tableH.addColumn(new KSGTableColumn("dateF", "출발일", 90));
 
-		//		tableH.addColumn(new KSGTableColumn("fromDate", "출발일", 90));
-
 		tableH.addColumn(new KSGTableColumn("dateT", "도착일", 90));
-
-		//		tableH.addColumn(new KSGTableColumn("toDate", "도착일", 90));
 
 		tableH.addColumn(new KSGTableColumn("port", "도착항",200));
 
@@ -323,7 +313,6 @@ public class PnNormal2 extends PnSchedule{
 			}
 
 			if(input_date!=null||!input_date.equals(""))
-
 			{
 				searchParam.put("date_issue", input_date);
 			}
@@ -367,31 +356,13 @@ public class PnNormal2 extends PnSchedule{
 	@Override
 	public void componentShown(ComponentEvent e) {
 
-		try {
-
-			cbxArea.removeAllItems();
-
-			cbxArea.addItem(new KSGTableColumn("", "전체"));
-
-			List<AreaInfo> areaList=areaService.selectAll();
-
-			areaList.stream()	.sorted(Comparator.comparing(AreaInfo::getArea_name))
-			.forEach(o->cbxArea.addItem(new KSGTableColumn(o.getArea_name(), o.getArea_name())));
-
-
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
+		callApi("pnNormal2.init");
 	}
 
 	@Override
 	public void updateView() {
 
 		CommandMap result= this.getModel();
-
-
 
 		String serviceId = (String) result.get("serviceId");
 
@@ -402,9 +373,17 @@ public class PnNormal2 extends PnSchedule{
 			tableH.setResultData(data);
 
 		}
+		else if("pnNormal2.init".equals(serviceId)) {
 
+			List<AreaInfo> areaList=(List<AreaInfo>) result.get("areaList");
 
+			cbxArea.removeAllItems();
 
+			cbxArea.addItem(new KSGTableColumn("", "전체"));
+
+			areaList.stream()	.sorted(Comparator.comparing(AreaInfo::getArea_name))
+			.forEach(o->cbxArea.addItem(new KSGTableColumn(o.getArea_name(), o.getArea_name())));
+
+		}
 	}
-
 }
