@@ -30,7 +30,7 @@ import org.apache.logging.log4j.Logger;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.service.TableService;
-import com.ksg.view.comp.table.renderer.KSGTableCellRenderer;
+import com.ksg.view.comp.table.renderer.DateCellRenderer;
 import com.ksg.workbench.admin.KSGViewParameter;
 
 /**
@@ -82,7 +82,7 @@ public abstract class KSGTable extends JTable implements KSGObserver {
 		{
 			TableColumn namecol = colmodel.getColumn(i);
 
-			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
+			DefaultTableCellRenderer renderer = new DateCellRenderer();
 
 			namecol.setCellRenderer(renderer);
 			namecol.setHeaderRenderer(new IconHeaderRenderer());

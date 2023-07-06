@@ -103,7 +103,7 @@ public class ManageVesselDialog extends BaseInfoDialog implements ActionListener
 
 	public void actionPerformed(ActionEvent arg0) {
 		String command = arg0.getActionCommand();
-		if(command.equals("¥›±‚"))
+		if(command.equals("√Îº“"))
 		{
 			this.setVisible(false);
 			dispose();

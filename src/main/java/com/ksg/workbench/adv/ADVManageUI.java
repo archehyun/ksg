@@ -62,9 +62,6 @@ import javax.swing.tree.TreePath;
 import com.dtp.api.control.ShipperTableController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.domain.TablePort;
-import com.ksg.service.TableService;
-import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.checkbox.KSGCheckBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.radiobutton.KSGRadioButton;
@@ -102,7 +99,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 {	
-	
 	private static int _tableViewCount = 10;
 
 	private static final String SEARCH_TYPE_COMPANY = "선사";
@@ -169,18 +165,15 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 	private ADVListPanel advListPanel;
 
-	private TablePort tablePort;
-
-	private TableService tableService;
-
 	private SearchPanel searchPanel;
-
 
 	public ADVManageUI() {
 
 		super();
 
 		this.title="광고정보 입력";
+		
+		this.setName("광고정보 입력");
 
 		this.borderColor = new Color(179,195,207);
 
@@ -190,13 +183,11 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 		this.setController(new ShipperTableController());
 
-		tableService = new TableServiceImpl();
-
 		this.addComponentListener(this);
 
 		createAndUpdateUI();
 
-//		callApi("aDVManageUI.init");
+		callApi("aDVManageUI.init");
 	}
 
 	public void actionPerformed(ActionEvent e) {

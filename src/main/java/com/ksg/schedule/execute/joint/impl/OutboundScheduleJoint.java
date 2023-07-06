@@ -1,7 +1,5 @@
 package com.ksg.schedule.execute.joint.impl;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,12 +13,9 @@ import java.util.stream.Collectors;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.execute.joint.JointSchedule;
-import com.ksg.service.VesselServiceV2;
-import com.ksg.service.impl.VesselServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,10 +36,6 @@ import lombok.extern.slf4j.Slf4j;
   */
 @Slf4j
 public class OutboundScheduleJoint extends JointSchedule{
-
-	
-
-	
 
 	public OutboundScheduleJoint(String date_isusse)	
 	{

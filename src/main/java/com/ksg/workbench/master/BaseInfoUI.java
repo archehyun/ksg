@@ -364,15 +364,10 @@ public class BaseInfoUI extends AbstractMgtUI{
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void actionPerformed(ActionEvent e) {}
 
 	@Override
-	public void componentShown(ComponentEvent e) {
-		
-	}
+	public void componentShown(ComponentEvent e) {}
 
 
 }

@@ -18,7 +18,7 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.view.comp.table.renderer.KSGTableCellRenderer;
+import com.ksg.view.comp.table.renderer.DateCellRenderer;
 
 /**
  * @author ¹ÚÃ¢Çö
@@ -116,7 +116,7 @@ public class KSGXMLTable extends KSGTable
 				if(i!=0)
 				{
 					namecol.setHeaderRenderer(renderer);
-					namecol.setCellRenderer(new KSGTableCellRenderer());
+					namecol.setCellRenderer(new DateCellRenderer());
 					namecol.setMinWidth(100);
 				}else
 				{

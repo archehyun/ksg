@@ -183,8 +183,8 @@ public class AddVesselDialog extends KSGDialog {
 					vesselModel.setRowCount(vesselModel.getRowCount()+1);
 					vesselModel.setValueAt(txf.getText(), row1, 0);
 					vesselModel.setValueAt(txf.getText(), row1, 1);
-
-					main.setValue( vessel.getVessel_name().toUpperCase(), row1, 0);
+					//TODO ERROR »Æ¿Œ
+					//main.setValue( vessel.getVessel_name().toUpperCase(), row1, 0);
 				} catch (SQLException e1) 
 				{
 					if(e1.getErrorCode()==2627)

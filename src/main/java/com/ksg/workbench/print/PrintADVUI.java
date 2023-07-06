@@ -158,8 +158,6 @@ public class PrintADVUI extends AbstractMgtUI implements ActionListener, KSGObse
 		this.add(pnCenter,BorderLayout.CENTER);
 		
 		this.add(pnLeftMenu,BorderLayout.WEST);
-
-
 	}
 
 

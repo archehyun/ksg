@@ -214,7 +214,9 @@
 	</select>
 	
 	<select id="selectVesselAbbr" resultClass="com.ksg.domain.Vessel">
-		select * from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr#
+		select
+		 /* selectVesselAbbr */
+		* from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr#
 	</select>
 	
 		<select id="selectVesselListByLike" resultClass="com.ksg.domain.Vessel" parameterClass="com.ksg.domain.Vessel">

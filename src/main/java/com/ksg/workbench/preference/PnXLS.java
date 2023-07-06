@@ -22,31 +22,43 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
+import com.ksg.view.comp.KSGViewUtil;
 import com.ksg.view.comp.panel.KSGPanel;
 
 public class PnXLS extends PnOption{
 	
-	
 	private JComboBox cbbUnderPort;
+	
 	private JComboBox cboUpDown;
+	
 	private JCheckBox cbxDoubleLine;
+	
 	JCheckBox cbxUnderPort;
+	
 	private JCheckBox cbxVoy;
+	
 	private JCheckBox chxDoubleKeyword;
+	
 	private JCheckBox chxETAETD;
+	
 	private Font defaultfont;
 
-
-	PreferenceDialog preferenceDialog;
+	private PreferenceDialog preferenceDialog;
 
 	private KSGPropertis propertis = KSGPropertis.getIntance();
+	
+	private KSGViewUtil viewPropeties = KSGViewUtil.getInstance();
+	
 	BaseService baseService;
+	
 	private JCheckBox cbxVesselVoyage;
 	private JCheckBox chxDivider;
 	private JRadioButton radioButNoaml;
 	private JRadioButton radioButSlash;
 	private JRadioButton radioButGyu;
 	private JRadioButton radioButDot;
+
+	private JCheckBox cbxShowLeft;
 	public PnXLS(PreferenceDialog preferenceDialog) 
 	{
 		super(preferenceDialog);
@@ -54,6 +66,7 @@ public class PnXLS extends PnOption{
 		this.setName("엑셀입력옵션");
 		
 		baseService = new BaseServiceImpl();
+		
 		defaultfont = KSGModelManager.getInstance().defaultFont;
 		
 		initComponent();
@@ -61,6 +74,9 @@ public class PnXLS extends PnOption{
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		this.add(buildCenter());
+		
+		boolean s =Boolean.valueOf( viewPropeties.getProperty("view.showleft"));
+		cbxShowLeft.setSelected(s);
 		
 	}
 	
@@ -114,6 +130,11 @@ public class PnXLS extends PnOption{
 		pnBox.add(createComp(new JLabel("이중항구 등록시:")));
 		pnBox.add(createComp(panel));
 		
+		KSGPanel pnShowLeft = new KSGPanel();
+		
+		cbxShowLeft = new JCheckBox("왼쪽 메뉴 표시", true);
+		
+		pnBox.add(createComp(cbxShowLeft));
 		
 		
 		KSGPanel pnMain=new KSGPanel(new BorderLayout());
@@ -252,8 +273,6 @@ public class PnXLS extends PnOption{
 		bg.add(radioButSlash);
 		bg.add(radioButGyu);
 		
-		
-		
 		cbxVoy.setBackground(Color.white);
 		cbxDoubleLine.setBackground(Color.white);
 		cbxVesselVoyage.setBackground(Color.white);
@@ -265,30 +284,22 @@ public class PnXLS extends PnOption{
 		radioButDot.setBackground(Color.white);
 		radioButSlash.setBackground(Color.white);
 		radioButGyu.setBackground(Color.white);
-		
-		/*switch (KSGPropertis.PROPERTIES_DIVIDER_COUNT) {
-		case KSGPropertis.PROPERTIES_DIVIDER_NOMAL:
-			radioButNoaml.setSelected(true);
-			break;
-		case KSGPropertis.PROPERTIES_DIVIDER_SLASH:
-			radioButSlash.setSelected(true);
-			break;
-		case KSGPropertis.PROPERTIES_DIVIDER_BRACKETS:
-			radioButGyu.setSelected(true);
-			break;
 
-		default:
-			break;
-		}*/
 	}
 	
 	public void saveAction() {
+		
 		logger.debug("xls saveAction:");
 		
-		propertis.setProperty(KSGPropertis.PROPERTIES_UNDERPORT, (String)cbbUnderPort.getSelectedItem());
-		propertis.setProperty(KSGPropertis.PROPERTIES_VOY, String.valueOf(cbxVoy.isSelected()));
-		propertis.setProperty(KSGPropertis.PROPERTIES_DOUBLEKEY, chxDoubleKeyword.isSelected()+"|"+cboUpDown.getSelectedItem());
+//		propertis.setProperty(KSGPropertis.PROPERTIES_UNDERPORT, (String)cbbUnderPort.getSelectedItem());
+//		
+//		propertis.setProperty(KSGPropertis.PROPERTIES_VOY, String.valueOf(cbxVoy.isSelected()));
+//		
+//		propertis.setProperty(KSGPropertis.PROPERTIES_DOUBLEKEY, chxDoubleKeyword.isSelected()+"|"+cboUpDown.getSelectedItem());
 		
+		viewPropeties.setProperty("view.showleft",  Boolean.toString( cbxShowLeft.isSelected()));
+
+		viewPropeties.store();
 		
 	}
 }

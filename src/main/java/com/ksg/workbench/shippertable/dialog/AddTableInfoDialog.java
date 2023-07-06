@@ -336,7 +336,7 @@ public class AddTableInfoDialog extends BaseInfoDialog implements FocusListener{
 
 		txfVesselCount	= createTextField( 3);
 
-		txfOutFromPort		= createTextField( 13);
+		txfOutFromPort	= createTextField( 13);
 
 		txfOther		= createTextField( 3);
 

@@ -71,13 +71,13 @@ public class PnNormalByTree extends PnSchedule implements View {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Image changePortImg;
+//	private Image changePortImg;
 
 	private Image changeShipImg;
 
 	private Image changeShipRedImg;
 
-	private Image changeAreaImg;
+//	private Image changeAreaImg;
 
 	private Image changeShipGreenImg;
 
@@ -125,8 +125,8 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		super();
 
-		Image img 			= new ImageIcon("images/port.png").getImage();
-		changePortImg 		= img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+//		Image img 			= new ImageIcon("images/port.png").getImage();
+//		changePortImg 		= img.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 
 		Image img2 			= new ImageIcon("images/ship_group.png").getImage();
 		changeShipImg 		= img2.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
@@ -134,8 +134,8 @@ public class PnNormalByTree extends PnSchedule implements View {
 		Image img3 			= new ImageIcon("images/ship_group_red.png").getImage();
 		changeShipRedImg 	= img3.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 
-		Image img4 			= new ImageIcon("images/internet.png").getImage();
-		changeAreaImg 		= img4.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+//		Image img4 			= new ImageIcon("images/internet.png").getImage();
+//		changeAreaImg 		= img4.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 
 		Image img5 			= new ImageIcon("images/ship_group_green.png").getImage();
 		changeShipGreenImg 	= img5.getScaledInstance(15, 15, Image.SCALE_SMOOTH);
@@ -548,11 +548,6 @@ public class PnNormalByTree extends PnSchedule implements View {
 		}		
 	}
 
-	@Override
-	public void componentShown(ComponentEvent e) {
-		log.debug("init");
-		callApi("pnNormalByTree.init");
-	}
 
 	@Override
 	public void updateView() {
@@ -605,5 +600,11 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 			callApi("scheduleViewUpdate");
 		}
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+		callApi("pnNormalByTree.init");
 	}
 }

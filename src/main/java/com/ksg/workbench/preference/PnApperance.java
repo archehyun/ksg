@@ -257,13 +257,11 @@ public class PnApperance extends PnOption {
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void saveAction() {
-		// TODO Auto-generated method stub
 		
 	}
 

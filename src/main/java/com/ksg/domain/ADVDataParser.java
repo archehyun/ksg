@@ -199,6 +199,7 @@ public class ADVDataParser {
 			return null;
 		}
 	}
+	
 	public void addDataRow() {
 		String a[] = new String[this.getPortCount()];
 		data+=ROW_DIVIDER;

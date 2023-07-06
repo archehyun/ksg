@@ -32,7 +32,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.service.TableService;
 import com.ksg.view.comp.ColorData;
 import com.ksg.view.comp.table.model.KSGTableModel;
-import com.ksg.view.comp.table.renderer.KSGTableCellRenderer;
+import com.ksg.view.comp.table.renderer.DateCellRenderer;
 
 public class SearchSubTableCommand extends AbstractCommand {
 
@@ -105,7 +105,7 @@ public class SearchSubTableCommand extends AbstractCommand {
 
 				TableColumn namecol = colmodel.getColumn(i);
 
-				DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
+				DefaultTableCellRenderer renderer = new DateCellRenderer();
 				if(i==0||i==1||i==2||i==4||i==5)
 					renderer.setHorizontalAlignment(SwingConstants.CENTER);
 

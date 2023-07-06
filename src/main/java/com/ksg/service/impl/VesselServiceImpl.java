@@ -177,7 +177,9 @@ public class VesselServiceImpl extends AbstractServiceImpl implements VesselServ
 		
 		return map;
 	}
-	public Vessel selectDetail(String vessel_abbr) throws SQLException {
+	public Vessel selectVesselDetail(String vessel_abbr) throws SQLException {
+		
+		if(vessel_abbr == null) return null;
 
 		return vesselDAO.selectDetail(vessel_abbr);
 	}

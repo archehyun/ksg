@@ -4,9 +4,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
+import com.dtp.api.control.AbstractController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.view.comp.panel.KSGPanel;
 
-public abstract class KSGView extends KSGPanel implements ActionListener, ComponentListener{
+public abstract class KSGView extends KSGPanel implements ActionListener, ComponentListener, View{
+	
+	protected AbstractController controller;
+	
+	protected CommandMap model;
 	
 	@Override
 	public void componentResized(ComponentEvent e) {}
@@ -19,5 +25,35 @@ public abstract class KSGView extends KSGPanel implements ActionListener, Compon
 
 	@Override
 	public void componentHidden(ComponentEvent e) {}
+	
+
+	@Override
+	public void setModel(CommandMap model) {
+		this. model = model;
+
+	}
+	public CommandMap getModel() {
+
+		return model;
+	}
+
+	public void callApi(String serviceId, CommandMap param)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, param, this);
+	}
+	
+	public void callApi(String serviceId)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, new CommandMap(),this);
+	}
+	
+	public void updateView() {};
+	
+	public void setController(AbstractController constroller)
+	{
+		this.controller =constroller;
+	}
 
 }

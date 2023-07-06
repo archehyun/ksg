@@ -76,7 +76,6 @@ import com.dtp.api.exception.ResourceNotFoundException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ADVData;
-import com.ksg.domain.Company;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.CompanyService;
 import com.ksg.view.comp.KSGViewUtil;
@@ -221,17 +220,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 	private JMenuItem 			delMenu;
 
-	private int 				depth=1; //
-
-	private final int 			DEPTH_PAGE=3; //
-
-	private final int 			DEPTH_ROOT=1; //
-
-	private final int 			DEPTH_SUB=2; //
-
 	private UpdateShipperTableDateDialog updateAllDateDialog; //날짜 일괄 수정 창		
-
-	//public KSGTableSelectListner listner;
 
 	public List 				_searchedList, selectedList;
 
@@ -409,28 +398,11 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			{
 				updateAndSaveShipperTableInfo();
 			}
-//			else if(command.equals("SEARCH_COMPANY"))
-//			{
-//				SearchCompanyDialog companyDialog = new SearchCompanyDialog();
-//
-//				companyDialog.createAndUpdateUI();
-//
-//				String company_abbr = companyDialog.result;
-//
-//				if(company_abbr == null)return;
-//
-//				CommandMap param = new CommandMap();
-//
-//				param.put("company_abbr", company_abbr);
-//
-//				Company companyInfo=companyService.select(param );
-//
-//				pnUpdateTable. setCompanyInfo(companyInfo);	
-//
-//			}
 
 		} catch (Exception e1)
 		{
+			e1.printStackTrace();
+			
 			JOptionPane.showMessageDialog(ShipperTableMgtUI2.this, e1.getMessage());
 		}
 	}
@@ -776,8 +748,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 		this.add(buildNorthPn(),BorderLayout.NORTH);
 
-		//this.fnSearch();
-
 		logger.debug("init searchUI end");
 	}
 
@@ -867,9 +837,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		txfTable_id.setBackground(Color.white);
 
 
-
-
-
 		txfDate = new HintTextField("2000.1.1",8);
 
 		txfDate.setEditable(false);
@@ -929,7 +896,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-
 				txfSearchInput.setText("");
 
 				stfCompanyAbbr.setText("");
@@ -937,8 +903,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 				cbxGubun.setSelectedIndex(0);
 
 				cbbOption.setSelectedIndex(0);
-
-				//				
 			}
 		});
 
@@ -1039,11 +1003,10 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 		pnSearchMainDown.add(lblDateSearch);
 
-		//		pnSearchMainDown.add(txfDateSearch);
-
 		pnSearchMainDown.add(jdatePicker);
 
 		pnSearchMainDown.add(butDateSearch);
+		
 		pnSearchMainDown.add(butCancel);
 
 		pnSearchMain.add(createSearchPanel(),BorderLayout.NORTH);
@@ -1055,20 +1018,29 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		pnMain1.add(pnSearchMain);
 
 		bo.add(pnMain1);
+		
 		KSGPanel pnLeft = new KSGPanel();
+		
 		pnLeft.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		JLabel label = new JLabel("페이지 : ",new  ImageIcon("images/buticon.png"),JLabel.LEFT);
+		
 		label.setBackground(propeties.getColor("searchtextfield.readonly") );
+		
 		label.setForeground(Color.blue.brighter());
 		pnLeft.add(label);
 		pnLeft.add(txfPage);		
 
 		txfPage.setForeground(Color.blue);
+		
 		JLabel lbl = new JLabel("테이블 ID : ",new  ImageIcon("images/buticon.png"),JLabel.LEFT);
+		
 		lbl.setBackground(propeties.getColor("searchtextfield.readonly") );
+		
 		lbl.setForeground(Color.blue.brighter());
 
 		txfTable_id.setForeground(Color.blue.brighter());
+		
 		pnLeft.add(lbl);
 		pnLeft.add(txfTable_id);
 
@@ -1088,20 +1060,29 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		pnSearchInfoMain.add(bo);
 
 		KSGPanel pnS = new KSGPanel();
+		
 		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		
 		pnS.setPreferredSize(new Dimension(0,1));
+		
 		KSGPanel pnS1 = new KSGPanel();
+		
 		pnS1.setPreferredSize(new Dimension(0,15));
+		
 		pnSearchInfoMain.add(pnS);
+		
 		pnSearchInfoMain.add(pnS1);
+		
 		pnSearchInfoMain.add(pnADVInfo);
 
 		pnADVInfo.setVisible(false);
 
 		KSGPanel pnMain = new KSGPanel();
+		
 		pnMain.setLayout( new BorderLayout());
 
 		pnMain.add(pnSearchInfoMain,BorderLayout.CENTER);
+		
 		return pnMain;
 	}
 
@@ -1404,7 +1385,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		//		fnSearch();
+				
 		//if(isShowData)
 	}
 	class SearchOptionKeyAdapter extends KeyAdapter
@@ -1463,8 +1444,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 				CommandMap viewModel = (CommandMap) result.clone();
 
 				tree.loadModel(viewModel);
-
+				
 				fnSearch();
+				
 			}
 			else if("shipperTableMgtUI2.fnSearch".equals(serviceId)) {
 

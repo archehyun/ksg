@@ -29,15 +29,11 @@ import com.ksg.view.comp.panel.KSGPanel;
   * @프로그램 설명 :
 
   */
-public abstract class AbstractMgtUI extends KSGView implements View{
+public abstract class AbstractMgtUI extends KSGView {
 	
 	protected String title;
 	
 	protected Color borderColor;
-	
-	private AbstractController controller;
-	
-	private CommandMap model;
 	
 	public AbstractMgtUI()
 	{
@@ -78,34 +74,4 @@ public abstract class AbstractMgtUI extends KSGView implements View{
 
 		return pnTitleMain;
 	}
-	
-	@Override
-	public void setModel(CommandMap model) {
-		this. model = model;
-
-	}
-	public CommandMap getModel() {
-
-		return model;
-	}
-
-	public void callApi(String serviceId, CommandMap param)
-	{
-		if(this.controller!=null)
-			this.controller.call(serviceId, param, this);
-	}
-	
-	public void callApi(String serviceId)
-	{
-		if(this.controller!=null)
-			this.controller.call(serviceId, new CommandMap(),this);
-	}
-	
-	public void updateView() {};
-	
-	public void setController(AbstractController constroller)
-	{
-		this.controller =constroller;
-	}
-
 }

@@ -276,7 +276,7 @@ public class SearchAndInsertVesselDialog extends BaseInfoDialog{
 		{
 			NotificationManager.showNotification(vessel_abbr+" 추가했습니다.");
 			
-			advTable.setValue( vessel_abbr.toUpperCase(), row, 0);
+//			advTable.setValue( vessel_abbr.toUpperCase(), row, 0);
 			
 			txfSearch.setText("");
 		}
@@ -318,7 +318,7 @@ public class SearchAndInsertVesselDialog extends BaseInfoDialog{
 
 			vesselModel.fireTableCellUpdated(row, 0);
 
-			advTable.setValue(vesselName.getVessel_name(), row, 0);
+//			advTable.setValue(vesselName.getVessel_name(), row, 0);
 
 			setVisible(false);
 

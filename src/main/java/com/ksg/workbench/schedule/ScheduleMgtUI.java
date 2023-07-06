@@ -23,7 +23,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -33,14 +32,12 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 
 import com.dtp.api.control.ScheduleController;
 import com.ksg.commands.schedule.route.RouteTaskNewVessel;
@@ -49,10 +46,6 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ScheduleType;
 import com.ksg.domain.ShippersTable;
-import com.ksg.schedule.ScheduleServiceManager;
-import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.service.ScheduleSubService;
-import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.checkbox.KSGCheckBox;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -66,7 +59,6 @@ import com.ksg.workbench.schedule.comp.PnConsole2;
 import com.ksg.workbench.schedule.comp.PnInland2;
 import com.ksg.workbench.schedule.comp.PnNormal2;
 import com.ksg.workbench.schedule.comp.PnNormalByTree;
-import com.ksg.workbench.schedule.dialog.ScheduleResultDialog;
 
 import mycomp.comp.MyTable;
 
@@ -89,29 +81,13 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 	private static final String ACTION_DELETE = "스케줄 삭제";
 
-	ErrorLogManager errorLogManager = ErrorLogManager.getInstance();
-
-	private ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
+	private ErrorLogManager errorLogManager = ErrorLogManager.getInstance();
 
 	private static final long serialVersionUID = 1L;	
 
 	private MyTable tblScheduleDateList;
 
-	private JLabel lblNTop;
-
-	private ScheduleResultDialog scheduleResultDialog;
-
-	private ScheduleSubService scheduleService;
-
-	private JDialog searchScheduleByCompanyDialog;	
-
-	private JComboBox cbxOption;
-
-	private JTextField txfOption;
-
 	private JButton butDelete,butPrint;
-
-	private List tableDatelist;
 
 	private JButton butBuild;
 
@@ -137,31 +113,33 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 	private KSGCheckBox cbxNew,cbxInboundSchedule,cbxOutboundSchedule,cbxRouteSchedule;
 
-	JComboBox cbxRouteLogic;
-	
-	JCheckBox chxRouteLogic;
-	
-	JCheckBox chxOutboundLogic;
-	
-	JCheckBox chxInboundLogic;
-	
+	private JComboBox cbxRouteLogic;
+
+	private JCheckBox chxRouteLogic;
+
+	private JCheckBox chxOutboundLogic;
+
+	private JCheckBox chxInboundLogic;
+
 	PrintAble printAble = new PrintAble();
 
 	private JComboBox<String> cbxOutboundLogic;
 
 	public ScheduleMgtUI() {
 
-		scheduleService = new ScheduleServiceImpl();
-
 		this.setController(new ScheduleController());
 
 		this.addComponentListener(this);
 
 		this.title = "스케줄정보 관리";
+		
+		this.setName("스케줄 확인");
 
 		this.borderColor = new Color(255,100,100);
 
 		createAndUpdateUI();
+		
+		callApi("scheduleViewUpdate");
 	}
 
 	/**
@@ -169,8 +147,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 	 */
 	public void createAndUpdateUI() 
 	{
-		this.setName("SearchUI");
-
 		this.setLayout(new BorderLayout(10,10));		
 
 		this.add( buildLeftMenu(),BorderLayout.WEST);	
@@ -185,27 +161,27 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		KSGPanel pnLeftMenu = new KSGPanel(new BorderLayout(5,5));	
 
 		butPrint = new JButton("파일 출력 (P)");
-		
+
 		butPrint.setActionCommand("파일 출력");
-		
+
 		butPrint.setMnemonic(KeyEvent.VK_P);
-		
+
 		butBuild = new JButton("스케줄 생성(N)");
-		
+
 		butBuild.setMnemonic(KeyEvent.VK_N);
-		
+
 		butBuild.setActionCommand(ACTION_CREATE);		
-		
+
 		butDelete = new JButton("스케줄 삭제(D)");
-		
+
 		butDelete.setMnemonic(KeyEvent.VK_D);
-		
+
 		butDelete.setActionCommand(ACTION_DELETE);
 
 		butPrint.addActionListener(new SchedulePrintAction());
-		
+
 		butBuild.addActionListener(this);	
-		
+
 		butDelete.addActionListener(this);		
 
 
@@ -221,15 +197,15 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnTableDateModelSouth.add(pnTableDateModelSouthPadding,BorderLayout.SOUTH);
 
 		cbxTableDateList = new JComboBox();
-		
+
 		JButton butUpdate = new KSGGradientButton("갱신");
-		
+
 		butUpdate.addActionListener(this);
 
 		KSGPanel pnDateMain = new KSGPanel(new BorderLayout());
 
 		KSGPanel pnDate = new KSGPanel(new BorderLayout(5,5));
-		
+
 		pnDate.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
 
 		pnDate.add(new JLabel("기준 일자"), BorderLayout.WEST);
@@ -293,13 +269,13 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 				String inputdate = (String) tblScheduleDateList.getValueAt(row, 1);
 
 				pnNormal2.setInput_date(inputdate);
-				
+
 				pnConsole2.setInput_date(inputdate);
-				
+
 				pnInland2.setInput_date(inputdate);
-				
+
 				pnNomalByTree.setInput_date(inputdate);
-				
+
 				pnNomalByTree.setGubun(gubun);
 
 				if(gubun.equals(ShippersTable.GUBUN_CONSOLE)||gubun.equals(ShippersTable.GUBUN_NORMAL))
@@ -311,18 +287,18 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 				{
 					pnOption.setVisible(false);
 				}
-				
+
 				if(tabPane.getSelectedIndex()==3)
 				{
 					pnNomalByTree.fnSearch();
 				}
 			}
 		});
-		
+
 		pnTblScheduleDateList.add(new JLabel("스케줄 생성 일자"),BorderLayout.NORTH);
-		
+
 		pnTblScheduleDateList.add(new JScrollPane(tblScheduleDateList));
-		
+
 		tblScheduleDateList.getParent().setBackground(Color.white);
 
 
@@ -333,11 +309,11 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		// 버튼 목록=============================================
 
 		GridLayout gridLayout = butlayout;
-		
+
 		gridLayout.setVgap(5);
-		
+
 		KSGPanel pnLeftMenuButtonList = new KSGPanel(gridLayout);
-		
+
 		pnLeftMenuButtonList.setPreferredSize(new Dimension(250,50));
 
 		pnLeftMenuButtonList.add(butPrint);		
@@ -345,9 +321,9 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		//====================================================
 
 		pnLeftMenu.add(pnLeftMenuButtonList,BorderLayout.SOUTH);
-		
+
 		pnLeftMenu.add(pnTableDateModel,BorderLayout.NORTH);
-		
+
 		pnLeftMenu.add(pnTblScheduleDateList);
 
 		pnLeftMenu.setPreferredSize(new Dimension(280,0));
@@ -357,55 +333,54 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
 		pnMain.add(pnLeftMenu);
-		
+
 		pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-		//pnMain.setBorder(BorderFactory.createTitledBorder("스케줄 정보 관리"));
 		return pnMain;
 	}
-	
+
 	private KSGPanel createOptionPn()
 	{
 		// 콘솔 옵션
 		pnConsoleOption = new KSGPanel(new FlowLayout(FlowLayout.LEADING));
-		
+
 		pnConsoleOption.setBorder(BorderFactory.createTitledBorder("출력 항목"));
-		
+
 		optPage = new KSGRadioButton("Page",true);
-		
+
 		optCFS = new KSGRadioButton("CFS");
-		
+
 		ButtonGroup bg = new ButtonGroup();
-		
+
 		bg.add(optPage);
-		
+
 		bg.add(optCFS);		
 
 		pnConsoleOption.add(new JLabel("콘솔 출력:"));
-		
+
 		pnConsoleOption.add(optPage);
-		
+
 		pnConsoleOption.add(optCFS);		
 
 		GridLayout layout = new GridLayout(2,1);
-		
+
 		layout.setVgap(5);
-		
-		
+
+
 		// 노멀 옵션
-		
+
 		pnNormalOption = new KSGPanel(layout);
 
 		KSGPanel pnNormalSelectionOption = new KSGPanel(new GridLayout(3,1));
-		
+
 		pnNormalSelectionOption.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-		
+
 		pnNormalSelectionOption.setBorder(BorderFactory.createTitledBorder("스케줄 생성 여부"));
-		
+
 		cbxInboundSchedule 	= new KSGCheckBox("Inbound",true);
-		
+
 		cbxOutboundSchedule = new KSGCheckBox("Outbound",true);
-		
+
 		cbxOutboundSchedule.addActionListener(new ActionListener() {
 
 			@Override
@@ -413,7 +388,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 				chxOutboundLogic.setVisible(cbxOutboundSchedule.isSelected());
 			}
 		});
-		
+
 		cbxRouteSchedule 	= new KSGCheckBox("항로별",true);
 
 		cbxRouteSchedule.addActionListener(new ActionListener() {
@@ -424,77 +399,75 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 				chxRouteLogic.setVisible(cbxRouteSchedule.isSelected());
 			}
 		});
-		
+
 		cbxInboundSchedule.addActionListener(printAble);
-		
+
 		cbxInboundSchedule.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				chxInboundLogic.setVisible(cbxInboundSchedule.isSelected());
 			}
 		});
-		
+
 		cbxRouteSchedule.addActionListener(printAble);
-		
+
 		cbxOutboundSchedule.addActionListener(printAble);
-		
+
 		cbxOutboundLogic = new JComboBox<String>();
-		
+
 		chxOutboundLogic = new JCheckBox("신규",true);
-		
+
 		chxOutboundLogic.setBackground(Color.white);
-		
+
 		cbxOutboundLogic.addItem("기존");
-		
+
 		cbxOutboundLogic.addItem("신규");
-		
+
 
 		cbxRouteLogic = new JComboBox<String>();
-		
+
 		chxRouteLogic = new JCheckBox("신규",true);
-		
+
 		chxRouteLogic.setBackground(Color.white);
-		
+
 		cbxRouteLogic.addItem("기존");
-		
+
 		cbxRouteLogic.addItem("신규");
-		
+
 		chxInboundLogic = new JCheckBox("신규",true);
-		
+
 		chxInboundLogic.setBackground(Color.white);
-		
-		
-		
+
 
 		KSGPanel pnOutboundScheduleOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
+
 		KSGPanel pnRouteScheduleOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
+
 		KSGPanel pnInboundScheduleOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		
+
+
 		pnRouteScheduleOption.add(cbxRouteSchedule);
-		
+
 		pnRouteScheduleOption.add(chxRouteLogic);
-		
+
 
 		pnOutboundScheduleOption.add(cbxOutboundSchedule);
-		
+
 		pnOutboundScheduleOption.add(chxOutboundLogic);
-		
-		
+
+
 		pnInboundScheduleOption.add(cbxInboundSchedule);
-		
+
 		pnInboundScheduleOption.add(chxInboundLogic);
-		
+
 		pnNormalSelectionOption.add(pnOutboundScheduleOption);
 
 		pnNormalSelectionOption.add(pnInboundScheduleOption);
 
 		pnNormalSelectionOption.add(pnRouteScheduleOption);
-	
+
 		pnNormalRouteOption = new KSGPanel(new FlowLayout());
 
 		pnNormalRouteOption.setBorder(BorderFactory.createTitledBorder("항로별 정렬 기준"));
@@ -528,7 +501,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnOption.add(pnNormalOption,ShippersTable.GUBUN_NORMAL);
 
 		pnOption.setVisible(false);
-		
+
 		return pnOption;
 	}
 
@@ -545,13 +518,13 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnInland2 = new PnInland2();
 
 		pnNomalByTree = new PnNormalByTree();
-		
+
 		tabPane.add(pnNomalByTree, "TreeTable");
 
 		tabPane.add(pnNormal2, "NORMAL");
-		
+
 		tabPane.add(pnConsole2, "CONSOLE");
-		
+
 		tabPane.add(pnInland2, "INLAND");
 
 		pnMain.add(tabPane);
@@ -559,92 +532,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		return pnMain;
 	}
-
-	List scheduleDateLists;
-
-	/**
-	 * @설명 스케줄 생성 일자 테이블 갱신
-	 * @throws SQLException 
-	 * 
-	 */
-	private void updateScheduleDateList(List scheduleDateLists) throws SQLException {
-
-		List scheduleDateList = scheduleService.selectScheduleDateList();
-
-		List inlandScheduleDateList = scheduleService.getInlandScheduleDateList();
-
-		if(scheduleDateList.size()==0&&inlandScheduleDateList.size()==0)
-		{
-			butDelete.setEnabled(false);
-			butPrint.setEnabled(false);
-		}
-		else
-		{
-			butDelete.setEnabled(true);
-			butPrint.setEnabled(true);
-		}		
-
-		tblScheduleDateList.setResultData(scheduleDateLists);
-	}
-
-	/**
-	 * @throws SQLException 
-	 * 
-	 */
-	private void searchScheduleAction() throws SQLException {
-
-		int row = tblScheduleDateList.getSelectedRow();
-		if(row==-1)
-			return;
-
-		// 구분
-		String gubun = (String) tblScheduleDateList.getValueAt(row, 0);
-
-		//생성일자
-		String date_isuss = (String) tblScheduleDateList.getValueAt(row, 1);
-
-		ScheduleData data = new ScheduleData();
-		
-		data.setDate_issue(date_isuss);
-
-		data.setGubun(gubun);
-
-		if(!txfOption.getText().equals(""))
-		{
-			String op = txfOption.getText();
-
-			int inoutOptionIndex=cbxOption.getSelectedIndex();
-
-			switch (inoutOptionIndex) {
-
-			case 0: // 테이블 ID
-				data.setTable_id(op);
-				break;
-			case 1: // 선사명
-				data.setCompany_abbr(op);
-				break;
-			case 2: // 에이전트 명
-				data.setAgent(op);
-				break;	
-			case 3: // 선박명
-				data.setVessel(op);
-				break;
-			case 4: // 출발항
-				data.setFromPort(op);
-				break;
-			case 5: // 도착항
-				data.setPort(op);
-				break;
-			default:
-				break;
-			}
-		}
-
-
-		txfOption.setText("");
-	}
-
-	ScheduleManager scheduleManager = ScheduleManager.getInstance();
 
 	private KSGPanel pnNormalRouteOption;
 
@@ -662,14 +549,14 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			String command = e.getActionCommand();
 
 			try{
 				if(command.equals(ACTION_PRINT_FLIE))
 				{
 					int selectedRow=tblScheduleDateList.getSelectedRow();
-					
+
 					if(selectedRow<0)
 					{					
 						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "파일 출력할 일자를 선택하십시요");
@@ -683,15 +570,15 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 					String selectedDate = (String) tblScheduleDateList.getValueAt(selectedRow, 1);				
 
 					ScheduleData op = new ScheduleData();
-					
+
 					op.setDate_issue(selectedDate);
-					
+
 					CommandMap param = new CommandMap();
-					
+
 					param.put("gubun", gubun);
-					
+
 					param.put("op", op);
-					
+
 
 					// 콘솔 스케줄 생성
 					if(gubun.equals(ShippersTable.GUBUN_CONSOLE))
@@ -712,14 +599,14 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 						param.put("isNew", cbxNew.isSelected());
 
 						param.put("isPrintNewRoute", chxRouteLogic.isSelected());
-						
+
 						param.put("isPrintNewOutbound", chxOutboundLogic.isSelected());
-						
+
 						param.put("isPrintNewInbound", chxInboundLogic.isSelected());
 
 						param.put("orderBy", optDate.isSelected()?RouteTaskNewVessel.ORDER_BY_DATE:RouteTaskNewVessel.ORDER_BY_VESSEL);
 					}
-					
+
 					callApi("schedulePrint", param);
 				}
 			}catch(Exception ee)
@@ -737,20 +624,20 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			if(command.equals(ACTION_DELETE))
 			{
 				CommandMap param = new CommandMap();
-				
+
 				int row=tblScheduleDateList.getSelectedRow();
-				
+
 				if(row<0) return;
 				// 구분
 				String gubun 		= (String) tblScheduleDateList.getValueAt(row, 0);
 
 				//생성일자
 				String date_isuss 	= (String) tblScheduleDateList.getValueAt(row, 1);
-				
+
 				param.put("gubun", gubun);
-				
+
 				param.put("date_isuss", date_isuss);
-				
+
 				callApi("deleteSchedule");
 			}
 			else if(command.equals("갱신"))
@@ -761,15 +648,15 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			{		
 				// 스케줄 생성일자 선택
 				CommandMap param = new CommandMap();
-				
+
 				String inputDate = toDateformat.format(consoleDateformat.parse((String)cbxTableDateList.getSelectedItem()));
-				
+
 				param.put("inputDate", inputDate);
-				
+
 				callApi("createSchedule");
 			}
 		}
-		 catch (ParseException e) {
+		catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(ScheduleMgtUI.this, e.getMessage());
@@ -778,58 +665,50 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 	@Override
 	public void componentShown(ComponentEvent e) {
+
 		
-		callApi("scheduleViewUpdate");
 	}
 
 	@Override
 	public void updateView() {
-		
+
 		CommandMap result= this.getModel();
 
-		boolean success = (boolean) result.get("success");
+		String serviceId = (String) result.get("serviceId");
 
-		if(success)
-		{
-			String serviceId = (String) result.get("serviceId");
-			
-			if("scheduleViewUpdate".equals(serviceId)) {
-				
-				List tableDatelist = (List) result.get("tableDatelist");
+		if("scheduleViewUpdate".equals(serviceId)) {
 
-				List scheduleDateLists = (List) result.get("scheduleDateLists");
+			List tableDatelist = (List) result.get("tableDatelist");
 
-				cbxTableDateList.removeAllItems();
-				
-				tblScheduleDateList.setResultData(scheduleDateLists);
-				
-				tableDatelist.stream().forEach(scheduleDate -> cbxTableDateList.addItem(scheduleDate));
-	
-			}
-			else if("deleteSchedule".equals(serviceId)) {
-				
-				int deleteCount = (int) result.get("deleteCount");
-				
-				JOptionPane.showMessageDialog(this, deleteCount+"건을 삭제 했습니다.");
-				
-				callApi("scheduleViewUpdate");
-			}
-			
-			else if("createSchedule".equals(serviceId)) {
-				
-			}
+			List scheduleDateLists = (List) result.get("scheduleDateLists");
+
+			cbxTableDateList.removeAllItems();
+
+			tblScheduleDateList.setResultData(scheduleDateLists);
+
+			tableDatelist.stream().forEach(scheduleDate -> cbxTableDateList.addItem(scheduleDate));
+
 		}
-		else{  
-			String error = (String) result.get("error");
-			JOptionPane.showMessageDialog(this, error);
+		else if("deleteSchedule".equals(serviceId)) {
+
+			int deleteCount = (int) result.get("deleteCount");
+
+			JOptionPane.showMessageDialog(this, deleteCount+"건을 삭제 했습니다.");
+
+			callApi("scheduleViewUpdate");
 		}
+
+		else if("createSchedule".equals(serviceId)) {
+
+		}
+
 	}
-	
+
 	class PrintAble implements ActionListener
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			// 모두 선택되지 않았다면 비활성화
 			butPrint.setEnabled(!(!cbxRouteSchedule.isSelected()&&!cbxOutboundSchedule.isSelected()&&!cbxInboundSchedule.isSelected()));
 

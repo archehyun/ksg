@@ -66,6 +66,7 @@ import com.ksg.workbench.admin.KSGMainFrame;
 
   */
 public class KSGLogin extends JDialog implements ComponentListener{
+	
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	/**
 	 * 
@@ -85,19 +86,22 @@ public class KSGLogin extends JDialog implements ComponentListener{
 	private Properties properties = new Properties();
 	
 	private Properties db_properties = new Properties();
+	
 	private String url,db;
 	
 	Configure config; 
+	
 	public KSGLogin() {
 		try
-		{
-			
+		{	
 			config = Configure.getInstance();
+			
 			String resource = "config/db.properties";
+			
 			Reader reader = Resources.getResourceAsReader(resource);
 			
-			
 			properties.load(Resources.getResourceAsReader("config/ksg.properties"));
+			
 			db_properties.load(reader);			
 
 			url = config.getProperty("mssql.ip");
@@ -151,12 +155,6 @@ public class KSGLogin extends JDialog implements ComponentListener{
 
 		ViewUtil.center(this, true);
 		this.setVisible(true);
-		
-		
-		
-
-
-
 	}
 
 	private Component buildCenter() {

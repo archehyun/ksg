@@ -195,8 +195,7 @@ public class AddVesselDialog extends KSGDialog {
 						vesselModel.setValueAt(txfInput.getText(), row, 1);
 					}
 
-					if(advTable!=null)
-						advTable.setValue( vessel.getVessel_abbr().toUpperCase(), row, 0);
+//					if(advTable!=null) advTable.setValue( vessel.getVessel_abbr().toUpperCase(), row, 0);
 					JOptionPane.showMessageDialog(null, "선박명: "+vessel.getVessel_name()+"이(가) 추가 되었습니다.");
 					AddVesselDialog.this.setVisible(false);
 					AddVesselDialog.this.dispose();

@@ -392,6 +392,8 @@ public class ShipperTableController extends AbstractController{
 	@ControlMethod(serviceId = "KSGADVTablePanel.save")
 	public CommandMap saveADVData(CommandMap param) throws Exception
 	{
+		log.info("save:{}", param);
+		
 		CommandMap returnMap = new CommandMap();
 
 		ADVData insertParam= (ADVData) param.get("insertParam");

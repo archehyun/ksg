@@ -187,7 +187,7 @@ public class VesselListComp extends JList{
 
 				param.put("vessel_name", vesselName);
 
-				Vessel itemDetail=vesselService.selectDetail(vesselName);
+				Vessel itemDetail=vesselService.selectVesselDetail(vesselName);
 
 				VesselInfo info = new VesselInfo();
 				//선박명이 존재 하지 않을 경우
@@ -254,7 +254,7 @@ public class VesselListComp extends JList{
 				String vesselName =litinfo.vesselName;
 				Vessel op = new Vessel();
 				op.setVessel_name(vesselName);
-				Vessel v1 =vesselService.selectDetail(vesselName);
+				Vessel v1 =vesselService.selectVesselDetail(vesselName);
 				VesselInfo info = new VesselInfo();
 
 				if(v1==null)

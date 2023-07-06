@@ -15,7 +15,7 @@ public interface VesselServiceV2 extends VesselService{
 	
 	public HashMap<String, Object> selectTotalList() throws SQLException;
 	
-	public Vessel selectDetail(String vessel_abbr) throws SQLException;
+	public Vessel selectVesselDetail(String vessel_abbr) throws SQLException;
 	
 	public Object update(HashMap<String, Object> param) throws SQLException;
 	

@@ -131,13 +131,11 @@ public class TableServiceImpl extends AbstractServiceImpl implements TableServic
 	@Deprecated
 	public List<ShippersTable> getTableListOrderByCompany(ShippersTable table)
 			throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Deprecated
 	public List<ShippersTable> getTableListOrderByPage(ShippersTable table)
 			throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

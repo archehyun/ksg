@@ -16,9 +16,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -30,9 +32,12 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.dtp.api.service.ShipperTableService;
+import com.dtp.api.service.impl.ShipperTableServiceImpl;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
+import com.ksg.domain.TablePort;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.admin.KSGViewParameter;
@@ -66,12 +71,16 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 	private SimpleDateFormat sorceDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	private SimpleDateFormat targetDateFormat = new SimpleDateFormat("yyyyMMdd");
+	
+	private ShipperTableService service;
 
 	private ShippersTable selectedTable;
 
 	public KSGADVTablePanel(ShipperTableAbstractMgtUI base) {
 
 		this.base=base;
+		
+		service = new ShipperTableServiceImpl();
 
 		this.createAndUpdateUI();
 	}
@@ -93,7 +102,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 		}
 		else if(command.equals("전체 삭제"))
 		{
-			tblADVTable.delete(); 
+			tblADVTable.deleteAll(); 
 		}
 		else if(command.equals("스케줄 표시"))
 		{
@@ -154,7 +163,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 				
 				JSlider op = (JSlider) item.getSource();
 				
-				int value=op.getValue();
+				int value = op.getValue();
 				
 				KSGViewParameter.TABLE_COLUM_WIDTH= value;
 				
@@ -249,7 +258,7 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 		this.add(pnADVControl,BorderLayout.SOUTH);
 	}
 	
-	public ADVData getADVData() throws ParseException
+	public ADVData getADVData() throws Exception
 	{
 		String inputDate 	= txfImportDate.getText();
 
@@ -288,15 +297,11 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 		if(e.getKeyCode()==KeyEvent.VK_ENTER)
 		{
-			row = row-1;
-			
-			if(row==-1) row=0;
+			row = row>0? row-1:0;
 			
 		}else
 		{
-			col=col-1; 
-			
-			if(col==-1) col=0;
+			col=col>0? col-1:0;
 		}
 
 	}
@@ -312,19 +317,10 @@ public class KSGADVTablePanel extends KSGPanel implements ActionListener,KeyList
 
 	public void retrive() throws Exception{
 		
+		List<TablePort> portList = service.selectShipperTablePortListByID(this.selectedTable.getTable_id());
+		
+		tblADVTable.setTablePortList(portList);
+		
 		tblADVTable.retrive();
-	}
-	
-	public void setValue(String upperCase, int row, int col) {
-		tblADVTable.setValue(upperCase, row, col);
-	}
-
-	public void autoVesselWrite( int selectedVesselrow) {
-		tblADVTable.autoVesselWrite( selectedVesselrow);
-	}
-
-	public void autoVesselWrite( int selectedVesselrow, int col) {
-		tblADVTable.autoVesselWrite( selectedVesselrow,col);
-
 	}
 }

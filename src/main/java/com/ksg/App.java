@@ -51,7 +51,7 @@ public class App
 
 	public App() 
 	{	
-		//ApplicationContext ac = new AnnotationConfigApplicationContext(ViewConfiguration.class);
+//		ApplicationContext ac = new AnnotationConfigApplicationContext(ViewConfiguration.class);
 	}
 
 

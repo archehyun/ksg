@@ -353,11 +353,6 @@ public class PnNormal2 extends PnSchedule{
 			txfToPort.setText(portDialog.result);
 		}		
 	}
-	@Override
-	public void componentShown(ComponentEvent e) {
-
-		callApi("pnNormal2.init");
-	}
 
 	@Override
 	public void updateView() {
@@ -385,5 +380,11 @@ public class PnNormal2 extends PnSchedule{
 			.forEach(o->cbxArea.addItem(new KSGTableColumn(o.getArea_name(), o.getArea_name())));
 
 		}
+	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+		callApi("pnNormal2.init");
 	}
 }

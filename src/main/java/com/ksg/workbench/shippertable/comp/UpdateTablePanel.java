@@ -30,6 +30,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -38,12 +39,17 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import com.dtp.api.util.PortIndexUitl;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Company;
 import com.ksg.domain.ShippersTable;
+import com.ksg.service.CompanyService;
+import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.SearchCompanyDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
+import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
 
 /**
  * @author 박창현
@@ -68,6 +74,7 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 	private JTextField 	txfPage;
 	private JTextField 	txfBookPage;
 	private JTextField 	txfCompany_Abbr;
+	private JTextField 	txfCompany_name;
 
 	private JTextField 	txfIndex;
 	private JTextField  txfPortCount;
@@ -76,7 +83,7 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 	private ShippersTable shippersTable;
 	private JTextField txfOhterCount;
 
-
+	private CompanyService companyService;
 	private ShipperTableAbstractMgtUI searchUI;
 
 	private JLabel lblSaveInfo;
@@ -96,6 +103,8 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		
 		this.searchUI =searchUI;
 		
+		companyService 	= new CompanyServiceImpl();
+		
 		createAndUpdteUI();
 
 	}
@@ -105,15 +114,16 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 
 		this.txfTable_id		= new JTextField(15);	// 테이블 아이디
 		this.txfCompany_Abbr 	= new JTextField(15);	// 선사 약어
+		this.txfCompany_name 	= new JTextField(15);	// 선사 명
 		this.txfAgent 			= new JTextField(15);	// 에이전트
 
 		this.txfPage 			= new JTextField(3);	// 페이지
 		this.txfBookPage 		= new JTextField(3);	// 지면 페이지
 		this.txfIndex			= new JTextField(2);	// 인덱스
 
-		this.txfOutFromPort 		= new JTextField(15);	// 국내항 인덱스
+		this.txfOutFromPort 	= new JTextField(15);	// 국내항 인덱스
 		this.txfOutToPort		= new JTextField(15);
-		this.txfInFromPort 			= new JTextField(15);	// 구분
+		this.txfInFromPort 		= new JTextField(15);	// 구분
 		this.txfGubun 			= new JTextField(3);
 		this.txfInToPort 		= new JTextField(15);
 		this.txfTitle 			= new JTextField(15);
@@ -254,6 +264,43 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		pnCompanySearch.add(txfCompany_Abbr);
 
 		JButton butCompanySearch = new KSGGradientButton("검색");
+		
+		butCompanySearch.addActionListener(new ActionListener(){
+
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+
+				SearchCompanyDialog searchCompanyDialog = new SearchCompanyDialog();
+
+				searchCompanyDialog.createAndUpdateUI();
+
+				String company_abbr = searchCompanyDialog.result;
+
+				if(company_abbr == null)return;
+				try {
+
+					CommandMap param = new CommandMap();
+
+					param.put("company_abbr", company_abbr);
+
+					Company companyInfo=companyService.select(param );
+
+//					setTableIndex(companyInfo.getCompany_abbr());
+
+					txfCompany_Abbr.setText(companyInfo.getCompany_abbr());
+					
+					txfCompany_name.setText(companyInfo.getCompany_name());
+
+					txfAgent.setText(companyInfo.getAgent_abbr());
+
+					txaCommon.setText(companyInfo.getCompany_abbr());
+
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
+					e1.printStackTrace();
+				}
+
+			}});
 
 		butCompanySearch.setActionCommand("SEARCH_COMPANY");
 
@@ -382,27 +429,6 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 
 	}
 
-//	public void setTableIndex(String company_abbr) {
-//
-//		if(company_abbr==null)return;
-//		
-//		int index=0;
-//		
-//		try 
-//		{
-//			int last=tableService.getLastTableIndex(company_abbr);
-//			
-//			index= last+1;
-//		}
-//
-//		catch (Exception e1) 
-//		{
-//			txfIndex.setText("0");
-//		}
-//		
-//		this.setTableIndex(index);
-//		
-//	}
 	
 
 	/**@ 콘솔 정보 저장 화면
@@ -501,6 +527,8 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		table.setQuark_format(txaQuark.getText());
 
 		table.setCompany_abbr(txfCompany_Abbr.getText());
+		
+		table.setCompany_name(txfCompany_name.getText());
 
 		table.setAgent(txfAgent.getText());
 
@@ -541,6 +569,8 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		table.setInland_indexs(txfInland.getText());
 		
 		table.setDate_isusse(shippersTable.getDate_isusse());
+		
+		table.setTable_date(shippersTable.getTable_date());
 
 		return table;
 	}
@@ -648,12 +678,15 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		txfConsolePage.setText(shippersTable.getConsole_page());
 
 		tabPaneInfo.setSelectedIndex(shippersTable.getGubun().equals(ShippersTable.GUBUN_CONSOLE)?2:0);// 0: 콘솔 탭 선택, 2:	공동 배선 탭
+		
+		
 	}
 
 	public void focusGained(FocusEvent e) {
 		Object f =e.getSource();
 
 		lblSaveInfo.setText("");
+		
 		if(f instanceof JTextField)
 		{
 			JTextField txfToIndex = (JTextField) f;
@@ -694,109 +727,6 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		}
 
 	}
-//	private void updateToPortIndex(JTextField txfOutPort,JTextField txfOutToPort) {
-//
-//		StringTokenizer stringTokenizer = new StringTokenizer(txfOutPort.getText(),"#");
-//		
-//		if(stringTokenizer.countTokens()>0)
-//		{
-//			String portCount=txfPortCount.getText();
-//			Vector intCount = new Vector();
-//			while(stringTokenizer.hasMoreTokens())
-//			{
-//				try
-//				{
-//					int in = Integer.parseInt(stringTokenizer.nextToken());
-//
-//					// 존재하는 항구인지 확인
-//					TablePort port = new TablePort();
-//					port.setTable_id(txfTable_id.getText());
-//					port.setPort_index(in);
-//
-//					intCount.add(in);
-//				}catch(NumberFormatException nume)
-//				{
-//					System.err.println(nume.getMessage());
-//				}
-//			}
-//
-//			int pCount = Integer.parseInt(portCount);
-//
-//			pCount+=Integer.parseInt(txfOhterCount.getText());
-//
-//			String dd="";
-//
-//			for(int i=1;i<pCount+1;i++)
-//			{
-//				boolean flag=true;
-//				for(int j=0;j<intCount.size();j++)
-//				{
-//					int a = (Integer)intCount.get(j);
-//					if(a==i)
-//					{
-//						flag=false;
-//					}
-//				}
-//
-//				if(flag)
-//				{
-//					// 존재하는 항구인지 확인
-//					TablePort port = new TablePort();
-//					port.setTable_id(txfTable_id.getText());
-//					port.setPort_index(i);
-//					try {
-//						TablePort searchPort=tableService.getTablePort(port);
-//
-//						try{
-//
-//							if(searchPort!=null)
-//							{
-//								PortInfo info=baseService.getPortInfoByPortName(searchPort.getPort_name());
-//								if(info!=null)
-//								{
-//									dd+=String.valueOf(i);
-//
-//									if(i<pCount)
-//									{
-//										dd+="#";
-//									}
-//								}
-//							}else
-//							{
-//								dd+=String.valueOf(i);
-//
-//								if(i<pCount)
-//								{
-//									dd+="#";
-//								}
-//							}
-//
-//						}catch(NullPointerException e)
-//						{
-//							e.printStackTrace();
-//						}
-//
-//					} catch (SQLException e1) {
-//						// TODO Auto-generated catch block
-//						e1.printStackTrace();
-//						System.err.println(e1.getErrorCode());
-//						if(e1.getErrorCode()==0)
-//						{
-//							dd+=String.valueOf(i);
-//
-//							if(i<pCount)
-//							{
-//								dd+="#";
-//							}
-//						}
-//					}
-//
-//				}
-//
-//			}
-//			txfOutToPort.setText(dd);
-//		}
-//	}
 	
 	public void focusLost(FocusEvent e) {
 
@@ -805,63 +735,8 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		Object f =e.getSource();
 
 		lblSaveInfo.setText("");
-
-//		if(f.equals( txfOutFromPort))
-//		{
-//			updatePortIndexWhenFocusLost(txfOutFromPort,txfOutToPort);
-//		}
-//		if(f.equals( txfInFromPort))
-//		{
-//			updatePortIndexWhenFocusLost(txfInFromPort,txfInToPort);
-//		}
 	}
-//	private void updatePortIndexWhenFocusLost(JTextField txfOutPort,JTextField txfOutToPort) {
-//		
-//		StringTokenizer stringTokenizer = new StringTokenizer(txfOutPort.getText(),"#");
-//
-//		if(stringTokenizer.countTokens()== 0) return;
-//		
-//		String portCount=txfPortCount.getText();
-//		
-//		String oriOutPort = txfOutPort.getText();
-//		
-//		while(stringTokenizer.hasMoreTokens())
-//		{
-//			try
-//			{
-//				int in = Integer.parseInt(stringTokenizer.nextToken());
-//
-//				// 존재하는 항구인지 확인
-//				TablePort port = new TablePort();
-//				port.setTable_id(txfTable_id.getText());
-//				port.setPort_index(in);
-//				try {
-//					TablePort searchPort=tableService.getTablePort(port);
-//
-//
-//					if(searchPort==null)
-//					{
-//						JOptionPane.showMessageDialog(null, "인덱스 "+in+"은 등록되어 있지 않습니");
-//						return;
-//					}
-//					PortInfo info=baseService.getPortInfoByPortName(searchPort.getPort_name());
-//					if(info==null)
-//					{
-//						txfOutPort.setText("");
-//						txfOutToPort.setText("");
-//						JOptionPane.showMessageDialog(null, "인덱스 "+in+"("+searchPort.getPort_name()+")은 존재하지 않습니다.");
-//						return;
-//					}
-//
-//				} catch (SQLException e1) {
-//					e1.printStackTrace();
-//				}
-//			}catch(NumberFormatException nume)
-//			{
-//				System.err.println(nume.getMessage());
-//			}
-//		}
-//	}
+
 	public void setPortCount(int count) {
 		txfPortCount.setText(String.valueOf(count));
 	}

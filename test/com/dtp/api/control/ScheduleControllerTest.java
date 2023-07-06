@@ -91,5 +91,12 @@ public class ScheduleControllerTest {
 //			e.printStackTrace();
 //		}
 //	}
+	
+	@Test
+	public void testSelectRouteScheduleList1() {
+		Object a=null;
+		System.out.println(String.valueOf(a).isEmpty());
+		
+	}
 
 }

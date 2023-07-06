@@ -3,9 +3,9 @@ package com.ksg.schedule.joint;
 @Deprecated
 public class InboundJoint2 extends KSGScheduleJoint{
 
+	//TODO 삭제 처리
 	@Override
 	public int execute() throws Exception {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

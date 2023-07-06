@@ -344,11 +344,7 @@ public class PnConsole2 extends PnSchedule{
 		}	
 	}
 	
-	@Override
-	public void componentShown(ComponentEvent e) {
 
-		callApi("pnNormal2.init");
-	}
 
 	@Override
 	public void updateView() {
@@ -376,5 +372,11 @@ public class PnConsole2 extends PnSchedule{
 			.forEach(o->cbxArea.addItem(new KSGTableColumn(o.getArea_name(), o.getArea_name())));
 
 		}
+	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+		callApi("pnNormal2.init");
 	}
 }

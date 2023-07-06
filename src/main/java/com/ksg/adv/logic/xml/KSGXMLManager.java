@@ -55,6 +55,7 @@ public class KSGXMLManager {
 		for(int i=0;i<tableInfoList.size();i++)
 		{
 			ShippersTable t=(ShippersTable) tableInfoList.get(i);
+			
 			List templi = tableService.getTableListByCompany(t.getCompany_abbr(),t.getPage());
 
 			for(int j=0;j<templi.size();j++)
@@ -130,32 +131,40 @@ public class KSGXMLManager {
 	 * @throws SQLException
 	 * @throws NullPointerException
 	 */
-	public DefaultTableModel createDBTableModel(DefaultTableModel defaultTableModel,ADVData data) throws JDOMException, IOException, SQLException,NullPointerException
+	public DefaultTableModel setDBTableModelData(DefaultTableModel defaultTableModel, ADVData data, ShippersTable shippersTable) throws JDOMException, IOException, NullPointerException
 	{
 		logger.debug("start");
+		
 		SAXBuilder builder = new SAXBuilder();
+		
 		Document document = builder.build(new ByteArrayInputStream(data.getData().getBytes()));
+		
 		Element root = document.getRootElement();
+		
 		List vessel_list=root.getChildren("vessel");
 
-		String table_id=data.getTable_id();
-		ShippersTable shippersTable=tableService.getTableById(table_id);
-		if(defaultTableModel==null)
-			return null;
+		
+		if(defaultTableModel==null) return null;
+		
 		for(int i=0;i<vessel_list.size();i++)
 		{
 			Element vessel_info = (Element) vessel_list.get(i);
+			
 			String vessel_name = vessel_info.getAttributeValue("name");
+			
 			String voyage  = vessel_info.getAttributeValue("voyage");
+			
 			Vector rowData = new Vector();
+			
 			rowData.add(vessel_name);
+			
 			rowData.add(voyage);
+			
 			if(shippersTable.getGubun()!=null&&shippersTable.getGubun().equals("TS"))
 			{
 				rowData.add( vessel_info.getAttributeValue("ts_name"));
 				rowData.add( vessel_info.getAttributeValue("ts_voyage"));
 			}
-
 
 			List li=vessel_info.getChildren("input_date");
 
@@ -173,6 +182,13 @@ public class KSGXMLManager {
 
 			defaultTableModel.addRow(rowData);
 		}
+		
+		int currentRowCount 				= defaultTableModel.getRowCount();
+
+		int updateRowCount 					= currentRowCount<15?15:currentRowCount+2;
+
+		defaultTableModel.setRowCount(updateRowCount);
+		
 		logger.debug("end");
 
 
@@ -187,33 +203,37 @@ public class KSGXMLManager {
 	 * @throws SQLException
 	 * @throws NullPointerException
 	 */
-	public DefaultTableModel createDBVesselNameModel(DefaultTableModel defaultTableModel,ADVData data) throws JDOMException, IOException, SQLException,NullPointerException
+	public DefaultTableModel createDBVesselNameModel(DefaultTableModel defaultTableModel, ADVData data) throws JDOMException, IOException, SQLException,NullPointerException
 	{
 		logger.debug("start");
+		
 		SAXBuilder builder = new SAXBuilder();
+		
 		Document document = builder.build(new ByteArrayInputStream(data.getData().getBytes()));
+		
 		Element root = document.getRootElement();
+		
 		List vessel_list=root.getChildren("vessel");
 
-		String table_id=data.getTable_id();
-		ShippersTable shippersTable=tableService.getTableById(table_id);
-		if(defaultTableModel==null)
-			return null;
+		if(defaultTableModel==null)return null;
+		
 		for(int i=0;i<vessel_list.size();i++)
 		{
 			Element vessel_info = (Element) vessel_list.get(i);
+			
 			String vessel_name = vessel_info.getAttributeValue("name");
+			
 			String f_vessel_name  = vessel_info.getAttributeValue("full-name");
+			
 			Vector rowData = new Vector();
+			
 			rowData.add( f_vessel_name);
+			
 			rowData.add(vessel_name);
-
-
 
 			defaultTableModel.addRow(rowData);
 		}
 		logger.debug("end");
-
 
 		return defaultTableModel;
 	}
@@ -223,6 +243,7 @@ public class KSGXMLManager {
 		 * 
 		 */
 		private boolean is=true;
+		
 		private static final long serialVersionUID = 1L;
 
 		public boolean isCellEditable(int row, int column)

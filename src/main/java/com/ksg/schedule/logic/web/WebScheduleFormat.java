@@ -18,7 +18,6 @@ public abstract class WebScheduleFormat implements IFWebScheduleFormat{
 	protected String errorFileName="";
 	
 	public String getErrorFileName() {
-		// TODO Auto-generated method stub
 		return fileName;
 	}
 }
