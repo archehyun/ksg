@@ -74,7 +74,6 @@ public class ScheduleController extends AbstractController{
 	
 	public ScheduleController()
 	{
-		
 		dtpScheduleService = new DTPScheduleServiceImpl();
 		
 		service = new ScheduleServiceImpl();

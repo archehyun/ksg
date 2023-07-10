@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.swing.BorderFactory;
+
 import com.dtp.api.service.impl.CodeServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
@@ -44,6 +46,7 @@ public class KSGComboBox extends MyComboBox<KSGTableColumn>{
 	public KSGComboBox()
 	{
 		super();
+		this.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 		service = new CodeServiceImpl();
 	}
 

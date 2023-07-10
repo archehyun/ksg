@@ -29,9 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ShipperTableController extends AbstractController{
 
-
-	protected Logger logger = LogManager.getLogger(this.getClass());
-
 	int groupCount=10;
 
 	public static final char[] ALPA = {		
@@ -133,8 +130,6 @@ public class ShipperTableController extends AbstractController{
 	@ControlMethod(serviceId = "shipperTableMgtUI2.fnSearch")
 	public CommandMap fnSelect(CommandMap param) throws SQLException
 	{
-		logger.info("param:{}",param);
-
 		ShippersTable shipperTable= null;
 
 		try {

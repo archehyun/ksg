@@ -12,7 +12,6 @@ package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.Box;
@@ -23,11 +22,10 @@ import javax.swing.JTextField;
 import com.dtp.api.control.PortController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.service.PortService;
-import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.service.impl.PortServiceImpl;
+import com.ksg.common.util.ViewUtil;
 import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**
@@ -36,68 +34,78 @@ import com.ksg.workbench.master.BaseInfoUI;
  * @author 박창현
  *
  */
-public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionListener{
+public class InsertPortAbbrInfoDialog extends MainTypeDialog {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	private JTextField txfPortName = new JTextField(20);
-	
-	private JTextField txfPortAbbr = new JTextField(20);
-	
+
+	private JTextField txfPortName;
+
+	private JTextField txfPortAbbr;
+
 	private String port_name,port_abbr="";
-	
+
 
 
 	public InsertPortAbbrInfoDialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
-		
+
 		this.setController(new PortController());
-		
+
 		this.baseInfoUI=baseInfoUI;
-		
+
 		this.addComponentListener(this);
 	}
-	
+
 	public InsertPortAbbrInfoDialog(BaseInfoUI baseInfoUI,String port_name) {
-		
+
 		this(baseInfoUI);
-		
-		
+
 		this.port_name =port_name;
-		
+
 	}
 
 	public void createAndUpdateUI() {
 		
+		this.titleInfo ="항구명 약어 추가";
+		
+		initComp();
+		
 		this.setModal(true);
-		
-		this.setTitle("항구명 약어 추가");
 
-		this.getContentPane().add(buildTitle("항구명: "+port_name),BorderLayout.NORTH);
+		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
+
+		this.addComp(buildCenter(),BorderLayout.CENTER);
+
+		this.addComp(buildControl(),BorderLayout.SOUTH);
 		
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-		
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-		
-		this.pack();
-		
-		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
-		
+		ViewUtil.center(this, true);
+
+		this.setResizable(false);
+
 		this.setVisible(true);
 	}
-	
+
+	private void initComp() {
+		txfPortAbbr = new JTextField(20);
+		txfPortName = new JTextField(20);
+		txfPortName.setEditable(false);
+		
+	}
+
 	public KSGPanel buildCenter() {
-		
+
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-		
+
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		
+		pnCenter.add(createFormItem(txfPortName, "항구명"));
+
 		pnCenter.add(createFormItem(txfPortAbbr, "항구명 약어"));
-		
+
 		pnMain.add(pnCenter);
-		
+
 		return pnMain;
 	}
 
@@ -111,60 +119,41 @@ public class InsertPortAbbrInfoDialog extends BaseInfoDialog implements ActionLi
 				return;
 			}
 			String port_abbr = txfPortAbbr.getText(); 
-			
+
 			CommandMap param = new CommandMap();
-			
+
 			param.put("port_name", port_name);
-			
+
 			param.put("port_abbr", port_abbr);
-			
+
 			callApi("insertPortDetail", param);
-			
 
 		}else
 		{
 			close();
 		}
-		
 	}
-	
+
 	@Override
 	public void componentShown(ComponentEvent e) {
 		this.txfPortName.setText(port_name);
 		this.txfPortAbbr.setText(port_abbr);
-		
 	}
-	
+
 	@Override
 	public void updateView() {
-		
+
 		CommandMap resultMap= this.getModel();
 
-		boolean success = (boolean) resultMap.get("success");
+		String serviceId=(String) resultMap.get("serviceId");
 
-		if(success)
-		{
-			String serviceId=(String) resultMap.get("serviceId");
+		if("insertPortDetail".equals(serviceId))
+		{	
+			result = SUCCESS;
 
-			if("insertPortDetail".equals(serviceId))
-			{	
-				result = SUCCESS;
-				
-				
-				NotificationManager.showNotification("추가했습니다.");
+			NotificationManager.showNotification("추가했습니다.");
 
-				close();
-
-			}
-
-			
+			close();
 		}
-		else{  
-			String error = (String) resultMap.get("error");
-
-			JOptionPane.showMessageDialog(this, error);
-		}
-
 	}
-
 }

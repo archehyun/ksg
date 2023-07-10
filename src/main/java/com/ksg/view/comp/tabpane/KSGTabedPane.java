@@ -35,12 +35,15 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 	public void addTab(String title, Component component) {
 
 		Icon closeIcon = new CloseIcon(); 
+
 		JButton btClose=       new JButton(closeIcon);
+
 		btClose.setPreferredSize(new Dimension( closeIcon.getIconWidth(), closeIcon.getIconHeight()));
+
 		btClose.addActionListener(this);
 
 		JLabel lbl = new JLabel(title);
-		
+
 		lbl.setForeground(Color.black.brighter());
 
 		// Add some spacing between text and icon, and position text to the RHS.
@@ -78,14 +81,6 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 		setBackgroundAt(this.getTabCount()-1, pnMain.getBackground());
 	}
 
-	// @Override
-	// protected void paintTabBackground(Graphics g, int tabPlacement,
-	//              int tabIndex, int x, int y, int w, int h, boolean isSelected) {
-	// }
-
-
-
-
 
 	public void actionPerformed(ActionEvent e) {
 		int i = indexOfTabComponent(((Component) e.getSource()).getParent());
@@ -111,22 +106,22 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 		@Override
 		protected void installDefaults() {
 			super.installDefaults();
-//			deSelectColor= new Color(0X2d5ff5);
+//						deSelectColor= new Color(0X2d5ff5);
+//
+//						selectColor = new Color(0X2d5ff5).brighter();
 
-//			selectColor = new Color(0X2d5ff5).brighter();
-			
 			deSelectColor 	= Color.decode("#ebebeb");
 
 			selectColor 	= Color.white;
 
 			highlight 		= new Color(0, 0, 0, 0);
-			
+
 			lightHighlight 	= new Color(0, 0, 0, 0);
-			
+
 			shadow 			= new Color(0, 0, 0, 0);
-			
+
 			darkShadow 		= new Color(0, 0, 0, 0);
-			
+
 			focus 			= new Color(0, 0, 0, 0);
 		}
 
@@ -138,16 +133,16 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 		@Override
 		protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects, int tabIndex,
 				Rectangle iconRect, Rectangle textRect) {
-			// if (tabIndex == 0) {
-			//     rects[tabIndex].height = 30 + 1;
-			//     rects[tabIndex].y = 32 - rects[tabIndex].height + 1;
-			// } else if (tabIndex == 1) {
-			//     rects[tabIndex].height = 26 + 1;
-			//     rects[tabIndex].y = 32 - rects[tabIndex].height + 1;
-			// }
+			if (tabIndex == 0) {
+				rects[tabIndex].height = 30 + 1;
+				rects[tabIndex].y = 32 - rects[tabIndex].height + 1;
+			} else if (tabIndex == 1) {
+				rects[tabIndex].height = 26 + 1;
+				rects[tabIndex].y = 32 - rects[tabIndex].height + 1;
+			}
 
-			// rects[tabIndex].height = 36 + 1;
-			//     rects[tabIndex].y = 32 - rects[tabIndex].height + 1;
+			rects[tabIndex].height = 36 + 1;
+			rects[tabIndex].y = 32 - rects[tabIndex].height + 1;
 			super.paintTab(g, tabPlacement, rects, tabIndex, iconRect, textRect);
 		}
 		@Override
@@ -161,47 +156,51 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 		@Override
 		protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
 			Graphics2D g2D = (Graphics2D) g;
-			
+
 			GradientPaint gradientShadow;
-			
+
 			int xp[] = new int[]{x, x, x + 3, x + w - inclTab - 6, x + w - inclTab - 2, x + w - inclTab, x + w - inclTab, x};
-			
+
 			int yp[] = new int[]{y + h, y + 3, y, y, y + 1, y + 3, y + h, y + h};;
-			
+
 			gradientShadow = new GradientPaint(0, 0, Color.ORANGE, 0, y + h / 2, new Color(240, 255, 210));
-			
+
 			shape = new Polygon(xp, yp, xp.length);
-			
+
 			Component comp= getTabComponentAt(tabIndex);
 
 			if (isSelected) {
 				g2D.setColor(Color.decode("#f0f5f5"));
 				comp.setBackground(selectColor);
 				g2D.fillRect(x, y, w, h);
-//				g2D.setPaint(gradientShadow);
+				g2D.setPaint(gradientShadow);
 
 			} else {
-				// if (tabPane.isEnabled() && tabPane.isEnabledAt(tabIndex)) {
-				//     g2D.setColor(deSelectColor);
-				//     GradientPaint gradientShadowTmp = new GradientPaint(0, 0, new Color(255, 255, 200), 0, y + h / 2, new Color(240, 255, 210));
-				//     g2D.setPaint(gradientShadowTmp);
-				// } else {
-				//     GradientPaint gradientShadowTmp = new GradientPaint(0, 0, new Color(240, 255, 210), 0, y + 15 + h / 2, new Color(204, 204, 204));
-				//     g2D.setPaint(gradientShadowTmp);
-				// }
+				if (tabPane.isEnabled() && tabPane.isEnabledAt(tabIndex)) {
+					g2D.setColor(deSelectColor);
+					
+					GradientPaint gradientShadowTmp = new GradientPaint(0, 0, new Color(255, 255, 200), 0, y + h / 2, new Color(240, 255, 210));
+					
+					g2D.setPaint(gradientShadowTmp);
+					
+				} else {
+					GradientPaint gradientShadowTmp = new GradientPaint(0, 0, new Color(240, 255, 210), 0, y + 15 + h / 2, new Color(204, 204, 204));
+					
+					g2D.setPaint(gradientShadowTmp);
+				}
 				g2D.setColor(deSelectColor);
 				comp.setBackground(deSelectColor);
 				g2D.fillRect(x, y, w, h);
 				g2D.setColor(Color.lightGray);
 				g2D.drawRect(x, y, w, h);
 			}
-
-			// g2D.fill(shape);
-			// if (runCount > 1) {
-			//     g2D.setColor(hazAlfa(getRunForTab(tabPane.getTabCount(), tabIndex) - 1));
-			//     g2D.fill(shape);
-			// }
-			// g2D.fill(shape);
+			//
+			g2D.fill(shape);
+			if (runCount > 1) {
+				g2D.setColor(hazAlfa(getRunForTab(tabPane.getTabCount(), tabIndex) - 1));
+				g2D.fill(shape);
+			}
+			//g2D.fill(shape);
 
 		}
 		protected Color hazAlfa(int fila) {
@@ -220,9 +219,9 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 		}
 
 		public void paintIcon(Component c, Graphics g, int x, int y) {
-			//  g.setColor(Color.white);
-			//  g.fillRect(0, 0, getIconWidth(), getHeight());
-//			g.setColor(Color.white);
+			g.setColor(c.getParent().getBackground());
+			g.fillRect(0, 0, getIconWidth(), getHeight());
+			g.setColor(Color.DARK_GRAY);
 			g.drawLine(6, 6, getIconWidth() - 7, getIconHeight() - 7);
 			g.drawLine(getIconWidth() - 7, 6, 6, getIconHeight() - 7);
 		}
@@ -236,11 +235,8 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 
 	class TabPanel extends KSGPanel
 	{
-
 		public TabPanel(LayoutManager layout) {
 			super(layout);
-
-
 		}
 		@Override
 		public void setBackground(Color bg)

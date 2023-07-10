@@ -25,6 +25,8 @@ public class ShipperTableServiceImpl implements ShipperTableService{
 
 	@Override
 	public List selectTableAll() throws SQLException {
+		
+		log.info("selectTableAll");
 
 		List<ShippersTable> li = shipperTableDAO.selectShipperTableListAll();
 

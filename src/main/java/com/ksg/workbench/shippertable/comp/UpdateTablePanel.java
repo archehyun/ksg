@@ -30,26 +30,23 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import com.dtp.api.util.PortIndexUitl;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Company;
 import com.ksg.domain.ShippersTable;
-import com.ksg.service.CompanyService;
-import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.combobox.KSGComboBox;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.common.dialog.SearchCompanyDialog;
+import com.ksg.workbench.common.dialog.SearchCompanyDialog2;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
-import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
 
 /**
  * @author 박창현
@@ -58,8 +55,6 @@ import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
  */
 @SuppressWarnings("serial")
 public class UpdateTablePanel extends KSGPanel implements FocusListener{
-	
-	private KSGModelManager modelManager = KSGModelManager.getInstance();
 	
 	private JTextField 	txfTable_id;
 	private JTextField 	txfAgent;
@@ -83,11 +78,10 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 	private ShippersTable shippersTable;
 	private JTextField txfOhterCount;
 
-	private CompanyService companyService;
 	private ShipperTableAbstractMgtUI searchUI;
 
 	private JLabel lblSaveInfo;
-	private JComboBox cbxGubun;
+	private KSGComboBox cbxGubun;
 	private JTextArea txaConsoleCFS;
 	private JTextField txfDtime;
 	private JTextField txfInland;
@@ -98,14 +92,16 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 	private JTabbedPane tabPaneInfo;
 	private KSGPanel pnInland;
 	
+	private Border padding= BorderFactory.createEmptyBorder(5, 5, 5, 5);
+	
 	public UpdateTablePanel(ShipperTableAbstractMgtUI searchUI) {
 		super();
 		
 		this.searchUI =searchUI;
 		
-		companyService 	= new CompanyServiceImpl();
-		
 		createAndUpdteUI();
+		
+		
 
 	}
 	private void createAndUpdteUI()
@@ -143,9 +139,9 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 
 		this.txfTable_id.setEditable(false);
 		
-		txfCompany_Abbr.setEditable(false);
+		this.txfCompany_Abbr.setEditable(false);
 		
-		txfAgent.setEditable(false);
+		this.txfAgent.setEditable(false);
 
 		this.txfTable_id.setHorizontalAlignment(JTextField.RIGHT);
 		
@@ -157,79 +153,81 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 
 		this.txfPortCount.setHorizontalAlignment(JTextField.RIGHT);
 		
-		txfVesselCount.setHorizontalAlignment(JTextField.RIGHT);
+		this.txfVesselCount.setHorizontalAlignment(JTextField.RIGHT);
 		
-		txfOhterCount.setHorizontalAlignment(JTextField.RIGHT);
+		this.txfOhterCount.setHorizontalAlignment(JTextField.RIGHT);
 
-		txfPage.addKeyListener(searchUI);
+		this.txfPage.addKeyListener(searchUI);
 		
-		txfBookPage.addKeyListener(searchUI);
+		this.txfBookPage.addKeyListener(searchUI);
 		
-		txfIndex.addKeyListener(searchUI);
+		this.txfIndex.addKeyListener(searchUI);
 
-		txfOutToPort.addKeyListener(searchUI);
+		this.txfOutToPort.addKeyListener(searchUI);
 		
-		txfInToPort.addKeyListener(searchUI);
+		this.txfInToPort.addKeyListener(searchUI);
 		
-		txfGubun.addKeyListener(searchUI);
+		this.txfGubun.addKeyListener(searchUI);
 		
-		txfTitle.addKeyListener(searchUI);
+		this.txfTitle.addKeyListener(searchUI);
 
-		txaCommon.addKeyListener(searchUI);
+		this.txaCommon.addKeyListener(searchUI);
 		
-		txfPortCount.addKeyListener(searchUI);
+		this.txfPortCount.addKeyListener(searchUI);
 		
-		txfVesselCount.addKeyListener(searchUI);	
+		this.txfVesselCount.addKeyListener(searchUI);	
 		
-		txfOhterCount.addKeyListener(searchUI);
+		this.txfOhterCount.addKeyListener(searchUI);
 
 //		txfOutFromPort.addKeyListener(new EnterKeyListener2(txfOutFromPort));
 //		
 //		txfInFromPort.addKeyListener(new EnterKeyListener2(txfInFromPort));		
 
-		txfCompany_Abbr.addFocusListener(this);
+		this.txfCompany_Abbr.addFocusListener(this);
 		
-		txfAgent.addFocusListener(this);
+		this.txfAgent.addFocusListener(this);
 
-		txfPage.addFocusListener(this);
+		this.txfPage.addFocusListener(this);
 		
-		txfBookPage.addFocusListener(this);
+		this.txfBookPage.addFocusListener(this);
 		
-		txfIndex.addFocusListener(this);
+		this.txfIndex.addFocusListener(this);
 
-		txfOutFromPort.addFocusListener(this);
+		this.txfOutFromPort.addFocusListener(this);
 		
-		txfOutToPort.addFocusListener(this);
+		this.txfOutToPort.addFocusListener(this);
 		
-		txfInFromPort.addFocusListener(this);
+		this.txfInFromPort.addFocusListener(this);
 		
-		txfInToPort.addFocusListener(this);
+		this.txfInToPort.addFocusListener(this);
 		
-		txfGubun.addFocusListener(this);
+		this.txfGubun.addFocusListener(this);
 		
-		txfTitle.addFocusListener(this);
+		this.txfTitle.addFocusListener(this);
 
-		txaCommon.addFocusListener(this);
+		this.txaCommon.addFocusListener(this);
 		
-		txfPortCount.addFocusListener(this);
+		this.txfPortCount.addFocusListener(this);
 		
-		txfVesselCount.addFocusListener(this);
+		this.txfVesselCount.addFocusListener(this);
 		
-		txfOhterCount.addFocusListener(this);	
+		this.txfOhterCount.addFocusListener(this);	
 
-		cbxGubun = new JComboBox();
+		this.cbxGubun = new KSGComboBox("tableType");
 		
-		cbxGubun.addItem(ShippersTable.GUBUN_NORMAL);
-		
-		cbxGubun.addItem(ShippersTable.GUBUN_CONSOLE);
-		
-		cbxGubun.addItem(ShippersTable.GUBUN_INLAND);
-		
-		cbxGubun.addItem(ShippersTable.GUBUN_NNN);
-		
-		cbxGubun.addItem(ShippersTable.GUBUN_TS);
+		this.cbxGubun.initComp();
+//		
+//		this.cbxGubun.addItem(ShippersTable.GUBUN_NORMAL);
+//		
+//		this.cbxGubun.addItem(ShippersTable.GUBUN_CONSOLE);
+//		
+//		this.cbxGubun.addItem(ShippersTable.GUBUN_INLAND);
+//		
+//		this.cbxGubun.addItem(ShippersTable.GUBUN_NNN);
+//		
+//		this.cbxGubun.addItem(ShippersTable.GUBUN_TS);
 
-		cbxGubun.addActionListener(new ActionListener() {
+		this.cbxGubun.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg) {
 				
@@ -256,8 +254,8 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		TitledBorder boderTable = BorderFactory.createTitledBorder("테이블 정보");
 
 		boderTable.setTitleFont(getFont().deriveFont(Font.BOLD));
-
-		pnTable.setBorder(boderTable);
+		
+		pnTable.setBorder(BorderFactory.createCompoundBorder(boderTable, padding) );
 
 		KSGPanel pnCompanySearch = new KSGPanel(new BorderLayout(5,0));
 
@@ -270,36 +268,24 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
 
-				SearchCompanyDialog searchCompanyDialog = new SearchCompanyDialog();
+				SearchCompanyDialog2 searchCompanyDialog = new SearchCompanyDialog2();
 
 				searchCompanyDialog.createAndUpdateUI();
 
-				String company_abbr = searchCompanyDialog.result;
+				CommandMap result  = (CommandMap) searchCompanyDialog.resultObj;
 
-				if(company_abbr == null)return;
-				try {
+				if(result  == null)return;
+				
+				String company_name = (String) result.get("company_name");
+				String company_abbr = (String) result.get("company_abbr");
+				String agent_name = (String) result.get("agent_name");
+				
+				txfCompany_Abbr.setText(company_abbr);
+				
+				txfCompany_name.setText(company_name);
 
-					CommandMap param = new CommandMap();
-
-					param.put("company_abbr", company_abbr);
-
-					Company companyInfo=companyService.select(param );
-
-//					setTableIndex(companyInfo.getCompany_abbr());
-
-					txfCompany_Abbr.setText(companyInfo.getCompany_abbr());
-					
-					txfCompany_name.setText(companyInfo.getCompany_name());
-
-					txfAgent.setText(companyInfo.getAgent_abbr());
-
-					txaCommon.setText(companyInfo.getCompany_abbr());
-
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
-					e1.printStackTrace();
-				}
-
+				txfAgent.setText(agent_name);
+				
 			}});
 
 		butCompanySearch.setActionCommand("SEARCH_COMPANY");
@@ -396,8 +382,17 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		pnS1.add(new JScrollPane(txaCommon),BorderLayout.CENTER);
 
 		pnS2.add(new JScrollPane(txaQuark),BorderLayout.CENTER);
-
 		KSGPanel pnConsole = buildConsolePn();
+		
+		
+		Border padding2 = BorderFactory.createEmptyBorder(5, 7, 5, 7);
+		
+		pnS1.setBorder(padding2);
+		
+		pnS2.setBorder(padding2);
+		
+		pnConsole.setBorder(padding2);
+
 
 		tabPaneInfo.addTab("공동배선", pnS1);
 
@@ -475,6 +470,7 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		return pnConsole;
 	}
 	private KSGPanel createPnInBound(GridLayout gridLayout) {
+		
 		KSGPanel pnInBound = new KSGPanel();
 
 		pnInBound.setLayout(gridLayout);
@@ -487,7 +483,7 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 
 		createTitledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
 
-		pnInBound.setBorder(createTitledBorder);
+		pnInBound.setBorder(BorderFactory.createCompoundBorder(createTitledBorder, padding));
 
 		KSGPanel pnInBoundSub = new KSGPanel();
 
@@ -505,7 +501,7 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 
 		createTitledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
 
-		pnOutBound.setBorder(createTitledBorder);
+		pnOutBound.setBorder(BorderFactory.createCompoundBorder(createTitledBorder, padding));
 
 		pnOutBound.add(createForm("국내항: ", txfOutFromPort));
 
@@ -754,4 +750,3 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		txaCommon.setText(companyInfo.getCompany_abbr());
 	}
 }
-

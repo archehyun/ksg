@@ -14,7 +14,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -43,10 +43,11 @@ import com.dtp.api.schedule.joint.tree.node.AreaTreeNode;
 import com.dtp.api.schedule.joint.tree.node.NodeType;
 import com.dtp.api.schedule.joint.tree.node.ScheduleTreeNode;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.ViewUtil;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
 
 /**
  * 항구 정보 수정 다이어그램
@@ -54,7 +55,7 @@ import com.ksg.view.comp.panel.KSGPanel;
  * @author 박창현
  *
  */
-public class UpdatePortInfoDialog extends BaseInfoDialog
+public class UpdatePortInfoDialog extends MainTypeDialog
 {
 	/**
 	 * 
@@ -82,6 +83,22 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 		this.setController(new PortController());
 
 		this.type = type;
+		
+
+		switch (type) {
+		case UPDATE:
+			
+			titleInfo = "항구정보 수정";
+			
+			break;
+		case INSERT:
+			
+			titleInfo = "항구정보 추가";
+
+			break;
+
+		}
+
 
 		areaMap = new CommandMap();
 	}
@@ -92,29 +109,8 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 
 		this.param = param;
 	}
-	public void createAndUpdateUI() {
-
-		this.addComponentListener(this);
-
-		this.setModal(true);
-
-		this.setTitle("항구 정보 관리");
-
-		this.getContentPane().add(buildTitle("항구 정보 수정"),BorderLayout.NORTH);
-
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-
-		this.pack();
-
-		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
-
-		this.setVisible(true);
-
-	}
-
-	public KSGPanel buildCenter()
+	
+	private void initComp()
 	{
 		txfPort_name = new JTextField(20);
 
@@ -128,7 +124,36 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 
 		txfPort_area.setEditable(false);
 
-		JButton butSearchCode = new JButton("코드 검색");
+	}
+	public void createAndUpdateUI() {
+
+		initComp();
+		
+		this.setModal(true);
+		
+		this.addComponentListener(this);
+
+		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
+
+		this.addComp(buildCenter(),BorderLayout.CENTER);
+
+		this.addComp(buildControl(),BorderLayout.SOUTH);
+		
+//		this.setSize(400, 350);
+
+		ViewUtil.center(this, true);
+
+		this.setResizable(false);
+
+		this.setVisible(true);
+
+	}
+
+	public KSGPanel buildCenter()
+	{
+		KSGGradientButton butSearchCode = new KSGGradientButton("코드 검색", "images/search3.png");
+		
+		butSearchCode.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butSearchCode.addActionListener(new ActionListener(){
 
@@ -140,14 +165,19 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 
 			}});
 
-
-		KSGPanel pnCenter = new KSGPanel(new GridLayout(0,1,0,-3));
+		Box pnCenter = Box.createVerticalBox();
 
 		pnCenter.add(createFormItem(txfPort_name, "항구명"));
 
 		pnCenter.add(createFormItem(txfPort_nationailty, "나라"));
+		
+		Box area = Box.createHorizontalBox();
+		
+		area.add(txfArea_code);
+		area.add(Box.createHorizontalStrut(25));
+		area.add(butSearchCode);
 
-		pnCenter.add(createFormItem(txfArea_code, butSearchCode, "지역코드"));
+		pnCenter.add(createFormItem(area, "지역코드"));
 
 		pnCenter.add(createFormItem(txfPort_area, "지역명"));	
 
@@ -166,7 +196,6 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 
 		if(command.equals("수정"))
 		{
-
 			if(txfPort_name.getText().length()<=0)
 			{
 				JOptionPane.showMessageDialog(this, "항구명이 없습니다.");
@@ -188,9 +217,7 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 				return;
 			}
 
-
 			CommandMap param = new CommandMap();
-
 
 			param.put("area_code", txfArea_code.getText());
 
@@ -208,7 +235,6 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 		}
 		else if(command.equals("추가"))
 		{
-
 			if(txfPort_name.getText().length()<=0)
 			{
 				JOptionPane.showMessageDialog(this, "항구명이 없습니다.");
@@ -246,7 +272,6 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 
 			this.dispose();
 		}
-
 	}
 
 	@Override
@@ -386,6 +411,12 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 			butOk.addActionListener(new ActionListener(){
 
 				public void actionPerformed(ActionEvent e) {
+					
+					// TODO 오류 발생
+//					txfPort_area.setText((String) param.get("port_area"));
+//
+//					txfArea_code.setText((String) param.get("area_code"));
+					
 					close();
 
 				}});
@@ -397,11 +428,9 @@ public class UpdatePortInfoDialog extends BaseInfoDialog
 
 				public void actionPerformed(ActionEvent e) {
 
-
-					// TODO 오류 발생
-					txfPort_area.setText((String) param.get("port_area"));
-
-					txfArea_code.setText((String) param.get("area_code"));
+					txfPort_area.setText("");
+//
+					txfArea_code.setText("");
 
 					close();
 

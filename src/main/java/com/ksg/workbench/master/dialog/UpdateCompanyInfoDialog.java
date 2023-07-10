@@ -18,24 +18,23 @@ import java.awt.event.ComponentEvent;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.dtp.api.control.CompanyController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
 
-public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
+@SuppressWarnings("serial")
+public class UpdateCompanyInfoDialog extends MainTypeDialog  {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
-	private CompanyServiceImpl companyService;
 
 	private JTextField txfCompany_name; // 선사명
 
@@ -57,19 +56,18 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 		this.setController(new CompanyController());
 
-		companyService = new CompanyServiceImpl();
-
 		this.addComponentListener(this);
 
 		this.type = type;
-
-		title = "선사 정보 관리";
-
+		
 		switch (type) {
+		
 		case UPDATE:
 
 			titleInfo="선사 정보 수정";
+			
 			break;
+			
 		case INSERT:
 
 			titleInfo="선사 정보 추가";
@@ -78,15 +76,26 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		default:
 			break;
 		}
-
 	}
 
 	public UpdateCompanyInfoDialog(int type, HashMap<String, Object> company)
 	{
 		this(type);
+		
 		this.company = company;
 	}
+	private void initComp()
+	{
+		txfCompany_name = new JTextField(20);
 
+		txfCompany_abbr = new JTextField(20);
+
+		txfAgent_name = new JTextField(20);
+
+		txfAgent_abbr = new JTextField(20);
+
+		txaContents = new JTextArea(8,32);
+	}
 
 	public void actionPerformed(ActionEvent e) {
 
@@ -117,7 +126,6 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			this.setVisible(false);
 
 			this.dispose();
-
 		}
 		else if(command.equals("추가"))
 		{
@@ -136,46 +144,38 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			param.put("base_company_abbr", txfCompany_abbr.getText());
 
 			callApi("insertCompany", param);
-
 		}
 	}
 
 	public void createAndUpdateUI() {
-
+		
+		initComp();
+		
 		this.setModal(true);
 
-		this.getContentPane().add(buildTitle("Add a Company Field"),BorderLayout.NORTH);
+		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
 
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.addComp(buildCenter(),BorderLayout.CENTER);
 
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		this.addComp(buildControl(),BorderLayout.SOUTH);
 
-		this.setSize(400, 350);
-
-		ViewUtil.center(this);
+		ViewUtil.center(this,true);
 
 		this.setResizable(false);
 
 		this.setVisible(true);
+
 	}
+	
+	
 
 	public KSGPanel buildCenter()
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
-		txfCompany_name = new JTextField(20);
-
-		txfCompany_abbr = new JTextField(20);
-
-		txfAgent_name = new JTextField(20);
-
-		txfAgent_abbr = new JTextField(20);
-
-		txaContents = new JTextArea(8,32);
-
 		txaContents.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-		KSGPanel pnCenter = new KSGPanel(new GridLayout(0,1,0,-3));
+		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 
 		pnCenter.add( createFormItem(txfCompany_name,"선사명"));
 
@@ -197,8 +197,7 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 	@Override
 	public void componentShown(ComponentEvent e) {
 
-		this.setTitle(title);
-		this.lblTitle.setText(titleInfo);
+		title = "선사 정보 관리";
 
 		if(company!=null)
 		{
@@ -223,14 +222,13 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			butOK.setActionCommand("추가");
 
 			break;
-
 		}
 	}
 
 	@Override
 	public void updateView() {
+		
 		CommandMap resultMap= this.getModel();
-
 
 		String serviceId=(String) resultMap.get("serviceId");
 
@@ -255,10 +253,5 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 			this.dispose();
 		}
-
-
-
 	}
-
-
 }

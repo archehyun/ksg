@@ -20,9 +20,11 @@ import javax.swing.JTextField;
 import com.dtp.api.control.CodeController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.ViewUtil;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
 
 
 /**
@@ -39,7 +41,7 @@ import com.ksg.view.comp.panel.KSGPanel;
 
   */
 @SuppressWarnings("serial")
-public class InsertCommonCodeDetailDialog extends BaseInfoDialog {
+public class InsertCommonCodeDetailDialog extends MainTypeDialog {
 	
 	private JTextField txfCodeField;
 	
@@ -55,8 +57,6 @@ public class InsertCommonCodeDetailDialog extends BaseInfoDialog {
 	private String codeType;
 	
 	public InsertCommonCodeDetailDialog() {
-		
-		this.setTitle("상세 코드 정보 추가");
 		
 		this.addComponentListener(this);
 		
@@ -77,17 +77,6 @@ public class InsertCommonCodeDetailDialog extends BaseInfoDialog {
 	
 	public KSGPanel buildCenter()
 	{
-		
-		txfCodeField 	= new JTextField(15);
-		
-		txfCodeNameEng 	= new JTextField(15);
-		
-		txfCodeType 	= new JTextField(15);
-		
-		txfCodeNameKor 	= new JTextField(15);
-		
-		txfCodeType.setEditable(false);
-		
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		
 		pnCenter.add(createFormItem(txfCodeType,"코드타입"));
@@ -106,23 +95,6 @@ public class InsertCommonCodeDetailDialog extends BaseInfoDialog {
 		
 		return pnMain;
 	}
-	
-	private KSGPanel addComp(String title, JComponent comp)
-	{
-		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		JLabel lblTitle = new JLabel(title,JLabel.RIGHT);
-		
-		lblTitle.setPreferredSize(new Dimension(100,25));
-		
-		pnMain.add(lblTitle);
-		
-		pnMain.add(comp);
-		
-		return pnMain;
-	}
-	
-
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -162,48 +134,44 @@ public class InsertCommonCodeDetailDialog extends BaseInfoDialog {
 			callApi("insertCodeDetail", param);
 
 		}
-		
 	}
-	
-	private KSGPanel buildTitle() {
-		
-		KSGPanel pnTitle = new KSGPanel();
-		
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		pnTitle.setBackground(Color.white);
-		
-		JLabel label = new JLabel(title);
-		
-		label.setFont(new Font("돋움",0,16));
-		
-		pnTitle.add(label);
-
-		return pnTitle;
-	}
-
-
 
 	@Override
 	public void createAndUpdateUI() {
 		
+		this.titleInfo="상세 코드 정보 추가";
+		
+		initComp();
+		
 		this.setModal(true);
 
-		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
-		
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-		
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
 
-		this.pack();
+		this.addComp(buildCenter(),BorderLayout.CENTER);
 
-		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
-		
+		this.addComp(buildControl(),BorderLayout.SOUTH);
+
+		ViewUtil.center(this,true);
+
 		this.setResizable(false);
-		
+
 		this.setVisible(true);
 	}
 	
+	private void initComp() {
+		
+		txfCodeField 	= new JTextField(15);
+		
+		txfCodeNameEng 	= new JTextField(15);
+		
+		txfCodeType 	= new JTextField(15);
+		
+		txfCodeNameKor 	= new JTextField(15);
+		
+		txfCodeType.setEditable(false);
+		
+	}
+
 	@Override
 	public void componentShown(ComponentEvent e) {
 		

@@ -173,6 +173,8 @@ public class PnConsole2 extends PnSchedule{
 		cbxArea.setPreferredSize(new Dimension(250,23));
 
 		JLabel lblFromPort = new JLabel("출발항");
+		
+		lblFromPort.setFont(labelFont);
 
 		txfFromPort = new SearchTextField();
 
@@ -181,6 +183,8 @@ public class PnConsole2 extends PnSchedule{
 		txfFromPort.setActionCommand("SEARCH_FROM_PORT");
 
 		JLabel lblToPort = new JLabel("도착항");
+		
+		lblToPort.setFont(labelFont);
 
 		txfToPort = new SearchTextField();
 
@@ -224,17 +228,25 @@ public class PnConsole2 extends PnSchedule{
 			}
 		});
 
-		pnNormalSearchCenter.add(new JLabel("구분:"));
+		JLabel lbl1 = new JLabel("구분:");
+		JLabel lbl2 = new JLabel("지역:");
+		JLabel lbl3 = new JLabel("항목:");
+		
+		lbl1.setFont(labelFont);
+		lbl2.setFont(labelFont);
+		lbl3.setFont(labelFont);
+		
+		pnNormalSearchCenter.add(lbl1);
 
 		pnNormalSearchCenter.add(cbxNormalInOut);
 
-		pnNormalSearchCenter.add(new JLabel("지역:"));
+		pnNormalSearchCenter.add(lbl2);
 
 		pnNormalSearchCenter.add(cbxArea);
 
 		pnNormalSearchCenter.add(pnPortSearch);
 
-		pnNormalSearchCenter.add(new JLabel("항목:"));
+		pnNormalSearchCenter.add(lbl3);
 
 		pnNormalSearchCenter.add(cbxNormalSearch);
 

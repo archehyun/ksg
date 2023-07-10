@@ -35,4 +35,10 @@ public class NotificationManager {
         Notification panel = new Notification(NotificationManager.getInstance().getFrame(), type, Notification.Location.TOP_CENTER, message);
         panel.showNotification();
     }
+    
+    public static void showNotification(Notification.Type type,Notification.Location location, String message)
+    {
+        Notification panel = new Notification(NotificationManager.getInstance().getFrame(), type, location, message);
+        panel.showNotification();
+    }
 }

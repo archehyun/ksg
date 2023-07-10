@@ -66,14 +66,11 @@ public class PnArea extends PnBase implements ActionListener{
 
 	private JLabel lblTable,lblTotal;
 	
-	KSGTablePanel tableH;
+	private KSGTablePanel tableH;
 
-	private String columName[] = {"코드","지역명","지역코드"};
-	
 	AreaServiceImpl areaService = new AreaServiceImpl();
 	
 	AreaDAOImpl areaDAO = new AreaDAOImpl();
-
 
 	public PnArea(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
@@ -110,10 +107,10 @@ public class PnArea extends PnBase implements ActionListener{
 
 		tableH.setColumnName(columns);
 		
-		
-		
 		tableH.initComp();
+		
 		tableH.setShowControl(true);
+		
 		tableH.addContorlListener(this);
 		
 		
@@ -328,7 +325,4 @@ public class PnArea extends PnBase implements ActionListener{
 		
 		
 	}
-
-
-
 }

@@ -29,16 +29,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.dtp.api.control.PortController;
-import com.dtp.api.service.impl.CodeServiceImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
-import com.ksg.domain.Code;
-import com.ksg.service.impl.PortServiceImpl;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.master.dialog.BaseInfoDialog;
 import com.ksg.workbench.shippertable.dialog.ManagePortDialog;
 
 
@@ -56,7 +51,7 @@ import com.ksg.workbench.shippertable.dialog.ManagePortDialog;
 
  */
 @SuppressWarnings("serial")
-public class SearchPortDialog extends BaseInfoDialog implements ActionListener{
+public class SearchPortDialog extends MainTypeDialog implements ActionListener{
 
 	public String result;
 

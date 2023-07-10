@@ -1,6 +1,7 @@
 package com.ksg.workbench.shippertable.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,7 @@ import javax.swing.JTextField;
 import com.dtp.api.control.ShipperTableController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
+import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
@@ -50,11 +52,11 @@ public class ManageTablePortPop extends BaseInfoDialog implements ActionListener
 
 	private static final String ACTION_DOWN = "DOWN";
 
-	private JButton butDelete;
-	private JButton butUpdate;
-	private JButton butInsert;
-	private JButton butUp;
-	private JButton butDown;
+	private KSGGradientButton butDelete;
+	private KSGGradientButton butUpdate;
+	private KSGGradientButton butInsert;
+	private KSGGradientButton butUp;
+	private KSGGradientButton butDown;
 
 	private JTextField txfSelectedPortName;
 
@@ -137,15 +139,21 @@ public class ManageTablePortPop extends BaseInfoDialog implements ActionListener
 	{
 		KSGPanel pnMain = new KSGPanel();
 
-		butUp 		= new JButton("▲");
+		butUp 		= new KSGGradientButton("▲");
 
-		butDown 	= new JButton("▼");
+		butDown 	= new KSGGradientButton("▼");
 
-		butInsert 	= new JButton("추가");
+		butInsert 	= new KSGGradientButton("추가");
 
-		butDelete 	= new JButton("삭제");
+		butDelete 	= new KSGGradientButton("삭제");
 
-		butUpdate 	= new JButton("수정");	
+		butUpdate 	= new KSGGradientButton("수정");	
+		
+		butUp.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		butDown.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		butInsert.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		butDelete.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		butUpdate.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUp.setActionCommand(ACTION_UP);
 

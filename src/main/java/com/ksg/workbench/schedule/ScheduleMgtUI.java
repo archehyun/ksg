@@ -48,6 +48,7 @@ import com.ksg.domain.ScheduleType;
 import com.ksg.domain.ShippersTable;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.checkbox.KSGCheckBox;
+import com.ksg.view.comp.combobox.KSGComboBox;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.radiobutton.KSGRadioButton;
 import com.ksg.view.comp.table.KSGAbstractTable;
@@ -101,7 +102,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 	private JRadioButton optCFS;
 
-	private JComboBox cbxTableDateList;
+	private KSGComboBox cbxTableDateList;
 
 	private JTabbedPane tabPane;
 
@@ -196,7 +197,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		pnTableDateModelSouth.add(pnTableDateModelSouthPadding,BorderLayout.SOUTH);
 
-		cbxTableDateList = new JComboBox();
+		cbxTableDateList = new KSGComboBox();
 
 		JButton butUpdate = new KSGGradientButton("갱신");
 
@@ -648,8 +649,10 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			{		
 				// 스케줄 생성일자 선택
 				CommandMap param = new CommandMap();
+				
+				String selectedDate= ((KSGTableColumn)cbxTableDateList.getSelectedItem()).columnField;
 
-				String inputDate = toDateformat.format(consoleDateformat.parse((String)cbxTableDateList.getSelectedItem()));
+				String inputDate = toDateformat.format(consoleDateformat.parse(selectedDate));
 
 				param.put("inputDate", inputDate);
 
@@ -686,7 +689,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 			tblScheduleDateList.setResultData(scheduleDateLists);
 
-			tableDatelist.stream().forEach(scheduleDate -> cbxTableDateList.addItem(scheduleDate));
+			tableDatelist.stream().forEach(scheduleDate -> cbxTableDateList.addItem(new KSGTableColumn((String)scheduleDate, (String)scheduleDate) ));
 
 		}
 		else if("deleteSchedule".equals(serviceId)) {

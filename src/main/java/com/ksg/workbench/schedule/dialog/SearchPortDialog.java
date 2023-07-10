@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -26,7 +27,7 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.master.dialog.BaseInfoDialog;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
 
 import mycomp.comp.MyTable;
 
@@ -45,7 +46,7 @@ import mycomp.comp.MyTable;
  * @프로그램 설명 : 항구 정보 조회 팝업
 
  */
-public class SearchPortDialog extends BaseInfoDialog{
+public class SearchPortDialog extends MainTypeDialog{
 
 	private JLabel lblTitle;
 
@@ -58,20 +59,23 @@ public class SearchPortDialog extends BaseInfoDialog{
 	public String result;
 
 	public SearchPortDialog() {
-		
+		super();
 		this.setController(new PortController());
+		
 	}
 
 	@Override
 	public void createAndUpdateUI() {
+		
 		this.setModal(true);
-		this.setTitle(title);
+		
+//		this.setTitle(title);
+		
+		this.getContentPane().add(buildHeader(),BorderLayout.NORTH);
 
-		this.getContentPane().add(buildTitle("항구 조회"),BorderLayout.NORTH);
+		this.addComp(buildCenter(),BorderLayout.CENTER);
 
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		this.addComp(buildControl(),BorderLayout.SOUTH);
 
 		this.pack();
 		
@@ -80,20 +84,31 @@ public class SearchPortDialog extends BaseInfoDialog{
 		this.setResizable(false);
 		
 		this.setVisible(true);
-
+	}
+	
+	public KSGPanel buildHeader()
+	{
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
+//		pnMain.setBackground(Color.lightGray);
+		
+		pnMain.add(buildTitle("항구조회"));
+		
+		return pnMain;
 	}
 
 	public KSGPanel buildTitle(String title)
 	{
-		KSGPanel pnTitle = new KSGPanel();
+		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		pnTitle.setBackground(Color.white);
+		pnTitle.setBorder(BorderFactory.createEmptyBorder(5,15,5,0));
+//		#000046, #1cb5e0	
+		pnTitle.setBackground(titleColor);
 		
 		lblTitle = new JLabel(title);
 		
-		lblTitle.setFont(new Font("area",Font.BOLD,16));
+		lblTitle.setFont(new Font("area",Font.BOLD,20));
+		lblTitle.setForeground(Color.white);
 		
 		pnTitle.add(lblTitle);
 		
@@ -167,41 +182,80 @@ public class SearchPortDialog extends BaseInfoDialog{
 					SearchPortDialog.this.close();
 				}
 			}
-
 		});
 
-		KSGPanel pnMain = new KSGPanel(new BorderLayout(5,5));
+		KSGPanel pnMainDetail = new KSGPanel(new BorderLayout(5,5));
+		
+		
+		JScrollPane comp = new JScrollPane(tableH);
+		
+		tableH.getParent().setBackground(Color.white);
 
-		txfInput = new JTextField();
+		JScrollPane compRight = new JScrollPane(tableD);
+
+		compRight.setBackground(Color.white);
+
+		tableD.getParent().setBackground(Color.white);
+
+		compRight.setPreferredSize(new Dimension(200,200));
+		
+		KSGPanel pnMainNorth =  new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		JLabel label = new JLabel("상세정보",new  ImageIcon("images/buticon.png"),JLabel.LEFT);
+		
+		pnMainNorth.add(label);
+		
+		pnMainNorth.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+		
+		pnMainDetail.add(pnMainNorth,BorderLayout.NORTH);
+
+		pnMainDetail.add(compRight,BorderLayout.EAST);
+		
+		pnMainDetail.add(comp);
+
+		pnMainDetail.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		
+		KSGPanel pnMain =  new KSGPanel(new BorderLayout(10,10));
+		
+		pnMain.add(buildNorth(),BorderLayout.NORTH);
+		
+		pnMain.add(pnMainDetail);
+
+		return pnMain;
+	}
+	
+	private KSGPanel buildNorth()
+	{
+		txfInput = new JTextField(15);
 
 		txfInput.addKeyListener(new KeyAdapter() {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
 				
-				fnSearch();
+				fnSearch();	
 			}
 
 		});
-		pnMain.add(new JScrollPane(tableH));
-
-		tableH.getParent().setBackground(Color.white);
-
-		JScrollPane compDetail = new JScrollPane(tableD);
-
-		compDetail.setBackground(Color.white);
-
-		tableD.getParent().setBackground(Color.white);
-
-		compDetail.setPreferredSize(new Dimension(200,200));
-
-		pnMain.add(compDetail,BorderLayout.EAST);
-
-		pnMain.add(txfInput,BorderLayout.NORTH);
-
-		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
+		
+		
+		KSGPanel pnSearchLabel = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel label = new JLabel("검색조건",new  ImageIcon("images/buticon.png"),JLabel.LEFT);
+		pnSearchLabel.add(label);
+		
+		KSGPanel pnSearchOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		pnSearchOption.add(new JLabel("항구명"));
+		pnSearchOption.add(txfInput);
+		pnSearchOption.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.lightGray,1),BorderFactory.createEmptyBorder(10,15,10,15)));
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
+		pnMain.add(pnSearchLabel, BorderLayout.NORTH);
+		
+		pnMain.add(pnSearchOption);
+		
 		return pnMain;
+		
 	}
 
 	private void fnSearch()
@@ -209,8 +263,18 @@ public class SearchPortDialog extends BaseInfoDialog{
 		CommandMap param = new CommandMap();
 
 		String input =txfInput.getText();
-
-		if(!"".equals(input)) param.put("port_name", input);
+		
+		if(input.isEmpty())
+		{
+			tableH.clearReslult();
+			
+			tableD.clearReslult();
+			
+			return;
+		}
+		
+		
+		param.put("port_name", input);
 		
 		callApi("selectPort", param);
 		
@@ -262,8 +326,5 @@ public class SearchPortDialog extends BaseInfoDialog{
 
 			JOptionPane.showMessageDialog(this, error);
 		}
-
 	}
-
-
 }

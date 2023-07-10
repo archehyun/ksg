@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -120,7 +121,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 	private JLabel lblSpiltedSchedule;
 
 	private JLabel lblLegend;
-
+	
 	public PnNormalByTree() {
 
 		super();
@@ -328,6 +329,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 		cbxArea.setPreferredSize(new Dimension(250,23));
 
 		JLabel lblFromPort = new JLabel("출발항");
+		lblFromPort.setFont(labelFont);
 
 		fromPort = new SearchTextField();
 
@@ -346,11 +348,11 @@ public class PnNormalByTree extends PnSchedule implements View {
 		toPort.addActionListener(this);
 
 		JLabel lblToPort = new JLabel("도착항");
+		lblToPort.setFont(labelFont);
 
 		KSGPanel pnPortSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		pnPortSearch.add(lblFromPort);
-
 
 		pnPortSearch.add(fromPort);
 
@@ -390,17 +392,27 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		butSearch.addActionListener(this);
 
-		pnNormalSearchCenter.add(new JLabel("구분:"));
+		JLabel lbl1 = new JLabel("구분:");
+		JLabel lbl2 = new JLabel("지역:");
+		JLabel lbl3 = new JLabel("항목:");
+		JLabel lbl4 = new JLabel("정렬:");
+		
+		lbl1.setFont(labelFont);
+		lbl2.setFont(labelFont);
+		lbl3.setFont(labelFont);
+		lbl4.setFont(labelFont);
+		
+		pnNormalSearchCenter.add(lbl1);
 
 		pnNormalSearchCenter.add(cbxNormalInOut);
 
-		pnNormalSearchCenter.add(new JLabel("지역:"));
+		pnNormalSearchCenter.add(lbl2);
 
 		pnNormalSearchCenter.add(cbxArea);
 
 		pnNormalSearchCenter.add(pnPortSearch);
 
-		pnNormalSearchCenter.add(new JLabel("항목:"));
+		pnNormalSearchCenter.add(lbl3);
 
 		pnNormalSearchCenter.add(cbxNormalSearch);
 
@@ -412,7 +424,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		pnRouteSerchOption.setVisible(false);
 
-		pnRouteSerchOption.add(new JLabel("정렬:"));
+		pnRouteSerchOption.add(lbl4);
 
 		rbtRouteDateSorted = new JRadioButton("날짜");
 
@@ -570,6 +582,8 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 			areaList.stream()
 			.forEach(areaName->cbxArea.addItem(new KSGTableColumn(areaName, areaName)));
+			
+			log.info("init end");
 
 		}
 		else if("pnNormalByTree.fnSearch".equals(serviceId)) {

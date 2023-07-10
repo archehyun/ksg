@@ -74,6 +74,38 @@ public class CompanyController extends AbstractController{
 	 * @return
 	 * @throws Exception
 	 */
+	@ControlMethod(serviceId = "selectCompanyListByCondition")	
+    public CommandMap selectCompanyListByCondition(CommandMap param) throws Exception
+    {
+		log.info("param:{}", param);
+		
+		Company companyParam = Company	.builder()
+										.company_name((String)(param.get("company_name")))
+										.company_abbr((String)(param.get("company_abbr")))
+										.agent_name((String)(param.get("agent_name")))
+										.agent_abbr((String)(param.get("agent_abbr")))
+										.build();
+		
+		List<Company> resultList = (List<Company>) service.selectCompanyListByCondition(companyParam);
+		
+		List<CommandMap> result=resultList.stream()
+										.map(o -> objectMapper.convertValue(o, CommandMap.class))
+										.collect(Collectors.toList());
+								
+		CommandMap model = new CommandMap();
+		
+        model.put("data", result);
+		
+		return model;
+    }
+	
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "insertCompany")
 	public CommandMap insertCompany(CommandMap param) throws Exception{
 

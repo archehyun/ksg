@@ -3,7 +3,6 @@ package com.ksg.workbench.admin;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +13,8 @@ import com.dtp.api.control.MainController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.tabpane.KSGTabedPane;
+import com.ksg.workbench.admin.menu.Menu;
+import com.ksg.workbench.admin.menu.MenuAction;
 import com.ksg.workbench.common.comp.KSGView;
 
 
@@ -143,10 +144,7 @@ public class PnMainTab extends KSGView{
 		
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-	}
+
 	public void updateView() {
 		
 		CommandMap result= this.getModel();

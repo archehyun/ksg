@@ -55,6 +55,7 @@ public abstract class AbstractController {
 	 */
 	private void call(String serviceId, CommandMap param) 
 	{
+		
 		log.debug("serviceId:{}, param:{}",serviceId, param);
 
 		CommandMap model =new CommandMap();

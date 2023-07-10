@@ -48,7 +48,6 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	
 	public static final String ACTION_UPDATE 	= "¼öÁ¤";
 	
-	
 	protected JLabel lblTitle;
 
 	protected String titleInfo;
@@ -60,6 +59,8 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	protected CommandMap model;
 	
 	private AbstractController controller;
+	
+	
 	
 	/**
 	 * 
@@ -96,15 +97,17 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		
 		pnLabel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		
-		JLabel lblCompany_abbr = new JLabel(title);
+		JLabel lblItemLabel = new JLabel(title);
 		
-		lblCompany_abbr.setVerticalAlignment(JLabel.CENTER);
+		lblItemLabel.setVerticalAlignment(JLabel.CENTER);
 		
-		pnLabel.add(lblCompany_abbr);
+		pnLabel.add(lblItemLabel);
 		
 		pnLabel.setBackground(labelColor);
 		
-		lblCompany_abbr.setPreferredSize(new Dimension(120,15));
+		lblItemLabel.setPreferredSize(new Dimension(120,15));
+		
+		pnLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		
 		KSGPanel pnComp = new KSGPanel(new BorderLayout());
 		
@@ -150,7 +153,6 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		pnControl.add(butOK);
 		
 		pnControl.add(butCancel);
-		
 		
 		KSGPanel pnLine = new KSGPanel();
 		

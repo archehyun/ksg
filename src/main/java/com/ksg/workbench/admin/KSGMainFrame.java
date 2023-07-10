@@ -44,9 +44,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.dtp.api.control.AbstractController;
 import com.dtp.api.control.MainController;
 import com.ksg.commands.IFCommand;
@@ -62,8 +59,6 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleServiceManager;
-import com.ksg.service.ScheduleSubService;
-import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -80,6 +75,8 @@ import com.ksg.workbench.print.PrintADVUI;
 import com.ksg.workbench.schedule.ScheduleMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
 
@@ -94,6 +91,7 @@ import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
  * @프로그램 설명 :
 
  */
+@Slf4j
 public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, View{
 
 	private AbstractController controller;
@@ -136,13 +134,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 	private KSGModelManager modelManager = KSGModelManager.getInstance();
 
-	protected Logger logger = LogManager.getLogger(this.getClass());
-
 	private CardLayout cardLayout= new CardLayout();
 
 	ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
 
-	private ScheduleSubService scheduleService= new ScheduleServiceImpl();
+//	private ScheduleSubService scheduleService= new ScheduleServiceImpl();
 
 
 	/**
@@ -213,7 +209,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		new Thread(){
 			public void run()
 			{
-				logger.debug("init frame start");
+				log.debug("init frame start");
 
 				pnAdvAdd 			= new ADVManageUI();
 
@@ -261,7 +257,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 				KSGMainFrame.this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-				logger.debug("init frame end");
+				log.debug("init frame end");
 			}
 
 		}.start();
@@ -288,7 +284,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	 */
 	public void createAndUpdateUI()
 	{
-		logger.debug("create frame start");
+		log.debug("create frame start");
 
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 
@@ -310,7 +306,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 		this.setVisible(false);
 
-		logger.debug("create frame end");
+		log.debug("create frame end");
 
 	}
 
@@ -431,8 +427,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 					try {
 						String searchDate = KSGDateUtil.toDate3(date).toString();
+						
 						CommandMap param = new CommandMap();
+						
 						param.put("searchDate", searchDate);
+						
 						callApi("searchTableCount", param);
 
 					} 
@@ -460,6 +459,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		});
 
 		toolbar.addSeparator();
+		
 		toolbar.add(txfImportDate);
 
 		return toolbar;
@@ -932,58 +932,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		}
 		public void actionPerformed(ActionEvent e) {
 			
-			//cardLayout.show(pnCenter,  BASE_MAIN);
-			
 			pnMainView.showPanel(BASE_MAIN);
-			
-//			if(e.getActionCommand().equals(BASE_MAIN)||e.getActionCommand().equals(BASE_CODE))
-//			{	
-//				modelManager.menu_command=BaseInfoUI.STRING_CODE_INFO;
-//				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_CODE_INFO);
-//				pnMainView.showPanel(BaseInfoUI.STRING_CODE_INFO);
-//			}
-//			else if(e.getActionCommand().equals(BASE_AREA))
-//			{
-//				modelManager.menu_command=BaseInfoUI.STRING_AREA_INFO;
-//
-//				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_AREA_INFO);
-//
-//				pnMainView.showPanel(BaseInfoUI.STRING_AREA_INFO);
-//			}
-//			else if(e.getActionCommand().equals(BASE_PORT))
-//			{
-//				modelManager.menu_command=BaseInfoUI.STRING_PORT_INFO;
-//				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_PORT_INFO);
-//				pnMainView.showPanel(BaseInfoUI.STRING_PORT_INFO);
-//			}
-//			else if(e.getActionCommand().equals(BASE_PORT_ABBR))
-//			{
-//				modelManager.menu_command=BaseInfoUI.STRING_PORT_ABBR;
-//				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_PORT_ABBR);
-//				pnMainView.showPanel(BaseInfoUI.STRING_PORT_ABBR);
-//
-//			}
-//			else if(e.getActionCommand().equals(BASE_COMPANY))
-//			{
-//				modelManager.menu_command=BaseInfoUI.STRING_COMPANY_INFO;
-//				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_COMPANY_INFO);
-//				pnMainView.showPanel(BaseInfoUI.STRING_COMPANY_INFO);
-//			}
-//
-//			else if(e.getActionCommand().equals(BASE_VESSEL))
-//			{
-//				modelManager.menu_command=BaseInfoUI.STRING_VESSEL_INFO;
-//
-//				//pnBaseInfo
-//				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_VESSEL_INFO);
-//				pnMainView.showPanel(BaseInfoUI.STRING_VESSEL_INFO);
-//			}
-//			else if(e.getActionCommand().equals(BASE_VESSEL_ABBR))
-//			{
-//				modelManager.menu_command=BaseInfoUI.STRING_VESSEL_ABBR;
-//				pnBaseInfo.showBaseInfo(BaseInfoUI.STRING_VESSEL_ABBR);
-//				pnMainView.showPanel(BaseInfoUI.STRING_VESSEL_ABBR);
-//			}
 		}
 	}
 
@@ -1140,6 +1089,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		if(this.controller!=null)
 			this.controller.call(serviceId, new CommandMap(),this);
 	}
+	
 	class WorldWideDialog extends JDialog implements ActionListener
 	{
 		public WorldWideDialog() {}
@@ -1246,9 +1196,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 				setVisible(false);
 				dispose();
 			}
-
-
-
 		}
 	}
 }

@@ -1,9 +1,10 @@
-package com.ksg.workbench.admin;
+package com.ksg.workbench.admin.menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;

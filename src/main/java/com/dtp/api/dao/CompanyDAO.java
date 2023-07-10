@@ -40,4 +40,6 @@ public class CompanyDAO extends AbstractDAO{
 		return insert(namespace+".insertCompany", param);
 	}
 
+
+
 }

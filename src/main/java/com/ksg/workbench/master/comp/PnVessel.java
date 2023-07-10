@@ -45,7 +45,6 @@ import com.ksg.commands.base.VesselInfoExportCommand;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
-import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
@@ -369,7 +368,9 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		String command = e.getActionCommand();
+		
 		if(command.equals(STRING_SEARCH))
 		{
 			fnSearch();
@@ -522,10 +523,14 @@ public class PnVessel extends PnBase implements ActionListener {
 		dialog.createAndUpdateUI();
 
 		switch (dialog.result) {
+		
 		case KSGDialog.SUCCESS:
+			
 			fnSearch();
+			
 			break;
-		case KSGDialog.FAILE:					
+		case KSGDialog.FAILE:
+			
 			break;	
 
 		default:
@@ -537,6 +542,7 @@ public class PnVessel extends PnBase implements ActionListener {
 	private void deleteAllAction()
 	{
 		String result= JOptionPane.showInputDialog(KSGModelManager.getInstance().frame, "데이터를 삭제 하시려면 '삭제확인'을 입력 하십시요");
+		
 		if(result.equals("삭제확인"))
 		{
 			try {
@@ -544,6 +550,7 @@ public class PnVessel extends PnBase implements ActionListener {
 				vesselService.delete(new HashMap<String, Object>());
 
 				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "데이터를 삭제 했습니다.");
+				
 			} catch (SQLException e1) {
 
 				e1.printStackTrace();

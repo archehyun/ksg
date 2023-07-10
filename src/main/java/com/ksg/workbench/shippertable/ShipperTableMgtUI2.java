@@ -92,7 +92,7 @@ import com.ksg.view.comp.textfield.HintTextField;
 import com.ksg.view.comp.textfield.SearchTextField;
 import com.ksg.view.comp.tree.CustomTree;
 import com.ksg.workbench.common.comp.KSGDatePickerImpl;
-import com.ksg.workbench.common.dialog.SearchCompanyDialog;
+import com.ksg.workbench.common.dialog.SearchCompanyDialog2;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 import com.ksg.workbench.shippertable.comp.UpdateTablePanel;
 import com.ksg.workbench.shippertable.dialog.AddTableInfoDialog;
@@ -128,6 +128,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	private static final String ACTION_UPDATE_DATE 	= "입력일자 수정";
 
 	private KSGViewUtil propeties = KSGViewUtil.getInstance();
+	
+	Font labelFont = new Font("맑은고딕",Font.BOLD,12);
 
 	/**
 	 * @author 박창현
@@ -249,8 +251,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	private ButtonGroup tableGroup;
 
 	private JRadioButton rbtPage;
-
-	private CompanyService companyService;
 
 	private KSGDatePickerImpl jdatePicker;
 
@@ -697,11 +697,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 			panel.add(butDelTable);
 
-
 			KSGPanel pnTitle = new KSGPanel();
 
 			pnTitle.setBackground(new Color(88,141,250));
-
 
 			pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -808,7 +806,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				SearchCompanyDialog dialog = new SearchCompanyDialog();
+				SearchCompanyDialog2 dialog = new SearchCompanyDialog2();
 
 				dialog.createAndUpdateUI();
 
@@ -973,19 +971,19 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 		lblItem = new JLabel("  항목: ");
 
-		JLabel lblCompany = new JLabel("선사: ");
+		JLabel lblCompany = new JLabel("선사명 약어: ");
 
-		Font font = new Font("맑은고딕",Font.BOLD,12);
+		
 
-		lblDivision.setFont(font);
+		lblDivision.setFont(labelFont);
 
-		lblPage.setFont(font);
+		lblPage.setFont(labelFont);
 
-		lblIndex.setFont(font);
+		lblIndex.setFont(labelFont);
 
-		lblItem.setFont(font);
+		lblItem.setFont(labelFont);
 
-		lblCompany.setFont(font);
+		lblCompany.setFont(labelFont);
 
 		pnSearchMainDown.add(lblDivision);
 
@@ -1446,6 +1444,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 				tree.loadModel(viewModel);
 				
 				fnSearch();
+				
+				log.info("init end");
 				
 			}
 			else if("shipperTableMgtUI2.fnSearch".equals(serviceId)) {

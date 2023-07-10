@@ -1,4 +1,4 @@
-package com.ksg.workbench.admin;
+package com.ksg.workbench.admin.menu;
 
 import com.formdev.flatlaf.util.Animator;
 import java.util.HashMap;

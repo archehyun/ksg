@@ -3,7 +3,6 @@ package com.ksg.workbench.shippertable.comp.render;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.sql.SQLException;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -11,8 +10,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
 import com.ksg.domain.Vessel;
-import com.ksg.service.VesselServiceV2;
-import com.ksg.service.impl.VesselServiceImpl;
 import com.ksg.workbench.admin.KSGViewParameter;
 import com.ksg.workbench.shippertable.comp.AdvertiseTable;
 
@@ -25,16 +22,12 @@ public class VesselRenderer extends DefaultTableCellRenderer {
 
 	private Font defaultFont;
 
-//	private VesselServiceV2 vesselService;
-	
 	AdvertiseTable advertiseTable;
 
 	public VesselRenderer(AdvertiseTable advertiseTable) {
-		
+
 		defaultFont = new Font(this.getFont().getName(),this.getFont().getStyle(), KSGViewParameter.TABLE_CELL_SIZE);
-		
-//		vesselService = new VesselServiceImpl();
-		
+
 		this.advertiseTable = advertiseTable;
 	}
 
@@ -71,39 +64,29 @@ public class VesselRenderer extends DefaultTableCellRenderer {
 			}
 		}
 
-		if(isSelected)
-		{
-			foreground = Color.white;
-			background=new Color(51,153,255);				
-		}
-		else
-		{
-			foreground = Color.black;
-			background=Color.WHITE;	
-		}
+		foreground = isSelected?Color.white:Color.black;
+		background = isSelected?new Color(51,153,255):Color.WHITE;				
 
-			// 오류 발생시 글자색 변경
+		// 오류 발생시 글자색 변경
 
-			if(value!=null&&String.valueOf(value).isEmpty())
-			{	
-				String vessel_abbr =String.valueOf(table.getValueAt(row,0));
+		if(value!=null&&String.valueOf(value).isEmpty())
+		{	
+			String vessel_abbr =String.valueOf(table.getValueAt(row,0));
 
-				//TODO SQL 제거
-				
-				
-				//선박약어 기준
-				
-				if(!vessel_abbr.isEmpty())
-				{
+			//TODO SQL 제거
+			//선박약어 기준
+			if(!vessel_abbr.isEmpty())
+			{
 				Vessel result = advertiseTable.selectVesselDetail(vessel_abbr);
 				if(result==null) foreground = Color.RED;
-				}
 			}
+		}
 
-			renderer.setBackground(background);
-			renderer.setForeground(foreground);
-
+		renderer.setBackground(background);
 		
+		renderer.setForeground(foreground);
+
+
 		this.setFont(defaultFont);
 
 		return renderer;

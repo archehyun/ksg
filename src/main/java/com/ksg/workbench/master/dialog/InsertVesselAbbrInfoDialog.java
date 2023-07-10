@@ -25,15 +25,17 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
 
 /**선박 양어 정보 추가 다이어그램
  * @author 박창현
  *
  */
 @SuppressWarnings("serial")
-public class InsertVesselAbbrInfoDialog extends BaseInfoDialog{
+public class InsertVesselAbbrInfoDialog extends MainTypeDialog{
 
-	private JTextField txfVesselAbbr = new JTextField(20);
+	private JTextField txfVesselAbbr;
+	private JTextField txfVesselName;
 
 	private String vessel_name;
 	
@@ -66,18 +68,39 @@ public class InsertVesselAbbrInfoDialog extends BaseInfoDialog{
 
 	public void createAndUpdateUI() {
 
+//		this.setModal(true);
+//
+//		this.addComponentListener(this);
+//
+//		this.setTitle(title);
+//
+//		this.getContentPane().add(buildTitle("선박명: "+vessel_name),BorderLayout.NORTH);
+//
+//		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+//
+//		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+//
+//		ViewUtil.center(this, true);
+//
+//		this.setResizable(false);
+//
+//		this.setVisible(true);
+		
+		
+		this.titleInfo ="항구명 약어 추가";
+		
+		initComp();
+		
+		this.addComponentListener(this);
+		
 		this.setModal(true);
 
-		this.addComponentListener(this);
+		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
 
-		this.setTitle(title);
+		this.addComp(buildCenter(),BorderLayout.CENTER);
 
-		this.getContentPane().add(buildTitle("선박명: "+vessel_name),BorderLayout.NORTH);
-
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-
+		this.addComp(buildControl(),BorderLayout.SOUTH);
+		
 		ViewUtil.center(this, true);
 
 		this.setResizable(false);
@@ -85,11 +108,20 @@ public class InsertVesselAbbrInfoDialog extends BaseInfoDialog{
 		this.setVisible(true);
 	}
 
+	private void initComp() {
+		txfVesselAbbr = new JTextField(20);
+		txfVesselName = new JTextField(20);
+		txfVesselName.setEditable(false);
+		
+	}
+
 	public KSGPanel buildCenter()
 	{
 		KSGPanel pnMain= new KSGPanel(new BorderLayout());
 
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+		
+		pnCenter.add(createFormItem(txfVesselName, "선박명"));
 
 		pnCenter.add(createFormItem(txfVesselAbbr, "선박명 약어"));
 
@@ -134,7 +166,9 @@ public class InsertVesselAbbrInfoDialog extends BaseInfoDialog{
 	@Override
 	public void componentShown(ComponentEvent e) {
 		
-		txfVesselAbbr.setText(vessel_abbr);
+		
+		this.txfVesselName.setText(vessel_name);
+		this.txfVesselAbbr.setText(vessel_abbr);
 	}
 	@Override
 	public void updateView() {

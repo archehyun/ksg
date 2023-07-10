@@ -51,6 +51,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
+import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.dialog.PortSearchDialog;
 import com.ksg.workbench.common.dialog.SearchPortDialog;
@@ -329,15 +330,23 @@ public class ManagePortDialog extends BaseInfoDialog implements ActionListener{
 		 */
 		KSGPanel pnLeftNorthControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		JButton butUpdate = new JButton(ACTION_COMMAND_UPDATE);
+		KSGGradientButton butUpdate = new KSGGradientButton(ACTION_COMMAND_UPDATE);
+		
+		butUpdate.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUpdate.addActionListener(portIndexController);
 
-		JButton butUp=new JButton(ACTION_COMMAND_UP);
+		KSGGradientButton butUp=new KSGGradientButton(ACTION_COMMAND_UP);
+		
+		butUp.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUp.addActionListener(portIndexController);
 
-		JButton butDown=new JButton(ACTION_COMMAND_DOWN);
+		KSGGradientButton butDown=new KSGGradientButton(ACTION_COMMAND_DOWN);
+		
+		butDown.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		
+				
 
 		butDown.addActionListener(portIndexController);
 
@@ -395,6 +404,8 @@ public class ManagePortDialog extends BaseInfoDialog implements ActionListener{
 		JLabel lbl2 = new JLabel("항구명: ");
 
 		JButton butAdd = new JButton("추가(A)");
+		
+		
 		butAdd.setMnemonic(KeyEvent.VK_A);
 		butAdd.setActionCommand(BUT_ACTION_INSERT);
 		butAdd.addActionListener(this);

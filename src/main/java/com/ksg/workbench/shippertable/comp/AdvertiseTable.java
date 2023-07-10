@@ -79,7 +79,7 @@ public class AdvertiseTable extends JTable implements TableModelListener{
 	private ShippersTable shippersTableInfo; // 테이블 정보
 
 	// 등록된 선박 판단 여부
-	private DefaultTableModel vesselModel;  // 선박 정보
+	private DefaultTableModel vesselModel = new DefaultTableModel();  // 선박 정보
 
 	private ADVData selectedADVData; // 광고정보
 
@@ -253,13 +253,13 @@ public class AdvertiseTable extends JTable implements TableModelListener{
 		return value==null?"": String.valueOf(value);
 	}
 
-	private void setValueAt( String obj, int row, int col) {
+	private void setValue( String obj, int row, int col) {
 
 		DefaultTableModel model = (DefaultTableModel) getModel();
 		
 		model.removeTableModelListener(modelLister);		
 				
-		setValueAt(obj.toUpperCase(), row, col);
+		setValueAt(obj==null?null: obj.toUpperCase(), row, col);
 
 		changeSelection(row, col, false, false);
 
@@ -357,13 +357,15 @@ public class AdvertiseTable extends JTable implements TableModelListener{
 
 	private void initVesselModel() throws Exception
 	{
-		vesselModel 		= new DefaultTableModel();
+		this.vesselModel 		= new DefaultTableModel();
 
-		vesselModel.addColumn("선박 명");
+		this.vesselModel.addColumn("선박 명");
 
-		vesselModel.addColumn("선박 명 약어");
+		this.vesselModel.addColumn("선박 명 약어");
 
-		vesselModel = manager.createDBVesselNameModel(vesselModel ,this.shippersTableInfo.getAdvData());
+		this.vesselModel = manager.createDBVesselNameModel(vesselModel ,this.shippersTableInfo.getAdvData());
+		
+		this.modelLister.setVesselModel(this.vesselModel);
 	}
 
 	private void makeTableModel() throws SQLException, NullPointerException, JDOMException, IOException
@@ -680,11 +682,14 @@ public class AdvertiseTable extends JTable implements TableModelListener{
 		
 		DefaultTableModel vesselModel;
 		
+		public void setVesselModel(DefaultTableModel vesselModel)
+		{
+			this.vesselModel = vesselModel;
+		}
+		
 		public AdvtizeTableModeListner(AdvertiseTable myTable)
 		{
 			this.myTable = myTable;
-			
-			this.myTable.vesselModel = myTable.getVesselModel();
 		}
 		
 		/**
@@ -781,7 +786,7 @@ public class AdvertiseTable extends JTable implements TableModelListener{
 				}
 			}
 			
-			setValueAt(obj, row, col);
+			setValue(obj, row, col);
 			
 			log.info("set value:{}", obj);
 			

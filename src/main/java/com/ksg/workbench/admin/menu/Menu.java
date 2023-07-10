@@ -1,4 +1,4 @@
-package com.ksg.workbench.admin;
+package com.ksg.workbench.admin.menu;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.util.UIScale;
+import com.ksg.workbench.admin.LightDarkMode;
 
 ;
 
@@ -171,7 +172,7 @@ public class Menu extends JPanel{
 		        }
 		    }
 
-		    protected void runEvent(int index, int subIndex) {
+		    public void runEvent(int index, int subIndex) {
 		        MenuAction menuAction = new MenuAction();
 		        for (MenuEvent event : events) {
 		            event.menuSelected(index, subIndex, menuAction);

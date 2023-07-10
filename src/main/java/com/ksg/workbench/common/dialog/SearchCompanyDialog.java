@@ -54,6 +54,7 @@ import com.ksg.view.comp.panel.KSGPanel;
 
  * @프로그램 설명 : 선사 정보 선택
  */
+@Deprecated
 @SuppressWarnings("serial")
 public class SearchCompanyDialog extends KSGDialog{
 
@@ -64,6 +65,8 @@ public class SearchCompanyDialog extends KSGDialog{
 	private JTree tree;
 
 	public String result;
+	
+	public Object resultObj;
 	
 	public SearchCompanyDialog()
 	{
@@ -182,7 +185,7 @@ public class SearchCompanyDialog extends KSGDialog{
 
 		this.getContentPane().add(pnMain);
 
-		setSize(400, 400);
+		setSize(600, 600);
 		
 		ViewUtil.center(this);
 		
@@ -203,6 +206,7 @@ public class SearchCompanyDialog extends KSGDialog{
 			public void actionPerformed(ActionEvent e) 
 			{
 				TreePath path=tree.getSelectionPath();
+				
 				if(path!=null&&path.getPathCount()!=1)
 				{
 					result=path.getLastPathComponent().toString();
@@ -260,7 +264,6 @@ public class SearchCompanyDialog extends KSGDialog{
 	}
 	@Override
 	public void componentShown(ComponentEvent e) {
-
 
 		try {
 			CommandMap param = new CommandMap();

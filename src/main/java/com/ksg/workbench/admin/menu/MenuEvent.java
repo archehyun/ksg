@@ -1,4 +1,4 @@
-package com.ksg.workbench.admin;
+package com.ksg.workbench.admin.menu;
 
 /**
  *

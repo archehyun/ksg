@@ -1,6 +1,7 @@
 package com.ksg.workbench.common.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -14,7 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,8 +26,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import com.ksg.common.util.ViewUtil;
+import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.workbench.master.dialog.BaseInfoDialog;
 
 
 /**
@@ -43,7 +46,7 @@ import com.ksg.workbench.master.dialog.BaseInfoDialog;
 
   */
 @SuppressWarnings("serial")
-public class SearchVesselDialog extends BaseInfoDialog{
+public class SearchVesselDialog extends MainTypeDialog{
 	
 	public String result=null;
 	
@@ -59,7 +62,7 @@ public class SearchVesselDialog extends BaseInfoDialog{
 
 	private String searchText;
 
-	private JTextField txf;
+	private JTextField txfSearchText;
 	
 	public SearchVesselDialog(String searchText, List vesselList) 
 	{
@@ -106,7 +109,6 @@ public class SearchVesselDialog extends BaseInfoDialog{
 				{					
 					setResult(table);
 					close();
-					
 				}
 			}
 
@@ -135,11 +137,34 @@ public class SearchVesselDialog extends BaseInfoDialog{
 		
 		vesselTable.changeSelection(0, 0, false, false);
 		
-		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
-		pnMain.setBorder(BorderFactory.createEmptyBorder(5,7,5,7));
 		
-		pnMain.add(new JScrollPane(vesselTable));
+		KSGPanel pnMainDetail = new KSGPanel(new BorderLayout(5,5));
+		
+		JScrollPane comp = new JScrollPane(vesselTable);
+		
+		vesselTable.getParent().setBackground(Color.white);
+		
+		KSGPanel pnMainNorth =  new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		JLabel label = new JLabel("상세정보",new  ImageIcon("images/buticon.png"),JLabel.LEFT);
+		
+		pnMainNorth.add(label);
+		
+		pnMainNorth.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
+		
+		pnMainDetail.add(pnMainNorth,BorderLayout.NORTH);
+		
+		pnMainDetail.add(comp);
+
+		pnMainDetail.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+		
+		KSGPanel pnMain =  new KSGPanel(new BorderLayout(10,10));
+		
+		pnMain.add(buildNorth(),BorderLayout.NORTH);
+		
+		pnMain.add(pnMainDetail);
+
 		
 		return pnMain;
 		
@@ -149,15 +174,13 @@ public class SearchVesselDialog extends BaseInfoDialog{
 		
 		this.setModal(true);
 		
-		setTitle("선박 선택");		
+		setTitle("선박 선택");
 		
-		getContentPane().add(buildCenter());
+		this.addComp(buildCenter(),BorderLayout.CENTER);
 		
-		getContentPane().add(buildControl(),BorderLayout.SOUTH);
-		
-		getContentPane().add(buildNorth(),BorderLayout.NORTH);
+		this.addComp(buildControl(),BorderLayout.SOUTH);
 
-		setSize(new Dimension(400,400));
+		setSize(new Dimension(600,600));
 		
 		ViewUtil.center(this, false);
 		
@@ -166,11 +189,37 @@ public class SearchVesselDialog extends BaseInfoDialog{
 
 	private Component buildNorth() {
 		
-		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGGradientButton butSearch = new KSGGradientButton("검색");
 		
-		txf = new JTextField(20);
+		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 		
-		pnMain.add(txf);
+		txfSearchText = new JTextField(20);
+		
+		KSGPanel pnSearchLabel = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel label = new JLabel("검색조건",new  ImageIcon("images/buticon.png"),JLabel.LEFT);
+		pnSearchLabel.add(label);
+		
+		
+		KSGPanel pnSearchOptionMain = new KSGPanel(new BorderLayout());
+		
+		KSGPanel pnSearchOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));		
+		pnSearchOption.add(new JLabel("선박명"));		
+		pnSearchOption.add(txfSearchText);
+		
+		KSGPanel pnSearchControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));		
+//		pnSearchControl.add(butSearch);
+		
+		pnSearchOptionMain.add(pnSearchOption);
+		pnSearchOptionMain.add(pnSearchControl,BorderLayout.EAST);
+		pnSearchOptionMain.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.lightGray,1),BorderFactory.createEmptyBorder(10,15,10,15)));
+		
+		
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
+		pnMain.add(pnSearchLabel, BorderLayout.NORTH);
+		
+		pnMain.add(pnSearchOptionMain);
 		
 		return pnMain;
 	}
@@ -216,7 +265,7 @@ public class SearchVesselDialog extends BaseInfoDialog{
 	@Override
 	public void componentShown(ComponentEvent e) {
 		
-		txf.setText(searchText);
+		txfSearchText.setText(searchText);
 	}
 
 	@Override

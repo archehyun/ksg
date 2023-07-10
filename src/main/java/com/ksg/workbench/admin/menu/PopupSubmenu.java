@@ -1,7 +1,8 @@
-package com.ksg.workbench.admin;
+package com.ksg.workbench.admin.menu;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.util.UIScale;
+
 import java.awt.BasicStroke;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
@@ -101,7 +102,7 @@ public class PopupSubmenu extends JPanel {
         }
     }
 
-    protected void setSelectedIndex(int index) {
+    public void setSelectedIndex(int index) {
         int size = getComponentCount();
         for (int i = 0; i < size; i++) {
             Component com = getComponent(i);

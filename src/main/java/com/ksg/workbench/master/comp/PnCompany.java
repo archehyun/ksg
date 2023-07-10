@@ -81,9 +81,6 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private String query;
 
-	private CompanyServiceImpl companyService = new CompanyServiceImpl();
-
-	private List<HashMap<String, Object>> master;
 
 	public PnCompany(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);		
@@ -201,6 +198,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 
 		KSGGradientButton butUpSearch = new KSGGradientButton("°Ë»ö", "images/search3.png");
+		
 		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUpSearch.addActionListener(this);
