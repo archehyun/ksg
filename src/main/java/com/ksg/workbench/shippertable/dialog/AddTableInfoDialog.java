@@ -44,7 +44,6 @@ import com.dtp.api.control.ShipperTableController;
 import com.dtp.api.util.PortIndexUitl;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.impl.TableServiceImpl;
@@ -78,16 +77,14 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("serial")
 public class AddTableInfoDialog extends MainTypeDialog implements FocusListener{
 
-	private KSGModelManager manager = KSGModelManager.getInstance();
-
 	private ShipperTableAbstractMgtUI searchUI;
 
 	private String company_abbr;
 	private ShippersTable searchOp;
-	ShippersTable selectedTable;
+	private ShippersTable selectedTable;
 	private JTextArea txaCommon;
 	private JTextArea txaQuark;
-	private JTextField txfAgent;
+	private JTextField txfAgentAbbr;
 	private JTextField txfCompany_Name;
 
 	private JTextField txfIndex;
@@ -121,6 +118,8 @@ public class AddTableInfoDialog extends MainTypeDialog implements FocusListener{
 	private JLabel lblTitle;
 
 	private JTextField txfCompany_Abbr;
+
+	private KSGGradientButton butSearchCompany;
 
 	public AddTableInfoDialog() {
 
@@ -168,7 +167,7 @@ public class AddTableInfoDialog extends MainTypeDialog implements FocusListener{
 
 		String company_abbr 	= txfCompany_Name.getText();
 
-		String agent 			= txfAgent.getText();
+		String agent 			= txfAgentAbbr.getText();
 
 		String common_shipping 	= txaCommon.getText();
 
@@ -322,7 +321,7 @@ public class AddTableInfoDialog extends MainTypeDialog implements FocusListener{
 
 		txfCompany_Abbr		= createTextField( 13);
 
-		txfAgent 			= createTextField( 20);
+		txfAgentAbbr 			= createTextField( 20);
 
 		txfPortCount		= createTextField( 3);
 
@@ -362,7 +361,7 @@ public class AddTableInfoDialog extends MainTypeDialog implements FocusListener{
 
 		txfOther.setText("0");
 
-		txfAgent.setEditable(false);
+		txfAgentAbbr.setEditable(false);
 
 		txfCompany_Name.setEditable(false);
 
@@ -393,6 +392,37 @@ public class AddTableInfoDialog extends MainTypeDialog implements FocusListener{
 				AddTableInfoDialog.this.pack();
 			}
 		});
+		
+		butSearchCompany = new KSGGradientButton("검색");
+		
+		butSearchCompany.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		butSearchCompany.addActionListener(new ActionListener(){
+
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+
+				SearchCompanyDialog2 searchCompanyDialog = new SearchCompanyDialog2();
+
+				searchCompanyDialog.createAndUpdateUI();
+
+				CommandMap result  = (CommandMap) searchCompanyDialog.resultObj;
+
+				if(result  == null)return;
+
+				String company_name = (String) result.get("company_name");
+
+				String company_abbr = (String) result.get("company_abbr");
+
+				String agent_name = (String) result.get("agent_name");
+
+				txfCompany_Abbr.setText(company_abbr);
+
+				txfCompany_Name.setText(company_name);
+
+				txfAgentAbbr.setText(agent_name);
+
+			}});
 
 	}
 
@@ -518,38 +548,16 @@ public class AddTableInfoDialog extends MainTypeDialog implements FocusListener{
 
 		pnFromCompany.setLayout(new FlowLayout(FlowLayout.LEADING));
 
-		pnFromCompany.add(createForm("선사명 약어 : ", txfCompany_Name));
+		pnFromCompany.add(createForm("선사명: ", txfCompany_Name));
 
-		JButton button = new KSGGradientButton("검색");
 
-		button.addActionListener(new ActionListener(){
 
-			@SuppressWarnings("unchecked")
-			public void actionPerformed(ActionEvent e) {
-
-				SearchCompanyDialog2 searchCompanyDialog = new SearchCompanyDialog2();
-
-				searchCompanyDialog.createAndUpdateUI();
-
-				CommandMap result  = (CommandMap) searchCompanyDialog.resultObj;
-
-				if(result  == null)return;
-
-				String company_name = (String) result.get("company_name");
-
-				String company_abbr = (String) result.get("company_abbr");
-
-				String agent_name = (String) result.get("agent_name");
-
-				txfCompany_Abbr.setText(company_abbr);
-
-				txfCompany_Name.setText(company_name);
-
-				txfAgent.setText(agent_name);
-
-			}});
-
-		pnFromCompany.add(button);
+		
+		Box company = Box.createHorizontalBox();
+		company.add(txfCompany_Abbr);
+		company.add(Box.createHorizontalStrut(25));
+		company.add(butSearchCompany);
+		
 
 		Box pnTableInfo = Box.createHorizontalBox();
 
@@ -582,10 +590,11 @@ public class AddTableInfoDialog extends MainTypeDialog implements FocusListener{
 		boxTableInfo.add(createForm("테이블 구분 : ", cbxGubun));
 		boxTableInfo.add(Box .createRigidArea(new Dimension(0, vgap)));
 
-		boxTableInfo.add(pnFromCompany);
+		boxTableInfo.add(createForm("선사명 약어: ", company));
+		
 		boxTableInfo.add(Box .createRigidArea(new Dimension(0, vgap)));
 
-		boxTableInfo.add(createForm("에이전트 약어 : ", txfAgent));
+		boxTableInfo.add(createForm("에이전트 약어 : ", txfAgentAbbr));
 		boxTableInfo.add(Box .createRigidArea(new Dimension(0, vgap)));
 
 		boxTableInfo.add(createForm("제목 : ", txfTitle));
@@ -909,7 +918,7 @@ public class AddTableInfoDialog extends MainTypeDialog implements FocusListener{
 			txfInToPort.setText(selectedTable.getIn_to_port());
 			txfOutToPort.setText(selectedTable.getOut_to_port());
 			txfOther.setText(String.valueOf(selectedTable.getOthercell()));
-			txfAgent.setText(selectedTable.getAgent());
+			txfAgentAbbr.setText(selectedTable.getAgent());
 			cbxGubun.setSelectedItem(selectedTable.getGubun());				
 			txfCtime.setText(String.valueOf(selectedTable.getC_time()));
 			txfDtime.setText(String.valueOf(selectedTable.getD_time()));

@@ -28,6 +28,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.view.ui.ErrorLogManager;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import lombok.extern.slf4j.Slf4j;
 /**
@@ -172,7 +173,7 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 					throw new RuntimeException(e.getMessage());
 
 				}
-				catch (RuntimeException | NotSupportedDateTypeException | VesselNullException e)
+				catch (Exception e)
 				{
 					System.err.println(tableDataItem.getTable_id()+", "+e.getMessage());
 
@@ -253,7 +254,9 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 				result=makeBuildingSchedule();
 			}
 			catch(Exception e)
-			{
+			{	
+				JOptionPane.showMessageDialog(null, e.getMessage());
+				
 				close();
 				done=false;
 				result= RESULT_FAILE;

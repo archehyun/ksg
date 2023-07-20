@@ -158,15 +158,7 @@ public class ScheduleServiceManager {
 		optionDialog.createAndUpdateUI();
 	}
 
-	/**
-	 * @param inputDate
-	 * @throws SQLException
-	 */
-	public void buildSchedule(String inputDate) throws SQLException
-	{
-		optionDialog = new ScheduleCreateOptionDialog(ScheduleCreateOptionDialog.NOMAL,inputDate);
-		optionDialog.createAndUpdateUI();
-	}
+	
 	/**
 	 * @throws SQLException
 	 */
@@ -175,15 +167,7 @@ public class ScheduleServiceManager {
 		optionDialog = new ScheduleCreateOptionDialog(ScheduleCreateOptionDialog.WEB);
 		optionDialog.createAndUpdateUI();
 	}
-	/**
-	 * @param inputDate
-	 * @throws SQLException
-	 */
-	public void buildWebSchedule(String inputDate) throws SQLException
-	{
-		optionDialog = new ScheduleCreateOptionDialog(ScheduleCreateOptionDialog.WEB,inputDate);
-		optionDialog.createAndUpdateUI();
-	}
+	
 	
 	/**
 	 * @param isOption 옵션 여부
@@ -204,7 +188,7 @@ public class ScheduleServiceManager {
 				{
 					ShippersTable op = new ShippersTable();
 					
-					op.setDate_isusse(KSGDateUtil.toDate3(inputDate).toString());
+					op.setDate_isusse(inputDate);
 					
 					if(isOption)
 					{

@@ -12,15 +12,21 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 
 public abstract class ExportCommand extends ImportCommand{
+	
 	protected String fileName;
+	
 	protected String sheetName;
+	
 	protected Workbook wb;
+	
 	protected boolean isFileWrite=true;
 	
 	public ExportCommand(String fileName)
 	{
 		super();
+		
 		this.fileName = fileName;
+		
 		if(!this.fileName.endsWith(".xls"))
 		{
 			this.fileName+=".xls";
@@ -41,14 +47,16 @@ public abstract class ExportCommand extends ImportCommand{
 	}
 	public void fileWrite(Workbook wb) throws FileNotFoundException,IOException {
 		
-		if(!isFileWrite)
-			return;
-		
+		if(!isFileWrite) return;
 		
 		logger.info("파일 출력");
+		
 		FileOutputStream fileOut = new FileOutputStream(KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION)+"/"+fileName);
+		
 		wb.write(fileOut);
+		
 		fileOut.close();
+		
 		JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, fileName+" 파일을 생성했습니다.");
 	}
 

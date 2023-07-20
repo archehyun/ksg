@@ -2,16 +2,19 @@ package com.ksg.workbench.schedule.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.InputMap;
@@ -21,27 +24,34 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JRadioButton;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import com.dtp.api.control.ScheduleController;
 import com.dtp.api.schedule.create.CreateNormalSchdeduleCommandNew;
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildWebSchdeduleCommand;
 import com.ksg.commands.schedule.create.CreateInlandScheduleCommand;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.DateFormattException;
 import com.ksg.common.util.KSGDateUtil;
+import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.ScheduleServiceManager;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.view.comp.button.KSGGradientButton;
-import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.notification.Notification;
+import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
-import com.ksg.view.comp.textfield.LookAheadTextField;
+import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.textfield.StringArrayLookAhead;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
 
 
 /**
@@ -59,7 +69,7 @@ import com.ksg.view.comp.textfield.StringArrayLookAhead;
   * @프로그램 설명 : 스케줄 생성시 입력 날짜 및 옵셥 값 설정 화면
 
   */
-public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListener{
+public class ScheduleCreateOptionDialog extends MainTypeDialog{
 
 	/**
 	 * 
@@ -71,9 +81,7 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 	 */
 	private int scheduleType;
 
-	public int getScheduleType() {
-		return scheduleType;
-	}
+
 	private JRadioButton rdoPage;
 
 	private JTextField txfOptionInput;
@@ -82,22 +90,31 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 
 	public static final int WEB=1;
 
-	private LookAheadTextField txfDateInput;
+//	private LookAheadTextField txfDateInput;
 
 	private KSGPanel pnOption;
 
 	private boolean isOption=false;
 
-	private JComboBox cbxType;
+	private KSGComboBox cbxGubun;
+	
+	SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd");
 
-	private String inputDate;
 
 	private ScheduleServiceManager scheduleServiceManager = ScheduleServiceManager.getInstance();
+
+	private JRadioButton rdoCompany;
+
+	private JCheckBox cbxMondya;
 	
-	public int getGubun()
-	{
-		return cbxType.getSelectedIndex();
-	}
+	private JCheckBox cbxOption;
+	
+	private KSGComboBox cbxTableDateList;
+	
+//	public int getGubun()
+//	{
+//		return cbxGubun.getSelectedIndex();
+//	}
 	public boolean isOption() {
 		return isOption;
 	}
@@ -108,91 +125,88 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 	public ScheduleCreateOptionDialog(int scheduleType) {
 
 		logger.info("스케줄 생성");
+		
+		this.titleInfo = "스케줄 생성";
+		
+		this.setController(new ScheduleController());
+		
 		this.scheduleType =scheduleType;
+		
+		this.addComponentListener(this);
+		
+		initComp();
 	}
-	public ScheduleCreateOptionDialog(int scheduleType, String inputDate) {
-		this(scheduleType);
-		this.inputDate = inputDate;
+	
+	
+	public int getScheduleType() {
+		return scheduleType;
 	}
-
-	public void close()
-	{
-		setVisible(false);
-		dispose();
-	}
+	
 	protected JRootPane createRootPane() {
+		
 		JRootPane rootPane = new JRootPane();
+		
 		KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+		
 		Action actionListener = new AbstractAction() {
+			
 			public void actionPerformed(ActionEvent actionEvent) {
 				setVisible(false);
 			}
 		};
 		InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		
 		inputMap.put(stroke, "ESCAPE");
+		
 		rootPane.getActionMap().put("ESCAPE", actionListener);
+		
 
 		return rootPane;
 	}
 	
-	@Override
-	public void createAndUpdateUI()
-	{	
-		setModal(true);
-		setTitle("스케줄 생성");
-		KSGPanel pnMain = new KSGPanel();
-
-		KSGPanel pnInput = new KSGPanel();
-		pnInput.setLayout( new FlowLayout(FlowLayout.LEADING));
-
+	private void initComp()
+	{
 		StringArrayLookAhead lookAhead = new StringArrayLookAhead(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
-		txfDateInput = new LookAheadTextField("생성 날짜 입력",8,lookAhead);
-		txfDateInput.setFocus_lost(false);
-		if(inputDate !=null)
-			txfDateInput.setText(inputDate);
-
-		JCheckBox cbxMondya = new JCheckBox("월요일");
-		cbxMondya.setBackground(Color.white);
 		
-		cbxMondya.addActionListener(new ActionListener(){
+//		txfDateInput = new LookAheadTextField("생성 날짜 입력",8,lookAhead);
+//		
+//		txfDateInput.setFocus_lost(false);
+		
+//		cbxGubun = new JComboBox();	
+		
+		cbxGubun = new KSGComboBox("tableType");
+		
+		cbxGubun.initComp();
+		
+//		cbxGubun.addItem(ShippersTable.GUBUN_NORMAL);
+//		
+//		cbxGubun.addItem(ShippersTable.GUBUN_CONSOLE);
+//		
+//		cbxGubun.addItem(ShippersTable.GUBUN_INLAND);
+//		
+		cbxGubun.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				JCheckBox bo =(JCheckBox) e.getSource();
+				fnSelectTableDate((String) cbxGubun.getSelectedItem());
 				
-				if(bo.isSelected())
-				{
-					txfDateInput.setText(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
-				}
 			}});
-
-		cbxType = new JComboBox();			
-		cbxType.addItem(ShippersTable.GUBUN_NORMAL);
-		cbxType.addItem(ShippersTable.GUBUN_CONSOLE);
-		cbxType.addItem(ShippersTable.GUBUN_INLAND);
-		pnInput.add(new JLabel("스케줄 구분: "));
-		pnInput.add(cbxType);
-		pnInput.add(new JLabel("생성 일자: "));
-		pnInput.add(txfDateInput);
-		pnInput.add(cbxMondya);
-
-		pnOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		pnOption.setVisible(false);
-
+		
 		rdoPage = new JRadioButton("페이지",true);
+		
+		rdoPage.setBackground(Color.white);
 
-		JRadioButton rdoCompany = new JRadioButton("선사");
+		rdoCompany = new JRadioButton("선사");
+		
+		rdoCompany.setBackground(Color.white);
 
 		ButtonGroup group = new ButtonGroup();
 
 		group.add(rdoPage);
 
 		group.add(rdoCompany);
-
-		pnOption.add(rdoPage);
-
-		pnOption.add(rdoCompany);
-
+		
 		txfOptionInput = new JTextField(10);
 
 		txfOptionInput.addKeyListener(new KeyAdapter() {
@@ -205,8 +219,129 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 			}
 
 		});
-		pnOption.add(txfOptionInput);
+		
+		cbxMondya = new JCheckBox("월요일");
+		
+		cbxMondya.setBackground(Color.white);
+		
+		cbxMondya.addActionListener(new ActionListener(){
 
+			public void actionPerformed(ActionEvent e) {
+				
+				JCheckBox bo =(JCheckBox) e.getSource();
+				
+				if(bo.isSelected())
+				{
+					int count =cbxTableDateList.getItemCount();
+					
+					String monday =format.format(KSGDateUtil.nextMonday(new Date()));
+					
+					for(int i=0;i<count;i++)
+					{
+						KSGTableColumn col = cbxTableDateList.getItemAt(i);
+						
+						if(col.columnField.equals(monday))
+						{	
+							cbxTableDateList.setSelectedIndex(i);
+							return;
+						}
+					}
+					bo.setSelected(false);
+					NotificationManager.showNotification(Notification.Type.WARNING, String.format("월요일(%s) 정보가 없습니다.", monday) );
+					
+				}
+				
+				
+			}});
+		
+		cbxTableDateList = new KSGComboBox();
+		
+		cbxTableDateList.setPreferredSize(new Dimension(100, 25));
+		
+		cbxOption = new JCheckBox("기타",false);		
+		
+		cbxOption.setBackground(Color.white);
+		
+		cbxOption.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+			boolean selected =cbxOption.isSelected();
+			
+			rdoCompany.setVisible(selected);
+			
+			rdoPage.setVisible(selected);
+			
+			txfOptionInput.setVisible(selected);
+			
+			setOption(selected);
+				
+			}
+		});
+		
+//		rdoCompany.setVisible(false);
+//		rdoPage.setVisible(false);
+//		txfOptionInput.setVisible(false);
+		
+	}
+	
+	private KSGPanel buildCenter()
+	{
+		KSGPanel pnMain = new KSGPanel();
+		
+		KSGPanel pnGubun = new KSGPanel();
+		
+		pnGubun.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		pnGubun.add(new JLabel("스케줄 구분: "));
+		
+		pnGubun.add(cbxGubun);
+		
+		KSGPanel pnInputDate = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		pnInputDate.add(new JLabel("생성 일자: "));
+		
+		pnInputDate.add(cbxTableDateList);
+		
+		pnInputDate.add(cbxMondya);
+		
+		pnGubun.add(pnInputDate);
+		
+//		pnGubun.add(cbxOption);
+		
+//		pnInputDate.add(txfDateInput);
+//		
+
+
+		this.pnOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+//		pnOption.setVisible(false);
+
+		this.pnOption.add(rdoPage);
+
+		this.pnOption.add(rdoCompany);
+		
+		this.pnOption.add(txfOptionInput);
+		
+		this.pnOption.setVisible(false);
+		
+		Box box = Box.createVerticalBox();
+		
+//		box.setBorder(BorderFactory.createTitledBorder("스케줄 생성 정보"));
+		
+		box.add(pnGubun);
+		
+//		box.add(pnInputDate);
+		
+		box.add(pnOption);
+		
+		pnMain.add(box);
+		
+		return pnMain;
+	}
+	
+	public KSGPanel buildControl()
+	{
 		KSGPanel pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		
 		JButton butOk = new KSGGradientButton("확인(D)");
@@ -214,7 +349,6 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 		butOk.setActionCommand("확인");
 
 		butOk.setMnemonic(KeyEvent.VK_D);
-		
 
 		JButton butCancel = new KSGGradientButton("취소");	
 
@@ -233,71 +367,79 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 		pnControl.add(butCancel);
 
 		pnControl.add(butOption);
-
-		Box box = Box.createVerticalBox();
 		
-		KSGPanel pn1 = new KSGPanel();
+		return pnControl;
+	}
+	
+	private void fnSelectTableDate(String gubun)
+	{
+		CommandMap param = new CommandMap();
 		
-		pn1.setLayout(new FlowLayout(FlowLayout.LEADING));
+		param.put("gubun", gubun);
 		
-		box.setBorder(BorderFactory.createTitledBorder("스케줄을 생성할 날짜를 입력 하세요"));
+		callApi("scheduleCreateOptionDialog.fnSelectTableDate",param);
+	}
+	
+	@Override
+	public void createAndUpdateUI()
+	{	
+		this.setModal(true);
 
-		box.add(pn1);
-		box.add(pnInput);
-		box.add(pnOption);
-		pnMain.add(box);
+		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
 
-		getContentPane().add(pnMain);
-		getContentPane().add(pnControl,BorderLayout.SOUTH);
+		this.addComp(buildCenter(),BorderLayout.CENTER);
 
-		this.pack();
+		this.addComp(buildControl(),BorderLayout.SOUTH);
+		
+//		this.setSize(400,300);
+
+		ViewUtil.center(this, true);
+
 		this.setResizable(false);
-		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
-		setVisible(true);
 
+		this.setVisible(true);
 	}
 	/**
 	 * 
 	 */
 	private void buildSchedule()
 	{
-		final String inputDate=txfDateInput.getText();
-		
 		String optionData = txfOptionInput.getText();
 		
 		boolean isPage = rdoPage.isSelected();
-
-		/*
-		 * 유효성 체크
-		 */
-		if(inputDate==null) return;
-
-		String datePattern = "\\d{4}.\\d{1,2}.\\d{1,2}";
-
-		boolean retval = inputDate.matches(datePattern);
-
-		if(!retval)
-		{
-			JOptionPane.showMessageDialog(this, "입력 형식이 틀렸습니다. "+inputDate);
-			return;
-		}
-
+		
 		if(isOption())
 		{
-			if(optionData.length()<0)
+			if(optionData.isEmpty())
 			{
-				JOptionPane.showMessageDialog(this, "항목을 입력하십시요");
+				NotificationManager.showNotification(Notification.Type.WARNING, "항목을 입력하십시요");
 				return;
 			}	
 		}
+		
+		KSGTableColumn  col = (KSGTableColumn) cbxTableDateList.getSelectedItem();
+		
+		String inputDate =col.columnField;
+		
 		close();
 
-		scheduleServiceManager.startScheduleMake(isOption(),isPage, optionData, inputDate,(String)cbxType.getSelectedItem(),getScheduleType());
-
+		KSGTableColumn typecol= (KSGTableColumn) cbxGubun.getSelectedItem();
+		
+		scheduleServiceManager.startScheduleMake(isOption(),isPage, optionData, inputDate,typecol.columnName ,getScheduleType());
+	}
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+//		if(inputDate !=null) txfDateInput.setText(inputDate);
+		
+		fnSelectTableDate(ShippersTable.GUBUN_NORMAL);
+		
 	}
 	public void actionPerformed(ActionEvent e) {
 
 		String command = e.getActionCommand();
+		
 		if(command.equals("확인"))
 		{
 			buildSchedule();
@@ -323,7 +465,6 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 			}
 			pnOption.setVisible(this.isOption());
 			this.pack();
-
 		}
 
 	}
@@ -402,6 +543,22 @@ public class ScheduleCreateOptionDialog extends KSGDialog implements ActionListe
 				}
 			}
 		}.start();
+	}
+	
+	@Override
+	public void updateView() {
+		CommandMap resultMap= this.getModel();
+
+		String serviceId=(String) resultMap.get("serviceId");
+
+		if("scheduleCreateOptionDialog.fnSelectTableDate".equals(serviceId))
+		{	
+			List tableDatelist = (List) resultMap.get("tableDatelist");
+			
+			cbxTableDateList.removeAllItems();
+
+			tableDatelist.stream().forEach(scheduleDate -> cbxTableDateList.addItem(new KSGTableColumn((String)scheduleDate, (String)scheduleDate) ));
+		}
 	}
 
 }

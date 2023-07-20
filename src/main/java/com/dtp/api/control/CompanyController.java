@@ -46,7 +46,7 @@ public class CompanyController extends AbstractController{
 	@ControlMethod(serviceId = "selectCompany")	
     public CommandMap selectByCondtion(CommandMap param) throws Exception
     {
-		log.info("param:{}", param);
+		log.info("start:{}", param);
 		
 		Company companyParam = Company	.builder()
 										.company_name((String)(param.get("company_name")))
@@ -64,6 +64,8 @@ public class CompanyController extends AbstractController{
 		CommandMap model = new CommandMap();
 		
         model.put("data", result);
+        
+        log.info("end");
 		
 		return model;
     }
@@ -77,7 +79,7 @@ public class CompanyController extends AbstractController{
 	@ControlMethod(serviceId = "selectCompanyListByCondition")	
     public CommandMap selectCompanyListByCondition(CommandMap param) throws Exception
     {
-		log.info("param:{}", param);
+		log.info("start:{}", param);
 		
 		Company companyParam = Company	.builder()
 										.company_name((String)(param.get("company_name")))
@@ -95,6 +97,8 @@ public class CompanyController extends AbstractController{
 		CommandMap model = new CommandMap();
 		
         model.put("data", result);
+        
+        log.info("end");
 		
 		return model;
     }
@@ -108,6 +112,8 @@ public class CompanyController extends AbstractController{
 	 */
 	@ControlMethod(serviceId = "insertCompany")
 	public CommandMap insertCompany(CommandMap param) throws Exception{
+		
+		log.info("start:{}", param);
 
         String company_name = (String) param.get("company_name");
         
@@ -133,6 +139,8 @@ public class CompanyController extends AbstractController{
         
         returnMap.put("data", result);
         
+        log.info("end");
+        
         return returnMap;
     }
 	
@@ -145,6 +153,8 @@ public class CompanyController extends AbstractController{
 	@ControlMethod(serviceId = "deleteCompany")
     public CommandMap deleteCompany(CommandMap param) throws Exception {
 		
+		log.info("start:{}", param);
+		
 		String company_abbr = (String) param.get("company_abbr");
 		
 		if(company_abbr== null) throw new ResourceNotFoundException("company_abbr is null");
@@ -156,6 +166,8 @@ public class CompanyController extends AbstractController{
         CommandMap returnMap = new CommandMap();
         
         returnMap.put("data", result);
+        
+        log.info("end");
 
         return returnMap;
     }
@@ -168,6 +180,8 @@ public class CompanyController extends AbstractController{
 	 */
 	@ControlMethod(serviceId = "updateCompany")
     public CommandMap updateCompany(CommandMap param) throws Exception{
+		
+		log.info("start:{}", param);
         
         String company_name 		= (String) param.get("company_name");
         
@@ -195,6 +209,8 @@ public class CompanyController extends AbstractController{
         CommandMap returnMap = new CommandMap();
         
         returnMap.put("data", result);
+        
+        log.info("end");
         
         return returnMap;
     }

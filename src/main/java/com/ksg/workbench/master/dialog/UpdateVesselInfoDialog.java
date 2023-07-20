@@ -31,19 +31,22 @@ import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
 
 import com.dtp.api.control.VesselController;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.model.KSGModelManager;
+import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
+import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.checkbox.KSGCheckBox;
 import com.ksg.view.comp.combobox.KSGComboBox;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.Notification;
+import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
 
 
 /**
@@ -61,7 +64,7 @@ import com.ksg.view.comp.table.KSGTableColumn;
  * @프로그램 설명 : 선박 정보 수정 다이어그램
 
  */
-public class UpdateVesselInfoDialog extends BaseInfoDialog{
+public class UpdateVesselInfoDialog extends MainTypeDialog{
 
 	/**
 	 * 
@@ -90,27 +93,46 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 		this.setController( new VesselController());
 
 		this.info = item;
+		
+		this.titleInfo="신규 선박 정보 수정";
 
 		this.addComponentListener(this);
 	}
 	public void createAndUpdateUI() 
 	{
-		this.setModal(true);			
+//		this.setModal(true);			
+//
+//		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
+//
+//		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+//
+//		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+//
+//
+//		this.pack();
+//
+//		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+//
+//		this.setResizable(false);
+//
+//		this.setVisible(true);
+		
+		this.setModal(true);
 
-		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
+		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
 
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.addComp(buildCenter(),BorderLayout.CENTER);
 
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		this.addComp(buildControl(),BorderLayout.SOUTH);
 
-
-		this.pack();
-
-		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
+		ViewUtil.center(this,true);
 
 		this.setResizable(false);
 
 		this.setVisible(true);
+		
+		
+		
 	}
 
 	private KSGPanel buildTitle() {
@@ -192,7 +214,9 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 		});
 
 
-		JButton butSearchCompany = new JButton("조회");
+		KSGGradientButton butSearchCompany = new KSGGradientButton("조회");
+
+		butSearchCompany.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butSearchCompany.addActionListener(new ActionListener()
 		{
@@ -236,7 +260,7 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 
 				if(mmsi_size<9)
 				{
-					JOptionPane.showMessageDialog(this, "MMSI는 9자리 숫자입니다.");
+					NotificationManager.showNotification(Notification.Type.WARNING, "MMSI는 9자리 숫자입니다.");
 					return;
 				}
 				param.put("vessel_mmsi", txfMMSI.getText());
@@ -264,20 +288,16 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 
 		cbxConType.initComp();
 
-		String vessel_type = (String) info.get("vessel_type");
+		String vessel_type 		= (String) info.get("vessel_type");
 
-		String vessel_company = (String) info.get("vessel_company");
+		String vessel_company 	= (String) info.get("vessel_company");
 
-		String vessel_mmsi = (String) info.get("vessel_mmsi");
+		String vessel_mmsi 		= (String) info.get("vessel_mmsi");
 
 		int use=(Integer)info.get("vessel_use");
 
-		if(use==Vessel.NON_USE)
-		{
-			chbUse.setSelected(true);
-		}
-
-
+		chbUse.setSelected(use==Vessel.NON_USE);
+		
 		txfCompanyName.setText(vessel_company);
 
 		if(vessel_mmsi!=null&&!vessel_mmsi.equals("         "))
@@ -306,20 +326,19 @@ public class UpdateVesselInfoDialog extends BaseInfoDialog{
 
 	@Override
 	public void updateView() {
+		
 		CommandMap resultMap= this.getModel();
 
 		String serviceId=(String) resultMap.get("serviceId");
 
 		if("updateVessel".equals(serviceId))
-		{	
-
-			JOptionPane.showMessageDialog(UpdateVesselInfoDialog.this,"수정했습니다.");
-
-			this.setVisible(false);
-
-			this.dispose();
+		{
+			
+			NotificationManager.showNotification("수정했습니다.");
 
 			result=KSGDialog.SUCCESS;
+			
+			close();
 
 		}
 	}

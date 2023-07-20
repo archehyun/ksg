@@ -44,7 +44,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -75,7 +74,7 @@ import com.ksg.service.TableService;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGXMLTable;
-import com.ksg.workbench.adv.dialog.SearchVesselDialog;
+import com.ksg.workbench.adv.dialog.SearchVesselNameDialog;
 import com.ksg.workbench.adv.dialog.TableInfoDialog;
 import com.ksg.workbench.adv.xls.XLSTableInfo;
 
@@ -151,8 +150,6 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 
 	private KSGXMLTable tblADV;
 
-//	private PortTable tblPort;
-	
 	private SearchedPortTable tblPort;
 
 	private JTextArea txaADV;
@@ -217,10 +214,13 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 			try 
 			{
 				KSGXMLManager manager = new KSGXMLManager();
+				
 				DefaultTableModel model = manager.createXLSTableModel(data);
+				
 				JTable table = new JTable();
 
 				table.setModel(model);
+				
 				pnMain.add(new JScrollPane(table),BorderLayout.SOUTH);
 
 			} catch (JDOMException e1) {
@@ -241,12 +241,19 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 	public Component addForm(String label,Component comp)
 	{
 		KSGPanel pnMain = new KSGPanel();
+		
 		pnMain.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		JLabel lbllabel = new JLabel(label);
+		
 		lbllabel.setFont(KSGModelManager.getInstance().defaultFont);
+		
 		comp.setFont(KSGModelManager.getInstance().defaultFont);
+		
 		pnMain.add(lbllabel);
+		
 		pnMain.add(comp);
+		
 		return pnMain;
 	}
 	/**
@@ -255,10 +262,11 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 	public KSGPanel buildControlPn()
 	{
 		KSGPanel pnCenterControl = new KSGPanel(new BorderLayout());
-		pnCard = new KSGPanel();
 		
+		pnCard = new KSGPanel();
 
 		//JButton butReload = new JButton("다시 불러오기");
+		
 		//butReload.setEnabled(false);
 
 		JToggleButton butShowText = new JToggleButton("텍스트 보기");
@@ -271,19 +279,16 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 				JToggleButton ee=(JToggleButton) e.getSource();
 
 				ButtonModel model =ee.getModel();
-				if(model.isSelected())
-				{
-					cardLayout.show(pnCard, TEXT);
-
-				}else
-				{
-					cardLayout.show(pnCard, TABLE);
-				}
+				
+				cardLayout.show(pnCard, model.isSelected()?TEXT:TABLE);
+				
 			}});
 
 
 		JButton butXML = new JButton(ACTION_COMMAND_XML);
+		
 		butXML.setActionCommand(ACTION_COMMAND_XML);
+		
 		butXML.addActionListener(this);
 
 		KSGPanel pnCenterControlRight = new KSGPanel();
@@ -398,12 +403,6 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 		cbxDivider = new JComboBox();
 
 
-		dividerAction = new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-			}
-		};
 		cbxDivider.addActionListener(dividerAction);
 
 		cbxDivider.addItem("/");
@@ -419,7 +418,6 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 		cbxCount.addItem(3);
 		countAction = new ActionListener()
 		{
-
 			public void actionPerformed(ActionEvent e) 
 			{
 				if(xlstableinfo==null)
@@ -456,6 +454,7 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 		pncontrl.add(butApply);
 
 		pnPortVesselCount.add(pncontrl,BorderLayout.SOUTH);
+		
 		return pnPortVesselCount;
 	}
 	private void createAndUpdatePN() {
@@ -485,7 +484,9 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 		}
 		);
 		txaADV = new JTextArea();
+		
 		litVessel =new VesselListComp(this);
+		
 //		tblPort = new PortTable(txaADV, this);
 		tblPort = new SearchedPortTable();
 		tblPort.setToolTipText("기본: 검정색, 신규 항구:노란색, 위치가  다른 항구:빨간색,");
@@ -626,9 +627,9 @@ public class KSGXLSImportPanel extends KSGPanel implements KSGObserver, ActionLi
 					return;
 
 
-				SearchVesselDialog dialog = new SearchVesselDialog(tblADV.getValueAt(row, col).toString());
+				SearchVesselNameDialog dialog = new SearchVesselNameDialog(tblADV.getValueAt(row, col).toString());
 				dialog.createAndUpdateUI();
-				if(dialog.OPTION==SearchVesselDialog.OK_OPTION)
+				if(dialog.OPTION==SearchVesselNameDialog.OK_OPTION)
 				{
 					DefaultListModel model=(DefaultListModel) litVessel.getModel();
 					model.setElementAt(dialog.info, row);

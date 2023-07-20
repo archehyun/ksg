@@ -91,17 +91,25 @@ public class PnMember extends PnBase implements ActionListener{
 	}
 
 	private Component buildNorthPanel() {
+		
 		KSGPanel pnSearch = new KSGPanel();
+		
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
 		JButton butSerach = new JButton("조회");
+		
 		butSerach.addActionListener(this);
+		
 		pnSearch.add(butSerach);
 		
-		
 		KSGPanel pnMain= new KSGPanel(new BorderLayout());
+		
 		pnMain.add(buildLine(),BorderLayout.SOUTH);
+		
 		pnMain.add(pnSearch,BorderLayout.EAST);
+		
 		pnMain.add(buildTitleIcon("사용자 정보"),BorderLayout.WEST);
+		
 		return pnMain;
 		
 		

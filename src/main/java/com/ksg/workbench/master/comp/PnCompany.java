@@ -32,7 +32,6 @@ import javax.swing.event.TableColumnModelListener;
 
 import com.dtp.api.control.CompanyController;
 import com.ksg.common.model.CommandMap;
-import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.combobox.KSGComboBox;
 import com.ksg.view.comp.dialog.KSGDialog;
@@ -60,13 +59,9 @@ import lombok.extern.slf4j.Slf4j;
  * @프로그램 설명 : 선사 정보 관리 화면
 
  */
+@SuppressWarnings("serial")
 @Slf4j
 public class PnCompany extends PnBase implements ActionListener{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 
@@ -353,6 +348,8 @@ public class PnCompany extends PnBase implements ActionListener{
 	@Override
 	public void fnSearch() {
 
+		log.info("search");
+		
 		CommandMap param = new CommandMap();
 
 		String field = (String) cbxField.getSelectedItem();
@@ -362,6 +359,7 @@ public class PnCompany extends PnBase implements ActionListener{
 			if(field.equals("선사명"))
 			{
 				query="company_name";
+				
 			}else if(field.equals("선사명 약어"))
 			{
 				query="company_abbr";

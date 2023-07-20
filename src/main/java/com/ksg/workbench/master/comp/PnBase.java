@@ -132,6 +132,11 @@ public abstract class PnBase extends KSGPanel implements ComponentListener, View
 		if(this.controller!=null)
 			this.controller.call(serviceId, param, this);
 	}
+	
+	public void callApi(String serviceId)
+	{
+		callApi(serviceId, new CommandMap());
+	}
 
 
 

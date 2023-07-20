@@ -141,9 +141,7 @@ public class PnMainTab extends KSGView{
 		this.viewList.add(pn);
 		
 		addTab(menuId, pn);
-		
 	}
-
 
 	public void updateView() {
 		

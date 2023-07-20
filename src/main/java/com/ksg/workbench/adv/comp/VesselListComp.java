@@ -25,7 +25,7 @@ import org.jdom.Element;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.workbench.adv.dialog.SearchVesselDialog;
+import com.ksg.workbench.adv.dialog.SearchVesselNameDialog;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -140,9 +140,9 @@ public class VesselListComp extends JList{
 
 				VesselInfo info=(VesselInfo) VesselListComp.this.getSelectedValue();
 
-				SearchVesselDialog dialog = new SearchVesselDialog(info.vesselName);
+				SearchVesselNameDialog dialog = new SearchVesselNameDialog(info.vesselName);
 				dialog.createAndUpdateUI();
-				if(dialog.OPTION==SearchVesselDialog.OK_OPTION)
+				if(dialog.OPTION==SearchVesselNameDialog.OK_OPTION)
 				{
 					DefaultListModel model=(DefaultListModel) VesselListComp.this.getModel();
 					model.setElementAt(dialog.info, index);

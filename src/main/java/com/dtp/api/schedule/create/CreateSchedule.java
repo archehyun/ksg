@@ -23,7 +23,6 @@ import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
-import com.ksg.service.ScheduleService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,6 +53,9 @@ public class CreateSchedule {
 	private String[][] vslDatas;
 
 	private String[][] arrayDatas;
+	
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+	private SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy/M/dd");
 
 	private String gubun;
 
@@ -423,6 +425,17 @@ public class CreateSchedule {
 			String inOutType			
 			)
 	{
+		String fommatFromDate=null;
+		String fommatToDate=null;
+		try {
+			fommatFromDate = dateFormat.format(dateFormat1.parse(dateF));
+			fommatToDate = dateFormat.format(dateFormat1.parse(dateT));
+		} catch (ParseException e) {
+			fommatFromDate ="";
+			fommatToDate ="";
+			e.printStackTrace();
+		}
+		
 		ScheduleData scheduledata =ScheduleData.builder()
 				.table_id(table.getTable_id())
 				.vessel(vesselName)
@@ -446,8 +459,8 @@ public class CreateSchedule {
 				.inland_port("")
 				.DateF(dateF)
 				.DateT(dateT)
-				.fromDate(dateF)
-				.toDate(dateT)
+				.fromDate(fommatFromDate)
+				.toDate(fommatToDate)
 				.date_issue(table.getDate_isusse())
 				.c_time("")
 				.d_time("")
@@ -502,6 +515,4 @@ public class CreateSchedule {
 			return ScheduleDateUtil. adjestDateYear(dataArray[outToPortIndex-1], dataArray[outFromPortIndex-1]);
 		}
 	}
-
-	
 }

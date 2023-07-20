@@ -93,21 +93,21 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 	private KSGPanel pnInland;
 	
 	private Border padding= BorderFactory.createEmptyBorder(5, 5, 5, 5);
+	private KSGGradientButton butCompanySearch;
 	
 	public UpdateTablePanel(ShipperTableAbstractMgtUI searchUI) {
 		super();
 		
 		this.searchUI =searchUI;
 		
+		initComp();
+		
 		createAndUpdteUI();
-		
-		
 
 	}
-	private void createAndUpdteUI()
+	
+	private void initComp()
 	{
-		this.setLayout( new BorderLayout());		
-
 		this.txfTable_id		= new JTextField(15);	// 테이블 아이디
 		this.txfCompany_Abbr 	= new JTextField(15);	// 선사 약어
 		this.txfCompany_name 	= new JTextField(15);	// 선사 명
@@ -179,10 +179,6 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		
 		this.txfOhterCount.addKeyListener(searchUI);
 
-//		txfOutFromPort.addKeyListener(new EnterKeyListener2(txfOutFromPort));
-//		
-//		txfInFromPort.addKeyListener(new EnterKeyListener2(txfInFromPort));		
-
 		this.txfCompany_Abbr.addFocusListener(this);
 		
 		this.txfAgent.addFocusListener(this);
@@ -216,16 +212,6 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		this.cbxGubun = new KSGComboBox("tableType");
 		
 		this.cbxGubun.initComp();
-//		
-//		this.cbxGubun.addItem(ShippersTable.GUBUN_NORMAL);
-//		
-//		this.cbxGubun.addItem(ShippersTable.GUBUN_CONSOLE);
-//		
-//		this.cbxGubun.addItem(ShippersTable.GUBUN_INLAND);
-//		
-//		this.cbxGubun.addItem(ShippersTable.GUBUN_NNN);
-//		
-//		this.cbxGubun.addItem(ShippersTable.GUBUN_TS);
 
 		this.cbxGubun.addActionListener(new ActionListener() {
 
@@ -240,28 +226,11 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 				pnInland.setVisible(command.equals(ShippersTable.GUBUN_INLAND));
 			}
 		});
-
-		Box pnMain = new Box(BoxLayout.Y_AXIS);
-
-		KSGPanel pnTable = new KSGPanel();
-
-		GridLayout gridLayout = new GridLayout(0,1);
-
-		gridLayout.setVgap(10);
-
-		pnTable.setLayout(gridLayout);
-
-		TitledBorder boderTable = BorderFactory.createTitledBorder("테이블 정보");
-
-		boderTable.setTitleFont(getFont().deriveFont(Font.BOLD));
 		
-		pnTable.setBorder(BorderFactory.createCompoundBorder(boderTable, padding) );
-
-		KSGPanel pnCompanySearch = new KSGPanel(new BorderLayout(5,0));
-
-		pnCompanySearch.add(txfCompany_Abbr);
-
-		JButton butCompanySearch = new KSGGradientButton("검색");
+		
+		butCompanySearch = new KSGGradientButton("검색");
+		
+		butCompanySearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 		
 		butCompanySearch.addActionListener(new ActionListener(){
 
@@ -289,6 +258,30 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 			}});
 
 		butCompanySearch.setActionCommand("SEARCH_COMPANY");
+	}
+	private void createAndUpdteUI()
+	{
+		this.setLayout( new BorderLayout());		
+
+		Box pnMain = new Box(BoxLayout.Y_AXIS);
+
+		KSGPanel pnTable = new KSGPanel();
+
+		GridLayout gridLayout = new GridLayout(0,1);
+
+		gridLayout.setVgap(10);
+
+		pnTable.setLayout(gridLayout);
+
+		TitledBorder boderTable = BorderFactory.createTitledBorder("테이블 정보");
+
+		boderTable.setTitleFont(getFont().deriveFont(Font.BOLD));
+		
+		pnTable.setBorder(BorderFactory.createCompoundBorder(boderTable, padding) );
+
+		KSGPanel pnCompanySearch = new KSGPanel(new BorderLayout(5,0));
+
+		pnCompanySearch.add(txfCompany_Abbr);
 
 		pnCompanySearch.add(butCompanySearch,BorderLayout.EAST);
 
@@ -382,6 +375,7 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		pnS1.add(new JScrollPane(txaCommon),BorderLayout.CENTER);
 
 		pnS2.add(new JScrollPane(txaQuark),BorderLayout.CENTER);
+		
 		KSGPanel pnConsole = buildConsolePn();
 		
 		
@@ -674,8 +668,6 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 		txfConsolePage.setText(shippersTable.getConsole_page());
 
 		tabPaneInfo.setSelectedIndex(shippersTable.getGubun().equals(ShippersTable.GUBUN_CONSOLE)?2:0);// 0: 콘솔 탭 선택, 2:	공동 배선 탭
-		
-		
 	}
 
 	public void focusGained(FocusEvent e) {

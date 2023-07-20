@@ -47,4 +47,6 @@ public interface VesselService {
 
 	Vessel selectVesselDetailByKey(Vessel param) throws Exception;
 
+	public List<Vessel> selectDetailAll() throws Exception;
+
 }

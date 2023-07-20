@@ -91,6 +91,7 @@ import lombok.extern.slf4j.Slf4j;
  * @프로그램 설명 :
 
  */
+@SuppressWarnings("serial")
 @Slf4j
 public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, View{
 
@@ -103,9 +104,13 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	private CommandMap model;
 
 	private static final String MONDAY = "월요일";
+	
 	private static final String SCHEDULE_WORLDWIDE	= "항로별 스케줄 생성";
+	
 	private static final String SCHEDULE_INBOUND	= "Inbound 스케줄 생성";
+	
 	private static final String SCHEDULE_OUTBOUND	= "Outbound 스케줄 생성";
+	
 	private static final String ADV_INPUT_SEARCH	= "광고입력 조회";
 
 	private static final String SCHEDULE_DELETE 	= "Schedule 삭제";
@@ -123,11 +128,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	private static final String BASE_VESSEL 		= "선박정보";
 	private static final String BASE_VESSEL_ABBR 	= "선박약어정보";
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	private LookAheadTextField txfImportDate;
 
 	private static String TITLE="KSG DTP System";
@@ -138,13 +138,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 	ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
 
-//	private ScheduleSubService scheduleService= new ScheduleServiceImpl();
-
-
-	/**
-	 * 메뉴바 생성
-	 * @return
-	 */
 	private IFCommand scheduleCommand;
 
 	protected JDialog optionDialog;
@@ -185,9 +178,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 	private BuildActionListenr buildActionListenr = new BuildActionListenr();
 
-	Configure config = Configure .getInstance();
+	private Configure config = Configure .getInstance();
 
-	PnMainTab pnMainView = new PnMainTab();
+	private PnMainTab pnMainView = new PnMainTab();
 
 	public KSGMainFrame(KSGLogin login) 
 	{	
@@ -211,28 +204,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 			{
 				log.debug("init frame start");
 
-				pnAdvAdd 			= new ADVManageUI();
-
-				pnBaseInfo 			= new BaseInfoUI();
-
-				pnSearch 			= new ShipperTableMgtUI2();
-
-				pnPrintADV 			= new PrintADVUI();
-
-				pnSchedule  		= new ScheduleMgtUI();
-
-				pnCenter.add(pnSearch, 		ADV_SEARCH);
-
-				pnCenter.add(pnAdvAdd, 		ADV_INPUT);
-
-				pnCenter.add(pnSchedule, 	SCHEDULE_SEARCH);
-
-				pnCenter.add(pnBaseInfo, 	BASE_MAIN);
-
-				pnCenter.add(pnPrintADV, 	ADV_PRINT);
-
-				manager.execute(pnSearch.getName());
-
 				KSGMainFrame.this.setVisible(false);
 
 				KSGMainFrame.this.setResizable(true);
@@ -244,8 +215,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 				menuBar.setVisible(true);
 
 				ViewUtil.center(KSGMainFrame.this, true);
-
-				cardLayout.show(pnCenter,  ADV_SEARCH);
 
 				pnMainView.showPanel(ADV_SEARCH);
 
@@ -359,11 +328,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	{
 		JButton butSearch = new JButton(butName,new ImageIcon(img));
 
-		//		butSearch.setBackground(Color.decode("#0f326d"));
-
 		butSearch.setPreferredSize(new Dimension(20,20));
-		//		butSearch.setForeground(Color.white);
-
+		
 		butSearch.setActionCommand(action);
 
 		butSearch.setBorderPainted(false);
@@ -387,8 +353,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	private Component buildToolBar() 
 	{
 		toolbar = new JToolBar();
-
-		//		toolbar.setBackground(Color.decode("#0f326d"));
 
 		toolbar.setPreferredSize(new Dimension(-1,45));
 
@@ -450,11 +414,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		cbxImportDate.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
+				
 				JCheckBox bo =(JCheckBox) e.getSource();
-				if(bo.isSelected())
-				{
-					txfImportDate.setText(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
-				}
+				
+				if(bo.isSelected()) txfImportDate.setText(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
 			}
 		});
 
@@ -469,12 +432,14 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	private JMenuBar crateMenuBar() 
 	{
 		menuBar = new JMenuBar();
+		
 		BiggerMenu fileMenu = new BiggerMenu("File");
+		
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 
 		JMenuItem ExitMenu = new JMenuItem("Exit", KeyEvent.VK_X);
+		
 		ExitMenu.addActionListener(new ActionListener(){
-
 
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -587,14 +552,19 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	private JMenuItem addMenuItem(JMenu menu,String label)
 	{
 		JMenuItem item = new JMenuItem(label);
+		
 		item.addActionListener(this);
+		
 		menu.add(item);
+		
 		return item;
 	}
 	private JMenu addMenu(JMenu menu,String label)
 	{
 		JMenu item = new JMenu(label);
+		
 		item.addActionListener(this);
+		
 		menu.add(item);
 		return item;
 	}
@@ -608,7 +578,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 	private JMenuItem addMenuItem(JMenu menu,String label,int numeric,ActionListener ac)
 	{	
-		JMenuItem item = this.addMenuItem(menu, label, ac);		
+		JMenuItem item = this.addMenuItem(menu, label, ac);	
+		
 		item.setMnemonic(numeric);
 
 		return item;
@@ -688,11 +659,12 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		butCancel.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
+				
 				optionDialog.setVisible(false);
+				
 				optionDialog.dispose();
-
+				
 			}});
-
 
 		pnControl.add(butOk);
 
@@ -720,14 +692,17 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 		optionDialog.setVisible(true);
 	}
+	
 	private void start(JTextField txfDate) throws NoSuchElementException, ParseException
 	{
 		final String result=txfDate.getText();
-		if(result==null)
-			return;
+		
+		if(result==null) return;
 
 		String datePattern = "\\d{4}.\\d{1,2}.\\d{1,2}";
+		
 		boolean retval = true;
+		
 		retval = result.matches(datePattern);
 
 		if(!retval)
@@ -771,11 +746,15 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	public void update(KSGModelManager manager) {
 
 		workprocess.setVisible(manager.isWorkMoniter);
+		
 		lblWorkProcessText.setVisible(manager.isWorkMoniter);
+		
 		workprocess.setIndeterminate(manager.isWorkMoniter);
+		
 		if(manager.isWorkMoniter)
 		{
 			lblWorkProcessText.setText(manager.workProcessText);
+			
 			workprocess.setString(manager.workProcessText);
 		}
 
@@ -1065,13 +1044,12 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 			toolbar.requestFocus();
 		}
-
 	}
 
 	@Override
 	public void setModel(CommandMap model) {
+		
 		this. model = model;
-
 	}
 	public CommandMap getModel() {
 

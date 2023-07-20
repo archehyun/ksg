@@ -35,6 +35,12 @@ public class VesselServiceImpl implements VesselService{
 	{
 		return dao.selectAll();
 	}
+	
+	@Override
+	public List<Vessel> selectDetailAll() throws Exception {
+
+		return dao.selectDetailAll();
+	}
 	@Override
 	public List<Vessel> selectListByCondtion(Vessel param)throws Exception
 	{
@@ -135,4 +141,6 @@ public class VesselServiceImpl implements VesselService{
 
 		return selectOne;
 	}
+
+
 }

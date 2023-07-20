@@ -24,7 +24,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Date;
-import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.AbstractButton;
@@ -151,7 +150,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 	private Vector 			pageList;
 
-	private KSGPanel 		pnSubSearch,pnSubSelect,pnTableInfo,pnTableList,pnLeftMenu;
+	private KSGPanel 		pnSubSearch, pnSubSelect, pnTableInfo, pnTableList, pnLeftMenu;
 
 	private JTabbedPane 	pnTab;
 
@@ -172,12 +171,10 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		super();
 
 		this.title="광고정보 입력";
-		
+
 		this.setName("광고정보 입력");
 
 		this.borderColor = new Color(179,195,207);
-
-		Properties properties = new Properties();
 
 		this.setName("ADVManageUI");
 
@@ -191,9 +188,9 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		
+
 		String command = e.getActionCommand();
-		
+
 		if(command.equals("이전"))
 		{
 			if(currentPage<=pageCount&&currentPage>0)
@@ -216,7 +213,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		}else if(command.equals("신규등록"))
 		{
 			AddTableInfoDialog addTableInfoDialog = new AddTableInfoDialog();
-			
+
 			addTableInfoDialog.createAndUpdateUI();
 		}
 	}
@@ -225,7 +222,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	 * @return
 	 */
 	private Component buildCenter() {
-
 
 		pnTab = new JTabbedPane();
 
@@ -245,9 +241,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 			}});
 
-		initComp();
-
-
 		//검색 화면
 
 		searchPanel = new SearchPanel(this);
@@ -261,7 +254,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		searchPanel.setAdvListPanel(advListPanel);
 
 		pnTab.addTab("입력정보", searchPanel);
-		
+
 		pnTab.addTab("결과", advListPanel);
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
@@ -271,8 +264,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 		return pnMain;
 	}
-
-
 
 	private KSGPanel buildHistoryCenter()
 	{
@@ -325,17 +316,18 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		pnMain.add(buildSouthPn(),BorderLayout.SOUTH);
 		return pnMain;
 	}
-	
+
 	private KSGPanel buildLeftMenu() 
 	{
 		pnLeftMenu = new KSGPanel();
-		
+
 		KSGPanel pnSearch =  new KSGPanel();
+
 		pnSearch.setLayout(new BorderLayout());
 
-		_treeMenu = createTreeMenu();		
-		_txfSearchByCompany = new JTextField(8);
+		_treeMenu = createTreeMenu();
 
+		_txfSearchByCompany = new JTextField(8);
 
 		KSGPanel pnSearchByCompany = new KSGPanel();
 
@@ -363,6 +355,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 					if(node==null)
 					{
 						JOptionPane.showMessageDialog(ADVManageUI.this, "검색된 정보가 없습니다.");
+
 						_txfSearchByCompany.setText("");
 						return;
 					}
@@ -411,16 +404,19 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 
 		KSGPanel pnContorl = new KSGPanel();
-		ButtonGroup group = new ButtonGroup();
 
+		ButtonGroup group = new ButtonGroup();
 
 		JRadioButton button = new KSGRadioButton("선사별");
 
 		JRadioButton button1 = new KSGRadioButton("페이지별",true);
+
 		group.add(button);
+
 		group.add(button1);
 
 		pnContorl.add(button);
+
 		pnContorl.add(button1);
 
 		ItemListener itemListener= new ItemListener(){
@@ -443,30 +439,49 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 			}};
 
 			button.addItemListener(itemListener);
+			
 			button1.addItemListener(itemListener);
+			
 			pnContorl.add(new JSeparator(JSeparator.HORIZONTAL));
+			
 			JButton butADDTable = new JButton(new ImageIcon("images/plus.gif"));
 
 			butADDTable.setPreferredSize(new Dimension(35,25));
+			
 			butADDTable.setFocusPainted(false);
+			
 			butADDTable.setActionCommand("신규등록");
+			
 			butADDTable.setToolTipText("신규 테이블 등록");
+			
 			butADDTable.addActionListener(this);
 
 			pnContorl.add(butADDTable);
+			
 			JButton butDelTable = new JButton(new ImageIcon("images/minus.gif"));
+			
 			butDelTable.setPreferredSize(new Dimension(35,25));
+			
 			butDelTable.setFocusPainted(false);
+			
 			butDelTable.setActionCommand("삭제");
+			
 			butDelTable.addActionListener(this);
+			
 			pnContorl.add(butDelTable);
 
 			KSGPanel pnTitle = new KSGPanel();
+			
 			pnTitle.setBackground(new Color(88,141,250));
+			
 			pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
+			
 			JLabel label = new JLabel("테이블 목록");
+			
 			label.setForeground(Color.white);
+			
 			pnTitle.add(label);
+			
 			pnTitle.setPreferredSize( new Dimension(0,22));
 
 			pnSearch.add(pnSearchByCompany,BorderLayout.NORTH);
@@ -480,7 +495,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 			pnLeftMenu.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
 			pnLeftMenu.add(pnSearch);
-
 
 			return pnLeftMenu;
 	}
@@ -496,20 +510,24 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	private Component buildSouthPn() {
 
 		KSGPanel pnMain = new KSGPanel();
+
 		pnMain.setLayout(new BorderLayout());
 
 		KSGPanel paRight = new KSGPanel();
+
 		paRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		JButton butADD = new JButton("광고불러오기",new ImageIcon("images/importxls.gif"));
+
 		butADD.setToolTipText("광고정보추가");
+
 		butADD.setPreferredSize(new Dimension(100,20));
-		
+
 		JButton butCancel = new JButton(new ImageIcon("images/cancel.gif"));
+
 		butCancel.setPreferredSize(new Dimension(35,25));
+
 		butCancel.addActionListener(new ActionListener(){
-
-
 			public void actionPerformed(ActionEvent e) {
 				//initInfo();
 				_txfCompany.setText("");
@@ -529,7 +547,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		txfImportDate = new JTextField(8);
 
 		JCheckBox cbxImportDate = new JCheckBox("월요일",false);
-		
+
 		cbxImportDate.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
@@ -567,11 +585,12 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 				}else
 				{
 					String p = _txfPage.getText()+"_";
+
 					for(int i=0;i<companyList.size();i++)
 					{
 						p+=companyList.get(i);
-						if(i<companyList.size()-1)
-							p+="_";
+
+						if(i<companyList.size()-1) p+="_";
 					}
 					page_l=p;
 				}
@@ -595,6 +614,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	 */
 	public void createAndUpdateUI() 
 	{	
+		initComp();
 
 		this.setLayout(new BorderLayout(10,10));
 
@@ -610,23 +630,35 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	 * @return
 	 */
 	private KSGPanel createPnTableList() {
+		
 		KSGPanel pnTableListMain = new KSGPanel();
+
 		pnTableListMain.setLayout(new BorderLayout());
 
 		pnTableList = new KSGPanel();
+
 		pnTableList.setLayout(new BoxLayout(pnTableList, BoxLayout.Y_AXIS));
 
-
 		KSGPanel pnTableListControl = new KSGPanel();
+
 		butPre = new JButton("이전");
+
 		butPre.setEnabled(false);
+
 		butPre.addActionListener(this);
+
 		pnTableListControl.add(butPre);
+
 		butNext = new JButton("다음");
+
 		butNext.addActionListener(this);
+
 		butNext.setEnabled(false);
+
 		pnTableListControl.add(butNext);
+
 		pnTableListMain.add(new JScrollPane(pnTableList),BorderLayout.CENTER);
+
 		return pnTableListMain;
 	}
 
@@ -636,7 +668,6 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	private JTree createTreeMenu() 
 	{
 		tree1 = new KSGTreeDefault("tree1");
-
 
 		tree1.setRowHeight(25);
 
@@ -653,7 +684,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 			public void valueChanged(TreeSelectionEvent e) {
 
 				TreePath path=e.getNewLeadSelectionPath();
-				
+
 				if(path!=null)
 				{
 
@@ -698,25 +729,7 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 		menu.add(xlsMenu);
 		return menu;
 	}
-//	private JPopupMenu createXLSListPopup() {
-//		JPopupMenu menu =  new JPopupMenu();
-//		JMenuItem viewMenu = new JMenuItem("보기");
-//		viewMenu.addActionListener(new ActionListener(){
-//
-//			public void actionPerformed(ActionEvent e) {
-//
-//				FileInfo info = (FileInfo) fileLi.getSelectedValue();
-//
-//				if(info==null)
-//					return;
-//				ViewXLSFileDialog dialog = new ViewXLSFileDialog(info);
-//				dialog.createAndUpdateUI();
-//
-//			}});
-//
-//		menu.add(viewMenu);
-//		return menu;
-//	}
+
 
 
 	/**
@@ -756,25 +769,27 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 	 */
 	public void updateTableListPN() 
 	{
-
-
 		totalTableCount = manager.tableCount-1;
+
 		pageCount =totalTableCount/_tableViewCount;
+
 		pnTableList.removeAll();
 
 		logger.debug("adv execute");
+
 		manager.execute("adv");
 
-
 		// 인덱스를 조회 하여 지정 하는 부분 필요
-		for(int i=0;i<importTableList.size();i++)
+		for(KSGXLSImportPanel table:importTableList)
 		{
-			KSGXLSImportPanel table=importTableList.get(i);
 			JScrollPane scrollPane = new JScrollPane(table);
+
 			TitledBorder createTitledBorder = BorderFactory.createTitledBorder(table.getTitle());
+
 			createTitledBorder.setTitleFont(new Font("돋음",0,12));
 
 			scrollPane.setBorder(createTitledBorder);
+
 			pnTableList.add(scrollPane);
 		}
 
@@ -798,38 +813,17 @@ public class ADVManageUI extends AbstractMgtUI  implements ActionListener
 
 		CommandMap result= this.getModel();
 
-		boolean success = (boolean) result.get("success");
+		String serviceId = (String) result.get("serviceId");
 
-		if(success)
-		{
-			String serviceId = (String) result.get("serviceId");
+		if("aDVManageUI.init".equals(serviceId)) {				
 
-			if("aDVManageUI.init".equals(serviceId)) {				
+			viewModel = (CommandMap) result.clone();
 
-				viewModel = (CommandMap) result.clone();
-
-				tree.loadModel(viewModel);
+			tree.loadModel(viewModel);
 
 
-			}
-			else if("shipperTableMgtUI2.fnSearch".equals(serviceId)) {
-
-
-			}
-
-			else if("deleteSchedule".equals(serviceId)) {
-
-
-			}
-		}
-		else{  
-			String error = (String) result.get("error");
-			JOptionPane.showMessageDialog(this, error);
 		}
 	}
-
-
-
 }
 
 

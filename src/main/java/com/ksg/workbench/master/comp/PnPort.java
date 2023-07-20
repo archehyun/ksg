@@ -32,7 +32,6 @@ import javax.swing.event.ListSelectionListener;
 
 import com.dtp.api.control.PortController;
 import com.ksg.common.model.CommandMap;
-import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.combobox.KSGComboBox;
 import com.ksg.view.comp.dialog.KSGDialog;
@@ -71,11 +70,9 @@ public class PnPort extends PnBase implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private JComboBox cbxPortArea,cbxAreaCode,cbxField;
+	private JComboBox cbxAreaName,cbxAreaCode,cbxField;
 
 	private JTextField txfSearch;
-
-	private AreaServiceImpl areaService = new AreaServiceImpl();
 
 	private KSGTablePanel tableH;
 
@@ -89,6 +86,10 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private JLabel lblPationality;
 
+	private final String ACTION_INSERT_ABBR="약어 등록";
+	
+	private final String ACTION_DELETE_ABBR="약어 삭제";
+
 	public PnPort(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
@@ -100,6 +101,8 @@ public class PnPort extends PnBase implements ActionListener{
 		this.add(buildCenter());
 
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		
+		callApi("pnPort.init");
 
 	}
 	/**
@@ -140,7 +143,6 @@ public class PnPort extends PnBase implements ActionListener{
 		butUpSearch.addActionListener(this);
 
 
-
 		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
 
 		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
@@ -151,8 +153,11 @@ public class PnPort extends PnBase implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 
 				cbxAreaCode.setSelectedIndex(0);
-				cbxPortArea.setSelectedIndex(0);
+				
+				cbxAreaName.setSelectedIndex(0);
+				
 				cbxField.setSelectedIndex(0);
+				
 				txfSearch.setText("");
 			}
 		});
@@ -163,17 +168,17 @@ public class PnPort extends PnBase implements ActionListener{
 
 		JLabel lblAreaCode = new JLabel("지역코드:");
 
-		cbxPortArea = new KSGComboBox();
+		cbxAreaName = new KSGComboBox();
 
 		cbxAreaCode = new KSGComboBox();
 
-		cbxPortArea.setPreferredSize(new Dimension(300,25));
+		cbxAreaName.setPreferredSize(new Dimension(300,25));
 
 		cbxAreaCode.setPreferredSize(new Dimension(80,25));
 
 		pnSearch.add(lblArea);
 
-		pnSearch.add(cbxPortArea);
+		pnSearch.add(cbxAreaName);
 
 		pnSearch.add(lblAreaCode);
 
@@ -257,7 +262,6 @@ public class PnPort extends PnBase implements ActionListener{
 		pnMain.add(comp);
 
 		return pnMain;
-
 
 	}
 	private KSGPanel createPortDetail()
@@ -440,7 +444,9 @@ public class PnPort extends PnBase implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		String command = e.getActionCommand();
+
 		if(command.equals("검색"))
 		{
 			this.fnSearch();
@@ -480,27 +486,20 @@ public class PnPort extends PnBase implements ActionListener{
 		else if(command.equals(KSGTablePanel.DELETE))
 		{
 			int row=tableH.getSelectedRow();
-			if(row<0)
-				return;
+
+			if(row<0) return;
 
 			String data = (String) tableH.getValueAt(row, 0);
 
 			int result=JOptionPane.showConfirmDialog(PnPort.this, data+"를 삭제 하시겠습니까?", "항구 정보 삭제", JOptionPane.YES_NO_OPTION);
 
-			if(result==JOptionPane.OK_OPTION)
-			{						
+			if(result==JOptionPane.CANCEL_OPTION)  return;
 
-				CommandMap param = new CommandMap();
+			CommandMap param = new CommandMap();
 
-				param.put("port_name", data);
+			param.put("port_name", data);
 
-				callApi("deletePort", param);
-
-			}
-			else
-			{
-				System.out.println("no select");
-			}
+			callApi("deletePort", param);
 		}
 		else if(command.equals("약어 삭제"))
 		{
@@ -511,20 +510,20 @@ public class PnPort extends PnBase implements ActionListener{
 			HashMap<String, Object> data = (HashMap<String, Object>) tableD.getValueAt(row);
 
 			String port_name = (String)data.get("port_name");
+
 			String port_abbr = (String)data.get("port_abbr");
 
 			int result=JOptionPane.showConfirmDialog(this, port_abbr+"를 삭제 하시겠습니까?", "항구 약어 정보 삭제", JOptionPane.YES_NO_OPTION);
 
-			if(result==JOptionPane.OK_OPTION)
-			{	
-				CommandMap param = new CommandMap();
+			if(result==JOptionPane.CANCEL_OPTION)  return;
+			
+			CommandMap param = new CommandMap();
 
-				param.put("port_name", port_name);
+			param.put("port_name", port_name);
 
-				param.put("port_abbr", port_abbr);
+			param.put("port_abbr", port_abbr);
 
-				callApi("deletePortDetail", param);
-			}
+			callApi("deletePortDetail", param);
 		}
 	}
 	class TableSelectListner extends MouseAdapter
@@ -546,8 +545,8 @@ public class PnPort extends PnBase implements ActionListener{
 				JTable es = (JTable) e.getSource();
 
 				int row=es.getSelectedRow();
-				if(row<0)
-					return;
+				
+				if(row<0) return;
 
 				if(e.getClickCount()>0)
 				{
@@ -564,7 +563,6 @@ public class PnPort extends PnBase implements ActionListener{
 					callApi("selectPortDetailList", param);
 				}
 
-
 				if(e.getClickCount()>1)
 				{				
 					HashMap<String, Object> param = (HashMap<String, Object>) tableH.getValueAt(row);
@@ -578,7 +576,6 @@ public class PnPort extends PnBase implements ActionListener{
 						fnSearch();
 					}
 				}
-
 			}
 			catch(Exception ee)
 			{
@@ -587,7 +584,6 @@ public class PnPort extends PnBase implements ActionListener{
 			}
 		}
 	}
-
 
 	@Override
 	public void fnSearch() {
@@ -599,9 +595,9 @@ public class PnPort extends PnBase implements ActionListener{
 			param.put("area_code", cbxAreaCode.getSelectedItem());
 		}
 
-		if(cbxPortArea.getSelectedIndex()>0)
+		if(cbxAreaName.getSelectedIndex()>0)
 		{
-			param.put("port_area", cbxPortArea.getSelectedItem());
+			param.put("port_area", cbxAreaName.getSelectedItem());
 		}
 
 		String field = (String) cbxField.getSelectedItem();
@@ -629,31 +625,14 @@ public class PnPort extends PnBase implements ActionListener{
 	@Override
 	public void componentShown(ComponentEvent e) {
 
-		try {
-
-			initComboBox(cbxPortArea, areaService.getAreaListGroupByAreaName());
-
-			initComboBox(cbxAreaCode, areaService.getAreaListGroupByAreaCode());
-
-
-		} catch (Exception ee) {
-
-			JOptionPane.showMessageDialog(PnPort.this, ee.getMessage());
-			ee.printStackTrace();
-		}
-
 		if(isShowData) fnSearch();
 
 	}
 	private void initComboBox(JComboBox combox, List list)	
 	{
-		combox.removeAllItems();
-
 		combox.addItem("전체");
 
 		list.stream().forEach(item -> combox.addItem(item));
-
-
 	}
 	@Override
 	public void updateView() {
@@ -688,8 +667,20 @@ public class PnPort extends PnBase implements ActionListener{
 		else if("selectPortDetailList".equals(serviceId))
 		{
 			List data = (List )result.get("data");
+			
 			tableD.setResultData(data);
 
+		}
+		else if("pnPort.init".equals(serviceId))
+		{
+			List<String> araaCode =(List<String>) result.get("areaCode");
+			
+			List<String> araaName =(List<String>) result.get("areaName");
+			
+			initComboBox(cbxAreaName, araaName);
+			
+			initComboBox(cbxAreaCode, araaCode);
+			
 		}
 		else if("deletePort".equals(serviceId))
 		{

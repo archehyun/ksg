@@ -45,12 +45,12 @@ import mycomp.comp.MyTable;
  */
 @SuppressWarnings("serial")
 public class KSGTablePanel extends KSGPanel{ 
+	
 	public static final String INSERT="insert";
 
 	public static final String DELETE="delete";
 
 	public static final String UPDATE="update";
-
 
 	protected int total;
 
@@ -83,10 +83,11 @@ public class KSGTablePanel extends KSGPanel{
 	}
 
 	public KSGTablePanel() {
+		
 		super();
 
 		this.setLayout(new BorderLayout(5,5));
-//		table = new KSGAbstractTable();
+		
 		table = new KSGAbstractTable()
 		{
 			protected JTableHeader createDefaultTableHeader() {
@@ -172,31 +173,29 @@ public class KSGTablePanel extends KSGPanel{
 
 		butDelete = new KSGGradientButton("삭제");
 
-		//butUpdate = new JButton("수정");
-
-
-		//butInsert.setBackground(Color.BLUE);
-		//butInsert.setForeground(Color.white);
-
 		butInsert.setActionCommand(INSERT);
+		
 		butDelete.setActionCommand(DELETE);
-		//butUpdate.setActionCommand(UPDATE);
 
 		lblTotalCount = new JLabel("0");
+		
 		lblTotalCount.setForeground(Color.red);
 
-
 		pnControl.add(butInsert);
-		//pnControl.add(butUpdate);
+		
 		pnControl.add(butDelete);
 
 		pnTitle.add(lblTitle);
+		
 		pnTitle.add(lblTotalCount);
+		
 		pnTitle.add(new JLabel("건"));
 
 
 		pnMain.add(pnTitle,BorderLayout.LINE_START);
+		
 		pnMain.add(pnControl,BorderLayout.LINE_END);
+		
 		pnControl.setVisible(showControl);
 
 		return pnMain;
@@ -296,12 +295,10 @@ public class KSGTablePanel extends KSGPanel{
 		table.setComponentPopupMenu(popup);
 	}
 
-
 	public void  clearResult()
 	{
 		table.clearReslult();
 	}
-
 
 	@Override
 	public void createAndUpdateUI() {
@@ -311,8 +308,4 @@ public class KSGTablePanel extends KSGPanel{
 	public int[] getSelectedRows() {
 		return table.getSelectedRows();
 	}
-
-
-
-
 }

@@ -77,7 +77,6 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
-import com.ksg.service.CompanyService;
 import com.ksg.view.comp.KSGViewUtil;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.combobox.KSGComboBox;
@@ -123,6 +122,8 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 @Slf4j
 public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 {	
+	
+	
 	private static final String ACTION_SEARCH 		= "조회";
 
 	private static final String ACTION_UPDATE_DATE 	= "입력일자 수정";

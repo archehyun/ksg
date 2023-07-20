@@ -77,18 +77,27 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		KSGTableColumn Hcolumns[] = new KSGTableColumn[3];
 
 		Hcolumns[0] = new KSGTableColumn();
+		
 		Hcolumns[0].columnField = "code_field";
+		
 		Hcolumns[0].columnName = "코드ID";
+		
 		Hcolumns[0].size = 100;
 
 		Hcolumns[1] = new KSGTableColumn();
+		
 		Hcolumns[1].columnField = "code_name_kor";
+		
 		Hcolumns[1].columnName = "코드명";
+		
 		Hcolumns[1].size = 100;		
 
 		Hcolumns[2] = new KSGTableColumn();
+		
 		Hcolumns[2].columnField = "code_name";
+		
 		Hcolumns[2].columnName = "코드타입";
+		
 		Hcolumns[2].size = 100;
 
 		tableH.setColumnName(Hcolumns);
@@ -107,13 +116,19 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 
 		Dcolumns[0] = new KSGTableColumn();
+		
 		Dcolumns[0].columnField = "code_field";
+		
 		Dcolumns[0].columnName = "코드";
+		
 		Dcolumns[0].size = 200;
 
 		Dcolumns[1] = new KSGTableColumn();
+		
 		Dcolumns[1].columnField = "code_name_kor";
+		
 		Dcolumns[1].columnName = "코드명";
+		
 		Dcolumns[1].size = 200;	
 
 
@@ -207,7 +222,6 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 	class CommonCodeAction implements ActionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
@@ -233,11 +247,9 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 			else if(command.equals(KSGTablePanel.UPDATE))
 			{
-
 				int row = tableH.getSelectedRow();
 
-				if(row<0)
-					return;
+				if(row<0) return;
 
 				HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(row);
 
@@ -246,6 +258,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 				codeInsertPop.showPop(PnCommonCode.this);
 
 				switch (codeInsertPop.result) {
+				
 				case BasePop.OK:
 
 					fnSearch();
@@ -263,11 +276,13 @@ public class PnCommonCode extends PnBase implements ActionListener{
 			else if(command.equals(KSGTablePanel.DELETE))
 			{
 				int row = tableH.getSelectedRow();
-				if(row<0)
-					return;
+				
+				if(row<0)return;
+				
 				HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(row);
 
 				CommandMap param = new CommandMap();
+				
 				param.put("code_field", item.get("code_field"));
 
 				callApi("deleteCode", param);
@@ -282,15 +297,16 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 			String command = e.getActionCommand();
 
 			if(command.equals(KSGTablePanel.INSERT))
 			{
-				int row=tableH.getSelectedRow();
-				if(row<0)
-					return;
+				int tableHrow = tableH.getSelectedRow();
+				
+				if(tableHrow<0) return;
 
-				InsertCommonCodeDetailDialog codeInsertPop = new InsertCommonCodeDetailDialog((HashMap<String, Object>) tableH.getValueAt(row));
+				InsertCommonCodeDetailDialog codeInsertPop = new InsertCommonCodeDetailDialog((HashMap<String, Object>) tableH.getValueAt(tableHrow));
 
 				codeInsertPop.createAndUpdateUI();
 
@@ -299,28 +315,21 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 			else if(command.equals(KSGTablePanel.DELETE))
 			{
-				int row = tableD.getSelectedRow();
+				int tableDrow = tableD.getSelectedRow();
 
-				if(row<0) return;
+				if(tableDrow<0) return;
 
-				HashMap<String, Object> item=(HashMap<String, Object>) tableD.getValueAt(row);
-
+				HashMap<String, Object> item=(HashMap<String, Object>) tableD.getValueAt(tableDrow);
 
 				CommandMap param = new CommandMap();
 
 				param.put("code_field",item.get("code_field"));
+				
 				param.put("code_name",item.get("code_name"));
 
 				callApi("deleteCodeDetail", param);
-
-			}
-
-			else if(command.equals(KSGTablePanel.UPDATE))
-			{
-
 			}
 		}
-
 	}
 	class SelectionListner implements ListSelectionListener
 	{
@@ -348,6 +357,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		logger.info("select row:{}",row);
 
 		String CDENG = (String) tableH.getValueAt(tableH.getSelectedRow(), 2);
+		
 		fnSearchDetail(CDENG);
 	}
 
@@ -387,6 +397,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 			{
 				tableH.changeSelection(0,0,false,false);
 			}
+			
 			tableH.getSelectionModel().addListSelectionListener(selectionListner);
 		}
 		else if("deleteCode".equals(serviceId))

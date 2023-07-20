@@ -38,7 +38,7 @@ import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.comp.VesselInfo;
 
-public class SearchVesselDialog extends KSGDialog {
+public class SearchVesselNameDialog extends KSGDialog {
 
 	/**
 	 * 
@@ -69,7 +69,7 @@ public class SearchVesselDialog extends KSGDialog {
 
 	private VesselServiceV2 vesselService;
 
-	public SearchVesselDialog(String vesselName) {
+	public SearchVesselNameDialog(String vesselName) {
 		super();
 		this.vesselName=vesselName;
 
@@ -116,7 +116,7 @@ public class SearchVesselDialog extends KSGDialog {
 					
 					info.vesselName= (String) liVessel.getSelectedValue();
 
-					OPTION = SearchVesselDialog.OK_OPTION;	
+					OPTION = SearchVesselNameDialog.OK_OPTION;	
 				}else
 				{
 					info = new VesselInfo();
@@ -125,7 +125,7 @@ public class SearchVesselDialog extends KSGDialog {
 
 					info.vesselName= vesselName;
 
-					OPTION = SearchVesselDialog.OK_OPTION;
+					OPTION = SearchVesselNameDialog.OK_OPTION;
 				}
 
 
@@ -160,7 +160,7 @@ public class SearchVesselDialog extends KSGDialog {
 				int row = liVessel.getSelectedIndex();
 				if(row==-1)
 				{
-					JOptionPane.showMessageDialog(SearchVesselDialog.this, "선택된 선박명이 없습니다.");
+					JOptionPane.showMessageDialog(SearchVesselNameDialog.this, "선택된 선박명이 없습니다.");
 					return;
 				}
 				addVesselAbbrAction(vesselName, liVessel.getSelectedValue().toString());
@@ -316,13 +316,13 @@ public class SearchVesselDialog extends KSGDialog {
 				vessel.put("vessel_abbr", vessel_abbr);
 
 				vesselService.insertDetail(vessel);
-				JOptionPane.showMessageDialog(SearchVesselDialog.this, vessel_abbr+" 추가했습니다.");
+				JOptionPane.showMessageDialog(SearchVesselNameDialog.this, vessel_abbr+" 추가했습니다.");
 				txfSearch.setText("");
 			}
 			catch (AlreadyExistException e)
 			{
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(SearchVesselDialog.this, "선박명 약어가 존재합니다.");
+				JOptionPane.showMessageDialog(SearchVesselNameDialog.this, "선박명 약어가 존재합니다.");
 			}
 		} 
 

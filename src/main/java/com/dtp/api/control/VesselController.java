@@ -1,12 +1,17 @@
 package com.dtp.api.control;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.dtp.api.annotation.ControlMethod;
+import com.dtp.api.model.ExcelExport;
 import com.dtp.api.service.VesselService;
 import com.dtp.api.service.impl.CodeServiceImpl;
 import com.dtp.api.service.impl.VesselServiceImpl;
+import com.dtp.api.util.ExcelUtil;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.Code;
 import com.ksg.domain.Vessel;
@@ -49,7 +54,7 @@ public class VesselController extends AbstractController{
     @ControlMethod(serviceId = "selectVessel")
     public CommandMap selectByCondtion(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
 
         String vessel_name =(String) param.get("vessel_name");
         
@@ -75,6 +80,8 @@ public class VesselController extends AbstractController{
         model.put("success", true);
         
         model.put("data", resultArray);
+        
+        log.info("end");
 
         return model;
         
@@ -89,7 +96,7 @@ public class VesselController extends AbstractController{
     @ControlMethod(serviceId = "selectVesselDetailList")
     public CommandMap selectVesselDetailList(CommandMap param) throws Exception
     {
-    	log.info("param:{}",param);
+    	log.info("start:{}",param);
     	
     	String vesselName = (String) param.get("vessel_name");
     	
@@ -102,13 +109,15 @@ public class VesselController extends AbstractController{
                          .collect(Collectors.toList());
         
         model.put("data", resultArray);
+        
+        log.info("end");
 
         return model;
     }
     @ControlMethod(serviceId = "insertVessel")
     public CommandMap insertVessel(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
         
         String vessel_name 		= (String) param.get("vessel_name");
         
@@ -141,13 +150,15 @@ public class VesselController extends AbstractController{
         
         returnMap.put("data", result);
         
+        log.info("end");
+        
         return returnMap;
     }
     
     @ControlMethod(serviceId = "insertVesselDetail")
     public CommandMap insertVesselDetail(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
         
         String vessel_name 		= (String) param.get("vessel_name");
         
@@ -165,13 +176,15 @@ public class VesselController extends AbstractController{
         
         returnMap.put("data", result);
         
+        log.info("end");
+        
         return returnMap;
     }
 
     @ControlMethod(serviceId = "deleteVessel")
     public CommandMap deleteVessel(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
         
         String id = (String) param.get("vessel_name");
         
@@ -180,6 +193,8 @@ public class VesselController extends AbstractController{
         CommandMap returnMap = new CommandMap();
         
         returnMap.put("data", result);
+        
+        log.info("end");
 
         return returnMap;
     }
@@ -187,7 +202,7 @@ public class VesselController extends AbstractController{
     @ControlMethod(serviceId = "deleteVesselDetail")
     public CommandMap deleteVesselDetail(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
         
         String vessel_name = (String) param.get("vessel_name");
         
@@ -200,6 +215,8 @@ public class VesselController extends AbstractController{
         CommandMap returnMap = new CommandMap();
         
         returnMap.put("data", result);
+        
+        log.info("end");
 
         return returnMap;
     }
@@ -207,7 +224,7 @@ public class VesselController extends AbstractController{
     @ControlMethod(serviceId = "updateVessel")
     public CommandMap updateVessel(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
         
         String vessel_name = (String) param.get("vessel_name");
         
@@ -236,13 +253,15 @@ public class VesselController extends AbstractController{
         
         returnMap.put("data", result);
         
+        log.info("end");
+        
         return returnMap;
     }
 
     @ControlMethod(serviceId = "updateVesselDetail")
     public CommandMap updateVesselDetail(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
         
         int id = (int) param.get("id");
         
@@ -277,12 +296,16 @@ public class VesselController extends AbstractController{
         
         returnMap.put("data", result);
         
+        log.info("end");
+        
         return returnMap;
     }
     
     @ControlMethod(serviceId = "pnVessel.init")
     public CommandMap init(CommandMap param) throws Exception
     {
+    	log.info("start:{}",param);
+    	
 		Code codeParam = Code.builder().code_type((String) param.get("code_type")).build();
 
 		List<Code> result= codeService.selectCodeDetailListByCondition(codeParam);
@@ -294,10 +317,48 @@ public class VesselController extends AbstractController{
         CommandMap returnMap = new CommandMap();
 	  
         returnMap.put("data", resultArry);
+        
+        log.info("end");
       
         return returnMap;
-      
-   
     }
-
+    @ControlMethod(serviceId = "pnVessel.export")
+    public CommandMap export(CommandMap param) throws Exception
+    {
+    	log.info("start:{}",param);
+    	
+    	List<Vessel> vesselList=service.selectAll();
+    	
+    	List<Vessel> vesselDetailList=service.selectDetailAll();
+    	
+    	String column_vessel[]= {"vessel_name", "vessel_type", "vessel_mmsi", "vessel_company", "vessel_use", "input_date"};
+    	
+    	String column_vessel_abbr[]= {"vessel_name", "vessel_abbr", "input_date"};
+    	
+        List<CommandMap> vesselArray=(List<CommandMap>) vesselList.stream()
+                .map(o -> objectMapper.convertValue(o, CommandMap.class))
+                .collect(Collectors.toList());
+        
+        List<CommandMap> vesselAbbrArray=(List<CommandMap>) vesselDetailList.stream()
+                .map(o -> objectMapper.convertValue(o, CommandMap.class))
+                .collect(Collectors.toList());
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+        
+        String fileNameAndTime = String.format("%s_%s.xls", "vessel", dateFormat.format(new Date())) ;
+        
+        ArrayList<ExcelExport> exportList = new ArrayList<ExcelExport>();
+        
+        exportList.add(new ExcelExport("TB_VESSEL_H", column_vessel, vesselArray));
+        
+        exportList.add(new ExcelExport("TB_VESSEL_ABBR", column_vessel_abbr, vesselAbbrArray));
+    	
+    	ExcelUtil.exportData(fileNameAndTime,exportList);
+		
+        CommandMap returnMap = new CommandMap();
+        
+        log.info("end");
+      
+        return returnMap;
+    }
 }

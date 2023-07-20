@@ -178,7 +178,7 @@
 	</select>
 	
 	<select id="selectShipperTableListAllByCondition" resultMap="allTableMap" parameterClass="com.ksg.domain.ShippersTable">
-		SELECT 
+		SELECT /* selectShipperTableListAllByCondition */
 			A.table_id,
 			A.table_index,
 			CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse,
@@ -223,7 +223,7 @@
 	</select>
 	
 	<select id="selectShipperTableAllById" resultMap="allTableMap">
-		SELECT 
+		SELECT /* selectShipperTableAllById */
 			A.table_id,
 			A.table_index,
 			CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse,
@@ -257,7 +257,7 @@
 	</select>
 	
 	<select id="selectShipperTableListByCondition" resultClass="com.ksg.domain.ShippersTable" parameterClass="com.ksg.domain.ShippersTable">
-		SELECT    
+		SELECT  /* selectShipperTableListByCondition */  
 			A.table_id,	
 			A.table_index,
 			CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse    ,
@@ -316,7 +316,7 @@
 	</select>
 	
 	<select id="selectShipperTablePortListByID" resultClass="com.ksg.domain.TablePort">
-		SELECT * 
+		SELECT *  /* selectShipperTablePortListByID */
 		FROM TB_TABLE_PORTLIST 
 		WHERE table_id=#table_id#
 	
@@ -402,7 +402,9 @@
 	</select>
 
 	<select id="selectPortList" resultClass="java.util.HashMap">
-		select * from TB_TABLE_PORTLIST
+		SELECTR /* selectPortList */
+			* 
+		FROM TB_TABLE_PORTLIST
 		
 		<dynamic prepend="where">
 			<isNotNull property="port_type" prepend="and">

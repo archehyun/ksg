@@ -3,6 +3,7 @@ package com.ksg.workbench.shippertable.comp.render;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -65,7 +66,7 @@ public class DelActionPanel extends JPanel
 	{
 		jButton = new ActionButton();
 
-		jButton.setIcon( new javax.swing.ImageIcon(getClass().getResource("/com/ksg/view/comp/table/cell/delete.png")));
+		jButton.setIcon( new ImageIcon("images/delete.png"));
 
 		//			setBorder(BorderFactory.createEmptyBorder());
 		//			

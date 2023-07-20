@@ -111,6 +111,7 @@ public class ScheduleController extends AbstractController{
 		CommandMap result = new CommandMap();
 
 		List li  = service.selecteScheduleListMapByCondition(param);
+		
 		result.put("success", true);
 		result.put("master", li);
 
@@ -228,7 +229,7 @@ public class ScheduleController extends AbstractController{
 
 	public CommandMap selectInboundScheduleGroupList(CommandMap param) throws SQLException {
 
-		log.info("param:{}",param);
+		log.info("start:{}",param);
 
 		CommandMap result = (CommandMap) service.selectListMap(param);
 
@@ -357,7 +358,7 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "deleteSchedule")
 	public CommandMap deleteSchedule(CommandMap param) throws Exception
 	{
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		CommandMap returnMap = new CommandMap();
 		
@@ -367,13 +368,15 @@ public class ScheduleController extends AbstractController{
 		
 		returnMap.put("deleteCount",(result+b));
 		
+		log.info("end");
+		
 		return returnMap;
 	}
 
 	@ControlMethod(serviceId = "scheduleViewUpdate")
 	public CommandMap updateView(CommandMap param) throws Exception
 	{	
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		List<ShippersTable> tableDateTarget = tableService.selectTableAll();
 		
@@ -401,6 +404,45 @@ public class ScheduleController extends AbstractController{
 		returnMap.put("tableDatelist", tableDatelist);
 
 		returnMap.put("scheduleDateLists", scheduleDateLists);
+		
+		log.info("end");
+
+		return returnMap;
+
+	}
+	
+	@ControlMethod(serviceId = "scheduleCreateOptionDialog.fnSelectTableDate")
+	public CommandMap scheduleCreateOptionDialogInit(CommandMap param) throws Exception
+	{	
+		log.info("start:{}",param);
+		
+		String gubun = (String) param.get("gubun");
+		
+		List<ShippersTable> tableDateTarget = tableService.selectTableAll();
+		
+		List<String> tableDatelist =  tableDateTarget.stream()
+															.filter(shipperTable -> shipperTable.getGubun().equals(gubun) )
+															.filter(ShippersTable ->ShippersTable.getDate_isusse()!=null)
+															.map(ShippersTable ->
+															{
+																try {
+																	return KSGDateUtil.format(KSGDateUtil.toDate2(ShippersTable.getDate_isusse()));
+																	
+																} catch (ParseException e) {
+																	e.printStackTrace();
+																	return "error";
+																}
+															})
+															
+															.distinct()
+															.sorted(Comparator.reverseOrder())
+															.collect(Collectors.toList());
+		
+		CommandMap returnMap = new CommandMap();
+		
+		returnMap.put("tableDatelist", tableDatelist);
+		
+		log.info("end");
 
 		return returnMap;
 
@@ -409,15 +451,15 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "createSchedule")
 	public CommandMap scheduleCreate(CommandMap param) throws Exception
 	{	
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
 		
-		String inputDate= (String) param.get("inputDate");
-		
-		serviceManager.buildSchedule(inputDate);
+		serviceManager.buildSchedule();
 		
 		CommandMap returnMap = new CommandMap();
+		
+		log.info("end");
 		
 		return returnMap;
 	}
@@ -426,7 +468,7 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "createSchedule2")
 	public CommandMap scheduleCreate2(CommandMap param) throws Exception
 	{	
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		String table_date = (String) param.get("table_date");
 		
@@ -446,13 +488,15 @@ public class ScheduleController extends AbstractController{
 		
 		CommandMap returnMap = new CommandMap();
 		
+		log.info("end");
+		
 		return returnMap;
 	}
 	
 	@ControlMethod(serviceId = "schedulePrint")
 	public CommandMap schedulePrint(CommandMap param) throws Exception
 	{	
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		ScheduleManager scheduleManager = ScheduleManager.getInstance();
 		
@@ -531,6 +575,8 @@ public class ScheduleController extends AbstractController{
 		
 		CommandMap returnMap = new CommandMap();
 		
+		log.info("end");
+		
 		return returnMap;
 	}
 
@@ -556,7 +602,7 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "pnNormalByTree.init")
 	public CommandMap initView(CommandMap param) throws Exception
 	{	
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		List<AreaInfo> trgetList=areaService.selectAll();
 		
@@ -573,13 +619,15 @@ public class ScheduleController extends AbstractController{
 		
 		returnMap.put("inboundCodeMap", inboundCodeMap);
 		
+		log.info("end");
+		
 		return returnMap;
 	}
 	
 	@ControlMethod(serviceId = "pnNormal2.init")
 	public CommandMap pnNormal2Init(CommandMap param) throws Exception
 	{	
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		List<AreaInfo> areaList=areaService.selectAll();
 		
@@ -589,13 +637,15 @@ public class ScheduleController extends AbstractController{
 		
 		returnMap.put("areaList", areaList);
 		
+		log.info("end");
+		
 		return returnMap;
 	}
 	
 	@ControlMethod(serviceId = "pnNormal2.fnSearch")
 	public CommandMap pnNormalfnSearch(CommandMap param) throws Exception
 	{
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		CommandMap returnMap = new CommandMap();
 		
@@ -621,13 +671,15 @@ public class ScheduleController extends AbstractController{
 		
 		returnMap.put("data", result);
 		
+		log.info("end");
+		
 		return returnMap;
 	}
 	
 	@ControlMethod(serviceId = "pnInland2.fnSearch")
 	public CommandMap pnInland2FnSearch(CommandMap param) throws Exception
 	{
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		CommandMap returnMap = new CommandMap();
 		
@@ -652,6 +704,8 @@ public class ScheduleController extends AbstractController{
 		
 		returnMap.put("data", result);
 		
+		log.info("end");
+		
 		return returnMap;
 	}
 	
@@ -660,7 +714,7 @@ public class ScheduleController extends AbstractController{
 	@ControlMethod(serviceId = "pnNormalByTree.fnSearch")
 	public CommandMap fnSearch(CommandMap param) throws Exception
 	{
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		CommandMap returnMap = new CommandMap();
 		
@@ -749,15 +803,19 @@ public class ScheduleController extends AbstractController{
 				returnMap.put("inOutType","O");
 			}
 		}
+		log.info("end");
+		
 		return returnMap;
 	}
 	
+	
+//	
 	
 	
 	@ControlMethod(serviceId = "showScheduleDialog.init")
 	public CommandMap showScheduleDialogInit(CommandMap param) throws Exception
 	{	
-		log.info("param:{}", param);
+		log.info("start:{}",param);
 		
 		
 		String table_id =  (String) param.get("table_id");
@@ -767,6 +825,8 @@ public class ScheduleController extends AbstractController{
 		CommandMap returnMap = new CommandMap();
 		
 		returnMap.put("selectedTable", selectedTable);
+		
+		log.info("end");
 		
 		return returnMap;
 	}

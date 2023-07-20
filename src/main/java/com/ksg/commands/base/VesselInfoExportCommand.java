@@ -1,14 +1,11 @@
 package com.ksg.commands.base;
 
-import java.io.FileInputStream;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -23,9 +20,6 @@ import com.ksg.service.impl.VesselServiceImpl;
 
 @Deprecated
 public class VesselInfoExportCommand extends ExportCommand{
-	
-	
-	
 
 	private List<Vessel> vesselList;
 	
@@ -34,12 +28,12 @@ public class VesselInfoExportCommand extends ExportCommand{
 	public VesselInfoExportCommand(String fileName)  {
 		
 		super(fileName);
+		
 		sheetName = "vessel";
 	}
 	
 	public VesselInfoExportCommand(String sheetName,Workbook wb)  {		
 		super(sheetName, wb);
-		
 	}
 	
 	
@@ -108,6 +102,7 @@ public class VesselInfoExportCommand extends ExportCommand{
 			}
 			
 			fileWrite(wb);
+			
 			logger.info("vessel table 생성 완료");
 			
 		} catch (Exception e) {

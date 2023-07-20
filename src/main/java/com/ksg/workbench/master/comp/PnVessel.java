@@ -15,7 +15,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -41,7 +40,6 @@ import org.apache.poi.ss.usermodel.Cell;
 
 import com.dtp.api.control.VesselController;
 import com.dtp.api.service.impl.CodeServiceImpl;
-import com.ksg.commands.base.VesselInfoExportCommand;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
@@ -82,6 +80,7 @@ import mycomp.comp.MyTable;
  * @프로그램 설명 : 선박 관리 화면
 
  */
+@SuppressWarnings("serial")
 @Slf4j
 public class PnVessel extends PnBase implements ActionListener {
 
@@ -102,15 +101,7 @@ public class PnVessel extends PnBase implements ActionListener {
 	 */
 	private KSGPropertis 	propertis = KSGPropertis.getIntance();
 
-	private SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd");
-
-	private String[] columName = {STRING_VESSEL_NAME, STRING_VESSEL_MMSI,STRING_VESSEL_TYPE, STRING_VESSEL_COMPANY,"사용 유무", STRING_INPUTDATE};
-
-	private static final long serialVersionUID = 1L;
-
 	private JTextField txfSearch;
-
-	private JLabel lblTable;	
 
 	private JComboBox<KSGTableColumn> cbxField;
 
@@ -118,9 +109,9 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	private JComboBox cbxUse;// 사용 유무 선택
 
-	KSGTablePanel tableH;
+	private KSGTablePanel tableH;
 
-	SelectionListner selectionListner = new SelectionListner();
+	private SelectionListner selectionListner = new SelectionListner();
 
 	private VesselService vesselService = new VesselServiceImpl();
 
@@ -186,14 +177,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		{
 			public Object getValue(Object obj)
 			{
-				if((Integer)obj==0)
-				{
-					return "Y";
-				}
-				else {
-					return "N";
-
-				}				
+				return (Integer)obj==0?"Y":"N";							
 			}
 		};
 		columns[4].columnField = "vessel_use";
@@ -368,9 +352,9 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		String command = e.getActionCommand();
-		
+
 		if(command.equals(STRING_SEARCH))
 		{
 			fnSearch();
@@ -394,7 +378,6 @@ public class PnVessel extends PnBase implements ActionListener {
 			HashMap<String, Object> itemH = (HashMap<String, Object>) tableH.getValueAt(rowH);
 
 			HashMap<String, Object> itemD=(HashMap<String, Object>) tableD.getValueAt(rowD);
-
 
 			CommandMap param = new CommandMap();
 
@@ -442,22 +425,17 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	private void exportAction() throws SQLException
 	{
-
-		String fileName=JOptionPane.showInputDialog(KSGModelManager.getInstance().frame, "파일명을 입력 하세요");
-
-		// 파일 이름 생성
-		if(fileName==null||fileName.equals(""))
-		{
-			return;
-		}
-
-
-		// TODO VESSEL EXPORT 수정
-		VesselInfoExportCommand command = new VesselInfoExportCommand(fileName);
-		command.execute();
-
-
-
+//		String fileName=JOptionPane.showInputDialog(KSGModelManager.getInstance().frame, "파일명을 입력 하세요");
+//
+//		// 파일 이름 생성
+//		if(fileName==null||fileName.equals("")) return;
+//
+//		// TODO VESSEL EXPORT 수정
+//		VesselInfoExportCommand command = new VesselInfoExportCommand(fileName);
+//
+//		command.execute();
+		
+		callApi("pnVessel.export");
 	}
 
 
@@ -467,18 +445,21 @@ public class PnVessel extends PnBase implements ActionListener {
 	private void importAction()
 	{
 		JFileChooser fileChooser = new JFileChooser(propertis.getProperty("dataLocation"));
+
 		fileChooser.setMultiSelectionEnabled(true);
+
 		String[] pics = new String[] { ".xls"};
 
-		fileChooser.addChoosableFileFilter(new SimpleFileFilter(pics,
-				"Excel(*.xls)"));
+		fileChooser.addChoosableFileFilter(new SimpleFileFilter(pics, "Excel(*.xls)"));
 
-		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-		{
-			File selectedFile = fileChooser.getSelectedFile();
-			VesselImportDialog dialog = new VesselImportDialog(selectedFile);
-			dialog.createAndUpdateUI();
-		}
+		if (fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) return;
+
+		File selectedFile = fileChooser.getSelectedFile();
+
+		VesselImportDialog dialog = new VesselImportDialog(selectedFile);
+
+		dialog.createAndUpdateUI();
+
 
 	}
 	/**선박 사용 항목  가져오기
@@ -523,14 +504,14 @@ public class PnVessel extends PnBase implements ActionListener {
 		dialog.createAndUpdateUI();
 
 		switch (dialog.result) {
-		
+
 		case KSGDialog.SUCCESS:
-			
+
 			fnSearch();
-			
+
 			break;
 		case KSGDialog.FAILE:
-			
+
 			break;	
 
 		default:
@@ -542,7 +523,7 @@ public class PnVessel extends PnBase implements ActionListener {
 	private void deleteAllAction()
 	{
 		String result= JOptionPane.showInputDialog(KSGModelManager.getInstance().frame, "데이터를 삭제 하시려면 '삭제확인'을 입력 하십시요");
-		
+
 		if(result.equals("삭제확인"))
 		{
 			try {
@@ -550,7 +531,7 @@ public class PnVessel extends PnBase implements ActionListener {
 				vesselService.delete(new HashMap<String, Object>());
 
 				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "데이터를 삭제 했습니다.");
-				
+
 			} catch (SQLException e1) {
 
 				e1.printStackTrace();
@@ -563,6 +544,8 @@ public class PnVessel extends PnBase implements ActionListener {
 	 * 
 	 */
 	private void deleteVesselAction() {
+		
+		log.info("delete");
 
 		int row = tableH.getSelectedRow();
 
@@ -587,25 +570,20 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	public void fnSearch()
 	{
+		log.info("search");
+		
 		CommandMap param = new CommandMap();	
 
 		if(cbxVesselType.getSelectedIndex()>0)
 		{
 			KSGTableColumn comboItem =(KSGTableColumn) cbxVesselType.getSelectedItem();
+			
 			param.put("vessel_type", comboItem.columnField);
-
 		}
 
 		if(cbxUse.getSelectedIndex()>0)
 		{
-			if(cbxUse.getSelectedItem().equals("사용안함"))
-			{	
-				param.put("vessel_use", Vessel.NON_USE);
-			}
-			else
-			{
-				param.put("vessel_use", Vessel.USE);
-			}
+			param.put("vessel_use", cbxUse.getSelectedItem().equals("사용안함")?Vessel.NON_USE:Vessel.USE);
 		}
 
 		if(!"".equals(txfSearch.getText()))
@@ -614,12 +592,10 @@ public class PnVessel extends PnBase implements ActionListener {
 			KSGTableColumn col =(KSGTableColumn) cbxField.getSelectedItem();
 
 			param.put(col.columnField, txfSearch.getText());
-
 		}
+		
 		callApi("selectVessel", param);
 	}
-
-
 
 	private JComponent createVesselDetail()
 	{		
@@ -707,6 +683,7 @@ public class PnVessel extends PnBase implements ActionListener {
 
 		return pnMain;
 	}
+	
 	private JComponent addComp(String name, JComponent comp)
 	{
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
@@ -738,10 +715,8 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	class TableSelectListner extends MouseAdapter
 	{
-		KSGDialog dialog;
 		public void mouseClicked(MouseEvent e) 
 		{			
-
 			if(e.getClickCount()>1)
 			{
 				int row=tableH.getSelectedRow();
@@ -778,7 +753,6 @@ public class PnVessel extends PnBase implements ActionListener {
 
 			if(!e.getValueIsAdjusting())
 			{
-
 				int row=tableH.getSelectedRow();
 
 				if(row<0) return;
@@ -796,14 +770,18 @@ public class PnVessel extends PnBase implements ActionListener {
 				String input_date=(String) tableH.getValueAt(row, 5);
 
 				lblVesselName.setText(vessel_name);
+
 				lblVesselCompany.setText(vessel_company);
+
 				lblVesselType.setText(vessel_type);
+
 				lblVesselMMSI.setText(vessel_mmsi);
+
 				lblVesselUse.setText(vessel_use);
+
 				lblInputDate.setText(input_date);
 
 				fnSearchDetail(vessel_name);
-
 			}
 		}
 	}
@@ -818,6 +796,7 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	@Override
 	public void updateView() {
+
 		CommandMap result= this.getModel();
 
 		String serviceId=(String) result.get("serviceId");
@@ -888,6 +867,10 @@ public class PnVessel extends PnBase implements ActionListener {
 			}
 
 			if(isShowData) fnSearch();
+		}
+		else if("pnVessel.export".equals(serviceId))
+		{
+			NotificationManager.showNotification("파일을 생성했습니다.");
 		}
 	}
 }

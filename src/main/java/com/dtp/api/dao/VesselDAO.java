@@ -34,8 +34,8 @@ public class VesselDAO extends AbstractDAO{
 	
 	// -- select List -- //
 
-	public List<Vessel> selectAll() {
-		return null;
+	public List<Vessel> selectAll() throws SQLException {
+		return selectList("vessel.selectAll");
 	}
 	
 
@@ -87,6 +87,11 @@ public class VesselDAO extends AbstractDAO{
 
 	public Object insertVesselDetail(Vessel param) throws SQLException {
 		return insert("vessel.insertVesselDetail", param);		
+	}
+
+	public List<Vessel> selectDetailAll() throws SQLException {
+		// TODO Auto-generated method stub
+		return selectList("vessel.selectDetailAll");
 	}
 
 

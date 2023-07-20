@@ -9,8 +9,10 @@ import com.dtp.api.service.PortService;
 import com.dtp.api.service.impl.CodeServiceImpl;
 import com.dtp.api.service.impl.PortServiceImpl;
 import com.ksg.common.model.CommandMap;
+import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
+import com.ksg.domain.ScheduleData;
 import com.ksg.service.AreaService;
 import com.ksg.service.impl.AreaServiceImpl;
 
@@ -40,7 +42,7 @@ public class PortController  extends AbstractController{
     @ControlMethod(serviceId = "selectPort")
     public CommandMap selectByCondtion(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+        log.info("start:{}",param);
 
         String port_name = (String) param.get("port_name");
         
@@ -63,6 +65,8 @@ public class PortController  extends AbstractController{
                         .collect(Collectors.toList());
 
         model.put("data", resultArry);
+        
+        log.info("end");
 
         return model;
         
@@ -71,7 +75,7 @@ public class PortController  extends AbstractController{
     @ControlMethod(serviceId = "selectPortDetailList")
     public CommandMap selectPortDeatilListByPortName(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
 
         String port_name =(String) param.get("port_name");
         
@@ -86,6 +90,8 @@ public class PortController  extends AbstractController{
 					                        .collect(Collectors.toList());
 
         model.put("data", resultArry);
+        
+        log.info("end");
 
         return model;
         
@@ -93,7 +99,7 @@ public class PortController  extends AbstractController{
     @ControlMethod(serviceId = "insertPort")
     public CommandMap insertPort(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
         
         String port_name 		= (String) param.get("port_name");
         
@@ -119,13 +125,15 @@ public class PortController  extends AbstractController{
         
         returnMap.put("data", result);
         
+        log.info("end");
+        
         return returnMap;
     }
 
     @ControlMethod(serviceId = "insertPortDetail")
     public CommandMap insertPortDetail(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
         
         String port_name = (String) param.get("port_name");
         
@@ -142,13 +150,15 @@ public class PortController  extends AbstractController{
         
         returnMap.put("data", result);
         
+        log.info("end");
+        
         return returnMap;
     }
 
     @ControlMethod(serviceId = "deletePort")
     public CommandMap deletePort(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
         
         String port_name = (String) param.get("port_name");
         
@@ -157,6 +167,8 @@ public class PortController  extends AbstractController{
         CommandMap returnMap = new CommandMap();
         
         returnMap.put("data", result);
+        
+        log.info("end");
 
         return returnMap;
     }
@@ -164,8 +176,8 @@ public class PortController  extends AbstractController{
     @ControlMethod(serviceId = "deletePortDetail")
     public CommandMap deletePortDetail(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
-        
+    	log.info("start:{}",param);
+    	
         String port_name = (String) param.get("port_name");
         
         String port_abbr = (String) param.get("port_abbr");
@@ -178,6 +190,8 @@ public class PortController  extends AbstractController{
        int result =service.deletePortDetail(portParam);
         
         CommandMap returnMap = new CommandMap();
+        
+        log.info("end");
 
         return returnMap;
     }
@@ -185,7 +199,7 @@ public class PortController  extends AbstractController{
     @ControlMethod(serviceId = "updatePort")
     public CommandMap updatePort(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
         
 //        int id = (int) param.get("id");
         
@@ -214,13 +228,16 @@ public class PortController  extends AbstractController{
         
         returnMap.put("data", result);
         
+        log.info("end");
+        
         return returnMap;
     }
 
     @ControlMethod(serviceId = "updatePortDetail")
     public CommandMap updatePortDetail(CommandMap param) throws Exception
     {
-        log.info("param:{}",param);
+    	log.info("start:{}",param);
+        
         int id 					= (int) param.get("id");
         
         String port_name 		= (String) param.get("port_name");
@@ -248,17 +265,47 @@ public class PortController  extends AbstractController{
         
         returnMap.put("data", result);
         
+        log.info("end");
+        
         return returnMap;
     }
     
     @ControlMethod(serviceId = "portDialog.init")
     public CommandMap dialogInit(CommandMap param) throws Exception
     {
+    	log.info("start:{}",param);
+    	
     	CommandMap returnMap = new CommandMap();
     	
     	List<CommandMap> areaMap = areaService.selectAreaInfoList();
 		
 		returnMap.put("areaMap", areaMap);
+		
+		log.info("end");
+		
+    	return returnMap;
+    }
+    
+    @ControlMethod(serviceId = "pnPort.init")
+    public CommandMap pnPortInit(CommandMap param) throws Exception
+    {
+    	CommandMap returnMap = new CommandMap();
+    	
+    	List<AreaInfo> areaList = areaService.selectAll();
+    	
+		List<String> areaCode=areaList.stream().map(AreaInfo::getArea_code)
+				.distinct()
+				.collect(Collectors.toList());
+		
+		List<String> areaName=areaList.stream().map(AreaInfo::getArea_name)
+				.distinct()
+				.collect(Collectors.toList());
+    	
+		returnMap.put("areaCode", areaCode);
+		
+		returnMap.put("areaName", areaName);
+		
+		log.info("end");
 		
     	return returnMap;
     }
@@ -266,8 +313,9 @@ public class PortController  extends AbstractController{
     @ControlMethod(serviceId = "searchPortDialog.init")
     public CommandMap searchPortDialogInit(CommandMap param) throws Exception
     {
-    	CommandMap returnMap = new CommandMap();
+    	log.info("start:{}",param);
     	
+    	CommandMap returnMap = new CommandMap();
     	
     	Code codeParam = Code.builder().code_type("port_exception").build();
 		
@@ -282,12 +330,16 @@ public class PortController  extends AbstractController{
 		
 		returnMap.put("portExceptionList", portExceptionList);
 		
+		log.info("end");
+		
     	return returnMap;
     }
     
     @ControlMethod(serviceId = "searchPortDialog.searchPortException")
     public CommandMap ssearchPortException(CommandMap param) throws Exception
     {
+    	log.info("start:{}",param);
+    	
     	CommandMap returnMap = new CommandMap();
     	
     	String code_type = (String) param.get("code_type");
@@ -307,12 +359,16 @@ public class PortController  extends AbstractController{
 		
 		returnMap.put("portExceptionList", portExceptionList);
 		
+		log.info("end");
+		
     	return returnMap;
     }
     
     @ControlMethod(serviceId = "searchPortDialog.searchPort")
     public CommandMap ssearchPort(CommandMap param) throws Exception
     {
+    	log.info("start:{}",param);
+    	
     	CommandMap returnMap = new CommandMap();
     	
     	String port_name = (String) param.get("port_name");
@@ -330,6 +386,8 @@ public class PortController  extends AbstractController{
         
 		
 		returnMap.put("portList", portExceptionList);
+		
+		log.info("end");
 		
     	return returnMap;
     }

@@ -46,7 +46,7 @@ public class CodeController extends AbstractController{
 	@ControlMethod(serviceId = "selectCodeList")
     public CommandMap selectByCondtion(CommandMap param) throws Exception
     {
-		log.debug("param:{}", param);
+		log.info("start:{}", param);
 
 		Code codeParam = Code.builder()
 							.code_name((String) param.get("code_name"))
@@ -65,6 +65,8 @@ public class CodeController extends AbstractController{
         model.put("success", true);
         
         model.put("data", result);
+        
+        log.info("end");
 		
 		return model;
     }
@@ -72,7 +74,7 @@ public class CodeController extends AbstractController{
 	@ControlMethod(serviceId = "selectCodeDetailList")
     public CommandMap selectDetailListByCondtion(CommandMap param) throws Exception
     {
-		log.debug("param:{}", param);
+		log.info("start:{}", param);
 		
 		logger.info("param:{}", param);
 
@@ -92,6 +94,8 @@ public class CodeController extends AbstractController{
         model.put("success", true);
         
         model.put("data", result);
+        
+        log.info("end");
 		
 		return model;
     }
@@ -99,6 +103,8 @@ public class CodeController extends AbstractController{
 	@ControlMethod(serviceId = "insertCode")
     public CommandMap insertCode(CommandMap param) throws Exception
     {	
+		log.info("start:{}", param);
+		
 		Code codeParam = Code.builder()
 							.cd_id((String) param.get("cd_id"))
 							.cd_nm((String) param.get("cd_nm"))
@@ -111,6 +117,8 @@ public class CodeController extends AbstractController{
 		CommandMap model = new CommandMap();
 		
         model.put("success", true);
+        
+        log.info("end");
 		
 		return model;
     }
@@ -118,6 +126,8 @@ public class CodeController extends AbstractController{
 	@ControlMethod(serviceId = "insertCodeDetail")
     public CommandMap insertCodeDetail(CommandMap param) throws Exception
     {	
+		log.info("start:{}", param);
+		
 		Code codeParam = Code.builder()
 							.code_name((String) param.get("code_name"))
 							.code_type((String) param.get("code_type"))
@@ -130,6 +140,8 @@ public class CodeController extends AbstractController{
 		CommandMap model = new CommandMap();
 		
         model.put("success", true);
+        
+        log.info("end");
 		
 		return model;
     }
@@ -137,17 +149,15 @@ public class CodeController extends AbstractController{
 	@ControlMethod(serviceId = "updateCode")
     public CommandMap updateCode(CommandMap param) throws Exception
     {
-		log.debug("param:{}", param);
-		
-		logger.info("param:{}", param);
+		log.info("start:{}", param);
 		
 		String code_field = (String) param.get("code_field");
 		
-//		service.deleteCode(code_field);
-								
 		CommandMap model = new CommandMap();
 		
 		model.put("code_field", code_field);
+		
+		log.info("end");
 		
 		return model;
     }
@@ -155,9 +165,7 @@ public class CodeController extends AbstractController{
 	@ControlMethod(serviceId = "deleteCode")
     public CommandMap deleteCode(CommandMap param) throws Exception
     {
-		log.debug("param:{}", param);
-		
-		logger.info("param:{}", param);
+		log.info("start:{}", param);
 		
 		String code_field = (String) param.get("code_field");
 		
@@ -167,15 +175,15 @@ public class CodeController extends AbstractController{
 		
 		model.put("code_field", code_field);
 		
+		log.info("end");
+		
 		return model;
     }
 	
 	@ControlMethod(serviceId = "deleteCodeDetail")
     public CommandMap deleteCodeDetail(CommandMap param) throws Exception
     {
-		log.debug("param:{}", param);
-		
-		logger.info("param:{}", param);
+		log.info("start:{}", param);
 		
 		String code_name= (String) param.get("code_name");
 		
@@ -195,6 +203,8 @@ public class CodeController extends AbstractController{
 		model.put("code_name", code_name);
 		
 		model.put("code_field", code_field);
+		
+		log.info("end");
 		
 		return model;
     }

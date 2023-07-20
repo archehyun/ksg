@@ -63,16 +63,28 @@
 				vessel_use=#vessel_use#
 				</isGreaterThan>
 			</dynamic>
-
-
 </sql>
 <!-- select -->
 
 	<select id="selectAll" resultClass="com.ksg.domain.Vessel">
-		select * FROM TB_VESSEL_H
+		SELECT /* selectAll */ 
+			vessel_name
+			,vessel_use
+			,vessel_type
+			,vessel_mmsi
+			,vessel_company
+			,input_date 
+		FROM TB_VESSEL_H
 		
 	</select>
-
+	
+	<select id="selectDetailAll" resultClass="com.ksg.domain.Vessel">
+		SELECT 	/* selectDetailAll */
+				vessel_name,
+				vessel_abbr,
+				input_date			
+		FROM TB_VESSEL_ABBR
+	</select>
 
 	<select id="selectVesselList" resultClass="java.util.HashMap">
 	
@@ -309,7 +321,6 @@
 		
 		)values
 		(
-			
 			#vessel_name#,
 			#vessel_use#,
 			#vessel_mmsi#,
@@ -322,9 +333,6 @@
 		    <isNull property="input_date">
 		        getdate()
 		    </isNull>
-			
-			
-			
 		);
 	</insert>
 	
