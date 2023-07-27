@@ -1,4 +1,4 @@
-package com.dtp.api.schedule.joint.print.route;
+package com.ksg.schedule.logic.print;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
+import com.dtp.api.schedule.joint.print.route.AbstractRouteSchedulePrint;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
@@ -25,6 +26,8 @@ import com.ksg.schedule.logic.route.GroupVessel;
 import com.ksg.schedule.logic.route.PortDateUtil;
 import com.ksg.schedule.logic.route.PortScheduleInfo;
 import com.ksg.schedule.logic.route.RouteScheduleUtil;
+import com.ksg.service.ScheduleSubService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,6 +60,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class RouteScheduleJointV1 extends AbstractRouteSchedulePrint{
+	
+	protected ScheduleSubService scheduleService	= new ScheduleServiceImpl();
 
 	/**
 	 * @설명 최상위 그룹

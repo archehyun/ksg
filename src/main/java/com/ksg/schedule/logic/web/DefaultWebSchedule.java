@@ -46,6 +46,7 @@ import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.TableService;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
@@ -151,6 +152,8 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 	private String inlnad_date;
 
 	private BaseService baseService;
+	
+	protected TableService tableService;
 
 	private void init(int format_type) throws SQLException {
 

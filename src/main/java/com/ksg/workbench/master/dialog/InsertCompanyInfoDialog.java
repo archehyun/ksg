@@ -13,7 +13,6 @@ package com.ksg.workbench.master.dialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 
@@ -21,17 +20,13 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.dtp.api.control.CompanyController;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.service.CompanyService;
-import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -59,7 +54,6 @@ public class InsertCompanyInfoDialog extends MainTypeDialog{
 	 * 
 	 */
 	
-	
 	private static final long serialVersionUID = 1L;
 	public static final int UPDATE=1;
 	public static  final int INSERT=0;
@@ -78,12 +72,10 @@ public class InsertCompanyInfoDialog extends MainTypeDialog{
 	private String agent_name;
 	private String agent_abbr;
 	
-	CompanyService service;
 	
 	public InsertCompanyInfoDialog(BaseInfoUI baseInfoUI) {
-		super(baseInfoUI);
 		
-//		service = new CompanyServiceImpl();
+		super(baseInfoUI);
 		
 		this.setController(new CompanyController());
 		

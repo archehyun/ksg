@@ -2,11 +2,8 @@ package com.ksg.schedule.logic.print;
 
 import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 import com.dtp.api.schedule.joint.print.SchedulePrintParam;
-import com.dtp.api.schedule.joint.print.inbound.InboundScheduleJoint;
 import com.dtp.api.schedule.joint.print.inbound.InboundSchedulePrintFile;
 import com.dtp.api.schedule.joint.print.outbound.OutboundSchedulePrintFile;
-import com.dtp.api.schedule.joint.print.outbound.OutboundSchedulePrintV2;
-import com.dtp.api.schedule.joint.print.route.RouteScheduleJointV1;
 import com.dtp.api.schedule.joint.print.route.RouteSchedulePrintFile;
 import com.ksg.common.model.CommandMap;
 

@@ -55,13 +55,9 @@ import com.ksg.workbench.common.dialog.MainTypeDialog;
  * @author 박창현
  *
  */
+@SuppressWarnings("serial")
 public class UpdatePortInfoDialog extends MainTypeDialog
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	private HashMap<String, Object> param;
 
 	private JTextField txfPort_name;
@@ -139,8 +135,6 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 
 		this.addComp(buildControl(),BorderLayout.SOUTH);
 		
-//		this.setSize(400, 350);
-
 		ViewUtil.center(this, true);
 
 		this.setResizable(false);
@@ -174,7 +168,9 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 		Box area = Box.createHorizontalBox();
 		
 		area.add(txfArea_code);
+		
 		area.add(Box.createHorizontalStrut(25));
+		
 		area.add(butSearchCode);
 
 		pnCenter.add(createFormItem(area, "지역코드"));
@@ -462,7 +458,6 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 	public void updateView() {
 
 		CommandMap resultMap= this.getModel();
-
 
 		String serviceId=(String) resultMap.get("serviceId");
 

@@ -26,7 +26,6 @@ import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -87,6 +86,8 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 
 	private JCheckBox cbxMMSICheck;
 
+	private KSGGradientButton butSearchCompany;
+
 	public UpdateVesselInfoDialog(HashMap<String, Object> item) {
 		super();
 
@@ -100,22 +101,7 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 	}
 	public void createAndUpdateUI() 
 	{
-//		this.setModal(true);			
-//
-//		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
-//
-//		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-//
-//		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-//
-//
-//		this.pack();
-//
-//		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
-//
-//		this.setResizable(false);
-//
-//		this.setVisible(true);
+		this.initComp();
 		
 		this.setModal(true);
 
@@ -130,37 +116,9 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 		this.setResizable(false);
 
 		this.setVisible(true);
-		
-		
-		
 	}
 
-	private KSGPanel buildTitle() {
-		KSGPanel pnTitle = new KSGPanel();
-
-		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		pnTitle.setBackground(Color.white);
-
-		LABEL ="선박 명: ";
-
-		LABEL +=info.get("vessel_name");
-
-		vesselName = (String) info.get("vessel_name");
-
-		JLabel label = new JLabel(LABEL);
-
-		label.setFont(new Font("돋움",0,16));
-
-		pnTitle.add(label);
-
-		return pnTitle;
-	}
-
-	private KSGPanel buildCenter()
-	{	
-		// initcomp
-
+	private void initComp() {
 		txfCompanyName = new JTextField(20);
 
 		txfCompanyName.setEditable(false);
@@ -212,9 +170,8 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 				}
 			}
 		});
-
-
-		KSGGradientButton butSearchCompany = new KSGGradientButton("조회");
+		
+		butSearchCompany = new KSGGradientButton("조회");
 
 		butSearchCompany.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
@@ -226,7 +183,32 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 			}
 
 		});
+		
+	}
+//	private KSGPanel buildTitle() {
+//		KSGPanel pnTitle = new KSGPanel();
+//
+//		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
+//
+//		pnTitle.setBackground(Color.white);
+//
+//		LABEL ="선박 명: ";
+//
+//		LABEL +=info.get("vessel_name");
+//
+//		vesselName = (String) info.get("vessel_name");
+//
+//		JLabel label = new JLabel(LABEL);
+//
+//		label.setFont(new Font("돋움",0,16));
+//
+//		pnTitle.add(label);
+//
+//		return pnTitle;
+//	}
 
+	private KSGPanel buildCenter()
+	{	
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 
 		pnCenter.add(createFormItem(cbxConType, "선박 타입"));

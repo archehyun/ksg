@@ -23,7 +23,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -92,10 +91,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 	private JButton butBuild;
 
-	private SimpleDateFormat toDateformat = new SimpleDateFormat("yyyy.mm.ss");
-
-	private SimpleDateFormat consoleDateformat = new SimpleDateFormat("yyyy-mm-ss");
-
 	private KSGPanel pnConsoleOption;
 
 	private JRadioButton optPage;
@@ -112,7 +107,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 	private CardLayout optionLayout;
 
-	private KSGCheckBox cbxNew,cbxInboundSchedule,cbxOutboundSchedule,cbxRouteSchedule;
+	private KSGCheckBox cbxNew, cbxInboundSchedule, cbxOutboundSchedule, cbxRouteSchedule;
 
 	private JComboBox cbxRouteLogic;
 
@@ -142,6 +137,8 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		callApi("scheduleViewUpdate");
 	}
+	
+	
 
 	/**
 	 *@설명 화면 생성 및 업데이트 
@@ -160,6 +157,7 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 	}
 
 	private void initComp() {
+		
 		butPrint = new JButton("파일 출력 (P)");
 
 		butPrint.setActionCommand("파일 출력");
@@ -251,6 +249,28 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		butUpdate = new KSGGradientButton("갱신");
 
 		butUpdate.addActionListener(this);
+		
+		optPage 		= new KSGRadioButton("Page",true);
+
+		optCFS 			= new KSGRadioButton("CFS");
+
+		ButtonGroup bg 	= new ButtonGroup();
+
+		bg.add(optPage);
+
+		bg.add(optCFS);
+		
+		optDate = new KSGRadioButton("날짜",true);
+
+		optVessel = new KSGRadioButton("선박");
+
+		cbxNew = new KSGCheckBox("신규 방식");		
+
+		ButtonGroup bg2 = new ButtonGroup();
+
+		bg2.add(optDate);
+		
+		bg2.add(optVessel);
 
 
 	}
@@ -272,16 +292,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnTableDateModelSouth.add(pnTableDateModelSouthPadding,BorderLayout.SOUTH);
 
 		KSGPanel pnDateMain = new KSGPanel(new BorderLayout());
-		//
-		//		KSGPanel pnDate = new KSGPanel(new BorderLayout(5,5));
-		//
-		//		pnDate.setBorder(BorderFactory.createEmptyBorder(5,0,5,0));
-		//
-		//		pnDate.add(new JLabel("기준 일자"), BorderLayout.WEST);
-		//
-		//		pnDate.add(cbxTableDateList);
-		//
-		//		pnDate.add(butUpdate,BorderLayout.EAST);
 
 		GridLayout butlayout = new GridLayout(0,1);
 
@@ -293,10 +303,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnDateButton.setPreferredSize(new Dimension(190,80));
 
 		pnDateButton.add(butBuild);
-
-		//		pnDateButton.add(butDelete);
-
-		//		pnDateMain.add(pnDate);
 
 		pnDateMain.add(pnDateButton,BorderLayout.SOUTH);
 		
@@ -427,16 +433,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		pnConsoleOption.setBorder(BorderFactory.createTitledBorder("출력 항목"));
 
-		optPage = new KSGRadioButton("Page",true);
-
-		optCFS = new KSGRadioButton("CFS");
-
-		ButtonGroup bg = new ButtonGroup();
-
-		bg.add(optPage);
-
-		bg.add(optCFS);		
-
 		pnConsoleOption.add(new JLabel("콘솔 출력:"));
 
 		pnConsoleOption.add(optPage);
@@ -459,11 +455,11 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnNormalSelectionOption.setBorder(BorderFactory.createTitledBorder("스케줄 생성 여부"));
 
 
-		KSGPanel pnOutboundScheduleOption = new KSGPanel(new GridLayout(1,0));
+		KSGPanel pnOutboundScheduleOption 	= new KSGPanel(new GridLayout(1,0));
 
-		KSGPanel pnRouteScheduleOption = new KSGPanel(new GridLayout(1,0));
+		KSGPanel pnRouteScheduleOption 		= new KSGPanel(new GridLayout(1,0));
 
-		KSGPanel pnInboundScheduleOption = new KSGPanel(new GridLayout(1,0));
+		KSGPanel pnInboundScheduleOption 	= new KSGPanel(new GridLayout(1,0));
 
 
 		pnRouteScheduleOption.add(cbxRouteSchedule);
@@ -485,22 +481,11 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		pnNormalSelectionOption.add(pnInboundScheduleOption);
 
 		pnNormalSelectionOption.add(pnRouteScheduleOption);
+		
 
 		pnNormalRouteOption = new KSGPanel(new FlowLayout());
 
 		pnNormalRouteOption.setBorder(BorderFactory.createTitledBorder("항로별 정렬 기준"));
-		
-
-		optDate = new KSGRadioButton("날짜",true);
-
-		optVessel = new KSGRadioButton("선박");
-
-		cbxNew = new KSGCheckBox("신규 방식");		
-
-		ButtonGroup bg2 = new ButtonGroup();
-
-		bg2.add(optDate);
-		bg2.add(optVessel);
 
 		pnNormalRouteOption.add(optDate);
 
@@ -548,7 +533,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		tabPane.add(pnInland2, "INLAND");
 
 		pnMain.add(tabPane);
-
 
 		return pnMain;
 	}

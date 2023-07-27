@@ -22,6 +22,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleSubService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 
 
 /**
@@ -51,7 +53,7 @@ public class InlnandScheduleJoint extends AbstractSchedulePrint{
 	private String TAG_BODY_AGENT_DATE;
 	private String TAG_BODY_AGENT_BODY;
 	private BaseService baseService;
-	
+	protected ScheduleSubService scheduleService	= new ScheduleServiceImpl();
 	/**
 	 * @param option
 	 * @throws SQLException

@@ -123,17 +123,17 @@ public class InboundNodeManager extends AbstractNodeManager{
 	{	
 		DefaultMutableTreeNode root = new AreaTreeNode("AREA");
 		
-		inboundScheduleMap=(Map<String, Map<String, List<ScheduleData>>>) areaList.get("inboundScheduleMap");
+		inboundScheduleMap 	= (Map<String, Map<String, List<ScheduleData>>>) areaList.get("inboundScheduleMap");
 		
-		isAddValidate = 			(boolean) areaList.get("isAddValidate");
+		isAddValidate 		= (boolean) areaList.get("isAddValidate");
 		
-		vesselMap=(Map<String, Vessel>) areaList.get("vesselMap");
+		vesselMap			= (Map<String, Vessel>) areaList.get("vesselMap");
 		
-		portMap=(Map<String, PortInfo>) areaList.get("portMap");
+		portMap				= (Map<String, PortInfo>) areaList.get("portMap");
 		
 		inboundScheduleRule = new InboundScheduleRule(vesselMap);
 		
-		Object[] mapkey = inboundScheduleMap.keySet().toArray();
+		Object[] mapkey 	= inboundScheduleMap.keySet().toArray();
 		
 		Arrays.sort(mapkey);
 		

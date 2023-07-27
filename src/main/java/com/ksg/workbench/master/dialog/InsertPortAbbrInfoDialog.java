@@ -46,8 +46,6 @@ public class InsertPortAbbrInfoDialog extends MainTypeDialog {
 
 	private String port_name,port_abbr="";
 
-
-
 	public InsertPortAbbrInfoDialog(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
 
@@ -63,7 +61,6 @@ public class InsertPortAbbrInfoDialog extends MainTypeDialog {
 		this(baseInfoUI);
 
 		this.port_name =port_name;
-
 	}
 
 	public void createAndUpdateUI() {
@@ -88,10 +85,12 @@ public class InsertPortAbbrInfoDialog extends MainTypeDialog {
 	}
 
 	private void initComp() {
-		txfPortAbbr = new JTextField(20);
-		txfPortName = new JTextField(20);
-		txfPortName.setEditable(false);
 		
+		txfPortAbbr = new JTextField(20);
+		
+		txfPortName = new JTextField(20);
+		
+		txfPortName.setEditable(false);
 	}
 
 	public KSGPanel buildCenter() {
@@ -110,7 +109,9 @@ public class InsertPortAbbrInfoDialog extends MainTypeDialog {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
 		String command = e.getActionCommand();
+		
 		if(command.equals("¿˙¿Â"))
 		{
 			if(txfPortAbbr.getText().equals(""))

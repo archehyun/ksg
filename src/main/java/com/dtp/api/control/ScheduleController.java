@@ -544,6 +544,8 @@ public class ScheduleController extends AbstractController{
 																.filter(o->o.getInOutType().equals("I"))
 																.collect(Collectors.toList());
 			
+			List<Code> fromPortList = codeService.selectCodeDetailListByCondition(Code.builder().code_type("fromPort").build());
+			
 			
 			Map<String, Map<String, List<ScheduleData>>> inboundScheduleMap = inboundScheduleList.stream().collect(
 							Collectors.groupingBy(ScheduleData::getFromPort,
@@ -567,6 +569,8 @@ public class ScheduleController extends AbstractController{
 			param.put("routeScheduleMap", routeScheduleMap);
 			
 			param.put("portMap", portMap);
+			
+			param.put("fromPortList", fromPortList);
 			
 			param.put("vesselMap", vesselMap);
 			

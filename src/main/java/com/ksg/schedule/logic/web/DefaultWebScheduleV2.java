@@ -38,8 +38,10 @@ import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.SchedulePrint;
+import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.TableService;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
@@ -127,6 +129,10 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 	private String[] inlandDates;
 
 	private int inlandPortIndexLists[];
+	
+	protected TableService tableService;
+	
+	protected ADVService advService;
 
 	private BaseService baseService;
 

@@ -55,9 +55,13 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 	private SelectionListner selectionListner = new SelectionListner();
 
+	private KSGGradientButton butSearch;
+
 	public PnCommonCode(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
+		
+		this.initComp();
 
 		this.setController(new CodeController());
 
@@ -66,6 +70,17 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		this.addComponentListener(this);
 
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+	}
+
+	private void initComp() {
+		txfCodeName = new JTextField(10);
+		
+		butSearch = new KSGGradientButton("조회", "images/search3.png");
+
+		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		butSearch.addActionListener(this);
+		
 	}
 
 	private Component createCenter() {
@@ -158,19 +173,11 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 	private KSGPanel createSerch()
 	{
-		txfCodeName = new JTextField(10);		
-
 		KSGPanel pnSearchAndCount = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		pnSearchAndCount.add(new JLabel("코드명:"));
 
 		pnSearchAndCount.add(txfCodeName);
-
-		KSGGradientButton butSearch = new KSGGradientButton("조회", "images/search3.png");
-
-		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
-
-		butSearch.addActionListener(this);
 
 		pnSearchAndCount.add(butSearch);
 
@@ -233,14 +240,16 @@ public class PnCommonCode extends PnBase implements ActionListener{
 				codeInsertPop.createAndUpdateUI();
 
 				switch (codeInsertPop.result) {
+				
 				case BasePop.OK:
+					
 					fnSearch();
+					
 					break;
 				case BasePop.CANCEL:					
 					break;	
 
 				default:
-					//fnSearch();
 					break;
 				}
 			}

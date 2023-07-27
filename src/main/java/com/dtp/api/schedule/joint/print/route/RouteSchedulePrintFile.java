@@ -1,5 +1,6 @@
 package com.dtp.api.schedule.joint.print.route;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,10 +14,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.dtp.api.schedule.comparator.DateComparator;
 import com.dtp.api.schedule.comparator.VesselComparator;
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 import com.dtp.api.schedule.joint.print.PrintAble;
 import com.dtp.api.schedule.joint.print.SchedulePrintParam;
 import com.ksg.commands.ScheduleExecute;
 import com.ksg.common.model.CommandMap;
+import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
@@ -37,7 +40,7 @@ import com.ksg.schedule.logic.print.ScheduleJointError;
 
   * @프로그램 설명 : 라우트 스케줄 출력
  */
-public class RouteSchedulePrintFile extends AbstractRouteSchedulePrint implements RouteJointSubject, PrintAble{
+public class RouteSchedulePrintFile extends AbstractSchedulePrint implements RouteJointSubject, PrintAble{
 	
 	
 	private RouteJoint routeJoint;
@@ -48,12 +51,7 @@ public class RouteSchedulePrintFile extends AbstractRouteSchedulePrint implement
 	
 	private int orderBy;
 	
-	private Map<String, Map<String, List<ScheduleData>>> routeScheduleMap;
-
-	public RouteSchedulePrintFile(ShippersTable op, int orderBy) throws Exception {
-		
-		super(op);
-	}
+	private Map<String, Map<String, List<ScheduleData>>> routeScheduleMap;	
 
 	public RouteSchedulePrintFile(List<ScheduleData> scheduleList, int orderBy) throws Exception {
 		super();
@@ -86,11 +84,47 @@ public class RouteSchedulePrintFile extends AbstractRouteSchedulePrint implement
 	public RouteSchedulePrintFile() throws Exception {
 		super();
 	}
+	
+	
+	protected String WORLD_B="";
+
+	protected String WORLD_E="";
+
+	protected String WORLD_F="";
+
+	protected String WORLD_INPORT="";
+
+	protected String WORLD_OUTPORT="";
+
+	protected String WORLD_VERSION1="";
+
+	protected String WORLD_VERSION2="";
+
+	protected String WORLD_VERSION3="";
+	
+	protected String INCODE_KEY="";
+	
+	protected ShippersTable op;
+	
+	public static final int ORDER_BY_DATE=1;
+	
+	public static final int ORDER_BY_VESSEL=2;
+	
+	public static final String OUTBOUND = "O";
+	
+	
+	protected String errorOutPortfileName;
+	
+	protected String commonInPortfileName;
+	
+	protected FileWriter fw,errorOutfw,commonInfw;
+	
+	SimpleDateFormat dateFormat =new SimpleDateFormat("yyyyMMddHHmmss");
+	
+	protected List<ScheduleData> scheduleList;
 
 	@Override
 	public int execute() throws Exception {
-		
-		
 		try
 		{
 			logger.info("인바운드 스케줄 프린트 시작");
@@ -123,8 +157,6 @@ public class RouteSchedulePrintFile extends AbstractRouteSchedulePrint implement
 			close();
 		}
 	}
-
-
 	
 	/**
 	 * 지역 목록 출력
@@ -144,7 +176,8 @@ public class RouteSchedulePrintFile extends AbstractRouteSchedulePrint implement
 	}
 
 	@Override
-	public void init() {
+	public void init() throws Exception {
+		
 		WORLD_F="<cc:><ct:><cs:><cf:><cc:60.100.0.0.><ct:30><cs:7.500000><cf:Yoon가변 윤고딕100\\_TT>▲<ct:><cf:><ct:Bold><cf:Helvetica LT Std>";
 		WORLD_B="<cc:><ct:><cs:><cf:><cc:60.100.0.0.><ct:30><cs:7.500000><cf:Yoon가변 윤고딕100\\_TT>▲<ct:><cf:><ct:Bold><cf:Helvetica LT Std>";
 		WORLD_VERSION1="<KSC5601-WIN>\r\n<vsn:8><fset:InDesign-Roman><ctable:=<Black:COLOR:CMYK:Process:0,0,0,1><60.100.0.0.:COLOR:CMYK:Process:0.6,1,0,0><30.60.0.0.:COLOR:CMYK:Process:0.3,0.6,0,0>>";
@@ -153,6 +186,19 @@ public class RouteSchedulePrintFile extends AbstractRouteSchedulePrint implement
 		WORLD_VERSION2="<pstyle:><ct:Bold><chs:0.900000><cl:8.000000><cf:Helvetica LT Std>";
 		WORLD_VERSION3="<pstyle:정규><pli:182.500000><pfli:-182.000000><psa:0.566894><ptr:96.37789916992188\\,Left\\,.\\,0\\,\\;201\\,Left\\,.\\,0\\,\\;><chs:0.800003><cl:20.000000><cs:18.000000><cf:Helvetica LT Std>\r\n<cl:><cl:20.099990>\r\n<cs:><ct:Bold><cs:18.000000>";
 		WORLD_E="<ct:><cs:><cf:><ct:Bold><cf:Helvetica LT Std>";
+		
+		
+		this.fileName  				= ksgPropertiey.getProperty("schedule.route.filename");
+		
+		this.errorOutPortfileName 	= ksgPropertiey.getProperty("schedule.route.erroroutport");
+		
+		this.commonInPortfileName 	= ksgPropertiey.getProperty("schedule.route.commoninport");
+		
+		fw 							= new FileWriter(fileLocation+"/"+String.format("%s.txt", fileName ));
+
+		errorOutfw 					= new FileWriter(fileLocation+"/"+errorOutPortfileName);
+
+		commonInfw 					= new FileWriter(fileLocation+"/"+commonInPortfileName);
 
 	}
 	private ArrayList<String> createPrintList() throws IOException
@@ -220,7 +266,6 @@ public class RouteSchedulePrintFile extends AbstractRouteSchedulePrint implement
 	 */
 	@Override
 	public void createScheduleAndAddGroup(List scheduleGroupList, List scheduleList, String areaName, String vesselName) {
-		
 		
 		if(vesselMap== null) throw new RuntimeException("vesselMap null");
 		

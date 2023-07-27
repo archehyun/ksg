@@ -7,12 +7,7 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
-import com.dtp.api.schedule.joint.print.inbound.InboundScheduleJoint;
-import com.dtp.api.schedule.joint.print.outbound.OutboundSchedulePrintV2;
 import com.ksg.commands.ScheduleExecute;
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.ResourceNotFoundException;
@@ -27,6 +22,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.print.ConsoleScheduleJoint;
+import com.ksg.schedule.logic.print.InboundScheduleJoint;
+import com.ksg.schedule.logic.print.OutboundSchedulePrintV2;
 import com.ksg.service.BaseService;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.BaseServiceImpl;
@@ -44,8 +41,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ScheduleManager {
-	
-	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	private static ScheduleManager instance;
 
@@ -82,14 +77,17 @@ public class ScheduleManager {
 	public void initMasterData()
 	{
 		try {
-			logger.info("스케줄 생성 마스터 초기화");
+			log.info("스케줄 생성 마스터 초기화");
 			
 			allPortlist 	= (ArrayList<PortInfo>) baseService.getPortInfoList();
+			
 			allPortAbbrlist = (ArrayList<PortInfo>) baseService.getPort_AbbrList();
-//			allVessellist 	= (ArrayList<Vessel>) baseService.getVesselList(new Vessel());
+			
 			allVessellist 	 = (ArrayList<Vessel>) vesselDAO.selectTotalList();
+			
 			allCompanyList 	= (ArrayList<Company>) companyDAO.selectList(new Company());
-			logger.info("스케줄 생성 마스터 초기화 종료");
+			
+			log.info("스케줄 생성 마스터 초기화 종료");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -188,6 +186,7 @@ public class ScheduleManager {
 	public Vessel searchVessel(String vesselName) throws ResourceNotFoundException {		
 
 		Iterator<Vessel> iterator = allVessellist.iterator();
+		
 		while(iterator.hasNext())
 		{
 			Vessel info=iterator.next();
@@ -272,7 +271,7 @@ public class ScheduleManager {
 						
 						long endTime = System.currentTimeMillis();
 						
-						logger.info("스케줄 생성 종료({}s)",(endTime-startTime));
+						log.info("스케줄 생성 종료({}s)",(endTime-startTime));
 					}
 				}
 				catch (Exception e) {

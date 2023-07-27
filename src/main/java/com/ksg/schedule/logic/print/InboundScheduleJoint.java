@@ -1,4 +1,4 @@
-package com.dtp.api.schedule.joint.print.inbound;
+package com.ksg.schedule.logic.print;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,6 +24,7 @@ import org.jdom.output.XMLOutputter;
 
 import com.ksg.commands.schedule.ScheduleSortData;
 import com.ksg.commands.schedule.XML_INFO;
+import com.ksg.common.dao.DAOManager;
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.KSGDateUtil;
@@ -35,7 +36,9 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.SchedulePrint;
-import com.ksg.schedule.logic.print.ScheduleBuildUtil;
+import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleSubService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 
 /**
  * ScheduelDateFResult
@@ -50,6 +53,10 @@ import com.ksg.schedule.logic.print.ScheduleBuildUtil;
  *
  */
 public class InboundScheduleJoint extends AbstractInboundSchedulePrint{
+	
+	protected ScheduleSubService scheduleService	= new ScheduleServiceImpl();
+	
+	BaseService baseService=baseService 	= DAOManager.getInstance().createBaseService();
 
 	private XTGManager xtgmanager = new XTGManager();
 
@@ -965,7 +972,7 @@ public class InboundScheduleJoint extends AbstractInboundSchedulePrint{
 		}		
 
 		// 파일 출력
-		xtgmanager.createXTGFile(buffer.toString(),INBOUND_PRINT_TXT);
+		xtgmanager.createXTGFile(buffer.toString(),fileName);
 	}
 	
 	/**
@@ -1024,7 +1031,7 @@ public class InboundScheduleJoint extends AbstractInboundSchedulePrint{
 		}		
 
 		// 파일 출력
-		xtgmanager.createXTGFile(buffer.toString(),INBOUND_PRINT_TXT);
+		xtgmanager.createXTGFile(buffer.toString(),fileName);
 	}
 	
 	public static void xtgFormat()

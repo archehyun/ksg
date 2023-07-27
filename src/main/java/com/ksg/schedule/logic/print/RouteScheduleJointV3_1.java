@@ -1,4 +1,4 @@
-package com.dtp.api.schedule.joint.print.route;
+package com.ksg.schedule.logic.print;
 
 import java.io.FileWriter;
 import java.sql.SQLException;
@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import com.dtp.api.schedule.joint.print.route.AbstractRouteSchedulePrint;
+import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.StringCompare;
 import com.ksg.domain.ScheduleData;
@@ -19,7 +21,9 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.print.ScheduleBuildUtil;
+import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleSubService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 
 /**
  * @author 박창현
@@ -40,8 +44,8 @@ import com.ksg.schedule.logic.print.ScheduleBuildUtil;
  *       
  */
 public class RouteScheduleJointV3_1 extends AbstractRouteSchedulePrint{
-
-
+	protected ScheduleSubService scheduleService	= new ScheduleServiceImpl();
+	BaseService baseService=baseService 	= DAOManager.getInstance().createBaseService();
 	/**
 	 * @설명 지역이름을 기준으로 선박을 그룹화 하는 클래스 
 	 * @author 박창현

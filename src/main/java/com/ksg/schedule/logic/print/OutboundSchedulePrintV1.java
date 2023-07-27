@@ -1,4 +1,4 @@
-package com.dtp.api.schedule.joint.print.outbound;
+package com.ksg.schedule.logic.print;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,6 +19,7 @@ import org.jdom.JDOMException;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 import com.ksg.commands.schedule.XML_INFO;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.exception.PortNullException;
@@ -31,20 +32,35 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.ScheduleBuild;
-import com.ksg.schedule.logic.print.ScheduleBuildUtil;
+import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleSubService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 
 /**
  * @deprecated
  * @author archehyun
  *
  */
-public class OutboundSchedulePrintV1 extends AbstractOutboundSchedulePrint{
+public class OutboundSchedulePrintV1 extends AbstractSchedulePrint{
 
 	XTGManager xtgmanager = new XTGManager();
 	
+	protected ScheduleSubService scheduleService	= new ScheduleServiceImpl();
+	
 	private String fromPort[];
 	
+	BaseService baseService=baseService 	= DAOManager.getInstance().createBaseService();
+	
 	private int fromPortCount;
+	
+	protected String 	BOLD_TAG_F="",
+			BOLD_TAG_B="",
+			TAG_VERSION0="",
+			TAG_VERSION1="",
+			TAG_VERSION2="",
+			TAG_VERSION3="",
+			TAG_VERSION4="",
+			TAG_VERSION5="";
 
 
 	DAOManager manager =DAOManager.getInstance();

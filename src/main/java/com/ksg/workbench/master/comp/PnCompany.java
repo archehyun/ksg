@@ -76,9 +76,15 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private String query;
 
+	private KSGGradientButton butUpSearch;
+
+	private KSGGradientButton butCancel;
+
 
 	public PnCompany(BaseInfoUI baseInfoUI) {
-		super(baseInfoUI);		
+		super(baseInfoUI);
+		
+		this.initComp();
 
 		this.addComponentListener(this);
 
@@ -87,6 +93,67 @@ public class PnCompany extends PnBase implements ActionListener{
 		this.add(buildCenter());
 
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+	}
+
+
+	private void initComp() {
+
+		lblTable = new JLabel("선사 정보");
+
+		lblTable.setSize(200, 25);
+
+		lblTable.setFont(new Font("돋움",0,16));
+
+		lblTable.setIcon(new ImageIcon("images/db_table.png"));
+		
+		cbxField = new KSGComboBox();	
+
+		cbxField.addItem("선사명");
+
+		cbxField.addItem("선사명 약어");
+
+		cbxField.addItem("에이전트");
+
+		cbxField.addItem("에이전트 약어");
+
+		txfSearch = new JTextField(15);
+
+		txfSearch.addKeyListener(new KeyAdapter() {
+
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				if(e.getKeyChar()==KeyEvent.VK_ENTER)
+				{
+					fnSearch();
+				}
+			}
+		});
+
+
+		butUpSearch = new KSGGradientButton("검색", "images/search3.png");
+		
+		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		butUpSearch.addActionListener(this);
+
+		cbxField.setPreferredSize(new Dimension(150,23));
+		
+
+		butCancel = new KSGGradientButton("",  "images/init.png");
+
+		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		butCancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				cbxField.setSelectedIndex(0);
+				txfSearch.setText("");
+			}
+		});
 	}
 
 
@@ -156,73 +223,14 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-		lblTable = new JLabel("선사 정보");
-
-		lblTable.setSize(200, 25);
-
-		lblTable.setFont(new Font("돋움",0,16));
-
-		lblTable.setIcon(new ImageIcon("images/db_table.png"));
-
-		JLabel lbl = new JLabel("필드명 : ");
-
-		cbxField = new KSGComboBox();	
-
-		cbxField.addItem("선사명");
-
-		cbxField.addItem("선사명 약어");
-
-		cbxField.addItem("에이전트");
-
-		cbxField.addItem("에이전트 약어");
-
-		txfSearch = new JTextField(15);
-
-		txfSearch.addKeyListener(new KeyAdapter() {
-
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-
-				if(e.getKeyChar()==KeyEvent.VK_ENTER)
-				{
-					fnSearch();
-				}
-			}
-		});
-
-
-		KSGGradientButton butUpSearch = new KSGGradientButton("검색", "images/search3.png");
-		
-		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
-
-		butUpSearch.addActionListener(this);
-
-		cbxField.setPreferredSize(new Dimension(150,23));
-
-
-		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
-
-		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
-
-		butCancel.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				cbxField.setSelectedIndex(0);
-				txfSearch.setText("");
-			}
-		});
-
-
-		pnSearch.add(lbl);
+		pnSearch.add(new JLabel("필드명 : "));
 
 		pnSearch.add(cbxField);
 
 		pnSearch.add(txfSearch);
 
 		pnSearch.add(butUpSearch);
+		
 		pnSearch.add(butCancel);
 
 		Box pnSearchAndCount = Box.createVerticalBox();
@@ -254,8 +262,8 @@ public class PnCompany extends PnBase implements ActionListener{
 			else if(command.equals(KSGPageTablePanel.DELETE))
 			{
 				int row=tableH.getSelectedRow();
-				if(row<0)
-					return;
+				
+				if(row<0) return;
 
 				CommandMap data= (CommandMap) tableH.getValueAt(row);
 

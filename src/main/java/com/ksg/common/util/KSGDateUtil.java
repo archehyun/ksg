@@ -1001,9 +1001,7 @@ public class KSGDateUtil {
 			return date;
 		}
 	}
-//	public static SimpleDateFormat createInputDateFormat() {
-//		return new SimpleDateFormat("yyyy/MM/dd");
-//	}
+
 	public static SimpleDateFormat createOutputDateFormat() {
 		return new SimpleDateFormat("M/d");
 	}

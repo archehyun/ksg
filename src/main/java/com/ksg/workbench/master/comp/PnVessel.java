@@ -39,7 +39,6 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.Cell;
 
 import com.dtp.api.control.VesselController;
-import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
@@ -115,7 +114,7 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	private VesselService vesselService = new VesselServiceImpl();
 
-	private CodeServiceImpl codeService= new CodeServiceImpl();
+//	private CodeServiceImpl codeService= new CodeServiceImpl();
 
 	private MyTable tableD;
 
@@ -130,10 +129,14 @@ public class PnVessel extends PnBase implements ActionListener {
 	private JLabel lblVesselUse;
 
 	private JLabel lblInputDate;
+	private KSGGradientButton butUpSearch;
+	private KSGGradientButton butCancel;
 
 	public PnVessel(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
+		
+		this.initComp();
 
 		this.setController(new VesselController());
 
@@ -142,6 +145,87 @@ public class PnVessel extends PnBase implements ActionListener {
 		this.add(buildCenter());
 
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+	}
+
+	private void initComp() {
+		
+		cbxField = new KSGComboBox();
+
+		cbxField.addItem(new KSGTableColumn("vessel_name",STRING_VESSEL_NAME));
+
+		cbxField.addItem(new KSGTableColumn("vessel_abbr",STRING_VESSEL_ABBR));
+
+		cbxField.addItem(new KSGTableColumn("vessel_mmsi",STRING_VESSEL_MMSI));
+
+		cbxField.addItem(new KSGTableColumn("vessel_company",STRING_VESSEL_COMPANY));
+
+		cbxField.addItem(new KSGTableColumn("input_date",STRING_INPUTDATE));
+		
+		cbxField.setPreferredSize(new Dimension(150,23));
+
+		txfSearch = new JTextField(15);
+
+		txfSearch.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				if(e.getKeyChar()==KeyEvent.VK_ENTER)
+				{
+					fnSearch();
+				}
+			}
+		});
+		
+		butUpSearch = new KSGGradientButton(STRING_SEARCH, "images/search3.png");
+
+		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		butUpSearch.addActionListener(this);
+
+		butCancel = new KSGGradientButton("",  "images/init.png");
+
+		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		butCancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				cbxUse.setSelectedIndex(0);
+				cbxVesselType.setSelectedIndex(0);
+				cbxField.setSelectedIndex(0);
+				txfSearch.setText("");
+			}
+		});
+
+		cbxVesselType = new KSGComboBox();
+
+		cbxVesselType.addItem(new KSGTableColumn("", STRING_ALL));
+		
+		cbxVesselType.setPreferredSize(new Dimension(150,23));
+
+		cbxUse = new KSGComboBox();
+
+		cbxUse.addItem(STRING_ALL);
+
+		cbxUse.addItem("사용함");
+
+		cbxUse.addItem("사용안함");
+		
+		cbxUse.setPreferredSize(new Dimension(100,23));
+		
+		lblVesselName = new JLabel();
+
+		lblVesselMMSI = new JLabel();
+
+		lblVesselType = new JLabel();
+
+		lblVesselCompany = new JLabel();
+
+		lblVesselUse = new JLabel();
+
+		lblInputDate = new JLabel();
 	}
 
 	private JComponent buildCenter()
@@ -224,90 +308,19 @@ public class PnVessel extends PnBase implements ActionListener {
 	 */
 	private JComponent buildSearchPanel() {
 
-		KSGPanel pnSearch = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));	
+		KSGPanel pnSearch = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		JLabel lbl = new JLabel("필드명 : ");
-
-		cbxField = new KSGComboBox();
-
-		cbxField.addItem(new KSGTableColumn("vessel_name",STRING_VESSEL_NAME));
-
-		cbxField.addItem(new KSGTableColumn("vessel_abbr",STRING_VESSEL_ABBR));
-
-		cbxField.addItem(new KSGTableColumn("vessel_mmsi",STRING_VESSEL_MMSI));
-
-		cbxField.addItem(new KSGTableColumn("vessel_company",STRING_VESSEL_COMPANY));
-
-		cbxField.addItem(new KSGTableColumn("input_date",STRING_INPUTDATE));
-
-		txfSearch = new JTextField(15);
-
-		txfSearch.addKeyListener(new KeyAdapter() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-
-				if(e.getKeyChar()==KeyEvent.VK_ENTER)
-				{
-					fnSearch();
-				}
-			}
-		});
-
-		KSGGradientButton butUpSearch = new KSGGradientButton(STRING_SEARCH, "images/search3.png");
-
-		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
-
-		butUpSearch.addActionListener(this);
-
-		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
-
-		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
-
-		butCancel.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				cbxUse.setSelectedIndex(0);
-				cbxVesselType.setSelectedIndex(0);
-				cbxField.setSelectedIndex(0);
-				txfSearch.setText("");
-			}
-		});
-
-		cbxVesselType = new KSGComboBox();
-
-		cbxVesselType.addItem(new KSGTableColumn("", STRING_ALL));
-
-		cbxUse = new KSGComboBox();
-
-		cbxUse.addItem(STRING_ALL);
-
-		cbxUse.addItem("사용함");
-
-		cbxUse.addItem("사용안함");
-
-		JLabel lblType = new JLabel("선박타입 : ");
-
-		JLabel lblUse = new JLabel("사용유무 : ");
-
-		cbxUse.setPreferredSize(new Dimension(100,23));
-
-		cbxField.setPreferredSize(new Dimension(150,23));
-
-		cbxVesselType.setPreferredSize(new Dimension(150,23));
-
-		pnSearch.add(lblUse);
+		pnSearch.add(new JLabel("사용유무 : "));
 		pnSearch.add(cbxUse);		
-		pnSearch.add(lblType);
+		pnSearch.add(new JLabel("선박타입 : "));
 		pnSearch.add(cbxVesselType);
-		pnSearch.add(lbl);
+		pnSearch.add(new JLabel("필드명 : "));
 		pnSearch.add(cbxField);
 		pnSearch.add(txfSearch);
 		pnSearch.add(butUpSearch);
 		pnSearch.add(butCancel);
 		Box pnSearchAndCount = Box.createVerticalBox();
+		
 		pnSearchAndCount.add(pnSearch);
 
 		KSGPanel pnCountInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));	
@@ -317,8 +330,11 @@ public class PnVessel extends PnBase implements ActionListener {
 		KSGPanel pnInfo= new KSGPanel(new BorderLayout());
 
 		pnInfo.add(buildLine(),BorderLayout.SOUTH);
+		
 		pnInfo.add(pnSearchAndCount,BorderLayout.EAST);
+		
 		pnInfo.add(buildTitleIcon("선박 정보"),BorderLayout.WEST);
+		
 		return pnInfo;
 	}
 
@@ -462,35 +478,35 @@ public class PnVessel extends PnBase implements ActionListener {
 
 
 	}
-	/**선박 사용 항목  가져오기
-	 * @param vesselUseCell
-	 * @return
-	 */
-	private int getVesselUse(Cell vesselUseCell)
-	{
-		int vesselUse;
-		try{
-			switch (vesselUseCell.getCellType()) {
-			case HSSFCell.CELL_TYPE_STRING:
-				vesselUse= Integer.valueOf(vesselUseCell.getStringCellValue());
-
-				break;
-			case HSSFCell.CELL_TYPE_NUMERIC:
-				vesselUse =(int) vesselUseCell.getNumericCellValue();
-				break;
-			case HSSFCell.CELL_TYPE_BLANK:
-				vesselUse =Vessel.USE;
-			default:
-				vesselUse =Vessel.USE;
-				break;
-			}
-		}catch(Exception e)
-		{
-			return Vessel.USE;
-		}
-
-		return vesselUse;
-	}
+//	/**선박 사용 항목  가져오기
+//	 * @param vesselUseCell
+//	 * @return
+//	 */
+//	private int getVesselUse(Cell vesselUseCell)
+//	{
+//		int vesselUse;
+//		try{
+//			switch (vesselUseCell.getCellType()) {
+//			case HSSFCell.CELL_TYPE_STRING:
+//				vesselUse= Integer.valueOf(vesselUseCell.getStringCellValue());
+//
+//				break;
+//			case HSSFCell.CELL_TYPE_NUMERIC:
+//				vesselUse =(int) vesselUseCell.getNumericCellValue();
+//				break;
+//			case HSSFCell.CELL_TYPE_BLANK:
+//				vesselUse =Vessel.USE;
+//			default:
+//				vesselUse =Vessel.USE;
+//				break;
+//			}
+//		}catch(Exception e)
+//		{
+//			return Vessel.USE;
+//		}
+//
+//		return vesselUse;
+//	}
 
 	/**
 	 * 
@@ -520,6 +536,7 @@ public class PnVessel extends PnBase implements ActionListener {
 		}
 
 	}
+	// 컨트롤러로 이관
 	private void deleteAllAction()
 	{
 		String result= JOptionPane.showInputDialog(KSGModelManager.getInstance().frame, "데이터를 삭제 하시려면 '삭제확인'을 입력 하십시요");
@@ -554,7 +571,6 @@ public class PnVessel extends PnBase implements ActionListener {
 		HashMap<String, Object> item=(HashMap<String, Object>) tableH.getValueAt(row);
 
 		String vessel_name = (String) item.get("vessel_name");
-
 
 		int result=JOptionPane.showConfirmDialog(this,vessel_name+"를 삭제 하시겠습니까?", "선박 정보 삭제", JOptionPane.YES_NO_OPTION);
 
@@ -599,17 +615,6 @@ public class PnVessel extends PnBase implements ActionListener {
 
 	private JComponent createVesselDetail()
 	{		
-		lblVesselName = new JLabel();
-
-		lblVesselMMSI = new JLabel();
-
-		lblVesselType = new JLabel();
-
-		lblVesselCompany = new JLabel();
-
-		lblVesselUse = new JLabel();
-
-		lblInputDate = new JLabel();
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout(5,5));
 

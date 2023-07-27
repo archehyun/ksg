@@ -27,6 +27,8 @@ import com.ksg.domain.ScheduleType;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.SchedulePrint;
 import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleSubService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
   */
 @Slf4j
 public class ConsoleScheduleJoint extends AbstractSchedulePrint{
-
+	protected ScheduleSubService scheduleService	= new ScheduleServiceImpl();
 	/**
 	 * @설명 도착항 그룹 클래스
 	 * 키: 스케줄 그룹(출발항-출발일-선박명-도착일)

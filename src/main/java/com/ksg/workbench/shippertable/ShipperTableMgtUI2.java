@@ -122,8 +122,6 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 @Slf4j
 public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 {	
-	
-	
 	private static final String ACTION_SEARCH 		= "조회";
 
 	private static final String ACTION_UPDATE_DATE 	= "입력일자 수정";
@@ -1385,7 +1383,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 	@Override
 	public void componentShown(ComponentEvent e) {
 				
-		//if(isShowData)
 	}
 	class SearchOptionKeyAdapter extends KeyAdapter
 	{

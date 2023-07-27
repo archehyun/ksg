@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.dtp.api.schedule.comparator.IFComparator;
 import com.dtp.api.schedule.joint.print.ScheduleGroup;
-import com.dtp.api.schedule.joint.tree.node.ScheduleDateComparator;
+import com.dtp.api.schedule.joint.tree.comparator.ScheduleDateComparator;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;

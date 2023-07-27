@@ -1,5 +1,6 @@
-package com.dtp.api.schedule.joint.print.outbound;
+package com.ksg.schedule.logic.print;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -8,18 +9,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
+import com.dtp.api.schedule.joint.print.outbound.OutboundScheduleRule;
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.util.SortUtil;
+import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.joint.outbound.FromPortGroup;
 import com.ksg.schedule.logic.joint.outbound.PrintItem;
 import com.ksg.schedule.logic.joint.outbound.ToPortGroup;
 import com.ksg.schedule.logic.joint.outbound.VesselGroup;
-import com.ksg.schedule.logic.print.ScheduleJointError;
-
+import com.ksg.service.ScheduleSubService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 /**
  * 
  * @설명 아웃바운드 생성 모듈
@@ -39,16 +45,44 @@ import com.ksg.schedule.logic.print.ScheduleJointError;
   * @프로그램 설명 :
 
   */
-public class OutboundSchedulePrintV2 extends AbstractOutboundSchedulePrint{
+public class OutboundSchedulePrintV2 extends AbstractSchedulePrint{
 
-
+	protected ScheduleSubService scheduleService	= new ScheduleServiceImpl();
+	
 	private ScheduleData op;
 
 	private ScheduleData data;
 
 	private ArrayList<PrintItem> printList;
 
-	private List<String> outbounSchedulePortList;	
+	private List<String> outbounSchedulePortList;
+	
+	protected OutboundScheduleRule outboundSchedule;
+
+	protected static final String PORT_NAME 	= "outbound_port.txt";
+
+	protected static final String FILE_NAME 	= "outbound_new.txt";
+
+	protected static final String ERROR_NAME 	= "outbound_error.txt";	
+
+	protected String errorFileName;
+
+	protected String portName;
+
+	protected String[] fromPort;
+
+	protected  Map<String, PortInfo> portMap;
+
+	protected  Map<String, Vessel> vesselMap;
+	
+	protected String 	BOLD_TAG_F="",
+			BOLD_TAG_B="",
+			TAG_VERSION0="",
+			TAG_VERSION1="",
+			TAG_VERSION2="",
+			TAG_VERSION3="",
+			TAG_VERSION4="",
+			TAG_VERSION5="";
 
 	public OutboundSchedulePrintV2() throws Exception {
 
@@ -58,9 +92,7 @@ public class OutboundSchedulePrintV2 extends AbstractOutboundSchedulePrint{
 
 		message = "Outbound 생성중...";
 		
-		initFile();
-		
-		printList = new ArrayList<PrintItem>();
+
 
 		logger.info("outbound 스케줄 생성 및 초기화");
 
@@ -344,6 +376,24 @@ public class OutboundSchedulePrintV2 extends AbstractOutboundSchedulePrint{
 	@Override
 	public void writeFile(ArrayList<String> printList) throws Exception {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void init() throws Exception {
+		fileName = fileLocation+"/"+FILE_NAME;
+
+		errorFileName = fileLocation+"/"+ERROR_NAME;
+
+		portName = fileLocation+"/"+PORT_NAME;
+
+		fw = new FileWriter(fileName);
+
+		errorfw = new FileWriter(errorFileName);
+
+		portfw = new FileWriter(portName);
+		
+		printList = new ArrayList<PrintItem>();
 		
 	}
 

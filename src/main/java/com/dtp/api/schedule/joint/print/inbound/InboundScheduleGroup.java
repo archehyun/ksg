@@ -1,6 +1,5 @@
 package com.dtp.api.schedule.joint.print.inbound;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.dtp.api.schedule.joint.print.ScheduleGroup;
 import com.dtp.api.schedule.joint.print.route.PortAndDay;
-import com.dtp.api.schedule.joint.tree.node.ScheduleDateComparator;
+import com.dtp.api.schedule.joint.tree.comparator.ScheduleDateComparator;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
@@ -22,20 +21,20 @@ public class InboundScheduleGroup extends ScheduleGroup{
 	
 	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.inputDateFormat;
 	
-	/* YYYYMMdd */
+	private String FROM_PORT_TAG1 = "<ct:><cf:><cs:><cs:8.000000><cf:Helvetica LT Std><ct:Bold>";
 
-	String FROM_PORT_TAG1 = "<ct:><cf:><cs:><cs:8.000000><cf:Helvetica LT Std><ct:Bold>";
+	private String FROM_DATE_TAG1 = "<ct:><cf:><cs:><cs:6.500000><cf:Helvetica LT Std><ct:Roman>";
 
-	String FROM_DATE_TAG1 = "<ct:><cf:><cs:><cs:6.500000><cf:Helvetica LT Std><ct:Roman>";
+	private String VESSEL_TAG ="\t<ct:><cf:><cf:Helvetica Neue LT Std>";
 
-	String VESSEL_TAG ="\t<ct:><cf:><cf:Helvetica Neue LT Std>";
+	private String BOLD_TAG_B="<ct:>";
 
-	String BOLD_TAG_B="<ct:>";
+	private String BOLD_TAG_F="<ct:77 Bold Condensed>";
 
-	String BOLD_TAG_F="<ct:77 Bold Condensed>";
-
-	InboundCodeMap inboundCodeMap = InboundCodeMap.getInstance();
 	
+	private InboundCodeMap inboundCodeMap = InboundCodeMap.getInstance();
+	
+	// "M/d"
 	protected SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
 
 	private boolean isTaged;

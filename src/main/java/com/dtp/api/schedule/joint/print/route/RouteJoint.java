@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.dtp.api.schedule.comparator.DateComparator;
-import com.dtp.api.schedule.joint.tree.node.ScheduleDateComparator;
+import com.dtp.api.schedule.joint.tree.comparator.ScheduleDateComparator;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;

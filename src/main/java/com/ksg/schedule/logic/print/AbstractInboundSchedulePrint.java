@@ -1,4 +1,4 @@
-package com.dtp.api.schedule.joint.print.inbound;
+package com.ksg.schedule.logic.print;
 
 import java.sql.SQLException;
 
@@ -13,10 +13,11 @@ public abstract class AbstractInboundSchedulePrint extends AbstractSchedulePrint
 	protected String 	TAG_VERSION3;
 	protected String 	TAG_VERSION6;
 	
-	protected final String INBOUND_PRINT_TXT = "inbound_print.txt";
+//	protected final String INBOUND_PRINT_TXT = "inbound_print.txt";
 
 	public AbstractInboundSchedulePrint() throws SQLException {
 		super();
+		fileName  = "inbound_print.txt"; 
 	}
 
 	@Override

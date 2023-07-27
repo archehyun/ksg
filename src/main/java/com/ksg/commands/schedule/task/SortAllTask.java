@@ -1,11 +1,11 @@
 package com.ksg.commands.schedule.task;
 
-import com.dtp.api.schedule.joint.print.inbound.InboundScheduleJoint;
 import com.ksg.commands.LongTask;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.joint.route.RouteSchedulePrint;
+import com.ksg.schedule.logic.print.InboundScheduleJoint;
 import com.ksg.schedule.logic.print.SchedulePrintFactory;
 
 public class SortAllTask implements LongTask {

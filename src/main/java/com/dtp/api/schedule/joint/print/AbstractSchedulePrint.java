@@ -12,18 +12,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ksg.commands.ScheduleExecute;
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.service.ADVService;
-import com.ksg.service.BaseService;
-import com.ksg.service.ScheduleSubService;
-import com.ksg.service.TableService;
-import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
@@ -45,6 +39,8 @@ public abstract class AbstractSchedulePrint implements ScheduleExecute{
 	protected PrintAble print;
 
 	public ScheduleManager scheduleManager = ScheduleManager.getInstance();
+	
+	protected KSGPropertis ksgPropertiey= KSGPropertis.getIntance();
 
 	public static final String BUSAN = "BUSAN";
 
@@ -66,13 +62,9 @@ public abstract class AbstractSchedulePrint implements ScheduleExecute{
 
 	protected ScheduleBuildMessageDialog processDialog;
 
-	protected ScheduleSubService scheduleService	= new ScheduleServiceImpl();
-
-	protected TableService tableService;
-
-	protected ADVService advService;
-
 	protected Logger logger = LogManager.getLogger(this.getClass());
+	
+	protected boolean isApplyTag=true;// 태그 적용 여부
 
 	protected Thread thread;
 
@@ -87,8 +79,6 @@ public abstract class AbstractSchedulePrint implements ScheduleExecute{
 	protected ArrayList<PortInfo> allPortAbbrlist;
 
 	protected ArrayList<Vessel> allVessellist;
-	
-	protected BaseService baseService;
 
 	protected Map<String, PortInfo> portMap;
 
@@ -101,10 +91,8 @@ public abstract class AbstractSchedulePrint implements ScheduleExecute{
 	 */
 	public AbstractSchedulePrint() {
 		
-		fileLocation=KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION);
+		fileLocation = KSGPropertis.getIntance().getProperty(KSGPropertis.SAVE_LOCATION);
 		
-		baseService 	= DAOManager.getInstance().createBaseService();
-
 	}	
 
 	@Override
@@ -146,10 +134,5 @@ public abstract class AbstractSchedulePrint implements ScheduleExecute{
 	public abstract void init() throws Exception;
 	
 	public abstract void writeFile(ArrayList<String> printList) throws Exception;
-	
-
-
-
-
 
 }

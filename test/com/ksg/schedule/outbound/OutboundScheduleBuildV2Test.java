@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import org.junit.Test;
 
 import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
-import com.dtp.api.schedule.joint.print.outbound.OutboundSchedulePrintV2;
+import com.ksg.schedule.logic.print.OutboundSchedulePrintV2;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 
 public class OutboundScheduleBuildV2Test {

@@ -12,9 +12,6 @@ package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -28,7 +25,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.AttributeSet;
@@ -38,7 +34,6 @@ import javax.swing.text.PlainDocument;
 
 import com.dtp.api.control.VesselController;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.view.comp.button.KSGGradientButton;
@@ -90,24 +85,7 @@ public class InsertVesselInfoDialog extends MainTypeDialog{
 	}
 
 	public void createAndUpdateUI() 
-	{
-//		this.setModal(true);
-//
-//		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
-//
-//		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-//
-//		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-//
-//		this.pack();
-//
-//		this.setLocationRelativeTo(KSGModelManager.getInstance().frame);
-//
-//		this.setResizable(false);
-//
-//		this.setVisible(true);
-		
-		
+	{	
 		this.setModal(true);
 
 		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);

@@ -12,7 +12,6 @@ package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.util.HashMap;
@@ -147,8 +146,8 @@ public class UpdateCompanyInfoDialog extends MainTypeDialog  {
 		}
 	}
 
-	public void createAndUpdateUI() {
-		
+	public void createAndUpdateUI() 
+	{
 		initComp();
 		
 		this.setModal(true);
@@ -166,8 +165,6 @@ public class UpdateCompanyInfoDialog extends MainTypeDialog  {
 		this.setVisible(true);
 
 	}
-	
-	
 
 	public KSGPanel buildCenter()
 	{

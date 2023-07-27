@@ -90,9 +90,19 @@ public class PnPort extends PnBase implements ActionListener{
 	
 	private final String ACTION_DELETE_ABBR="약어 삭제";
 
+	private KSGGradientButton butUpSearch;
+
+	private KSGGradientButton butCancel;
+
+	private JButton butNewAbbr;
+
+	private JButton butDelAbbr;
+
 	public PnPort(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
+		
+		this.initComp();
 
 		this.addComponentListener(this);
 
@@ -105,20 +115,10 @@ public class PnPort extends PnBase implements ActionListener{
 		callApi("pnPort.init");
 
 	}
-	/**
-	 * @return
-	 */
-	private JComponent buildSearchPanel() {
-
-		KSGPanel pnSearch = new KSGPanel();
-
-		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
-
-		JLabel lbl = new JLabel("필드명 : ");
-
+	private void initComp() {
 		cbxField = new KSGComboBox();
 
-		cbxField.setPreferredSize(new Dimension(100,23));
+		cbxField.setPreferredSize(new Dimension(150,23));
 
 		cbxField.addItem("항구명");
 
@@ -135,15 +135,15 @@ public class PnPort extends PnBase implements ActionListener{
 				}
 			}
 		});
-
-		KSGGradientButton butUpSearch = new KSGGradientButton("검색", "images/search3.png");
+		
+		butUpSearch = new KSGGradientButton("검색", "images/search3.png");
 
 		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUpSearch.addActionListener(this);
 
 
-		KSGGradientButton butCancel = new KSGGradientButton("",  "images/init.png");
+		butCancel = new KSGGradientButton("",  "images/init.png");
 
 		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
@@ -161,13 +161,7 @@ public class PnPort extends PnBase implements ActionListener{
 				txfSearch.setText("");
 			}
 		});
-
-		cbxField.setPreferredSize(new Dimension(150,23));
-
-		JLabel lblArea = new JLabel("지역:");
-
-		JLabel lblAreaCode = new JLabel("지역코드:");
-
+		
 		cbxAreaName = new KSGComboBox();
 
 		cbxAreaCode = new KSGComboBox();
@@ -175,16 +169,48 @@ public class PnPort extends PnBase implements ActionListener{
 		cbxAreaName.setPreferredSize(new Dimension(300,25));
 
 		cbxAreaCode.setPreferredSize(new Dimension(80,25));
+		
+		lblPortName 	= new JLabel();
+		
+		lblPortName.setBackground(Color.WHITE);
 
-		pnSearch.add(lblArea);
+		lblArea 		= new JLabel();
+
+		lblAreaCode 	= new JLabel();
+
+		lblPationality 	= new JLabel();
+		
+		butNewAbbr = new KSGGradientButton("추가");
+
+		butNewAbbr.setActionCommand("약어 등록");
+
+		butNewAbbr.addActionListener(this);
+		
+		butDelAbbr = new KSGGradientButton("삭제");
+
+		butDelAbbr.setActionCommand("약어 삭제");
+
+		butDelAbbr.addActionListener(this);
+		
+	}
+	/**
+	 * @return
+	 */
+	private JComponent buildSearchPanel() {
+
+		KSGPanel pnSearch = new KSGPanel();
+
+		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+		pnSearch.add(new JLabel("지역:"));
 
 		pnSearch.add(cbxAreaName);
 
-		pnSearch.add(lblAreaCode);
+		pnSearch.add(new JLabel("지역코드:"));
 
 		pnSearch.add(cbxAreaCode);
 
-		pnSearch.add(lbl);
+		pnSearch.add(new JLabel("필드명 : "));
 
 		pnSearch.add(cbxField);
 
@@ -266,15 +292,6 @@ public class PnPort extends PnBase implements ActionListener{
 	}
 	private KSGPanel createPortDetail()
 	{		
-		lblPortName 	= new JLabel();
-
-		lblArea 		= new JLabel();
-
-		lblAreaCode 	= new JLabel();
-
-		lblPationality 	= new JLabel();
-
-		lblPortName.setBackground(Color.WHITE);
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout(5,5));		
 
@@ -288,21 +305,9 @@ public class PnPort extends PnBase implements ActionListener{
 
 		KSGPanel pnControl = new KSGPanel(new FlowLayout());
 
-		JButton butNewAbbr = new KSGGradientButton("추가");
-
-		butNewAbbr.setActionCommand("약어 등록");
-
-		JButton butDelAbbr = new KSGGradientButton("삭제");
-
-		butDelAbbr.setActionCommand("약어 삭제");
-
 		pnControl.add(butNewAbbr);
 
 		pnControl.add(butDelAbbr);
-
-		butNewAbbr.addActionListener(this);
-
-		butDelAbbr.addActionListener(this);
 
 		pnTitle.add(pnControl,BorderLayout.EAST);
 

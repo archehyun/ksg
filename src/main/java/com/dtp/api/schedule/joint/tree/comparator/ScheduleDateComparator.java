@@ -1,4 +1,4 @@
-package com.dtp.api.schedule.joint.tree.node;
+package com.dtp.api.schedule.joint.tree.comparator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,8 +37,6 @@ public class ScheduleDateComparator implements Comparator<ScheduleData> {
 	{
 		return this.dateType;
 	}
-	
-	
 
 	private  SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("yyyy/MM/dd");
 	

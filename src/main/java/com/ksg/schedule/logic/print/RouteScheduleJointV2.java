@@ -1,4 +1,4 @@
-package com.dtp.api.schedule.joint.print.route;
+package com.ksg.schedule.logic.print;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,8 +23,10 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import com.dtp.api.schedule.joint.print.route.AbstractRouteSchedulePrint;
 import com.ksg.commands.schedule.ScheduleSortData;
 import com.ksg.commands.schedule.XML_INFO;
+import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.StringCompare;
@@ -36,7 +38,9 @@ import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.print.ScheduleBuildUtil;
+import com.ksg.service.BaseService;
+import com.ksg.service.ScheduleSubService;
+import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
@@ -54,9 +58,13 @@ import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
   */
 public class RouteScheduleJointV2 extends AbstractRouteSchedulePrint {
 	
+	protected ScheduleSubService scheduleService	= new ScheduleServiceImpl();
+	
 	final int FORWARD =0;
 	
 	final int BACK =1;
+	
+	BaseService baseService=baseService 	= DAOManager.getInstance().createBaseService();
 
 	private XTGManager xtgmanager = new XTGManager();
 	

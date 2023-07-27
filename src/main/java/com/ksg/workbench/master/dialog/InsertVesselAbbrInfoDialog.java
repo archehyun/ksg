@@ -17,13 +17,14 @@ import java.awt.event.ComponentEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.dtp.api.control.VesselController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.Notification;
+import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.dialog.MainTypeDialog;
 
@@ -35,6 +36,7 @@ import com.ksg.workbench.common.dialog.MainTypeDialog;
 public class InsertVesselAbbrInfoDialog extends MainTypeDialog{
 
 	private JTextField txfVesselAbbr;
+	
 	private JTextField txfVesselName;
 
 	private String vessel_name;
@@ -68,25 +70,6 @@ public class InsertVesselAbbrInfoDialog extends MainTypeDialog{
 
 	public void createAndUpdateUI() {
 
-//		this.setModal(true);
-//
-//		this.addComponentListener(this);
-//
-//		this.setTitle(title);
-//
-//		this.getContentPane().add(buildTitle("선박명: "+vessel_name),BorderLayout.NORTH);
-//
-//		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-//
-//		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-//
-//		ViewUtil.center(this, true);
-//
-//		this.setResizable(false);
-//
-//		this.setVisible(true);
-		
-		
 		this.titleInfo ="항구명 약어 추가";
 		
 		initComp();
@@ -109,10 +92,12 @@ public class InsertVesselAbbrInfoDialog extends MainTypeDialog{
 	}
 
 	private void initComp() {
-		txfVesselAbbr = new JTextField(20);
-		txfVesselName = new JTextField(20);
-		txfVesselName.setEditable(false);
 		
+		txfVesselAbbr = new JTextField(20);
+		
+		txfVesselName = new JTextField(20);
+		
+		txfVesselName.setEditable(false);
 	}
 
 	public KSGPanel buildCenter()
@@ -128,6 +113,7 @@ public class InsertVesselAbbrInfoDialog extends MainTypeDialog{
 		pnMain.add(pnCenter);
 		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));
+		
 		return pnMain;
 	}
 
@@ -137,7 +123,8 @@ public class InsertVesselAbbrInfoDialog extends MainTypeDialog{
 
 		if(txfVesselAbbr.getText().equals(""))
 		{
-			JOptionPane.showMessageDialog(this, "선박명 약어를 입력 하십시요");
+			NotificationManager.showNotification(Notification.Type.WARNING, "선박명 약어를 입력 하십시요");
+			
 			return;
 		}
 
@@ -149,7 +136,9 @@ public class InsertVesselAbbrInfoDialog extends MainTypeDialog{
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
 		String command = e.getActionCommand();
+		
 		if(command.equals("저장"))
 		{
 			fnInsertDetail();
@@ -166,8 +155,8 @@ public class InsertVesselAbbrInfoDialog extends MainTypeDialog{
 	@Override
 	public void componentShown(ComponentEvent e) {
 		
-		
 		this.txfVesselName.setText(vessel_name);
+		
 		this.txfVesselAbbr.setText(vessel_abbr);
 	}
 	@Override
