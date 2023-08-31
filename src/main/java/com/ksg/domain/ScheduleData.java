@@ -51,9 +51,9 @@ public class ScheduleData implements Comparable<Object>{
 	private String data;
 	private String date_issue;
 	private String DateF;
-	private String dateFBack;
+	private String dateFBack; // Ãâ¹ß ETD
 	private String DateT;
-	private String dateTBack;
+	private String dateTBack; // µµÂø ETD
 	private String departDate;
 	private String departure;
 	private String desination;

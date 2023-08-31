@@ -1,13 +1,9 @@
 package com.ksg.workbench.preference;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.comp.KSGView;
 
 /**
 
@@ -24,7 +20,7 @@ import com.ksg.view.comp.panel.KSGPanel;
   * @프로그램 설명 :
 
   */
-public abstract class PnOption extends KSGPanel implements ActionListener, ComponentListener{
+public abstract class PnOption extends KSGView {
 	
 	/**
 	 * 
@@ -41,21 +37,5 @@ public abstract class PnOption extends KSGPanel implements ActionListener, Compo
 	}
 	
 	public abstract void saveAction();
-	
-	@Override
-	public void componentResized(ComponentEvent e) {}
-
-
-	@Override
-	public void componentMoved(ComponentEvent e) {}
-
-
-	@Override
-	public void componentShown(ComponentEvent e) {}
-
-
-	@Override
-	public void componentHidden(ComponentEvent e) {}
-	
 
 }

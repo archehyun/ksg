@@ -50,23 +50,30 @@ public class WebScheduleTask extends SimpleTask{
 
 
 	private static final String TS = "TS";
+	
 	private XTGManager manager = new XTGManager();
+	
 	private Vector totalScheduleList;
+	
 	private int[] a_outport,a_outtoport;
 
 	private ADVService advService;
+	
 	private XTGManager xtgmanager = new XTGManager();
+	
 	private String[][] arrayDatas;
 
 	private String outPortData,outToPortData;
 
 	private String[] portData;
+	
 	private Vector portDataArray,scheduleDataList;
 
 	ScheduleBuildMessageDialog processMessageDialog;
 
 
 	private ShippersTable searchOption;
+	
 	private Date selectedDate;
 
 	private int size_outport,size_outtoport;
@@ -87,17 +94,25 @@ public class WebScheduleTask extends SimpleTask{
 	private Vector errorlist;
 	public WebScheduleTask() {
 		errorlist= new Vector();
+		
 		tableService = new TableServiceImpl();
+		
 		scheduleService = new ScheduleServiceImpl();
+		
 		advService = DAOManager.getInstance().createADVService();
+		
 		baseService = DAOManager.getInstance().createBaseService();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		
 		SimpleDateFormat sdf1 = new SimpleDateFormat("MM");
 
 		strYear = sdf.format(new Date());
-		strMonth = sdf.format(new Date());
+		
+		strMonth = sdf1.format(new Date());
+		
 		currentMonth = Integer.valueOf(sdf1.format(new Date()));
+		
 		map = new HashMap<String, Vector>();
 		for(int i=1;i<8;i++)
 		{
@@ -186,8 +201,8 @@ public class WebScheduleTask extends SimpleTask{
 			 */
 			logger.debug("search option:"+searchOption);
 
-			table_list = tableService.getScheduleTableListByDate(searchOption);
-			total = table_list.size();
+			table_list 	= tableService.getScheduleTableListByDate(searchOption);
+			total 		= table_list.size();
 			logger.debug("스케줄 처리용 테이블 수 : "+total);
 			Iterator iter = table_list.iterator();
 
@@ -260,10 +275,11 @@ public class WebScheduleTask extends SimpleTask{
 				 */
 				try{
 
-					String outPort = tableData.getOut_port();
-					String outToPort = tableData.getOut_to_port();
-					String inPort = tableData.getIn_port();
-					String inToPort = tableData.getIn_to_port();
+					String outPort 		= tableData.getOut_port();
+					String outToPort 	= tableData.getOut_to_port();
+					String inPort 		= tableData.getIn_port();
+					String inToPort 	= tableData.getIn_to_port();
+					
 					if(outPort==null)
 					{
 						outPort="";
@@ -281,10 +297,10 @@ public class WebScheduleTask extends SimpleTask{
 						inToPort="";
 					}
 
-					outPort = outPort.trim();
-					outToPort = outToPort.trim();
-					inPort = inPort.trim();
-					inToPort = inToPort.trim();
+					outPort 	= outPort.trim();
+					outToPort 	= outToPort.trim();
+					inPort 		= inPort.trim();
+					inToPort 	= inToPort.trim();
 
 					HashMap<Integer, Integer> map=makePortArrayWebIndexMap(outPort, outToPort,inPort,inToPort);
 
@@ -304,11 +320,14 @@ public class WebScheduleTask extends SimpleTask{
 					Set keySet =map.keySet();
 
 					a_outport = new int[keySet.size()];
+					
 					Iterator<Integer> iter2 = keySet.iterator();
+					
 					for(int i=0;iter2.hasNext();i++)
 					{
 						a_outport[i]=iter2.next();
 					}
+					
 					Arrays.sort(a_outport);
 
 

@@ -58,6 +58,11 @@ public class CreateSchedule {
 	private SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy/M/dd");
 
 	private String gubun;
+	
+	public  CreateSchedule(ShippersTable table) throws Exception
+	{
+		this.setShipperTable(table);
+	}
 
 	public CreateSchedule() {
 

@@ -32,7 +32,7 @@ public class NotificationManager {
 
     public static void showNotification(Notification.Type type, String message)
     {
-        Notification panel = new Notification(NotificationManager.getInstance().getFrame(), type, Notification.Location.TOP_CENTER, message);
+        Notification panel = new Notification(NotificationManager.getInstance().getFrame(), type, Notification.Location.CENTER, message);
         panel.showNotification();
     }
     

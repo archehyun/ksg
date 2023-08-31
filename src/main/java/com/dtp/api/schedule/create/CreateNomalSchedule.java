@@ -19,7 +19,6 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.schedule.logic.ScheduleBuild;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
-import com.ksg.service.ScheduleService;
 
 public class CreateNomalSchedule {
 
@@ -42,15 +41,6 @@ public class CreateNomalSchedule {
 	private List makeScheduleGroupByTable(ShippersTable tableData) throws NullPointerException, JDOMException, IOException
 	{	
 		ADVDataParser parser = new ADVDataParser(new ADVData(tableData.getData()));
-
-		// 날짜 정보 배열
-		//arrayDatas = advData.getDataArray();
-
-		// 선박 정보 배열
-		//vslDatas = advData.getFullVesselArray(isTS(tableData));
-
-
-
 
 		String[][] arrayDatas = parser.getDataArray();
 

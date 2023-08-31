@@ -54,7 +54,7 @@ public class PnMainTab extends KSGView{
 	}
 	
     private void initMenuEvent() {
-    	pnLeft.addMenuEvent((int index, int subIndex, MenuAction action) -> {
+    	pnLeft.addMenuEvent((int index, int subIndex, String menuId, MenuAction action) -> {
     		System.out.println(1);
         });
     }

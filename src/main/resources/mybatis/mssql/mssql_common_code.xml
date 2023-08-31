@@ -79,6 +79,24 @@
 		WHERE 	code_field=#code_field# 
 		AND 	code_name = #code_name#
 	</select>
+	
+	<select id="selectKeywordByKey" resultClass="com.ksg.domain.KeyWordInfo" parameterClass="com.ksg.domain.KeyWordInfo">
+		SELECT 
+				key_type,
+				key_name 
+		FROM TB_KEY_TYPE 
+		WHERE key_type= #key_type#
+		AND key_name = #key_name#
+	</select>
+	
+	
+	<select id="selectKeyWordInfoListByCondition" resultClass="com.ksg.domain.KeyWordInfo" parameterClass="com.ksg.domain.KeyWordInfo">
+		SELECT 
+				key_type,
+				key_name 
+		FROM TB_KEY_TYPE 
+		WHERE key_type= #key_type#
+	</select>
 
 <!-- insert -->
 
@@ -95,6 +113,7 @@
 		);
 	</insert>
 	
+	
 	<insert id="insertCodeDetail" parameterClass="com.ksg.domain.Code">
 		insert into TB_CODE_INFO(
 			code_field,
@@ -109,7 +128,18 @@
 			#code_type#,
 			#code_name_kor#
 		);
-	</insert>	
+	</insert>
+		
+	<insert id="insertKeyword" parameterClass="com.ksg.domain.KeyWordInfo">
+		insert into TB_KEY_TYPE(
+			key_type,
+			key_name 
+		)values
+		(
+			#key_type#,
+			#key_name#
+		);
+	</insert>		
 	
 <!-- update -->
 	
@@ -135,6 +165,13 @@
 		FROM 	TB_CODE_INFO 
 		WHERE 	code_field=#code_field# 
 		AND 	code_name=#code_name#
+	</delete>
+	
+	<delete id="deleteKeyword" parameterClass="com.ksg.domain.KeyWordInfo">
+		DELETE 
+		FROM 	TB_KEY_TYPE 
+		WHERE 	key_type=#key_type# 
+		AND 	key_name=#key_name#
 	</delete>
 	
 	

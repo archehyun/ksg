@@ -6,5 +6,7 @@ package com.ksg.workbench.admin.menu;
  */
 public interface MenuEvent {
 
-    public void menuSelected(int index, int subIndex, MenuAction action);
+    public void menuSelected(int index, int subIndex, String menuId, MenuAction action);
+ 
 }
+

@@ -14,6 +14,7 @@ public abstract class KSGView extends KSGPanel implements ActionListener, Compon
 	
 	
 	protected Font labelFont = new Font("¸¼Àº°íµñ",Font.BOLD,12);
+	
 	protected AbstractController controller;
 	
 	protected CommandMap model;

@@ -67,7 +67,7 @@ public class MainForm extends JLayeredPane {
     }
 
     private void initMenuEvent() {
-        menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
+        menu.addMenuEvent((int index, int subIndex, String menuId, MenuAction action) -> {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             if (index == 0) {
                 Application.showForm(new FormDashboard());

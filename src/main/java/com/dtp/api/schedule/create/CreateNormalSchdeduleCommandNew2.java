@@ -19,16 +19,13 @@ import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 
 import com.dtp.api.util.KSGListUtil;
-import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.commands.schedule.SwingWorker;
-import com.ksg.common.exception.VesselNullException;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.view.ui.ErrorLogManager;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import lombok.extern.slf4j.Slf4j;
 /**
@@ -54,9 +51,7 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 	/*
 	 * 광고 스케줄에서 부산항과 부산 신항이 같이 나타날 경우 기존 부산항 스케줄은 무시
 	 *  
-	 */
-
-	
+	 */	
 	
 	private static final String SCHEDULE_BUILD_ERROR_TXT = "schedule_build_error.txt";
 
@@ -110,16 +105,23 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 
 			for(ShippersTable tableDataItem: table_list)
 			{
+				
+				process++;		
+
+				current++;
+				
 				// 스케줄 생성 초기화
 				CreateSchedule createSchedule = new CreateSchedule(); 
 
 				try {
 
 					createSchedule.setShipperTable(tableDataItem);
+					
+					this.statMessage ="create : "+tableDataItem.getTable_id();
 
-					processMessageDialog.setMessage("");
+//					this.statMessage=tabl
 
-					notifyMessage("Make:"+tableDataItem.getCompany_abbr()+","+tableDataItem.getTable_id());
+					//notifyMessage("Make:"+tableDataItem.getCompany_abbr()+","+tableDataItem.getTable_id());
 
 				}catch(NumberFormatException e)
 				{
@@ -132,6 +134,7 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 				}catch(Exception e)				
 				{
 					e.printStackTrace();
+					
 					log.error("error:{} - {}", tableDataItem.getTable_id(), e.getMessage());
 
 					errorlist.add(createError("error", tableDataItem.getTable_id(), e.getMessage()));
@@ -142,9 +145,10 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 				// 스케줄 생성
 				try 
 				{
-					List<ScheduleData> inboundList= (ArrayList<ScheduleData>) createSchedule.getInboundScheduleList();
 					
-					List<ScheduleData> outboundList= (ArrayList<ScheduleData>) createSchedule.getOutboundScheduleList();
+					List<ScheduleData> inboundList	= (ArrayList<ScheduleData>) createSchedule.getInboundScheduleList();
+					
+					List<ScheduleData> outboundList	= (ArrayList<ScheduleData>) createSchedule.getOutboundScheduleList();
 					
 					inboundList.addAll(outboundList);
 
@@ -154,9 +158,7 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 
 					log.info("make schedule({}):{}", tableDataItem.getTable_id(), inboundList.size());
 
-					process++;		
 
-					current++;
 
 				}
 
@@ -183,7 +185,7 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 				}
 			}
 
-			done = true;
+			done 	= true;
 
 			current = lengthOfTask;			
 
@@ -199,19 +201,30 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 
 			throw new RuntimeException(e.getMessage());
 
-
 		}catch (Exception e) {
+			
 			e.printStackTrace();
+			
 			done=false;
+			
 			JOptionPane.showMessageDialog(null, "error message:"+e.getMessage());
+			
 			return RESULT_FAILE;
 		}
 
 		// 전체
 
 	}
+	/**
+	 * 
+	 * 
+	 * @param table_id
+	 * @param insertList
+	 * @throws SQLException
+	 */
 	private void insertList(String table_id, List<ScheduleData> insertList) throws SQLException {
-
+		
+		//TODO 교체
 		scheduleService.deleteScheduleById(table_id);
 
 		List<ScheduleData> newList=insertList.stream().filter(KSGListUtil.distinctByKey(m -> m.toKey())).collect(Collectors.toList());;
@@ -225,8 +238,11 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 	}
 
 	private void close() {
+		
 		done=false;
+		
 		processMessageDialog.setVisible(false);
+		
 		processMessageDialog.dispose();
 	}
 

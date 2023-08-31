@@ -397,37 +397,45 @@ public class PnPort extends PnBase implements ActionListener{
 
 		pnMainCenter.add(createPortDetail(),BorderLayout.EAST);	
 
-		KSGTableColumn columns[] = new KSGTableColumn[5];
+//		KSGTableColumn columns[] = new KSGTableColumn[5];
+//
+//		columns[0] = new KSGTableColumn();
+//		columns[0].columnField = "port_name";
+//		columns[0].columnName = "항구명";
+//		columns[0].size = 300;
+//		//columns[0].ALIGNMENT = SwingConstants.LEFT;
+//
+//		columns[1] = new KSGTableColumn();
+//		columns[1].columnField = "port_nationality";
+//		columns[1].columnName = "나라";
+//		columns[1].size = 300;
+//		columns[1].ALIGNMENT = SwingConstants.LEFT;
+//
+//		columns[2] = new KSGTableColumn();
+//		columns[2].columnField = "port_area";
+//		columns[2].columnName = "지역";
+//		columns[2].size = 300;
+//		columns[2].ALIGNMENT = SwingConstants.LEFT;
+//
+//		columns[3] = new KSGTableColumn();
+//		columns[3].columnField = "area_code";
+//		columns[3].columnName = "지역코드";
+//		columns[3].size = 100;
+//
+//		columns[4] = new KSGTableColumn();
+//		columns[4].columnField = "abbr_count";
+//		columns[4].columnName = "상세수";
+//		columns[4].size = 50;
 
-		columns[0] = new KSGTableColumn();
-		columns[0].columnField = "port_name";
-		columns[0].columnName = "항구명";
-		columns[0].size = 300;
-		columns[0].ALIGNMENT = SwingConstants.LEFT;
-
-		columns[1] = new KSGTableColumn();
-		columns[1].columnField = "port_nationality";
-		columns[1].columnName = "나라";
-		columns[1].size = 300;
-		columns[1].ALIGNMENT = SwingConstants.LEFT;
-
-		columns[2] = new KSGTableColumn();
-		columns[2].columnField = "port_area";
-		columns[2].columnName = "지역";
-		columns[2].size = 300;
-		columns[2].ALIGNMENT = SwingConstants.LEFT;
-
-		columns[3] = new KSGTableColumn();
-		columns[3].columnField = "area_code";
-		columns[3].columnName = "지역코드";
-		columns[3].size = 100;
-
-		columns[4] = new KSGTableColumn();
-		columns[4].columnField = "abbr_count";
-		columns[4].columnName = "상세수";
-		columns[4].size = 50;
-
-		tableH.setColumnName(columns);
+//		tableH.setColumnName(columns);
+		
+		
+		tableH.addColumn(new KSGTableColumn("port_name", "항구명",300, SwingConstants.LEFT ));
+		tableH.addColumn(new KSGTableColumn("port_nationality", "나라",300, SwingConstants.LEFT ));
+		tableH.addColumn(new KSGTableColumn("port_area", "지역",300, SwingConstants.LEFT ));
+		tableH.addColumn(new KSGTableColumn("area_code", "지역코드",100));
+		tableH.addColumn(new KSGTableColumn("abbr_count", "상세수",50, SwingConstants.RIGHT));
+		
 
 		tableH.initComp();
 

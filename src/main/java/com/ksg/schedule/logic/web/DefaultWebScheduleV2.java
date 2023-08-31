@@ -101,6 +101,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 	private Element root;
 
 	private String fromDates[];
+	
 	private String toDates[];
 
 	private String[][] vesselArrayDatas;
@@ -114,7 +115,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 	// 지역별 저장을 위한 객첵
 	private HashMap<String, Vector<ScheduleData>> areaKeyMap;
 
-	private Vector<TablePort> portDataArray;
+	private List<TablePort> portDataArray;
 
 	private TablePort fromPortTableInfo;
 
@@ -135,6 +136,8 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 	protected ADVService advService;
 
 	private BaseService baseService;
+	
+	private PortManager portManager;
 
 	public DefaultWebScheduleV2(int type,ShippersTable parameter) throws SQLException {
 		super();
@@ -164,6 +167,8 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 		logger.debug("Port 정보:"+portList.size());
 
 		portAbbrList = baseService.getPort_AbbrList();
+		
+		portManager = new PortManager(portList, portAbbrList);
 
 		logger.debug("PortAbbr 정보:"+portAbbrList.size());
 
@@ -220,148 +225,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 		}
 		return false;
 	}
-	/**
-	 * 항구 배열에서 항구 정보 추출
-	 * 
-	 * @param array
-	 * @param index
-	 * @return
-	 */
-	private TablePort getTablePort(Vector<TablePort> array,int index)
-	{
-		TablePort port1 = null;
-
-		for(int i=0;i<array.size();i++)
-		{
-
-			TablePort port=(TablePort) array.get(i);
-			if(port.getPort_index()==index)
-				port1= port;
-		}
-		return port1;
-
-	}
-	/**
-	 * @param portName
-	 * @return
-	 */
-	public PortInfo getPortInfoByPortName(String portName)
-	{
-		Iterator<PortInfo> iter = portList.iterator();
-		while(iter.hasNext())
-		{
-			PortInfo info = iter.next();
-			if(info.getPort_name().equals(portName))
-				return info;
-		}
-		return null;
-	}
-
-	/**
-	 * @param portName
-	 * @return
-	 */
-	public PortInfo getPortInfoAbbrByPortName(String portName)
-	{
-		Iterator<PortInfo> iter = portAbbrList.iterator();
-		while(iter.hasNext())
-		{
-			PortInfo info = iter.next();
-			if(info.getPort_abbr().equals(portName))
-				return info;
-		}
-		return null;
-
-	}
-	/**
-	 * @param portName
-	 * @return
-	 * @throws SQLException
-	 */
-	private PortInfo getPortInfo(String portName)
-	{
-		PortInfo  portInfo=getPortInfoByPortName(portName );
-		if(portInfo!=null)
-		{
-			return portInfo;
-
-		}else
-		{
-			PortInfo  portabbrInfo=getPortInfoAbbrByPortName(portName );
-			if(portabbrInfo!=null)
-			{
-				return portabbrInfo;
-
-			}else
-			{
-				return null;
-			}
-		}
-	}	
-
-	private int[] extractPortIndex(String strIndex)
-	{
-
-
-		int indexList[];
-		try{
-			StringTokenizer st = new StringTokenizer(strIndex.trim(),"#");
-
-			ArrayList<Integer> list = new ArrayList<Integer>();
-
-			while(st.hasMoreTokens())
-			{
-				int indexItem =Integer.parseInt(st.nextToken().trim());
-				list.add(indexItem);
-			}
-			indexList = new int[list.size()];
-			for(int i=0;i<list.size();i++)
-			{
-				indexList[i] = list.get(i);
-			}
-			logger.debug("extract Port Index:"+strIndex.trim() + ", size:"+indexList.length);
-			return indexList;
-		}catch(NumberFormatException e)
-		{
-			indexList = new int[0];
-			logger.debug("extract Port Index:"+strIndex.trim() + ", size:"+indexList.length);
-			return indexList;
-		}
-
-	}
-
-	/** 
-	 * 주어진 항구명이 있는지 판단해서 있는 항구면 항구 인덱스를, 아니면 -1을 반환
-	 * @param array
-	 * @param portName
-	 * @return
-	 */
-	private int isExitPort(Vector<TablePort> array, int indexs[], String portName)
-	{
-		try{
-			for(int i=0;i<indexs.length;i++)
-			{
-				int portIndex =indexs[i];
-
-
-				TablePort port=this.getTablePort(array, portIndex);
-				PortInfo searchOutOldPort = this.getPortInfo(port.getPort_name());
-
-				if(searchOutOldPort==null)
-					return -1;
-
-				if(searchOutOldPort.getPort_name().equals(portName))
-					return portIndex;
-			}
-		}catch(Exception e)
-		{
-			logger.error(e.getMessage()+",portName:"+portName);
-			e.printStackTrace();
-			return -1;
-		}
-
-		return -1;
-	}
+	
 
 	@SuppressWarnings("finally")
 	@Override
@@ -420,31 +284,31 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 
 					tableID = shipperTableData.getTable_id();
 
-					int outboundFromPortIndexList[]=extractPortIndex(shipperTableData.getOut_port());
+					int outboundFromPortIndexList[]	= portManager.extractPortIndex(shipperTableData.getOut_port());
 
-					int outboundToPortIndexList[]=extractPortIndex(shipperTableData.getOut_to_port());
+					int outboundToPortIndexList[]	= portManager.extractPortIndex(shipperTableData.getOut_to_port());
 
 
-					int inboundFromPortIndexList[]=extractPortIndex(shipperTableData.getIn_to_port());
+					int inboundFromPortIndexList[]	= portManager.extractPortIndex(shipperTableData.getIn_to_port());
 
-					int inboundToPortIndexList[]=extractPortIndex(shipperTableData.getIn_port());
+					int inboundToPortIndexList[]	= portManager.extractPortIndex(shipperTableData.getIn_port());
 					
 					if(format_type==FORMAT_INLNAD)
 					{
-						inlandPortIndexLists = extractPortIndex(shipperTableData.getInland_indexs());
+						inlandPortIndexLists = portManager.extractPortIndex(shipperTableData.getInland_indexs());
 					}
 
 					// outbound 부산신항이 있는지 판단						
-					int outbundBusanNewPortIndex=isExitPort(portDataArray, outboundFromPortIndexList, BUSAN_NEW_PORT);
+					int outbundBusanNewPortIndex 	= portManager.isExitPort(portDataArray, outboundFromPortIndexList, BUSAN_NEW_PORT);
 
 					// outbound 부산항이 있는지 판단
-					int outboundBusanPortIndex=isExitPort(portDataArray, outboundFromPortIndexList, BUSAN_PORT);
+					int outboundBusanPortIndex		= portManager.isExitPort(portDataArray, outboundFromPortIndexList, BUSAN_PORT);
 
 					// inbound 부산신항이 있는지 판단						
-					int inbundBusanNewPortIndex=isExitPort(portDataArray, inboundToPortIndexList, BUSAN_NEW_PORT);
+					int inbundBusanNewPortIndex		= portManager.isExitPort(portDataArray, inboundToPortIndexList, BUSAN_NEW_PORT);
 
 					// inbound 부산항이 있는지 판단
-					int inboundBusanPortIndex=isExitPort(portDataArray, inboundToPortIndexList, BUSAN_PORT);
+					int inboundBusanPortIndex		= portManager.isExitPort(portDataArray, inboundToPortIndexList, BUSAN_PORT);
 
 
 					logger.debug("BUSAN PORT:"+outboundBusanPortIndex+", BUSAN NEW PORT:"+outbundBusanNewPortIndex);
@@ -569,7 +433,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 					}
 				}
 				
-				fromPortTableInfo = this.getTablePort(portDataArray, fromPortIndexA);
+				fromPortTableInfo = portManager.getTablePort(portDataArray, fromPortIndexA);
 				
 				// 아웃바운드, 부산항, 부산 신항 둘다 있는 경우 수정
 				if(inOutType.equals(ScheduleEnum.OUTBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
@@ -578,7 +442,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 					//부산신항 항구명을 부산항으로 변경 
 					if(fromPortIndexA==busanNewPortIndex)
 					{	
-						fromPortTableInfo = this.getTablePort(portDataArray, busanPortIndex);
+						fromPortTableInfo = portManager.getTablePort(portDataArray, busanPortIndex);
 					}
 				}
 				
@@ -654,7 +518,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 						}
 					}
 
-					toTablePortInfo = this.getTablePort(portDataArray, toPortIndexA);
+					toTablePortInfo = portManager.getTablePort(portDataArray, toPortIndexA);
 					
 					// 인바운드, 부산항, 부산 신항 둘다 있는 경우
 					if(inOutType.equals(ScheduleEnum.INBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
@@ -662,7 +526,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 						//부산 신항 항구명을 부산항으로 지정
 						if(toPortIndexA==busanNewPortIndex)
 						{
-							toTablePortInfo = this.getTablePort(portDataArray, busanPortIndex);
+							toTablePortInfo = portManager.getTablePort(portDataArray, busanPortIndex);
 						}
 					}
 
@@ -706,7 +570,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 				{
 					int inlandIndexA=inlandIndexList[inlnadIndex];
 					//기항지 항구 설정
-					TablePort inlandTablePortInfo = this.getTablePort(portDataArray, inlandIndexA);
+					TablePort inlandTablePortInfo = portManager.getTablePort(portDataArray, inlandIndexA);
 
 
 					if(inlandTablePortInfo== null)
@@ -774,7 +638,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 					}
 				}
 
-				fromPortTableInfo = this.getTablePort(portDataArray, fromPortIndexA);
+				fromPortTableInfo = portManager.getTablePort(portDataArray, fromPortIndexA);
 				
 				// 아웃바운드, 부산항, 부산 신항 둘다 있는 경우
 				if(inOutType.equals(ScheduleEnum.OUTBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
@@ -782,7 +646,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 					// 부산 신항 항구 명을 부산항으로 지정
 					if(fromPortIndexA==busanNewPortIndex)
 					{
-						fromPortTableInfo = this.getTablePort(portDataArray, busanPortIndex);
+						fromPortTableInfo = portManager.getTablePort(portDataArray, busanPortIndex);
 					}
 				}
 
@@ -854,7 +718,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 						}
 					}
 
-					toTablePortInfo = this.getTablePort(portDataArray, toPortIndexA);
+					toTablePortInfo = portManager.getTablePort(portDataArray, toPortIndexA);
 					
 					// 인바운드, 부산항, 부산 신항 둘다 있는 경우 수정
 					if(inOutType.equals(ScheduleEnum.INBOUND.getSymbol())&&busanPortIndex!=-1&&busanNewPortIndex!=-1)
@@ -862,7 +726,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 						// 부산 신항 항구 명을 부산항으로 지정
 						if(toPortIndexA==busanNewPortIndex)
 						{
-						toTablePortInfo = this.getTablePort(portDataArray, busanPortIndex);
+						toTablePortInfo = portManager.getTablePort(portDataArray, busanPortIndex);
 						}
 					}
 
@@ -1161,27 +1025,7 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 			return ports.trim();
 		}
 	}
-	/**
-	 * @param portName
-	 * @return
-	 */
-	public PortInfo getPortAreaCode(String portName){
-		PortInfo  portInfo=getPortInfoByPortName(portName );
-		if(portInfo!=null)
-		{
-			return portInfo;
-		}else
-		{
-			PortInfo  portabbrInfo=getPortInfoAbbrByPortName(portName );
-			if(portabbrInfo!=null)
-			{
-				return portabbrInfo;
-			}else
-			{
-				return null;
-			}
-		}
-	}
+
 
 	/**
 	 *  테이블 아이디를 기준으로 포트 정보 추출
@@ -1189,23 +1033,21 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Vector<TablePort> getPortList(ShippersTable table) throws SQLException 
+	public List<TablePort> getPortList(ShippersTable table) throws SQLException 
 	{
-		Vector<TablePort> portDataArray  = new Vector<TablePort>();
-		TablePort tablePort = new TablePort();
-		tablePort.setTable_id(table.getTable_id());
-		tablePort.setPort_type(TablePort.TYPE_PARENT);
+		
+		
+		TablePort searchParam 				= new TablePort();
+		
+		searchParam.setTable_id(table.getTable_id());
+		
+		searchParam.setPort_type(TablePort.TYPE_PARENT);
 
-		List<TablePort> li=tableService.getTablePortList(tablePort);
+		List<TablePort> li=tableService.getTablePortList(searchParam);
 
-		for(int i=0;i<li.size();i++)
-		{
-			TablePort port = li.get(i);
+		
 
-			portDataArray.add(port);
-		}
-
-		return portDataArray;
+		return li;
 	}
 
 
@@ -1220,48 +1062,30 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 	 */
 	public HashMap<Integer, Integer> makePortArrayWebIndexMap(String outPortIndex, String outToPortIndex,String inPortIndex, String inToPortIndex) throws NumberFormatException{
 		String delimiters = "#";
+		
 		HashMap<Integer, Integer> indexlist = new HashMap<Integer, Integer>();
-		StringTokenizer st = new StringTokenizer(outPortIndex,delimiters);
-
-		while(st.hasMoreTokens())
-		{
-			int indexItem =Integer.parseInt(st.nextToken().trim());
-			if(!indexlist.containsKey(indexItem))
-			{
-				indexlist.put(indexItem,indexItem);
-			}
-		}
-
-		st = new StringTokenizer(outToPortIndex,delimiters);
-		while(st.hasMoreTokens())
-		{
-			int indexItem =Integer.parseInt(st.nextToken().trim());
-			if(!indexlist.containsKey(indexItem))
-			{
-				indexlist.put(indexItem,indexItem);
-			}
-		}
-
-		st = new StringTokenizer(inPortIndex,delimiters);
-		while(st.hasMoreTokens())
-		{
-			int indexItem =Integer.parseInt(st.nextToken().trim());
-			if(!indexlist.containsKey(indexItem))
-			{
-				indexlist.put(indexItem,indexItem);
-			}
-		}
-
-		st = new StringTokenizer(inToPortIndex,delimiters);
-		while(st.hasMoreTokens())
-		{
-			int indexItem =Integer.parseInt(st.nextToken().trim());
-			if(!indexlist.containsKey(indexItem))
-			{
-				indexlist.put(indexItem,indexItem);
-			}
-		}
+		
+		addWebSchedule(indexlist, new StringTokenizer(outPortIndex,delimiters));		
+		
+		addWebSchedule(indexlist, new StringTokenizer(outToPortIndex,delimiters));		
+		
+		addWebSchedule(indexlist, new StringTokenizer(inPortIndex,delimiters));		
+		
+		addWebSchedule(indexlist, new StringTokenizer(inToPortIndex,delimiters));
+		
 		return indexlist;
+	}
+
+	private void addWebSchedule(HashMap<Integer, Integer> indexlist, StringTokenizer st) {
+		while(st.hasMoreTokens())
+		{
+			int indexItem =Integer.parseInt(st.nextToken().trim());
+			
+			if(!indexlist.containsKey(indexItem))
+			{
+				indexlist.put(indexItem,indexItem);
+			}
+		}
 	}
 
 
@@ -1378,6 +1202,182 @@ public class DefaultWebScheduleV2 extends AbstractSchedulePrint {
 	@Override
 	public void writeFile(ArrayList<String> printList) throws Exception {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	class PortManager
+	{
+		private List<PortInfo> portList,portAbbrList;
+		
+		public PortManager(List<PortInfo> portList, List<PortInfo>portAbbrList)
+		{
+			this.portList = portList;
+			this.portAbbrList = portAbbrList;
+		}
+		/**
+		 * @param portName
+		 * @return
+		 */
+		public PortInfo getPortInfoByPortName(String portName)
+		{
+			Iterator<PortInfo> iter = portList.iterator();
+			while(iter.hasNext())
+			{
+				PortInfo info = iter.next();
+				if(info.getPort_name().equals(portName))
+					return info;
+			}
+			return null;
+		}
+
+		/**
+		 * @param portName
+		 * @return
+		 */
+		public PortInfo getPortInfoAbbrByPortName(String portName)
+		{
+			Iterator<PortInfo> iter = portAbbrList.iterator();
+			while(iter.hasNext())
+			{
+				PortInfo info = iter.next();
+				if(info.getPort_abbr().equals(portName))
+					return info;
+			}
+			return null;
+
+		}
+		/**
+		 * @param portName
+		 * @return
+		 * @throws SQLException
+		 */
+		private PortInfo getPortInfo(String portName)
+		{
+			PortInfo  portInfo=getPortInfoByPortName(portName );
+			if(portInfo!=null)
+			{
+				return portInfo;
+
+			}else
+			{
+				PortInfo  portabbrInfo=getPortInfoAbbrByPortName(portName );
+				if(portabbrInfo!=null)
+				{
+					return portabbrInfo;
+
+				}else
+				{
+					return null;
+				}
+			}
+		}	
+
+		private int[] extractPortIndex(String strIndex)
+		{
+
+
+			int indexList[];
+			try{
+				StringTokenizer st = new StringTokenizer(strIndex.trim(),"#");
+
+				ArrayList<Integer> list = new ArrayList<Integer>();
+
+				while(st.hasMoreTokens())
+				{
+					int indexItem =Integer.parseInt(st.nextToken().trim());
+					list.add(indexItem);
+				}
+				indexList = new int[list.size()];
+				for(int i=0;i<list.size();i++)
+				{
+					indexList[i] = list.get(i);
+				}
+				logger.debug("extract Port Index:"+strIndex.trim() + ", size:"+indexList.length);
+				return indexList;
+			}catch(NumberFormatException e)
+			{
+				indexList = new int[0];
+				logger.debug("extract Port Index:"+strIndex.trim() + ", size:"+indexList.length);
+				return indexList;
+			}
+
+		}
+		/**
+		 * @param portName
+		 * @return
+		 */
+		public PortInfo getPortAreaCode(String portName){
+			PortInfo  portInfo=getPortInfoByPortName(portName );
+			if(portInfo!=null)
+			{
+				return portInfo;
+			}else
+			{
+				PortInfo  portabbrInfo=getPortInfoAbbrByPortName(portName );
+				if(portabbrInfo!=null)
+				{
+					return portabbrInfo;
+				}else
+				{
+					return null;
+				}
+			}
+		}
+		
+		/** 
+		 * 주어진 항구명이 있는지 판단해서 있는 항구면 항구 인덱스를, 아니면 -1을 반환
+		 * @param array
+		 * @param portName
+		 * @return
+		 */
+		private int isExitPort(List<TablePort> array, int indexs[], String portName)
+		{
+			try{
+				for(int i=0;i<indexs.length;i++)
+				{
+					int portIndex =indexs[i];
+
+
+					TablePort port=this.getTablePort(array, portIndex);
+					PortInfo searchOutOldPort = portManager.getPortInfo(port.getPort_name());
+
+					if(searchOutOldPort==null)
+						return -1;
+
+					if(searchOutOldPort.getPort_name().equals(portName))
+						return portIndex;
+				}
+			}catch(Exception e)
+			{
+				logger.error(e.getMessage()+",portName:"+portName);
+				e.printStackTrace();
+				return -1;
+			}
+
+			return -1;
+		}
+		/**
+		 * 항구 배열에서 항구 정보 추출
+		 * 
+		 * @param array
+		 * @param index
+		 * @return
+		 */
+		private TablePort getTablePort(List<TablePort> array,int index)
+		{
+			TablePort port1 = null;
+
+			for(int i=0;i<array.size();i++)
+			{
+
+				TablePort port=(TablePort) array.get(i);
+				if(port.getPort_index()==index)
+					port1= port;
+			}
+			return port1;
+
+		}
 		
 	}
 

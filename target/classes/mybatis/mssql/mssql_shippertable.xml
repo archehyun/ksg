@@ -106,33 +106,33 @@
 
 	<sql id="TableList">
 	SELECT 
-		table_id
-		,table_index
-		,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
-		
-		,vsl_row
-		,title
-		,out_port
-		,common_shipping
-		,company_abbr
-		,TS
-		,company_name
-		,gubun
-		,page
-		,agent
-		,quark_format
-		,port_col
-		,out_to_port
-		,in_to_port
-		,in_port
-		,othercell
-		,console_cfs
-		,d_time
-		,c_time
-		,console_page
-		,inland_indexs
-		,bookPage
-	FROM TB_TABLE_INFO
+			table_id
+			,table_index
+			,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
+			
+			,vsl_row
+			,title
+			,out_port
+			,common_shipping
+			,company_abbr
+			,TS
+			,company_name
+			,gubun
+			,page
+			,agent
+			,quark_format
+			,port_col
+			,out_to_port
+			,in_to_port
+			,in_port
+			,othercell
+			,console_cfs
+			,d_time
+			,c_time
+			,console_page
+			,inland_indexs
+			,bookPage
+	FROM 	TB_TABLE_INFO
 	</sql>
 	
 	<select id="selectADVDataById" resultClass="com.ksg.domain.ADVData">
@@ -180,35 +180,35 @@
 	<select id="selectShipperTableListAllByCondition" resultMap="allTableMap" parameterClass="com.ksg.domain.ShippersTable">
 		SELECT /* selectShipperTableListAllByCondition */
 			A.table_id,
-			A.table_index,
-			CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse,
-			A.table_date,
-			A.vsl_row,
-			A.title,
-			A.out_port,
-			A.common_shipping,
-			A.company_abbr,
-			A.TS,
-			A.company_name,
-			A.gubun,
-			A.page,
-			A.agent,
-			A.quark_format,
-			A.port_col,
-			A.out_to_port,
-			A.in_to_port,
-			A.in_port,
-			A.othercell,
-			A.console_cfs,
-			A.d_time,
-			A.c_time,
-			A.console_page,
-			A.inland_indexs,
-			A.bookPage,
-			B.data as data 
-		FROM TB_TABLE_INFO A JOIN TB_ADV_INFO B
-		ON A. table_id= B.table_id
-		WHERE A.date_isusse=#date_isusse#
+				A.table_index,
+				CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse,
+				A.table_date,
+				A.vsl_row,
+				A.title,
+				A.out_port,
+				A.common_shipping,
+				A.company_abbr,
+				A.TS,
+				A.company_name,
+				A.gubun,
+				A.page,
+				A.agent,
+				A.quark_format,
+				A.port_col,
+				A.out_to_port,
+				A.in_to_port,
+				A.in_port,
+				A.othercell,
+				A.console_cfs,
+				A.d_time,
+				A.c_time,
+				A.console_page,
+				A.inland_indexs,
+				A.bookPage,
+				B.data as data 
+		FROM 	TB_TABLE_INFO A JOIN TB_ADV_INFO B
+		ON A. 	table_id= B.table_id
+		WHERE 	A.date_isusse=#date_isusse#
 		AND A.gubun  NOT IN ('NNN')
 		<isNotEmpty prepend="AND" property="gubun">
 		A.gubun= #gubun#
@@ -658,18 +658,14 @@
 	
 	
 	<update id="updateDate" parameterClass="java.util.HashMap">
-		UPDATE TB_TABLE_INFO set
-		
-		date_isusse=#date_isusse#
-
+		UPDATE TB_TABLE_INFO 
+		SET date_isusse=#date_isusse#
 		WHERE table_id=#table_id#
 	</update>
 	
 	<update id="updateShipperTableDate" parameterClass="java.util.HashMap">
-		UPDATE TB_TABLE_INFO
-		 
+		UPDATE TB_TABLE_INFO		 
 		SET date_isusse = #date_isusse#
-
 		WHERE table_id IN
 		
 		<iterate property="tableIDList" open="(" close=")" conjunction=",">
@@ -677,12 +673,12 @@
 		</iterate>
 	</update>
 	<update id="updateTableDate" parameterClass="com.ksg.domain.ADVData">
-		update TB_TABLE_INFO 
+		UPDATE TB_TABLE_INFO 
 		SET
 			date_isusse=#date_isusse#,
 			table_date =#table_date#
 		 
-		where table_id=#table_id#
+		WHERE table_id=#table_id#
 	</update>
 	
 
@@ -742,9 +738,7 @@
 	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
 		SELECT count(*) FROM TB_TABLE_INFO	
 	</select>
-	
-	
-	
+		
 	<select id="getPortList" resultClass="com.ksg.domain.TablePort" parameterClass="java.lang.String">
 		SELECT /*getPortList */
 			A.port_name,

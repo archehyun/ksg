@@ -49,7 +49,7 @@ import com.ksg.view.comp.table.KSGTablePanel;
 @SuppressWarnings("serial")
 public class SearchCompanyDialog2 extends MainTypeDialog implements ActionListener{
 
-	public String result;
+	
 
 	private KSGTablePanel tableH;
 

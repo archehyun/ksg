@@ -19,7 +19,6 @@ import com.ksg.commands.IFCommand;
 import com.ksg.commands.ScheduleExecute;
 import com.ksg.commands.schedule.ErrorLog;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
-import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.ADVData;
@@ -52,32 +51,57 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 	public static final int TYPE_INBOUND=1;
 
 	public static final int TYPE_OUTBOUND=2;
+	
 	private ShipperTableService shipperTableService;
+	
 	private TableService 		tableService;
+	
 	protected ADVService 		advService;
+	
 	protected ScheduleSubService 	scheduleService;
+	
 	protected BaseService 		baseService;
+	
 	private DTPScheduleService dtpScheduleService;
+	
 	private VesselService vesselService = new VesselServiceImpl();
 	
 	protected Vector errorlist ;
+	
 	protected int lengthOfTask;
+	
 	protected int current = 0;
+	
 	protected boolean done = false;
+	
 	protected boolean canceled = false;
+	
 	protected String statMessage;
+	
 	protected int total;
+	
 	protected int result;
+	
 	protected ShippersTable searchOption;
+	
 	protected ScheduleBuildMessageDialog processMessageDialog;
+	
 	protected int process;
+	
 	protected long startTime,endtime;
+	
 	protected int currentMonth;
+	
 	protected List portList,portAbbrList;
+	
 	protected List NO_VESSEL;
+	
 	protected String currentYear;
+	
 	protected ADVData advData;
+	
 	protected Date selectedDate;
+	
 	public CreateScheduleCommand() throws SQLException {
 		
 		shipperTableService = new ShipperTableServiceImpl();
@@ -95,7 +119,9 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 		errorlist= new Vector();
 
 		process =0;
+		
 		SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+		
 		SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
 
 		currentYear = sdfYear.format(new Date());

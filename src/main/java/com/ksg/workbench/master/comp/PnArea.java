@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
@@ -99,6 +100,7 @@ public class PnArea extends PnBase implements ActionListener{
 		columns[1].columnField = "area_name";
 		columns[1].columnName = "Áö¿ª¸í";
 		columns[1].size = 300;
+		columns[1].ALIGNMENT = SwingConstants.LEFT;
 
 		columns[2] = new KSGTableColumn();
 		columns[2].columnField = "area_book_code";

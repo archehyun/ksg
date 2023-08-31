@@ -15,7 +15,7 @@
 <sqlMap namespace="schedule">
 
 
-<sql id="selectSQL">select * from TB_SCHEDULE_INFO</sql>
+<sql id="selectSQL">SELECT * FROM TB_SCHEDULE_INFO</sql>
 
 <sql id="WHERE">
 			<dynamic prepend="where">
@@ -103,9 +103,6 @@
 
 </sql>
 
-
-
-	
 
 <!-- select -->
 
@@ -265,8 +262,11 @@
 	</select>
 	
 	<select id="selectScheduleDateList" resultClass="java.util.HashMap" >
-		SELECT date_issue, gubun, count(case when inOutType='I' then 1 end) cnt_i, 
-		count(case when inOutType='O' then 1 end) cnt_o 
+		SELECT 
+				date_issue, 
+				gubun, 
+				count(case when inOutType='I' then 1 end) cnt_i, 
+				count(case when inOutType='O' then 1 end) cnt_o 
 		
 		FROM TB_SCHEDULE_INFO group by date_issue,gubun
 	</select>
@@ -275,7 +275,9 @@
 	</select>
 	
 	<select id="selectInlandList" resultClass="java.util.HashMap">
-		select * FROM TB_INLAND_SCHEDULE_INFO where gubun='inland'
+		SELECT * 
+		FROM TB_INLAND_SCHEDULE_INFO 
+		WHERE gubun='inland'
 				<isNotNull property="table_id" prepend="and">
 					table_id=#table_id#
 				</isNotNull>
@@ -370,9 +372,10 @@
 	<select id="selectScheduledAreaList" resultClass="java.util.HashMap">
 	
 	SELECT 
-		area_name 
-	FROM TB_SCHEDULE_INFO 
-	group by area_name order by area_name
+			area_name 
+	FROM 	TB_SCHEDULE_INFO 
+	GROUP BY area_name 
+	ORDER BY area_name
 	
 	</select>
 	
@@ -392,7 +395,8 @@
 	
 	<select id="selectScheduledFromPortList" resultClass="java.util.HashMap">
 	
-	select fromPort from TB_SCHEDULE_INFO
+	SELECT fromPort 
+	FROM TB_SCHEDULE_INFO
 	<dynamic prepend="where">
 	
 		<isNotNull property="area_name" prepend="and">
@@ -405,8 +409,9 @@
 	group by fromPort order by fromPort
 	</select>
 	
-		<select id="selectScheduleJointList" resultClass="java.util.HashMap">
-		select * from TB_SCHEDULE_INFO
+	<select id="selectScheduleJointList" resultClass="java.util.HashMap">
+		SELECT 	* 
+		FROM 	TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 		
 		    	<isNotNull property="table_id" prepend="and">
@@ -445,7 +450,7 @@
   
 		</dynamic>
 		<isNotNull property="orderby">
-		order by $orderby$
+		ORDER BY $orderby$
 		</isNotNull>
 		
 	</select>
@@ -470,9 +475,7 @@
 	<delete id="deleteInlnadSchedule">
 		DELETE FROM TB_INLAND_SCHEDULE_INFO
 	</delete>
-	
-	
-	
+		
 <!-- count -->
 
 	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
@@ -520,33 +523,33 @@
 
 <insert id="insertScheduleBulk" parameterClass="java.util.List">
 		INSERT TB_SCHEDULE_INFO(
-		table_id,
-		vessel,
-		voyage_num,
-		port,
-		dateF,
-		dateT,
-		fromDate,
-		toDate,
-		company_abbr,
-		agent,
-		TS,
-		common_shipping,		
-		area_code,
-		inOutType,
-		fromPort,
-		date_issue,
-		gubun,
-		ts_vessel,
-		ts_date,
-		n_voyage_num,
-		area_name,
-		console_cfs,
-		console_page,
-		c_time,
-		d_time,
-		inland_port,
-		inland_date
+			table_id,
+			vessel,
+			voyage_num,
+			port,
+			dateF,
+			dateT,
+			fromDate,
+			toDate,
+			company_abbr,
+			agent,
+			TS,
+			common_shipping,		
+			area_code,
+			inOutType,
+			fromPort,
+			date_issue,
+			gubun,
+			ts_vessel,
+			ts_date,
+			n_voyage_num,
+			area_name,
+			console_cfs,
+			console_page,
+			c_time,
+			d_time,
+			inland_port,
+			inland_date
 		
 		) 
 		values
@@ -554,40 +557,40 @@
 		<iterate conjunction="," >
 		
 		(
-		#[].table_id#,
-		#[].vessel#,
-		#[].voyage_num#,
-		#[].port#,
-		#[].dateF#,
-		#[].dateT#,
-		#[].fromDate#,
-		#[].toDate#,
-		#[].company_abbr#,
-		#[].agent#,
-		#[].TS#,
-		#[].common_shipping#,
-		
-		#[].area_code#,
-		
-		#[].inOutType#,
-		#[].fromPort#,
-		#[].date_issue#,
-		#[].gubun#,
-		
-		#[].ts_vessel#,
-		
-		#[].ts_date#,
-		
-		#[].n_voyage_num#,
-		
-		#[].area_name#,
-		
-		#[].console_cfs#,
-		#[].console_page#,
-		#[].c_time#,
-		#[].d_time#,
-		#[].inland_port#,
-		#[].inland_date#
+			#[].table_id#,
+			#[].vessel#,
+			#[].voyage_num#,
+			#[].port#,
+			#[].dateF#,
+			#[].dateT#,
+			#[].fromDate#,
+			#[].toDate#,
+			#[].company_abbr#,
+			#[].agent#,
+			#[].TS#,
+			#[].common_shipping#,
+			
+			#[].area_code#,
+			
+			#[].inOutType#,
+			#[].fromPort#,
+			#[].date_issue#,
+			#[].gubun#,
+			
+			#[].ts_vessel#,
+			
+			#[].ts_date#,
+			
+			#[].n_voyage_num#,
+			
+			#[].area_name#,
+			
+			#[].console_cfs#,
+			#[].console_page#,
+			#[].c_time#,
+			#[].d_time#,
+			#[].inland_port#,
+			#[].inland_date#
 		
 		)
 		</iterate>

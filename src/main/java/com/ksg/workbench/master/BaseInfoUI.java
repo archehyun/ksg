@@ -40,6 +40,7 @@ import com.ksg.workbench.master.comp.PnBase;
 import com.ksg.workbench.master.comp.PnCommonCode;
 import com.ksg.workbench.master.comp.PnCompany;
 import com.ksg.workbench.master.comp.PnPort;
+import com.ksg.workbench.master.comp.PnPortNew;
 import com.ksg.workbench.master.comp.PnVessel;
 
 /**
@@ -224,7 +225,7 @@ public class BaseInfoUI extends AbstractMgtUI{
 		
 		addBasePanel(pnMain,new PnCompany(this),	STRING_COMPANY_INFO);
 		
-		addBasePanel(pnMain,new PnPort(this),		STRING_PORT_INFO);
+		addBasePanel(pnMain,new PnPortNew(this),		STRING_PORT_INFO);
 
 		return pnMain;
 	}

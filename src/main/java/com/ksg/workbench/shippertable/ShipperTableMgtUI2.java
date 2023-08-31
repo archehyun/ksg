@@ -463,7 +463,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		tableH.addColumn(new KSGTableColumn("in_port", "출발항",110, SwingConstants.LEFT ));
 		tableH.addColumn(new KSGTableColumn("in_to_port", "도착항",110, SwingConstants.LEFT ));
 		tableH.addColumn(new KSGTableColumn("out_port", "출발항", 110, SwingConstants.LEFT ));
-		tableH.addColumn(new KSGTableColumn("out_to_port", "도착항",110, SwingConstants.LEFT ));
+		tableH.addColumn(new KSGTableColumn("out_to_port", "도착항",110, SwingConstants.LEFT));
 
 		//TODO 컬럼 가운데 정렬
 
@@ -808,8 +808,9 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 				SearchCompanyDialog2 dialog = new SearchCompanyDialog2();
 
 				dialog.createAndUpdateUI();
-
-				stfCompanyAbbr.setText(dialog.result);
+				
+				HashMap result = (HashMap) dialog.resultObj;
+				stfCompanyAbbr.setText((String)result.get("company_abbr"));
 			}
 		});
 
@@ -970,9 +971,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 		lblItem = new JLabel("  항목: ");
 
-		JLabel lblCompany = new JLabel("선사명 약어: ");
-
-		
+		JLabel lblCompany = new JLabel("선사명 약어: ");		
 
 		lblDivision.setFont(labelFont);
 
@@ -1039,6 +1038,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		txfTable_id.setForeground(Color.blue.brighter());
 		
 		pnLeft.add(lbl);
+		
 		pnLeft.add(txfTable_id);
 
 		pnTableInfo.add(pnLeft,BorderLayout.WEST);

@@ -14,16 +14,22 @@ public class InlandWebScheduleFormat extends WebScheduleFormat implements IFWebS
 
 	private String[][] vslDatas;
 	
-
+	public InlandWebScheduleFormat()
+	{
+		fileName="INLAND";
+		errorFileName = "inlnad";
+	}
 	public InlandWebScheduleFormat(DefaultWebSchedule webSchedule) {
-			this.webSchedule = webSchedule;
-			fileName="INLAND";
-			errorFileName = "inlnad";
+		this();
+		this.webSchedule = webSchedule;
+
 	}
 
 	public InlandWebScheduleFormat(DefaultWebScheduleV2 defaultWebScheduleV2) {
-		fileName="INLAND";
-		errorFileName = "inlnad";
+		this();
+	}
+	public InlandWebScheduleFormat(DefaultWebScheduleV3 defaultWebScheduleV3) {
+		this();
 	}
 
 	public String toWebScheduleString(ScheduleData data)

@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -105,13 +106,15 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		
 		Hcolumns[1].columnName = "코드명";
 		
-		Hcolumns[1].size = 100;		
+		Hcolumns[1].size = 100;
+		Hcolumns[1].ALIGNMENT = SwingConstants.LEFT;
 
 		Hcolumns[2] = new KSGTableColumn();
 		
 		Hcolumns[2].columnField = "code_name";
 		
 		Hcolumns[2].columnName = "코드타입";
+		Hcolumns[2].ALIGNMENT = SwingConstants.LEFT;
 		
 		Hcolumns[2].size = 100;
 
@@ -129,7 +132,6 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 		KSGTableColumn Dcolumns[] = new KSGTableColumn[3];
 
-
 		Dcolumns[0] = new KSGTableColumn();
 		
 		Dcolumns[0].columnField = "code_field";
@@ -143,6 +145,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		Dcolumns[1].columnField = "code_name_kor";
 		
 		Dcolumns[1].columnName = "코드명";
+		Dcolumns[1].ALIGNMENT = SwingConstants.LEFT;
 		
 		Dcolumns[1].size = 200;	
 
@@ -151,6 +154,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		Dcolumns[2].columnField = "code_name";
 		Dcolumns[2].columnName = "코드영문명";
 		Dcolumns[2].size = 200;
+		Dcolumns[2].ALIGNMENT = SwingConstants.LEFT;
 
 		tableD.setColumnName(Dcolumns);
 

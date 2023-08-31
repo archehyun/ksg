@@ -57,7 +57,7 @@ public class OutboundSchedulePrintFile extends AbstractSchedulePrint{
 
 	protected  Map<String, PortInfo> portMap;
 
-	protected  Map<String, Vessel> vesselMap;
+//	protected  Map<String, Vessel> vesselMap;
 
 	protected boolean isApplyTag=true;// 태그 적용 여부
 

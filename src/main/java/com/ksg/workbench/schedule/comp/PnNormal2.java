@@ -4,15 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -23,8 +20,6 @@ import javax.swing.JTextField;
 import com.dtp.api.control.ScheduleController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.AreaInfo;
-import com.ksg.service.AreaService;
-import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.combobox.KSGComboBox;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -172,6 +167,7 @@ public class PnNormal2 extends PnSchedule{
 
 
 		txfNoramlSearch = new JTextField(15);
+		
 		txfNoramlSearch.addKeyListener(new KeyAdapter() {
 
 			@Override

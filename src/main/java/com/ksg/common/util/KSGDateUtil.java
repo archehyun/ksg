@@ -812,13 +812,13 @@ public class KSGDateUtil {
 		}
 		return monthAndDay;
 	}
-
+	
 	/**
 	 * @param dateF
 	 * @return
 	 * @throws VesselDateNotMatchException 
 	 */
-	public static String[] getDates(String dateF, int currentMonth,String strYear) throws VesselDateNotMatchException
+	public static String[] getDates(String dateF, int currentMonth,int year) throws VesselDateNotMatchException
 	{
 		String datePattern = "(\\d{1,2})/(\\d{1,2})";
 		String datePattern1 = "(\\d{1,2})/(\\d{1,2})-(\\d{1,2})/(\\d{1,2})";
@@ -831,8 +831,8 @@ public class KSGDateUtil {
 		int dayT = 0;
 		int yearT = 0;
 		int yearF = 0;
-		yearF = Integer.valueOf(strYear);
-		yearT = Integer.valueOf(strYear);
+		yearF = year;
+		yearT = year;
 		if(dateF.matches(datePattern))
 		{
 			Pattern patt = Pattern.compile(datePattern);
@@ -894,6 +894,18 @@ public class KSGDateUtil {
 			dd[1] = yearT+"/"+monthT+"/"+dayT;
 		}
 		return dd;
+
+	}
+
+	/**
+	 * @param dateF
+	 * @return
+	 * @throws VesselDateNotMatchException 
+	 */
+	public static String[] getDates(String dateF, int currentMonth,String strYear) throws VesselDateNotMatchException
+	{
+		
+		return getDates(dateF, currentMonth, Integer.parseInt(strYear));
 
 	}
 	public static String[] adjestDateYear(String dateF, String dateT, String inOutBoundType, int currentMonth, String currentYear) throws NotSupportedDateTypeException{

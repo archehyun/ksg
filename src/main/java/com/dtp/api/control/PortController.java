@@ -28,6 +28,8 @@ public class PortController  extends AbstractController{
     
     private CodeService codeService;
     
+    
+    
     public PortController()
     {
         super();
@@ -66,7 +68,7 @@ public class PortController  extends AbstractController{
 
         model.put("data", resultArry);
         
-        log.info("end");
+        log.info("end:"+resultArry.size());
 
         return model;
         
@@ -304,6 +306,12 @@ public class PortController  extends AbstractController{
 		returnMap.put("areaCode", areaCode);
 		
 		returnMap.put("areaName", areaName);
+		
+//        List areaListMap=(List) areaList.stream()
+//                .map(o -> objectMapper.convertValue(o, CommandMap.class))
+//                .collect(Collectors.toList());
+		
+		returnMap.put("areaList", areaList);
 		
 		log.info("end");
 		

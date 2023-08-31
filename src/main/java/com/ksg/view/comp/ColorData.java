@@ -25,5 +25,4 @@ public class ColorData {
 	  public String toString() {
 	    return m_data.toString();
 	  }
-
 }

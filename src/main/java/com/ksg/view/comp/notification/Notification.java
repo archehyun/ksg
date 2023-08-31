@@ -40,6 +40,8 @@ public class Notification extends javax.swing.JComponent {
         dialog.setUndecorated(true);
         dialog.setFocusableWindowState(false);
         dialog.setBackground(new Color(0, 0, 0, 0));
+        
+        dialog.setAlwaysOnTop(true);
         dialog.add(this);
         dialog.setSize(getPreferredSize());
         if (type == Type.SUCCESS) {

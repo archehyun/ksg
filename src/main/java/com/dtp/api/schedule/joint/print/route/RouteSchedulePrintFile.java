@@ -19,7 +19,6 @@ import com.dtp.api.schedule.joint.print.PrintAble;
 import com.dtp.api.schedule.joint.print.SchedulePrintParam;
 import com.ksg.commands.ScheduleExecute;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
@@ -110,14 +109,9 @@ public class RouteSchedulePrintFile extends AbstractSchedulePrint implements Rou
 	
 	public static final int ORDER_BY_VESSEL=2;
 	
-	public static final String OUTBOUND = "O";
-	
-	
 	protected String errorOutPortfileName;
 	
 	protected String commonInPortfileName;
-	
-	protected FileWriter fw,errorOutfw,commonInfw;
 	
 	SimpleDateFormat dateFormat =new SimpleDateFormat("yyyyMMddHHmmss");
 	

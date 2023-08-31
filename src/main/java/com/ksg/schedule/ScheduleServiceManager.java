@@ -29,8 +29,6 @@ import com.ksg.commands.schedule.BuildWebSchdeduleCommand;
 import com.ksg.commands.schedule.BuildXMLOutboundCommand;
 import com.ksg.commands.schedule.create.CreateInlandScheduleCommand;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.util.DateFormattException;
-import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
@@ -218,7 +216,9 @@ public class ScheduleServiceManager {
 						}
 						break;
 					case WEB:
+						
 						ScheduleBuildMessageDialog di = new ScheduleBuildMessageDialog ();
+						
 						command = new BuildWebSchdeduleCommand(di,op);
 						
 						break;

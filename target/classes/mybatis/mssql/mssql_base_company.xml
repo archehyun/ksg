@@ -33,24 +33,23 @@
 </sql>
 
 
-<!-- *** Port *** -->
-	
-
 <!-- select -->
 
 	<select id="selectCompanyList" resultClass="com.ksg.domain.Company">
-		select * from TB_COMPANY
+		SELECT 	* 
+		FROM 	TB_COMPANY
 		<include refid="WHERE"></include>
 	</select>
 	
 	<select id="selectCompanyById" resultClass="com.ksg.domain.Company">
-		SELECT * 
-		FROM TB_COMPANY
-		WHERE company_abbr = #company_abbr#
+		SELECT 	* 
+		FROM 	TB_COMPANY
+		WHERE 	company_abbr = #company_abbr#
 	</select>
 	
 	<select id="selectCompany" resultClass="com.ksg.domain.Company">
-		select * from TB_COMPANY
+		SELECT 	* 
+		FROM 	TB_COMPANY
 		<dynamic prepend="where">
 		    <isNotNull property="company_name" prepend="and">
 		        company_name = #company_name#
@@ -62,9 +61,10 @@
 		
 		</dynamic>
 		
-		</select>
+	</select>
 	<select id="selectCompanyListByCondition" resultClass="com.ksg.domain.Company">
-		SELECT * from TB_COMPANY
+		SELECT 	* 
+		FROM 	TB_COMPANY
 		<dynamic prepend="where">
 		    <isNotNull property="company_name" prepend="and">
 		        company_name like '%$company_name$%'
@@ -84,8 +84,9 @@
 	</select>	
 		
 	
-		<select id="selectCompanyByLike" resultClass="com.ksg.domain.Company">
-		select * from TB_COMPANY
+	<select id="selectCompanyByLike" resultClass="com.ksg.domain.Company">
+		SELECT 	* 
+		FROM 	TB_COMPANY
 		<dynamic prepend="where">
 		    <isNotNull property="company_name" prepend="and">
 		        company_name like '%$company_name$%'
@@ -103,11 +104,10 @@
 		</dynamic>
 		
 	</select>
-	
-
-	
+		
 	<select id="selectCompanyListByPage" resultClass="java.util.HashMap">
-		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY company_name) 
+		SELECT 	* 
+		FROM 	( SELECT ROW_NUMBER() OVER (ORDER BY company_name) 
 		
 		AS ROWNUM, * FROM TB_COMPANY
 		WITH (NOLOCK) 
@@ -116,7 +116,6 @@
 
 		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
 	</select>
-	
 		
 
 <!-- insert -->
@@ -142,14 +141,14 @@
 <!-- update -->
 	
 	<update id="updateCompany" parameterClass="java.util.HashMap">
-		update TB_COMPANY 
-		set 
+		UPDATE TB_COMPANY 
+		SET 
 			agent_name=#agent_name#,
 			company_abbr=#company_abbr#,
 			agent_abbr=#agent_abbr#,
 			company_name=#company_name#,
 			contents=#contents#
-		where (company_abbr=#base_company_abbr#)
+		WHERE (company_abbr=#base_company_abbr#)
 	</update>
 	
 	<update id="updateCompanyInfo" parameterClass="com.ksg.domain.Company">

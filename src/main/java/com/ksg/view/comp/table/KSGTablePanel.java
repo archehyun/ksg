@@ -2,6 +2,7 @@ package com.ksg.view.comp.table;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
@@ -74,8 +75,18 @@ public class KSGTablePanel extends KSGPanel{
 	}
 
 	public void setShowControl(boolean showControl) {
+		
 		this.showControl = showControl;
-		pnControl.setVisible(showControl);
+		
+		butDelete.setVisible(showControl);
+		
+		butInsert.setVisible(showControl);
+		
+//		pnControl.setVisible(showControl);
+		
+		butInsert.updateUI();
+		
+		butDelete.updateUI();
 	}
 
 	public void setTitle(String title) {
@@ -126,17 +137,19 @@ public class KSGTablePanel extends KSGPanel{
 	public KSGTablePanel(String title) {
 
 		this();
+		
 		this.title = title;
+		
 		this.add(createTitle(), BorderLayout.NORTH);
-
 	}
 
 	public KSGTablePanel(String title, TableModel model) {
 
 		this(model);
+		
 		this.title = title;
+		
 		this.add(createTitle(), BorderLayout.NORTH);
-
 	}
 
 	public void setSelectionMode(int SINGLE_SELECTION)
@@ -166,6 +179,8 @@ public class KSGTablePanel extends KSGPanel{
 		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		
+//		pnControl.setPreferredSize(new Dimension(200,45));
 
 		BoldLabel lblTitle = new BoldLabel(title + " รั");
 
@@ -196,7 +211,12 @@ public class KSGTablePanel extends KSGPanel{
 		
 		pnMain.add(pnControl,BorderLayout.LINE_END);
 		
-		pnControl.setVisible(showControl);
+		butDelete.setVisible(showControl);
+		butInsert.setVisible(showControl);
+		
+		pnControl.setPreferredSize(new Dimension(200,30));
+		
+//		pnControl.setVisible(showControl);
 
 		return pnMain;
 	}
@@ -243,13 +263,13 @@ public class KSGTablePanel extends KSGPanel{
 	public void addContorlListener(ActionListener l)
 	{
 		butDelete.addActionListener(l);
+		
 		butInsert.addActionListener(l);
 		//butUpdate.addActionListener(l);
 	}
 
 	public void addColumn(KSGTableColumn ksgTableColumn) {
 		table.addColumn(ksgTableColumn);
-
 	}
 
 	public Object getValueAt(int rowIndex, String columnField) {
@@ -275,9 +295,7 @@ public class KSGTablePanel extends KSGPanel{
 		}
 
 
-		if(lblTotalCount!=null)
-
-			lblTotalCount.setText(String.valueOf(master.size())+"/"+total);
+		if(lblTotalCount!=null) lblTotalCount.setText(String.valueOf(master.size())+"/"+total);
 	}
 	
 	public void setTotalCount(String total)
@@ -292,6 +310,7 @@ public class KSGTablePanel extends KSGPanel{
 	public void setComponentPopupMenu(JPopupMenu popup) 
 	{
 		super.setComponentPopupMenu(popup);
+		
 		table.setComponentPopupMenu(popup);
 	}
 

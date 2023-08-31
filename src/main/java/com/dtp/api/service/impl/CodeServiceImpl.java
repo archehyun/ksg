@@ -1,16 +1,14 @@
 package com.dtp.api.service.impl;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.dtp.api.dao.CodeDAO;
 import com.dtp.api.exception.AlreadyExistException;
 import com.dtp.api.service.CodeService;
 import com.ksg.common.model.CommandMap;
-import com.ksg.dao.impl.CodeDAOImpl;
 import com.ksg.domain.Code;
+import com.ksg.domain.KeyWordInfo;
 import com.ksg.service.impl.AbstractServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +72,11 @@ public class CodeServiceImpl extends AbstractServiceImpl implements CodeService{
 		}
 		return result;
 	}
-
+	@Override
+	public List<KeyWordInfo> selectKeyWordInfoListByCondition(KeyWordInfo param) throws SQLException
+	{
+		return codeDAO.selectKeyWordInfoListByCondition(param);
+	}
 
 	public Object updateCode(Code param) throws Exception{
 		
@@ -85,7 +87,6 @@ public class CodeServiceImpl extends AbstractServiceImpl implements CodeService{
 		 if(target==null) throw new AlreadyExistException("존재하지 않는 코드입니다.");
 		
 		return codeDAO.updateCode(param);
-		
 	}
 	
 	public Object deleteCode(String code_field)throws Exception {
@@ -106,6 +107,15 @@ public class CodeServiceImpl extends AbstractServiceImpl implements CodeService{
 		 
 		return codeDAO.deleteCodeDetail(codeParam);
 	}
+	
+	public Object deleteKeyword(KeyWordInfo keyParam) throws Exception {
+		
+		KeyWordInfo target= codeDAO.selectKeywordByKey(keyParam);
+		
+		 if(target==null) throw new AlreadyExistException("존재하지 않는 키워드입니다.");
+		 
+		return codeDAO.deleteKeyword(keyParam);
+	}
 
 	public Object insertCode(Code codeParam) throws Exception {
 		
@@ -124,5 +134,14 @@ public class CodeServiceImpl extends AbstractServiceImpl implements CodeService{
 		if(code !=null) throw new AlreadyExistException(String.format("이미 존재하는 코드명(%s)입니다.", code.getCode_name()));
 		
 		return codeDAO.insertCodeDetail(codeParam);
+	}
+
+	@Override
+	public Object insertKeyword(KeyWordInfo keyParam) throws Exception{
+		KeyWordInfo keyword = codeDAO.selectKeywordByKey(keyParam);
+		
+		if(keyword !=null) throw new AlreadyExistException(String.format("이미 존재하는 코드명(%s)입니다.", keyword.getKey_name()));
+		
+		return codeDAO.insertKeyword(keyParam);
 	}
 }

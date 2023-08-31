@@ -59,6 +59,8 @@ public class PnApperance extends PnOption {
 	private JTree tree;
 
 	private JColorChooser tcc;
+
+	private JButton butEdit;
 	
 	public PnApperance(PreferenceDialog preferenceDialog) {
 		
@@ -102,21 +104,21 @@ public class PnApperance extends PnOption {
 		
 		tree = createTree();
 		
-        HEADER_HEIGHT=Integer.parseInt(propeties.getProperty("table.header.height"));
+        HEADER_HEIGHT		= Integer.parseInt(propeties.getProperty("table.header.height"));
 
-		ROW_HEIGHT=Integer.parseInt(propeties.getProperty("table.row.height"));
+		ROW_HEIGHT			= Integer.parseInt(propeties.getProperty("table.row.height"));
 		
-		GRID_COLOR =  Color.decode(propeties.getProperty("table.girdcolor"));
+		GRID_COLOR 			= Color.decode(propeties.getProperty("table.girdcolor"));
 		
-		FONT_SIZE = Integer.parseInt(propeties.getProperty("table.font.size"));
+		FONT_SIZE 			= Integer.parseInt(propeties.getProperty("table.font.size"));
 		
-		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnTitle 	= new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		pnTitle.add(new JLabel("색상을 설정"));
 		
 		KSGPanel pnLight = new KSGPanel();
 		
-		JButton butEdit = new JButton("EDIT");
+		butEdit = new JButton("EDIT");
 		
 		butEdit.addActionListener(new ActionListener() {
 			
@@ -152,10 +154,6 @@ public class PnApperance extends PnOption {
 						propeties.store();
 					}
 				}
-				
-				
-				
-				
 			}
 		});
 		

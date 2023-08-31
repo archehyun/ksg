@@ -31,9 +31,9 @@ public class NomalScheduleBuild extends DefaultScheduleBuild{
 				if(isValidation(tableData)) {continue;}
 
 				// 인바운드 출발 항구 인덱스
-				int[] inboundFromPortIndex = makePortArraySub("");
+				int[] inboundFromPortIndex 	= makePortArraySub("");
 				// 인바운드 도착 항구 인덱스
-				int[] inboundToPortIndex = makePortArraySub("");
+				int[] inboundToPortIndex 	= makePortArraySub("");
 				// 아웃바운드 출발 항구 인덱스
 				int[] outboundFromPortIndex = makePortArraySub("");
 				// 아웃바운드 도착 항구 인덱스

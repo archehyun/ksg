@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.domain.Code;
+import com.ksg.domain.KeyWordInfo;
 
 public class CodeDAO extends AbstractDAO {
 	
@@ -23,6 +24,11 @@ public class CodeDAO extends AbstractDAO {
 		return selectList(this.namespace+".selectCodeDetailListByCondition", param);
 	}
 	
+	public List<KeyWordInfo> selectKeyWordInfoListByCondition(KeyWordInfo param) throws SQLException
+	{
+		return selectList(this.namespace+".selectKeyWordInfoListByCondition", param);
+	}
+	
 	public Code selectCodeById(String id) throws SQLException
 	{
 		return (Code) selectList(namespace+".selectCodeById", id);
@@ -30,7 +36,7 @@ public class CodeDAO extends AbstractDAO {
 	
 	public Code selectCodeDetailByKey(Code param) throws SQLException
 	{
-		return (Code) selectList(namespace+".selectCodeDetailByKey", param);
+		return (Code) selectOne(namespace+".selectCodeDetailByKey", param);
 	}
 	
 	public int  insertCode(Code param) throws SQLException
@@ -38,9 +44,9 @@ public class CodeDAO extends AbstractDAO {
 		return (int) insert(namespace+".insertCode", param);
 	}
 	
-	public int  insertCodeDetail(Code param) throws SQLException
+	public Object  insertCodeDetail(Code param) throws SQLException
 	{
-		return (int) insert(namespace+".insertCodeDetail", param);
+		return (Object) insert(namespace+".insertCodeDetail", param);
 	}
 	
 	public int  updateCode(Code param) throws SQLException
@@ -59,5 +65,20 @@ public class CodeDAO extends AbstractDAO {
 	public int  deleteCodeDetail(Code param) throws SQLException
 	{
 		return (int) update(this.namespace+".deleteCodeDetail", param);
+	}	
+	
+	public int  deleteKeyword(KeyWordInfo param) throws SQLException
+	{
+		return (int) update(this.namespace+".deleteKeyword", param);
+	}
+
+	public KeyWordInfo selectKeywordByKey(KeyWordInfo keyParam) throws SQLException {
+		// TODO Auto-generated method stub
+		return (KeyWordInfo) selectOne(namespace+".selectKeywordByKey", keyParam);
+	}
+
+	public  Object insertKeyword(KeyWordInfo keyParam) throws SQLException {
+		// TODO Auto-generated method stub
+		return insert(namespace+".insertKeyword", keyParam);
 	}
 }

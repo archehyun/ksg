@@ -174,12 +174,15 @@ public class PnXLS extends PnOption{
 	{
 
 		cbxUnderPort = new JCheckBox();
+		
 		cbxVoy = new JCheckBox("Voyage가 생략 되어 있을 경우 선택");
+		
 		cbxDoubleLine = new JCheckBox("Keyword또는 항구가 아래,위 동일한 형태로 있을 경우 선택");
+		
 		cbxVesselVoyage = new JCheckBox("Vessel&Voyage 키워드가  혼재 되어 있을 경우 선택");
-
 		
 		cbxVesselVoyage.setSelected(KSGModelManager.getInstance().seperatedVesselvoy);
+		
 		cbxVesselVoyage.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				KSGModelManager.getInstance().seperatedVesselvoy=cbxVesselVoyage.isSelected();

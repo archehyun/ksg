@@ -161,9 +161,9 @@ public class DefaultWebSchedule extends AbstractSchedulePrint {
 
 		advService = DAOManager.getInstance().createADVService();
 
-		currentYear = dateTypeYear.format(new Date());
-
 		builder = new SAXBuilder();
+		
+		currentYear = dateTypeYear.format(new Date());
 
 		currentMonth = Integer.valueOf(dateTypeMonth.format(new Date()));
 

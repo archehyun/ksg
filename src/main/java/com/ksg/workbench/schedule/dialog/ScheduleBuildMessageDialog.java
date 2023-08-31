@@ -203,6 +203,8 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 	public void setMessage(String message) {
 		
 		this.message=message;
+		
+		
 
 	}
 	

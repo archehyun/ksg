@@ -1,8 +1,10 @@
 package com.dtp.api.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.ksg.domain.Code;
+import com.ksg.domain.KeyWordInfo;
 
 public interface CodeService {
 	
@@ -18,6 +20,12 @@ public interface CodeService {
 	
 	public Object deleteCodeDetail(Code codeParam) throws Exception;
 	
-	public Object deleteCode(String code_field)throws Exception; 
+	public Object deleteCode(String code_field)throws Exception;
+
+	public List<KeyWordInfo> selectKeyWordInfoListByCondition(KeyWordInfo param) throws SQLException;
+
+	public Object insertKeyword(KeyWordInfo keyParam)throws Exception;
+
+	public Object deleteKeyword(KeyWordInfo keyParam)throws Exception; 
 
 }

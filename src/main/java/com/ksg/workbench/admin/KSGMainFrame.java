@@ -590,8 +590,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		if(e.getActionCommand().equals(PREFERENCE))
 		{
 			PreferenceDialog preferenceDialog = new PreferenceDialog(PREFERENCE,true);
-
-			preferenceDialog.createAndUpdateUI(this);
+			
+			preferenceDialog.createAndUpdateUI();
 		}
 	}
 	private void sort()

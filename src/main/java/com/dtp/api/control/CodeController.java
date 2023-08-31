@@ -12,6 +12,7 @@ import com.dtp.api.service.CodeService;
 import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.Code;
+import com.ksg.domain.KeyWordInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,8 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CodeController extends AbstractController{
 	
 	CodeService service;
-	
-	protected Logger logger = LogManager.getLogger(this.getClass());
 	
 	public CodeController(){
 		
@@ -76,7 +75,7 @@ public class CodeController extends AbstractController{
     {
 		log.info("start:{}", param);
 		
-		logger.info("param:{}", param);
+		log.info("param:{}", param);
 
 		Code codeParam = Code.builder()
 							.code_name((String) param.get("code_name"))
@@ -99,6 +98,90 @@ public class CodeController extends AbstractController{
 		
 		return model;
     }
+	
+	@ControlMethod(serviceId = "pnCheckPort.selectCodeDetailList")
+    public CommandMap pnCheckPortSelectDetailListByCondtion(CommandMap param) throws Exception
+    {
+		log.info("start:{}", param);
+
+		Code codeParam = Code.builder()
+							.code_name((String) param.get("code_name"))
+							.code_type((String) param.get("code_type"))							
+							.build();
+				
+		List<Code> resultList = (List<Code>) service.selectCodeDetailListByCondition(codeParam);
+		
+		CommandMap model = new CommandMap();
+		
+        model.put("success", true);
+        
+        model.put("data", resultList);
+        
+        log.info("end");
+		
+		return model;
+    }
+	
+	@ControlMethod(serviceId = "pnKeyWord.selectKeyWordInfoListByCondition")
+    public CommandMap pnKeyWordSelectKeyWordInfoListByCondition(CommandMap param) throws Exception
+    {
+		log.info("start:{}", param);
+		
+		KeyWordInfo keyParam =KeyWordInfo.builder().key_type((String) param.get("key_type"))
+										.build();
+
+		List<KeyWordInfo> resultList = (List<KeyWordInfo>) service.selectKeyWordInfoListByCondition(keyParam);
+		
+		CommandMap model = new CommandMap();
+		
+        model.put("success", true);
+        
+        model.put("data", resultList);
+        
+        log.info("end({})",resultList.size());
+		
+		return model;
+    }
+	
+	
+	@ControlMethod(serviceId = "pnKeyWord.insertKeyWord")
+    public CommandMap pnKeyWordInsertKeyword(CommandMap param) throws Exception
+    {
+		log.info("start:{}", param);
+		
+		KeyWordInfo keyParam =KeyWordInfo.builder()
+										.key_type((String) param.get("key_type"))
+										.key_name((String) param.get("key_name"))
+										.build();
+
+		List<KeyWordInfo> resultList = (List<KeyWordInfo>) service.insertKeyword(keyParam);
+		
+		CommandMap model = new CommandMap();
+		
+        log.info("end");
+		
+		return model;
+    }
+	
+	@ControlMethod(serviceId = "pnKeyWord.deleteKeyWord")
+    public CommandMap pnKeyWordDeleteKeyWord(CommandMap param) throws Exception
+    {
+		log.info("start:{}", param);
+		
+		KeyWordInfo keyParam =KeyWordInfo.builder()
+										.key_type((String) param.get("key_type"))
+										.key_name((String) param.get("key_name"))
+										.build();
+
+		Object resultList =  service.deleteKeyword(keyParam);
+		
+		CommandMap model = new CommandMap();
+		
+        log.info("end");
+		
+		return model;
+    }
+	
 	
 	@ControlMethod(serviceId = "insertCode")
     public CommandMap insertCode(CommandMap param) throws Exception
@@ -140,6 +223,7 @@ public class CodeController extends AbstractController{
 		CommandMap model = new CommandMap();
 		
         model.put("success", true);
+        model.put("data", codeParam);
         
         log.info("end");
 		
