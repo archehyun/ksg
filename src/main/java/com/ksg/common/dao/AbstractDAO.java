@@ -40,8 +40,6 @@ public abstract class AbstractDAO {
 		return sqlMap.queryForList(queryId, param);
 	}
 	
-	
-	
 	@SuppressWarnings("rawtypes")
 	public List selectList(String queryId) throws SQLException {
 		return sqlMap.queryForList(queryId);
@@ -55,12 +53,8 @@ public abstract class AbstractDAO {
 
 	public Object insert(String queryId, Object params) throws SQLException {
 		
-		Object result = sqlMap.insert(queryId,params);
-
-		return result;
+		return sqlMap.insert(queryId,params);
 	}
-
-
 
 	public Object update(String queryId, Object params) throws SQLException {
 		return sqlMap.update(queryId, params);

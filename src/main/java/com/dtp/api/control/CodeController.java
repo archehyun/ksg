@@ -3,9 +3,6 @@ package com.dtp.api.control;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.dtp.api.annotation.ControlMethod;
 import com.dtp.api.exception.ResourceNotFoundException;
 import com.dtp.api.service.CodeService;

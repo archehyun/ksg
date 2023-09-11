@@ -19,5 +19,4 @@ public interface ShipperTableDAO {
 	public Object insert(Map<String, Object> param) throws SQLException;
 
 	int updateDate(Map<String, Object> param) throws SQLException;
-
 }

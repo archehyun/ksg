@@ -86,7 +86,6 @@ public class PortServiceImpl implements PortService{
     @Override
 	public int deletePortDetail(PortInfo port) throws Exception 
     {
-    	
     	 log.debug("detail port:{}",port);
     	 
          PortInfo selectOne= dao.selectDetailByKey(port);

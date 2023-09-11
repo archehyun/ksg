@@ -16,6 +16,10 @@ import com.ksg.workbench.common.comp.View;
 import lombok.extern.slf4j.Slf4j;
 
 
+/**
+ * control 추상 클래스
+ */
+
 @Slf4j
 public abstract class AbstractController {
 

@@ -13,9 +13,7 @@ import com.ksg.domain.PortInfo;
 @Deprecated
 public interface PortDAO {
 	
-	
 	// -- select List -- //
-	
 	public List<PortInfo> selectAll() throws SQLException ;
 	
 	public PortInfo select(PortInfo param) throws SQLException;
@@ -26,14 +24,7 @@ public interface PortDAO {
 	
 	public int selectCount(Map<String, Object> commandMap) throws SQLException;
 	
-	// -- select -- //
-	
-	
-	
-	
 	// -- update -- //
-	
-	
 	public int update(PortInfo param) throws SQLException;
 
 	public int updateDetail(PortInfo param) throws SQLException;

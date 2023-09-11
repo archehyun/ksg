@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  * @프로그램 설명 : 항구 정보 관리
 
  */
+@Deprecated
 @Slf4j
 public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 
@@ -324,10 +325,4 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 	public List<PortInfo> selectPortListByNameList(List<String> nameList) throws SQLException {
 		return portDAO.selectPortListByNameList(nameList);
 	}
-
-
-
-
-
-
 }

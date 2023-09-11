@@ -20,7 +20,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
-@SuppressWarnings("unchecked")
+
 public interface TableDAO {
 	
 	/**

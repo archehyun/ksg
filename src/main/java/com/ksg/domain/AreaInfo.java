@@ -23,14 +23,14 @@ public class AreaInfo extends BaseInfo{
 	private String base_area_name;
 	
 	private String area_type;
+	
 	private String index;		// 
+	
 	private String area_code;  // 지역 코드
+
 	private int area_book_code;// 책 코드
 	
 	private String area_name;
-	
-	
-	
 
 	public String toString()
 	{
