@@ -6,8 +6,11 @@ import com.ksg.common.util.KSGDateUtil;
 public class PortAndDay implements IFComparator{
 	
 	private String port;
+	
 	private String date;
+	
 	private String vessel;
+	
 	public PortAndDay(String port, String date)
 	{
 		this.port = port;

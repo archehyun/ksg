@@ -71,8 +71,6 @@ public class RouteJoint {
 	 */
 	public List<PortAndDay> makeDayList(Map<String, List<ScheduleData>> ports, Comparator<ScheduleData> comparator , int DateType)
 	{
-		
-		
 		ArrayList<PortAndDay> list = new ArrayList<PortAndDay>();
 
 		ports.entrySet().stream()
@@ -99,6 +97,13 @@ public class RouteJoint {
 		subject.createScheduleAndAddGroup(group, scheduleList, areaName, vesselName);
 	}
 	
+	/**
+	 * 
+	 * @param vesselList
+	 * @param strArea
+	 * @param delegate
+	 * @return
+	 */
 	public List createRouteScheduleGroupList(Map<String, List<ScheduleData>> vesselList,
 			String strArea, RouteJointSubject delegate) {
 		
