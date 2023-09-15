@@ -28,6 +28,8 @@ public abstract class BaseInfo {
 	protected String orderBy;
 	
 	protected String orderby;
-	
+
 	public abstract String toInfoString();
+	
+	
 }

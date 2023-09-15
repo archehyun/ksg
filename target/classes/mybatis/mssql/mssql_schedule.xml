@@ -10,12 +10,12 @@
         IBM Corporation - initial API and implementation
  -->
 
-<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="schedule">
 
 
-<sql id="selectSQL">select * from TB_SCHEDULE_INFO</sql>
+<sql id="selectSQL">SELECT * FROM TB_SCHEDULE_INFO</sql>
 
 <sql id="WHERE">
 			<dynamic prepend="where">
@@ -104,9 +104,6 @@
 </sql>
 
 
-
-	
-
 <!-- select -->
 
 
@@ -124,7 +121,8 @@
 </select>
 
 	<select id="selectScheduleListByCondition" resultClass="com.ksg.domain.ScheduleData" parameterClass="com.ksg.domain.ScheduleData">
-		SELECT * FROM TB_SCHEDULE_INFO
+		SELECT * /* selectScheduleListByCondition */
+		FROM TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 				<isNotNull property="gubun" prepend="and">
 					gubun=#gubun#
@@ -144,10 +142,6 @@
 				</isNotNull>
 				<isNotNull property="area_name" prepend="and">
 					area_name=#area_name#
-				</isNotNull>
-				
-				<isNotNull property="gubun" prepend="and">
-					gubun=#gubun#
 				</isNotNull>
 				
 				<isNotNull property="agent" prepend="and">
@@ -172,8 +166,9 @@
 		</dynamic>
 	</select>
 	
-		<select id="selectScheduleListByCondition2" resultClass="com.ksg.domain.Schedule" parameterClass="com.ksg.domain.Schedule">
-			SELECT * FROM TB_SCHEDULE_INFO
+		<select id="selectScheduleListByCondition2" resultClass="com.ksg.domain.ScheduleData" parameterClass="com.ksg.domain.ScheduleData">
+			SELECT * /* selectScheduleListByCondition2 */
+			FROM TB_SCHEDULE_INFO
 			<dynamic prepend="where">
 					<isNotNull property="gubun" prepend="and">
 						gubun=#gubun#
@@ -198,7 +193,8 @@
 		</select>
 	
 	<select id="selectAll" resultClass="com.ksg.domain.Schedule" parameterClass="com.ksg.domain.Schedule">
-		SELECT * FROM TB_SCHEDULE_INFO
+		SELECT * 
+		FROM TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 				<isNotNull property="gubun" prepend="and">
 					gubun=#gubun#
@@ -223,7 +219,8 @@
 	</select>
 	
 	<select id="selectScheduleList" resultClass="com.ksg.common.model.CommandMap" parameterClass="com.ksg.common.model.CommandMap">
-		select * from TB_SCHEDULE_INFO
+		SELECT * 
+		FROM TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 		    	<isNotNull property="table_id" prepend="and">
 					table_id=#table_id#
@@ -261,22 +258,26 @@
 				<isNotNull property="n_voyage_num" prepend="and">
 					n_voyage_num=#n_voyage_num#
 				</isNotNull>
-  
 		</dynamic>
 	</select>
 	
 	<select id="selectScheduleDateList" resultClass="java.util.HashMap" >
-		select date_issue, gubun, count(case when inOutType='I' then 1 end) cnt_i, 
-		count(case when inOutType='O' then 1 end) cnt_o 
+		SELECT 
+				date_issue, 
+				gubun, 
+				count(case when inOutType='I' then 1 end) cnt_i, 
+				count(case when inOutType='O' then 1 end) cnt_o 
 		
-		from TB_SCHEDULE_INFO group by date_issue,gubun
+		FROM TB_SCHEDULE_INFO group by date_issue,gubun
 	</select>
 	<select id="selectInlandScheduleDateList" resultClass="java.util.HashMap" >
-		select date_issue, gubun, count(*) cnt from TB_INLAND_SCHEDULE_INFO group by date_issue,gubun
+		SELECT date_issue, gubun, count(*) cnt from TB_INLAND_SCHEDULE_INFO group by date_issue,gubun
 	</select>
 	
 	<select id="selectInlandList" resultClass="java.util.HashMap">
-	select * from TB_INLAND_SCHEDULE_INFO where gubun='inland'
+		SELECT * 
+		FROM TB_INLAND_SCHEDULE_INFO 
+		WHERE gubun='inland'
 				<isNotNull property="table_id" prepend="and">
 					table_id=#table_id#
 				</isNotNull>
@@ -290,9 +291,11 @@
 				<isNotNull property="inOutType" prepend="and">
 					inOutType=#inOutType#
 				</isNotNull>
+				
 				<isNotNull property="vessel" prepend="and">
 					vessel=#vessel#
 				</isNotNull>
+				
 				<isNotNull property="voyage_num" prepend="and">
 					voyage_num=#voyage_num#
 				</isNotNull>
@@ -300,26 +303,80 @@
 				<isNotNull property="fromPort" prepend="and">
 					fromPort=#fromPort#
 				</isNotNull>
+				
 				<isNotNull property="port" prepend="and">
 					port=#port#
 				</isNotNull>
+				
 				<isNotNull property="inland_port" prepend="and">
 					inland_port=#inland_port#
-				</isNotNull>					
-	
+				</isNotNull>				
 
-	<isNotNull property="date_issue" prepend="and">
-	date_issue=#date_issue#
-	</isNotNull>
+				<isNotNull property="date_issue" prepend="and">
+				date_issue=#date_issue#
+				</isNotNull>
 		
-	order by port, fromPort, DateF,DateT
-</select>
+		order by port, fromPort, DateF,DateT
+	</select>
+	
+	
+	<select id="selectInlandScheduleListByCondition" resultClass="com.ksg.domain.ScheduleData">
+		SELECT * /* selectInlandScheduleList */ 
+		
+		FROM TB_INLAND_SCHEDULE_INFO
+		 
+		WHERE gubun='inland'
+		<isNotNull property="table_id" prepend="and">
+			table_id=#table_id#
+		</isNotNull>
+		<isNotNull property="company_abbr" prepend="and">
+			company_abbr=#company_abbr#
+		</isNotNull>
+		<isNotNull property="agent" prepend="and">
+			agent=#agent#
+		</isNotNull>								
+
+		<isNotNull property="inOutType" prepend="and">
+			inOutType=#inOutType#
+		</isNotNull>
+		
+		<isNotNull property="vessel" prepend="and">
+			vessel=#vessel#
+		</isNotNull>
+		
+		<isNotNull property="voyage_num" prepend="and">
+			voyage_num=#voyage_num#
+		</isNotNull>
+
+		<isNotNull property="fromPort" prepend="and">
+			fromPort=#fromPort#
+		</isNotNull>
+		
+		<isNotNull property="port" prepend="and">
+			port=#port#
+		</isNotNull>
+		
+		<isNotNull property="inland_port" prepend="and">
+			inland_port=#inland_port#
+		</isNotNull>				
+
+		<isNotNull property="date_issue" prepend="and">
+		date_issue=#date_issue#
+		</isNotNull>
+		
+		ORDER BY port, fromPort, DateF,DateT
+	</select>
 	
 	
 	
 	<select id="selectScheduledAreaList" resultClass="java.util.HashMap">
 	
-	select area_name from TB_SCHEDULE_INFO group by area_name order by area_name
+	SELECT 
+			area_name 
+	FROM 	TB_SCHEDULE_INFO 
+	GROUP BY area_name 
+	ORDER BY area_name
+	
 	</select>
 	
 	<select id="selectScheduledPortList" resultClass="java.util.HashMap">
@@ -338,7 +395,8 @@
 	
 	<select id="selectScheduledFromPortList" resultClass="java.util.HashMap">
 	
-	select fromPort from TB_SCHEDULE_INFO
+	SELECT fromPort 
+	FROM TB_SCHEDULE_INFO
 	<dynamic prepend="where">
 	
 		<isNotNull property="area_name" prepend="and">
@@ -347,14 +405,13 @@
 		<isNotNull property="inOutType" prepend="and">
 			inOutType=#inOutType#
 		</isNotNull>
-	</dynamic>
-	
-	
+	</dynamic>	
 	group by fromPort order by fromPort
 	</select>
 	
-		<select id="selectScheduleJointList" resultClass="java.util.HashMap">
-		select * from TB_SCHEDULE_INFO
+	<select id="selectScheduleJointList" resultClass="java.util.HashMap">
+		SELECT 	* 
+		FROM 	TB_SCHEDULE_INFO
 		<dynamic prepend="where">
 		
 		    	<isNotNull property="table_id" prepend="and">
@@ -393,7 +450,7 @@
   
 		</dynamic>
 		<isNotNull property="orderby">
-		order by $orderby$
+		ORDER BY $orderby$
 		</isNotNull>
 		
 	</select>
@@ -408,15 +465,17 @@
 	
 
 <!-- delete -->
-<delete id="deleteSchedule">
-	delete from TB_SCHEDULE_INFO
-</delete>
-<delete id="deleteInlnadSchedule">
-	delete from TB_INLAND_SCHEDULE_INFO
-</delete>
-	
-	
-	
+	<delete id="deleteSchedule">
+		DELETE FROM TB_SCHEDULE_INFO
+	</delete>
+	<delete id="deleteScheduleById">
+		DELETE FROM TB_SCHEDULE_INFO
+		WHERE table_id=#table_id#
+	</delete>
+	<delete id="deleteInlnadSchedule">
+		DELETE FROM TB_INLAND_SCHEDULE_INFO
+	</delete>
+		
 <!-- count -->
 
 	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
@@ -463,32 +522,34 @@
 <!-- ********************************************* -->	
 
 <insert id="insertScheduleBulk" parameterClass="java.util.List">
-		insert TB_SCHEDULE_INFO(
-		table_id,
-		vessel,
-		voyage_num,
-		port,
-		dateF,
-		dateT,
-		company_abbr,
-		agent,
-		TS,
-		common_shipping,		
-		area_code,
-		inOutType,
-		fromPort,
-		date_issue,
-		gubun,
-		ts_vessel,
-		ts_date,
-		n_voyage_num,
-		area_name,
-		console_cfs,
-		console_page,
-		c_time,
-		d_time,
-		inland_port,
-		inland_date
+		INSERT TB_SCHEDULE_INFO(
+			table_id,
+			vessel,
+			voyage_num,
+			port,
+			dateF,
+			dateT,
+			fromDate,
+			toDate,
+			company_abbr,
+			agent,
+			TS,
+			common_shipping,		
+			area_code,
+			inOutType,
+			fromPort,
+			date_issue,
+			gubun,
+			ts_vessel,
+			ts_date,
+			n_voyage_num,
+			area_name,
+			console_cfs,
+			console_page,
+			c_time,
+			d_time,
+			inland_port,
+			inland_date
 		
 		) 
 		values
@@ -496,45 +557,43 @@
 		<iterate conjunction="," >
 		
 		(
-		#[].table_id#,
-		#[].vessel#,
-		#[].voyage_num#,
-		#[].port#,
-		#[].dateF#,
-		#[].dateT#,
-		#[].company_abbr#,
-		#[].agent#,
-		#[].TS#,
-		#[].common_shipping#,
-		
-		#[].area_code#,
-		
-		
-		#[].inOutType#,
-		#[].fromPort#,
-		#[].date_issue#,
-		#[].gubun#,
-		
-		#[].ts_vessel#,
-		
-		#[].ts_date#,
-		
-		#[].n_voyage_num#,
-		
-		#[].area_name#,
-		
-		#[].console_cfs#,
-		#[].console_page#,
-		#[].c_time#,
-		#[].d_time#,
-		#[].inland_port#,
-		#[].inland_date#
+			#[].table_id#,
+			#[].vessel#,
+			#[].voyage_num#,
+			#[].port#,
+			#[].dateF#,
+			#[].dateT#,
+			#[].fromDate#,
+			#[].toDate#,
+			#[].company_abbr#,
+			#[].agent#,
+			#[].TS#,
+			#[].common_shipping#,
+			
+			#[].area_code#,
+			
+			#[].inOutType#,
+			#[].fromPort#,
+			#[].date_issue#,
+			#[].gubun#,
+			
+			#[].ts_vessel#,
+			
+			#[].ts_date#,
+			
+			#[].n_voyage_num#,
+			
+			#[].area_name#,
+			
+			#[].console_cfs#,
+			#[].console_page#,
+			#[].c_time#,
+			#[].d_time#,
+			#[].inland_port#,
+			#[].inland_date#
 		
 		)
 		</iterate>
 </insert>
-
-
-
 				
 </sqlMap>

@@ -18,7 +18,7 @@ public class DateComparator implements Comparator<IFComparator>{
 
 		try {
 
-			return dateformat.parse(f1.getDate()).compareTo(dateformat.parse(f2.getDate()));
+			return dateformat.parse(f1.getDateF()).compareTo(dateformat.parse(f2.getDateF()));
 
 		} catch (ParseException e) {
 			e.printStackTrace();

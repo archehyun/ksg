@@ -14,7 +14,6 @@ public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 		super();
 	}
 	
-	
 	public List<Map<String, Object>> selectPortList(Map<String, Object> commandMap) throws SQLException {
 		// 
 		return selectList("shippertable.selectPortList", commandMap);
@@ -36,7 +35,6 @@ public class ShipperTableDAOImpl extends AbstractDAO implements ShipperTableDAO{
 		delete("shippertable.deleteShipperPortList", commandMap);
 		
 	}
-
 
 	@Override
 	public Object select(Map<String, Object> param) throws SQLException {

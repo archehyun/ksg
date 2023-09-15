@@ -22,19 +22,21 @@ import javax.swing.JOptionPane;
 
 import org.jdom.JDOMException;
 
+import com.dtp.api.schedule.create.CreateScheduleCommand;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.commands.schedule.SwingWorker;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.ADVData;
+import com.ksg.domain.ADVDataParser;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
-import com.ksg.schedule.logic.build.CreateScheduleCommand;
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.service.ScheduleService;
 import com.ksg.view.ui.ErrorLogManager;
 
@@ -110,23 +112,23 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 					errorlist.add(createError("테이블 정보 오류", tableData.getTable_id(), ""));
 					continue;
 				}
-
+				ADVDataParser paraser = new ADVDataParser(advData);
 				processMessageDialog.setMessage("");
 
 				notifyMessage("Make:"+tableData.getCompany_abbr()+","+tableData.getTable_id());
-								
+
 				// 날짜 정보 배열
-				arrayDatas = advData.getDataArray();
-				
+				arrayDatas = paraser.getDataArray();
+
 				// 선박 정보 배열
-				vslDatas = advData.getFullVesselArray(isTS(tableData));				
+				vslDatas = paraser.getFullVesselArray(isTS(tableData));				
 
 				//항구 정보 배열
 				/**
 				 * 각 항구 인덱스를 이용해서 
 				 * 스케줄에서 불러오 배열을 생성함
 				 */
-				
+
 				// 아웃바운드 국내항
 				a_outport=makePortArraySub(tableData.getOut_port(),tableData);
 				// 인바운드 국내항
@@ -141,10 +143,10 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 					try 
 					{
 						// 인바운드 스케줄 생성
-						makeSchedule(tableData, vslIndex,a_inport,a_intoport,ScheduleService.INBOUND,advData);
-						
+						makeSchedule(tableData, vslIndex,a_inport,a_intoport,ScheduleEnum.INBOUND.getSymbol(),advData);
+
 						// 아웃바운드 스케줄 생성
-						makeSchedule(tableData, vslIndex,a_outport,a_outtoport,ScheduleService.OUTBOUND,advData);
+						makeSchedule(tableData, vslIndex,a_outport,a_outtoport,ScheduleEnum.OUTBOUND.getSymbol(),advData);
 					}
 
 					catch (PortIndexNotMatchException e) 
@@ -271,11 +273,11 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 		}
 		return portDataArray;
 	}
-	
-	
+
+
 	private void insertSchedule(String table_id,String voyageNum,String vesselName,String dateF, String dateT,String area_code, String area_name, String gubun)
 	{
-		
+
 	}
 	/**
 	 * @param table
@@ -287,17 +289,22 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 	 * @param outToPort
 	 * @param adv
 	 * @throws SQLException
+	 * @throws IOException 
+	 * @throws JDOMException 
+	 * @throws NullPointerException 
 	 */
 	private void insertSchedule(ShippersTable table, int vslIndex,
-			String InOutBoundType, int outPortIndex, int outToPortIndex, String outPort, String outToPort,ADVData adv) throws SQLException,ArrayIndexOutOfBoundsException {
+			String InOutBoundType, int outPortIndex, int outToPortIndex, String outPort, String outToPort,ADVData adv) throws SQLException,ArrayIndexOutOfBoundsException, NullPointerException, JDOMException, IOException {
 
 		outToPortData = arrayDatas[vslIndex][outToPortIndex-1];
-		
+
 		outPortData = arrayDatas[vslIndex][outPortIndex-1];
 
 		ScheduleData scheduledata = new ScheduleData();
-		
+
 		scheduledata.setTable_id(table.getTable_id());
+		
+		ADVDataParser parser = new ADVDataParser(adv);
 
 		if(isScheduleDataValidation())
 		{
@@ -331,7 +338,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 
 			if(table.getGubun().equals("TS"))
 			{
-				String vsl[][] = adv.getFullVesselArray(true);
+				String vsl[][] = parser.getFullVesselArray(true);
 				scheduledata.setTs_vessel(vsl[vslIndex][0]);
 				TablePort tablePort = new TablePort();
 				// TS 확인
@@ -343,8 +350,10 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 
 				String date[][]=null;
 				
-					date = adv.getDataArray();
 				
+				
+				date = parser.getDataArray();
+
 
 
 			}
@@ -353,7 +362,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 
 
 			// 인바운드
-			if(InOutBoundType.equals(ScheduleService.INBOUND))
+			if(InOutBoundType.equals(ScheduleEnum.INBOUND.getSymbol()))
 			{
 				//inbound 스케줄 처리시 외국출항일이 7/29-7/30일때 늦은날짜인 7/30로 처리되어야 함.
 				try 
@@ -438,7 +447,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 			scheduledata.setConsole_page(table.getConsole_page());
 
 		}
-		
+
 
 		try
 		{
@@ -521,7 +530,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 		}
 		return null;
 	}
-	
+
 
 	/**
 	 * @param field
@@ -567,7 +576,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 	int oldPortIndex;
 	int newPortIndex;
 	boolean isNewPort=false;
-	
+
 	private int isExitNewPort(String[] array)
 	{
 		for(int i=0;i<array.length;i++)
@@ -577,7 +586,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 				return i;
 			}
 		}
-		
+
 		return -1;
 	}
 	private int isExitOldPort(String[] array)
@@ -589,7 +598,7 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 				return i;
 			}
 		}
-		
+
 		return -1;
 	}
 
@@ -624,14 +633,14 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 					TablePort _outport = this.getPort(portDataArray, outPortIndex);
 					TablePort _outtoport = this.getPort(portDataArray, outToPortIndex);
 
-					String fromPortArray[]=_outport.getPortArray();					
-					String toPortArray[]=_outtoport.getPortArray();
-					
+					String fromPortArray[]=_outport.getSubPortNameArray();					
+					String toPortArray[]=_outtoport.getSubPortNameArray();
+
 					oldPortIndex = isExitOldPort(fromPortArray);
 					newPortIndex = isExitOldPort(fromPortArray);
-					
-					
-					
+
+
+
 					for(int z =0;z<fromPortArray.length;z++)
 					{
 						for(int c =0;c<toPortArray.length;c++)
@@ -668,12 +677,4 @@ public class CreateNormalSchdeduleCommand extends CreateScheduleCommand
 			result=makeBildingSchedule();
 		}
 	}
-
-
-
-
-
-	
-
-
 }

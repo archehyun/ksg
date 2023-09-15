@@ -113,7 +113,7 @@ public class ImportVesselDataTask implements LongTask{
 				}
 				try 
 				{					
-					vesselService.insert(op);
+					vesselService.insertVessel(op);
 				} catch (SQLException e1) 
 				{
 

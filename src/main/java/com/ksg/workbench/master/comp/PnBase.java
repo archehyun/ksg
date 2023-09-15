@@ -18,8 +18,8 @@ import javax.swing.JLabel;
 import com.dtp.api.control.AbstractController;
 import com.ksg.common.dao.DAOImplManager;
 import com.ksg.common.model.CommandMap;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**
@@ -131,6 +131,11 @@ public abstract class PnBase extends KSGPanel implements ComponentListener, View
 	{
 		if(this.controller!=null)
 			this.controller.call(serviceId, param, this);
+	}
+	
+	public void callApi(String serviceId)
+	{
+		callApi(serviceId, new CommandMap());
 	}
 
 

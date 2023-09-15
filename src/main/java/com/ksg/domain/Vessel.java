@@ -55,7 +55,12 @@ public class Vessel extends BaseInfo{
 	
 	private String option;
 	
-	private String contents;	
+	private String contents;
+	
+	public String toString()
+	{
+		return vessel_name;
+	}
 
 	@Override
 	public String toInfoString() {

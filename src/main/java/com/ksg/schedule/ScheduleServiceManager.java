@@ -22,18 +22,16 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
+import com.dtp.api.schedule.create.CreateNormalSchdeduleCommandNew2;
 import com.ksg.commands.IFCommand;
 import com.ksg.commands.schedule.BuildInboundCommand;
 import com.ksg.commands.schedule.BuildWebSchdeduleCommand;
 import com.ksg.commands.schedule.BuildXMLOutboundCommand;
 import com.ksg.commands.schedule.create.CreateInlandScheduleCommand;
 import com.ksg.common.model.KSGModelManager;
-import com.ksg.common.util.DateFormattException;
-import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.build.CreateNormalSchdeduleCommandNew;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 import com.ksg.workbench.schedule.dialog.ScheduleCreateOptionDialog;
 
@@ -59,8 +57,9 @@ public class ScheduleServiceManager {
 	private JProgressBar bar =new JProgressBar();
 	
 	public static ScheduleServiceManager getInstance() {
-		if(serviceManager==null)
-			serviceManager = new ScheduleServiceManager();
+		
+		if(serviceManager==null) serviceManager = new ScheduleServiceManager();
+		
 		return serviceManager;
 	}
 	private ScheduleCreateOptionDialog optionDialog;
@@ -137,11 +136,14 @@ public class ScheduleServiceManager {
 
 	public String getDate(String da)
 	{
-		if(da.length()!=8)
-			JOptionPane.showMessageDialog(null, "입력자리수가 다릅니다.");
-		String year=da.substring(0,4);
-		String month=da.substring(4,6);
-		String day=da.substring(6,8);
+		if(da.length()!=8) JOptionPane.showMessageDialog(null, "입력자리수가 다릅니다.");
+		
+		String year		= da.substring(0,4);
+		
+		String month	= da.substring(4,6);
+		
+		String day		= da.substring(6,8);
+		
 		return year+"-"+month+"-"+day;
 	}
 	
@@ -154,15 +156,7 @@ public class ScheduleServiceManager {
 		optionDialog.createAndUpdateUI();
 	}
 
-	/**
-	 * @param inputDate
-	 * @throws SQLException
-	 */
-	public void buildSchedule(String inputDate) throws SQLException
-	{
-		optionDialog = new ScheduleCreateOptionDialog(ScheduleCreateOptionDialog.NOMAL,inputDate);
-		optionDialog.createAndUpdateUI();
-	}
+	
 	/**
 	 * @throws SQLException
 	 */
@@ -171,15 +165,7 @@ public class ScheduleServiceManager {
 		optionDialog = new ScheduleCreateOptionDialog(ScheduleCreateOptionDialog.WEB);
 		optionDialog.createAndUpdateUI();
 	}
-	/**
-	 * @param inputDate
-	 * @throws SQLException
-	 */
-	public void buildWebSchedule(String inputDate) throws SQLException
-	{
-		optionDialog = new ScheduleCreateOptionDialog(ScheduleCreateOptionDialog.WEB,inputDate);
-		optionDialog.createAndUpdateUI();
-	}
+	
 	
 	/**
 	 * @param isOption 옵션 여부
@@ -200,7 +186,7 @@ public class ScheduleServiceManager {
 				{
 					ShippersTable op = new ShippersTable();
 					
-					op.setDate_isusse(KSGDateUtil.toDate3(inputDate).toString());
+					op.setDate_isusse(inputDate);
 					
 					if(isOption)
 					{
@@ -226,11 +212,13 @@ public class ScheduleServiceManager {
 							command = new CreateInlandScheduleCommand(op);
 						}else
 						{
-							command = new CreateNormalSchdeduleCommandNew(op);								
+							command = new CreateNormalSchdeduleCommandNew2(op);								
 						}
 						break;
 					case WEB:
+						
 						ScheduleBuildMessageDialog di = new ScheduleBuildMessageDialog ();
+						
 						command = new BuildWebSchdeduleCommand(di,op);
 						
 						break;
@@ -240,19 +228,13 @@ public class ScheduleServiceManager {
 					command.execute();
 
 				}
-				catch (DateFormattException e1) {
-					e1.printStackTrace();
-					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
-					return ;
-				}catch (NumberFormatException e1) {
-					e1.printStackTrace();
-					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
-					return ;
-				}
+				
 				catch (Exception e1) 
 				{
 					e1.printStackTrace();
+					
 					JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e1.getMessage());
+					
 					return ;
 				}
 			}

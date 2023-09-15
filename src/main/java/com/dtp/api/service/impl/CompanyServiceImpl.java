@@ -9,10 +9,27 @@ import com.dtp.api.service.CompanyService;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.domain.Company;
 
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * 
+
+  * @FileName : CompanyServiceImpl.java
+
+  * @Project : KSG2
+
+  * @Date : 2023. 5. 31. 
+
+  * @작성자 : pch
+
+  * @변경이력 :
+
+  * @프로그램 설명 :
+ */
+@Slf4j
 public class CompanyServiceImpl implements CompanyService{
 
-
-	CompanyDAO dao;
+	private CompanyDAO dao;
 
 	public CompanyServiceImpl()
 	{
@@ -20,40 +37,46 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	@Override
-	public List<Company> selectListByCondition(Company param) throws SQLException {
-
-
+	public List<Company> selectCompanyListByCondition(Company param) throws Exception {
+		
+		log.info("param:{}", param);
+		
 		List<Company> result=dao.selectListByCondition(param);
 
 		return result;
 	}
 
 
-
 	@Override
-	public Company delete(String companyAbbr) throws Exception{
+	public Company deleteCompany(String companyAbbr) throws Exception{
+		log.info("param:{}", companyAbbr);
+		
 		Company selectOne = dao.selectById(companyAbbr);
 
 		if(selectOne== null) throw new ResourceNotFoundException(companyAbbr+" is no exist");
 
-		dao.deleteCompany(companyAbbr);
+		int result =(int) dao.deleteCompany(companyAbbr);
 
+		System.out.println(result);
 		return selectOne;
 	}
 	
-	
 	@Override
-	public Company selectById(String company_abbr) throws Exception
+	public Company selectCompanyById(String company_abbr) throws Exception
 	{
+		log.info("param:{}",  company_abbr);
+		
 		return dao.selectById(company_abbr);
 	}
 
 	@Override
-	public Company insert(Company param) throws Exception {
+	public Company insertCompany(Company param) throws Exception {
+		
+		log.info("param:{}", param);
+		
         Company selectOne= dao.selectById(param.getCompany_abbr());
         
-        if(selectOne!=null)
-            throw new AlreadyExistException("("+param.getCompany_name()+")존재하는 선사명입니다.");
+        if(selectOne!=null) throw new AlreadyExistException("("+param.getCompany_name()+")존재하는 선사명입니다.");
 
         dao.insertCompany(param);
 
@@ -61,15 +84,18 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	@Override
-	public Company update(Company param) throws Exception {
-		Company selectOne= selectById(param.getCompany_abbr());
+	public Company updateCompay(Company param) throws Exception {
 		
-		if(selectOne==null)
-			throw new ResourceNotFoundException("("+param.getCompany_name()+")선사명이 존재하지 않습니다.");
+		log.info("param:{}", param);
+		
+		Company selectOne= selectCompanyById(param.getCompany_abbr());
+		
+		if(selectOne==null) throw new ResourceNotFoundException("("+param.getCompany_name()+")선사명이 존재하지 않습니다.");
 
 		int result = (int) dao.updateCompany(param);
 		
 		return selectOne;
 	}
+
 
 }

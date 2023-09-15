@@ -2,7 +2,9 @@ package com.ksg.workbench.schedule.comp;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -10,12 +12,11 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -32,24 +33,24 @@ import com.dtp.api.control.ScheduleController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.ScheduleEnum;
-import com.ksg.service.AreaService;
-import com.ksg.service.impl.AreaServiceImpl;
-import com.ksg.service.impl.CodeServiceImpl;
-import com.ksg.view.comp.KSGComboBox;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.label.BoldLabel;
+import com.ksg.view.comp.label.KSGLabel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
+import com.ksg.view.comp.textfield.SearchTextField;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.button.ImageButton;
-import com.ksg.workbench.common.comp.label.BoldLabel;
-import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.treetable.KSGTreeTable;
-import com.ksg.workbench.common.comp.treetable.nodemager.TreeNodeManager;
+import com.ksg.workbench.schedule.comp.treenode.ScheduleTreeTableModel;
 import com.ksg.workbench.schedule.dialog.SearchPortDialog;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
 
- * @FileName : PnOutbound.java
+ * @FileName : PnNormalByTree.java
 
  * @Project : KSG2
 
@@ -62,7 +63,7 @@ import com.ksg.workbench.schedule.dialog.SearchPortDialog;
  * @프로그램 설명 : 스케줄 조회 후 트리 형태로 표시 , 공동 배선 적용
 
  */
-
+@Slf4j
 @Component("schedule")
 public class PnNormalByTree extends PnSchedule implements View {
 
@@ -71,7 +72,11 @@ public class PnNormalByTree extends PnSchedule implements View {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private KSGPageTablePanel tableH;	
+	private Image changeShipImg;
+
+	private Image changeShipRedImg;
+
+	private Image changeShipGreenImg;
 
 	private KSGComboBox cbxNormalInOut;
 
@@ -87,19 +92,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 	private ScheduleTreeTableModel treeTableModel;
 
-	private JTextField txfToPort;
-
-	private JTextField txfFromPort;
-	
 	private JCheckBox cbxIsAddValidate;
-
-	private HashMap<String, Object> inboundCodeMap;
-
-	private TreeNodeManager nodeManager = new TreeNodeManager();
-
-	private AreaService areaService = new AreaServiceImpl();
-
-	private ScheduleController control = new ScheduleController(); 
 
 	protected ObjectMapper objectMapper;
 
@@ -108,21 +101,38 @@ public class PnNormalByTree extends PnSchedule implements View {
 	private JRadioButton rbtRouteDateSorted;
 
 	private JRadioButton rbtRouteVesselSorted;
-	
+
 	private JLabel lblCount = new JLabel("0");
 
 	private JLabel lblTotalCount;
 
+	private SearchTextField fromPort;
+
+	private SearchTextField toPort;
+
+	private JLabel lblNoramlSchedule;
+
+	private JLabel lblJointedSchedule;
+
+	private JLabel lblSpiltedSchedule;
+
+	private JLabel lblLegend;
+
+	private KSGGradientButton butSearch;
+
+	private KSGGradientButton butCancel;
+	
 	public PnNormalByTree() {
 
 		super();
 
-		codeService = new CodeServiceImpl();
+	
+		initComp();
 
 		objectMapper = new ObjectMapper();
 
 		this.setLayout(new BorderLayout());
-		
+
 		this.setController(new ScheduleController());
 
 		this.addComponentListener(this);
@@ -130,22 +140,156 @@ public class PnNormalByTree extends PnSchedule implements View {
 		add(buildSearch(),BorderLayout.NORTH);
 
 		add(buildCenter());
-		
-		
 
 	}
-
-	private java.awt.Component buildSouth() {
-		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		pnMain.add(new JLabel("총"));
-		pnMain.add(lblCount);
-		return pnMain;
+	
+	private Image getScaledImage(String imgPath)
+	{
+		return new ImageIcon(imgPath).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 	}
+	
+	private void initComp()
+	{
+		changeShipImg 		= getScaledImage("images/ship_group.png");
 
+		changeShipRedImg 	= getScaledImage("images/ship_group_red.png");
+
+		changeShipGreenImg 	= getScaledImage("images/ship_group_green.png");
+		
+
+		lblNoramlSchedule = new JLabel( "일반스케줄");
+
+		lblNoramlSchedule.setIcon(new ImageIcon(changeShipImg));
+
+		lblJointedSchedule = new JLabel( "공동배선");
+
+		lblJointedSchedule.setIcon(new ImageIcon(changeShipRedImg));
+
+		lblSpiltedSchedule = new JLabel( "분할스케줄");
+
+		lblSpiltedSchedule.setIcon(new ImageIcon(changeShipGreenImg));
+
+		rbtRouteDateSorted = new JRadioButton("날짜", true);
+
+		rbtRouteVesselSorted = new JRadioButton("선박",false);
+
+		rbtRouteDateSorted.setBackground(Color.white);
+
+		rbtRouteVesselSorted.setBackground(Color.white);
+
+		ButtonGroup group = new ButtonGroup();
+
+		group.add(rbtRouteDateSorted);
+
+		group.add(rbtRouteVesselSorted);
+		
+		chkRoute = new JCheckBox("Route");
+
+		chkRoute.setBackground(Color.white);
+
+		cbxIsAddValidate = new JCheckBox("제외 항구 추가");
+
+		//		cbxIsAddValidate.setVisible(false);
+
+		cbxIsAddValidate.setBackground(Color.white);
+
+		cbxArea = new KSGComboBox();
+
+		cbxArea.setPreferredSize(new Dimension(250,23));
+		
+		fromPort = new SearchTextField();
+
+		fromPort.setActionCommand("SEARCH_FROM_PORT");
+
+		fromPort.setPreferredSize(new Dimension(150,25));
+
+		fromPort.addActionListener(this);
+
+		toPort = new SearchTextField();
+
+		toPort.setActionCommand("SEARCH_TO_PORT");
+
+		toPort.setPreferredSize(new Dimension(150,25));
+
+		toPort.addActionListener(this);
+		
+		cbxNormalInOut = new KSGComboBox("inOutType");
+
+		cbxNormalInOut.setPreferredSize(new Dimension(100,23));
+
+		cbxNormalSearch = new KSGComboBox();
+
+		cbxNormalSearch.setPreferredSize(new Dimension(150,23));
+
+		cbxNormalSearch.addItem(new KSGTableColumn("table_id", "테이블 ID"));
+
+		cbxNormalSearch.addItem(new KSGTableColumn("company_abbr", "선사명"));
+
+		cbxNormalSearch.addItem(new KSGTableColumn("agent", "에이전트"));
+
+		cbxNormalSearch.addItem(new KSGTableColumn("vessel", "선박명"));
+		
+		cbxNormalInOut.addItemListener(new ItemListener() {
+
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+
+				if(cbxNormalInOut.getSelectedItem() ==null)return;
+
+				String selectedValue = cbxNormalInOut.getSelectedItem().toString();
+
+				chkRoute.setEnabled("OUTBOUND".equals(selectedValue));
+
+				pnRouteSerchOption.setVisible("ROUTE".equals(selectedValue));
+
+				if("OUTBOUND".equals(selectedValue))
+				{
+					lblJointedSchedule.setText("공동배선");
+				}
+				else if("ROUTE".equals(selectedValue)||"INBOUND".equals(selectedValue))
+				{
+					lblJointedSchedule.setText("제외스케줄");
+					lblSpiltedSchedule.setVisible(false);
+				}
+				//cbxIsAddValidate.setVisible(!"INBOUND".equals(selectedValue));
+			}
+		});
+
+		txfNoramlSearch = new JTextField(15);
+		txfNoramlSearch.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(e.getKeyChar()== KeyEvent.VK_ENTER)
+				{
+					fnSearch();
+				}
+			}
+		});
+		
+		butSearch = new KSGGradientButton("검색", "images/search3.png");
+		butSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		butCancel = new KSGGradientButton("",  "images/init.png");
+		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		butCancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fromPort.setText("");
+				toPort.setText("");
+				txfNoramlSearch.setText("");
+				cbxArea.setSelectedIndex(0);
+				cbxNormalSearch.setSelectedIndex(0);
+			}
+		});
+
+		butSearch.addActionListener(this);
+		
+	}
+	
 	public KSGPanel buildCenter()
 	{
-
 		treeTableModel = new ScheduleTreeTableModel();
 
 		treeTableModel.addColumn(new KSGTableColumn("", "",2000));
@@ -181,13 +325,13 @@ public class PnNormalByTree extends PnSchedule implements View {
 		table.getParent().setBackground(Color.white);
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-		
+
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
-		
+
 		pnMain.add(treeTableScrollPane);
-		
+
 		pnMain.add(createTitle(),BorderLayout.NORTH);
-		
+
 		return pnMain;
 	}
 	public JComponent createTitle() {
@@ -196,193 +340,85 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
-		
-
 		String title = "스케줄 목록";
-	
 
 		lblTotalCount = new JLabel("0");
+
 		lblTotalCount.setForeground(Color.red);
 
-
-
 		pnTitle.add(new BoldLabel(title + " 총"));
+
 		pnTitle.add(lblTotalCount);
+
 		pnTitle.add(new JLabel("건"));
 
-
 		pnMain.add(pnTitle,BorderLayout.LINE_START);
-		
+
+		KSGPanel pnOutboundLegend = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+
+		pnOutboundLegend.add(new JLabel("범례:"));
+
+		pnOutboundLegend.add(lblNoramlSchedule);
+
+		pnOutboundLegend.add(lblJointedSchedule);
+
+		pnOutboundLegend.add(lblSpiltedSchedule);
+
+		pnMain.add(pnOutboundLegend,BorderLayout.LINE_END);
 
 		return pnMain;
 	}
-
-
-
 
 	public KSGPanel buildSearch()
 	{
 		KSGPanel pnNormalSearchMain = new KSGPanel(new BorderLayout());
 
 		KSGPanel pnNormalSearchCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-
-		cbxNormalInOut = new KSGComboBox("inOutType");
-
-
-		cbxNormalSearch = new KSGComboBox();
-		cbxNormalSearch.addItem(new KSGTableColumn("", "전체"));
-		cbxNormalSearch.addItem(new KSGTableColumn("table_id", "테이블 ID"));
-		cbxNormalSearch.addItem(new KSGTableColumn("company_abbr", "선사명"));
-		cbxNormalSearch.addItem(new KSGTableColumn("agent", "에이전트"));
-		cbxNormalSearch.addItem(new KSGTableColumn("vessel", "선박명"));
-
-
-		cbxNormalInOut.addItemListener(new ItemListener() {
-
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				
-				if(cbxNormalInOut.getSelectedItem() ==null)return;
-
-				String selectedValue = cbxNormalInOut.getSelectedItem().toString();
-
-				chkRoute.setEnabled("OUTBOUND".equals(selectedValue));
-				
-				pnRouteSerchOption.setVisible("ROUTE".equals(selectedValue));			}
-		});
-
-		chkRoute = new JCheckBox("Route");
-		chkRoute.setBackground(Color.white);
-		
-		cbxIsAddValidate = new JCheckBox("제외 항구 추가");
-		
-		cbxIsAddValidate.setBackground(Color.white);
-
-		cbxArea = new KSGComboBox();
-
-		JLabel lblFromPort = new JLabel("출발항");
-
-		txfFromPort = new JTextField(10);
-
-		txfFromPort.setEditable(false);
-
-		JButton butSearchFromPort = new ImageButton("images/search1.png");	
-		
-		butSearchFromPort.setActionCommand("SEARCH_FROM_PORT");
-		
-		butSearchFromPort.addActionListener(this);
-		
-		JLabel lblToPort = new JLabel("도착항");
-		
-		txfToPort = new JTextField(10);
-		
-		txfToPort.setEditable(false);
-		
-		JButton butSearchToPort = new ImageButton("images/search1.png");
-		
-		butSearchToPort.setActionCommand("SEARCH_TO_PORT");
-		
-		butSearchToPort.addActionListener(this);
 		
 		KSGPanel pnPortSearch = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
-		pnPortSearch.add(lblFromPort);
-		
-		pnPortSearch.add(txfFromPort);
-		
-		pnPortSearch.add(butSearchFromPort);
-		
-		pnPortSearch.add(lblToPort);
-		
-		pnPortSearch.add(txfToPort);
-		
-		pnPortSearch.add(butSearchToPort);
 
-		txfNoramlSearch = new JTextField(15);
-		txfNoramlSearch.addKeyListener(new KeyAdapter() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if(e.getKeyChar()== KeyEvent.VK_ENTER)
-				{
-					fnSearch();
-				}
-			}
-			
-		});
+		pnPortSearch.add(new KSGLabel("출발항", labelFont));
 
-		JButton butSearch = new JButton("검색");
+		pnPortSearch.add(fromPort);
+
+		pnPortSearch.add(new KSGLabel("도착항", labelFont));
+
+		pnPortSearch.add(toPort);
 		
-		JButton butCancel = new JButton("초기화");
-		butCancel.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				txfFromPort.setText("");
-				txfToPort.setText("");
-				txfNoramlSearch.setText("");
-				cbxArea.setSelectedIndex(0);
-				cbxNormalSearch.setSelectedIndex(0);
-				
-			}
-		});
-
-		butSearch.addActionListener(this);
-
-		pnNormalSearchCenter.add(new JLabel("구분:"));
+		pnNormalSearchCenter.add(new KSGLabel("구분:",labelFont));
 
 		pnNormalSearchCenter.add(cbxNormalInOut);
 
-		pnNormalSearchCenter.add(new JLabel("지역:"));
+		pnNormalSearchCenter.add(new KSGLabel("지역:",labelFont));
 
 		pnNormalSearchCenter.add(cbxArea);
 
 		pnNormalSearchCenter.add(pnPortSearch);
 
-		pnNormalSearchCenter.add(new JLabel("항목:"));
+		pnNormalSearchCenter.add(new KSGLabel("항목:",labelFont));
 
 		pnNormalSearchCenter.add(cbxNormalSearch);
 
 		pnNormalSearchCenter.add(txfNoramlSearch);
 
+		pnNormalSearchCenter.add(cbxIsAddValidate);
+
 		pnRouteSerchOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-		
+
 		pnRouteSerchOption.setVisible(false);
 
-		pnRouteSerchOption.add(new JLabel("정렬:"));
-		
-		rbtRouteDateSorted = new JRadioButton("날짜");
-		
-		rbtRouteVesselSorted = new JRadioButton("선박");
-		
-		rbtRouteDateSorted.setBackground(Color.white);
-		
-		rbtRouteVesselSorted.setBackground(Color.white);
-		
-		 ButtonGroup group = new ButtonGroup();
-		 
-		 group.add(rbtRouteDateSorted);
-		 
-		 group.add(rbtRouteVesselSorted);
-		 
-		 pnRouteSerchOption.add(rbtRouteDateSorted);
-		 
-		 pnRouteSerchOption.add(rbtRouteVesselSorted);
-		 
-		 pnRouteSerchOption.add(cbxIsAddValidate);
-		 
-		 
-		 rbtRouteDateSorted.setSelected(true);
-		 
-		 rbtRouteVesselSorted.setSelected(false);
-		
+		pnRouteSerchOption.add(new KSGLabel("정렬:",labelFont));
+
+		pnRouteSerchOption.add(rbtRouteDateSorted);
+
+		pnRouteSerchOption.add(rbtRouteVesselSorted);
+
 		pnNormalSearchCenter.add(pnRouteSerchOption);
-		
 
 		KSGPanel pnNormalSeawrchEast = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
 		pnNormalSeawrchEast.add(butSearch);
-		
+
 		pnNormalSeawrchEast.add(butCancel);
 
 		pnNormalSearchMain.add(pnNormalSearchCenter);
@@ -390,85 +426,77 @@ public class PnNormalByTree extends PnSchedule implements View {
 		pnNormalSearchMain.add(pnNormalSeawrchEast,BorderLayout.EAST);
 
 		return pnNormalSearchMain;
-
 	}
+
 	public void fnSearch()
 	{	
+		CommandMap param = new CommandMap();
 
-		try {
-
-			CommandMap param = new CommandMap();
-
-			param.put("gubun", gubun);
-
-			String searchOption  = txfNoramlSearch.getText();
-
-			KSGTableColumn col = (KSGTableColumn)cbxNormalInOut.getSelectedItem();
-
-			param.put("inOutType", col.columnField);
-
-			if(cbxArea.getSelectedIndex()>0)
-			{
-				KSGTableColumn item=(KSGTableColumn) cbxArea.getSelectedItem();
-				param.put("area_name", item.columnField);
-			}
-			if(cbxNormalSearch.getSelectedIndex()>0) {
-
-				KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
-				if(!"".equals(searchOption))
-				{
-					param.put(item.columnField, searchOption);
-				}
-			}
-
-			if(!"".equals(txfFromPort.getText())){
-				param.put("fromPort", txfFromPort.getText());
-			}
-
-			if(!"".equals(txfToPort.getText())){
-				param.put("port", txfToPort.getText());
-			}
-
-			if(input_date!=null&&!input_date.equals(""))
-			{
-				param.put("date_issue", input_date);
-			}
-			else
-			{
-				JOptionPane.showMessageDialog(PnNormalByTree.this, "스케줄 생성 일자를 선택하십시요");
-				return;
-			}
-			
-			param.put("sortType", rbtRouteDateSorted.isSelected()?"date":"vessel");
-			
-			param.put("isAddValidate", cbxIsAddValidate.isSelected());
-
-			logger.info("param:"+param);
-			
-			// inbound 호출시
-			if(col.columnField.equals(ScheduleEnum.OUTBOUND.getSymbol()))
-			{	
-				param.put("depth", 5);
-			}
-			// outbound 호출시
-			else
-			{
-				param.put("depth", 4);
-			}
-			
-			
-
-			callApi("pnNormalByTree.fnSearch", param);
-			
-			
-
+		if(input_date!=null&&!input_date.equals(""))
+		{
+			param.put("date_issue", input_date);
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-			JOptionPane.showMessageDialog(this, "error:"+e.getMessage());
+		else
+		{
+			JOptionPane.showMessageDialog(PnNormalByTree.this, "스케줄 생성 일자를 선택하십시요");
+			return;
 		}
+
+		param.put("gubun", gubun);
+
+		String searchOption  = txfNoramlSearch.getText();
+
+		KSGTableColumn col = (KSGTableColumn)cbxNormalInOut.getSelectedItem();
+
+		param.put("inOutType", col.columnField);
+
+		if(cbxArea.getSelectedIndex()>0)
+		{
+			KSGTableColumn item=(KSGTableColumn) cbxArea.getSelectedItem();
+			param.put("area_name", item.columnField);
+		}
+
+		KSGTableColumn item=(KSGTableColumn) cbxNormalSearch.getSelectedItem();
+
+		if(!"".equals(searchOption))
+		{
+			param.put(item.columnField, searchOption);
+		}
+
+		if(!"".equals(fromPort.getText())){
+			param.put("fromPort", fromPort.getText());
+		}
+
+		if(!"".equals(toPort.getText())){
+			param.put("port", toPort.getText());
+		}
+
+		param.put("sortType", rbtRouteDateSorted.isSelected()?"date":"vessel");
+
+		param.put("isAddValidate", cbxIsAddValidate.isSelected());
+
+		param.put("mergeBusan", cbxIsAddValidate.isSelected());
+
+		logger.info("param:"+param);
+
+		// inbound 호출시
+		if(col.columnField.equals(ScheduleEnum.INBOUND.getSymbol()))
+		{	
+			param.put("depth", 3);
+		}
+		// outbound 호출시
+
+		else if(col.columnField.equals(ScheduleEnum.OUTBOUND.getSymbol()))
+		{
+			param.put("depth", 4);
+		}
+		else
+		{
+			param.put("depth", 4);
+		}
+		callApi("pnNormalByTree.fnSearch", param);
+
 	}
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -485,7 +513,7 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 			portDialog.createAndUpdateUI();
 
-			txfFromPort.setText(portDialog.result);
+			fromPort.setText(portDialog.result);
 		}
 		else if(command.equals("SEARCH_TO_PORT"))
 		{
@@ -493,84 +521,69 @@ public class PnNormalByTree extends PnSchedule implements View {
 
 			portDialog.createAndUpdateUI();
 
-			txfToPort.setText(portDialog.result);
+			toPort.setText(portDialog.result);
 		}		
 	}
 
 
 	@Override
-	public void componentShown(ComponentEvent e) {
-
-		callApi("pnNormalByTree.init");
-
-	}
-	
-	@Override
 	public void updateView() {
-		
+
 		CommandMap result= this.getModel();
 
-		boolean success = (boolean) result.get("success");
-		
-		if(success)
-		{
-			String serviceId = (String) result.get("serviceId");
-			
-			if("pnNormalByTree.init".equals(serviceId)) {
-				
-				cbxNormalInOut.initComp();	
+		String serviceId = (String) result.get("serviceId");
 
-				cbxNormalInOut.addItem(new KSGTableColumn("R", "ROUTE"));
-				
-				cbxArea.removeAllItems();
-				
-				cbxArea.addItem(new KSGTableColumn("", "전체"));
-				
-				List<String> areaList=(List<String>) result.get("areaList");
-				
-				
-				areaList.stream()
-						.forEach(areaName->cbxArea.addItem(new KSGTableColumn(areaName, areaName)));
-				
-				inboundCodeMap = (HashMap<String, Object>) result.get("inboundCodeMap");
-			}
-			else if("pnNormalByTree.fnSearch".equals(serviceId)) {
-				
-				Object treeNode = result.get("treeNode");
-				
-				int depth = (int) result.get("depth");
-				
-				int count = result.containsKey("count")?(int) result.get("count"):0;
-				
-				lblTotalCount.setText(String.valueOf(count));
-				
-				table.setShowPathCount(depth);
-				
-				treeTableModel.setRoot(treeNode);
+		if("pnNormalByTree.init".equals(serviceId)) {
 
-				table.setTreeExpandedState(true);
+			cbxNormalInOut.initComp();	
 
-				table.updateUI();
+			cbxNormalInOut.addItem(new KSGTableColumn("R", "ROUTE"));
+
+			cbxArea.removeAllItems();
+
+			cbxArea.addItem(new KSGTableColumn("", "전체"));
+
+			List<String> areaList=(List<String>) result.get("areaList");
+
+			areaList.stream()
+			.forEach(areaName->cbxArea.addItem(new KSGTableColumn(areaName, areaName)));
 			
-				
-				
-			}
-			
-			else if("deleteSchedule".equals(serviceId)) {
-				
-				int deleteCount = (int) result.get("deleteCount");
-				
-				JOptionPane.showMessageDialog(this, deleteCount+"건을 삭제 했습니다.");
-				
-				callApi("scheduleViewUpdate");
-			}
+			log.info("init end");
+
 		}
-		else{  
-			String error = (String) result.get("error");
-			JOptionPane.showMessageDialog(this, error);
+		else if("pnNormalByTree.fnSearch".equals(serviceId)) {
+
+			Object treeNode = result.get("treeNode");
+
+			int depth = (int) result.get("depth");
+
+			int count = result.containsKey("count")?(int) result.get("count"):0;
+
+			lblTotalCount.setText(String.valueOf(count));
+
+			table.setShowPathCount(depth);
+
+			treeTableModel.setRoot(treeNode);
+
+			table.setTreeExpandedState(true);
+
+			table.updateUI();
+
+		}
+
+		else if("deleteSchedule".equals(serviceId)) {
+
+			int deleteCount = (int) result.get("deleteCount");
+
+			JOptionPane.showMessageDialog(this, deleteCount+"건을 삭제 했습니다.");
+
+			callApi("scheduleViewUpdate");
 		}
 	}
 
-	
-
+	@Override
+	public void componentShown(ComponentEvent e) {
+		
+		callApi("pnNormalByTree.init");
+	}
 }

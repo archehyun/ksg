@@ -10,7 +10,6 @@ public abstract class AbstractGroup extends HashMap<String,Object>
 	String strKey;
 	
 	public AbstractGroup() {
-		// TODO Auto-generated constructor stub
 	}
 	public AbstractGroup(String keyName) {
 		strKey=keyName;

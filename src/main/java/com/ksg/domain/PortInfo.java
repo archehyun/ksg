@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.ksg.domain;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,13 +47,14 @@ public class PortInfo extends BaseInfo {
 	
 	private int abbr_count;
 	
+	private List<PortInfo> portAbbrList;
+	
 	public String toString()
 	{
 		return "["+this.getPort_name()+"]";
 	}
 	
 	public String toInfoString() {
-		// TODO Auto-generated method stub
 		return "["+this.getPort_name()+","+getPort_nationality()+"]";
 	}
 	

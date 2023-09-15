@@ -48,9 +48,9 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Company;
 import com.ksg.service.ADVService;
 import com.ksg.service.impl.ADVServiceImpl;
-import com.ksg.workbench.adv.ADVListPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.workbench.adv.comp.ADVListPanel;
 import com.ksg.workbench.adv.xls.XLSManagerImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * @author archehyun

@@ -27,8 +27,10 @@ import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGDateUtil;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ADVData;
+import com.ksg.domain.ADVDataParser;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.print.logic.quark.v1.XTGManager;
@@ -41,34 +43,41 @@ import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 public class WebScheduleTask extends SimpleTask{
-	
+
 	public static final int RESULT_SUCCESS=0;
-	
+
 	public static final int RESULT_FAILE=1;
 
 
 	private static final String TS = "TS";
+	
 	private XTGManager manager = new XTGManager();
+	
 	private Vector totalScheduleList;
+	
 	private int[] a_outport,a_outtoport;
-	
+
 	private ADVService advService;
+	
 	private XTGManager xtgmanager = new XTGManager();
+	
 	private String[][] arrayDatas;
-	
+
 	private String outPortData,outToPortData;
-	
+
 	private String[] portData;
+	
 	private Vector portDataArray,scheduleDataList;
-	
+
 	ScheduleBuildMessageDialog processMessageDialog;
-	
+
 
 	private ShippersTable searchOption;
+	
 	private Date selectedDate;
 
 	private int size_outport,size_outtoport;
-	
+
 	private TableService tableService;
 
 	private String strYear;
@@ -85,17 +94,25 @@ public class WebScheduleTask extends SimpleTask{
 	private Vector errorlist;
 	public WebScheduleTask() {
 		errorlist= new Vector();
+		
 		tableService = new TableServiceImpl();
+		
 		scheduleService = new ScheduleServiceImpl();
+		
 		advService = DAOManager.getInstance().createADVService();
+		
 		baseService = DAOManager.getInstance().createBaseService();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+		
 		SimpleDateFormat sdf1 = new SimpleDateFormat("MM");
 
 		strYear = sdf.format(new Date());
-		strMonth = sdf.format(new Date());
+		
+		strMonth = sdf1.format(new Date());
+		
 		currentMonth = Integer.valueOf(sdf1.format(new Date()));
+		
 		map = new HashMap<String, Vector>();
 		for(int i=1;i<8;i++)
 		{
@@ -184,8 +201,8 @@ public class WebScheduleTask extends SimpleTask{
 			 */
 			logger.debug("search option:"+searchOption);
 
-			table_list = tableService.getScheduleTableListByDate(searchOption);
-			total = table_list.size();
+			table_list 	= tableService.getScheduleTableListByDate(searchOption);
+			total 		= table_list.size();
 			logger.debug("스케줄 처리용 테이블 수 : "+total);
 			Iterator iter = table_list.iterator();
 
@@ -209,17 +226,19 @@ public class WebScheduleTask extends SimpleTask{
 				// 해당 테이블에 대한 광고정보 조회
 				advData=(ADVData) advService.getADVData(tableData.getTable_id());
 
+				ADVDataParser parser = new ADVDataParser(advData);
+
 				// 입력된 광고 정보가 없으며 통과
 				if(advData==null||advData.getData()==null)
 					continue;
 
 				if(processMessageDialog!=null)
 					processMessageDialog.setMessage("");
-					arrayDatas = advData.getDataArray();
-				
+				arrayDatas = parser.getDataArray();
+
 				if(tableData.getTS()!=null&&tableData.getTS().equals(TS))
 				{
-					vslDatas = advData.getFullVesselArray(true);
+					vslDatas = parser.getFullVesselArray(true);
 
 					logger.debug("<=======>"+advData.getTable_id());
 					for(int i=0;i<vslDatas.length;i++)
@@ -233,8 +252,8 @@ public class WebScheduleTask extends SimpleTask{
 
 				}else
 				{
-						vslDatas = advData.getFullVesselArray(false);
-					
+					vslDatas = parser.getFullVesselArray(false);
+
 					logger.debug("<=======>"+advData.getTable_id());
 					for(int i=0;i<vslDatas.length;i++)
 					{
@@ -248,7 +267,7 @@ public class WebScheduleTask extends SimpleTask{
 				}
 
 				// 항구 정보<=== 변경 해야 함 DB에서 조회 해야 함
-				portData =advData.getPortArray();
+				portData =parser.getPortArray();
 
 				/**
 				 * 각 항구 인덱스를 이용해서 
@@ -256,10 +275,11 @@ public class WebScheduleTask extends SimpleTask{
 				 */
 				try{
 
-					String outPort = tableData.getOut_port();
-					String outToPort = tableData.getOut_to_port();
-					String inPort = tableData.getIn_port();
-					String inToPort = tableData.getIn_to_port();
+					String outPort 		= tableData.getOut_port();
+					String outToPort 	= tableData.getOut_to_port();
+					String inPort 		= tableData.getIn_port();
+					String inToPort 	= tableData.getIn_to_port();
+					
 					if(outPort==null)
 					{
 						outPort="";
@@ -277,10 +297,10 @@ public class WebScheduleTask extends SimpleTask{
 						inToPort="";
 					}
 
-					outPort = outPort.trim();
-					outToPort = outToPort.trim();
-					inPort = inPort.trim();
-					inToPort = inToPort.trim();
+					outPort 	= outPort.trim();
+					outToPort 	= outToPort.trim();
+					inPort 		= inPort.trim();
+					inToPort 	= inToPort.trim();
 
 					HashMap<Integer, Integer> map=makePortArrayWebIndexMap(outPort, outToPort,inPort,inToPort);
 
@@ -300,11 +320,14 @@ public class WebScheduleTask extends SimpleTask{
 					Set keySet =map.keySet();
 
 					a_outport = new int[keySet.size()];
+					
 					Iterator<Integer> iter2 = keySet.iterator();
+					
 					for(int i=0;iter2.hasNext();i++)
 					{
 						a_outport[i]=iter2.next();
 					}
+					
 					Arrays.sort(a_outport);
 
 
@@ -339,13 +362,13 @@ public class WebScheduleTask extends SimpleTask{
 				{
 					try 
 					{
-						makeWebSchedule(tableData, vslIndex,a_outport,ScheduleService.OUTBOUND,advData);
+						makeWebSchedule(tableData, vslIndex,a_outport,ScheduleEnum.OUTBOUND.getSymbol(),advData);
 					}
 
 					catch (PortIndexNotMatchException e) 
 					{
 						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, e.table.getCompany_abbr()+"선사의 "+e.table.getPage()+" 페이지,"+e.table.getTable_index()+
-						"번 테이블의 스케줄 정보 생성시 문제가 생겼습니다.\n\n항구정보, 항구 인덱스 정보,날짜 형식를 확인 하십시요.\n\n스케줄 생성을 종료 합니다.");
+								"번 테이블의 스케줄 정보 생성시 문제가 생겼습니다.\n\n항구정보, 항구 인덱스 정보,날짜 형식를 확인 하십시요.\n\n스케줄 생성을 종료 합니다.");
 						e.printStackTrace();
 						return RESULT_FAILE;
 					}
@@ -665,12 +688,17 @@ public class WebScheduleTask extends SimpleTask{
 	 * @param adv 광고정보
 	 * @throws SQLException
 	 * @throws ArrayIndexOutOfBoundsException
+	 * @throws IOException 
+	 * @throws JDOMException 
+	 * @throws NullPointerException 
 	 */
 	private void insertWebSchedule(ShippersTable table, int vslIndex,
-			String InOutBoundType, int outPortIndex, int outToPortIndex, String outPort, String outToPort,ADVData adv) throws SQLException,ArrayIndexOutOfBoundsException {
+			String InOutBoundType, int outPortIndex, int outToPortIndex, String outPort, String outToPort,ADVData adv) throws SQLException,ArrayIndexOutOfBoundsException, NullPointerException, JDOMException, IOException {
 
 		outToPortData = arrayDatas[vslIndex][outToPortIndex-1];
 		outPortData = arrayDatas[vslIndex][outPortIndex-1];
+
+		ADVDataParser parser = new ADVDataParser(adv);
 
 		if(!outToPortData.equals("-")&&!outPortData.equals("-")&&
 				!outToPortData.equals("_")&&!outPortData.equals("_")&&
@@ -691,11 +719,11 @@ public class WebScheduleTask extends SimpleTask{
 			scheduledata.setVessel(vslDatas[vslIndex][0]);
 			if(table.getGubun().equals(TS))
 			{
-				String vsl[][] = adv.getFullVesselArray(true);
+				String vsl[][] = parser.getFullVesselArray(true);
 				scheduledata.setTs_vessel(vsl[vslIndex][0]);
 				scheduledata.setTs_voyage_num(vsl[vslIndex][1]);
 				TablePort tablePort = new TablePort();
-				
+
 				// 확인 필요
 				//tablePort.setPort_index(table.getDirection());
 				tablePort.setTable_id(table.getTable_id());
@@ -704,9 +732,10 @@ public class WebScheduleTask extends SimpleTask{
 				scheduledata.setTS(info.getPort_name());
 
 				String date[][]=null;
-				
-					date = adv.getDataArray();
-				
+
+
+				date = parser.getDataArray();
+
 				//scheduledata.setTs_date(date[vslIndex][table.getDirection()-1]);
 			}
 			scheduledata.setAgent(table.getAgent());
@@ -769,7 +798,6 @@ public class WebScheduleTask extends SimpleTask{
 
 			}
 
-
 			String key=scheduledata.getFromAreaCode()+scheduledata.getArea_code();
 			totalScheduleList.add(scheduledata);
 
@@ -801,7 +829,7 @@ public class WebScheduleTask extends SimpleTask{
 		xtgmanager.createXTGFile(buffer.toString(),"web_error.txt");
 	}
 	private void makeWebSchedule(ShippersTable table, int vslIndex, int portList[],String InOutBoundType,ADVData adv)
-	throws ArrayIndexOutOfBoundsException,NullPointerException, ParseException
+			throws ArrayIndexOutOfBoundsException,NullPointerException, ParseException
 	{
 		portDataArray=getPortList(table);
 		for(int i=0;i<portList.length;i++)
@@ -812,8 +840,8 @@ public class WebScheduleTask extends SimpleTask{
 				int ToPortIndex = portList[j];
 				TablePort _outport = this.getPort(portDataArray, FromPortIndex);
 				TablePort _outtoport = this.getPort(portDataArray, ToPortIndex);
-				String outportarray[]=_outport.getPortArray();
-				String outtoportarray[]=_outtoport.getPortArray();
+				String outportarray[]=_outport.getSubPortNameArray();
+				String outtoportarray[]=_outtoport.getSubPortNameArray();
 				for(int z =0;z<outportarray.length;z++)
 				{
 					for(int c =0;c<outtoportarray.length;c++)
@@ -835,6 +863,10 @@ public class WebScheduleTask extends SimpleTask{
 								errorlogger.append(portList[error]+",");
 							logger.error(errorlogger.toString());
 
+
+						}catch (Exception e) 
+						{
+							e.printStackTrace();
 						}
 					}
 				}
@@ -870,12 +902,12 @@ public class WebScheduleTask extends SimpleTask{
 		}
 	}
 	public void makeSchedule() throws SQLException, JDOMException, IOException,
-			ParseException {
-		
+	ParseException {
+
 	}
 	protected void initTag() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 

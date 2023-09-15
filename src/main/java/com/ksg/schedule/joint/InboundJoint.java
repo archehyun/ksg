@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ksg.common.util.KSGDateUtil;
-import com.ksg.service.impl.CodeServiceImpl;
 
 /**
 
@@ -101,7 +101,7 @@ public class InboundJoint extends KSGScheduleJoint{
 			
 			commandMapCode.put("code_type", "inPort");
 			
-			inPortCodeList=(List<Map<String, Object>>) codeService.selectCodeDList(commandMapCode).get("master");
+//			inPortCodeList=(List<Map<String, Object>>) codeService.selectCodeDList(commandMapCode).get("master");
 			
 			System.out.println(inPortCodeList);
 			

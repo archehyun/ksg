@@ -26,34 +26,51 @@ import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.shippertable.comp.AdvertiseTable;
 
 public class AddVesselDialog extends KSGDialog {
 
 	private DAOManager daoManager;
+	
 	private static final long serialVersionUID = 1L;
 
 	private Object vesselName;
+	
 	private JCheckBox box;
+	
 	private JComboBox cbxType;
+	
 	private BaseService baseService;
+	
 	private VesselServiceV2 vesselService;
+	
 	public AddVesselDialog(Object vesselName) {
+		
 		this.vesselName=vesselName;
-		daoManager =DAOManager.getInstance();
-		baseService = daoManager.createBaseService();
-		vesselService = new VesselServiceImpl();
+		
+		this.daoManager 		= DAOManager.getInstance();
+		
+		this.baseService 		= daoManager.createBaseService();
+		
+		this.vesselService 		= new VesselServiceImpl();
+		
 		this.addComponentListener(this);
 
 	}
 	private AdvertiseTable advTable;
+	
 	private DefaultTableModel  vesselModel;
+	
 	private int col;
+	
 	private int row;
+	
 	private JTextField txfMMSI;
+	
 	private JCheckBox cbxMMSICheck;
+	
 	private JTextField txfInput;
 
 	public AddVesselDialog(AdvertiseTable advTable, int row,
@@ -169,7 +186,7 @@ public class AddVesselDialog extends KSGDialog {
 				vessel.setVessel_type(con.getTypeField());
 
 				try {
-					vesselService.insert(vessel);
+					vesselService.insertVessel(vessel);
 
 					if(advTable!=null)
 					{
@@ -178,8 +195,7 @@ public class AddVesselDialog extends KSGDialog {
 						vesselModel.setValueAt(txfInput.getText(), row, 1);
 					}
 
-					if(advTable!=null)
-						advTable.setValue( vessel.getVessel_abbr().toUpperCase(), row, 0);
+//					if(advTable!=null) advTable.setValue( vessel.getVessel_abbr().toUpperCase(), row, 0);
 					JOptionPane.showMessageDialog(null, "선박명: "+vessel.getVessel_name()+"이(가) 추가 되었습니다.");
 					AddVesselDialog.this.setVisible(false);
 					AddVesselDialog.this.dispose();

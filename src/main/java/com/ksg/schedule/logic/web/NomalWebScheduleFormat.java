@@ -12,6 +12,7 @@ public class NomalWebScheduleFormat extends WebScheduleFormat implements IFWebSc
 	
 	private DefaultWebSchedule webSchedule;
 	private DefaultWebScheduleV2 webSchedulev2;
+	private DefaultWebScheduleV3 webSchedulev3;
 	private String[][] arrayDatas;
 	private String[][] vslDatas;
 	
@@ -25,6 +26,16 @@ public class NomalWebScheduleFormat extends WebScheduleFormat implements IFWebSc
 		webSchedulev2 = defaultWebScheduleV2;
 		fileName="WW_SYBASE";
 		errorFileName = "ww_sybase";
+	}
+	
+	public NomalWebScheduleFormat(DefaultWebScheduleV3 defaultWebScheduleV3) {
+		webSchedulev3 = defaultWebScheduleV3;
+		fileName="WW_SYBASE";
+		errorFileName = "ww_sybase";
+	}
+
+	public NomalWebScheduleFormat() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String toWebScheduleString(ScheduleData data)
@@ -51,8 +62,8 @@ public class NomalWebScheduleFormat extends WebScheduleFormat implements IFWebSc
 			String inOutType, int vslIndex, Vessel vesselInfo, int fromPortIndex,
 			int toPortIndex, String fromPort, String toPort) {
 
-		arrayDatas = webSchedule.getArrayDatas();
-		vslDatas = webSchedule.getVslDatas();
+		arrayDatas 				= webSchedule.getArrayDatas();
+		vslDatas 				= webSchedule.getVslDatas();
 		String outToPortData 	= arrayDatas[vslIndex][toPortIndex-1];
 		String outPortData		= arrayDatas[vslIndex][fromPortIndex-1];
 		String fromDates[]		= webSchedule.getFromDates();

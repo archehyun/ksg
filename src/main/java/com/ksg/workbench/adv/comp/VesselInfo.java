@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import javax.swing.Icon;
 
+import com.ksg.view.comp.DiamondIcon;
+
 
 
 /**

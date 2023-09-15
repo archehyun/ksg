@@ -11,6 +11,7 @@ import org.jdom.JDOMException;
 
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.domain.ADVData;
+import com.ksg.domain.ADVDataParser;
 import com.ksg.domain.TablePort;
 import com.ksg.schedule.execute.build.BuildSchedule;
 import com.ksg.schedule.execute.util.ScheduleDateUtil;
@@ -100,14 +101,16 @@ public class NormalScheduleBuild extends BuildSchedule{
 		log.info("tableid:{}", table_id);
 
 		ADVData data = advService.getADVData(table_id);
+		
+		ADVDataParser parser = new ADVDataParser(data);
 
 		if(data == null) return;
 
-		String[][] dateDatas = data.getDataArray();	
+		String[][] dateDatas = parser.getDataArray();	
 
 		if(dateDatas.length == 0) return;
 
-		vslDatas = data.getFullVesselArray(false);
+		vslDatas = parser.getFullVesselArray(false);
 
 		List portList=shipperTableService.getPortList(table_id);
 		

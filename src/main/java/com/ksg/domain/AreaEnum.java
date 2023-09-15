@@ -12,8 +12,6 @@ public enum AreaEnum {
 	PERSIAN_GULF("PERSIAN GULF", 8),
 	ELSE("ELSE",10);
 	
-
-	
 	final private String name;
 	
 	final private int gap;
@@ -43,7 +41,6 @@ public enum AreaEnum {
 				.orElse(ELSE);
 	}
 	public String toUpperCase() {
-		// TODO Auto-generated method stub
 		return name.toUpperCase();
 	}
 	

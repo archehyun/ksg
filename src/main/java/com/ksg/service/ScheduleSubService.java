@@ -9,6 +9,7 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 
+@Deprecated
 public interface ScheduleSubService extends ScheduleService{
 	
 
@@ -171,5 +172,7 @@ public interface ScheduleSubService extends ScheduleService{
 	 */
 	@Deprecated
 	public PortInfo getPortInfoByPortAbbr(String port)						throws SQLException;
+
+	public int deleteScheduleById(String table_id) throws SQLException;
 
 }

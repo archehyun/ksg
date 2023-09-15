@@ -7,20 +7,20 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
-import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
-import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
+import com.ksg.schedule.logic.print.OutboundSchedulePrintV2;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 
 public class OutboundScheduleBuildV2Test {
 
 	
-	OutboundScheduleJointV2 outbound;
+	OutboundSchedulePrintV2 outbound;
 	
 	
 	@Test
-	public void testOutboundScheduleBuildV2() throws SQLException {
+	public void testOutboundScheduleBuildV2() throws Exception {
 		try {
-			outbound = new OutboundScheduleJointV2();
+			outbound = new OutboundSchedulePrintV2();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

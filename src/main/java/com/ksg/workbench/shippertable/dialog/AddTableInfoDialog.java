@@ -23,9 +23,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -34,30 +32,28 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import com.dtp.api.control.ShipperTableController;
+import com.dtp.api.util.PortIndexUitl;
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.domain.Company;
 import com.ksg.domain.ShippersTable;
-import com.ksg.service.CompanyService;
-import com.ksg.service.ShipperTableService;
-import com.ksg.service.impl.ADVServiceImpl;
-import com.ksg.service.impl.CompanyServiceImpl;
-import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.KSGComboBox;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
+import com.ksg.workbench.common.dialog.SearchCompanyDialog2;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 
 import lombok.extern.slf4j.Slf4j;
@@ -79,23 +75,23 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @SuppressWarnings("serial")
-public class AddTableInfoDialog extends KSGDialog implements ActionListener,FocusListener{
+public class AddTableInfoDialog extends MainTypeDialog implements FocusListener{
+
+	private ShipperTableAbstractMgtUI searchUI;
 
 	private String company_abbr;
-	private KSGModelManager manager = KSGModelManager.getInstance();
-	ShipperTableAbstractMgtUI searchUI;
 	private ShippersTable searchOp;
-	ShippersTable selectedTable;
+	private ShippersTable selectedTable;
 	private JTextArea txaCommon;
 	private JTextArea txaQuark;
-	private JTextField txfAgent;
-	private JTextField txfCompany;
+	private JTextField txfAgentAbbr;
+	private JTextField txfCompany_Name;
 
 	private JTextField txfIndex;
-	private JTextField txfInPort;
+	private JTextField txfInFromPort;
 	private JTextField txfInToPort;
 	private JTextField txfOther;
-	private JTextField txfOutPort;
+	private JTextField txfOutFromPort;
 	private JTextField txfOutToPort;
 	private JTextField txfPage;
 	private JTextField txfBookPage;
@@ -108,7 +104,7 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	private JTextField txfConsolePage;
 	private JTextField txfDtime;
 	private JTextField txfCtime;
-	private int vgap=31;
+	//	private int vgap=31;
 	private KSGComboBox cbxGubun;
 	private KSGPanel pnClosingTime;
 	private JRadioButton optPage;
@@ -116,73 +112,97 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	private KSGPanel pnInland;
 
 	private JTextField txfInland;
-	private ShipperTableService service;
-	
-	
-	private CompanyService companyService;
+
+	private Border padding= BorderFactory.createEmptyBorder(5, 5, 5, 5);
+
+	private JLabel lblTitle;
+
+	private JTextField txfCompany_Abbr;
+
+	private KSGGradientButton butSearchCompany;
 
 	public AddTableInfoDialog() {
-		super();
-		
-		advservice= new ADVServiceImpl();
-		
-		tableService = new TableServiceImpl();
-		
-		companyService = new CompanyServiceImpl();
 
-		service = new ShipperTableServiceImpl();
+		super();
+
+		tableService 	= new TableServiceImpl();
+
+		this.addComponentListener(this);
+
+		this.setController(new ShipperTableController());
 	}
 
 	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent) {
 
 		this();
-		
+
 		this.setModal(true);
-		
-		this.searchUI=parent;		
+
+		this.searchUI = parent;		
 	}
 	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent, ShippersTable selectedCompany) {
 
 		this(parent);
-		
-		this.setSelectedCompany(selectedCompany);
 
+		this.setSelectedCompany(selectedCompany);
 	}
 	public AddTableInfoDialog(ShipperTableAbstractMgtUI parent, String selectedCompany) {
 
 		this(parent);
-		
-		this.company_abbr=selectedCompany;
 
+		this.company_abbr=selectedCompany;
 	}
+
+
 
 	private void saveAction() throws Exception
 	{
 		String table_id 		= txfTableID.getText();
+
 		int page 				= Integer.parseInt(txfPage.getText());
+
 		String bookPage 		= txfBookPage.getText();
+
 		int table_index			= Integer.parseInt(txfIndex.getText());
-		String company_abbr 	= txfCompany.getText();
-		String agent 			= txfAgent.getText();
+
+		String company_abbr 	= txfCompany_Name.getText();
+
+		String agent 			= txfAgentAbbr.getText();
+
 		String common_shipping 	= txaCommon.getText();
+
 		String quark_format		= txaQuark.getText();
-		String in_port			= txfInPort.getText();
+
+		String in_port			= txfInFromPort.getText();
+
 		String in_to_port		= txfInToPort.getText();
-		String out_port			= txfOutPort.getText();
+
+		String out_port			= txfOutFromPort.getText();
+
 		String out_to_port		= txfOutToPort.getText();
+
 		int port_col			= Integer.parseInt(txfPortCount.getText());
+
 		int vsl_row				= Integer.parseInt(txfVesselCount.getText());
+
 		String title 			= txfTitle.getText();
+
 		int othercell			= Integer.parseInt(txfOther.getText());
+
 		String console_cfs		= txaConsoleCFS.getText();
+
 		String console_page		= txfConsolePage.getText();
+
 		String gubun			= ((KSGTableColumn) cbxGubun.getSelectedItem()).columnName;
+
 		int c_time				= Integer.parseInt(txfCtime.getText());
+
 		int d_time				= Integer.parseInt(txfDtime.getText());
+
 		String inland_indexs	= txfInland.getText();
 
 
-		HashMap<String, Object> param = new HashMap<String, Object>();
+		CommandMap param = new CommandMap();
 		param.put("table_id", table_id);
 		param.put("page", page);
 		param.put("bookPage", bookPage);
@@ -206,20 +226,16 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 		param.put("d_time",  d_time);
 		param.put("inland_indexs",  inland_indexs);
 
-
-		service.insert(param);
+		callApi("addTableInfoDialog.insert",param);
 
 	}
 
-
-
 	public void actionPerformed(ActionEvent e) {
+
 		String command = e.getActionCommand();
+
 		if(command.equals("저장"))
 		{
-
-			//try{
-
 			if(txfTableID.getText().length()<=0)
 			{
 				JOptionPane.showMessageDialog(null, "테이블 ID를 지정하세요");
@@ -231,12 +247,13 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 				JOptionPane.showMessageDialog(null, "Page를 지정하세요");
 				return;
 			}
+
 			if(txfIndex.getText().length()<=0)
 			{
 				JOptionPane.showMessageDialog(null, "Index를 지정하세요");
 				return;
 			}
-			if(txfCompany.getText().length()<=0)
+			if(txfCompany_Name.getText().length()<=0)
 			{
 				JOptionPane.showMessageDialog(null, "선사를 지정하세요");
 				return;
@@ -247,32 +264,31 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 				JOptionPane.showMessageDialog(null, "항구수를 지정하세요");
 				return;
 			}
+
 			if(txfVesselCount.getText().length()<=0)
 			{
 				JOptionPane.showMessageDialog(null, "선박수를 지정하세요");
 				return;
 			}
-			if(txfCompany.getText().length()<=0)
+			if(txfCompany_Name.getText().length()<=0)
 			{
 				JOptionPane.showMessageDialog(null, "선사를 지정하세요");
 				return;
 			}
 
-
 			try {
-				saveAction();
-				
-				
+
+				this.saveAction();
+
 				this.setVisible(false);
+
 				this.dispose();
-				
-				searchUI.fnUpdate();
+
+				this.searchUI.fnUpdate();
 			}
 
 			catch (AlreadyExistException e1) {
 				JOptionPane.showMessageDialog(null, "동일한 테이블 ID가 존재합니다.");	
-
-
 			}
 
 			catch(Exception e1)
@@ -281,381 +297,480 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 				e1.printStackTrace();
 
 			}
-			
+
 		}
+		else if(command.equals("취소"))
+		{
+			this.setVisible(false);
 
+			this.dispose();
+		}
 	}
-	public Component buildButtom()
+
+	private void initComp()
 	{
-		KSGPanel pnButtom = new KSGPanel();
-		
-		pnButtom.setLayout(new GridLayout(1,0));
-		
-		KSGPanel pnPass = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		txfTableID 			= createTextField( 20);
 
-		JButton btnNext = new JButton("저장");
-		
-		btnNext.addActionListener(this);
+		txfPage 			= createTextField( 2);
 
-		pnPass.add(btnNext);
-		
-		JButton btnCancel = new JButton("취소");
-		
-		btnCancel.addActionListener(new ActionListener(){
+		txfBookPage 		= createTextField( 5);
 
-			public void actionPerformed(ActionEvent e) {
+		txfIndex			= createTextField( 2);
 
-				AddTableInfoDialog.this.setVisible(false);
-				AddTableInfoDialog.this.dispose();
+		txfCompany_Name		= createTextField( 13);
 
-			}});
+		txfCompany_Abbr		= createTextField( 13);
 
-		pnPass.add(btnCancel);
+		txfAgentAbbr 			= createTextField( 20);
 
-		KSGPanel pnS = new KSGPanel();
-		pnS.setBorder(BorderFactory.createLineBorder(Color.lightGray));
-		pnS.setPreferredSize(new Dimension(0,1));
-		KSGPanel pnS1 = new KSGPanel();
-		pnS1.setPreferredSize(new Dimension(0,15));
-		Box bb = new Box(BoxLayout.Y_AXIS);
-		bb.add(pnS);
-		bb.add(pnS1);
-		bb.add(pnPass);
-		pnButtom.add(bb);
-		return pnButtom;
-	}
-	private JComponent buildPnCenter() {
+		txfPortCount		= createTextField( 3);
 
-		txfTableID=createTextField( 20);
+		txfVesselCount		= createTextField( 3);
 
-		txfPage=createTextField( 2);
-		txfBookPage=createTextField( 5);
-		txfIndex=createTextField( 2);
+		txfOutFromPort		= createTextField( 13);
 
+		txfOther			= createTextField( 3);
 
-		txfCompany=createTextField( 13);
-		txfAgent=createTextField( 20);	
+		txfOutToPort 		= createTextField( 13);
 
+		txfInFromPort 		= createTextField( 13);
 
-		txfAgent.setEditable(false);
-		txfCompany.setEditable(false);
+		txfInToPort 		= createTextField( 13);
 
+		txfInland  			= createTextField( 13);
 
+		txaCommon			= createTextArea( 20);
 
-		txfPortCount=createTextField( 3);
-		txfVesselCount=createTextField( 3);		
-		txfOutPort=createTextField( 13);		
-		txfOther =createTextField( 3);
-		txfOutToPort =createTextField( 13);
-		txfInPort =createTextField( 13);
-		txfInToPort =createTextField( 13);
-		txfInland =createTextField( 13);
-		txaCommon=createTextArea( 20);
-		txaQuark=createTextArea( 20,false);
-		txfTitle =createTextField(20);
-		txaConsoleCFS = createTextArea(20);
-		txfConsolePage = createTextField(5);
-		txfDtime =createTextField(3);
-		txfCtime =createTextField(3);
+		txaQuark			= createTextArea( 20,false);
+
+		txfTitle 			= createTextField(20);
+
+		txaConsoleCFS 		= createTextArea(20);
+
+		txfConsolePage 		= createTextField(5);
+
+		txfDtime 			= createTextField(3);
+
+		txfCtime 			= createTextField(3);
+
 		txfDtime.setText("0");
+
 		txfCtime.setText("0");
+
 		txfIndex.setText("0");
+
 		txfOther.setText("0");
+
+		txfAgentAbbr.setEditable(false);
+
+		txfCompany_Name.setEditable(false);
+
 		txfIndex.setHorizontalAlignment(JTextField.RIGHT);
+
 		txfPage.setHorizontalAlignment(JTextField.RIGHT);
 
+		optPage = new JRadioButton("Page",true);
 
-		KSGPanel pnFromCompany = new KSGPanel();
-		
-		pnFromCompany.setLayout(new FlowLayout(FlowLayout.LEADING));
-		
-		pnFromCompany.add(createForm("선사명 약어: ", txfCompany));
-		
-		JButton button = new JButton("검색");
-		
-		button.addActionListener(new ActionListener(){
+		optCFS = new JRadioButton("CFS");
 
-			@SuppressWarnings("unchecked")
-			public void actionPerformed(ActionEvent e) {
-
-				SearchCompanyDialog searchCompanyDialog = new SearchCompanyDialog(AddTableInfoDialog.this);
-				
-				searchCompanyDialog.createAndUpdateUI();
-				
-				
-				String company_abbr = searchCompanyDialog.result;
-				
-				if(company_abbr == null)return;
-				try {
-
-					log.debug("company_name:{}",company_abbr);
-					
-					CommandMap param = new CommandMap();
-					param.put("company_abbr", company_abbr);
-					Company companyInfo=companyService.select(param );
-					setTableIndex(companyInfo.getCompany_abbr());
-					txfCompany.setText(companyInfo.getCompany_abbr());
-					txfAgent.setText(companyInfo.getAgent_abbr());
-					txaCommon.setText(companyInfo.getCompany_abbr());
-					
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
-					e1.printStackTrace();
-				}
-				
-			}});
-		pnFromCompany.add(button);
-		KSGPanel pnFromPortVslCount = new KSGPanel();
-		pnFromPortVslCount.setBorder(BorderFactory.createEmptyBorder());
-		pnFromPortVslCount.setLayout(new  FlowLayout(FlowLayout.LEADING));
-		pnFromPortVslCount.add(txfPortCount);
-		pnFromPortVslCount.add(createForm("선박수 : ", txfVesselCount,50));
-		pnFromPortVslCount.add(createForm("기타 : ", txfOther,40));		
-
-
-		KSGPanel pnTableInfo = new KSGPanel();
-		pnTableInfo.setBorder(BorderFactory.createEmptyBorder());
-		pnTableInfo.setLayout(new  FlowLayout(FlowLayout.LEADING));
-		pnTableInfo.add(createForm("페이지 : ", txfPage));
-		pnTableInfo.add(createForm("지면페이지 : ", txfBookPage,75));	
-		pnTableInfo.add(createForm("인덱스 : ", txfIndex,50));
-
-
-		cbxGubun = new KSGComboBox("tableType");		
-
+		cbxGubun = new KSGComboBox("tableType");
 
 		cbxGubun.addActionListener(new ActionListener() {
-
 
 			public void actionPerformed(ActionEvent e) {
 
 				KSGTableColumn column = (KSGTableColumn) cbxGubun.getSelectedItem();
+
+				if(column== null) return;
+
 				String command = column.columnField;
 
-				if(command.equals(ShippersTable.GUBUN_CONSOLE))
-				{
-					pnClosingTime.setVisible(true);
-				}
-				else
-				{
-					pnClosingTime.setVisible(false);
-				}
+				pnClosingTime.setVisible(command.equals(ShippersTable.GUBUN_CONSOLE));
 
-				if(command.equals(ShippersTable.GUBUN_INLAND))
-				{
-					pnInland.setVisible(true);
-				}
-				else
-				{
-					pnInland.setVisible(false);
-				}
-
+				pnInland.setVisible(command.equals(ShippersTable.GUBUN_INLAND));
 
 				AddTableInfoDialog.this.pack();
-
 			}
 		});
+		
+		butSearchCompany = new KSGGradientButton("검색");
+		
+		butSearchCompany.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
+		butSearchCompany.addActionListener(new ActionListener(){
 
-		Box boxTableInfo = Box.createVerticalBox();
-		boxTableInfo.setBackground(Color.white);
-		boxTableInfo.setBorder(BorderFactory.createTitledBorder("테이블 정보"));
-		boxTableInfo.add(createForm(createForm("테이블 ID : ", txfTableID),vgap));
-		boxTableInfo.add(createForm(createForm("테이블 구분 : ", cbxGubun),vgap));
-		boxTableInfo.add(pnFromCompany);
-		boxTableInfo.add(createForm(createForm("에이전트 약어 : ", txfAgent),vgap));
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
 
-		boxTableInfo.add( pnTableInfo);			
-		boxTableInfo.add(createForm("항구수 : ",pnFromPortVslCount));
-		boxTableInfo.add(createForm(createForm("제목 : ", txfTitle),vgap));
+				SearchCompanyDialog2 searchCompanyDialog = new SearchCompanyDialog2();
 
+				searchCompanyDialog.createAndUpdateUI();
 
-		Box pnBound = Box.createVerticalBox();
-		GridLayout gridLayout = new GridLayout(0,1);
-		gridLayout.setVgap(10);
+				CommandMap result  = (CommandMap) searchCompanyDialog.resultObj;
 
-		KSGPanel pnOutBound = createPnOutBound(gridLayout);
+				if(result  == null)return;
 
+				String company_name = (String) result.get("company_name");
 
-		KSGPanel pnInBound = createPnInBound(gridLayout);
+				String company_abbr = (String) result.get("company_abbr");
 
-		pnBound.add( pnOutBound);
-		pnBound.add( pnInBound);
+				String agent_name = (String) result.get("agent_name");
 
+				txfCompany_Abbr.setText(company_abbr);
 
+				txfCompany_Name.setText(company_name);
+
+				txfAgentAbbr.setText(agent_name);
+
+			}});
+
+	}
+
+	private Component buildCloseingTime()
+	{
 		pnClosingTime = new KSGPanel(new BorderLayout());
+
 		Box bxClosingTime = new Box(BoxLayout.X_AXIS);
 
 		bxClosingTime.add(createForm("Document Closing: ", txfDtime,120));
-		
+
 		bxClosingTime.add(createForm(" Cargo Closing: ", txfCtime,100));
-		pnClosingTime.add(bxClosingTime);		
+
+		pnClosingTime.add(bxClosingTime);	
+
 		pnClosingTime.setBorder(BorderFactory.createTitledBorder("Closing Time Index"));
 
+		pnClosingTime.setVisible(false);
 
-		pnInland = new KSGPanel(new BorderLayout());		
+		return pnClosingTime;
+	}
+
+	private Component buildInland()
+	{
+		pnInland = new KSGPanel(new BorderLayout());
+
 		TitledBorder boderInland = BorderFactory.createTitledBorder("내륙 기항지 지정");
+
 		pnInland.setBorder(boderInland);
 
-
 		Box bxInland = new Box(BoxLayout.X_AXIS);
-		
+
 		bxInland.add(createForm("기항지: ", txfInland));
 
-		pnInland.add(bxInland);
+		pnInland.add(bxInland);	
 
-		Box pnBox = new Box(BoxLayout.Y_AXIS);
-		pnBox.add(boxTableInfo);
-		pnBox.add(pnBound);
-		pnBox.add(pnClosingTime);
-		pnBox.add(pnInland);
-
-		pnClosingTime.setVisible(false);
 		pnInland.setVisible(false);
 
-		KSGPanel pnConsole = new KSGPanel(new BorderLayout());
+		return pnInland;
+	}
 
-		KSGPanel pnConsolePage = new KSGPanel(new BorderLayout());
-		KSGPanel pnConsoleCFS = new KSGPanel(new BorderLayout());
+	private JComponent buildCenter() {
+
+		setTableIndex(company_abbr);
+
+		KSGPanel pnMain = new KSGPanel();
+
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+		//center main
+		Box pnCenterMain = new Box(BoxLayout.Y_AXIS);
+
+		pnCenterMain.add(buildTableInfo());
+
+		pnCenterMain.add(createPnOutBound());
+
+		pnCenterMain.add(createPnInBound());
+
+		pnCenterMain.add(buildCloseingTime());
+
+		pnCenterMain.add(buildInland());
+
+		pnCenterMain.add(buildOther());
+
+		pnMain.add(pnCenterMain);
+
+		return pnMain;
+	}
+
+	private Component buildOther()
+	{
+		KSGPanel pnConsole 		= new KSGPanel(new BorderLayout());
+
+		KSGPanel pnConsolePage 	= new KSGPanel(new BorderLayout());
+
+		KSGPanel pnConsoleCFS 	= new KSGPanel(new BorderLayout());
 
 		pnConsoleCFS.add(new JScrollPane(txaConsoleCFS));
-		pnConsolePage.add(txfConsolePage);
-		optPage = new JRadioButton("Page",true);
-		optCFS = new JRadioButton("CFS");
 
+		pnConsolePage.add(txfConsolePage);
 
 
 		pnConsoleCFS.add(new JLabel("CFS 정보"),BorderLayout.NORTH);
+
 		pnConsolePage.add(new JLabel("Page 정보"),BorderLayout.NORTH);
+
 		pnConsole.add(pnConsoleCFS);
+
 		pnConsole.add(pnConsolePage,BorderLayout.NORTH);
+
+		KSGPanel pnS1 = new KSGPanel(new BorderLayout());
+
+		pnS1.add( new JScrollPane(txaCommon));
+
+		KSGPanel pnS2 = new KSGPanel(new BorderLayout());
+
+		pnS2.add( new JScrollPane(txaQuark));
+
+		Border padding2 = BorderFactory.createEmptyBorder(5, 7, 5, 7);
+
+		pnS1.setBorder(padding2);
+
+		pnS2.setBorder(padding2);
 
 
 		JTabbedPane pn = new JTabbedPane();
 
-		pn.addTab("공동배선", new JScrollPane(txaCommon));
-		pn.addTab("QuarkFormat", new JScrollPane(txaQuark));
+		pn.addTab("공동배선", pnS1);
+
+		pn.addTab("QuarkFormat", pnS2);
+
 		pn.addTab("Console", pnConsole);
 
-		pnBox.add(pn);
-
-		setTableIndex(company_abbr);
+		pnConsole.setBorder(padding2);
 
 
-		pnBox.add(buildButtom());
-		
-		
-		
-		KSGPanel pnMain = new KSGPanel();
-		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		pnMain.add(pnBox);
-		
-		return pnMain;
+		return pn;
 	}
-	private KSGPanel createPnInBound(GridLayout gridLayout) {
+
+	private Component buildTableInfo()
+	{
+		KSGPanel pnFromCompany = new KSGPanel();
+
+		pnFromCompany.setLayout(new FlowLayout(FlowLayout.LEADING));
+
+		pnFromCompany.add(createForm("선사명: ", txfCompany_Name));
+
+
+
+		
+		Box company = Box.createHorizontalBox();
+		company.add(txfCompany_Abbr);
+		company.add(Box.createHorizontalStrut(25));
+		company.add(butSearchCompany);
+		
+
+		Box pnTableInfo = Box.createHorizontalBox();
+
+		pnTableInfo.add(createForm("페이지 : ", txfPage));
+
+		pnTableInfo.add(createForm("지면페이지 : ", txfBookPage));
+
+		pnTableInfo.add(createForm("인덱스 : ", txfIndex));
+
+
+
+		// 항구수
+		Box pnFromPortVslCount = Box.createHorizontalBox();
+
+		pnFromPortVslCount.add(createForm("항구수 : ", txfPortCount));
+
+		pnFromPortVslCount.add(createForm("선박수 : ", txfVesselCount));
+
+		pnFromPortVslCount.add(createForm("기타 : ", txfOther));
+
+		int vgap= 10;
+
+		Box boxTableInfo = Box.createVerticalBox( );
+
+		initTitleBorder(boxTableInfo, "테이블 정보", padding);
+
+		boxTableInfo.add(createForm("테이블 ID : ", txfTableID));		
+		boxTableInfo.add(Box .createRigidArea(new Dimension(0, vgap)));
+
+		boxTableInfo.add(createForm("테이블 구분 : ", cbxGubun));
+		boxTableInfo.add(Box .createRigidArea(new Dimension(0, vgap)));
+
+		boxTableInfo.add(createForm("선사명 약어: ", company));
+		
+		boxTableInfo.add(Box .createRigidArea(new Dimension(0, vgap)));
+
+		boxTableInfo.add(createForm("에이전트 약어 : ", txfAgentAbbr));
+		boxTableInfo.add(Box .createRigidArea(new Dimension(0, vgap)));
+
+		boxTableInfo.add(createForm("제목 : ", txfTitle));
+		boxTableInfo.add(Box .createRigidArea(new Dimension(0, vgap)));
+
+		boxTableInfo.add(pnTableInfo);
+		boxTableInfo.add(Box .createRigidArea(new Dimension(0, vgap)));
+
+		boxTableInfo.add(pnFromPortVslCount);
+
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+
+		pnMain.add(boxTableInfo,BorderLayout.NORTH);
+
+		return boxTableInfo;
+	}
+
+	private void initTitleBorder(JComponent comp, String title, Border insideBorder)
+	{
+		TitledBorder createTitledBorder = BorderFactory.createTitledBorder(title);
+
+		createTitledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
+
+		comp.setBorder(BorderFactory.createCompoundBorder(createTitledBorder, insideBorder) );
+	}
+
+	private KSGPanel createPnInBound() {
+
 		KSGPanel pnInBound = new KSGPanel();
+
+		GridLayout gridLayout = new GridLayout(0,1);
+
+		gridLayout.setVgap(10);
+
 		pnInBound.setLayout(gridLayout);
-		pnInBound.add(createForm("국내항 : ", txfInPort));
+
+		pnInBound.add(createForm("국내항 : ", txfInFromPort));
+
 		pnInBound.add(createForm("외국항 : ", txfInToPort));
+
 		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수입항 등록");
-		pnInBound.setBorder(createTitledBorder);
+
+		createTitledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
+
+		pnInBound.setBorder(BorderFactory.createCompoundBorder(createTitledBorder, padding) );
 
 		KSGPanel pnInBoundSub = new KSGPanel();
+
 		pnInBoundSub.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
 		JButton butUpdateInbound = new JButton("등록/수정");
+
 		butUpdateInbound.addActionListener(this);
 
 		return pnInBound;
 	}
-	private KSGPanel createPnOutBound(GridLayout gridLayout) {
+
+	private KSGPanel createPnOutBound() {
+
 		KSGPanel pnOutBound = new KSGPanel();
+
+		GridLayout gridLayout = new GridLayout(0,1);
+
+		gridLayout.setVgap(10);
+
 		pnOutBound.setLayout(gridLayout);
 
-		TitledBorder createTitledBorder = BorderFactory.createTitledBorder("수출항 등록");
-		pnOutBound.setBorder(createTitledBorder);
+		initTitleBorder(pnOutBound, "수출항 등록", padding);
 
+		pnOutBound.add(createForm("국내항 : ", txfOutFromPort));
 
-		pnOutBound.add(createForm("국내항 : ", txfOutPort));
 		pnOutBound.add(createForm("외국항 : ", txfOutToPort));
+
 		KSGPanel pnOutboundSub = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+
 		JButton butUpdate = new JButton("등록/수정");
+
 		butUpdate.addActionListener(this);
+
 		return pnOutBound;
 	}
 
 	public void createAndUpdateUI() {
-		this.setTitle("테이블 정보 추가");
-		this.setBackground(Color.white);
+
+		//		this.setTitle("테이블 정보 추가");
+
 		this.addComponentListener(this);
 
-		this.getContentPane().add(buildTitle(),BorderLayout.NORTH);
-		
-		this.getContentPane().add(buildPnCenter());
+		initComp();
+
+		this.getContentPane().add(buildHeader("테이블 정보 추가"),BorderLayout.NORTH);
+
+		this.addComp(buildCenter(),BorderLayout.CENTER);
+
+		this.addComp(buildControl(),BorderLayout.SOUTH);
 
 		ViewUtil.center(this, true);
-		
+
 		this.setResizable(false);
-		
+
 		this.setVisible(true);
-
-	}
-	
-	private JComponent buildTitle()
-	{
-		KSGPanel pnTitleInfo = new KSGPanel();
-		
-		pnTitleInfo.setLayout(new BorderLayout());
-		
-		pnTitleInfo.setBorder(BorderFactory.createEtchedBorder());
-		
-		pnTitleInfo.setPreferredSize(new Dimension(0,45));
-
-		JLabel label = new JLabel("테이블 정보 생성",JLabel.LEFT);
-
-		label.setFont(new Font("aria", Font.BOLD, 16));
-		
-		pnTitleInfo.add(label,BorderLayout.WEST);
-		
-		pnTitleInfo.setBackground(Color.white);
-		
-		return pnTitleInfo;
 	}
 
 
-	private Component createForm(JComponent comp, int i) {
-		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEADING));
-		pnMain.setPreferredSize(new Dimension(0,i));
-
-		pnMain.add(comp);
-		return pnMain; 
-	}
 	private KSGPanel createForm(String label,Component comp)
 	{
-		KSGPanel pnMain = new KSGPanel();
-		pnMain.setLayout(new BorderLayout());
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+
 		JLabel label2 = new JLabel(label,JLabel.RIGHT);
-		label2.setPreferredSize(new Dimension(100,20));
+
+		label2.setPreferredSize(new Dimension(100,15));
+
 		pnMain.add(label2,BorderLayout.WEST);
+
 		KSGPanel pnComp = new KSGPanel();
+
 		pnComp.setLayout(new BorderLayout());
+
 		pnComp.add(comp);
+
 		pnMain.add(pnComp,BorderLayout.CENTER);
+
 		return pnMain; 
 
 	}
+
+	private KSGPanel createForm(String label,Component comp, boolean isCombined)
+	{
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+
+		JLabel label2 = new JLabel(label,JLabel.RIGHT);
+
+		label2.setPreferredSize(new Dimension(100,15));
+
+		pnMain.add(label2,BorderLayout.WEST);
+
+		if(isCombined)
+		{
+			pnMain.add(comp);
+		}
+		else
+		{
+
+			KSGPanel pnComp = new KSGPanel();
+
+			pnComp.setLayout(new BorderLayout());
+
+			pnComp.add(comp);
+
+			pnMain.add(pnComp,BorderLayout.CENTER);	
+		}
+
+
+
+		return pnMain; 
+
+	}
+
 	private KSGPanel createForm(String label,Component comp, int width)
 	{
-		KSGPanel pnMain = new KSGPanel();
-		pnMain.setLayout(new BorderLayout());
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+
 		JLabel label2 = new JLabel(label,JLabel.RIGHT);
+
 		label2.setVerticalTextPosition(JLabel.CENTER);
-		label2.setPreferredSize(new Dimension(	width,20));
+
+		//		label2.setPreferredSize(new Dimension(	width,20));
+
 		pnMain.add(label2,BorderLayout.WEST);
-		KSGPanel pnComp = new KSGPanel();
-		pnComp.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		KSGPanel pnComp = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		pnComp.add(comp);
+
 		pnMain.add(pnComp,BorderLayout.CENTER);
+
 		return pnMain; 
 	}
 	public JTextArea createTextArea(int i)
@@ -664,145 +779,87 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	}
 	public JTextArea createTextArea(int i,boolean add)
 	{
-
 		JTextArea comp =  new JTextArea(5,i);
-		if(add)
-			comp.addFocusListener(this);
+
+		if(add) comp.addFocusListener(this);
 
 		return comp;
 	}
 
 	public JTextField createTextField(int i)
 	{
-
 		JTextField comp =  new JTextField(i);
-		comp.addFocusListener(this);
 
+		comp.addFocusListener(this);
 
 		return comp;
 	}
+
 	public void focusGained(FocusEvent e) {
+
 		Object f =e.getSource();
+
 		if(f instanceof JTextField)
 		{
-			((JTextField) f).selectAll();
-			if(f.equals(txfOutToPort))
+			JTextField txfToIndex = (JTextField) f;
+
+			JTextField txfFromIndex = null;
+
+			txfToIndex.selectAll();
+
+			/**
+			 * toIndex 생성
+			 */
+			if(f.equals(txfOutToPort)||f.equals(txfInToPort))
 			{
-				StringTokenizer stringTokenizer = new StringTokenizer(txfOutPort.getText(),"#");
-				if(stringTokenizer.countTokens()>0)
+				try {
+					txfFromIndex 		= f.equals(txfOutToPort)?txfOutFromPort:txfInFromPort;
+
+					List intCountArray 	= PortIndexUitl.extractIntArray(txfFromIndex);
+
+					if(intCountArray.isEmpty()) return;
+
+					int portCount 		= Integer.parseInt(txfPortCount.getText());
+
+					String strToIndex 	= PortIndexUitl.creatIndexString(intCountArray, portCount);
+
+					txfToIndex.setText(strToIndex);
+
+				}catch(Exception ee)
 				{
-					String portCount=txfPortCount.getText();
-					Vector intCount = new Vector();
-					while(stringTokenizer.hasMoreTokens())
-					{
-						try
-						{
-							int in = Integer.parseInt(stringTokenizer.nextToken());
-							intCount.add(in);
-						}catch(NumberFormatException nume)
-						{
-							System.err.println(nume.getMessage());
-						}
-					}
-
-
-
-					int pCount = Integer.parseInt(portCount);
-					String dd="";
-					for(int i=1;i<pCount+1;i++)
-					{
-						boolean flag=true;
-						for(int j=0;j<intCount.size();j++)
-						{
-							int a = (Integer)intCount.get(j);
-							if(a==i)
-							{
-								flag=false;
-							}
-						}
-
-						if(flag)
-						{
-							dd+=String.valueOf(i);
-							if(i<pCount)
-								dd+="#";
-						}
-
-					}
-					txfOutToPort.setText(dd);
-				}
-
-			}
-			if(f.equals(txfInToPort))
-			{
-				StringTokenizer stringTokenizer = new StringTokenizer(txfInPort.getText(),"#");
-				if(stringTokenizer.countTokens()>0)
-				{
-					String portCount=txfPortCount.getText();
-					Vector intCount = new Vector();
-					while(stringTokenizer.hasMoreTokens())
-					{
-						try
-						{
-							int in = Integer.parseInt(stringTokenizer.nextToken());
-							intCount.add(in);
-						}catch(NumberFormatException nume)
-						{
-							System.err.println(nume.getMessage());
-						}
-					}
-
-
-
-					int pCount = Integer.parseInt(portCount);
-					String dd="";
-					for(int i=1;i<pCount+1;i++)
-					{
-						boolean flag=true;
-						for(int j=0;j<intCount.size();j++)
-						{
-							int a = (Integer)intCount.get(j);
-							if(a==i)
-							{
-								flag=false;
-							}
-						}
-
-						if(flag)
-						{
-							dd+=String.valueOf(i);
-							if(i<pCount)
-								dd+="#";
-						}
-
-					}
-					txfInToPort.setText(dd);
+					txfToIndex.setText("");
+					txfFromIndex.setText("");
 				}
 			}
+
 		}else if (f instanceof JTextArea)
 		{
 			((JTextArea) f).selectAll();
 		}
-
 	}
+
 	public void focusLost(FocusEvent arg0) {
 
 	}
 	private void setTableIndex(String company_abbr) {
-		if(company_abbr!=null)
+
+		if(company_abbr==null) return;
+
+		try 
 		{
-			try 
-			{
-				int last=tableService.getLastTableIndex(company_abbr);				
-				txfIndex.setText(String.valueOf((last+1)));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}catch (NullPointerException e1) 
-			{
-				txfIndex.setText("0");
-			}
-			txfCompany.setText(company_abbr);
+			int last=tableService.getLastTableIndex(company_abbr);
+
+			txfIndex.setText(String.valueOf((last+1)));
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+
+		}catch (NullPointerException e1) 
+		{
+			txfIndex.setText("0");
 		}
+		txfCompany_Name.setText(company_abbr);
 	}
 
 	public ShippersTable getSelectedCompany() {
@@ -816,45 +873,60 @@ public class AddTableInfoDialog extends KSGDialog implements ActionListener,Focu
 	@Override
 	public void componentShown(ComponentEvent e) {
 
-
 		cbxGubun.initComp();
-		
-		initSearchOp();
 
+		CommandMap param = new CommandMap();
+
+		if(searchOp!=null) param.put("table_id", searchOp.getTable_id());
+
+		callApi("addTableInfoDialog.init", param);
 	}
 
-	private void initSearchOp() {
-		if(searchOp!=null)
+	@Override
+	public void updateView() {
+
+		CommandMap resultMap= this.getModel();
+
+
+		String serviceId=(String) resultMap.get("serviceId");
+
+		if("addTableInfoDialog.insert".equals(serviceId))
 		{	
-			try {
-				selectedTable = tableService.getTableById(searchOp.getTable_id());
+			result = KSGDialog.SUCCESS;
 
-				txfTitle.setText(selectedTable.getTitle());
-				txfCompany.setText(selectedTable.getCompany_abbr());
-				txfPage.setText(String.valueOf(selectedTable.getPage()));
-				txfBookPage.setText(String.valueOf(selectedTable.getBookPage()));
-				txfPortCount.setText(String.valueOf(selectedTable.getPort_col()));
-				txfVesselCount.setText((String.valueOf( selectedTable.getPort_col())));
-				txaQuark.setText(selectedTable.getQuark_format());
-				txaCommon.setText(selectedTable.getCommon_shipping());
-				txfInPort.setText(selectedTable.getIn_port());
-				txfOutPort.setText(selectedTable.getOut_port());
-				txfInToPort.setText(selectedTable.getIn_to_port());
-				txfOutToPort.setText(selectedTable.getOut_to_port());
-				txfOther.setText(String.valueOf(selectedTable.getOthercell()));
-				txfAgent.setText(selectedTable.getAgent());
-				cbxGubun.setSelectedItem(selectedTable.getGubun());				
-				txfCtime.setText(String.valueOf(selectedTable.getC_time()));
-				txfDtime.setText(String.valueOf(selectedTable.getD_time()));
-				txaConsoleCFS.setText(selectedTable.getConsole_cfs());
-				txfConsolePage.setText(selectedTable.getConsole_page());
-				txfInland.setText(selectedTable.getInland_indexs());
+			JOptionPane.showMessageDialog(this, "추가했습니다.");	
 
-			} catch (SQLException ee) {
-				JOptionPane.showMessageDialog(AddTableInfoDialog.this, ee.getMessage());
-				ee.printStackTrace();
-			}
+			close();
 		}
-	}
 
+		if("addTableInfoDialog.init".equals(serviceId))
+		{	
+			ShippersTable selectedTable = (ShippersTable) resultMap.get("selectedTable");
+
+			if(selectedTable==null) return;
+
+			txfTitle.setText(selectedTable.getTitle());
+			txfCompany_Name.setText(selectedTable.getCompany_abbr());
+			txfPage.setText(String.valueOf(selectedTable.getPage()));
+			txfBookPage.setText(String.valueOf(selectedTable.getBookPage()));
+			txfPortCount.setText(String.valueOf(selectedTable.getPort_col()));
+			txfVesselCount.setText((String.valueOf( selectedTable.getPort_col())));
+			txaQuark.setText(selectedTable.getQuark_format());
+			txaCommon.setText(selectedTable.getCommon_shipping());
+			txfInFromPort.setText(selectedTable.getIn_port());
+			txfOutFromPort.setText(selectedTable.getOut_port());
+			txfInToPort.setText(selectedTable.getIn_to_port());
+			txfOutToPort.setText(selectedTable.getOut_to_port());
+			txfOther.setText(String.valueOf(selectedTable.getOthercell()));
+			txfAgentAbbr.setText(selectedTable.getAgent());
+			cbxGubun.setSelectedItem(selectedTable.getGubun());				
+			txfCtime.setText(String.valueOf(selectedTable.getC_time()));
+			txfDtime.setText(String.valueOf(selectedTable.getD_time()));
+			txaConsoleCFS.setText(selectedTable.getConsole_cfs());
+			txfConsolePage.setText(selectedTable.getConsole_page());
+			txfInland.setText(selectedTable.getInland_indexs());
+
+		}
+
+	}
 }

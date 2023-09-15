@@ -10,24 +10,24 @@
  *******************************************************************************/
 package com.ksg.domain;
 
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * @author 박창현
  *
  */
+@NoArgsConstructor @AllArgsConstructor
+@Builder
+@Getter @Setter
 public class QuarkFormat {
+	
 	public int table_id; // 테이블 아이디
+	
 	public String foamt; // 포맷
-	public int getTable_id() {
-		return table_id;
-	}
-	public void setTable_id(int table_id) {
-		this.table_id = table_id;
-	}
-	public String getFoamt() {
-		return foamt;
-	}
-	public void setFoamt(String foamt) {
-		this.foamt = foamt;
-	}
-
 }

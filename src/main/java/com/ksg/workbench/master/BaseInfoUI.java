@@ -7,7 +7,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
-import java.sql.SQLException;
+import java.awt.event.ComponentEvent;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,11 +29,12 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import com.dtp.api.service.impl.CodeServiceImpl;
 import com.ibatis.sqlmap.client.SqlMapException;
-import com.ksg.service.impl.CodeServiceImpl;
+import com.ksg.domain.Code;
 import com.ksg.view.comp.IconData;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.AbstractMgtUI;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.comp.PnArea;
 import com.ksg.workbench.master.comp.PnBase;
 import com.ksg.workbench.master.comp.PnCommonCode;
@@ -44,19 +45,19 @@ import com.ksg.workbench.master.comp.PnVessel;
 
 /**
 
-  * @FileName : BaseInfoUI.java
+ * @FileName : BaseInfoUI.java
 
-  * @Project : KSG2
+ * @Project : KSG2
 
-  * @Date : 2022. 3. 11. 
+ * @Date : 2022. 3. 11. 
 
-  * @작성자 : pch
+ * @작성자 : pch
 
-  * @변경이력 :
+ * @변경이력 :
 
-  * @프로그램 설명 : 마스터 정보관리
+ * @프로그램 설명 : 마스터 정보관리
 
-  */
+ */
 public class BaseInfoUI extends AbstractMgtUI{
 	public static final String STRING_CODE_INFO 	= "코드정보";
 	public static final String STRING_VESSEL_ABBR 	= "선박 약어";
@@ -73,17 +74,17 @@ public class BaseInfoUI extends AbstractMgtUI{
 
 
 	private JTree tree;
+
 	private KSGPanel pnMain;
+
 	private CardLayout cardLayout;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-
 
 	private HashMap<String, PnBase> panelList;// 패널 저장 객체
-	
+
 	private CodeServiceImpl codeService;
 
 	/**
@@ -94,8 +95,10 @@ public class BaseInfoUI extends AbstractMgtUI{
 
 		super();
 		logger.debug("create view start");
-		
+
 		codeService = new CodeServiceImpl();
+
+		this.addComponentListener(this);
 
 		panelList = new HashMap<String, PnBase>();
 
@@ -103,6 +106,14 @@ public class BaseInfoUI extends AbstractMgtUI{
 		this.borderColor = new Color(107,138,15);
 
 		createAndUpdateUI();
+		
+		try {
+			viewInit();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		logger.debug("create view end");
 	}
 	public void createAndUpdateUI() {
@@ -116,7 +127,7 @@ public class BaseInfoUI extends AbstractMgtUI{
 	}
 
 	public static void expandAll(JTree tree, TreePath parent, boolean expand) {
-		
+
 		TreeNode node = (TreeNode) parent.getLastPathComponent();
 		if (node.getChildCount() >= 0) {
 			for (Enumeration e = node.children(); e.hasMoreElements();) {
@@ -154,42 +165,38 @@ public class BaseInfoUI extends AbstractMgtUI{
 	 */
 	private JTree createTreeMenu() {
 		tree = new JTree();
+		
+		tree.setExpandsSelectedPaths(true);
 
-		try {
-			this.updateTree();
+		tree.addTreeSelectionListener(new TreeSelectionListener(){
 
-			tree.setExpandsSelectedPaths(true);
-			tree.addTreeSelectionListener(new TreeSelectionListener(){
-
-				private String _selectedTable;
+			private String _selectedTable;
 
 
-				public void valueChanged(TreeSelectionEvent e) {
+			public void valueChanged(TreeSelectionEvent e) {
 
-					TreePath path=e.getNewLeadSelectionPath();
-					if(path!=null&&path.getLastPathComponent()!=null)
+				TreePath path=e.getNewLeadSelectionPath();
+
+				if(path!=null&&path.getLastPathComponent()!=null)
+				{
+					try {
+
+						_selectedTable = path.getLastPathComponent().toString();
+
+						showBaseInfo(_selectedTable);
+
+					}
+
+					catch(SqlMapException e2)
 					{
-						try {
-
-							_selectedTable = path.getLastPathComponent().toString();
-
-							showBaseInfo(_selectedTable);
-
-						}
-
-						catch(SqlMapException e2)
-						{
-							JOptionPane.showMessageDialog(BaseInfoUI.this, _selectedTable+"에 대한 쿼리가 없습니다.");
-						}
+						JOptionPane.showMessageDialog(BaseInfoUI.this, _selectedTable+"에 대한 쿼리가 없습니다.");
 					}
 				}
-			});
+			}
+		});
 
 
-		} catch (SQLException e) {
-			JOptionPane.showMessageDialog(null,"트리 정보생성에 실패 했습니다.=>"+e.getMessage()+", "+e.getErrorCode() );
-			e.printStackTrace();
-		}
+
 		return tree;
 	}
 
@@ -213,14 +220,12 @@ public class BaseInfoUI extends AbstractMgtUI{
 		addBasePanel(pnMain,new PnCommonCode(this),STRING_COMMONCODE_INFO);
 
 		addBasePanel(pnMain,new PnArea(this),		STRING_AREA_INFO);
-		addBasePanel(pnMain,new PnVessel(this),		STRING_VESSEL_INFO);
-		//addBasePanel(pnMain,new PnVesselAbbr(this),	STRING_VESSEL_ABBR);
-		addBasePanel(pnMain,new PnCompany(this),	STRING_COMPANY_INFO);
-		addBasePanel(pnMain,new PnPort(this),		STRING_PORT_INFO);
-//		addBasePanel(pnMain,new PnPort(this),		STRING_PORT_INFO);
 		
-		//addBasePanel(pnMain,new PnPortAbbr(this),	STRING_PORT_ABBR);
-		//addBasePanel(pnMain,new PnMember(this),	"사용자");
+		addBasePanel(pnMain,new PnVessel(this),		STRING_VESSEL_INFO);
+		
+		addBasePanel(pnMain,new PnCompany(this),	STRING_COMPANY_INFO);
+		
+		addBasePanel(pnMain,new PnPortNew(this),		STRING_PORT_INFO);
 
 		return pnMain;
 	}
@@ -232,37 +237,32 @@ public class BaseInfoUI extends AbstractMgtUI{
 		panelList.put(panelName, insertPanel);
 
 	}
-	private void updateTree() throws SQLException
+	private void viewInit() throws Exception
 	{
 		logger.debug("update tree model");
-		
+
 		HashMap<String, Object> param = new HashMap<String, Object>();
+
 		param.put("code_type", "table");
 		
-		HashMap<String, Object> resultMap=(HashMap<String, Object>) codeService.selectCodeDList(param);
-		
-		List master = (List) resultMap.get("master");
-	
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16.png"),null,"기초정보"));
+		Code codeParam = Code.builder().code_type("table").build();
 
-		DefaultMutableTreeNode code = new DefaultMutableTreeNode(STRING_CODE_INFO);
-		
-		DefaultMutableTreeNode table = new DefaultMutableTreeNode("기초 정보");
+		List<Code>result= codeService.selectCodeDetailListByCondition(codeParam);		
 
-		
-		Iterator<HashMap> iter2 =master.iterator();
+		DefaultMutableTreeNode root 	= new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16.png"),null,"기초정보"));
+
+		DefaultMutableTreeNode code 	= new DefaultMutableTreeNode(STRING_CODE_INFO);
+
+		DefaultMutableTreeNode table 	= new DefaultMutableTreeNode("기초 정보");
+
 
 		DefaultMutableTreeNode commonCode = new DefaultMutableTreeNode(STRING_COMMONCODE_INFO);
-	
-
 
 		code.add(commonCode);
-
-		while(iter2.hasNext())
+		
+		for(Code codeItem:result)
 		{
-			HashMap<String, Object> d =iter2.next(); 
-			DefaultMutableTreeNode sub = new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16_2.png"),null,d.get("code_name_kor")));
-			table.add(sub);
+			table.add(new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16_2.png"),null,codeItem.getCode_name_kor())));
 		}
 
 
@@ -365,10 +365,10 @@ public class BaseInfoUI extends AbstractMgtUI{
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void actionPerformed(ActionEvent e) {}
+
+	@Override
+	public void componentShown(ComponentEvent e) {}
 
 
 }

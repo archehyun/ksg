@@ -25,6 +25,7 @@ import org.apache.logging.log4j.Logger;
 import org.jdom.JDOMException;
 
 import com.ksg.domain.ADVData;
+import com.ksg.domain.ADVDataParser;
 import com.ksg.domain.ShippersTable;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.print.logic.quark.v1.XTGPage;
@@ -39,7 +40,7 @@ public class CreateXTGCommand extends AbstractCommand{
 	protected ADVService	 		_advService;
 	protected TableService 		_tableService;
 	int pages;
-	
+
 	String selectedCompany;
 	XTGManager xtgmanager = new XTGManager();
 	XTGPage page;
@@ -95,19 +96,19 @@ public class CreateXTGCommand extends AbstractCommand{
 			shippersTable.setAgent(agent);
 			shippersTable.setDate_isusse(selectDate);
 			lis=_tableService.getTableList(shippersTable);
-			
+
 			if(agent==null)
 			{
 				logger.debug("agent null");
-				
-				
+
+
 				lis = _tableService.getTableListByPage(shippersTable);
 			}
 			else
 			{
 				lis = _tableService.getTableListByAgent(shippersTable);
 			}
-//			logger.debug(lis);
+			//			logger.debug(lis);
 
 			for(int i=0;i<lis.size();i++)
 			{
@@ -128,6 +129,8 @@ public class CreateXTGCommand extends AbstractCommand{
 			for(int i=0;i<advLi.size();i++)
 			{
 				ADVData  data = advLi.get(i);
+				
+				ADVDataParser parser = new ADVDataParser(data);
 				ShippersTable table=_tableService.getTableById(data.getTable_id());
 				if(table.getTable_index()==0)
 					continue;
@@ -155,12 +158,12 @@ public class CreateXTGCommand extends AbstractCommand{
 						 * XTGManager.java 에서 처리함 
 						 * 
 						 */
-						
+
 						String str1=table.getQuark_format();
 						String str2="";
 						String newline="\r\n";
 						String line_lf="\n";
-						
+
 						for(int j=0;j<str1.length();j++) {
 							if(str1.substring(j,j+1).compareTo(line_lf)==0){
 								str2=str2+"\r"+str1.substring(j,j+1);
@@ -169,10 +172,10 @@ public class CreateXTGCommand extends AbstractCommand{
 								str2=str2+str1.substring(j,j+1);
 							}
 						}
-						
-						
+
+
 						version=str2;   	//+"\n<ct:><cs:>";
-//						version=table.getQuark_format();   	//+"\n<ct:><cs:>";
+						//						version=table.getQuark_format();   	//+"\n<ct:><cs:>";
 						/*
 						 * 
 						 * 2013.6.4 유현경 수정 - 첫번째 스케줄 테이블의 태그만 개행처리 [끝]
@@ -188,11 +191,11 @@ public class CreateXTGCommand extends AbstractCommand{
 					{
 						int firstIndex=table.getQuark_format().indexOf("@");
 						int lastIndex = table.getQuark_format().lastIndexOf(":");
-					//					int boldLastIndex = table.getQuark_format().lastIndexOf(">");
-					// 추후 수정 예정
-					//result+="<"+table.getQuark_format().substring(fistIndex,lastIndex+1);//table
+						//					int boldLastIndex = table.getQuark_format().lastIndexOf(">");
+						// 추후 수정 예정
+						//result+="<"+table.getQuark_format().substring(fistIndex,lastIndex+1);//table
 						try{
-						version=table.getQuark_format().substring(firstIndex,table.getQuark_format().length());//bold
+							version=table.getQuark_format().substring(firstIndex,table.getQuark_format().length());//bold
 						}catch(Exception e)
 						{
 							logger.error("출력 오류"+e.getMessage());
@@ -202,8 +205,8 @@ public class CreateXTGCommand extends AbstractCommand{
 					else
 					{
 						try{
-						// version=table.getQuark_format();//.substring(firstIndex,table.getQuark_format().length());//bold
-						version="\r\n"+table.getQuark_format();//.substring(firstIndex,table.getQuark_format().length());//bold
+							// version=table.getQuark_format();//.substring(firstIndex,table.getQuark_format().length());//bold
+							version="\r\n"+table.getQuark_format();//.substring(firstIndex,table.getQuark_format().length());//bold
 						}catch(Exception e)
 						{
 							logger.error("출력 오류"+e.getMessage());
@@ -214,15 +217,15 @@ public class CreateXTGCommand extends AbstractCommand{
 
 				//				logger.debug("result:"+result);
 				String dataArray[][]=null;
-				
-					dataArray = data.getDataArray();
-				
-				
-				
-				String vesselList[][] = data.getAbbrVesselArray(false);
-				
-				
-				
+
+				dataArray = parser.getDataArray();
+
+
+
+				String vesselList[][] = parser.getAbbrVesselArray(false);
+
+
+
 				for(int j=0;j<dataArray.length;j++)
 				{
 					// bold
@@ -235,7 +238,7 @@ public class CreateXTGCommand extends AbstractCommand{
 								result+=version+"\t"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
 								if(data.getTs()!=null&&data.getTs().equals("TS"))
 								{
-									String tsvesselList[][]=data.getFullVesselArray(true);
+									String tsvesselList[][]=parser.getFullVesselArray(true);
 									result+="<B>"+tsvesselList[j][0]+"\t"+tsvesselList[j][1]+"<$>\t";
 								}
 							}else
@@ -243,7 +246,7 @@ public class CreateXTGCommand extends AbstractCommand{
 								result+=version+"\n<$>\t<B>"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
 								if(data.getTs()!=null&&data.getTs().equals("TS"))
 								{
-									String tsvesselList[][]=data.getFullVesselArray(true);
+									String tsvesselList[][]=parser.getFullVesselArray(true);
 									result+="<B>"+tsvesselList[j][0]+"\t"+tsvesselList[j][1]+"<$>\t";
 								}
 							}
@@ -253,7 +256,7 @@ public class CreateXTGCommand extends AbstractCommand{
 							result+="<$>\t<B>"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
 							if(data.getTs()!=null&&data.getTs().equals("TS"))
 							{
-								String tsvesselList[][]=data.getFullVesselArray(true);
+								String tsvesselList[][]=parser.getFullVesselArray(true);
 								result+="<B>"+tsvesselList[j][0]+"\t"+tsvesselList[j][1]+"<$>\t";
 							}
 						}
@@ -266,7 +269,7 @@ public class CreateXTGCommand extends AbstractCommand{
 								result+=version+"\t"+vesselList[j][0]+"\t"+vesselList[j][1]+"<ct:>\t";
 								if(data.getTs()!=null&&data.getTs().equals("TS"))
 								{
-									String tsvesselList[][]=data.getFullVesselArray(true);
+									String tsvesselList[][]=parser.getFullVesselArray(true);
 									result+="<ct:Bold>"+tsvesselList[j][0]+"\t"+tsvesselList[j][1]+"<ct:>\t";
 								}
 							}else
@@ -275,7 +278,7 @@ public class CreateXTGCommand extends AbstractCommand{
 								//result+=version+""+"<ct:Bold>"+vesselList[j][0]+"\t"+vesselList[j][1]+"<ct:>\t";
 								if(data.getTs()!=null&&data.getTs().equals("TS"))
 								{
-									String tsvesselList[][]=data.getFullVesselArray(true);
+									String tsvesselList[][]=parser.getFullVesselArray(true);
 									result+="<ct:Bold>"+tsvesselList[j][0]+"\t"+tsvesselList[j][1]+"<ct:>\t";
 								}
 							}
@@ -283,11 +286,11 @@ public class CreateXTGCommand extends AbstractCommand{
 						}else
 						{
 							result+="\r\n"+"<ct:Bold>"+"\t"+vesselList[j][0]+"\t"+vesselList[j][1]+"<ct:>\t";
-//							result+="\r\n"+"<ct:Bold>"+"\t"+vesselList[j][0]+"\t"+vesselList[j][1]+"<ct:>\t";
+							//							result+="\r\n"+"<ct:Bold>"+"\t"+vesselList[j][0]+"\t"+vesselList[j][1]+"<ct:>\t";
 							//result+="\r\n"+"<ct:Bold>"+vesselList[j][0]+"\t"+vesselList[j][1]+"<ct:>\t";
 							if(data.getTs()!=null&&data.getTs().equals("TS"))
 							{
-								String tsvesselList[][]=data.getFullVesselArray(true);
+								String tsvesselList[][]=parser.getFullVesselArray(true);
 								result+="<ct:Bold>"+tsvesselList[j][0]+"\t"+tsvesselList[j][1]+"<ct:>\t";
 							}
 						}
@@ -310,41 +313,41 @@ public class CreateXTGCommand extends AbstractCommand{
 							String firstDate = st.nextToken();
 							String secondDate=st.nextToken();
 							try {
-									
+
 								StringTokenizer stFirstDate = new StringTokenizer(firstDate,"/");
-								
+
 								int firstMonth  = Integer.parseInt(stFirstDate.nextToken());
 								int firstDay  = Integer.parseInt(stFirstDate.nextToken());
-								
+
 								StringTokenizer stSecondDate = new StringTokenizer(secondDate,"/");
-								
-								
+
+
 								int secondMonth;
 								int secondDay;
 								if(stSecondDate.countTokens()==2)
 								{
 									secondMonth  = Integer.parseInt(stSecondDate.nextToken());
 									secondDay  = Integer.parseInt(stSecondDate.nextToken());
-									
+
 								}else
 								{
 									secondDay  = Integer.parseInt(stSecondDate.nextToken());
 									secondMonth =firstDay<=secondDay?firstMonth:firstMonth+1;
 								}
 								result +=firstMonth+"/"+firstDay+"-"+secondMonth+"/"+secondDay;
-								
+
 
 							} catch (Exception e1) {
 								result +=dataArray[j][z];
 								logger.error(firstDate);
 								e1.printStackTrace();
 							}
-							
+
 							/*try {
-								
-								
+
+
 								StringTokenizer st2 = new StringTokenizer(st.nextToken(),"/");
-								
+
 								int month  = Integer.parseInt(st2.nextToken());
 								int day  = Integer.parseInt(st2.nextToken());
 								result +=month+"/"+day;
@@ -360,26 +363,26 @@ public class CreateXTGCommand extends AbstractCommand{
 						{
 							/*try {
 								StringTokenizer st2 = new StringTokenizer(st.nextToken(),"/");
-								
+
 								int month  = Integer.parseInt(st2.nextToken());
 								int day  = Integer.parseInt(st2.nextToken());
-								
+
 								result +=month+"/"+day;
 
 							} catch (Exception e1) {
 								result +=dataArray[j][z];
 								e1.printStackTrace();
 							}*/
-							
+
 							/* 2014.4.18 박창현씨 수정
 							 * 이하 수정된 부분은 날짜 앞에 0이 오는 경우 0을 제외하고 출력하도록 한 것임
 							 */
 							String monthStr=null,dayStr=null;
 							try {
 
-								
+
 								StringTokenizer stOneDate = new StringTokenizer(st.nextToken(),"/");
-								
+
 								if(stOneDate.countTokens()==1) // 날짜 형식이 아닌 경우
 								{
 									result +=stOneDate.nextToken();
@@ -389,13 +392,13 @@ public class CreateXTGCommand extends AbstractCommand{
 									try{
 										monthStr =stOneDate.nextToken();
 										int month  = Integer.parseInt(monthStr);
-										
+
 										result +=String.valueOf(month); // 월 정보 추가
 									}catch(NumberFormatException e1) // 숫자 형식이 아닐때
 									{
 										result +=monthStr;
 									}
-									
+
 									try{
 										// 오류 발생!
 										dayStr =stOneDate.nextToken();
@@ -403,7 +406,7 @@ public class CreateXTGCommand extends AbstractCommand{
 										result +="/"+String.valueOf(day); // 일 정보 추가, 
 									}catch(NumberFormatException e1)//숫자 형식이 아닐때
 									{
-	/*
+										/*
 										if(dayStr.charAt(0)=='0')// 한자리
 										{										
 											result +="/"+String.valueOf(dayStr.charAt(1)) // 1자리 일
@@ -413,7 +416,7 @@ public class CreateXTGCommand extends AbstractCommand{
 											result +="/"+String.valueOf(dayStr.charAt(0))+String.valueOf(dayStr.charAt(1))//2자리 일
 														+" "+dayStr.substring(2,dayStr.length()).trim();// 기타 문자(AM, PM..)
 										}
-	*/									
+										 */									
 										if(dayStr.charAt(0)=='0')// 한자리
 										{										
 											result +="/"+dayStr.substring(1);
@@ -422,36 +425,36 @@ public class CreateXTGCommand extends AbstractCommand{
 											result +="/"+dayStr;
 										}
 									}
-									
+
 								}
-								
-								
+
+
 
 
 							} catch (Exception e1) {
 								result +=dataArray[j][z];
 								e1.printStackTrace();
 							}
-							
+
 						}else
 						{
 							result +=dataArray[j][z];
 						}
-						
+
 						/*try
 						{
-							
-							
+
+
 							Date d =KSGDateUtil.toDateBySearch(dataArray[j][z]);
 //							result +=dateFormat.parse(dataArray[j][z]).toString();
-						
+
 							result+=(d.getMonth()+"/"+d.getDay());
-							
+
 						} catch (ParseException e)
 						{
 							result +=dataArray[j][z];
 
-							
+
 							e.printStackTrace();
 						}*/
 						if(z<dataArray[j].length-1)
@@ -478,11 +481,13 @@ public class CreateXTGCommand extends AbstractCommand{
 
 
 			}
-		} catch (SQLException e) {
-
+		} 
+		catch(Exception e)
+		{
 			e.printStackTrace();
 			return RESULT_FAILE;
 		}
+		
 		if(isCreateFile)
 		{
 			try{
@@ -501,181 +506,181 @@ public class CreateXTGCommand extends AbstractCommand{
 		}
 
 	}
-	public void execute2() {
-		//		String advMessage = new String();
-		// 테이블 정보 조회
-
-		if(selectedCompany==null)
-		{
-			result="선택된 선사가 없습니다.";
-			return;
-		}
-
-
-		try {
-			//			String ver;
-			String bold="";
-			List<ADVData> advLi = _advService.getADVDataListByPage(selectedCompany, selectedPage, selectDate);
-			if(advLi.size()==0)
-			{
-				result="광고정보가 없습니다.";
-				return;
-			}
-			logger.debug("searched table size:"+advLi.size());
-			// 광고 정보 조회
-			for(int i=0;i<advLi.size();i++)
-			{
-				ADVData  data = advLi.get(i);
-				ShippersTable table=_tableService.getTableById(data.getTable_id());
-				//result+=data.getData()+"\n";
-				
-				
-				if(printFlag==1)
-				{
-					if(i==0)//첫번째 태그 분석 - version
-					{
-						if(table.getQuark_format().length()<1)
-						{
-							JOptionPane.showMessageDialog(null, table.getPage()+"-"+table.getTable_index()+"번 테이블의 태그 정보가 없습니다.");
-							return;
-						}
-						int lastIndex=table.getQuark_format().lastIndexOf(":");
-						int lastIndex2=table.getQuark_format().lastIndexOf(">");
-						result+=table.getQuark_format().substring(0,lastIndex+1);//version
-
-						bold=table.getQuark_format().substring(lastIndex+1,lastIndex2+1);//bold
-
-					}else
-					{
-						int fistIndex=table.getQuark_format().lastIndexOf("*t");
-						int lastIndex = table.getQuark_format().lastIndexOf(":");
-						int boldLastIndex = table.getQuark_format().lastIndexOf(">");
-						// 추후 수정 예정
-						result+="<"+table.getQuark_format().substring(fistIndex,lastIndex+1);//table
-						bold=table.getQuark_format().substring(lastIndex+1,boldLastIndex+1);//bold
-					}
-				}
-				else			
-				{
-					if(i==0)//첫번째 태그 분석 - version
-				
-					{
-						if(table.getQuark_format().length()<1)
-						{
-							JOptionPane.showMessageDialog(null, table.getPage()+"-"+table.getTable_index()+"번 테이블의 태그 정보가 없습니다.");
-							return;
-						}
-						/*
-						int lastIndex=table.getQuark_format().lastIndexOf(":");
-						int lastIndex2=table.getQuark_format().lastIndexOf(">");
-						result+=table.getQuark_format().substring(0,lastIndex+1);//version
-
-						bold=table.getQuark_format().substring(lastIndex+1,lastIndex2+1);//bold
-*/
-						result+="여기가 어디냐?????";
-						bold="여기는 또 어디냐????? - Bold tag인데";
-					}else
-					{
-						/*
-						int fistIndex=table.getQuark_format().lastIndexOf("*t");
-						int lastIndex = table.getQuark_format().lastIndexOf(":");
-						int boldLastIndex = table.getQuark_format().lastIndexOf(">");
-						// 추후 수정 예정
-						result+="<"+table.getQuark_format().substring(fistIndex,lastIndex+1);//table
-						bold=table.getQuark_format().substring(lastIndex+1,boldLastIndex+1);//bold
-						*/
-						result+="else인 경우 여기가 어디냐?????";
-						bold="else인 경우 여기는 또 어디냐????? - Bold tag인데";
-
-					}
-				}
-				logger.debug("result:"+result);
-				String dataArray[][]=null;
-				
-					dataArray = data.getDataArray();
-				
-				String vesselList[][] = data.getFullVesselArray(false);
-				for(int j=0;j<dataArray.length;j++)
-				{
-					// bold
-					if(j==0)
-					{
-						result+=bold+"\t"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
-
-					}else
-					{
-						result+="<$>\t<B>"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
-					}
-					// 선박 + 항차 
-					//result+=bold+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
-
-					for(int z=0;z<dataArray[j].length;z++)
-					{
-
-						try
-						{
-							System.out.println(dateFormat.parse(dataArray[j][z]).toString());
-							result +=dateFormat.parse(dataArray[j][z]).toString();
-						} catch (ParseException e) 
-						{
-							result +=dataArray[j][z];
-
-							StringTokenizer st = new StringTokenizer(dataArray[j][z]);
-
-							if(st.countTokens()==2)
-							{
-
-								String temp;
-								try {
-									temp = dateFormat.parse(st.nextToken()).toString();
-									temp+="-"+dateFormat.parse(st.nextToken()).toString();
-
-
-								} catch (ParseException e1) {
-									result +=dataArray[j][z];
-									e1.printStackTrace();
-								}
- 
-
-							}
-							e.printStackTrace();
-						}
-						result +=dataArray[j][z];
-						if(z<dataArray[j].length-1)
-							result+="t";	
-
-					}
-					if(j!=dataArray.length-1)
-						result+="\r\n";
-
-				}
-				if(i!=advLi.size()-1)
-				{
-					if(printFlag==1)
-					{
-						result+="<\\c>";			
-					}
-					else
-					{
-						result+="";
-					}
-				}
-			}
-			if(isCreateFile)
-			{
-				try{
-					xtgmanager.createXTGFile(data,selectedPage+".txt");
-					JOptionPane.showMessageDialog(null,selectedCompany+"_"+selectedPage+"_"+selectDate+" 파일을 생성했습니다.");
-				}catch(Exception e)
-				{
-					JOptionPane.showMessageDialog(null, selectedPage+".txt 파일을 생성에 실패 했습니다."+e.getMessage());
-				}
-			}
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-
-	}
+	//	public void execute2() {
+	//		//		String advMessage = new String();
+	//		// 테이블 정보 조회
+	//
+	//		if(selectedCompany==null)
+	//		{
+	//			result="선택된 선사가 없습니다.";
+	//			return;
+	//		}
+	//
+	//
+	//		try {
+	//			//			String ver;
+	//			String bold="";
+	//			List<ADVData> advLi = _advService.getADVDataListByPage(selectedCompany, selectedPage, selectDate);
+	//			if(advLi.size()==0)
+	//			{
+	//				result="광고정보가 없습니다.";
+	//				return;
+	//			}
+	//			logger.debug("searched table size:"+advLi.size());
+	//			// 광고 정보 조회
+	//			for(int i=0;i<advLi.size();i++)
+	//			{
+	//				ADVData  data = advLi.get(i);
+	//				ShippersTable table=_tableService.getTableById(data.getTable_id());
+	//				//result+=data.getData()+"\n";
+	//				
+	//				
+	//				if(printFlag==1)
+	//				{
+	//					if(i==0)//첫번째 태그 분석 - version
+	//					{
+	//						if(table.getQuark_format().length()<1)
+	//						{
+	//							JOptionPane.showMessageDialog(null, table.getPage()+"-"+table.getTable_index()+"번 테이블의 태그 정보가 없습니다.");
+	//							return;
+	//						}
+	//						int lastIndex=table.getQuark_format().lastIndexOf(":");
+	//						int lastIndex2=table.getQuark_format().lastIndexOf(">");
+	//						result+=table.getQuark_format().substring(0,lastIndex+1);//version
+	//
+	//						bold=table.getQuark_format().substring(lastIndex+1,lastIndex2+1);//bold
+	//
+	//					}else
+	//					{
+	//						int fistIndex=table.getQuark_format().lastIndexOf("*t");
+	//						int lastIndex = table.getQuark_format().lastIndexOf(":");
+	//						int boldLastIndex = table.getQuark_format().lastIndexOf(">");
+	//						// 추후 수정 예정
+	//						result+="<"+table.getQuark_format().substring(fistIndex,lastIndex+1);//table
+	//						bold=table.getQuark_format().substring(lastIndex+1,boldLastIndex+1);//bold
+	//					}
+	//				}
+	//				else			
+	//				{
+	//					if(i==0)//첫번째 태그 분석 - version
+	//				
+	//					{
+	//						if(table.getQuark_format().length()<1)
+	//						{
+	//							JOptionPane.showMessageDialog(null, table.getPage()+"-"+table.getTable_index()+"번 테이블의 태그 정보가 없습니다.");
+	//							return;
+	//						}
+	//						/*
+	//						int lastIndex=table.getQuark_format().lastIndexOf(":");
+	//						int lastIndex2=table.getQuark_format().lastIndexOf(">");
+	//						result+=table.getQuark_format().substring(0,lastIndex+1);//version
+	//
+	//						bold=table.getQuark_format().substring(lastIndex+1,lastIndex2+1);//bold
+	//*/
+	//						result+="여기가 어디냐?????";
+	//						bold="여기는 또 어디냐????? - Bold tag인데";
+	//					}else
+	//					{
+	//						/*
+	//						int fistIndex=table.getQuark_format().lastIndexOf("*t");
+	//						int lastIndex = table.getQuark_format().lastIndexOf(":");
+	//						int boldLastIndex = table.getQuark_format().lastIndexOf(">");
+	//						// 추후 수정 예정
+	//						result+="<"+table.getQuark_format().substring(fistIndex,lastIndex+1);//table
+	//						bold=table.getQuark_format().substring(lastIndex+1,boldLastIndex+1);//bold
+	//						*/
+	//						result+="else인 경우 여기가 어디냐?????";
+	//						bold="else인 경우 여기는 또 어디냐????? - Bold tag인데";
+	//
+	//					}
+	//				}
+	//				logger.debug("result:"+result);
+	//				String dataArray[][]=null;
+	//				
+	//					dataArray = data.getDataArray();
+	//				
+	//				String vesselList[][] = data.getFullVesselArray(false);
+	//				for(int j=0;j<dataArray.length;j++)
+	//				{
+	//					// bold
+	//					if(j==0)
+	//					{
+	//						result+=bold+"\t"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
+	//
+	//					}else
+	//					{
+	//						result+="<$>\t<B>"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
+	//					}
+	//					// 선박 + 항차 
+	//					//result+=bold+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
+	//
+	//					for(int z=0;z<dataArray[j].length;z++)
+	//					{
+	//
+	//						try
+	//						{
+	//							System.out.println(dateFormat.parse(dataArray[j][z]).toString());
+	//							result +=dateFormat.parse(dataArray[j][z]).toString();
+	//						} catch (ParseException e) 
+	//						{
+	//							result +=dataArray[j][z];
+	//
+	//							StringTokenizer st = new StringTokenizer(dataArray[j][z]);
+	//
+	//							if(st.countTokens()==2)
+	//							{
+	//
+	//								String temp;
+	//								try {
+	//									temp = dateFormat.parse(st.nextToken()).toString();
+	//									temp+="-"+dateFormat.parse(st.nextToken()).toString();
+	//
+	//
+	//								} catch (ParseException e1) {
+	//									result +=dataArray[j][z];
+	//									e1.printStackTrace();
+	//								}
+	// 
+	//
+	//							}
+	//							e.printStackTrace();
+	//						}
+	//						result +=dataArray[j][z];
+	//						if(z<dataArray[j].length-1)
+	//							result+="t";	
+	//
+	//					}
+	//					if(j!=dataArray.length-1)
+	//						result+="\r\n";
+	//
+	//				}
+	//				if(i!=advLi.size()-1)
+	//				{
+	//					if(printFlag==1)
+	//					{
+	//						result+="<\\c>";			
+	//					}
+	//					else
+	//					{
+	//						result+="";
+	//					}
+	//				}
+	//			}
+	//			if(isCreateFile)
+	//			{
+	//				try{
+	//					xtgmanager.createXTGFile(data,selectedPage+".txt");
+	//					JOptionPane.showMessageDialog(null,selectedCompany+"_"+selectedPage+"_"+selectDate+" 파일을 생성했습니다.");
+	//				}catch(Exception e)
+	//				{
+	//					JOptionPane.showMessageDialog(null, selectedPage+".txt 파일을 생성에 실패 했습니다."+e.getMessage());
+	//				}
+	//			}
+	//		} catch (SQLException e) {
+	//
+	//			e.printStackTrace();
+	//		}
+	//
+	//	}
 
 }

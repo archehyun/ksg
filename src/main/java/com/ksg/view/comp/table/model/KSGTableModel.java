@@ -23,7 +23,9 @@ public class KSGTableModel extends DefaultTableModel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	boolean isEdit=false;
+	
 	public KSGTableModel()
 	{
 		super();

@@ -14,7 +14,7 @@ public class InboundJointedFormatter extends JointFormatter
 	
 	InboundCodeMap inboundCodeMap;
 	
-	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
+	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.inputDateFormat;
 
 	private SimpleDateFormat outputDateFormat 	= KSGDateUtil.createOutputDateFormat();
 	
@@ -51,6 +51,8 @@ public class InboundJointedFormatter extends JointFormatter
 		{
 			String portCode = (String) inboundCodeMap.get(item.get("port"));
 			String toDate =outputDateFormat.format(inputDateFormat.parse(String.valueOf(item.get("DateT"))));
+			
+//			strPots.append(String.format("[%s]%s", portCode, toDate));
 			strPots.append("["+portCode+"]"+toDate);
 		}
 		return strPots.toString();

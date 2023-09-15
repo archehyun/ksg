@@ -134,6 +134,7 @@ public interface ADVService {
 	public void updateDateADVData(String table_id, String date)throws SQLException;
 
 	public ADVData getADVData(String table_id) throws SQLException;
+	
 	public ADVData getADVData(ADVData data) throws SQLException;
 	public void updateDataADVData(ADVData data)throws SQLException;
 

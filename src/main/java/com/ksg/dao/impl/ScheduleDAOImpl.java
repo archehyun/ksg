@@ -41,7 +41,6 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return sqlMap.queryForList("Base.selectPort_nameList");
 	}
 
-
 	public ScheduleData insertScheduleData(ScheduleData data) throws SQLException {
 		return (ScheduleData) sqlMap.insert("Schedule.insertSchedule", data);
 	}
@@ -59,8 +58,6 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	public int updateScheduleData(ScheduleData data) throws SQLException {
 		return 0;
 	}
-
-
 
 	public List getScheduleListByPort(String port) throws SQLException {
 		return sqlMap.queryForList("Schedule.selectScheduleList",port);
@@ -290,6 +287,11 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 	public Object insertScheduleBulkData(List<ScheduleData> scheduleList) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlMap.insert("schedule.insertScheduleBulk", scheduleList);
+	}
+	@Override
+	public int deleteScheduleById(String table_id) throws SQLException {
+		return sqlMap.delete("schedule.deleteScheduleById", table_id);
+		
 	}
 
 	

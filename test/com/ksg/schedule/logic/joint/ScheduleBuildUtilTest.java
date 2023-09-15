@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
+
 public class ScheduleBuildUtilTest {
 
 	@Test

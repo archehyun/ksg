@@ -58,7 +58,7 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
 
@@ -859,7 +859,6 @@ public class AddTableInfoDialog_temp extends KSGDialog implements ActionListener
 
 	}
 	public void focusLost(FocusEvent arg0) {
-		// TODO Auto-generated method stub
 
 	}
 	private void setTableIndex(String company_abbr) {

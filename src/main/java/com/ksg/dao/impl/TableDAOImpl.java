@@ -161,6 +161,9 @@ public class TableDAOImpl extends AbstractDAO implements TableDAO{
 	public List getTablePortList(TablePort tablePort) throws SQLException {
 		return sqlMap.queryForList("Table.getTablePortList",tablePort);
 	}
+	public List getTablePortListById(String table_id) throws SQLException {
+		return sqlMap.queryForList("Table.getTablePortListById",table_id);
+	}
 
 
 	public void deleteTablePort(TablePort tablePort) throws SQLException {

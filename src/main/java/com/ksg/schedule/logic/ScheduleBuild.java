@@ -1,6 +1,6 @@
 package com.ksg.schedule.logic;
 
-import com.ksg.commands.LongTask;
+import com.ksg.commands.ScheduleExecute;
 
 /**
 /**
@@ -20,9 +20,7 @@ import com.ksg.commands.LongTask;
  * 
  */
  
-public interface ScheduleBuild extends LongTask{
-	public int execute() throws Exception;
-	public final int SUCCESS=1;
-	public final int FAILURE=2;
+public interface ScheduleBuild extends ScheduleExecute{
+
 
 }

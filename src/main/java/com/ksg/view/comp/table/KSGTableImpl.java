@@ -43,22 +43,18 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.ADVService;
 import com.ksg.service.BaseService;
-import com.ksg.service.VesselService;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.admin.KSGViewParameter;
 import com.ksg.workbench.adv.comp.ADVTableData;
 import com.ksg.workbench.adv.xls.XLSTableInfo;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
 
 /**
  * @author 박창현
@@ -309,7 +305,7 @@ public class KSGTableImpl extends KSGTable implements KeyListener{
 							Vessel vessel = new Vessel();
 							vessel.setVessel_name(txf.getText());
 							try {
-								vesselService.insert(vessel);
+								vesselService.insertVessel(vessel);
 								JOptionPane.showMessageDialog(null, "선박명: "+vessel.getVessel_name()+"이(가) 추가 되었습니다.");
 								di.setVisible(false);
 								di.dispose();

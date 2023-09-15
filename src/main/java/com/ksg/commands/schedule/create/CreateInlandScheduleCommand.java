@@ -9,19 +9,21 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import com.dtp.api.schedule.create.CreateScheduleCommand;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.ADVData;
+import com.ksg.domain.ADVDataParser;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.build.CreateScheduleCommand;
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.service.ScheduleService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -59,9 +61,13 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 	public int execute() {
 		try {
 			log.debug("search option:"+searchOption);
+			
 			List table_list = this.getTableListByOption();
+			
 			log.debug("table Size:"+table_list.size());
+			
 			Iterator tableIter = table_list.iterator();
+			
 			while(tableIter.hasNext())
 			{
 				tableData = (ShippersTable) tableIter.next();
@@ -73,12 +79,12 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 					errorlist.add(createError("테이블 정보 오류", tableData.getTable_id(), ""));
 					continue;
 				}
-
+				ADVDataParser parser = new ADVDataParser(advData);
 				// 날짜 정보 배열 생성
-				arrayDatas 				= advData.getDataArray();
+				arrayDatas 				= parser.getDataArray();
 
 				// 선박 정보 배열 생성
-				vslDatas 				= advData.getFullVesselArray(isTS(tableData));
+				vslDatas 				= parser.getFullVesselArray(isTS(tableData));
 
 				// 아웃바운드 국내항 인덱스 배열 생성
 				a_outbound_port_index	= makePortArraySub(tableData.getOut_port());
@@ -101,10 +107,10 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 					vesselInfo = scheduleManager.searchVessel(vslDatas[vslIndex][0]);
 
 					// 인바운드 스케줄 조합
-					makeSchedule(tableData, vslIndex,a_inbound_port_index,a_inbound_toport_index,a_inland_port_index,ScheduleService.INBOUND,advData);
+					makeSchedule(tableData, vslIndex,a_inbound_port_index,a_inbound_toport_index,a_inland_port_index,ScheduleEnum.INBOUND.getSymbol(),advData);
 
 					// 아웃바운드 스케줄 조합
-					makeSchedule(tableData, vslIndex,a_outbound_port_index,a_outbound_toport_index,a_inland_port_index,ScheduleService.OUTBOUND,advData);
+					makeSchedule(tableData, vslIndex,a_outbound_port_index,a_outbound_toport_index,a_inland_port_index,ScheduleEnum.OUTBOUND.getSymbol(),advData);
 				}
 			}
 			JOptionPane.showMessageDialog(null, "스케줄 생성 완료");
@@ -172,8 +178,8 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 					TablePort toPort = this.getPort(portDataArray, outPort[outToPortIndex]);
 
 
-					String fromPortArray[]	= fromPort.getPortArray();
-					String toPortArray[]	= toPort.getPortArray();
+					String fromPortArray[]	= fromPort.getSubPortNameArray();
+					String toPortArray[]	= toPort.getSubPortNameArray();
 
 
 					for(int fromPortIndex =0;fromPortIndex<fromPortArray.length;fromPortIndex++)
@@ -186,12 +192,12 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 								for(int inlnadIndex=0;inlnadIndex<inlnadPortIndex.length;inlnadIndex++)
 								{
 									TablePort inlnadPorts = this.getPort(portDataArray, inlnadPortIndex[inlnadIndex]);
-									String inlnadPortArray[]	= inlnadPorts.getPortArray();
+									String inlnadPortArray[]	= inlnadPorts.getSubPortNameArray();
 
 									for(int inlnadPortNum=0;inlnadPortNum<inlnadPortArray.length;inlnadPortNum++)
 									{	
 										//출발항, 도착항 지정
-										if(InOutBoundType.equals(ScheduleService.INBOUND))
+										if(InOutBoundType.equals(ScheduleEnum.INBOUND.getSymbol()))
 										{
 											if(arrayDatas[vslIndex][outPort[outPortIndex]-1].equals("-")||arrayDatas[vslIndex][ports[outToPortIndex]-1].equals("-"))
 												continue;
@@ -201,7 +207,7 @@ public class CreateInlandScheduleCommand extends CreateScheduleCommand{
 											scheduleDates = adjestDateYear(arrayDatas[vslIndex][outPort[outPortIndex]-1],arrayDatas[vslIndex][ports[outToPortIndex]-1],InOutBoundType);
 											scheduleDates = adjestDateYear2(arrayDatas[vslIndex][outPort[outPortIndex]-1],arrayDatas[vslIndex][ports[outToPortIndex]-1],InOutBoundType);
 										}
-										else if(InOutBoundType.equals(ScheduleService.OUTBOUND))
+										else if(InOutBoundType.equals(ScheduleEnum.OUTBOUND.getSymbol()))
 										{
 											//											하이픈 처리된 스케줄은 패스
 											if(arrayDatas[vslIndex][ports[outPortIndex]-1].equals("-")||arrayDatas[vslIndex][outPort[outToPortIndex]-1].equals("-"))

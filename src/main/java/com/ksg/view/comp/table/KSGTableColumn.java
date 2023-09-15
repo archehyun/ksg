@@ -2,6 +2,8 @@ package com.ksg.view.comp.table;
 
 import javax.swing.table.TableColumn;
 
+import mycomp.comp.table.MyTableColumn;
+
 /**
 
   * @FileName : KSGTableColumn.java
@@ -16,23 +18,7 @@ import javax.swing.table.TableColumn;
 
   */
 @SuppressWarnings("serial")
-public class KSGTableColumn extends TableColumn{
-	
-	
-	
-	public int ALIGNMENT=0;
-	
-	public int size = 0;
-	
-	public int minSize = 0;
-	
-	public int maxSize = 0;
-
-	public String columnName;
-
-	public String columnField;
-
-	public int cloumIndex;
+public class KSGTableColumn extends MyTableColumn{
 	
 	public KSGTableColumn() {
 
@@ -55,14 +41,6 @@ public class KSGTableColumn extends TableColumn{
 	}
 	
 	public Object getValue(Object obj)
-	{
-		return obj;
+	{	return obj;
 	}
-
-
-	@Override
-	public String toString() {
-		return columnName;
-	}
-
 }

@@ -35,8 +35,8 @@ import com.ksg.domain.PortInfo;
 import com.ksg.domain.Vessel;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.view.comp.table.KSGTableCellRenderer;
 import com.ksg.view.comp.table.model.KSGTableModel;
+import com.ksg.view.comp.table.renderer.DateCellRenderer;
 
 public class SearchBaseInfoCommand implements IFCommand {
 
@@ -307,8 +307,8 @@ public class SearchBaseInfoCommand implements IFCommand {
 		_tblTable.setColumnSelectionAllowed(false);
 		TableColumnModel colmodel = _tblTable.getColumnModel();
 		TableColumn areacol;
-		DefaultTableCellRenderer cell_left_renderer = new KSGTableCellRenderer();
-		DefaultTableCellRenderer cell_center_renderer = new KSGTableCellRenderer();
+		DefaultTableCellRenderer cell_left_renderer = new DateCellRenderer();
+		DefaultTableCellRenderer cell_center_renderer = new DateCellRenderer();
 		cell_center_renderer.setHorizontalAlignment(JLabel.CENTER);
 		MyTableHeaderRenderer head_renderer =new MyTableHeaderRenderer();
 		
@@ -332,7 +332,7 @@ public class SearchBaseInfoCommand implements IFCommand {
 			{
 				TableColumn namecol = colmodel.getColumn(i);
 
-				cell_left_renderer = new KSGTableCellRenderer();
+				cell_left_renderer = new DateCellRenderer();
 				namecol.setHeaderRenderer(head_renderer);
 				if(i==2||i==0)
 				{

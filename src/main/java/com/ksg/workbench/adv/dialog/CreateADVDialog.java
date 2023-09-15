@@ -43,8 +43,8 @@ import com.ksg.service.ADVService;
 import com.ksg.service.TableService;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.view.comp.KSGCompboBox2;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.view.comp.combobox.KSGCompboBox2;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.print.PrintADVUI;
 
 public class CreateADVDialog extends KSGDialog implements ActionListener{

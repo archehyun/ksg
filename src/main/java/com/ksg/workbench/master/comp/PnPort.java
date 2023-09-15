@@ -13,7 +13,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,22 +31,22 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.dtp.api.control.PortController;
-import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.model.CommandMap;
-import com.ksg.service.PortService;
-import com.ksg.service.impl.AreaServiceImpl;
-import com.ksg.service.impl.PortServiceImpl;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.label.BoldLabel;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGAbstractTable;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.label.BoldLabel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.InsertPortAbbrInfoDialog;
 import com.ksg.workbench.master.dialog.UpdatePortInfoDialog;
 
 import lombok.extern.slf4j.Slf4j;
+import mycomp.comp.MyTable;
 
 
 /**
@@ -71,17 +70,13 @@ public class PnPort extends PnBase implements ActionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private JComboBox cbxPortArea,cbxAreaCode,cbxField;
+	private JComboBox cbxAreaName,cbxAreaCode,cbxField;
 
 	private JTextField txfSearch;
 
-	private PortService portService = new PortServiceImpl();
-
-	private AreaServiceImpl areaService = new AreaServiceImpl();
-
 	private KSGTablePanel tableH;
 
-	private KSGAbstractTable tableD;
+	private MyTable tableD;
 
 	private JLabel lblPortName;
 
@@ -91,9 +86,23 @@ public class PnPort extends PnBase implements ActionListener{
 
 	private JLabel lblPationality;
 
+	private final String ACTION_INSERT_ABBR="약어 등록";
+	
+	private final String ACTION_DELETE_ABBR="약어 삭제";
+
+	private KSGGradientButton butUpSearch;
+
+	private KSGGradientButton butCancel;
+
+	private JButton butNewAbbr;
+
+	private JButton butDelAbbr;
+
 	public PnPort(BaseInfoUI baseInfoUI) {
 
 		super(baseInfoUI);
+		
+		this.initComp();
 
 		this.addComponentListener(this);
 
@@ -102,20 +111,14 @@ public class PnPort extends PnBase implements ActionListener{
 		this.add(buildCenter());
 
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		
+		callApi("pnPort.init");
 
 	}
-	/**
-	 * @return
-	 */
-	private JComponent buildSearchPanel() {
+	private void initComp() {
+		cbxField = new KSGComboBox();
 
-		KSGPanel pnSearch = new KSGPanel();
-
-		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
-
-		JLabel lbl = new JLabel("필드명 : ");
-
-		cbxField = new JComboBox();
+		cbxField.setPreferredSize(new Dimension(150,23));
 
 		cbxField.addItem("항구명");
 
@@ -132,42 +135,90 @@ public class PnPort extends PnBase implements ActionListener{
 				}
 			}
 		});
+		
+		butUpSearch = new KSGGradientButton("검색", "images/search3.png");
 
-
-		JButton butUpSearch = new JButton("검색");
+		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUpSearch.addActionListener(this);
 
-		cbxField.setPreferredSize(new Dimension(150,23));
 
-		JLabel lblArea = new JLabel("지역:");
+		butCancel = new KSGGradientButton("",  "images/init.png");
 
-		JLabel lblAreaCode = new JLabel("지역코드:");
+		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
-		cbxPortArea = new JComboBox();
+		butCancel.addActionListener(new ActionListener() {
 
-		cbxAreaCode = new JComboBox();
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-		cbxPortArea.setPreferredSize(new Dimension(300,25));
+				cbxAreaCode.setSelectedIndex(0);
+				
+				cbxAreaName.setSelectedIndex(0);
+				
+				cbxField.setSelectedIndex(0);
+				
+				txfSearch.setText("");
+			}
+		});
+		
+		cbxAreaName = new KSGComboBox();
+
+		cbxAreaCode = new KSGComboBox();
+
+		cbxAreaName.setPreferredSize(new Dimension(300,25));
 
 		cbxAreaCode.setPreferredSize(new Dimension(80,25));
+		
+		lblPortName 	= new JLabel();
+		
+		lblPortName.setBackground(Color.WHITE);
 
+		lblArea 		= new JLabel();
 
-		pnSearch.add(lblArea);
+		lblAreaCode 	= new JLabel();
 
-		pnSearch.add(cbxPortArea);
+		lblPationality 	= new JLabel();
+		
+		butNewAbbr = new KSGGradientButton("추가");
 
-		pnSearch.add(lblAreaCode);
+		butNewAbbr.setActionCommand("약어 등록");
+
+		butNewAbbr.addActionListener(this);
+		
+		butDelAbbr = new KSGGradientButton("삭제");
+
+		butDelAbbr.setActionCommand("약어 삭제");
+
+		butDelAbbr.addActionListener(this);
+		
+	}
+	/**
+	 * @return
+	 */
+	private JComponent buildSearchPanel() {
+
+		KSGPanel pnSearch = new KSGPanel();
+
+		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+		pnSearch.add(new JLabel("지역:"));
+
+		pnSearch.add(cbxAreaName);
+
+		pnSearch.add(new JLabel("지역코드:"));
 
 		pnSearch.add(cbxAreaCode);
 
-		pnSearch.add(lbl);
+		pnSearch.add(new JLabel("필드명 : "));
 
 		pnSearch.add(cbxField);
 
 		pnSearch.add(txfSearch);
 
 		pnSearch.add(butUpSearch);
+
+		pnSearch.add(butCancel);
 
 		Box pnSearchAndCount = Box.createVerticalBox();
 
@@ -188,7 +239,7 @@ public class PnPort extends PnBase implements ActionListener{
 	private KSGPanel buildButton()
 	{
 		KSGPanel pnButtom = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		
+
 		KSGPanel pnButtomRight = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		JButton butNewAbbr = new JButton("추가");
@@ -202,20 +253,20 @@ public class PnPort extends PnBase implements ActionListener{
 		pnButtomRight.setBorder(BorderFactory.createEtchedBorder());		
 
 		butNewAbbr.addActionListener(this);
-		
+
 		butDelAbbr.addActionListener(this);
 
 		pnButtom.add(pnButtomRight);
-		
+
 		return pnButtom;
 	}
 
 	private KSGPanel addComp(String name, JComponent comp)
 	{
 		FlowLayout layout = new FlowLayout(FlowLayout.LEFT);
-		
+
 		layout.setHgap(5);		
-		
+
 		KSGPanel pnMain = new KSGPanel(layout);
 
 		pnMain.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -223,34 +274,24 @@ public class PnPort extends PnBase implements ActionListener{
 		JLabel lblName = new JLabel(name);
 
 		Font font = lblName.getFont();
-		
+
 		Font newFont = new Font(font.getFontName(),Font.BOLD,font.getSize());
 
 		lblName.setFont(newFont);
 
 		Dimension siz = lblName.getPreferredSize();
-		
+
 		lblName.setPreferredSize(new Dimension(75, (int) siz.getHeight()));
 
 		pnMain.add(lblName);
-		
-		pnMain.add(comp);
-		
-		return pnMain;
 
+		pnMain.add(comp);
+
+		return pnMain;
 
 	}
 	private KSGPanel createPortDetail()
 	{		
-		lblPortName 	= new JLabel();
-		
-		lblArea 		= new JLabel();
-		
-		lblAreaCode 	= new JLabel();
-		
-		lblPationality 	= new JLabel();
-
-		lblPortName.setBackground(Color.WHITE);
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout(5,5));		
 
@@ -262,24 +303,11 @@ public class PnPort extends PnBase implements ActionListener{
 
 		pnTitle.add(new BoldLabel("항구상세정보"),BorderLayout.WEST);
 
-
 		KSGPanel pnControl = new KSGPanel(new FlowLayout());
-		
-		JButton butNewAbbr = new JButton("추가");
-		
-		butNewAbbr.setActionCommand("약어 등록");
-		
-		JButton butDelAbbr = new JButton("삭제");
-		
-		butDelAbbr.setActionCommand("약어 삭제");
 
 		pnControl.add(butNewAbbr);
-		
-		pnControl.add(butDelAbbr);
 
-		butNewAbbr.addActionListener(this);
-		
-		butDelAbbr.addActionListener(this);
+		pnControl.add(butDelAbbr);
 
 		pnTitle.add(pnControl,BorderLayout.EAST);
 
@@ -288,8 +316,11 @@ public class PnPort extends PnBase implements ActionListener{
 		KSGPanel pnPortInfo = new KSGPanel(new GridLayout(4,1,2,2));
 
 		pnPortInfo.add(addComp("항구명",lblPortName));
+
 		pnPortInfo.add(addComp("나라",lblPationality));
+
 		pnPortInfo.add(addComp("지역",lblArea));
+
 		pnPortInfo.add(addComp("지역코드",lblAreaCode));
 
 		tableD = new KSGAbstractTable();
@@ -297,22 +328,27 @@ public class PnPort extends PnBase implements ActionListener{
 		tableD.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 		KSGTableColumn dcolumns = new KSGTableColumn();
+
 		dcolumns.columnField = "port_abbr";
+
 		dcolumns.columnName = "항구명 약어";
 
 		tableD.addColumn(dcolumns);
+
 		tableD.initComp();
 
 		pnSubMain.add(pnPortInfo,BorderLayout.NORTH);
+
 		pnSubMain.add(new JScrollPane(tableD));
 
 		pnMain.add(pnTitle,BorderLayout.NORTH);
+
 		pnMain.add(pnSubMain);
+
 		tableD.getParent().setBackground(Color.white);
 
 		return pnMain;
 	}
-
 
 	private JComponent buildCenter()
 	{
@@ -327,6 +363,8 @@ public class PnPort extends PnBase implements ActionListener{
 
 				if(!e.getValueIsAdjusting())
 				{
+					if(e.getFirstIndex()<0) return;
+
 					String portName=(String) tableH.getValueAt(e.getFirstIndex(), 0);
 
 					String pationality = (String) tableH.getValueAt(e.getFirstIndex(), 1);
@@ -336,28 +374,22 @@ public class PnPort extends PnBase implements ActionListener{
 					String areaCode = (String) tableH.getValueAt(e.getFirstIndex(), 3);
 
 					lblPortName.setText(portName);
+
 					lblPationality.setText(pationality);
+
 					lblArea.setText(area);
+
 					lblAreaCode.setText(areaCode);
 
-					HashMap<String, Object> commandMap = new HashMap<String, Object>();
+					CommandMap commandMap = new CommandMap();
 
 					commandMap.put("port_name", portName);
 
-					try {
-						List li=portService.selectPortAbbrList(commandMap);
-						tableD.setResultData(li);
-					} catch (Exception e1) {
-
-						e1.printStackTrace();
-						JOptionPane.showMessageDialog(PnPort.this, e1.getMessage());
-					}
+					callApi("selectPortDetailList", commandMap);					
 
 				}
 			}
 		});
-
-
 
 		KSGPanel pnMainCenter = new KSGPanel(new BorderLayout(5,5));
 
@@ -365,42 +397,48 @@ public class PnPort extends PnBase implements ActionListener{
 
 		pnMainCenter.add(createPortDetail(),BorderLayout.EAST);	
 
-		KSGTableColumn columns[] = new KSGTableColumn[5];
+//		KSGTableColumn columns[] = new KSGTableColumn[5];
+//
+//		columns[0] = new KSGTableColumn();
+//		columns[0].columnField = "port_name";
+//		columns[0].columnName = "항구명";
+//		columns[0].size = 300;
+//		//columns[0].ALIGNMENT = SwingConstants.LEFT;
+//
+//		columns[1] = new KSGTableColumn();
+//		columns[1].columnField = "port_nationality";
+//		columns[1].columnName = "나라";
+//		columns[1].size = 300;
+//		columns[1].ALIGNMENT = SwingConstants.LEFT;
+//
+//		columns[2] = new KSGTableColumn();
+//		columns[2].columnField = "port_area";
+//		columns[2].columnName = "지역";
+//		columns[2].size = 300;
+//		columns[2].ALIGNMENT = SwingConstants.LEFT;
+//
+//		columns[3] = new KSGTableColumn();
+//		columns[3].columnField = "area_code";
+//		columns[3].columnName = "지역코드";
+//		columns[3].size = 100;
+//
+//		columns[4] = new KSGTableColumn();
+//		columns[4].columnField = "abbr_count";
+//		columns[4].columnName = "상세수";
+//		columns[4].size = 50;
 
-		columns[0] = new KSGTableColumn();
-		columns[0].columnField = "port_name";
-		columns[0].columnName = "항구명";
-		columns[0].size = 300;
-		columns[0].ALIGNMENT = SwingConstants.LEFT;
-
-		columns[1] = new KSGTableColumn();
-		columns[1].columnField = "port_nationality";
-		columns[1].columnName = "나라";
-		columns[1].size = 300;
-		columns[1].ALIGNMENT = SwingConstants.LEFT;
-
-		columns[2] = new KSGTableColumn();
-		columns[2].columnField = "port_area";
-		columns[2].columnName = "지역";
-		columns[2].size = 300;
-		columns[2].ALIGNMENT = SwingConstants.LEFT;
-
-		columns[3] = new KSGTableColumn();
-		columns[3].columnField = "area_code";
-		columns[3].columnName = "지역코드";
-		columns[3].size = 100;
-
-		columns[4] = new KSGTableColumn();
-		columns[4].columnField = "abbr_count";
-		columns[4].columnName = "상세수";
-		columns[4].size = 50;
-
+//		tableH.setColumnName(columns);
 		
 		
-		tableH.setColumnName(columns);
+		tableH.addColumn(new KSGTableColumn("port_name", "항구명",300, SwingConstants.LEFT ));
+		tableH.addColumn(new KSGTableColumn("port_nationality", "나라",300, SwingConstants.LEFT ));
+		tableH.addColumn(new KSGTableColumn("port_area", "지역",300, SwingConstants.LEFT ));
+		tableH.addColumn(new KSGTableColumn("area_code", "지역코드",100));
+		tableH.addColumn(new KSGTableColumn("abbr_count", "상세수",50, SwingConstants.RIGHT));
+		
 
 		tableH.initComp();
-		
+
 		tableH.setShowControl(true);
 
 		tableH.addMouseListener(new TableSelectListner());
@@ -419,7 +457,9 @@ public class PnPort extends PnBase implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		String command = e.getActionCommand();
+
 		if(command.equals("검색"))
 		{
 			this.fnSearch();
@@ -427,7 +467,9 @@ public class PnPort extends PnBase implements ActionListener{
 		else if(command.equals(KSGTablePanel.INSERT))
 		{
 			KSGDialog dialog = new UpdatePortInfoDialog(UpdatePortInfoDialog.INSERT);
+
 			dialog.createAndUpdateUI();
+
 			if(dialog.result==KSGDialog.SUCCESS)
 			{
 				this.fnSearch();
@@ -436,92 +478,66 @@ public class PnPort extends PnBase implements ActionListener{
 		else if(command.equals("약어 등록"))
 		{
 			int row=tableH.getSelectedRow();
-			if(row<0)
-				return;
+
+			if(row<0) return;
+
 			String port_name=(String) tableH.getValueAt(row, 0);
 
 			KSGDialog dialog = new InsertPortAbbrInfoDialog(getBaseInfoUI(),port_name);
+
 			dialog.createAndUpdateUI();
+
 			if(dialog.result==KSGDialog.SUCCESS)
 			{
-				try {
-					int hrow = tableH.getSelectedRow();
+				CommandMap param = new CommandMap();
 
-					HashMap<String, Object> param2 = new HashMap<String, Object>();
-					param2.put("port_name", port_name);
-					tableD.setResultData(portService.selectPortAbbrList(param2));
-				}catch (Exception ee) {
-					ee.printStackTrace();
-				}
+				param.put("port_name", port_name);
+
+				callApi("selectPortDetailList", param);
 			}
 		}
 		else if(command.equals(KSGTablePanel.DELETE))
 		{
 			int row=tableH.getSelectedRow();
-			if(row<0)
-				return;
+
+			if(row<0) return;
 
 			String data = (String) tableH.getValueAt(row, 0);
+
 			int result=JOptionPane.showConfirmDialog(PnPort.this, data+"를 삭제 하시겠습니까?", "항구 정보 삭제", JOptionPane.YES_NO_OPTION);
-			if(result==JOptionPane.OK_OPTION)
-			{						
-				try {
-					System.out.println("delete ");
-					CommandMap param = new CommandMap();
 
-					param.put("port_name", data);
+			if(result==JOptionPane.CANCEL_OPTION)  return;
 
-					portService.delete(param);
+			CommandMap param = new CommandMap();
 
-					this.fnSearch();
+			param.put("port_name", data);
 
-				}
-				catch (ResourceNotFoundException e1) {
-					e1.printStackTrace();
-				}
-				catch (Exception e1) {
-					e1.printStackTrace();
-					JOptionPane.showMessageDialog(PnPort.this, e1.getMessage());
-				}
-			}
-			else
-			{
-				System.out.println("no select");
-			}
+			callApi("deletePort", param);
 		}
 		else if(command.equals("약어 삭제"))
 		{
 			int row=tableD.getSelectedRow();
-			if(row<0)
-				return;
-			String data = (String) tableD.getValueAt(row, 0);
-			int result=JOptionPane.showConfirmDialog(this, data+"를 삭제 하시겠습니까?", "항구 약어 정보 삭제", JOptionPane.YES_NO_OPTION);
-			if(result==JOptionPane.OK_OPTION)
-			{	
-				try {
-					CommandMap param = new CommandMap();
 
-					param.put("port_abbr", data);
+			if(row<0) return;
 
-					int count=(int) portService.deleteDetail(param);
-					if(count>0)
-					{
-						int hrow = tableH.getSelectedRow();
+			HashMap<String, Object> data = (HashMap<String, Object>) tableD.getValueAt(row);
 
-						String port_name =(String) tableH.getValueAt(hrow,0);
+			String port_name = (String)data.get("port_name");
 
-						HashMap<String, Object> param2 = new HashMap<String, Object>();
-						param2.put("port_name", port_name);
-						tableD.setResultData(portService.selectPortAbbrList(param2));
+			String port_abbr = (String)data.get("port_abbr");
 
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
+			int result=JOptionPane.showConfirmDialog(this, port_abbr+"를 삭제 하시겠습니까?", "항구 약어 정보 삭제", JOptionPane.YES_NO_OPTION);
+
+			if(result==JOptionPane.CANCEL_OPTION)  return;
+			
+			CommandMap param = new CommandMap();
+
+			param.put("port_name", port_name);
+
+			param.put("port_abbr", port_abbr);
+
+			callApi("deletePortDetail", param);
 		}
-
 	}
 	class TableSelectListner extends MouseAdapter
 	{
@@ -542,8 +558,8 @@ public class PnPort extends PnBase implements ActionListener{
 				JTable es = (JTable) e.getSource();
 
 				int row=es.getSelectedRow();
-				if(row<0)
-					return;
+				
+				if(row<0) return;
 
 				if(e.getClickCount()>0)
 				{
@@ -557,18 +573,8 @@ public class PnPort extends PnBase implements ActionListener{
 
 					lblAreaCode.setText((String) param.get("area_code"));
 
-					HashMap<String, Object> commandMap = new HashMap<String, Object>();
-
-					commandMap.put("port_name", param.get("port_name"));
-					
-					
-
-					List li=portService.selectPortAbbrList(commandMap);
-
-										
-					PnPort.this.callApi("selectPortDetailList", param);
+					callApi("selectPortDetailList", param);
 				}
-
 
 				if(e.getClickCount()>1)
 				{				
@@ -583,22 +589,17 @@ public class PnPort extends PnBase implements ActionListener{
 						fnSearch();
 					}
 				}
-
 			}
 			catch(Exception ee)
 			{
 				ee.printStackTrace();
 				JOptionPane.showMessageDialog(PnPort.this, ee.getMessage());
 			}
-
 		}
-
 	}
-
 
 	@Override
 	public void fnSearch() {
-
 
 		CommandMap param = new CommandMap();
 
@@ -607,12 +608,12 @@ public class PnPort extends PnBase implements ActionListener{
 			param.put("area_code", cbxAreaCode.getSelectedItem());
 		}
 
-		if(cbxPortArea.getSelectedIndex()>0)
+		if(cbxAreaName.getSelectedIndex()>0)
 		{
-			param.put("port_area", cbxPortArea.getSelectedItem());
+			param.put("port_area", cbxAreaName.getSelectedItem());
 		}
-		String field = (String) cbxField.getSelectedItem();
 
+		String field = (String) cbxField.getSelectedItem();
 
 		String searchParam = txfSearch.getText();
 
@@ -628,99 +629,90 @@ public class PnPort extends PnBase implements ActionListener{
 			}	
 		}			
 
+		log.info("param:"+param);
 
-		try {
-
-
-			log.info("param:"+param);
-
-
-			callApi("selectPort", param);
-
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		callApi("selectPort", param);
 
 	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
 
-		try {
-
-			initComboBox(cbxPortArea, areaService.getAreaListGroupByAreaName());
-
-			initComboBox(cbxAreaCode, areaService.getAreaListGroupByAreaCode());
-
-
-		} catch (Exception ee) {
-
-			JOptionPane.showMessageDialog(PnPort.this, ee.getMessage());
-			ee.printStackTrace();
-		}
-
-
-
 		if(isShowData) fnSearch();
 
 	}
 	private void initComboBox(JComboBox combox, List list)	
 	{
-		combox.removeAllItems();
-
-		combox.addItem("선택");
+		combox.addItem("전체");
 
 		list.stream().forEach(item -> combox.addItem(item));
-
-
 	}
 	@Override
 	public void updateView() {
+
 		CommandMap result= this.getModel();
 
-		boolean success = (boolean) result.get("success");
+		String serviceId=(String) result.get("serviceId");
 
-		if(success)
+		if("selectPort".equals(serviceId))
+		{	
+			List data = (List )result.get("data");
+
+			tableH.setResultData(data);
+
+			tableH.setTotalCount(String.valueOf(data.size()));
+
+			if(data.size()==0)tableH.changeSelection(0,0,false,false);
+
+			if(data.size()==0)
+			{
+				lblArea.setText("");
+				lblAreaCode.setText("");
+				lblPationality.setText("");
+				lblPortName.setText("");
+				tableD.clearReslult();
+			}
+			else
+			{
+				tableH.changeSelection(0,0,false,false);
+			}
+		}
+		else if("selectPortDetailList".equals(serviceId))
 		{
-			
-			String serviceId=(String) result.get("serviceId");
-			
 			List data = (List )result.get("data");
 			
-			if("selectPort".equals(serviceId))
-			{	
-				tableH.setResultData(data);
-				tableH.setTotalCount(String.valueOf(data.size()));
-
-				if(data.size()==0)tableH.changeSelection(0,0,false,false);
-
-				if(data.size()==0)
-				{
-					lblArea.setText("");
-					lblAreaCode.setText("");
-					lblPationality.setText("");
-					lblPortName.setText("");
-					tableD.clearReslult();
-				}
-				else
-				{
-					tableH.changeSelection(0,0,false,false);
-				}
-			}
-			else if("selectPortDetailList".equals(serviceId))
-			{
-				tableD.setResultData(data);
-
-			}
+			tableD.setResultData(data);
 
 		}
-		else{  
-			String error = (String) result.get("error");
-			JOptionPane.showMessageDialog(this, error);
+		else if("pnPort.init".equals(serviceId))
+		{
+			List<String> araaCode =(List<String>) result.get("areaCode");
+			
+			List<String> araaName =(List<String>) result.get("areaName");
+			
+			initComboBox(cbxAreaName, araaName);
+			
+			initComboBox(cbxAreaCode, araaCode);
+			
 		}
+		else if("deletePort".equals(serviceId))
+		{
+			fnSearch();
 
+		}
+		else if("deletePortDetail".equals(serviceId))
+		{
+			int row=tableH.getSelectedRow();
+
+			String port_name=(String) tableH.getValueAt(row, 0);
+
+			CommandMap param = new CommandMap();
+
+			param.put("port_name", port_name);
+
+			NotificationManager.showNotification("삭제되었습니다.");
+
+			callApi("selectPortDetailList", param);
+		}
 	}
-
-
 }

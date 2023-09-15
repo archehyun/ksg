@@ -16,34 +16,30 @@ public class CompanyDAO extends AbstractDAO{
 		this.namespace = "company";
 	}
 	
-	
 	public List<Company> selectListByCondition(Company param) throws SQLException {
 		
 		log.debug("param:{}", param);
+		
 		return selectList(namespace+".selectCompanyListByCondition", param);
-
 	}
 
-
-	public int deleteCompany(String companyAbbr) {
-		// TODO Auto-generated method stub
-		return 0;
+	public Object deleteCompany(String company_abbr) throws SQLException{
+		return delete(namespace+".deleteCompany", company_abbr);
 	}
-
 
 	public Company selectById(String company_abbr) throws SQLException {
 		
 		return (Company) selectOne(namespace+".selectCompanyById", company_abbr);
 	}
 
-
 	public Object updateCompany(Company param) throws SQLException {
 		return update(namespace+".updateCompanyInfo", param);
 	}
 
-
 	public Object insertCompany(Company param) throws SQLException {
 		return insert(namespace+".insertCompany", param);
 	}
+
+
 
 }

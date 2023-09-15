@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.management.RuntimeErrorException;
-
 import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.model.CommandMap;
@@ -30,9 +28,10 @@ import lombok.extern.slf4j.Slf4j;
 
  * @변경이력 :
 
- * @프로그램 설명 :
+ * @프로그램 설명 : 항구 정보 관리
 
  */
+@Deprecated
 @Slf4j
 public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 
@@ -90,8 +89,6 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 		}
 		else
 		{
-			//objectMapper.
-
 			resultMap=(HashMap<String, Object>) objectMapper.convertValue(result, Map.class);
 		}
 
@@ -144,9 +141,6 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 		}
 	}
 
-
-	
-
 	@Override
 	public Object selectPortAbbr(HashMap<String, Object> param) throws SQLException {
 		log.debug("param:{}", param);
@@ -186,8 +180,6 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 		{
 			throw new RuntimeException(e.getMessage());
 		}
-
-
 	}
 
 	@Override
@@ -329,9 +321,8 @@ public class PortServiceImpl extends AbstractServiceImpl implements PortService{
 
 	}
 
-
-
-
-
-
+	@Override
+	public List<PortInfo> selectPortListByNameList(List<String> nameList) throws SQLException {
+		return portDAO.selectPortListByNameList(nameList);
+	}
 }

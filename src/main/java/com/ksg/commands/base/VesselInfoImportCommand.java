@@ -89,7 +89,7 @@ public class VesselInfoImportCommand extends ImportCommand {
 				param.put("input_date", cell6.getStringCellValue().equals("")?null:format.parse(cell6.getStringCellValue()));
 				
 				
-				service.insert(param);
+				//service.insert(param);
 				//baseService.insertVessel(insertParameter);
 				current++;
 			}

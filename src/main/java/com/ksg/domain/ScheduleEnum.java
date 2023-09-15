@@ -1,9 +1,10 @@
 package com.ksg.domain;
 
 public enum ScheduleEnum {
-	INBOUND("INBOUND","I"),OUTBOUND("OUTBOUND","O"), ROUTE("ROUTE", "R");
+	INBOUND("INBOUND","I"),OUTBOUND("OUTBOUND","O"), ROUTE("ROUTE", "O");
 
 	final private String name;
+	
 	final private String symbol;
 
 	private ScheduleEnum(String name, String symbol) { // enum에서 생성자 같은 역할

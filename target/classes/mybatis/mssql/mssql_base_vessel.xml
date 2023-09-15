@@ -10,7 +10,7 @@
         IBM Corporation - initial API and implementation
  -->
 
-<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="vessel">
 
@@ -40,39 +40,51 @@
 
 <sql id="SELECT">
 
-		select 
-		vessel_name
-		,vessel_use
-		,vessel_type
-		,vessel_mmsi
-		,vessel_company
-		,CONVERT(VARCHAR, input_date, 23) AS input_date		
-		 from TB_VESSEL_H
-		<dynamic prepend="where">
-
-			<isNotNull property="vessel_name" prepend="and">
-						vessel_name like '%$vessel_name$%'
-			</isNotNull>
-			<isNotNull property="vessel_type" prepend="and">
-						vessel_type like '%$vessel_type$%'
-			</isNotNull>
-			<isNotEmpty property="vessel_mmsi" prepend="and">
-						vessel_mmsi like '%$vessel_mmsi$%'
-			</isNotEmpty>
-			<isGreaterThan prepend="and" property="vessel_use" compareValue="-1">
-			vessel_use=#vessel_use#
-			</isGreaterThan>
-		</dynamic>
-
-
+		SELECT 
+				vessel_name
+				,vessel_use
+				,vessel_type
+				,vessel_mmsi
+				,vessel_company
+				,CONVERT(VARCHAR, input_date, 23) AS input_date		
+		 FROM 	TB_VESSEL_H
+			<dynamic prepend="where">
+	
+				<isNotNull property="vessel_name" prepend="and">
+							vessel_name like '%$vessel_name$%'
+				</isNotNull>
+				<isNotNull property="vessel_type" prepend="and">
+							vessel_type like '%$vessel_type$%'
+				</isNotNull>
+				<isNotEmpty property="vessel_mmsi" prepend="and">
+							vessel_mmsi like '%$vessel_mmsi$%'
+				</isNotEmpty>
+				<isGreaterThan prepend="and" property="vessel_use" compareValue="-1">
+				vessel_use=#vessel_use#
+				</isGreaterThan>
+			</dynamic>
 </sql>
 <!-- select -->
 
 	<select id="selectAll" resultClass="com.ksg.domain.Vessel">
-		select * FROM TB_VESSEL_H
+		SELECT /* selectAll */ 
+				vessel_name
+				,vessel_use
+				,vessel_type
+				,vessel_mmsi
+				,vessel_company
+				,input_date 
+		FROM 	TB_VESSEL_H
 		
 	</select>
-
+	
+	<select id="selectDetailAll" resultClass="com.ksg.domain.Vessel">
+		SELECT 	/* selectDetailAll */
+				vessel_name,
+				vessel_abbr,
+				input_date			
+		FROM 	TB_VESSEL_ABBR
+	</select>
 
 	<select id="selectVesselList" resultClass="java.util.HashMap">
 	
@@ -81,12 +93,16 @@
 	
 	
 	<select id="selectVessel" resultClass="com.ksg.domain.Vessel">
-		SELECT * FROM TB_VESSEL_H
-		WHERE vessel_name =#vessel_name#
+		SELECT 	
+				* 
+		FROM 	TB_VESSEL_H
+		WHERE 	vessel_name =#vessel_name#
 	</select>
 	<select id="selectVesselById" resultClass="com.ksg.domain.Vessel">
-		SELECT * FROM TB_VESSEL_H
-		WHERE vessel_name =#vessel_name#
+		SELECT 
+				* 
+		FROM 	TB_VESSEL_H
+		WHERE 	vessel_name =#vessel_name#
 	</select>
 	<select id="selectVesselListByNameList" resultClass="com.ksg.domain.Vessel" parameterClass="java.util.List">
 		SELECT 	* 
@@ -99,22 +115,25 @@
 	
 	
 	<select id="selectVesselTotalList" resultClass="com.ksg.domain.Vessel">
-		SELECT *,B.vessel_abbr 
-		FROM TB_VESSEL_H A, TB_VESSEL_ABBR B 
-		WHERE A.vessel_name = B.vessel_name
+		SELECT 
+				*, 
+				B.vessel_abbr 
+		FROM 	TB_VESSEL_H A, 
+				TB_VESSEL_ABBR B 
+		WHERE 	A.vessel_name = B.vessel_name
 		 
 	</select>
 	<select id="selectVesselListByCondition" resultClass="com.ksg.domain.Vessel" parameterClass="com.ksg.domain.Vessel">
 	
 		SELECT 
-			vessel_name
-			,vessel_use
-			,vessel_type
-			,vessel_mmsi
-			,vessel_company
-			,CONVERT(VARCHAR, input_date, 23) AS input_date		
-			
-		FROM TB_VESSEL_H
+				vessel_name
+				,vessel_use
+				,vessel_type
+				,vessel_mmsi
+				,vessel_company
+				,CONVERT(VARCHAR, input_date, 23) AS input_date		
+				
+		FROM 	TB_VESSEL_H
 		
 		<dynamic prepend="WHERE">
 
@@ -122,7 +141,7 @@
 						vessel_name like '%$vessel_name$%'
 			</isNotNull>
 			<isNotNull property="vessel_type" prepend="and">
-						vessel_type like '%$vessel_type$%'
+						vessel_type = #vessel_type#
 			</isNotNull>
 			<isNotEmpty property="vessel_mmsi" prepend="and">
 						vessel_mmsi like '%$vessel_mmsi$%'
@@ -135,38 +154,44 @@
 		</dynamic>
 	</select>
 	<select id="selectVesselListByPage" resultClass="java.util.HashMap">
-		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY vessel_name) 
-		
-		AS ROWNUM 
-		,vessel_name
-		,vessel_use
-		,vessel_type
-		,vessel_mmsi
-		,vessel_company
-		,CONVERT(VARCHAR, input_date, 23) AS input_date	 FROM TB_VESSEL_H
-		WITH (NOLOCK) 
+		SELECT * 
+		FROM ( 	SELECT 
+						ROW_NUMBER() OVER (ORDER BY vessel_name) AS ROWNUM 
+						,vessel_name
+						,vessel_use
+						,vessel_type
+						,vessel_mmsi
+						,vessel_company
+						,CONVERT(VARCHAR, input_date, 23) AS input_date	 
+				FROM 	TB_VESSEL_H
+				WITH (NOLOCK) 
 		<include refid="LIKE_WHERE"></include>
 		 ) T 
 
 		WHERE T.ROWNUM BETWEEN (#PAGE_NO# - 1) * #PAGE_SIZE# + 1 AND #PAGE_NO# * #PAGE_SIZE#
 	</select>
 	
-		<select id="selectVesselListByPage2" resultClass="java.util.HashMap">
-	SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY vessel_name) 
-		
-		AS ROWNUM 
-		,vessel_name
-		,vessel_use
-		,vessel_type
-		,vessel_mmsi
-		,vessel_company
-		,CONVERT(VARCHAR, input_date, 23) AS input_date
+	<select id="selectVesselListByPage2" resultClass="java.util.HashMap">
+	SELECT 
+			* 
+	FROM 	( SELECT 
+						ROW_NUMBER() OVER (ORDER BY vessel_name) AS ROWNUM 
+						,vessel_name
+						,vessel_use
+						,vessel_type
+						,vessel_mmsi
+						,vessel_company
+						,CONVERT(VARCHAR, input_date, 23) AS input_date
 	FROM (	
-		SELECT * FROM TB_VESSEL_H AS TBL where TBL.vessel_name in (
-			SELECT vessel_name FROM 
-  			TB_VESSEL_ABBR 
-  			WHERE vessel_abbr like '%$vessel_abbr$%'
-  			GROUP BY vessel_name
+			SELECT * 
+			FROM TB_VESSEL_H AS TBL 
+			WHERE TBL.vessel_name IN (
+						SELECT 
+								vessel_name
+						FROM 
+			  					TB_VESSEL_ABBR 
+			  			WHERE 	vessel_abbr LIKE '%$vessel_abbr$%'
+			  			GROUP BY vessel_name
  			)
  		) AS TBL2
 	
@@ -188,6 +213,17 @@
 		
 	</select>
 	
+	<select id="selectVesselDetailByKey" resultClass="com.ksg.domain.Vessel" >
+		SELECT 
+				* /*selectVesselDetailByKey*/
+		FROM 
+				TB_VESSEL_ABBR
+		WHERE
+				vessel_name =#vessel_name#
+		AND 	vessel_abbr =#vessel_abbr#
+	</select>
+	
+	
 	<select id="selectVesselAbbrList" resultClass="java.util.HashMap" parameterClass="java.util.HashMap">
 		select * from TB_VESSEL_ABBR
 		<dynamic prepend="where">
@@ -204,7 +240,9 @@
 	</select>
 	
 	<select id="selectVesselAbbr" resultClass="com.ksg.domain.Vessel">
-		select * from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr#
+		select
+		 /* selectVesselAbbr */
+		* from TB_VESSEL_ABBR where vessel_abbr=#vessel_abbr#
 	</select>
 	
 		<select id="selectVesselListByLike" resultClass="com.ksg.domain.Vessel" parameterClass="com.ksg.domain.Vessel">
@@ -251,8 +289,6 @@
 		        getdate()
 		    </isNull>
 			
-			
-			
 		);
 	</insert>
 	
@@ -297,7 +333,6 @@
 		
 		)values
 		(
-			
 			#vessel_name#,
 			#vessel_use#,
 			#vessel_mmsi#,
@@ -310,11 +345,25 @@
 		    <isNull property="input_date">
 		        getdate()
 		    </isNull>
-			
-			
-			
 		);
 	</insert>
+	
+	<insert id="insertVesselDetail" parameterClass="com.ksg.domain.Vessel">
+		insert into TB_VESSEL_ABBR(			
+			vessel_name,
+			vessel_abbr,			
+			
+			input_date
+		
+		)values
+		(
+			
+			#vessel_name#,
+			#vessel_abbr#,
+			getdate()
+		);
+	</insert>
+	
 	
 	<insert id="insertVesselAbbr" parameterClass="com.ksg.domain.Vessel">
 		insert into TB_VESSEL_ABBR(			
@@ -351,6 +400,14 @@
 	
 <!-- update -->
 	
+	<update id="updateVesselInfo" parameterClass="com.ksg.domain.Vessel">
+		UPDATE TB_VESSEL_H 
+		SET vessel_type=#vessel_type# 
+			,vessel_use=#vessel_use#
+			,vessel_company=#vessel_company#
+			,vessel_mmsi=#vessel_mmsi#  
+		WHERE vessel_name=#vessel_name#
+	</update>
 	<update id="updateVessel" parameterClass="java.util.HashMap">
 		UPDATE TB_VESSEL_H 
 		SET vessel_type=#vessel_type# 
@@ -372,16 +429,27 @@
 
 <!-- delete -->
 
+	<delete id="deleteVesselInfo" parameterClass="string">
+		DELETE FROM TB_VESSEL_H where vessel_name=#vessel_name#
+	</delete>
+
 	<delete id="deleteVessel" parameterClass="java.util.HashMap">
-		delete from TB_VESSEL_H where vessel_name=#vessel_name#
+		DELETE FROM TB_VESSEL_H where vessel_name=#vessel_name#
 	</delete>
 	
 	<delete id="deleteVesselAbbr" parameterClass="java.util.HashMap">
-		delete from TB_VESSEL_ABBR where vessel_name= #vessel_name#
+		DELETE FROM TB_VESSEL_ABBR where vessel_name= #vessel_name#
 		
 		<isNotNull property="vessel_abbr">
 			and vessel_abbr=#vessel_abbr# 
 		</isNotNull> 
+		
+	</delete>
+	
+	<delete id="deleteVesselDetail" parameterClass="com.ksg.domain.Vessel">
+		DELETE FROM TB_VESSEL_ABBR 
+		WHERE vessel_name= #vessel_name#
+		AND vessel_abbr=#vessel_abbr#
 		
 	</delete>
 	

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 import com.ksg.commands.schedule.NotSupportedDateTypeException;
 import com.ksg.common.dao.DAOManager;
 import com.ksg.common.exception.PortNullException;
@@ -33,23 +35,25 @@ import com.ksg.common.util.KSGPropertis;
 import com.ksg.domain.ADVData;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
+import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Vessel;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
-import com.ksg.schedule.logic.ScheduleJoint;
+import com.ksg.schedule.logic.SchedulePrint;
+import com.ksg.schedule.logic.print.ScheduleBuildUtil;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
-import com.ksg.schedule.logic.joint.ScheduleBuildUtil;
 import com.ksg.service.ADVService;
+import com.ksg.service.BaseService;
 import com.ksg.service.ScheduleService;
+import com.ksg.service.TableService;
 import com.ksg.workbench.schedule.dialog.ScheduleBuildMessageDialog;
 
 /**
  * @author archehyun
  *
  */
-public class DefaultWebSchedule extends DefaultScheduleJoint {
+public class DefaultWebSchedule extends AbstractSchedulePrint {
 	
 	private SimpleDateFormat format = new SimpleDateFormat("M/d");
 	
@@ -147,15 +151,19 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 	
 	private String inlnad_date;
 
+	private BaseService baseService;
+	
+	protected TableService tableService;
+
 	private void init(int format_type) throws SQLException {
 
 		tableService = DAOManager.getInstance().createTableService();
 
 		advService = DAOManager.getInstance().createADVService();
 
-		currentYear = dateTypeYear.format(new Date());
-
 		builder = new SAXBuilder();
+		
+		currentYear = dateTypeYear.format(new Date());
 
 		currentMonth = Integer.valueOf(dateTypeMonth.format(new Date()));
 
@@ -222,6 +230,7 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 	private DefaultWebSchedule(ShippersTable op) throws SQLException {
 		super();
 		this.op= op;
+		baseService 	= DAOManager.getInstance().createBaseService();
 	}
 
 
@@ -451,13 +460,13 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 			printWebSchedule();
 			
 			JOptionPane.showMessageDialog(processDialog, "웹 스케줄 생성 완료");
-			return ScheduleJoint.SUCCESS;
+			return SchedulePrint.SUCCESS;
 
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			return ScheduleJoint.FAILURE;
+			return SchedulePrint.FAILURE;
 		}
 		finally{
 			processDialog.setVisible(false);
@@ -606,10 +615,10 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 				try {
 					vesselInfo = getVesselInfo(vslDatas[vslIndex][0]);
 					// 인바운드 스케줄 조합
-					makeSchedule(tableData, vslIndex,a_inbound_port_index,a_inbound_toport_index,a_inland_port_index,ScheduleService.INBOUND,advData);
+					makeSchedule(tableData, vslIndex,a_inbound_port_index,a_inbound_toport_index,a_inland_port_index,ScheduleEnum.INBOUND.getSymbol(),advData);
 
 					// 아웃바운드 스케줄 조합
-					makeSchedule(tableData, vslIndex,a_outbound_port_index,a_outbound_toport_index,a_inland_port_index,ScheduleService.OUTBOUND,advData);
+					makeSchedule(tableData, vslIndex,a_outbound_port_index,a_outbound_toport_index,a_inland_port_index,ScheduleEnum.OUTBOUND.getSymbol(),advData);
 
 
 					processDialog.setMessage(message);
@@ -677,8 +686,8 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 					TablePort toPort = this.getTablePort(portDataArray, outPort[outToPortIndex]);
 
 
-					String fromPortArray[]	= fromPort.getPortArray();
-					String toPortArray[]	= toPort.getPortArray();
+					String fromPortArray[]	= fromPort.getSubPortNameArray();
+					String toPortArray[]	= toPort.getSubPortNameArray();
 
 
 					for(int fromPortIndex =0;fromPortIndex<fromPortArray.length;fromPortIndex++)
@@ -692,12 +701,12 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 								for(int inlnadIndex=0;inlnadIndex<inlnadPortIndex.length;inlnadIndex++)
 								{
 									TablePort inlnadPorts = this.getTablePort(portDataArray, inlnadPortIndex[inlnadIndex]);
-									String inlnadPortArray[]	= inlnadPorts.getPortArray();
+									String inlnadPortArray[]	= inlnadPorts.getSubPortNameArray();
 
 									for(int inlnadPortNum=0;inlnadPortNum<inlnadPortArray.length;inlnadPortNum++)
 									{	
 										//출발항, 도착항 지정
-										if(InOutBoundType.equals(ScheduleService.INBOUND))
+										if(InOutBoundType.equals(ScheduleEnum.INBOUND.getSymbol()))
 										{
 											if(arrayDatas[vslIndex][outPort[outPortIndex]-1].equals("-")||arrayDatas[vslIndex][ports[outToPortIndex]-1].equals("-"))
 												continue;
@@ -709,7 +718,7 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 											toDates   = KSGDateUtil.getDates(arrayDatas[vslIndex][ports[outToPortIndex]-1],currentMonth,currentYear);
 
 										}
-										else if(InOutBoundType.equals(ScheduleService.OUTBOUND))
+										else if(InOutBoundType.equals(ScheduleEnum.OUTBOUND.getSymbol()))
 										{
 											// 하이픈 처리된 스케줄은 패스
 											if(arrayDatas[vslIndex][ports[outPortIndex]-1].equals("-")||arrayDatas[vslIndex][outPort[outToPortIndex]-1].equals("-"))
@@ -744,7 +753,7 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 										
 										
 										// outbound 스케줄:
-										if(InOutBoundType.equals(ScheduleService.OUTBOUND)&&isOutToBusanAndNewBusan)
+										if(InOutBoundType.equals(ScheduleEnum.OUTBOUND.getSymbol())&&isOutToBusanAndNewBusan)
 										{	
 											/* 무시하기 위한 기준
 											 * 1. 부산항, 부산신항이 동시에 존재하는 경우
@@ -762,7 +771,7 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 											}
 										}
 										// inbound 스케줄
-										if(InOutBoundType.equals(ScheduleService.INBOUND)&&isOutBusanAndNewBusan)
+										if(InOutBoundType.equals(ScheduleEnum.INBOUND.getSymbol())&&isOutBusanAndNewBusan)
 										{									
 											if(toPort.equals(BUSAN)&&isOutNewBusanPortScheduleAdd)
 											{
@@ -990,7 +999,7 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 			{
 				try 
 				{
-					makeWebSchedule(tableData, vslIndex,a_outport,ScheduleService.OUTBOUND,advData);
+					makeWebSchedule(tableData, vslIndex,a_outport,ScheduleEnum.OUTBOUND.getSymbol(),advData);
 				}
 				catch (PortIndexNotMatchException e) 
 				{
@@ -1267,9 +1276,9 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 
 				TablePort _outtoport = this.getTablePort(portDataArray, outToPortIndex);
 
-				String subFromPortArray[]=_outport.getPortArray();
+				String subFromPortArray[]=_outport.getSubPortNameArray();
 
-				String subToPortArray[]=_outtoport.getPortArray();
+				String subToPortArray[]=_outtoport.getSubPortNameArray();
 
 				outToPortData = arrayDatas[vslIndex][outToPortIndex-1];
 
@@ -1305,7 +1314,7 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 						try{
 
 							// outbound 스케줄:
-							if(InOutBoundType.equals(ScheduleService.OUTBOUND)&&isOutToBusanAndNewBusan)
+							if(InOutBoundType.equals(ScheduleEnum.OUTBOUND.getSymbol())&&isOutToBusanAndNewBusan)
 							{	
 								/* 무시하기 위한 기준
 								 * 1. 부산항, 부산신항이 동시에 존재하는 경우
@@ -1323,7 +1332,7 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 								}
 							}
 							// inbound 스케줄
-							if(InOutBoundType.equals(ScheduleService.INBOUND)&&isOutBusanAndNewBusan)
+							if(InOutBoundType.equals(ScheduleEnum.INBOUND.getSymbol())&&isOutBusanAndNewBusan)
 							{									
 								if(toPort.equals(BUSAN)&&isOutNewBusanPortScheduleAdd)
 								{
@@ -1510,7 +1519,17 @@ public class DefaultWebSchedule extends DefaultScheduleJoint {
 		return arrayDatas;
 	}
 	@Override
-	public void initTag() {
+	public void init() {
+		
+	}
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void writeFile(ArrayList<String> printList) throws Exception {
+		// TODO Auto-generated method stub
 		
 	}
 

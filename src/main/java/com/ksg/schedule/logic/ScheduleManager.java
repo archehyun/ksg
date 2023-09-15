@@ -1,16 +1,14 @@
 package com.ksg.schedule.logic;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
+import com.ksg.commands.ScheduleExecute;
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.ResourceNotFoundException;
 import com.ksg.common.exception.VesselNullException;
@@ -23,10 +21,9 @@ import com.ksg.domain.Company;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
-import com.ksg.schedule.logic.joint.ConsoleScheduleJoint;
-import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
-import com.ksg.schedule.logic.joint.InboundScheduleJoint;
-import com.ksg.schedule.logic.joint.OutboundScheduleJointV2;
+import com.ksg.schedule.logic.print.ConsoleScheduleJoint;
+import com.ksg.schedule.logic.print.InboundScheduleJoint;
+import com.ksg.schedule.logic.print.OutboundSchedulePrintV2;
 import com.ksg.service.BaseService;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.BaseServiceImpl;
@@ -44,12 +41,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ScheduleManager {
-	
-	protected Logger logger = LogManager.getLogger(this.getClass());
 
 	private static ScheduleManager instance;
 
-	private ArrayList<ScheduleJoint> scheduleBuilds;
+	private ArrayList<ScheduleExecute> scheduleBuilds;
 
 	private ScheduleBuildMessageDialog di;
 
@@ -70,25 +65,29 @@ public class ScheduleManager {
 	private CompanyDAO companyDAO;
 
 	private ScheduleManager() {
-		scheduleBuilds = new ArrayList<ScheduleJoint>();
+		scheduleBuilds = new ArrayList<ScheduleExecute>();
 		
 		baseService = new BaseServiceImpl();
 		
 		vesselDAO = new VesselDAOImpl();
+		
 		companyDAO = new CompanyDAOImpl();
 		
 	}
 	public void initMasterData()
 	{
 		try {
-			logger.info("스케줄 생성 마스터 초기화");
+			log.info("스케줄 생성 마스터 초기화");
 			
 			allPortlist 	= (ArrayList<PortInfo>) baseService.getPortInfoList();
+			
 			allPortAbbrlist = (ArrayList<PortInfo>) baseService.getPort_AbbrList();
-//			allVessellist 	= (ArrayList<Vessel>) baseService.getVesselList(new Vessel());
+			
 			allVessellist 	 = (ArrayList<Vessel>) vesselDAO.selectTotalList();
+			
 			allCompanyList 	= (ArrayList<Company>) companyDAO.selectList(new Company());
-			logger.info("스케줄 생성 마스터 초기화 종료");
+			
+			log.info("스케줄 생성 마스터 초기화 종료");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -103,19 +102,18 @@ public class ScheduleManager {
 	/**
 	 * @설명 아웃바운드 스케줄 생성
 	 * @return
-	 * @throws SQLException 
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public ScheduleJoint getOutboundSchedule() throws SQLException, IOException
+	public ScheduleExecute getOutboundSchedule() throws Exception
 	{
-		return new OutboundScheduleJointV2();
+		return new OutboundSchedulePrintV2();
 	}
 	/**
 	 * @설명 인바운드 스케줄 생성
 	 * @return
 	 * @throws SQLException 
 	 */
-	public ScheduleJoint getInboundSchedule() throws SQLException
+	public ScheduleExecute getInboundSchedule() throws SQLException
 	{
 		return new InboundScheduleJoint();
 	}
@@ -136,7 +134,7 @@ public class ScheduleManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public ScheduleJoint getConsoleSchedudle(ScheduleData op) throws SQLException
+	public ScheduleExecute getConsoleSchedudle(ScheduleData op) throws SQLException
 	{
 		return new ConsoleScheduleJoint(op);
 	}
@@ -145,7 +143,7 @@ public class ScheduleManager {
 	 * @return
 	 * @throws SQLException 
 	 */
-	public ScheduleJoint getInlandSchedule() throws SQLException
+	public ScheduleExecute getInlandSchedule() throws SQLException
 	{
 		return new InboundScheduleJoint();
 	}
@@ -188,6 +186,7 @@ public class ScheduleManager {
 	public Vessel searchVessel(String vesselName) throws ResourceNotFoundException {		
 
 		Iterator<Vessel> iterator = allVessellist.iterator();
+		
 		while(iterator.hasNext())
 		{
 			Vessel info=iterator.next();
@@ -245,28 +244,34 @@ public class ScheduleManager {
 
 				File file = new File(fileLocation);
 
-				if(!file.exists())
-				{
-					file.mkdirs();
-					log.info("폴더 생성:"+fileLocation);
-				}
+				if(!file.exists()) file.mkdirs();
 				
 				di = new ScheduleBuildMessageDialog();
 				
 				di.createAndUpdateUI();
 				
-				Iterator<ScheduleJoint>iter = scheduleBuilds.iterator();
+				Iterator<ScheduleExecute>iter = scheduleBuilds.iterator();
 				
 				initMasterData();
 				
 				try {
 					while(iter.hasNext())
 					{
-						DefaultScheduleJoint build = (DefaultScheduleJoint) iter.next();
+						long startTime = System.currentTimeMillis();
+						
+						AbstractSchedulePrint build = (AbstractSchedulePrint) iter.next();
+						
 						di.setTask(build);
-						build.initTag();
+						
+						build.init();
+						
 						build.execute();
+						
 						build.setDone(true);
+						
+						long endTime = System.currentTimeMillis();
+						
+						log.info("스케줄 생성 종료({}s)",(endTime-startTime));
 					}
 				}
 				catch (Exception e) {
@@ -283,7 +288,7 @@ public class ScheduleManager {
 	/**
 	 * @param build
 	 */
-	public void addBulid(ScheduleJoint build)
+	public void addBulid(ScheduleExecute build)
 	{
 		scheduleBuilds.add(build);
 	}

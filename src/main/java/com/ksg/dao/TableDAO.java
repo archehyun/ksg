@@ -20,7 +20,7 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.domain.Table_Property;
-@SuppressWarnings("unchecked")
+
 public interface TableDAO {
 	
 	/**
@@ -292,6 +292,6 @@ public interface TableDAO {
 	Object selectCount(HashMap<String, Object> param) throws SQLException;
 
 	public int delete(Map<String, Object> param);
-	
+	public List getTablePortListById(String table_id)throws SQLException;
 
 }

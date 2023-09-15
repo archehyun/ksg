@@ -128,15 +128,14 @@ public class TableServiceImpl extends AbstractServiceImpl implements TableServic
 		return tableDAO.getTableListBycompany(table);
 	}
 
+	@Deprecated
 	public List<ShippersTable> getTableListOrderByCompany(ShippersTable table)
 			throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@Deprecated
 	public List<ShippersTable> getTableListOrderByPage(ShippersTable table)
 			throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -371,6 +370,8 @@ public class TableServiceImpl extends AbstractServiceImpl implements TableServic
 		return count;
 	}
 
-
-	
+	@Override
+	public List<TablePort> getTablePortList(String table_id) throws SQLException {
+		return tableDAO.getTablePortListById(table_id);
+	}
 }

@@ -23,7 +23,7 @@ import com.ksg.common.dao.DAOManager;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.domain.Code;
 import com.ksg.service.BaseService;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 
 public class PnPortExcpetion extends PnOption{
 
@@ -54,17 +54,16 @@ public class PnPortExcpetion extends PnOption{
 		this.setLayout(new BorderLayout());
 		
 		this.add(buildCenter(),BorderLayout.CENTER);
-		
-		
 	}
 	
 	private KSGPanel buildCenter()
 	{
-		
 		listKeyword = new JList();
 		
 		KSGPanel pnKeyWordTypeOption = new KSGPanel();
+		
 		pnKeyWordTypeOption.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		pnKeyWordTypeOption.add(new JLabel("광고정보 입력시에는 사용되고 스케줄 생성시에는 사용되지 않는 항구명을 입력하십시요 "));
 		
 
@@ -111,6 +110,7 @@ public class PnPortExcpetion extends PnOption{
 	public void actionPerformed(ActionEvent e) {
 
 		String command = e.getActionCommand();
+		
 		if(command.equals("예외 항구  추가"))
 		{
 			String result=JOptionPane.showInputDialog(preferenceDialog, "예외 항구명을 를 입력하세요");
@@ -179,7 +179,9 @@ public class PnPortExcpetion extends PnOption{
 	public void componentShown(ComponentEvent e) {
 		
 		Code code_info = new Code();
+		
 		code_info.setCode_type("port_exception");
+		
 		try {
 			updateKeyWordList(baseService.getCodeInfoList(code_info));
 		} catch (SQLException ee) {

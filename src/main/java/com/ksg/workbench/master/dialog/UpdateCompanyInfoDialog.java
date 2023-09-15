@@ -12,32 +12,28 @@ package com.ksg.workbench.master.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.dtp.api.control.CompanyController;
-import com.ksg.common.exception.AlreadyExistException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.service.impl.CompanyServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
 
-public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
+@SuppressWarnings("serial")
+public class UpdateCompanyInfoDialog extends MainTypeDialog  {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
-	private CompanyServiceImpl companyService;
 
 	private JTextField txfCompany_name; // 선사명
 
@@ -59,19 +55,18 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 		this.setController(new CompanyController());
 
-		companyService = new CompanyServiceImpl();
-
 		this.addComponentListener(this);
 
 		this.type = type;
-
-		title = "선사 정보 관리";
-
+		
 		switch (type) {
+		
 		case UPDATE:
 
 			titleInfo="선사 정보 수정";
+			
 			break;
+			
 		case INSERT:
 
 			titleInfo="선사 정보 추가";
@@ -80,20 +75,31 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		default:
 			break;
 		}
-
 	}
-
-
 
 	public UpdateCompanyInfoDialog(int type, HashMap<String, Object> company)
 	{
 		this(type);
+		
 		this.company = company;
 	}
+	private void initComp()
+	{
+		txfCompany_name = new JTextField(20);
 
+		txfCompany_abbr = new JTextField(20);
+
+		txfAgent_name = new JTextField(20);
+
+		txfAgent_abbr = new JTextField(20);
+
+		txaContents = new JTextArea(8,32);
+	}
 
 	public void actionPerformed(ActionEvent e) {
+
 		String command = e.getActionCommand();
+
 		if(command.equals("수정"))
 		{
 			CommandMap param = new CommandMap();
@@ -112,15 +118,13 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 			callApi("updateCompany", param);
 
-
-
 		}else if(command.equals("취소"))
 		{
 			result = FAILE;
 
 			this.setVisible(false);
-			this.dispose();
 
+			this.dispose();
 		}
 		else if(command.equals("추가"))
 		{
@@ -139,26 +143,22 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			param.put("base_company_abbr", txfCompany_abbr.getText());
 
 			callApi("insertCompany", param);
-
 		}
-
 	}
 
-	public void createAndUpdateUI() {
+	public void createAndUpdateUI() 
+	{
+		initComp();
 		
 		this.setModal(true);
 
-		this.getContentPane().add(buildTitle("Add a Company Field"),BorderLayout.NORTH);
+		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
 
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
+		this.addComp(buildCenter(),BorderLayout.CENTER);
 
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
+		this.addComp(buildControl(),BorderLayout.SOUTH);
 
-		this.setSize(400, 350);
-
-		//		this.pack
-
-		ViewUtil.center(this);
+		ViewUtil.center(this,true);
 
 		this.setResizable(false);
 
@@ -166,27 +166,13 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 
 	}
 
-
-
-
 	public KSGPanel buildCenter()
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
-
-		txfCompany_name = new JTextField(20);
-
-		txfCompany_abbr = new JTextField(20);
-
-		txfAgent_name = new JTextField(20);
-
-		txfAgent_abbr = new JTextField(20);
-
-		txaContents = new JTextArea(8,32);
-
 		txaContents.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-		KSGPanel pnCenter = new KSGPanel(new GridLayout(0,1,0,-3));
+		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 
 		pnCenter.add( createFormItem(txfCompany_name,"선사명"));
 
@@ -205,25 +191,21 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 		return pnMain;
 	}
 
-
-
-
 	@Override
 	public void componentShown(ComponentEvent e) {
 
-		this.setTitle(title);
-		this.lblTitle.setText(titleInfo);
+		title = "선사 정보 관리";
 
 		if(company!=null)
 		{
 			this.txfCompany_abbr.setText((String) company.get("company_abbr"));
-			
+
 			this.txfCompany_name.setText((String) company.get("company_name"));
-			
+
 			this.txfAgent_abbr.setText((String) company.get("agent_abbr"));
-			
+
 			this.txfAgent_name.setText((String) company.get("agent_name"));
-			
+
 			this.txaContents.setText((String) company.get("contents"));
 		}
 		switch (type) {
@@ -237,54 +219,36 @@ public class UpdateCompanyInfoDialog extends BaseInfoDialog  {
 			butOK.setActionCommand("추가");
 
 			break;
-
 		}
-
 	}
 
 	@Override
 	public void updateView() {
+		
 		CommandMap resultMap= this.getModel();
 
-		boolean success = (boolean) resultMap.get("success");
+		String serviceId=(String) resultMap.get("serviceId");
 
-		if(success)
-		{
+		if("insertCompany".equals(serviceId))
+		{	
+			result = SUCCESS;
 
-			String serviceId=(String) resultMap.get("serviceId");
+			NotificationManager.showNotification("추가했습니다.");
 
-			if("insertCompany".equals(serviceId))
-			{	
-				result = SUCCESS;
+			this.setVisible(false);
 
-				JOptionPane.showMessageDialog(UpdateCompanyInfoDialog.this,"추가했습니다.");
-
-				this.setVisible(false);
-
-				this.dispose();
-
-			}
-
-			if("updateCompany".equals(serviceId))
-			{	
-				result = SUCCESS;
-
-				JOptionPane.showMessageDialog(UpdateCompanyInfoDialog.this,"수정했습니다.");
-
-				this.setVisible(false);
-
-				this.dispose();
-
-			}
-
-		}
-		else{  
-			String error = (String) resultMap.get("error");
-
-			JOptionPane.showMessageDialog(this, error);
+			this.dispose();
 		}
 
+		if("updateCompany".equals(serviceId))
+		{	
+			result = SUCCESS;
+
+			NotificationManager.showNotification("수정했습니다.");
+
+			this.setVisible(false);
+
+			this.dispose();
+		}
 	}
-
-
 }

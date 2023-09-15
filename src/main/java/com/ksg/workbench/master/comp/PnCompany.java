@@ -18,7 +18,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -33,12 +32,14 @@ import javax.swing.event.TableColumnModelListener;
 
 import com.dtp.api.control.CompanyController;
 import com.ksg.common.model.CommandMap;
-import com.ksg.service.impl.CompanyServiceImpl;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPageTablePanel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.UpdateCompanyInfoDialog;
 
@@ -58,13 +59,9 @@ import lombok.extern.slf4j.Slf4j;
  * @프로그램 설명 : 선사 정보 관리 화면
 
  */
+@SuppressWarnings("serial")
 @Slf4j
 public class PnCompany extends PnBase implements ActionListener{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 
@@ -79,26 +76,89 @@ public class PnCompany extends PnBase implements ActionListener{
 
 	private String query;
 
-	CompanyServiceImpl companyService = new CompanyServiceImpl();
+	private KSGGradientButton butUpSearch;
 
-	private List<HashMap<String, Object>> master;
+	private KSGGradientButton butCancel;
+
 
 	public PnCompany(BaseInfoUI baseInfoUI) {
-		super(baseInfoUI);		
+		super(baseInfoUI);
 		
+		this.initComp();
+
 		this.addComponentListener(this);
-		
+
 		this.setController(new CompanyController());
-		
+
 		this.add(buildCenter());
-		
+
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+	}
+
+
+	private void initComp() {
+
+		lblTable = new JLabel("선사 정보");
+
+		lblTable.setSize(200, 25);
+
+		lblTable.setFont(new Font("돋움",0,16));
+
+		lblTable.setIcon(new ImageIcon("images/db_table.png"));
+		
+		cbxField = new KSGComboBox();	
+
+		cbxField.addItem("선사명");
+
+		cbxField.addItem("선사명 약어");
+
+		cbxField.addItem("에이전트");
+
+		cbxField.addItem("에이전트 약어");
+
+		txfSearch = new JTextField(15);
+
+		txfSearch.addKeyListener(new KeyAdapter() {
+
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+				if(e.getKeyChar()==KeyEvent.VK_ENTER)
+				{
+					fnSearch();
+				}
+			}
+		});
+
+
+		butUpSearch = new KSGGradientButton("검색", "images/search3.png");
+		
+		butUpSearch.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		butUpSearch.addActionListener(this);
+
+		cbxField.setPreferredSize(new Dimension(150,23));
+		
+
+		butCancel = new KSGGradientButton("",  "images/init.png");
+
+		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+
+		butCancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				cbxField.setSelectedIndex(0);
+				txfSearch.setText("");
+			}
+		});
 	}
 
 
 	private JComponent buildCenter()
 	{
-		log.debug("화면 초기화");
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());	
 
 		KSGTableColumn columns[] = new KSGTableColumn[5];
@@ -138,21 +198,19 @@ public class PnCompany extends PnBase implements ActionListener{
 		tableH.addMouseListener(new TableSelectListner());
 
 		tableH.setShowControl(true);
-		
+
 		tableH.addContorlListener(this);
 
 		pnMain.add(tableH);
 
 		tableH.setColumnName(columns);
-		
+
 		tableH.initComp();
 
 		pnMain.add(buildSearchPanel(),BorderLayout.NORTH);
 
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 
-		log.debug("화면 초기화 종료");
-		
 		return pnMain;
 
 	}
@@ -160,84 +218,43 @@ public class PnCompany extends PnBase implements ActionListener{
 	 * @return
 	 */
 	private KSGPanel buildSearchPanel() {
-		
+
 		KSGPanel pnSearch = new KSGPanel();
-		
+
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-		lblTable = new JLabel("선사 정보");
-		
-		lblTable.setSize(200, 25);
-		
-		lblTable.setFont(new Font("돋움",0,16));
-		
-		lblTable.setIcon(new ImageIcon("images/db_table.png"));
-		
-		JLabel lbl = new JLabel("필드명 : ");
-		
-		cbxField = new JComboBox();	
-		
-		cbxField.addItem("선사명");
-		
-		cbxField.addItem("선사명 약어");
-		
-		cbxField.addItem("에이전트");
-		
-		cbxField.addItem("에이전트 약어");
-		
-		txfSearch = new JTextField(15);
+		pnSearch.add(new JLabel("필드명 : "));
 
-		txfSearch.addKeyListener(new KeyAdapter() {
-
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-
-				if(e.getKeyChar()==KeyEvent.VK_ENTER)
-				{
-					fnSearch();
-				}
-			}
-		});
-
-
-		JButton butUpSearch = new JButton("검색");
-
-		butUpSearch.addActionListener(this);
-
-		cbxField.setPreferredSize(new Dimension(150,23));
-
-		pnSearch.add(lbl);
-		
 		pnSearch.add(cbxField);
-		
+
 		pnSearch.add(txfSearch);
-		
+
 		pnSearch.add(butUpSearch);
 		
+		pnSearch.add(butCancel);
+
 		Box pnSearchAndCount = Box.createVerticalBox();
-		
+
 		pnSearchAndCount.add(pnSearch);
-		
+
 		KSGPanel pnMain= new KSGPanel(new BorderLayout());
-		
+
 		pnMain.add(buildLine(),BorderLayout.SOUTH);
-		
+
 		pnMain.add(pnSearchAndCount,BorderLayout.EAST);
-		
+
 		pnMain.add(buildTitleIcon("사용자 정보"),BorderLayout.WEST);
-		
+
 		return pnMain;
 	}	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-
 		try {
-			
+
 			String command = e.getActionCommand();
-			
+
 			if(command.equals("검색"))
 			{
 				fnSearch();
@@ -245,37 +262,30 @@ public class PnCompany extends PnBase implements ActionListener{
 			else if(command.equals(KSGPageTablePanel.DELETE))
 			{
 				int row=tableH.getSelectedRow();
-				if(row<0)
-					return;
-	
+				
+				if(row<0) return;
+
 				CommandMap data= (CommandMap) tableH.getValueAt(row);
-	
+
 				int result=JOptionPane.showConfirmDialog(this,data.get("company_name")+"를 삭제 하시겠습니까?", "선사 정보 삭제", JOptionPane.YES_NO_OPTION);
-	
+
 				if(result==JOptionPane.OK_OPTION)
 				{	
-					
-					int count=companyService.delete(data);
-
-					if(count>0)
-					{
-						fnSearch();
-						JOptionPane.showMessageDialog(this, "삭제되었습니다.");
-					}
+					callApi("deleteCompany", data);
 				}	
 			}
 			else if(command.equals(KSGPageTablePanel.INSERT))
 			{
 				KSGDialog dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.INSERT);
-	
+
 				dialog.createAndUpdateUI();
-	
+
 				if(dialog.result==KSGDialog.SUCCESS)
 				{
 					fnSearch();
 				}
 			}
-		
+
 		} catch (Exception e1) {
 
 			e1.printStackTrace();
@@ -283,30 +293,25 @@ public class PnCompany extends PnBase implements ActionListener{
 		}
 	}
 
-
-
 	class TableSelectListner extends MouseAdapter
 	{
 		KSGDialog dialog;
 
 		public void mouseClicked(MouseEvent e) 
 		{
-
 			if(e.getClickCount()>1)
 			{
 				JTable es = (JTable) e.getSource();
 				int row=es.getSelectedRow();
 
-				if(row<0)
-					return;
-
+				if(row<0) return;
 
 				HashMap<String, Object> port=(HashMap<String, Object>) tableH.getValueAt(row);
 
 				dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.UPDATE,port);
 
 				dialog .createAndUpdateUI();
-				
+
 				int result = dialog.result;
 
 				if(result==UpdateCompanyInfoDialog.SUCCESS)
@@ -315,14 +320,12 @@ public class PnCompany extends PnBase implements ActionListener{
 				}
 			}
 		}
-
 	}
 
-
 	class MyTableColumnModelListener implements TableColumnModelListener {
-		
+
 		JTable table;
-		
+
 		public MyTableColumnModelListener(JTable table) {
 			this.table = table;
 		}
@@ -353,9 +356,8 @@ public class PnCompany extends PnBase implements ActionListener{
 	@Override
 	public void fnSearch() {
 
+		log.info("search");
 		
-		System.out.println("select");
-
 		CommandMap param = new CommandMap();
 
 		String field = (String) cbxField.getSelectedItem();
@@ -365,6 +367,7 @@ public class PnCompany extends PnBase implements ActionListener{
 			if(field.equals("선사명"))
 			{
 				query="company_name";
+				
 			}else if(field.equals("선사명 약어"))
 			{
 				query="company_abbr";
@@ -381,39 +384,36 @@ public class PnCompany extends PnBase implements ActionListener{
 		}
 
 		callApi("selectCompany", param);
-
 	}
 
 
 	@Override
 	public void componentShown(ComponentEvent e) {
 		if(isShowData)fnSearch();
-
 	}
 
 	@Override
 	public void updateView() {
+		
 		CommandMap result= this.getModel();
 
-		boolean success = (boolean) result.get("success");
+		String serviceId=(String) result.get("serviceId");
 
-		if(success)
+		if("selectCompany".equals(serviceId))
 		{
 			List data = (List )result.get("data");
 
 			tableH.setResultData(data);
-			
+
 			tableH.setTotalCount(String.valueOf(data.size()));
 
 			if(data.size()==0)tableH.changeSelection(0,0,false,false);
-
 		}
-		else{  
-			String error = (String) result.get("error");
-			JOptionPane.showMessageDialog(this, error);
+		else if("deleteCompany".equals(serviceId))
+		{
+			NotificationManager.showNotification("삭제되었습니다.");
+
+			fnSearch();
 		}
-
-
 	}
-
 }

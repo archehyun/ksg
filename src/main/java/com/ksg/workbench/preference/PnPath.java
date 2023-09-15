@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.io.File;
-import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -15,24 +14,30 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
-import com.ksg.domain.Code;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 
+@SuppressWarnings("serial")
 public class PnPath extends PnOption{
+	
 	private JTextField txfXLSFolder;
+	
 	private JTextField txfSaveFolder;
+	
 	private Font defaultfont;	
+	
 	private JButton butSearcFold;
 	
 	private KSGPropertis propertis = KSGPropertis.getIntance();
 	
 	public PnPath(PreferenceDialog preferenceDialog) {
+		
 		super(preferenceDialog);
+		
+		initComp();
 		
 		this.setName("경로지정");
 		
@@ -41,23 +46,23 @@ public class PnPath extends PnOption{
 		this.addComponentListener(this);
 
 		this.add(buildCenter());
-		
-		
-
 	}
-	
-	private KSGPanel buildCenter()
+	private void initComp()
 	{
+		defaultfont = KSGModelManager.getInstance().defaultFont;
 		
-		Box pnBox = new Box(BoxLayout.Y_AXIS);
-		 
 		txfXLSFolder = new JTextField(30);
 		
 		txfSaveFolder = new JTextField(25);
 		
 		butSearcFold = new JButton("찾기");
 		
-		defaultfont = KSGModelManager.getInstance().defaultFont;
+		
+		butSearcFold.setFont(defaultfont);	
+	}
+	private KSGPanel buildCenter()
+	{
+		Box pnBox = new Box(BoxLayout.Y_AXIS);
 
 		KSGPanel pnXTG = new KSGPanel();
 		
@@ -83,8 +88,6 @@ public class PnPath extends PnOption{
 		pnXLS.add(new JLabel("XLS 파일 폴더 이름: "));
 		
 		pnXLS.add(txfXLSFolder);
-		
-		butSearcFold.setFont(defaultfont);	
 
 		pnBox.add(createComp(pnXTG));
 		
@@ -93,16 +96,19 @@ public class PnPath extends PnOption{
 		KSGPanel pnMain=new KSGPanel(new BorderLayout());
 		
 		pnMain.add(pnBox);
-		pnMain.setBorder(BorderFactory.createEmptyBorder(0,15, 5,5));
-		return pnMain;
-
 		
+		pnMain.setBorder(BorderFactory.createEmptyBorder(0,15, 5,5));
+		
+		return pnMain;
 	}
 	private Component createComp(Component comp)
 	{
 		KSGPanel pnMain = new KSGPanel();
+		
 		pnMain.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		pnMain.add(comp);
+		
 		return pnMain;
 	}
 	
@@ -110,22 +116,30 @@ public class PnPath extends PnOption{
 	public void componentShown(ComponentEvent e) {
 		
 		txfXLSFolder.setText(propertis.getProperty(KSGPropertis.DATA_LOCATION));
+		
 		txfSaveFolder.setText(propertis.getProperty(KSGPropertis.SAVE_LOCATION));
 	}
 
 	public void saveAction() {
+		
 		logger.debug("path saveaction:");
+		
 		propertis.setProperty(KSGPropertis.SAVE_LOCATION, txfSaveFolder.getText());
+		
 		propertis.setProperty(KSGPropertis.DATA_LOCATION, txfXLSFolder.getText());
 	}
 	public void actionPerformed(ActionEvent e) {
+		
 		JFileChooser fileChooser = new JFileChooser(propertis.getProperty(KSGPropertis.SAVE_LOCATION));
 
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
 		fileChooser.setAcceptAllFileFilterUsed(false);
+		
 		if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 		{
 			File selectedFile = fileChooser.getSelectedFile();
+			
 			if(selectedFile.isDirectory())
 			{
 				txfSaveFolder.setText(selectedFile.getAbsolutePath());	

@@ -15,8 +15,8 @@ import javax.swing.JTextField;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.service.MemberService;
 import com.ksg.service.impl.MemberServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 
 public class MemberUpdateDialog extends BaseInfoDialog implements ActionListener{
 	

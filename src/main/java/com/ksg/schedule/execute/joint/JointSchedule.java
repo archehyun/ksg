@@ -15,7 +15,7 @@ import com.ksg.service.impl.VesselServiceImpl;
 
 public abstract class JointSchedule implements Executeable{
 	
-	SimpleDateFormat inputDateFormat 	= KSGDateUtil.createInputDateFormat();
+	SimpleDateFormat inputDateFormat 	= KSGDateUtil.inputDateFormat;
 
 	SimpleDateFormat outputDateFormat = KSGDateUtil.createOutputDateFormat();
 	

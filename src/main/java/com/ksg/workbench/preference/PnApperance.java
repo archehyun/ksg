@@ -25,7 +25,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.ksg.view.comp.KSGViewUtil;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
 
 /**
 
@@ -59,6 +59,8 @@ public class PnApperance extends PnOption {
 	private JTree tree;
 
 	private JColorChooser tcc;
+
+	private JButton butEdit;
 	
 	public PnApperance(PreferenceDialog preferenceDialog) {
 		
@@ -89,8 +91,6 @@ public class PnApperance extends PnOption {
 		    	  String value = (String) propeties.get(selectedKey);
 		    	
 		      }
-
-			
 		    };
 		    
 		    tree.addTreeSelectionListener(treeSelectionListener);
@@ -104,21 +104,21 @@ public class PnApperance extends PnOption {
 		
 		tree = createTree();
 		
-        HEADER_HEIGHT=Integer.parseInt(propeties.getProperty("table.header.height"));
+        HEADER_HEIGHT		= Integer.parseInt(propeties.getProperty("table.header.height"));
 
-		ROW_HEIGHT=Integer.parseInt(propeties.getProperty("table.row.height"));
+		ROW_HEIGHT			= Integer.parseInt(propeties.getProperty("table.row.height"));
 		
-		GRID_COLOR = getColor(propeties.getProperty("table.girdcolor"));
+		GRID_COLOR 			= Color.decode(propeties.getProperty("table.girdcolor"));
 		
-		FONT_SIZE = Integer.parseInt(propeties.getProperty("table.font.size"));
+		FONT_SIZE 			= Integer.parseInt(propeties.getProperty("table.font.size"));
 		
-		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnTitle 	= new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 		
 		pnTitle.add(new JLabel("색상을 설정"));
 		
 		KSGPanel pnLight = new KSGPanel();
 		
-		JButton butEdit = new JButton("EDIT");
+		butEdit = new JButton("EDIT");
 		
 		butEdit.addActionListener(new ActionListener() {
 			
@@ -133,9 +133,7 @@ public class PnApperance extends PnOption {
 					
 					String key = colorNode.key;
 					 
-					 Color selectedColor =  getColor(propeties.getProperty(key));
-					 
-					 System.out.println("gridColor:"+selectedColor);
+					 Color selectedColor =  Color.decode(propeties.getProperty(key));
 					 
 					 Color newColor = JColorChooser.showDialog(
 		                     PnApperance.this,
@@ -156,10 +154,6 @@ public class PnApperance extends PnOption {
 						propeties.store();
 					}
 				}
-				
-				
-				
-				
 			}
 		});
 		
@@ -261,13 +255,11 @@ public class PnApperance extends PnOption {
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void saveAction() {
-		// TODO Auto-generated method stub
 		
 	}
 

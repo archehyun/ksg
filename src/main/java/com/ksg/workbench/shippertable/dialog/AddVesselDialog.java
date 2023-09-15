@@ -25,8 +25,8 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.view.comp.KSGComboBox;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.view.comp.combobox.KSGComboBox;
+import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.workbench.shippertable.comp.KSGADVTablePanel;
 
 public class AddVesselDialog extends KSGDialog {
@@ -174,7 +174,7 @@ public class AddVesselDialog extends KSGDialog {
 				vessel.setVessel_type(con.getTypeField());
 				
 				try {
-					vesselService.insert(vessel);
+					vesselService.insertVessel(vessel);
 					
 					
 					JOptionPane.showMessageDialog(null, "선박명: "+vessel.getVessel_name()+"이(가) 추가 되었습니다.");
@@ -183,8 +183,8 @@ public class AddVesselDialog extends KSGDialog {
 					vesselModel.setRowCount(vesselModel.getRowCount()+1);
 					vesselModel.setValueAt(txf.getText(), row1, 0);
 					vesselModel.setValueAt(txf.getText(), row1, 1);
-
-					main.setValue( vessel.getVessel_name().toUpperCase(), row1, 0);
+					//TODO ERROR 확인
+					//main.setValue( vessel.getVessel_name().toUpperCase(), row1, 0);
 				} catch (SQLException e1) 
 				{
 					if(e1.getErrorCode()==2627)

@@ -33,7 +33,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -41,7 +40,10 @@ import javax.swing.ListCellRenderer;
 import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 
+import com.dtp.api.control.PortController;
+import com.dtp.api.control.ShipperTableController;
 import com.ksg.common.exception.PortNullException;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
@@ -49,8 +51,11 @@ import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.dialog.PortSearchDialog;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.PortSearchDialog;
+import com.ksg.workbench.common.dialog.SearchPortDialog;
+import com.ksg.workbench.master.dialog.BaseInfoDialog;
 import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
 
 /**
@@ -74,7 +79,7 @@ import com.ksg.workbench.shippertable.ShipperTableAbstractMgtUI;
  * 
  */
 @SuppressWarnings("serial")
-public class ManagePortDialog extends KSGDialog implements ActionListener{
+public class ManagePortDialog extends BaseInfoDialog implements ActionListener{
 
 	private static final String BUT_ACTION_INSERT = "추가";
 
@@ -106,7 +111,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 	private JCheckBox cbxDeleteAll;
 
-	private JPanel pnRightOption, pnLeftOption;
+	private KSGPanel pnRightOption, pnLeftOption;
 
 	PortIndexController portIndexController;
 
@@ -129,22 +134,22 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	{	
 		super();
 
-		baseService = new BaseServiceImpl();
+		this.base 			= baseUI;
 
-		this.base =baseUI;
+		this.table_id		= table_id;
+		
+		this.setController(new ShipperTableController());
+		
+		this.setController(new PortController());
+		
+		baseService 		= new BaseServiceImpl();
 
-		this.table_id=table_id;
-
-		tableService = new TableServiceImpl();
+		tableService 		= new TableServiceImpl();
 
 		portIndexController = new PortIndexController();
-
 	}
 
-
 	public void createAndUpdateUI() {
-
-
 
 		setTitle(this.table_id+"테이블 항구 관리");
 
@@ -172,7 +177,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	 */
 	private Component buildCenterNorthControl()
 	{
-		JPanel pnMain = new JPanel(new BorderLayout());
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
 		txfIndex = new JTextField(3);
 
@@ -183,11 +188,13 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			public void focusGained(FocusEvent arg0) 
 			{	
 				int row=tblPortList.getSelectedRow();
-				if(row==-1)
-					return;
+				
+				if(row==-1) return;
 
 				tblPortList.selectedindex = row;
+				
 				txfUpdatePortName.setText(String.valueOf(tblPortList.getValueAt(row, PORT_NAME_COLUM)));
+				
 				txfIndex.setText(String.valueOf(tblPortList.getValueAt(row, PORT_INDEX_COLUM)));
 			}
 
@@ -252,14 +259,19 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				}
 				else if(arg0.getKeyCode()==KeyEvent.VK_ENTER)
 				{
-					JTextField txf = (JTextField) arg0.getSource();
+					JTextField txf 			= (JTextField) arg0.getSource();
+					
 					String searchedPortName = txf.getText();
+					
 					if(searchedPortName.length()>0)
 					{
 						List<String> li=null;
 						try {
+							
 							li=	baseService.getPortListByPatten(String.valueOf(searchedPortName));
+							
 						} catch (SQLException e1) {
+							
 							JOptionPane.showMessageDialog(ManagePortDialog.this, e1.getMessage());
 						}
 						if(li.size()==1)
@@ -312,23 +324,29 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			public void focusLost(FocusEvent arg0){}
 		});
 
-
-
 		/*
 		 * 20181228 기능 추가
 		 * 버튼으로 항구의 위아래 순서를 변경하는 기능
 		 */
-		JPanel pnLeftNorthControl = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		KSGPanel pnLeftNorthControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		JButton butUpdate = new JButton(ACTION_COMMAND_UPDATE);
+		KSGGradientButton butUpdate = new KSGGradientButton(ACTION_COMMAND_UPDATE);
+		
+		butUpdate.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUpdate.addActionListener(portIndexController);
 
-		JButton butUp=new JButton(ACTION_COMMAND_UP);
+		KSGGradientButton butUp=new KSGGradientButton(ACTION_COMMAND_UP);
+		
+		butUp.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
 
 		butUp.addActionListener(portIndexController);
 
-		JButton butDown=new JButton(ACTION_COMMAND_DOWN);
+		KSGGradientButton butDown=new KSGGradientButton(ACTION_COMMAND_DOWN);
+		
+		butDown.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
+		
+				
 
 		butDown.addActionListener(portIndexController);
 
@@ -338,7 +356,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		pnLeftNorthControl.add(butDown);		
 
-		JPanel pnMainCenter = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		KSGPanel pnMainCenter = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		FlowLayout out=(FlowLayout) pnMainCenter.getLayout();
 
@@ -347,9 +365,11 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		pnMainCenter.add(txfIndex);
 
 		pnMainCenter.add(txfUpdatePortName);
+		
 		pnMainCenter.add(butUpdate);
 
 		pnMain.add(pnMainCenter);
+		
 		pnMain.add(pnLeftNorthControl,BorderLayout.EAST);
 
 		return pnMain;
@@ -360,12 +380,17 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	 * @throws SQLException 
 	 */
 	private Component buildCenter() {
-		JPanel pnMain = new JPanel(new BorderLayout());
+		
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(10 , 10 , 10 , 10));
 
-		JPanel pnPortMain = new JPanel();
+		KSGPanel pnPortMain = new KSGPanel();
+		
 		GridLayout gridLayout = new GridLayout(1,0);
+		
 		gridLayout.setHgap(5);
+		
 		pnPortMain.setLayout(gridLayout);
 
 		tblPortList = new PortListTable(this.table_id);
@@ -374,12 +399,13 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		tblPortList.addKeyListener(new MyKeyAdapter());
 
-		JPanel pnLeft = new JPanel();
-		pnLeft.setLayout(new BorderLayout());
-
+		KSGPanel pnLeft = new KSGPanel(new BorderLayout());
+		
 		JLabel lbl2 = new JLabel("항구명: ");
 
 		JButton butAdd = new JButton("추가(A)");
+		
+		
 		butAdd.setMnemonic(KeyEvent.VK_A);
 		butAdd.setActionCommand(BUT_ACTION_INSERT);
 		butAdd.addActionListener(this);
@@ -431,7 +457,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}	
 		});
 
-		pnLeftOption = new JPanel(new BorderLayout());
+		pnLeftOption = new KSGPanel(new BorderLayout());
 		pnLeftOption.add(lbl2,BorderLayout.WEST);
 		pnLeftOption.add(txfPortName);
 		pnLeftOption.add(butAdd,BorderLayout.EAST);
@@ -444,7 +470,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 		pnLeft.add(pnLeftOption,BorderLayout.SOUTH);
 
-		JPanel pnRight = new JPanel();
+		KSGPanel pnRight = new KSGPanel();
 
 		pnRight.setLayout(new BorderLayout());
 
@@ -455,7 +481,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 		txflblPortName.setEditable(false);
 		txflblPortName.setBorder(BorderFactory.createEmptyBorder());
 
-		pnRightOption = new JPanel();
+		pnRightOption = new KSGPanel();
 		pnRightOption.setLayout(new FlowLayout(FlowLayout.LEFT));
 		pnRightOption.setVisible(false);	
 		cbxDeleteAll = new JCheckBox("대표 항구 삭제 시 세부 항구 삭제");
@@ -479,7 +505,7 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	 */
 	private Component buildInfo() {
 
-		JPanel pnMain = new JPanel();
+		KSGPanel pnMain = new KSGPanel();
 
 		pnMain.setLayout(new GridLayout(0,1));
 
@@ -497,31 +523,39 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 	/**
 	 * @return
 	 */
-	private Component buildControl() {
-		JPanel pnMain = new JPanel();
-		pnMain.setLayout(new BorderLayout());
-		JPanel pnRight = new JPanel();
-		pnRight.setLayout( new FlowLayout(FlowLayout.RIGHT));
-		JPanel pnLeft = new JPanel();
+	protected KSGPanel buildControl() {
+		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
+		KSGPanel pnRight = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		
+		KSGPanel pnLeft = new KSGPanel();
 
 		JButton butArrange = new JButton(BUT_ACTION_SEARCH);
+		
 		butArrange.addActionListener(this);
 
-
 		pnLeft.setLayout( new FlowLayout(FlowLayout.LEFT));
+		
 		JButton butDel = new JButton(BUT_ACTION_DELETE);	
 
 		butDel.addActionListener(this);
+		
 		JButton butSave = new JButton("저장 및 닫기");
+		
 		butSave.setActionCommand(BUT_ACTION_SAVE);
+		
 		butSave.setMnemonic(KeyEvent.VK_S);
+		
 		butSave.addActionListener(this);
 
 		pnRight.add(butArrange);
+		
 		pnRight.add(butDel);
+		
 		pnRight.add(butSave);
 
 		pnMain.add(pnLeft,BorderLayout.WEST);
+		
 		pnMain.add(pnRight,BorderLayout.EAST);
 
 		return pnMain;
@@ -668,8 +702,11 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			else if(command.equals("닫기"))
 			{
 				this.OPTION = ManagePortDialog.CANCEL_OPTION;
+				
 				this.setVisible(false);
+				
 				dispose();
+				
 				base.searchADVTable();
 			}
 
@@ -698,18 +735,18 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 			}
 			else if(command.equals("검색"))
 			{
-				if(tblPortList==null)
-					return;
+				if(tblPortList==null) return;
 
 				int row=tblPortList.getSelectedRow();
 
-				if(row==-1)
-					return;
-
+				if(row==-1) return;
 
 				PortSearchDialog dialog = new PortSearchDialog(this);
+				
 				dialog.setRow(row);
+				
 				dialog.createAndUpdateUI();
+				
 				if(dialog.portName!=null)
 				{
 					tblPortList.setValueAt(dialog.portName, row, PORT_NAME_COLUM);
@@ -1216,9 +1253,11 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 				if (row!=-1)
 				{
 					Object val =t.getValueAt(row, PORT_INDEX_COLUM);
-					if(val==null)
-						return;
+					
+					if(val==null) return;
+					
 					int port_index;
+					
 					if(val instanceof Integer)
 					{
 						port_index=(Integer)val;
@@ -1426,12 +1465,29 @@ public class ManagePortDialog extends KSGDialog implements ActionListener{
 
 	@Override
 	public void componentShown(ComponentEvent e) {
+		CommandMap param = new CommandMap();
+		
+		param.put("table_id", this.table_id);
+		
+		callApi("managePortDialog.init", param);
+		
+	}
+	@Override
+	public void updateView() {
 
-		try {
-			tblPortList.retrive();
-		} catch (SQLException ee) {
+		CommandMap result= this.getModel();
 
-			JOptionPane.showMessageDialog(this, ee.getMessage());
+		String serviceId = (String) result.get("serviceId");
+
+		if("managePortDialog.init".equals(serviceId)) {
+			
+			try {
+				tblPortList.retrive();
+			} catch (SQLException ee) {
+
+				JOptionPane.showMessageDialog(this, ee.getMessage());
+			}
+
 		}
 	}
 }

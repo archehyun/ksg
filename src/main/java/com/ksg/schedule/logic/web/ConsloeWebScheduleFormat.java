@@ -41,6 +41,11 @@ public class ConsloeWebScheduleFormat extends WebScheduleFormat  implements IFWe
 		fileName="CONSOLE";
 		errorFileName = "console";
 	}
+	
+	public ConsloeWebScheduleFormat(DefaultWebScheduleV3 defaultWebScheduleV3) {
+		fileName="CONSOLE";
+		errorFileName = "console";
+	}
 
 
 	public String toWebScheduleString(ScheduleData data)

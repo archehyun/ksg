@@ -43,7 +43,7 @@ import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.ShippersTable;
 import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
+import com.ksg.view.comp.dialog.KSGDialog;
 
 /**
  * 테이블 정보 수정 다이어그램

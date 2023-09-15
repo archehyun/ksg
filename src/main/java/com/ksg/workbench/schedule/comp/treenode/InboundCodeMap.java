@@ -1,9 +1,8 @@
 package com.ksg.workbench.schedule.comp.treenode;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 
-import com.ksg.service.impl.CodeServiceImpl;
+import com.dtp.api.service.impl.CodeServiceImpl;
 
 public class InboundCodeMap {
 	
@@ -18,7 +17,7 @@ public class InboundCodeMap {
 		codeService = new CodeServiceImpl();
 		try {
 			inboundCodeMap = (HashMap<String, Object>) codeService.selectInboundPortMap();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

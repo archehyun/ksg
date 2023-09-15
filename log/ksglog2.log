@@ -1,2 +1,9 @@
-2023-03-17 11:20:57,847  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
-2023-03-17 11:20:57,923  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-05-31 10:37:49,017  INFO [com.ksg.workbench.shippertable.comp.AdvertiseTable] create
+2023-05-31 10:37:49,157  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START
+2023-05-31 10:38:44,550  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:0
+2023-05-31 10:38:45,611  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:2
+2023-05-31 10:38:45,966  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:1
+2023-05-31 10:38:48,023  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:2
+2023-05-31 10:38:48,387  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:5
+2023-05-31 10:38:49,230  INFO [com.ksg.workbench.master.comp.PnCommonCode] select row:0
+2023-05-31 10:38:57,279  INFO [com.ksg.workbench.shippertable.ShipperTableMgtUI2] START

@@ -3,12 +3,12 @@ package com.ksg.schedule.logic.joint.outbound;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import com.dtp.api.schedule.joint.print.AbstractSchedulePrint;
 import com.ksg.common.exception.PortNullException;
 import com.ksg.common.exception.VesselNullException;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.ScheduleManager;
-import com.ksg.schedule.logic.joint.DefaultScheduleJoint;
 
 /**
  * @author 박창현
@@ -55,9 +55,9 @@ public class ToPortGroup extends HashMap<String,FromPortGroup>{
 		 */
 		PortInfo info=scheduleManager.searchPort(data.getFromPort());
 
-		if(info.getPort_name().equals(DefaultScheduleJoint.BUSAN_NEW_PORT))
+		if(info.getPort_name().equals(AbstractSchedulePrint.BUSAN_NEW_PORT))
 		{
-			data.setFromPort(DefaultScheduleJoint.BUSAN);
+			data.setFromPort(AbstractSchedulePrint.BUSAN);
 		}				
 
 		// 스케줄이 존재할 경우 추가

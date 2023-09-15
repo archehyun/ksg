@@ -44,11 +44,13 @@ public class KSGDateUtil {
 	public final static long HOUR_MILLIS = MINUTE_MILLIS*60;
 	public final static long DAY_MILLIS = HOUR_MILLIS*24;
 	public final static long YEAR_MILLIS = DAY_MILLIS*365;
+	
+	
 	public static DateFormat outputDateFormat = new SimpleDateFormat("M/d");
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	private static SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy/MM/dd");
-	private static SimpleDateFormat dashdateFormat = new SimpleDateFormat("yyyy.M.d");
-	private static SimpleDateFormat dateFormat5 = new SimpleDateFormat("yyyyMMdd");
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	public static SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+	public static SimpleDateFormat dashdateFormat = new SimpleDateFormat("yyyy.M.d");
+	public static SimpleDateFormat dateFormat5 = new SimpleDateFormat("yyyyMMdd");
 
 	public final static int TIME_TYPE_1=1;
 	public final static int TIME_TYPE_2=2;
@@ -810,13 +812,13 @@ public class KSGDateUtil {
 		}
 		return monthAndDay;
 	}
-
+	
 	/**
 	 * @param dateF
 	 * @return
 	 * @throws VesselDateNotMatchException 
 	 */
-	public static String[] getDates(String dateF, int currentMonth,String strYear) throws VesselDateNotMatchException
+	public static String[] getDates(String dateF, int currentMonth,int year) throws VesselDateNotMatchException
 	{
 		String datePattern = "(\\d{1,2})/(\\d{1,2})";
 		String datePattern1 = "(\\d{1,2})/(\\d{1,2})-(\\d{1,2})/(\\d{1,2})";
@@ -829,8 +831,8 @@ public class KSGDateUtil {
 		int dayT = 0;
 		int yearT = 0;
 		int yearF = 0;
-		yearF = Integer.valueOf(strYear);
-		yearT = Integer.valueOf(strYear);
+		yearF = year;
+		yearT = year;
 		if(dateF.matches(datePattern))
 		{
 			Pattern patt = Pattern.compile(datePattern);
@@ -892,6 +894,18 @@ public class KSGDateUtil {
 			dd[1] = yearT+"/"+monthT+"/"+dayT;
 		}
 		return dd;
+
+	}
+
+	/**
+	 * @param dateF
+	 * @return
+	 * @throws VesselDateNotMatchException 
+	 */
+	public static String[] getDates(String dateF, int currentMonth,String strYear) throws VesselDateNotMatchException
+	{
+		
+		return getDates(dateF, currentMonth, Integer.parseInt(strYear));
 
 	}
 	public static String[] adjestDateYear(String dateF, String dateT, String inOutBoundType, int currentMonth, String currentYear) throws NotSupportedDateTypeException{
@@ -981,13 +995,26 @@ public class KSGDateUtil {
 			return date;
 		}
 	}
-	public static SimpleDateFormat createInputDateFormat() {
-		return new SimpleDateFormat("yyyy/MM/dd");
+	
+	public static String convertDateFormatYYYY_MM_DDToMMDD(String date)
+	{
+		try {
+			return outputDateFormat.format(dateFormat5.parse(String.valueOf(date)));
+		} catch (ParseException e) {
+			return date;
+		}
 	}
+	
+	public static String convertDateFormatYYYY_MM_DDToMMDD2(String date)
+	{
+		try {
+			return outputDateFormat.format(inputDateFormat.parse(String.valueOf(date)));
+		} catch (ParseException e) {
+			return date;
+		}
+	}
+
 	public static SimpleDateFormat createOutputDateFormat() {
 		return new SimpleDateFormat("M/d");
 	}
-	
-
-
 }

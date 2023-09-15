@@ -22,7 +22,8 @@ import javax.swing.JTextField;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Code;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.workbench.common.dialog.MainTypeDialog;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**
@@ -31,7 +32,7 @@ import com.ksg.workbench.master.BaseInfoUI;
  * @author 박창현
  *
  */
-public class InsertCodeInfodialog extends BaseInfoDialog {
+public class InsertCodeInfodialog extends MainTypeDialog {
 	/**
 	 * 
 	 */
@@ -74,43 +75,56 @@ public class InsertCodeInfodialog extends BaseInfoDialog {
 		{
 			code_type="inPort";
 		}
-		
 	}
 
-
-
 	public void createAndUpdateUI() {
+		this.titleInfo="코드 정보 추가";
+		
+		initComp();
+		
 		this.setModal(true);
-		this.setTitle("Code 정보 추가");
 
-		this.getContentPane().add(buildTitle(title+" 코드 추가"),BorderLayout.NORTH);
-		this.getContentPane().add(buildCenter(),BorderLayout.CENTER);
-		this.getContentPane().add(buildControl(),BorderLayout.SOUTH);
-		ViewUtil.center(this, true);
+		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
+
+		this.addComp(buildCenter(),BorderLayout.CENTER);
+
+		this.addComp(buildControl(),BorderLayout.SOUTH);
+
+		ViewUtil.center(this,true);
+
 		this.setResizable(false);
+
 		this.setVisible(true);
 	}
 	
+	private void initComp() {
+		
+		txfCodeName = new JTextField(20);
+		
+		txtKorCode = new JTextField(20);
+		
+		txfField = new JTextField(20);	
+	}
+
 	public KSGPanel buildCenter()
 	{
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
-		
-		txfCodeName = new JTextField(20);
-		txtKorCode = new JTextField(20);
-		txfField = new JTextField(20);	
-		
-
 
 		pnCenter.add(createFormItem(txfCodeName, "Name"));
+		
 		pnCenter.add(createFormItem(txtKorCode, "한글"));
+		
 		pnCenter.add(createFormItem(txfField, "Field"));
 		
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
+		
 		return pnMain;
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
 		String command = e.getActionCommand();
+		
 		if(command.equals("확인"))
 		{
 			if(txfCodeName.getText().length()<=0)

@@ -15,9 +15,10 @@ import javax.swing.JLabel;
 
 import com.dtp.api.control.AbstractController;
 import com.ksg.common.model.CommandMap;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.comp.View;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 
 /**
@@ -37,11 +38,15 @@ import com.ksg.workbench.master.BaseInfoUI;
   */
 public abstract class BaseInfoDialog extends KSGDialog implements ActionListener, View{
 	
+	public static final String ACTION_SAVE 		= "저장";
 	
-	protected static String INSERT_ACTION = "추가";
-	protected static String UPDATE_ACTION = "저장";
-	protected static String CANCEL_ACTION = "취소";
+	public static final String ACTION_DELETE 	= "삭제";
 	
+	public static final String ACTION_CANCEL 	= "취소";
+	
+	public static final String ACTION_INSERT 	= "추가";
+	
+	public static final String ACTION_UPDATE 	= "수정";
 	
 	protected JLabel lblTitle;
 
@@ -55,10 +60,13 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	
 	private AbstractController controller;
 	
+	
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 
 	public BaseInfoDialog(BaseInfoUI baseInfoUI) {
 		super();
@@ -89,15 +97,17 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		
 		pnLabel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		
-		JLabel lblCompany_abbr = new JLabel(title);
+		JLabel lblItemLabel = new JLabel(title);
 		
-		lblCompany_abbr.setVerticalAlignment(JLabel.CENTER);
+		lblItemLabel.setVerticalAlignment(JLabel.CENTER);
 		
-		pnLabel.add(lblCompany_abbr);
+		pnLabel.add(lblItemLabel);
 		
 		pnLabel.setBackground(labelColor);
 		
-		lblCompany_abbr.setPreferredSize(new Dimension(120,15));
+		lblItemLabel.setPreferredSize(new Dimension(120,15));
+		
+		pnLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		
 		KSGPanel pnComp = new KSGPanel(new BorderLayout());
 		
@@ -132,21 +142,28 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 	{	
 		KSGPanel pnControl =  new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		butOK = new JButton("저장");
+		butOK = new KSGGradientButton("저장");
 
-		butCancel = new JButton("취소");
+		butCancel = new KSGGradientButton("취소");
+		
 		butOK.addActionListener(this);
+		
 		butCancel.addActionListener(this);
+		
 		pnControl.add(butOK);
+		
 		pnControl.add(butCancel);
 		
-		
 		KSGPanel pnLine = new KSGPanel();
+		
 		pnLine.setBorder(BorderFactory.createLineBorder(Color.lightGray));
+		
 		pnLine.setPreferredSize(new Dimension(0,1));		
 		
 		KSGPanel pnMain =  new KSGPanel(new BorderLayout());
+		
 		pnMain.add(pnControl);
+		
 		pnMain.add(pnLine,BorderLayout.NORTH);		
 		
 		
@@ -158,8 +175,6 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		KSGPanel pnTitle = new KSGPanel();
 		
 		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		pnTitle.setBackground(Color.white);
 		
 		lblTitle = new JLabel(title);
 		
@@ -185,12 +200,14 @@ public abstract class BaseInfoDialog extends KSGDialog implements ActionListener
 		if(this.controller!=null)
 			this.controller.call(serviceId, param, this);
 	}
+	public void callApi(String serviceId)
+	{
+		if(this.controller!=null)
+			this.controller.call(serviceId, new CommandMap(),this);
+	}
 	
 	@Override
-	public void updateView() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void updateView() {};
 
 	
 

@@ -24,16 +24,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.AreaDAOImpl;
 import com.ksg.service.impl.AreaServiceImpl;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.panel.KSGPageTablePanel;
+import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
-import com.ksg.workbench.common.comp.dialog.KSGDialog;
-import com.ksg.workbench.common.comp.panel.KSGPageTablePanel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.UpdateAreaInfodialog;
 
@@ -65,14 +67,11 @@ public class PnArea extends PnBase implements ActionListener{
 
 	private JLabel lblTable,lblTotal;
 	
-	KSGTablePanel tableH;
+	private KSGTablePanel tableH;
 
-	private String columName[] = {"코드","지역명","지역코드"};
-	
 	AreaServiceImpl areaService = new AreaServiceImpl();
 	
 	AreaDAOImpl areaDAO = new AreaDAOImpl();
-
 
 	public PnArea(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
@@ -87,10 +86,9 @@ public class PnArea extends PnBase implements ActionListener{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 		
 		tableH = new KSGTablePanel("지역 정보");
+		
 		tableH.addMouseListener(new TableSelectListner());
 		
-		
-		//  TODO 컬럼 정렬
 		KSGTableColumn columns[] = new KSGTableColumn[3];
 
 		columns[0] = new KSGTableColumn();
@@ -102,6 +100,7 @@ public class PnArea extends PnBase implements ActionListener{
 		columns[1].columnField = "area_name";
 		columns[1].columnName = "지역명";
 		columns[1].size = 300;
+		columns[1].ALIGNMENT = SwingConstants.LEFT;
 
 		columns[2] = new KSGTableColumn();
 		columns[2].columnField = "area_book_code";
@@ -110,10 +109,10 @@ public class PnArea extends PnBase implements ActionListener{
 
 		tableH.setColumnName(columns);
 		
-		
-		
 		tableH.initComp();
+		
 		tableH.setShowControl(true);
+		
 		tableH.addContorlListener(this);
 		
 		
@@ -191,12 +190,14 @@ public class PnArea extends PnBase implements ActionListener{
 		else if(command.equals(KSGPageTablePanel.DELETE))
 		{
 			
-			
 			int row =tableH.getSelectedRow();
-			if(row<0)
-				return;
+			
+			if(row<0) return;
+			
 			String data = (String) tableH.getValueAt(row, 1);
+			
 			int result=JOptionPane.showConfirmDialog(null, data+"를 삭제 하시겠습니까?", "지역 정보 삭제", JOptionPane.YES_NO_OPTION);
+			
 			if(result==JOptionPane.OK_OPTION)
 			{						
 				try {
@@ -302,9 +303,12 @@ public class PnArea extends PnBase implements ActionListener{
 	@Override
 	public void fnSearch() {
 		try {
-			List li = areaService.selectAreaList(null);
+			List li = areaService.selectAreaList(new CommandMap());
+			
 			tableH.setResultData(li);
+			
 			lblTotal.setText(li.size()+" ");
+			
 		} catch (SQLException ee) {
 			// TODO Auto-generated catch block
 			ee.printStackTrace();
@@ -323,7 +327,4 @@ public class PnArea extends PnBase implements ActionListener{
 		
 		
 	}
-
-
-
 }

@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import org.jdom.JDOMException;
 
 import com.ksg.domain.ADVData;
+import com.ksg.domain.ADVDataParser;
 import com.ksg.domain.ShippersTable;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.print.logic.quark.v1.XTGPage;
@@ -120,6 +121,9 @@ public class CreateXTGCommandInD extends AbstractCommand{
 			for(int i=0;i<advLi.size();i++)
 			{
 				ADVData  data = advLi.get(i);
+				
+				ADVDataParser parser = new ADVDataParser(data);
+				
 				ShippersTable table=_tableService.getTableById(data.getTable_id());
 				if(table.getTable_index()==0)
 					continue;
@@ -154,11 +158,11 @@ public class CreateXTGCommandInD extends AbstractCommand{
 				//				logger.debug("result:"+result);
 				String dataArray[][]=null;
 
-				dataArray = data.getDataArray();
+				dataArray = parser.getDataArray();
 
 
 
-				String vesselList[][] = data.getAbbrVesselArray(false);
+				String vesselList[][] = parser.getAbbrVesselArray(false);
 
 				for(int j=0;j<dataArray.length;j++)
 				{
@@ -170,7 +174,7 @@ public class CreateXTGCommandInD extends AbstractCommand{
 							result+=version+"\t"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
 							if(data.getTs()!=null&&data.getTs().equals("TS"))
 							{
-								String tsvesselList[][]=data.getFullVesselArray(true);
+								String tsvesselList[][]=parser.getFullVesselArray(true);
 								result+="<B>"+tsvesselList[j][0]+"\t"+tsvesselList[j][1]+"<$>\t";
 							}
 						}else
@@ -178,7 +182,7 @@ public class CreateXTGCommandInD extends AbstractCommand{
 							result+=version+"\n<$>\t<B>"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
 							if(data.getTs()!=null&&data.getTs().equals("TS"))
 							{
-								String tsvesselList[][]=data.getFullVesselArray(true);
+								String tsvesselList[][]=parser.getFullVesselArray(true);
 								result+="<B>"+tsvesselList[j][0]+"\t"+tsvesselList[j][1]+"<$>\t";
 							}
 						}
@@ -188,7 +192,7 @@ public class CreateXTGCommandInD extends AbstractCommand{
 						result+="<$>\t<B>"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
 						if(data.getTs()!=null&&data.getTs().equals("TS"))
 						{
-							String tsvesselList[][]=data.getFullVesselArray(true);
+							String tsvesselList[][]=parser.getFullVesselArray(true);
 							result+="<B>"+tsvesselList[j][0]+"\t"+tsvesselList[j][1]+"<$>\t";
 						}
 					}
@@ -308,7 +312,7 @@ public class CreateXTGCommandInD extends AbstractCommand{
 
 
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 
 			e.printStackTrace();
 			return RESULT_FAILE;
@@ -331,137 +335,137 @@ public class CreateXTGCommandInD extends AbstractCommand{
 		}
 
 	}
-	public void execute2() {
-		//		String advMessage = new String();
-		// 테이블 정보 조회
-
-		if(selectedCompany==null)
-		{
-			result="선택된 선사가 없습니다.";
-			return;
-		}
-
-
-		try {
-			//			String ver;
-			String bold="";
-			List<ADVData> advLi = _advService.getADVDataListByPage(selectedCompany, selectedPage, selectDate);
-			if(advLi.size()==0)
-			{
-				result="광고정보가 없습니다.";
-				return;
-			}
-			logger.debug("searched table size:"+advLi.size());
-			// 광고 정보 조회
-			for(int i=0;i<advLi.size();i++)
-			{
-				ADVData  data = advLi.get(i);
-				ShippersTable table=_tableService.getTableById(data.getTable_id());
-				//result+=data.getData()+"\n";
-				if(i==0)//첫번째 태그 분석 - version
-				{
-					if(table.getQuark_format().length()<1)
-					{
-						JOptionPane.showMessageDialog(null, table.getPage()+"-"+table.getTable_index()+"번 테이블의 쿽 정보가 없습니다.");
-						return;
-					}
-					int lastIndex=table.getQuark_format().lastIndexOf(":");
-					int lastIndex2=table.getQuark_format().lastIndexOf(">");
-					result+=table.getQuark_format().substring(0,lastIndex+1);//version
-
-					bold=table.getQuark_format().substring(lastIndex+1,lastIndex2+1);//bold
-
-				}else
-				{
-					int fistIndex=table.getQuark_format().lastIndexOf("*t");
-					int lastIndex = table.getQuark_format().lastIndexOf(":");
-					int boldLastIndex = table.getQuark_format().lastIndexOf(">");
-					// 추후 수정 예정
-					result+="<"+table.getQuark_format().substring(fistIndex,lastIndex+1);//table
-					bold=table.getQuark_format().substring(lastIndex+1,boldLastIndex+1);//bold
-				}
-
-				logger.debug("result:"+result);
-				String dataArray[][]=null;
-
-				dataArray = data.getDataArray();
-
-				String vesselList[][] = data.getFullVesselArray(false);
-				for(int j=0;j<dataArray.length;j++)
-				{
-					// bold
-					if(j==0)
-					{
-						result+=bold+"\t"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
-
-					}else
-					{
-						result+="<$>\t<B>"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
-					}
-					// 선박 + 항차 
-					//result+=bold+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
-
-					for(int z=0;z<dataArray[j].length;z++)
-					{
-
-						try
-						{
-							System.out.println(dateFormat.parse(dataArray[j][z]).toString());
-							result +=dateFormat.parse(dataArray[j][z]).toString();
-						} catch (ParseException e) 
-						{
-							result +=dataArray[j][z];
-
-							StringTokenizer st = new StringTokenizer(dataArray[j][z]);
-
-							if(st.countTokens()==2)
-							{
-
-								String temp;
-								try {
-									temp = dateFormat.parse(st.nextToken()).toString();
-									temp+="-"+dateFormat.parse(st.nextToken()).toString();
-
-
-								} catch (ParseException e1) {
-									result +=dataArray[j][z];
-									e1.printStackTrace();
-								}
-
-
-							}
-							e.printStackTrace();
-						}
-						result +=dataArray[j][z];
-						if(z<dataArray[j].length-1)
-							result+="t";	
-
-					}
-					if(j!=dataArray.length-1)
-						result+="\n";
-
-				}
-				if(i!=advLi.size()-1)
-				{
-					result+="<\\c>";	
-				}
-			}
-
-			if(isCreateFile)
-			{
-				try{
-					xtgmanager.createXTGFile(data,selectedPage+".txt");
-					JOptionPane.showMessageDialog(null,selectedCompany+"_"+selectedPage+"_"+selectDate+" 파일을 생성했습니다.");
-				}catch(Exception e)
-				{
-					JOptionPane.showMessageDialog(null, selectedPage+".txt 파일을 생성에 실패 했습니다."+e.getMessage());
-				}
-			}
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-
-	}
+//	public void execute2() {
+//		//		String advMessage = new String();
+//		// 테이블 정보 조회
+//
+//		if(selectedCompany==null)
+//		{
+//			result="선택된 선사가 없습니다.";
+//			return;
+//		}
+//
+//
+//		try {
+//			//			String ver;
+//			String bold="";
+//			List<ADVData> advLi = _advService.getADVDataListByPage(selectedCompany, selectedPage, selectDate);
+//			if(advLi.size()==0)
+//			{
+//				result="광고정보가 없습니다.";
+//				return;
+//			}
+//			logger.debug("searched table size:"+advLi.size());
+//			// 광고 정보 조회
+//			for(int i=0;i<advLi.size();i++)
+//			{
+//				ADVData  data = advLi.get(i);
+//				ShippersTable table=_tableService.getTableById(data.getTable_id());
+//				//result+=data.getData()+"\n";
+//				if(i==0)//첫번째 태그 분석 - version
+//				{
+//					if(table.getQuark_format().length()<1)
+//					{
+//						JOptionPane.showMessageDialog(null, table.getPage()+"-"+table.getTable_index()+"번 테이블의 쿽 정보가 없습니다.");
+//						return;
+//					}
+//					int lastIndex=table.getQuark_format().lastIndexOf(":");
+//					int lastIndex2=table.getQuark_format().lastIndexOf(">");
+//					result+=table.getQuark_format().substring(0,lastIndex+1);//version
+//
+//					bold=table.getQuark_format().substring(lastIndex+1,lastIndex2+1);//bold
+//
+//				}else
+//				{
+//					int fistIndex=table.getQuark_format().lastIndexOf("*t");
+//					int lastIndex = table.getQuark_format().lastIndexOf(":");
+//					int boldLastIndex = table.getQuark_format().lastIndexOf(">");
+//					// 추후 수정 예정
+//					result+="<"+table.getQuark_format().substring(fistIndex,lastIndex+1);//table
+//					bold=table.getQuark_format().substring(lastIndex+1,boldLastIndex+1);//bold
+//				}
+//
+//				logger.debug("result:"+result);
+//				String dataArray[][]=null;
+//
+//				dataArray = data.getDataArray();
+//
+//				String vesselList[][] = data.getFullVesselArray(false);
+//				for(int j=0;j<dataArray.length;j++)
+//				{
+//					// bold
+//					if(j==0)
+//					{
+//						result+=bold+"\t"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
+//
+//					}else
+//					{
+//						result+="<$>\t<B>"+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
+//					}
+//					// 선박 + 항차 
+//					//result+=bold+vesselList[j][0]+"\t"+vesselList[j][1]+"<$>\t";
+//
+//					for(int z=0;z<dataArray[j].length;z++)
+//					{
+//
+//						try
+//						{
+//							System.out.println(dateFormat.parse(dataArray[j][z]).toString());
+//							result +=dateFormat.parse(dataArray[j][z]).toString();
+//						} catch (ParseException e) 
+//						{
+//							result +=dataArray[j][z];
+//
+//							StringTokenizer st = new StringTokenizer(dataArray[j][z]);
+//
+//							if(st.countTokens()==2)
+//							{
+//
+//								String temp;
+//								try {
+//									temp = dateFormat.parse(st.nextToken()).toString();
+//									temp+="-"+dateFormat.parse(st.nextToken()).toString();
+//
+//
+//								} catch (ParseException e1) {
+//									result +=dataArray[j][z];
+//									e1.printStackTrace();
+//								}
+//
+//
+//							}
+//							e.printStackTrace();
+//						}
+//						result +=dataArray[j][z];
+//						if(z<dataArray[j].length-1)
+//							result+="t";	
+//
+//					}
+//					if(j!=dataArray.length-1)
+//						result+="\n";
+//
+//				}
+//				if(i!=advLi.size()-1)
+//				{
+//					result+="<\\c>";	
+//				}
+//			}
+//
+//			if(isCreateFile)
+//			{
+//				try{
+//					xtgmanager.createXTGFile(data,selectedPage+".txt");
+//					JOptionPane.showMessageDialog(null,selectedCompany+"_"+selectedPage+"_"+selectDate+" 파일을 생성했습니다.");
+//				}catch(Exception e)
+//				{
+//					JOptionPane.showMessageDialog(null, selectedPage+".txt 파일을 생성에 실패 했습니다."+e.getMessage());
+//				}
+//			}
+//		} catch (SQLException e) {
+//
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 }

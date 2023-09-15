@@ -16,9 +16,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.SQLException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
@@ -30,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.model.KSGObserver;
 import com.ksg.service.TableService;
+import com.ksg.view.comp.table.renderer.DateCellRenderer;
 import com.ksg.workbench.admin.KSGViewParameter;
 
 /**
@@ -81,7 +82,7 @@ public abstract class KSGTable extends JTable implements KSGObserver {
 		{
 			TableColumn namecol = colmodel.getColumn(i);
 
-			DefaultTableCellRenderer renderer = new KSGTableCellRenderer();
+			DefaultTableCellRenderer renderer = new DateCellRenderer();
 
 			namecol.setCellRenderer(renderer);
 			namecol.setHeaderRenderer(new IconHeaderRenderer());
@@ -107,20 +108,19 @@ public abstract class KSGTable extends JTable implements KSGObserver {
 			if (table != null) {
 				JTableHeader header = table.getTableHeader();
 				if (header != null) {
-					setForeground(new Color(61,86,113));
+					setForeground(new Color(47,47,47));
 
-					setBackground(new Color(214,226,242));
+					setBackground(new Color(249,250,250));
 					
-					Font f = header.getFont();
+					Font font = new Font("Malgun Gothic",Font.BOLD,12);
 					
-					Font font = new Font(f.getFontName(),Font.BOLD,12);
 					setFont(font);
 				}
 			}
 
 			setText((value == null) ? "" : value.toString());
 
-			setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+			setBorder(BorderFactory.createLineBorder(new Color(220,220,220),1));
 
 			setHorizontalAlignment(JLabel.CENTER);
 			

@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
@@ -20,50 +21,58 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-
 import javax.swing.JScrollPane;
 
+import com.dtp.api.control.CodeController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.KeyWordInfo;
 import com.ksg.service.BaseService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.NotificationManager;
+import com.ksg.view.comp.panel.KSGPanel;
 
 public class PnKeyWord extends PnOption {
+
+
 	private JList listKeyword;
-	
-	String selectedKeyword="vessel";
-	
+
+	private String selectedKeyword="vessel";
+
 	private Font defaultfont;
-	
-	BaseService baseService;
-	
+
+
 	private KSGPropertis propertis = KSGPropertis.getIntance();
-	
+
 	private JComboBox cbxKeyword;
+
+	private JButton butOption;
+
+	private JButton butADD;
+
+	private JButton butDel;
+
 	public PnKeyWord(PreferenceDialog preferenceDialog) {
 		super(preferenceDialog);
-		
+
 		this.setName("Keyword형식");
-		
-		baseService = new BaseServiceImpl();
-		
-		
+
+		this.setController(new CodeController());
+
+		initComp();
+
 		this.setLayout(new BorderLayout());
+
 		this.add(buildCenter(),BorderLayout.CENTER);
 	}
-	
-	private KSGPanel buildCenter()
+
+	private void initComp()
 	{
-		
 		listKeyword = new JList();
-		
-		KSGPanel pnKeyWordTypeOption = new KSGPanel();
-		pnKeyWordTypeOption.setLayout(new FlowLayout(FlowLayout.LEFT));
-		pnKeyWordTypeOption.add(new JLabel("키워드 타입: "));
-		
 		cbxKeyword = new JComboBox();
 		cbxKeyword.setPreferredSize(new Dimension(200,25));
 		cbxKeyword.addItem("Vessel");
@@ -71,98 +80,220 @@ public class PnKeyWord extends PnOption {
 		cbxKeyword.addItem("Vessel&Voyage");
 		cbxKeyword.addActionListener(this);
 		cbxKeyword.setSelectedIndex(0);
-	
-		pnKeyWordTypeOption.add(cbxKeyword);
-		JButton butOption = new JButton("Vessel&Voyage옵션");
+		butOption = new JButton("Vessel&Voyage옵션");
 		butOption.setActionCommand("옵션");
-		butOption.addActionListener(new KeywordOptionDialog());
-		pnKeyWordTypeOption.add(butOption);
+		butOption.addActionListener(this);
 
-
-		JButton butADD = new JButton("Key Word  추가");
+		butADD = new KSGGradientButton("Key Word  추가");
+		butDel = new KSGGradientButton("Key Word  삭제");
 		butADD.addActionListener(this);
-		JButton butDel = new JButton("Key Word  삭제");
 		butDel.addActionListener(this);
-
-
 		butADD.setFont(defaultfont);
 		butDel.setFont(defaultfont);
+	}
 
-		
+	private KSGPanel buildCenter()
+	{
+		KSGPanel pnKeyWordTypeOption = new KSGPanel();
+
+		pnKeyWordTypeOption.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		pnKeyWordTypeOption.add(new JLabel("키워드 타입: "));
+
+		pnKeyWordTypeOption.add(cbxKeyword);
+
+		pnKeyWordTypeOption.add(butOption);
+
 		Box pnBox =Box.createVerticalBox();
-		
+
 		pnBox.add(pnKeyWordTypeOption);
-		
-		KSGPanel pnKeyList = new KSGPanel();
-		pnKeyList.setLayout(new BorderLayout());
+
+		KSGPanel pnKeyList = new KSGPanel(new BorderLayout());
+
 		pnKeyList.add(new JScrollPane(listKeyword));
-		Box pnKeyControl = Box.createVerticalBox();
-		
-		pnKeyControl.add(butADD);		
-		pnKeyControl.add(Box.createGlue());
+
+		Box pnKeyControl = Box.createVerticalBox();	
+
+		pnKeyControl.add(butADD);
+
+		pnKeyControl.add(Box.createVerticalStrut(15));
+
 		pnKeyControl.add(butDel);
+
 		pnKeyControl.add(Box.createGlue());
-		
+
 		KSGPanel pn1 = new KSGPanel();
+
 		pn1.add(pnKeyControl);
-		
+
 		pnKeyList.add(pn1,BorderLayout.EAST);
 
 		pnBox.add(pnKeyList);
-		
+
 		KSGPanel pnMain=new KSGPanel(new BorderLayout());
-		
+
 		pnMain.add(pnBox);
+
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,15, 5,5));
+
 		return pnMain;
-		
+
+	}
+
+	private String getKeyType()
+	{
+		Object selectedKeytyp=cbxKeyword.getSelectedItem();
+
+		if(selectedKeytyp.equals("Vessel"))
+		{
+			return "VESSEL"; 
+
+		}else if(selectedKeytyp.equals("Voyage"))
+		{
+			return "VOYAGE";
+		}
+		else
+		{
+			return "BOTH";
+		}
+	}
+
+	public void actionPerformed(ActionEvent e) {
+
+		String command = e.getActionCommand();
+
+		if(command.equals("comboBoxChanged"))
+		{
+			fnSearch();
+		}
+
+		else if(command.equals("Key Word  추가"))
+		{
+			String result=JOptionPane.showInputDialog(preferenceDialog, cbxKeyword.getSelectedItem()+"타입 Keyword를 입력하세요");
+
+			if(result!=null&&result.length()>0)
+			{
+				CommandMap param = new CommandMap();
+
+				param.put("key_name", result);
+
+				param.put("key_type", getKeyType());
+
+				callApi("pnKeyWord.insertKeyWord", param);
+
+			}else
+			{
+				NotificationManager.showNotification("키워드를 입력하세요");
+			}
+		}
+		else if(command.equals("Key Word  삭제"))
+		{
+
+			if(listKeyword.getSelectedValue()==null)return;
+			
+			int result=JOptionPane.showConfirmDialog(preferenceDialog, listKeyword.getSelectedValue()+" 항목을 삭제 하시겠습니까?","Key Word 삭제",JOptionPane.YES_NO_OPTION);
+
+			if(result==JOptionPane.OK_OPTION)
+			{
+				CommandMap param = new CommandMap();
+
+				param.put("key_name", listKeyword.getSelectedValue());
+
+				param.put("key_type", getKeyType());
+
+				callApi("pnKeyWord.deleteKeyWord", param);
+
+			}else
+			{
+				JOptionPane.showMessageDialog(preferenceDialog, "선택된 Key Word가 없습니다");
+			}
+		}
+		else if(command.equals("옵션"))
+		{
+			KeywordOptionDialog  dailog = new KeywordOptionDialog(preferenceDialog);
+			
+			dailog.createAndUpdateUI();
+		}
 	}
 	
-	private final class KeywordOptionDialog implements ActionListener {
-		private JComboBox cbxCount;
-		private JComboBox cbxDivider;
-	
+	private void fnSearch()
+	{
+		Object obj = cbxKeyword.getSelectedItem();
 
-		public void actionPerformed(ActionEvent arg0) {
+		CommandMap param = new CommandMap();
+
+		param.put("key_type", getKeyType() );
+
+		callApi("pnKeyWord.selectKeyWordInfoListByCondition", param);	
+	}
+
+	public void saveAction() {
+
+	}
+
+	@Override
+	public void updateView() {
+
+		CommandMap result= this.getModel();
+
+		String serviceId = (String) result.get("serviceId");
+
+		if("pnKeyWord.selectKeyWordInfoListByCondition".equals(serviceId)) {
+
+			List<KeyWordInfo> data = (List) result.get("data");
+
+			DefaultListModel listModel = new DefaultListModel();
+
+			Iterator<KeyWordInfo> iter = data.iterator();
+
+			while(iter.hasNext())
+			{
+				listModel.addElement(iter.next().getKey_name());
+			}
 			
-			final JDialog dialog =  new JDialog(preferenceDialog);
-			dialog.setTitle("Vessel&Voy Keyword 옵션" );
-			KSGPanel pnControl = new KSGPanel();
-			pnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			JButton butSubOk = new JButton("확인");
-			butSubOk.addActionListener(new ActionListener() {
+			listKeyword.setModel(listModel);
 
-				public void actionPerformed(ActionEvent e) {
+		}else if("pnKeyWord.insertKeyWord".equals(serviceId)) {
+			NotificationManager.showNotification("추가 되었습니다.");
+			fnSearch();
+		}
+		
+		else if("pnKeyWord.deleteKeyWord".equals(serviceId)) {
+			NotificationManager.showNotification("삭제 되었습니다.");
+			fnSearch();
+		}
+		
+		
+	}
+	class KeywordOptionDialog extends KSGDialog implements ActionListener
+	{
+		private JComboBox cbxCount;
 
-					String divider=(String)cbxDivider.getSelectedItem();
-					int cc=(Integer)cbxCount.getSelectedItem();
+		private JComboBox cbxDivider;
 
-					propertis.setProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_DIVIDER, divider);
-					propertis.setProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_COUNT, String.valueOf(cc));
-					propertis.store();
-					dialog.setVisible(false);
-					dialog.dispose();
-				}
-			});
+		private JButton butSubOk;
+
+		private JButton butSubCancel;
+
+		public KeywordOptionDialog(JDialog dialog)
+		{
+			super(dialog);
+
+			initComp();
+
+			this.addComponentListener(this);
+		}
+
+		private void initComp()
+		{
+			butSubOk = new JButton("확인");
+			butSubOk.addActionListener(this);
 			butSubOk.setFont(defaultfont);
-			JButton butSubCancel = new JButton("취소");
-			butSubCancel.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent arg0) {
-					dialog.setVisible(false);
-					dialog.dispose();
-				}
-			});
+			butSubCancel = new JButton("취소");
+			butSubCancel.addActionListener(this);
 			butSubCancel.setFont(defaultfont);
-			pnControl.add(butSubOk);
-			pnControl.add(butSubCancel);
-			KSGPanel pnMain = new KSGPanel();
-			pnMain.setLayout(new FlowLayout(FlowLayout.LEFT));
-			JLabel lblDivider =new JLabel("구분자 : ");
-			lblDivider.setFont(defaultfont);
-			lblDivider.setPreferredSize(new Dimension(60,25));
-			cbxDivider = new JComboBox();
 
+			cbxDivider = new JComboBox();
 			cbxDivider.setPreferredSize(new Dimension(60,25));
 			cbxDivider.setToolTipText("Vessel과 Voyage를 구분할 구분자를 지정");
 			cbxDivider.setFont(defaultfont);
@@ -177,6 +308,19 @@ public class PnKeyWord extends PnOption {
 			cbxCount.addItem(1);
 			cbxCount.addItem(2);
 			cbxCount.addItem(3);
+		}
+
+
+		public void createAndUpdateUI()
+		{
+			KSGPanel pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+			pnControl.add(butSubOk);
+			pnControl.add(butSubCancel);
+			KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+			JLabel lblDivider =new JLabel("구분자 : ");
+			lblDivider.setFont(defaultfont);
+			lblDivider.setPreferredSize(new Dimension(60,25));
+
 
 			JLabel lblCount =new JLabel("위치 : ");
 			lblCount.setFont(defaultfont);
@@ -184,144 +328,55 @@ public class PnKeyWord extends PnOption {
 			pnMain.add(cbxDivider);
 			pnMain.add(lblCount);
 			pnMain.add(cbxCount);
+
+
+			getContentPane().add(pnMain);
+
+			getContentPane().add(pnControl,BorderLayout.SOUTH);
+
+			setSize(250,120);
+
+			ViewUtil.center(this, false);
+
+			setVisible(true);
+		}
+
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String command = e.getActionCommand();
+			if("확인".equals(command)) {
+
+				String divider	= (String)cbxDivider.getSelectedItem();
+
+				int cc			= (Integer)cbxCount.getSelectedItem();
+
+				propertis.setProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_DIVIDER, divider);
+
+				propertis.setProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_COUNT, String.valueOf(cc));
+
+				propertis.store();
+
+				setVisible(false);
+
+				dispose();
+			}
+			else if("취소".equals(command)) {
+				KeywordOptionDialog.this.setVisible(false);
+				KeywordOptionDialog.this.dispose();
+			}
+		}
+
+		@Override
+		public void componentShown(ComponentEvent e) {
+
 			String doubleKey = propertis.getProperty(KSGPropertis.PROPERTIES_DOUBLEKEY);
+
 			StringTokenizer dst =  new StringTokenizer(doubleKey,"|");
 
-			
-			System.out.println(Integer.parseInt(propertis.getProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_COUNT).toString()));
 			cbxCount.setSelectedItem(Integer.parseInt(propertis.getProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_COUNT).toString()));
-			
-			cbxDivider.setSelectedItem(propertis.getProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_DIVIDER));				
 
-
-			dialog.getContentPane().add(pnMain);
-			dialog.getContentPane().add(pnControl,BorderLayout.SOUTH);
-			dialog.setSize(250,120);
-			ViewUtil.center(dialog, false);
-			dialog.setVisible(true);
+			cbxDivider.setSelectedItem(propertis.getProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_DIVIDER));		
 		}
-	}
-
-	public void actionPerformed(ActionEvent e) {
-		String command = e.getActionCommand();
-		try {
-		if(command.equals("comboBoxChanged"))
-		{
-			JComboBox box = (JComboBox) e.getSource();
-			Object obj = box.getSelectedItem();
-			if(obj.equals("Vessel"))
-			{
-				selectedKeyword="vessel";
-//				String keyList =propertis.getProperty("xlskey.vessel");
-				
-					updateKeyWordList(baseService.getKeywordList("VESSEL"));
-				
-			}else if(obj.equals("Voyage"))
-			{
-				selectedKeyword=command;
-//				String keyList =propertis.getProperty("xlskey.vessel");
-				try {
-					updateKeyWordList(baseService.getKeywordList("VOYAGE"));
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-			else if(obj.equals("Vessel&Voyage"))
-			{
-//				String keyList =propertis.getProperty("xlskey.vessel");
-				try {
-					updateKeyWordList(baseService.getKeywordList("BOTH"));
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-			
-		}
-		
-		else if(command.equals("Key Word  추가"))
-		{
-			String result=JOptionPane.showInputDialog(preferenceDialog, cbxKeyword.getSelectedItem()+"타입 Keyword를 입력하세요");
-			if(result!=null&&result.length()>0)
-			{
-				KeyWordInfo insert = new KeyWordInfo();
-				insert.setKey_name(result);
-				Object selectedKeytyp=cbxKeyword.getSelectedItem();
-				
-				if(selectedKeytyp.equals("Vessel"))
-				{
-					insert.setKey_type("VESSEL");
-				}else if(selectedKeytyp.equals("Voyage"))
-				{
-					insert.setKey_type("VOYAGE");
-				}
-				else if(selectedKeytyp.equals("Vessel&Voyage"))
-				{
-					insert.setKey_type("BOTH");	
-				}
-				try {
-					baseService.insertKeyword(insert);
-					DefaultListModel model =(DefaultListModel) listKeyword.getModel();
-
-					model.addElement(result);
-				} catch (SQLException e1) {
-					if(e1.getErrorCode()==2627)
-					{
-						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "존재하는 키워드 입니다.");
-					}
-
-					e1.printStackTrace();
-				}
-			}else
-			{
-				JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "키워드를 입력하세요");
-			}
-		}
-		else if(command.equals("Key Word  삭제"))
-		{
-			if(listKeyword.getSelectedValue()!=null)
-			{
-				int result=JOptionPane.showConfirmDialog(preferenceDialog, listKeyword.getSelectedValue()+" 항목을 삭제 하시겠습니까?","Key Word 삭제",JOptionPane.YES_NO_OPTION);
-				if(result==JOptionPane.OK_OPTION)
-				{
-					try {
-						KeyWordInfo info = new KeyWordInfo();
-						info.setKey_name(listKeyword.getSelectedValue().toString());
-						baseService.deleteKeyword(info);
-						DefaultListModel model = (DefaultListModel) listKeyword.getModel();
-						model.removeElement(listKeyword.getSelectedValue());
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}else
-			{
-				JOptionPane.showMessageDialog(preferenceDialog, "선택된 Key Word가 없습니다");
-			}
-		}
-		} catch (SQLException e1) {
-			JOptionPane.showMessageDialog(this, e1.getMessage());
-			e1.printStackTrace();
-		}
-	}
-	@SuppressWarnings("unchecked")
-	private void updateKeyWordList(List keyList) {
-
-		Iterator ite = keyList.iterator();
-		DefaultListModel listModel = new DefaultListModel();
-		while(ite.hasNext())
-		{
-			listModel.addElement(ite.next());
-		}
-
-
-		listKeyword.setModel(listModel);
-	}
-	
-
-	public void saveAction() {
-		
 	}
 }
-

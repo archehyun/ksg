@@ -25,8 +25,7 @@ import org.jdom.Element;
 import com.ksg.domain.Vessel;
 import com.ksg.service.VesselServiceV2;
 import com.ksg.service.impl.VesselServiceImpl;
-import com.ksg.workbench.adv.KSGXLSImportPanel;
-import com.ksg.workbench.adv.dialog.SearchVesselDialog;
+import com.ksg.workbench.adv.dialog.SearchVesselNameDialog;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -141,9 +140,9 @@ public class VesselListComp extends JList{
 
 				VesselInfo info=(VesselInfo) VesselListComp.this.getSelectedValue();
 
-				SearchVesselDialog dialog = new SearchVesselDialog(info.vesselName);
+				SearchVesselNameDialog dialog = new SearchVesselNameDialog(info.vesselName);
 				dialog.createAndUpdateUI();
-				if(dialog.OPTION==SearchVesselDialog.OK_OPTION)
+				if(dialog.OPTION==SearchVesselNameDialog.OK_OPTION)
 				{
 					DefaultListModel model=(DefaultListModel) VesselListComp.this.getModel();
 					model.setElementAt(dialog.info, index);
@@ -188,7 +187,7 @@ public class VesselListComp extends JList{
 
 				param.put("vessel_name", vesselName);
 
-				Vessel itemDetail=vesselService.selectDetail(vesselName);
+				Vessel itemDetail=vesselService.selectVesselDetail(vesselName);
 
 				VesselInfo info = new VesselInfo();
 				//선박명이 존재 하지 않을 경우
@@ -205,7 +204,7 @@ public class VesselListComp extends JList{
 				else
 				{
 					//선박명이 있는지 조회
-					Vessel itemHead=vesselService.select(vesselName);
+					Vessel itemHead=vesselService.selectVesselById(vesselName);
 					// 선박명이 있으면 선박명 사용
 					if(itemHead==null)
 					{
@@ -255,7 +254,7 @@ public class VesselListComp extends JList{
 				String vesselName =litinfo.vesselName;
 				Vessel op = new Vessel();
 				op.setVessel_name(vesselName);
-				Vessel v1 =vesselService.selectDetail(vesselName);
+				Vessel v1 =vesselService.selectVesselDetail(vesselName);
 				VesselInfo info = new VesselInfo();
 
 				if(v1==null)

@@ -11,8 +11,10 @@ import java.util.stream.Collectors;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.dtp.api.schedule.joint.print.route.RouteSchedulePrintFile;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.Vessel;
+import com.ksg.schedule.logic.print.RouteScheduleJointV1;
 import com.ksg.service.VesselService;
 import com.ksg.service.impl.VesselServiceImpl;
 
@@ -33,11 +35,11 @@ public class RouteScheduleJoint4Test {
 		
 		op.setDate_isusse("2023-03-06");
 		
-		RouteScheduleJointV4 jointV4 = new RouteScheduleJointV4("2023-03-06",RouteScheduleJoint.ORDER_BY_DATE);
+//		RouteSchedulePrintFile jointV4 = new RouteSchedulePrintFile("2023-03-06",RouteScheduleJointV1.ORDER_BY_DATE);
 		
 //		jointV4.initTag();
 		
-		jointV4 .execute();
+//		jointV4 .execute();
 		
 	}
 	@Ignore
@@ -48,11 +50,11 @@ public class RouteScheduleJoint4Test {
 		
 		op.setDate_isusse("2023-02-13");
 		
-		RouteScheduleJointV4 jointV4 = new RouteScheduleJointV4("2023-02-27",RouteScheduleJoint.ORDER_BY_DATE);
+		//RouteSchedulePrintFile jointV4 = new RouteSchedulePrintFile("2023-02-27",RouteScheduleJointV1.ORDER_BY_DATE);
 		
-		jointV4.initTag();
-		
-		jointV4 .execute();
+//		jointV4.init();
+//		
+//		jointV4 .execute();
 		
 	}
 	@Ignore

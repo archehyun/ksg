@@ -2,6 +2,7 @@ package com.ksg.view.comp.table;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
@@ -15,10 +16,15 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.JTableHeader;
 
+import com.ksg.view.comp.button.KSGGradientButton;
+import com.ksg.view.comp.label.BoldLabel;
+import com.ksg.view.comp.panel.KSGPanel;
+import com.ksg.view.comp.table.groupable.GroupableTableHeader;
 import com.ksg.view.comp.table.model.TableModel;
-import com.ksg.workbench.common.comp.label.BoldLabel;
-import com.ksg.workbench.common.comp.panel.KSGPanel;
+
+import mycomp.comp.MyTable;
 
 
 
@@ -40,16 +46,16 @@ import com.ksg.workbench.common.comp.panel.KSGPanel;
  */
 @SuppressWarnings("serial")
 public class KSGTablePanel extends KSGPanel{ 
+	
 	public static final String INSERT="insert";
 
 	public static final String DELETE="delete";
 
 	public static final String UPDATE="update";
 
-
 	protected int total;
 
-	private KSGAbstractTable table;
+	private MyTable table;
 
 	private String title;
 
@@ -62,10 +68,25 @@ public class KSGTablePanel extends KSGPanel{
 	private JButton butDelete;	
 
 	private KSGPanel pnControl;
+	
+	public MyTable getTable()
+	{
+		return table;
+	}
 
 	public void setShowControl(boolean showControl) {
+		
 		this.showControl = showControl;
-		pnControl.setVisible(showControl);
+		
+		butDelete.setVisible(showControl);
+		
+		butInsert.setVisible(showControl);
+		
+//		pnControl.setVisible(showControl);
+		
+		butInsert.updateUI();
+		
+		butDelete.updateUI();
 	}
 
 	public void setTitle(String title) {
@@ -73,11 +94,17 @@ public class KSGTablePanel extends KSGPanel{
 	}
 
 	public KSGTablePanel() {
+		
 		super();
 
 		this.setLayout(new BorderLayout(5,5));
-
-		table = new KSGAbstractTable();
+		
+		table = new KSGAbstractTable()
+		{
+			protected JTableHeader createDefaultTableHeader() {
+	              return new GroupableTableHeader(columnModel);
+	          }
+		};
 
 		table.setGridColor(Color.lightGray);
 
@@ -110,17 +137,19 @@ public class KSGTablePanel extends KSGPanel{
 	public KSGTablePanel(String title) {
 
 		this();
+		
 		this.title = title;
+		
 		this.add(createTitle(), BorderLayout.NORTH);
-
 	}
 
 	public KSGTablePanel(String title, TableModel model) {
 
 		this(model);
+		
 		this.title = title;
+		
 		this.add(createTitle(), BorderLayout.NORTH);
-
 	}
 
 	public void setSelectionMode(int SINGLE_SELECTION)
@@ -150,41 +179,44 @@ public class KSGTablePanel extends KSGPanel{
 		KSGPanel pnTitle = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
 
 		pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+		
+//		pnControl.setPreferredSize(new Dimension(200,45));
 
 		BoldLabel lblTitle = new BoldLabel(title + " 총");
 
-		butInsert = new JButton("추가");
+		butInsert = new KSGGradientButton("추가");
 
-
-
-		butDelete = new JButton("삭제");
-
-		//butUpdate = new JButton("수정");
-
-
-		//butInsert.setBackground(Color.BLUE);
-		//butInsert.setForeground(Color.white);
+		butDelete = new KSGGradientButton("삭제");
 
 		butInsert.setActionCommand(INSERT);
+		
 		butDelete.setActionCommand(DELETE);
-		//butUpdate.setActionCommand(UPDATE);
 
 		lblTotalCount = new JLabel("0");
+		
 		lblTotalCount.setForeground(Color.red);
 
-
 		pnControl.add(butInsert);
-		//pnControl.add(butUpdate);
+		
 		pnControl.add(butDelete);
 
 		pnTitle.add(lblTitle);
+		
 		pnTitle.add(lblTotalCount);
+		
 		pnTitle.add(new JLabel("건"));
 
 
 		pnMain.add(pnTitle,BorderLayout.LINE_START);
+		
 		pnMain.add(pnControl,BorderLayout.LINE_END);
-		pnControl.setVisible(showControl);
+		
+		butDelete.setVisible(showControl);
+		butInsert.setVisible(showControl);
+		
+		pnControl.setPreferredSize(new Dimension(200,30));
+		
+//		pnControl.setVisible(showControl);
 
 		return pnMain;
 	}
@@ -196,6 +228,8 @@ public class KSGTablePanel extends KSGPanel{
 	public void setResultData(List resultData) {
 
 		table.setResultData(resultData);
+		
+		if(lblTotalCount!=null)
 		lblTotalCount.setText(String.valueOf(resultData.size()));
 	}
 
@@ -229,13 +263,13 @@ public class KSGTablePanel extends KSGPanel{
 	public void addContorlListener(ActionListener l)
 	{
 		butDelete.addActionListener(l);
+		
 		butInsert.addActionListener(l);
 		//butUpdate.addActionListener(l);
 	}
 
 	public void addColumn(KSGTableColumn ksgTableColumn) {
 		table.addColumn(ksgTableColumn);
-
 	}
 
 	public Object getValueAt(int rowIndex, String columnField) {
@@ -261,9 +295,7 @@ public class KSGTablePanel extends KSGPanel{
 		}
 
 
-		if(lblTotalCount!=null)
-
-			lblTotalCount.setText(String.valueOf(master.size())+"/"+total);
+		if(lblTotalCount!=null) lblTotalCount.setText(String.valueOf(master.size())+"/"+total);
 	}
 	
 	public void setTotalCount(String total)
@@ -278,15 +310,14 @@ public class KSGTablePanel extends KSGPanel{
 	public void setComponentPopupMenu(JPopupMenu popup) 
 	{
 		super.setComponentPopupMenu(popup);
+		
 		table.setComponentPopupMenu(popup);
 	}
-
 
 	public void  clearResult()
 	{
 		table.clearReslult();
 	}
-
 
 	@Override
 	public void createAndUpdateUI() {
@@ -296,8 +327,4 @@ public class KSGTablePanel extends KSGPanel{
 	public int[] getSelectedRows() {
 		return table.getSelectedRows();
 	}
-
-
-
-
 }

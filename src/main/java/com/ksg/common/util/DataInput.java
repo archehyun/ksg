@@ -305,7 +305,7 @@ public class DataInput {
 			}
 			
 			try {
-				vesselService.insert(info);
+				vesselService.insertVessel(info);
 			} catch (Exception e1) {
 				
 				e1.getMessage();
