@@ -5,12 +5,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
-import com.dtp.api.control.AbstractController;
-import com.ksg.common.model.CommandMap;
 import com.ksg.view.comp.border.CurvedBorder;
 import com.ksg.view.comp.panel.KSGPanel;
 

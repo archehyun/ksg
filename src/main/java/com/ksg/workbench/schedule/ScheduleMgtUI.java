@@ -18,12 +18,11 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
+
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -137,8 +136,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		callApi("scheduleViewUpdate");
 	}
-	
-	
 
 	/**
 	 *@설명 화면 생성 및 업데이트 
@@ -198,7 +195,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 				chxRouteLogic.setVisible(cbxRouteSchedule.isSelected());
 			}
 		});
-
 
 		cbxOutboundSchedule.addActionListener(new ActionListener() {
 			@Override
@@ -271,7 +267,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		bg2.add(optDate);
 		
 		bg2.add(optVessel);
-
 
 	}
 
@@ -398,8 +393,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		KSGPanel pnLeftMenuButtonList = new KSGPanel(gridLayout);
 
 		pnLeftMenuButtonList.setPreferredSize(new Dimension(250,150));
-
-		
 
 		pnLeftMenuButtonList.add(butDelete);
 
@@ -577,24 +570,8 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		}
 		else if(command.equals(ACTION_CREATE))
 		{		
-			// 스케줄 생성일자 선택
-			//				CommandMap param = new CommandMap();
-			//				
-			//				String selectedDate= ((KSGTableColumn)cbxTableDateList.getSelectedItem()).columnField;
-			//
-			//				String inputDate = toDateformat.format(consoleDateformat.parse(selectedDate));
-			//
-			//				param.put("inputDate", inputDate);
-
 			callApi("createSchedule");
 		}
-
-	}
-
-	@Override
-	public void componentShown(ComponentEvent e) {
-
-
 	}
 
 	@Override
