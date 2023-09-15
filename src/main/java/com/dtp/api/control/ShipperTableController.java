@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.dtp.api.annotation.ControlMethod;
 import com.dtp.api.service.ShipperTableService;
 import com.dtp.api.service.impl.ShipperTableServiceImpl;
@@ -166,19 +163,18 @@ public class ShipperTableController extends AbstractController{
 			data=data.stream().filter(o->o.getPage()>=startPage&&o.getPage()<endPage)
 					.collect(Collectors.toList());
 		}
+		
 		if(param.containsKey("alphabet"))
 		{
 			String alphabet = (String) param.get("alphabet");
 
 			data=data.stream().filter(o->o.getCompany_abbr().startsWith(alphabet))
 					.collect(Collectors.toList());
-
 		}
 
 		List<CommandMap> resultArry=(List<CommandMap>) data.stream()
 				.map(o -> objectMapper.convertValue(o, CommandMap.class))
 				.collect(Collectors.toList());
-
 
 		CommandMap returnMap = new CommandMap();
 
@@ -187,9 +183,13 @@ public class ShipperTableController extends AbstractController{
 		log.info("end");
 
 		return returnMap;
-
 	}
-
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws SQLException
+	 */
 	@ControlMethod(serviceId = "aDVManageUI.init")
 	public CommandMap aDVManageUIInit(CommandMap param) throws SQLException
 	{	
@@ -227,7 +227,6 @@ public class ShipperTableController extends AbstractController{
 
 		});
 
-
 		groupCount = 10;
 
 		Map<Integer, Map<String,List<ShippersTable>>> pageMap= tableList.stream()
@@ -264,7 +263,13 @@ public class ShipperTableController extends AbstractController{
 
 		return returnMap;
 	}
-
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "shipperTableMgtUI2.deleteAdv")
 	public CommandMap deleteAdv(CommandMap param) throws Exception
 	{
@@ -280,7 +285,13 @@ public class ShipperTableController extends AbstractController{
 
 		return returnMap;
 	}
-
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "shipperTableMgtUI2.delete")
 	public CommandMap delete(CommandMap param) throws Exception
 	{
@@ -300,7 +311,6 @@ public class ShipperTableController extends AbstractController{
 	@ControlMethod(serviceId = "shipperTableMgtUI2.update")
 	public CommandMap update(CommandMap param) throws Exception
 	{
-		
 		log.info("start:{}",param);
 
 		ShippersTable target= (ShippersTable) param.get("updateParam");
@@ -313,30 +323,37 @@ public class ShipperTableController extends AbstractController{
 
 		return returnMap;
 	}
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "addTableInfoDialog.insert")
 	public CommandMap addTableInfoDialog_insert(CommandMap param) throws Exception
 	{
 		log.info("start:{}",param);
 		ShippersTable target = ShippersTable.builder()
-				.table_id((String) param.get("table_id"))
-				.title((String) param.get("title"))
-				.agent((String) param.get("agent"))
-				.company_abbr((String) param.get("company_abbr"))
-				.company_name((String) param.get("company_name"))
-				.gubun((String) param.get("gubun"))
-				.d_time((Integer) param.get("d_time"))
-				.c_time((Integer) param.get("c_time"))
-				.page((Integer) param.get("page"))
-				.console_page((String) param.get("console_page"))
-				.bookPage((String) param.get("bookPage"))
-				.common_shipping((String) param.get("common_shipping"))
-				.in_port((String) param.get("in_port"))
-				.in_to_port((String) param.get("in_to_port"))
-				.out_port((String) param.get("out_port"))
-				.out_to_port((String) param.get("out_to_port"))
-				.inland_indexs((String) param.get("inland_indexs"))
-				.date_isusse((String) param.get("date_isusse"))
-				.build(); 
+											.table_id((String) param.get("table_id"))
+											.title((String) param.get("title"))
+											.agent((String) param.get("agent"))
+											.company_abbr((String) param.get("company_abbr"))
+											.company_name((String) param.get("company_name"))
+											.gubun((String) param.get("gubun"))
+											.d_time((Integer) param.get("d_time"))
+											.c_time((Integer) param.get("c_time"))
+											.page((Integer) param.get("page"))
+											.console_page((String) param.get("console_page"))
+											.bookPage((String) param.get("bookPage"))
+											.common_shipping((String) param.get("common_shipping"))
+											.in_port((String) param.get("in_port"))
+											.in_to_port((String) param.get("in_to_port"))
+											.out_port((String) param.get("out_port"))
+											.out_to_port((String) param.get("out_to_port"))
+											.inland_indexs((String) param.get("inland_indexs"))
+											.date_isusse((String) param.get("date_isusse"))
+											.build(); 
 
 		service.insert(target);
 
@@ -346,7 +363,13 @@ public class ShipperTableController extends AbstractController{
 		
 		return returnMap;
 	}
-
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "addTableInfoDialog.init")
 	public CommandMap addTableInfoDialog(CommandMap param) throws Exception
 	{
@@ -367,7 +390,13 @@ public class ShipperTableController extends AbstractController{
 
 		return returnMap;
 	}
-
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "shipperTableMgtUI2.selectOne")
 	public CommandMap selectOne(CommandMap param) throws Exception
 	{
@@ -393,13 +422,18 @@ public class ShipperTableController extends AbstractController{
 
 			returnMap.put("selectedTable", shippersTable);
 			
-			
 		}
 		log.info("end");
 
 		return returnMap;
 	}
-
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "updateShipperTableDateDialog.updateDate")
 	public CommandMap updateDate(CommandMap param) throws Exception
 	{
@@ -419,6 +453,13 @@ public class ShipperTableController extends AbstractController{
 
 		return returnMap;
 	}
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "KSGADVTablePanel.save")
 	public CommandMap saveADVData(CommandMap param) throws Exception
 	{
@@ -434,7 +475,13 @@ public class ShipperTableController extends AbstractController{
 
 		return returnMap;
 	}
-
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "showADVTable")
 	public CommandMap showADVTable(CommandMap param) throws Exception
 	{
@@ -462,7 +509,13 @@ public class ShipperTableController extends AbstractController{
 
 		return returnMap;
 	}
-
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "managePortDialog.init")
 	public CommandMap managePortDialogInit(CommandMap param) throws Exception
 	{
@@ -495,6 +548,12 @@ public class ShipperTableController extends AbstractController{
 		return returnMap;
 	}
 	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "managePortDialog.saveTablePort")
 	public CommandMap managePortDialogSaveTablePort(CommandMap param) throws Exception
 	{

@@ -140,7 +140,6 @@ public class CodeController extends AbstractController{
 		return model;
     }
 	
-	
 	@ControlMethod(serviceId = "pnKeyWord.insertKeyWord")
     public CommandMap pnKeyWordInsertKeyword(CommandMap param) throws Exception
     {
@@ -178,7 +177,6 @@ public class CodeController extends AbstractController{
 		
 		return model;
     }
-	
 	
 	@ControlMethod(serviceId = "insertCode")
     public CommandMap insertCode(CommandMap param) throws Exception

@@ -12,7 +12,6 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
-import com.ksg.domain.ScheduleData;
 import com.ksg.service.AreaService;
 import com.ksg.service.impl.AreaServiceImpl;
 
@@ -27,8 +26,6 @@ public class PortController  extends AbstractController{
     private PortService service;
     
     private CodeService codeService;
-    
-    
     
     public PortController()
     {
@@ -203,8 +200,6 @@ public class PortController  extends AbstractController{
     {
     	log.info("start:{}",param);
         
-//        int id = (int) param.get("id");
-        
         String port_name = (String) param.get("port_name");
         
         String port_area = (String) param.get("port_area");
@@ -364,7 +359,6 @@ public class PortController  extends AbstractController{
 						                .map(o -> objectMapper.convertValue(o, CommandMap.class))
 						                .collect(Collectors.toList());
         
-		
 		returnMap.put("portExceptionList", portExceptionList);
 		
 		log.info("end");
@@ -391,7 +385,6 @@ public class PortController  extends AbstractController{
         List portExceptionList=(List) li.stream()
 						                .map(o -> objectMapper.convertValue(o, CommandMap.class))
 						                .collect(Collectors.toList());
-        
 		
 		returnMap.put("portList", portExceptionList);
 		
@@ -399,6 +392,4 @@ public class PortController  extends AbstractController{
 		
     	return returnMap;
     }
-    
-   
 }
