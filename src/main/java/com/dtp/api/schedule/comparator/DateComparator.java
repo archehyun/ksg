@@ -4,6 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 
+/**
+ * 날짜 정렬
+ */
 public class DateComparator implements Comparator<IFComparator>{
 	
 	protected SimpleDateFormat dateformat;

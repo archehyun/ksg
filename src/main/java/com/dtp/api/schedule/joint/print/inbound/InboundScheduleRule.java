@@ -47,8 +47,10 @@ public class InboundScheduleRule {
 										.collect(Collectors.toList()));
 			}
 		}		
-
-		List<InboundScheduleGroup> fillteredList 	= groupList.stream().filter(o -> o.getScheduleList().size()>0)
+		
+		// 스케줄 필터
+		List<InboundScheduleGroup> fillteredList 	= groupList.stream()
+																.filter(o -> o.getScheduleList().size()>0)
 																.collect(Collectors.toList());
 		
 		ArrayList<InboundScheduleGroup> inboundScheduleGroupList 	= new ArrayList<InboundScheduleGroup>();
@@ -104,9 +106,9 @@ public class InboundScheduleRule {
 	 */
 	private ArrayList<Integer> getSplitedScheduleIndex(InboundScheduleGroup jointScheduleItemList) {
 		// 공동배선 3이상 스케줄 분할
-		ArrayList<Integer> indexList = new ArrayList<Integer>();
+		ArrayList<Integer> indexList 		= new ArrayList<Integer>();
 		
-		List<ScheduleData> scheduleList  = jointScheduleItemList.getScheduleList();
+		List<ScheduleData> scheduleList  	= jointScheduleItemList.getScheduleList();
 
 		// 3일 차이 나는 인덱스 조회
 		for(int i=0;i<scheduleList.size()-1;i++)

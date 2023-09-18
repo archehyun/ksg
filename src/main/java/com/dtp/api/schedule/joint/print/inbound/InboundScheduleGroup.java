@@ -68,6 +68,10 @@ public class InboundScheduleGroup extends ScheduleGroup{
 		this.isTaged =isTaged;
 	}
 	
+	/**
+	 * 날짜 검증 dateT>dateF(?)
+	 * @return
+	 */
 	public boolean isValidateDate() 
 	{
 		try

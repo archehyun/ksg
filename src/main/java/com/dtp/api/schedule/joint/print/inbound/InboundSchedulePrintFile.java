@@ -133,9 +133,9 @@ public class InboundSchedulePrintFile extends AbstractSchedulePrint{
 		
 		ArrayList<String> printList = new ArrayList<String>();
 		
-		lengthOfTask = resultMap.keySet().size();
+		lengthOfTask 				= resultMap.keySet().size();
 		
-		Object[] mapkey = resultMap.keySet().toArray();
+		Object[] mapkey 			= resultMap.keySet().toArray();
 		
 		Arrays.sort(mapkey);
 
@@ -146,10 +146,12 @@ public class InboundSchedulePrintFile extends AbstractSchedulePrint{
 			printList.add(FROM_PORT_TAG1+fromPortName+" , "+ portInfo.getPort_nationality());
 
 			Map<String, List<ScheduleData>> vesselList= resultMap.get(fromPortName);
-
+			
+			// inbound 스케줄 그룹 생성
 			List<InboundScheduleGroup> groupList = inboundScheduleRule.createScheduleGroup(vesselList, true);
 			
 			List<String> strList = groupList.stream()
+											// 날짜 필터링
 											.filter(o -> o.isValidateDate())
 											.sorted().map(o -> o.toPrintString()).collect(Collectors.toList());
 			
