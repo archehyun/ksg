@@ -69,9 +69,9 @@ public class PnArea extends PnBase implements ActionListener{
 	
 	private KSGTablePanel tableH;
 
-	AreaServiceImpl areaService = new AreaServiceImpl();
+	private AreaServiceImpl areaService = new AreaServiceImpl();
 	
-	AreaDAOImpl areaDAO = new AreaDAOImpl();
+	private AreaDAOImpl areaDAO = new AreaDAOImpl();
 
 	public PnArea(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
