@@ -614,10 +614,9 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 			// 모두 선택되지 않았다면 비활성화
 			butPrint.setEnabled(!(!cbxRouteSchedule.isSelected()&&!cbxOutboundSchedule.isSelected()&&!cbxInboundSchedule.isSelected()));
-
-
 		}
 	}
+	
 	class SchedulePrintAction implements ActionListener
 	{
 		private static final String ACTION_PRINT_FLIE = "파일 출력";
