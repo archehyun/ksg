@@ -84,6 +84,7 @@ public class PnCompany extends PnBase implements ActionListener{
 	public PnCompany(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
 		
+		// TODO 보더 처리
 		this.initComp();
 
 		this.addComponentListener(this);

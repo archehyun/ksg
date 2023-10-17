@@ -52,7 +52,7 @@
 
 <!-- insert -->
 
-	<insert id="insertArea" parameterClass="java.util.HashMap">
+	<insert id="insertArea" parameterClass="com.ksg.domain.AreaInfo">
 		INSERT INTO TB_AREA(
 		
 			area_code,
@@ -69,7 +69,7 @@
 	
 <!-- update -->
 	
-	<update id="updateArea" parameterClass="java.util.HashMap">
+	<update id="updateArea" parameterClass="com.ksg.domain.AreaInfo">
 		UPDATE TB_AREA 
 		SET 
 			area_code=#area_code#, 
@@ -83,7 +83,7 @@
 
 <!-- delete -->
 
-	<delete id="deleteArea" parameterClass="java.util.HashMap">
+	<delete id="deleteArea" parameterClass="com.ksg.domain.AreaInfo">
 		delete from TB_AREA where area_name=#area_name#
 	</delete>
 	

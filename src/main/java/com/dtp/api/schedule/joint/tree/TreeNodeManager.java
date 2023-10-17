@@ -33,8 +33,6 @@ public class TreeNodeManager {
 	private AbstractNodeManager outboundNodeManager = new OutboundNodeManager();
 	
 	private InboundNodeManager inboundNodeManager 	= new InboundNodeManager();
-	
-
 
 	public TreeNodeManager()
 	{
@@ -50,8 +48,6 @@ public class TreeNodeManager {
 	 * @return
 	 */
 	public DefaultMutableTreeNode getOutboundTreeNode(CommandMap areaList) {
-
-
 		return outboundNodeManager.getTreeNode(areaList);
 	}
 
@@ -83,7 +79,4 @@ public class TreeNodeManager {
 
 		return routeNodeManager.getTreeNode(areaList);
 	}
-	
-
-
 }

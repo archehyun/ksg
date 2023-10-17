@@ -50,11 +50,9 @@ import javax.swing.tree.TreePath;
 import com.dtp.api.control.PortController;
 import com.dtp.api.schedule.joint.tree.node.AreaTreeNode;
 import com.dtp.api.service.impl.CodeServiceImpl;
-import com.ibatis.sqlmap.client.SqlMapException;
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Code;
-import com.ksg.domain.ScheduleData;
 import com.ksg.view.comp.IconData;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.combobox.KSGComboBox;
@@ -200,7 +198,6 @@ public class PnPortNew extends PnBase implements ActionListener{
 
 		butUpSearch.addActionListener(this);
 
-
 		butCancel = new KSGGradientButton("",  "images/init.png");
 
 		butCancel.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
@@ -306,7 +303,6 @@ public class PnPortNew extends PnBase implements ActionListener{
 
 			private String _selectedTable;
 
-
 			public void valueChanged(TreeSelectionEvent e) {
 
 				TreePath path=e.getNewLeadSelectionPath();
@@ -339,26 +335,6 @@ public class PnPortNew extends PnBase implements ActionListener{
 					}
 					
 					callApi("selectPort", param);
-
-					
-//					param.put("port_area", port_area);
-						
-
-//					log.info("param:"+param);
-//
-////					callApi("selectPort", param);
-//					try {
-//
-//						
-//
-//						showBaseInfo(_selectedTable);
-//
-//					}
-//
-//					catch(SqlMapException e2)
-//					{
-//						JOptionPane.showMessageDialog(PnPortNew.this, _selectedTable+"에 대한 쿼리가 없습니다.");
-//					}
 				}
 			}
 		});
@@ -391,33 +367,6 @@ public class PnPortNew extends PnBase implements ActionListener{
 		callApi("selectPort", param);
 
 	}
-
-
-
-//	private KSGPanel buildButton()
-//	{
-//		KSGPanel pnButtom = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-//
-//		KSGPanel pnButtomRight = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-//
-//		JButton butNewAbbr = new JButton("추가");
-//
-//		butNewAbbr.setActionCommand("약어 등록");
-//
-//		JButton butDelAbbr = new JButton("삭제");
-//
-//		butDelAbbr.setActionCommand("약어 삭제");
-//
-//		pnButtomRight.setBorder(BorderFactory.createEtchedBorder());		
-//
-//		butNewAbbr.addActionListener(this);
-//
-//		butDelAbbr.addActionListener(this);
-//
-//		pnButtom.add(pnButtomRight);
-//
-//		return pnButtom;
-//	}
 
 	private KSGPanel addComp(String name, JComponent comp)
 	{
@@ -726,13 +675,8 @@ public class PnPortNew extends PnBase implements ActionListener{
 		
 		DefaultMutableTreeNode root 	= new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16.png"),null,"전체"));
 		
-		
-		
 		Map<String, List<AreaInfo>> areaList =  data.stream().collect(
 				Collectors.groupingBy(AreaInfo::getArea_code ));
-		
-		
-		
 		
 		Set<String> key = areaList.keySet();
 		
@@ -744,8 +688,6 @@ public class PnPortNew extends PnBase implements ActionListener{
 			
 			for(AreaInfo areaItem :area)
 			{
-				
-//				DefaultMutableTreeNode itemSub = new DefaultMutableTreeNode(new IconData(new ImageIcon("images/db_table16_2.png"),null,areaItem.getArea_name()));
 				DefaultMutableTreeNode itemSub = new AreaTreeNode(areaItem.getArea_name());
 				item.add(itemSub);
 			}

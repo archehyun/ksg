@@ -100,7 +100,6 @@ public class KSGDatePickerImpl extends JPanel implements JDatePicker {
 
 		//Add event listeners
 		addHierarchyBoundsListener(internalEventHandler);
-//TODO		addAncestorListener(listener)
 		button.addActionListener(internalEventHandler);
 		formattedTextField.addPropertyChangeListener("value", internalEventHandler);
 		datePanel.addActionListener(internalEventHandler);

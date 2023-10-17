@@ -41,12 +41,10 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 	public CompanyServiceImpl() {
 
 		super();
-		objectMapper = new ObjectMapper();
+		
 		companyDAO = new CompanyDAOImpl();
 
 	}
-	
-
 
 	@SuppressWarnings("unchecked")
 	public CommandMap selectListByCondition(Map<String, Object> param) throws SQLException {
@@ -111,9 +109,7 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 		resultMap.put("master", map);
 
 		return resultMap;
-
 	}
-
 
 	public int update(CommandMap param) throws SQLException{
 		log.debug("param:{}", param);
@@ -126,34 +122,36 @@ public class CompanyServiceImpl extends AbstractServiceImpl implements CompanySe
 		return companyDAO.deleteCompany(param);
 	}
 
-	public void insert(CommandMap param) throws RuntimeException{
-		log.debug("param:{}", param);
+//	public void insert(CommandMap param) throws RuntimeException{
+//		log.debug("param:{}", param);
+//
+//			
+//		Company searchParam =Company.builder()
+//				.company_name(param.get("company_name")!=null?String.valueOf(param.get("company_name")):null)
+//				.agent_name(param.get("agent_name")!=null?String.valueOf(param.get("agent_name")):null)
+//				.company_abbr(param.get("company_abbr")!=null?String.valueOf(param.get("company_abbr")):null)
+//				.agent_abbr(param.get("agent_abbr")!=null?String.valueOf(param.get("agent_abbr")):null)
+//				.contents(param.get("contents")!=null?String.valueOf(param.get("contents")):null)
+//
+//				.build();
+//		try
+//		{
+//			this.insert(searchParam);			
+//
+//
+//		} catch (SQLException e1) {
+//
+//			throw new UnhandledException(e1.getMessage());
+//		}
+//	}
+	
+	public void insert(Company param) throws SQLException
+	{
+		Company exist = companyDAO.select(param);
 
-		try
-		{	
-			Company searchParam =Company.builder()
-					.company_name(param.get("company_name")!=null?String.valueOf(param.get("company_name")):null)
-					.agent_name(param.get("agent_name")!=null?String.valueOf(param.get("agent_name")):null)
-					.company_abbr(param.get("company_abbr")!=null?String.valueOf(param.get("company_abbr")):null)
-					.agent_abbr(param.get("agent_abbr")!=null?String.valueOf(param.get("agent_abbr")):null)
-					.contents(param.get("contents")!=null?String.valueOf(param.get("contents")):null)
-
-					.build();
-
-
-
-			Company exist = companyDAO.select(searchParam);
-
-			if(exist != null) throw new AlreadyExistException("exist ");
-
-
-			companyDAO.insert(searchParam) ;
-
-
-		} catch (SQLException e1) {
-
-			throw new UnhandledException(e1.getMessage());
-		}
+		if(exist != null) throw new AlreadyExistException("exist ");
+		
+		companyDAO.insert(param) ;
 	}
 
 

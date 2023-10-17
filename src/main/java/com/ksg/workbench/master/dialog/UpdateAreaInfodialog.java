@@ -13,7 +13,6 @@ package com.ksg.workbench.master.dialog;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -22,14 +21,19 @@ import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.dtp.api.control.PortController;
+import com.ksg.common.model.CommandMap;
 import com.ksg.common.util.ViewUtil;
-import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.Notification;
+import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.dialog.MainTypeDialog;
 
 /**
- * 지역정보 수정 다이어그램
+ * 지역정보 update/insert 다이어그램
  * 
  * @author 박창현
  *
@@ -47,22 +51,20 @@ public class UpdateAreaInfodialog extends MainTypeDialog {
 	
 	private JTextField txfAreaBookCode;
 	
-	private AreaServiceImpl areaService = new AreaServiceImpl();
-	
 	
 	public UpdateAreaInfodialog(int type) {
 		super();
-		
+		setController(new PortController());
 		title = "지역 정보 관리";
 		
 		this.type = type;
-		
 		this.addComponentListener(this);
 	}
 
 	public UpdateAreaInfodialog(int type,HashMap<String, Object> param) {
 		this(type);
 		this.param = param;
+		
 	}
 
 	private KSGPanel buildCenter()
@@ -113,8 +115,10 @@ public class UpdateAreaInfodialog extends MainTypeDialog {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
 		String command = e.getActionCommand();
-		if(command.equals("수정"))
+		
+		if(command.equals("수정")||command.equals("추가"))
 		{
 			if(txfAreaName.getText().length()<=0)
 			{
@@ -129,80 +133,30 @@ public class UpdateAreaInfodialog extends MainTypeDialog {
 			
 			if(txfAreaBookCode.getText().length()<=0)
 			{
-				JOptionPane.showMessageDialog(this, "코드번호을 적으세요");
+				JOptionPane.showMessageDialog(this, "북코드번호을 적으세요");
 				return;
 			}
-			try{
-				
-				
-				HashMap<String, Object> param = new HashMap<String, Object>();
-				
-				param.put("area_name", txfAreaName.getText());
-				
-				param.put("area_code", txfAreaCode.getText());
-				
-				param.put("area_book_code", Integer.parseInt(txfAreaBookCode.getText()));
-				
-				param.put("base_area_name", this.param.get("area_name"));
-				
-				areaService.updateArea(param);
-				
-				result=KSGDialog.SUCCESS;
-				
-				JOptionPane.showMessageDialog(this, "수정 했습니다.");
-				
-				close();
-
-			}catch (NumberFormatException nume) {
-				JOptionPane.showMessageDialog(this, "숫자 형식이 잘못 되었습니다.");
-				nume.printStackTrace();
-			}catch(SQLException sqle)
+			else
 			{
-
+				String str = txfAreaBookCode.getText();
+				
+				boolean isNumeric = StringUtils.isNumeric(str);
+				
+				if(!isNumeric)
+				{
+					NotificationManager.showNotification(Notification.Type.WARNING,"북코드번호는 숫자만 입력해야 합니다.");
+					return;
+				}
 			}
-
+		}
+		
+		if(command.equals("수정"))
+		{	
+			fnUpdate();
 		}
 		else if(command.equals("추가"))
 		{
-			if(txfAreaName.getText().length()<=0)
-			{
-				JOptionPane.showMessageDialog(this, "지역명을 적으세요");
-				return;
-			}
-			if(txfAreaCode.getText().length()<=0)
-			{
-				JOptionPane.showMessageDialog(this, "코드번호을 적으세요");
-				return;
-			}
-			
-			if(txfAreaBookCode.getText().length()<=0)
-			{
-				JOptionPane.showMessageDialog(this, "코드번호을 적으세요");
-				return;
-			}
-			
-			HashMap<String, Object> param = new HashMap<String, Object>();
-			
-			param.put("area_name", txfAreaName.getText());
-			
-			param.put("area_code", txfAreaCode.getText());
-			
-			param.put("area_book_code", Integer.parseInt(txfAreaBookCode.getText()));
-			
-			try {
-				areaService.insertArea(param);
-				result=KSGDialog.SUCCESS;
-				JOptionPane.showMessageDialog(this, "수정 했습니다.");
-				close();
-			} catch (Exception e1) {
-				
-				e1.printStackTrace();
-				
-				JOptionPane.showMessageDialog(this, e1.getMessage());
-				result=KSGDialog.FAILE;
-				close();
-			}
-			
+			fnInsert();
 		}
 		else
 		{
@@ -210,8 +164,34 @@ public class UpdateAreaInfodialog extends MainTypeDialog {
 			close();
 		}
 	}
-
-
+	
+	private void fnInsert()
+	{	
+		CommandMap param = new CommandMap();
+		
+		param.put("area_name", txfAreaName.getText());
+		
+		param.put("area_code", txfAreaCode.getText());
+		
+		param.put("area_book_code", Integer.parseInt(txfAreaBookCode.getText()));
+		
+		callApi("insertArea", param);
+	}
+	
+	private void fnUpdate() {
+		
+		CommandMap param = new CommandMap();
+		
+		param.put("area_name", txfAreaName.getText());
+		
+		param.put("area_code", txfAreaCode.getText());
+		
+		param.put("area_book_code", Integer.parseInt(txfAreaBookCode.getText()));
+		
+		param.put("base_area_name", this.param.get("area_name"));
+		
+		callApi("updateArea", param);
+	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
@@ -225,20 +205,34 @@ public class UpdateAreaInfodialog extends MainTypeDialog {
 		
 		switch (type) {
 		case UPDATE:
-
-			
 			butOK.setActionCommand("수정");
-
 			break;
 		case INSERT:
-
-			
 			butOK.setActionCommand("추가");
 
 			break;
-
 		}
+	}
+	
+	@Override
+	public void updateView() {
+		
+		CommandMap resultObj= this.getModel();
 
-	}	
+		String serviceId=(String) resultObj.get("serviceId");
 
+		if("insertArea".equals(serviceId))
+		{
+			result=KSGDialog.SUCCESS;
+			NotificationManager.showNotification("추가 했습니다.");
+		}
+		else if("updateArea".equals(serviceId))
+		{
+			result=KSGDialog.SUCCESS;
+			NotificationManager.showNotification("수정 했습니다.");
+			
+		}
+		
+		close();
+	}
 }

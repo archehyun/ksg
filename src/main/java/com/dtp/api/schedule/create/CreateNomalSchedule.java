@@ -173,7 +173,6 @@ public class CreateNomalSchedule {
 		}
 	}
 
-
 	public int execute()
 	{
 		if(shippersTables.isEmpty()) return 0;

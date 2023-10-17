@@ -23,44 +23,25 @@ public class AreaServiceImpl extends AbstractServiceImpl implements AreaService{
 		areaDAO = new AreaDAOImpl();
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> selectAreaList(Map<String, Object> commandMap) throws SQLException {
 		
 		log.debug("param:{}", commandMap);
 		return areaDAO.selectAreaList(commandMap);
-
 	}
 	
 	public List<AreaInfo> selectAll() throws SQLException
-	{
-		log.debug("");
-		
+	{	
 		return areaDAO.selectAll();
-	}
-
-	public int deleteArea(HashMap<String, Object> param) throws SQLException {
-		return (Integer) areaDAO.deleteArea(param);
-	}
-	
-	public int updateArea(HashMap<String, Object> param) throws SQLException {
-		return (Integer) areaDAO.updateArea(param);
-	}
-
-	public void insertArea(HashMap<String, Object> param) throws SQLException{
-		areaDAO.insertArea(param);
-		
 	}
 	
 	public List getAreaListGroupByAreaName() throws SQLException {
 		return areaDAO.getAreaListGroupBy("area");
 	}
 
-
 	public List getAreaListGroupByAreaCode() throws SQLException{
 		return areaDAO.getAreaListGroupBy("code");
 	}
-
 
 	@Override
 	public List<CommandMap> selectAreaInfoList() throws SQLException {
@@ -76,8 +57,32 @@ public class AreaServiceImpl extends AbstractServiceImpl implements AreaService{
 		return map;
 	}
 
+	@Override
+	public int deleteArea(AreaInfo info) throws SQLException {
+		// TODO Auto-generated method stub
+		return areaDAO.deleteArea(info);
+	}
 
-	
-	
+	@Override
+	public int updateArea(AreaInfo info) throws SQLException {
+		// TODO Auto-generated method stub
+		return areaDAO.updateArea(info);
+	}
 
+	@Override
+	public Object insertArea(AreaInfo info) throws SQLException {
+		return areaDAO.insertArea(info);
+	}
+	public int deleteArea(HashMap<String, Object> param) throws SQLException {
+		return (Integer) areaDAO.deleteArea(param);
+	}
+	
+	public int updateArea(HashMap<String, Object> param) throws SQLException {
+		return (Integer) areaDAO.updateArea(param);
+	}
+
+	public void insertArea(HashMap<String, Object> param) throws SQLException{
+		areaDAO.insertArea(param);
+		
+	}
 }

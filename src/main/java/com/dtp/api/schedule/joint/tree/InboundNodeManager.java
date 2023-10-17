@@ -27,6 +27,9 @@ import com.ksg.domain.Vessel;
 import com.ksg.view.comp.treetable.TreeTableNode;
 import com.ksg.workbench.schedule.comp.treenode.InboundCodeMap;
 
+/**
+ * 
+ */
 public class InboundNodeManager extends AbstractNodeManager{
 	
 	/**=======================================================================**/

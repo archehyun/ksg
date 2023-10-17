@@ -64,7 +64,6 @@ public class OutboundNodeManager extends AbstractNodeManager{
 	{
 		super();
 		objectMapper = new ObjectMapper();
-		
 	}
 
 	/**
@@ -85,7 +84,7 @@ public class OutboundNodeManager extends AbstractNodeManager{
 		
 		fromPort 					= (String[]) result.get("fromPort");
 		
-		isAddValidate = 			(boolean) result.get("isAddValidate");
+		isAddValidate 				= (boolean) result.get("isAddValidate");
 
 		outboundSchedule 			= new OutboundScheduleRule(vesselMap);
 		
@@ -190,7 +189,5 @@ public class OutboundNodeManager extends AbstractNodeManager{
 		String formatedVesselType =  (vessel_type.equals("")||vessel_type.equals(" "))?"   ":String.format("   [%s]   ", vessel_type);   
 		
 		return String.format("%-8s%-15s%s(%s)   %s", group.getJointedDateF(), group.getVesselName(),formatedVesselType, group.getJointedCompanyName(), group.getJointedDateT());
-
 	}
-	
 }

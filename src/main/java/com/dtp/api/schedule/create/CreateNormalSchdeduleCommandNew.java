@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -49,7 +48,6 @@ import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.schedule.logic.PortIndexNotMatchException;
 import com.ksg.schedule.logic.ScheduleManager;
 import com.ksg.schedule.logic.print.ScheduleBuildUtil;
-import com.ksg.service.ScheduleService;
 import com.ksg.view.ui.ErrorLogManager;
 
 import lombok.extern.slf4j.Slf4j;

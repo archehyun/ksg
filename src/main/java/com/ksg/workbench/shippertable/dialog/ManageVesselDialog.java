@@ -108,29 +108,6 @@ public class ManageVesselDialog extends BaseInfoDialog implements ActionListener
 			this.setVisible(false);
 			dispose();
 		}
-//		else if(command.equals("¼öÁ¤"))
-//		{
-//			int row = _tblVesselList.getSelectedRow();
-//			
-//			if(row==-1) return;
-//			
-//			String vesselAbbr = (String) _tblVesselList.getValueAt(row, 1);
-//
-//			HashMap<String, Object> param = new HashMap<String, Object>();
-//
-//			param.put("vessel_name", vesselAbbr);
-//
-//			//TODO 
-//			SearchVesselDialog searchVesselDialog = new SearchVesselDialog("",new ArrayList<>());
-//
-//			searchVesselDialog.createAndUpdateUI();
-//
-//
-//			if(searchVesselDialog.result!=null)
-//			{
-//				model.setValueAt(searchVesselDialog.result, row, 0);
-//			}
-//		}
 	}
 
 

@@ -264,12 +264,6 @@ public class PortTable extends JTable implements ActionListener
 			tableModel.setValueAt(info, row, 1);
 
 			PortTable.this.setValueAt(info, row, 1);
-
-//			Code op = new Code();
-//
-//			op.setCode_type("port_check");
-//			
-//			op.setCode_field(ii.getPort_name());
 			
 			PortTableInfo info_code = new PortTableInfo(ii.getArea_code());
 			
@@ -284,11 +278,10 @@ public class PortTable extends JTable implements ActionListener
 				
 				Code code = Code.builder().code_type("port_check").code_field(ii.getPort_name()).build();
 				
-				
+				// TODO SQL 제거
 				info_code.setType(codeServiceImpl.selectCodeDetailByKey(code)==null?PortTableInfo.TYPE_NOMAL:PortTableInfo.TYPE_BLUE);
 				
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			tableModel.setValueAt(info_code, row, 2);
@@ -383,6 +376,7 @@ public class PortTable extends JTable implements ActionListener
 				}
 				catch(SQLException e)
 				{
+					// TODO SQL 제거
 					System.err.println(e.getErrorCode()+", index:"+index+", error port:"+port_name);
 					e.printStackTrace();
 				}

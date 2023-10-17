@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,10 +27,12 @@ import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import com.dtp.api.control.PortController;
 import com.ksg.common.model.CommandMap;
 import com.ksg.dao.impl.AreaDAOImpl;
 import com.ksg.service.impl.AreaServiceImpl;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPageTablePanel;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
@@ -75,14 +76,14 @@ public class PnArea extends PnBase implements ActionListener{
 
 	public PnArea(BaseInfoUI baseInfoUI) {
 		super(baseInfoUI);
-		
+		this.setController(new PortController());
 		this.addComponentListener(this);
 		this.add(buildCenter());	
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 	}
 	public PnArea() {
 		super();
-		
+		this.setController(new PortController());
 		this.addComponentListener(this);
 		this.add(buildCenter());	
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -186,7 +187,25 @@ public class PnArea extends PnBase implements ActionListener{
 		pnInfo.add(pnCount,BorderLayout.WEST);
 		return pnInfo;
 	}
-
+	private void fnDelete()
+	{
+		int row =tableH.getSelectedRow();
+		
+		if(row<0) return;
+		
+		String data = (String) tableH.getValueAt(row, 1);
+		
+		int result=JOptionPane.showConfirmDialog(null, data+"를 삭제 하시겠습니까?", "지역 정보 삭제", JOptionPane.YES_NO_OPTION);
+		
+		if(result==JOptionPane.OK_OPTION)
+		{						
+			CommandMap param = new CommandMap();
+			
+			param.put("area_name", data);
+			
+			callApi("deleteArea", param);
+		}
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String command =e.getActionCommand();
@@ -197,48 +216,25 @@ public class PnArea extends PnBase implements ActionListener{
 		else if(command.equals(KSGPageTablePanel.DELETE))
 		{
 			
-			int row =tableH.getSelectedRow();
-			
-			if(row<0) return;
-			
-			String data = (String) tableH.getValueAt(row, 1);
-			
-			int result=JOptionPane.showConfirmDialog(null, data+"를 삭제 하시겠습니까?", "지역 정보 삭제", JOptionPane.YES_NO_OPTION);
-			
-			if(result==JOptionPane.OK_OPTION)
-			{						
-				try {
-					HashMap<String, Object> param = new HashMap<String, Object>();
-					
-					param.put("area_name", data);
-					int count=areaDAO.deleteArea(param);
-					if(count>0)
-					{
-						fnSearch();
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
+			fnDelete();
 		}
 		else if(command.equals(KSGPageTablePanel.INSERT))
 		{
-			KSGDialog dialog = new UpdateAreaInfodialog(UpdateAreaInfodialog.INSERT);
+			UpdateAreaInfodialog dialog = new UpdateAreaInfodialog(UpdateAreaInfodialog.INSERT);
+			
 			dialog.createAndUpdateUI();
+			
 			if(dialog.result==KSGDialog.SUCCESS)
 			{
 				fnSearch();
 			}
 		}
-
 	}
-
-
 
 	class TableSelectListner extends MouseAdapter
 	{
 		KSGDialog dialog;
+		
 		public void mouseClicked(MouseEvent e) 
 		{
 			if(e.getClickCount()>1)
@@ -248,10 +244,13 @@ public class PnArea extends PnBase implements ActionListener{
 				int row=es.getSelectedRow();
 				
 				HashMap<String , Object> param = (HashMap<String, Object>) tableH.getValueAt(row);
+				
 				dialog = new UpdateAreaInfodialog(UpdateAreaInfodialog.UPDATE,param);
+				
 				dialog.createAndUpdateUI();
 				
 				int result = dialog.result;
+				
 				if(result== KSGDialog.SUCCESS)
 				{
 					fnSearch();	
@@ -259,7 +258,6 @@ public class PnArea extends PnBase implements ActionListener{
 			}
 		}
 	}
-
 
 	class MyTableModelListener implements TableModelListener {
 		JTable table;
@@ -306,32 +304,39 @@ public class PnArea extends PnBase implements ActionListener{
 		}
 	}
 
-
 	@Override
 	public void fnSearch() {
-		try {
-			List li = areaService.selectAreaList(new CommandMap());
-			
-			tableH.setResultData(li);
-			
-			lblTotal.setText(li.size()+" ");
-			
-		} catch (SQLException ee) {
-			// TODO Auto-generated catch block
-			ee.printStackTrace();
-		}	
+		callApi("selectArea");
 		
 	}
 
 	@Override
 	public void componentShown(ComponentEvent e) {
 		fnSearch();
-		
 	}
 
 	@Override
 	public void updateView() {
-		
+		CommandMap result= this.getModel();
+
+		String serviceId=(String) result.get("serviceId");
+
+		if("selectArea".equals(serviceId))
+		{
+			List data = (List )result.get("areaList");
+
+			tableH.setResultData(data);
+
+			tableH.setTotalCount(String.valueOf(data.size()));
+
+			if(data.size()==0)tableH.changeSelection(0,0,false,false);
+		}
+		else if("deleteArea".equals(serviceId))
+		{
+			NotificationManager.showNotification("삭제되었습니다.");
+
+			fnSearch();
+		}
 		
 	}
 }

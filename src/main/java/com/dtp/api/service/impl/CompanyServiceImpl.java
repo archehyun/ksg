@@ -56,8 +56,7 @@ public class CompanyServiceImpl implements CompanyService{
 		if(selectOne== null) throw new ResourceNotFoundException(companyAbbr+" is no exist");
 
 		int result =(int) dao.deleteCompany(companyAbbr);
-
-		System.out.println(result);
+		
 		return selectOne;
 	}
 	
@@ -96,6 +95,4 @@ public class CompanyServiceImpl implements CompanyService{
 		
 		return selectOne;
 	}
-
-
 }

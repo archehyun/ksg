@@ -16,7 +16,7 @@ public interface CompanyService extends PageService{
 
 	public int delete(CommandMap param) throws SQLException;
 
-	public void insert(CommandMap param) throws SQLException;	
+//	public void insert(CommandMap param) throws SQLException;	
 	
 
 	public Company select(String company) throws SQLException;

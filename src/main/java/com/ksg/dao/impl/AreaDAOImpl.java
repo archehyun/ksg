@@ -47,9 +47,18 @@ public class AreaDAOImpl extends AbstractDAO{
 	public int deleteArea(HashMap<String, Object> param) throws SQLException {
 		return (Integer) delete("area.deleteArea", param);
 	}
+	
+	public int deleteArea(AreaInfo param) throws SQLException {
+		return (Integer) delete("area.deleteArea", param);
+	}
 
 	public int updateArea(HashMap<String, Object> param) throws SQLException {
 	
+		return (Integer) update("area.updateArea", param);
+	}
+	
+	public int updateArea(AreaInfo param) throws SQLException {
+		
 		return (Integer) update("area.updateArea", param);
 	}
 
@@ -70,6 +79,11 @@ public class AreaDAOImpl extends AbstractDAO{
 			return sqlMap.queryForList("area.selectAreaCodeListGroupByAreaCode");
 		}
 		
+	}
+
+	public Object insertArea(AreaInfo info) throws SQLException {
+		// TODO Auto-generated method stub
+		return insert("area.insertArea",info);
 	}
 
 }

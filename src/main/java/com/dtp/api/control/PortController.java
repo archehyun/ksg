@@ -314,7 +314,6 @@ public class PortController  extends AbstractController{
         List portExceptionList=(List) li.stream()
 						                .map(o -> objectMapper.convertValue(o, CommandMap.class))
 						                .collect(Collectors.toList());
-        
 		
 		returnMap.put("portExceptionList", portExceptionList);
 		
@@ -375,5 +374,98 @@ public class PortController  extends AbstractController{
 		log.info("end");
 		
     	return returnMap;
+    }
+    
+    @ControlMethod(serviceId = "selectArea")
+    public CommandMap searchArea(CommandMap param) throws Exception
+    {
+    	log.info("start:{}",param);
+    	
+    	List<AreaInfo> areaList = areaService.selectAll();
+    	
+    	CommandMap returnMap = new CommandMap();
+		
+        List areaListMap=(List) areaList.stream()
+						                .map(o -> objectMapper.convertValue(o, CommandMap.class))
+						                .collect(Collectors.toList());
+		
+        returnMap.put("areaList", areaListMap);;
+		
+		log.info("end");
+		
+    	return returnMap;
+    }
+    
+    @ControlMethod(serviceId = "insertArea")
+    public CommandMap insertArea(CommandMap param) throws Exception
+    {
+    	log.info("start:{}",param);
+    	
+        String area_name 		= (String) param.get("area_name");
+        String area_code 		= (String) param.get("area_code");
+        int area_book_code		= (int) param.get("area_book_code");
+        
+        AreaInfo area = AreaInfo.builder()
+        						.area_name(area_name)
+        						.area_code(area_code)
+        						.area_book_code(area_book_code)
+        						.build();
+        
+        Object result = areaService.insertArea(area);
+        
+        log.info("insert:{}",result);
+        
+        CommandMap returnMap = new CommandMap();
+        
+        log.info("end");
+
+        return returnMap;
+    }
+    
+    @ControlMethod(serviceId = "updateArea")
+    public CommandMap updateArea(CommandMap param) throws Exception
+    {
+    	log.info("start:{}",param);
+    	
+    	// TODO ªË¡¶(base_area_name)
+    	String base_area_name	= (String) param.get("base_area_name");
+        String area_name 		= (String) param.get("area_name");
+        String area_code 		= (String) param.get("area_code");
+        int area_book_code		= (int) param.get("area_book_code");
+        
+        AreaInfo area = AreaInfo.builder()
+        						.area_name(area_name)
+        						.area_code(area_code)
+        						.area_book_code(area_book_code)
+        						.base_area_name(base_area_name)
+        						.build();
+        
+        int result = areaService.updateArea(area);
+        
+        CommandMap returnMap = new CommandMap();
+        
+        log.info("end");
+
+        return returnMap;
+    }
+    
+    @ControlMethod(serviceId = "deleteArea")
+    public CommandMap deleteArea(CommandMap param) throws Exception
+    {
+    	log.info("start:{}",param);
+    	
+        String area_name = (String) param.get("area_name");
+        
+        AreaInfo area = AreaInfo.builder()
+        						.area_name(area_name)
+        						.build();
+        
+        int result = areaService.deleteArea(area);
+        
+        CommandMap returnMap = new CommandMap();
+        
+        log.info("end");
+
+        return returnMap;
     }
 }

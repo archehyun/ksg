@@ -183,14 +183,14 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 		pnMain.add(tableD);
 
-		pnMain.add(createSerch(),BorderLayout.NORTH);
+		pnMain.add(createSearch(),BorderLayout.NORTH);
 
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,7,5,7));
 
 		return pnMain;
 	}
 
-	private KSGPanel createSerch()
+	private KSGPanel createSearch()
 	{
 		KSGPanel pnSearchAndCount = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -314,8 +314,6 @@ public class PnCommonCode extends PnBase implements ActionListener{
 				param.put("code_field", item.get("code_field"));
 
 				callApi("deleteCode", param);
-
-
 			}
 		}
 	}

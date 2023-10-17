@@ -66,7 +66,7 @@ public class Menu extends JPanel{
 
 	private final List<MenuEvent> events = new ArrayList<>();
 	private boolean menuFull = true;
-	private final String headerName = "Raven Channel";
+	private final String headerName = "메뉴 목록";
 
 	protected final boolean hideMenuTitleOnMinimum = true;
 	protected final int menuTitleLeftInset = 5;
