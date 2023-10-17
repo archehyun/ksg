@@ -185,7 +185,6 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 			Toolkit.getDefaultToolkit().beep();
 			timer.stop();
 			setCursor(null); //turn off the wait cursor
-//			bar.setValue(bar.getMinimum());
 		}
 	}
 
@@ -203,9 +202,6 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 	public void setMessage(String message) {
 		
 		this.message=message;
-		
-		
-
 	}
 	
 	public void addErrorMessage(String errro) {
@@ -235,7 +231,5 @@ public class ScheduleBuildMessageDialog extends KSGDialog{
 		bar.setStringPainted(true);
 		
 		timer.start();
-		
 	}
-
 }

@@ -6,6 +6,15 @@ import java.util.List;
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.domain.PortInfo;
 
+/**
+ * 
+ * @FileName : PortDAO.java
+ * @Project : KSG2
+ * @Date : 2023. 5. 16
+ * @작성자 : ch.park
+ * @변경이력 :
+ * @프로그램 설명 :
+ */
 public class PortDAO extends AbstractDAO {
 	
 	public PortDAO()
@@ -23,7 +32,6 @@ public class PortDAO extends AbstractDAO {
 	public List<PortInfo> selectPortDetailListByPortName(String port_name) throws SQLException {
 		return selectList(this.namespace+".selectPortDetailListByPortName", port_name);
 	}
-	
 	
 	// -- select List -- //
 	

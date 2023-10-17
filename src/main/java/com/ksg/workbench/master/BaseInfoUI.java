@@ -255,7 +255,6 @@ public class BaseInfoUI extends AbstractMgtUI{
 
 		DefaultMutableTreeNode table 	= new DefaultMutableTreeNode("기초 정보");
 
-
 		DefaultMutableTreeNode commonCode = new DefaultMutableTreeNode(STRING_COMMONCODE_INFO);
 
 		code.add(commonCode);

@@ -7,6 +7,15 @@ import com.ksg.common.dao.AbstractDAO;
 import com.ksg.domain.Code;
 import com.ksg.domain.KeyWordInfo;
 
+/**
+ * 
+ * @FileName : CodeDAO.java
+ * @Project : KSG2
+ * @Date : 2023. 5. 16
+ * @작성자 : ch.park
+ * @변경이력 :
+ * @프로그램 설명 :
+ */
 public class CodeDAO extends AbstractDAO {
 	
 	public CodeDAO() {
@@ -140,13 +149,13 @@ public class CodeDAO extends AbstractDAO {
 		return (int) update(this.namespace+".deleteKeyword", param);
 	}
 
-	public KeyWordInfo selectKeywordByKey(KeyWordInfo keyParam) throws SQLException {
-		// TODO Auto-generated method stub
+	public KeyWordInfo selectKeywordByKey(KeyWordInfo keyParam) throws SQLException 
+	{
 		return (KeyWordInfo) selectOne(namespace+".selectKeywordByKey", keyParam);
 	}
 
-	public  Object insertKeyword(KeyWordInfo keyParam) throws SQLException {
-		// TODO Auto-generated method stub
+	public  Object insertKeyword(KeyWordInfo keyParam) throws SQLException 
+	{
 		return insert(namespace+".insertKeyword", keyParam);
 	}
 }

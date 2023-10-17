@@ -71,9 +71,6 @@ import com.ksg.workbench.common.dialog.SearchADVCountDialog;
 import com.ksg.workbench.common.dialog.WebScheduleCreateDialog;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.preference.PreferenceDialog;
-import com.ksg.workbench.print.PrintADVUI;
-import com.ksg.workbench.schedule.ScheduleMgtUI;
-import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -106,13 +103,9 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	private static final String MONDAY = "월요일";
 	
 	private static final String SCHEDULE_WORLDWIDE	= "항로별 스케줄 생성";
-	
 	private static final String SCHEDULE_INBOUND	= "Inbound 스케줄 생성";
-	
 	private static final String SCHEDULE_OUTBOUND	= "Outbound 스케줄 생성";
-	
 	private static final String ADV_INPUT_SEARCH	= "광고입력 조회";
-
 	private static final String SCHEDULE_DELETE 	= "Schedule 삭제";
 	private static final String SCHEDULE_SEARCH 	= "Schedule 확인";
 	private static final String ADV_PRINT 			= "광고정보 출력";
@@ -127,6 +120,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	private static final String BASE_PORT_ABBR 		= "항구약어정보";
 	private static final String BASE_VESSEL 		= "선박정보";
 	private static final String BASE_VESSEL_ABBR 	= "선박약어정보";
+	
+	private String[] adv_menu = {"광고정보관리", ADV_SEARCH, ADV_INPUT,"-", ADV_PRINT, ADV_INPUT_SEARCH};
+	
+	private String[] master_menu = {"기초정보관리", BASE_CODE,"-", BASE_AREA, BASE_COMPANY, BASE_PORT, BASE_VESSEL};
 
 	private LookAheadTextField txfImportDate;
 
@@ -168,7 +165,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 	private String cardTable[]={ADV_SEARCH,ADV_INPUT,SCHEDULE_SEARCH,BASE_MAIN,ADV_PRINT};
 
-	private BaseActionListener baseAction = new BaseActionListener();
+//	private BaseActionListener baseAction = new BaseActionListener();
 
 	private AdvertisementActionListener advActionListener = new AdvertisementActionListener();
 
@@ -452,25 +449,62 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 		//광고정보관리 메뉴 ================================
 
-		BiggerMenu AdvMenu = new BiggerMenu("광고정보관리");
+		BiggerMenu AdvMenu = new BiggerMenu(adv_menu[0]);
 
-		this.addMenuItem(AdvMenu, ADV_SEARCH, KeyEvent.VK_X,advActionListener);
-		this.addMenuItem(AdvMenu, ADV_INPUT, KeyEvent.VK_X,advActionListener);
-		this.addMenuItem(AdvMenu, ADV_PRINT, KeyEvent.VK_X,advActionListener);
-		AdvMenu.addSeparator();
-		this.addMenuItem(AdvMenu, ADV_INPUT_SEARCH, KeyEvent.VK_X,advActionListener);
+		/*
+		 * this.addMenuItem(AdvMenu, ADV_SEARCH, KeyEvent.VK_X,advActionListener);
+		 * this.addMenuItem(AdvMenu, ADV_INPUT, KeyEvent.VK_X,advActionListener);
+		 * this.addMenuItem(AdvMenu, ADV_PRINT, KeyEvent.VK_X,advActionListener);
+		 * AdvMenu.addSeparator(); this.addMenuItem(AdvMenu, ADV_INPUT_SEARCH,
+		 * KeyEvent.VK_X,advActionListener);
+		 */
+		
+		for(int i =1;i<adv_menu.length;i++)
+		{
+			if("-".equals(adv_menu[i]))
+			{
+				AdvMenu.addSeparator();
+			}
+			else
+			{
+				this.addMenuItem(AdvMenu, adv_menu[i], KeyEvent.VK_X,advActionListener);
+			}
+		}
 		//===============================================
 
 		//기초정보관리 메뉴================================
-		BiggerMenu BaseInfoMenu = new BiggerMenu(BASE_MAIN);
+//		BiggerMenu BaseInfoMenu = new BiggerMenu(BASE_MAIN);
+//
+//		this.addMenuItem(BaseInfoMenu, BASE_CODE,baseAction);
+//		this.addMenuItem(BaseInfoMenu, BASE_AREA,baseAction);
+//		this.addMenuItem(BaseInfoMenu, BASE_COMPANY,baseAction);
+//		this.addMenuItem(BaseInfoMenu, BASE_PORT,baseAction);
+//		this.addMenuItem(BaseInfoMenu, BASE_PORT_ABBR,baseAction);
+//		this.addMenuItem(BaseInfoMenu, BASE_VESSEL,baseAction);
+//		this.addMenuItem(BaseInfoMenu, BASE_VESSEL_ABBR,baseAction);
+//		
+		
+		BiggerMenu BaseInfoMenu = new BiggerMenu(master_menu[0]);
 
-		this.addMenuItem(BaseInfoMenu, BASE_CODE,baseAction);
-		this.addMenuItem(BaseInfoMenu, BASE_AREA,baseAction);
-		this.addMenuItem(BaseInfoMenu, BASE_COMPANY,baseAction);
-		this.addMenuItem(BaseInfoMenu, BASE_PORT,baseAction);
-		this.addMenuItem(BaseInfoMenu, BASE_PORT_ABBR,baseAction);
-		this.addMenuItem(BaseInfoMenu, BASE_VESSEL,baseAction);
-		this.addMenuItem(BaseInfoMenu, BASE_VESSEL_ABBR,baseAction);
+		/*
+		 * this.addMenuItem(AdvMenu, ADV_SEARCH, KeyEvent.VK_X,advActionListener);
+		 * this.addMenuItem(AdvMenu, ADV_INPUT, KeyEvent.VK_X,advActionListener);
+		 * this.addMenuItem(AdvMenu, ADV_PRINT, KeyEvent.VK_X,advActionListener);
+		 * AdvMenu.addSeparator(); this.addMenuItem(AdvMenu, ADV_INPUT_SEARCH,
+		 * KeyEvent.VK_X,advActionListener);
+		 */
+		
+		for(int i =1;i<master_menu.length;i++)
+		{
+			if("-".equals(master_menu[i]))
+			{
+				BaseInfoMenu.addSeparator();
+			}
+			else
+			{
+				this.addMenuItem(BaseInfoMenu, master_menu[i], this);
+			}
+		}
 		//===============================================
 
 		BiggerMenu schduleMenu = new BiggerMenu("Schedule정보 관리");
@@ -519,7 +553,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 		schduleMenu.addSeparator();
 
-		JMenuItem menuItem1=addMenuItem(schduleMenu, "일괄작업(Build_Sort)");
+		JMenuItem menuItem1=addMenuItem(schduleMenu, "일괄작업(Build_Sort)", this);
 
 		menuItem1.setEnabled(false);
 
@@ -533,7 +567,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 		BiggerMenu optionMenu = new BiggerMenu("옵션",KeyEvent.VK_O);
 
-		this.addMenuItem(optionMenu, PREFERENCE);
+		this.addMenuItem(optionMenu, PREFERENCE, this);
 
 		menuBar.add(AdvMenu);
 
@@ -548,17 +582,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		return menuBar;
 	}
 
-
-	private JMenuItem addMenuItem(JMenu menu,String label)
-	{
-		JMenuItem item = new JMenuItem(label);
-		
-		item.addActionListener(this);
-		
-		menu.add(item);
-		
-		return item;
-	}
 	private JMenu addMenu(JMenu menu,String label)
 	{
 		JMenu item = new JMenu(label);
@@ -566,13 +589,17 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		item.addActionListener(this);
 		
 		menu.add(item);
+		
 		return item;
 	}
 	private JMenuItem addMenuItem(JMenu menu,String label, ActionListener ac)
 	{
 		JMenuItem item = new JMenuItem(label);
+		
 		item.addActionListener(ac);
+		
 		menu.add(item);
+		
 		return item;
 	}
 
@@ -586,13 +613,18 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
+		String command = e.getActionCommand();
 
-		if(e.getActionCommand().equals(PREFERENCE))
+		if(command.equals(PREFERENCE))
 		{
 			PreferenceDialog preferenceDialog = new PreferenceDialog(PREFERENCE,true);
 			
 			preferenceDialog.createAndUpdateUI();
 		}
+		
+		pnMainView.showPanel(command);
+		
 	}
 	private void sort()
 	{
@@ -776,12 +808,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 				}
 			}
 		}
-
 	}
 
 	class SortActionListenr implements ActionListener
 	{
-
 		public void actionPerformed(ActionEvent e) {
 
 			if(e.getActionCommand().equals("Inbound"))
@@ -820,10 +850,13 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 				pnInput.setLayout( new FlowLayout(FlowLayout.LEADING));
 
 				StringArrayLookAhead lookAhead = new StringArrayLookAhead(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
+				
 				txfDate = new LookAheadTextField("생성 날짜 입력",15,lookAhead);
+				
 				txfDate.setFocus_lost(false);
 
 				JCheckBox cbxMondya = new JCheckBox(MONDAY);
+				
 				cbxMondya.addActionListener(new ActionListener(){
 
 					public void actionPerformed(ActionEvent e) {
@@ -905,15 +938,15 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	 * @author archehyun
 	 *
 	 */
-	class BaseActionListener implements ActionListener
-	{
-		public BaseActionListener() {
-		}
-		public void actionPerformed(ActionEvent e) {
-			
-			pnMainView.showPanel(BASE_MAIN);
-		}
-	}
+//	class BaseActionListener implements ActionListener
+//	{
+//		public BaseActionListener() {
+//		}
+//		public void actionPerformed(ActionEvent e) {
+//			
+//			pnMainView.showPanel(BASE_MAIN);
+//		}
+//	}
 
 	// 광고정보 관련 액션
 	class AdvertisementActionListener implements ActionListener

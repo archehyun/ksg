@@ -72,7 +72,9 @@ public class OutboundSchedulePrintFile extends AbstractSchedulePrint{
 
 	private List<Code> fromPortList;
 
-
+	/**
+	 * 
+	 */
 	public void init() throws Exception {
 		
 		log.info("태그정보 초기화");
@@ -112,7 +114,12 @@ public class OutboundSchedulePrintFile extends AbstractSchedulePrint{
 
 		portfw 			= new FileWriter(fileLocation+"/"+PORT_NAME);
 	}
-
+	
+	/**
+	 * 
+	 * @param param
+	 * @throws Exception
+	 */
 	public OutboundSchedulePrintFile(CommandMap param) throws Exception {
 		super();
 

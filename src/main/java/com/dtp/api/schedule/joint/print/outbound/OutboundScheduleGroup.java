@@ -106,15 +106,15 @@ public class OutboundScheduleGroup extends ScheduleGroup
 	 *   
 	 * @return
 	 */
-	private boolean bothBusanAndBusanNew(List<ScheduleData> originScheduleList)
-	{	
-		Optional<ScheduleData> busanList= originScheduleList.stream().filter(o -> o.getFromPort().equals(BUSAN)).findFirst();
-		
-		Optional<ScheduleData> busanNewList= originScheduleList.stream().filter(o -> o.getFromPort().equals(BUSAN_NEW)).findFirst();
-		
-		return busanList.isPresent()&&busanNewList.isPresent();
-	}
-	
+//	private boolean bothBusanAndBusanNew(List<ScheduleData> originScheduleList)
+//	{	
+//		Optional<ScheduleData> busanList= originScheduleList.stream().filter(o -> o.getFromPort().equals(BUSAN)).findFirst();
+//		
+//		Optional<ScheduleData> busanNewList= originScheduleList.stream().filter(o -> o.getFromPort().equals(BUSAN_NEW)).findFirst();
+//		
+//		return busanList.isPresent()&&busanNewList.isPresent();
+//	}
+//	
 	
 	private boolean isBusasnNewAndBusan(List<ScheduleData> sc)
 	{
@@ -226,6 +226,10 @@ public class OutboundScheduleGroup extends ScheduleGroup
 		return lastDateF.get();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isMulti()
 	{
 		return sortedScheduleList.size()>1;

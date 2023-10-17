@@ -72,6 +72,21 @@ public class PnCommonCode extends PnBase implements ActionListener{
 
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 	}
+	
+	public PnCommonCode() {
+
+		super();
+		
+		this.initComp();
+
+		this.setController(new CodeController());
+
+		this.add(createCenter());
+
+		this.addComponentListener(this);
+
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+	}
 
 	private void initComp() {
 		txfCodeName = new JTextField(10);

@@ -94,6 +94,20 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 	}
+	
+	public PnCompany() {
+		 super();
+		
+		this.initComp();
+
+		this.addComponentListener(this);
+
+		this.setController(new CompanyController());
+
+		this.add(buildCenter());
+
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+	}
 
 
 	private void initComp() {

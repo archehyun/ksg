@@ -13,6 +13,12 @@ import com.ksg.service.impl.ScheduleServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.workbench.adv.ADVManageUI;
 import com.ksg.workbench.master.BaseInfoUI;
+import com.ksg.workbench.master.comp.PnArea;
+import com.ksg.workbench.master.comp.PnCommonCode;
+import com.ksg.workbench.master.comp.PnCompany;
+import com.ksg.workbench.master.comp.PnPort;
+import com.ksg.workbench.master.comp.PnPortNew;
+import com.ksg.workbench.master.comp.PnVessel;
 import com.ksg.workbench.print.PrintADVUI;
 import com.ksg.workbench.schedule.ScheduleMgtUI;
 import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
@@ -33,18 +39,6 @@ public class MainController extends AbstractController{
 	public MainController()
 	{
 		tableService=new TableServiceImpl();
-		
-		Menu menuShipperTable = new Menu("스케줄정보관리", "crete", "스케줄정보관리");
-		
-		Menu menuMasterCommonCode = new Menu("기초정보관리", "COMMON_CODE", "공통코드");
-		
-		Menu menuMasterAreaCode = new Menu("기초정보관리", "AREA_CODE", "지역");
-		
-		Menu menuShippertable = new Menu("광고정보관리", "SHIPPERTABLE", "광고조회");
-		
-		Menu menuPrint = new Menu("광고정보관리", "PRINT", "광고출력");
-		
-		Menu menuInput = new Menu("광고정보관리", "INPUT", "광고 입력");
 	}
 	
 	@ControlMethod(serviceId = "showMenu")
@@ -66,6 +60,30 @@ public class MainController extends AbstractController{
         else if("기초정보관리".equals(menuId))
         {
         	model.put("view", new BaseInfoUI());
+        }
+        
+        else if("항구정보".equals(menuId))
+        {
+        	model.put("view", new PnPortNew());
+        }
+        else if("공통정보".equals(menuId))
+        {
+        	model.put("view", new PnCommonCode());
+        }
+        else if("선박정보".equals(menuId))
+        {
+        	model.put("view", new PnVessel());
+        }
+        
+        else if("지역정보".equals(menuId))
+        {
+        	model.put("view", new PnArea());
+        }
+        
+        
+        else if("선사정보".equals(menuId))
+        {
+        	model.put("view", new PnCompany());
         }
         else if("Schedule 확인".equals(menuId))
         {

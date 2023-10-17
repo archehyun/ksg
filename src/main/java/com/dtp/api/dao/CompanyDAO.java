@@ -8,7 +8,15 @@ import com.ksg.domain.Company;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+/**
+ * 
+ * @FileName : CompanyDAO.java
+ * @Project : KSG2
+ * @Date : 2023. 5. 16
+ * @작성자 : ch.park
+ * @변경이력 :
+ * @프로그램 설명 :
+ */
 public class CompanyDAO extends AbstractDAO{
 	
 	public CompanyDAO() {
@@ -17,8 +25,6 @@ public class CompanyDAO extends AbstractDAO{
 	}
 	
 	public List<Company> selectListByCondition(Company param) throws SQLException {
-		
-		log.debug("param:{}", param);
 		
 		return selectList(namespace+".selectCompanyListByCondition", param);
 	}
@@ -39,7 +45,4 @@ public class CompanyDAO extends AbstractDAO{
 	public Object insertCompany(Company param) throws SQLException {
 		return insert(namespace+".insertCompany", param);
 	}
-
-
-
 }

@@ -10,6 +10,15 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.view.comp.KSGViewUtil;
 
+/**
+ * 
+ * @FileName : InboundScheduleRule.java
+ * @Project : KSG2
+ * @Date : 2023. 5. 16
+ * @작성자 : ch.park
+ * @변경이력 :
+ * @프로그램 설명 :
+ */
 public class InboundScheduleRule {
 	
 	private KSGViewUtil propeties = KSGViewUtil.getInstance();
@@ -25,6 +34,12 @@ public class InboundScheduleRule {
 		this.vesselMap = vesselMap;
 	}
 	
+	/**
+	 * 
+	 * @param list
+	 * @param printTag
+	 * @return
+	 */
 	public List<InboundScheduleGroup> createScheduleGroup(Map<String,List<ScheduleData>> list, boolean printTag)
 	{	
 		ArrayList<InboundScheduleGroup> groupList = new ArrayList<InboundScheduleGroup>();
@@ -90,7 +105,6 @@ public class InboundScheduleRule {
 			try {
 				sortedInboundScheduleGroupList.add(new InboundScheduleGroup(jointScheduleItemList, (ArrayList) o));
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -101,11 +115,13 @@ public class InboundScheduleRule {
 	}
 	
 	/**
+	 * 
+	 * 공동배선 3이상 스케줄 분할
 	 * @param jointScheduleItemList
 	 * @return
 	 */
 	private ArrayList<Integer> getSplitedScheduleIndex(InboundScheduleGroup jointScheduleItemList) {
-		// 공동배선 3이상 스케줄 분할
+		// 
 		ArrayList<Integer> indexList 		= new ArrayList<Integer>();
 		
 		List<ScheduleData> scheduleList  	= jointScheduleItemList.getScheduleList();

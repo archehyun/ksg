@@ -17,6 +17,15 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.domain.Vessel;
 import com.ksg.workbench.schedule.comp.treenode.InboundCodeMap;
 
+/**
+ * 
+ * @FileName : InboundScheduleGroup.java
+ * @Project : KSG2
+ * @Date : 2023. 5. 16
+ * @작성자 : pch
+ * @변경이력 :
+ * @프로그램 설명 :
+ */
 public class InboundScheduleGroup extends ScheduleGroup{
 	
 	private SimpleDateFormat inputDateFormat 	= KSGDateUtil.inputDateFormat;
@@ -30,7 +39,6 @@ public class InboundScheduleGroup extends ScheduleGroup{
 	private String BOLD_TAG_B="<ct:>";
 
 	private String BOLD_TAG_F="<ct:77 Bold Condensed>";
-
 	
 	private InboundCodeMap inboundCodeMap = InboundCodeMap.getInstance();
 	
@@ -82,8 +90,11 @@ public class InboundScheduleGroup extends ScheduleGroup{
 			return false;
 		}
 	}
-
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<PortAndDay> getJointedInboundPortList() {
 		
 		// 국내항 그룹화

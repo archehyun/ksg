@@ -35,9 +35,9 @@ public class OutboundScheduleRule {
 	private static final int DIVIED_SCHEDULE = 3;
 
 	public OutboundScheduleRule(Map<String, Vessel> vesselMap) {
-		
+
 		this.vesselMap =vesselMap;
-		
+
 	}
 
 	/**
@@ -125,19 +125,14 @@ public class OutboundScheduleRule {
 	 * @throws Exception 
 	 */
 	public void addNewOutboundScheduleGroup(HashMap<String, OutboundScheduleGroup> scheduleList, SortedSchedule scheduleMap,
-			String scheduleKey)  {
+			String scheduleKey)  throws Exception{
 
-		try {
-			OutboundScheduleGroup jointScheduleItemList = new OutboundScheduleGroup(this.vesselMap.get(scheduleMap.getData().getVessel()));
+		OutboundScheduleGroup jointScheduleItemList = new OutboundScheduleGroup(this.vesselMap.get(scheduleMap.getData().getVessel()));
 
-			jointScheduleItemList.add(scheduleMap);
+		jointScheduleItemList.add(scheduleMap);
 
-			scheduleList.put(scheduleKey, jointScheduleItemList);
-		}catch(Exception e)
-		{
-			System.out.println(scheduleMap.getData().getVessel());
-			e.printStackTrace();
-		}
+		scheduleList.put(scheduleKey, jointScheduleItemList);
+
 	}
 
 	/**
@@ -183,7 +178,13 @@ public class OutboundScheduleRule {
 			}
 			else
 			{
-				addNewOutboundScheduleGroup(scheduleList, scheduleMap, scheduleKey);
+				try {
+					//TODO 예외 처리
+					addNewOutboundScheduleGroup(scheduleList, scheduleMap, scheduleKey);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -200,13 +201,14 @@ public class OutboundScheduleRule {
 
 		fillteredList.forEach(scheduleGroup -> outboundScheduleGroupList.addAll( getSplitedOutboundScheduleGroupNode(scheduleGroup)));
 
-
 		outboundScheduleGroupList.forEach(o -> o.joinnted());
 
 		return outboundScheduleGroupList;
 	}
 
 	/**출발항구 정렬
+	 * 
+	 * 
 	 * @param outboundFromPortArray
 	 * @return
 	 */
@@ -226,7 +228,6 @@ public class OutboundScheduleRule {
 			}
 		}
 		String[] newArray = arragedFromPortList.toArray(new String[arragedFromPortList.size()]);
-
 
 		return newArray;
 	}

@@ -9,18 +9,12 @@ import com.ksg.domain.Vessel;
 
 /**
  * 
-
-  * @FileName : VesselDAO.java
-
-  * @Project : KSG2
-
-  * @Date : 2023. 6. 27. 
-
-  * @작성자 : pch
-
-  * @변경이력 :
-
-  * @프로그램 설명 :
+ * @FileName : VesselDAO.java
+ * @Project : KSG2
+ * @Date : 2023. 5. 16
+ * @작성자 : ch.park
+ * @변경이력 :
+ * @프로그램 설명 :
  */
 public class VesselDAO extends AbstractDAO{
 	
@@ -62,7 +56,6 @@ public class VesselDAO extends AbstractDAO{
 	public Vessel selectVesselDetailByKey(Vessel param) throws SQLException {
 		return (Vessel) selectOne("vessel.selectVesselDetailByKey", param);
 	}
-
 
 	// -- update -- //
 

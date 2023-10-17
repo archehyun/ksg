@@ -274,7 +274,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 		// 왼쪽 일짜 목록====================
 		KSGPanel pnLeftMenu = new KSGPanel(new BorderLayout(5,5));	
 
-
 		// 테이블 업데이트 일자 항목 생성======================		
 		KSGPanel pnTableDateModel = new KSGPanel(new BorderLayout());
 
@@ -507,15 +506,15 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
 
-		tabPane = new JTabbedPane();
+		tabPane 		= new JTabbedPane();
 
-		pnNormal2 = new PnNormal2();
+		pnNormal2 		= new PnNormal2();
 
-		pnConsole2 = new PnConsole2();
+		pnConsole2 		= new PnConsole2();
 
-		pnInland2 = new PnInland2();
+		pnInland2 		= new PnInland2();
 
-		pnNomalByTree = new PnNormalByTree();
+		pnNomalByTree 	= new PnNormalByTree();
 
 		tabPane.add(pnNomalByTree, "TreeTable");
 
@@ -600,10 +599,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 			JOptionPane.showMessageDialog(this, deleteCount+"건을 삭제 했습니다.");
 
 			callApi("scheduleViewUpdate");
-		}
-
-		else if("createSchedule".equals(serviceId)) {
-
 		}
 	}
 

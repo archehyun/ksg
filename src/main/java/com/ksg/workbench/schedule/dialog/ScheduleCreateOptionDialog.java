@@ -20,7 +20,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -90,8 +89,6 @@ public class ScheduleCreateOptionDialog extends MainTypeDialog{
 
 	public static final int WEB=1;
 
-//	private LookAheadTextField txfDateInput;
-
 	private KSGPanel pnOption;
 
 	private boolean isOption=false;
@@ -111,10 +108,6 @@ public class ScheduleCreateOptionDialog extends MainTypeDialog{
 	
 	private KSGComboBox cbxTableDateList;
 	
-//	public int getGubun()
-//	{
-//		return cbxGubun.getSelectedIndex();
-//	}
 	public boolean isOption() {
 		return isOption;
 	}
@@ -168,22 +161,12 @@ public class ScheduleCreateOptionDialog extends MainTypeDialog{
 	{
 		StringArrayLookAhead lookAhead = new StringArrayLookAhead(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
 		
-//		txfDateInput = new LookAheadTextField("생성 날짜 입력",8,lookAhead);
-//		
-//		txfDateInput.setFocus_lost(false);
-		
-//		cbxGubun = new JComboBox();	
+
 		
 		cbxGubun = new KSGComboBox("tableType");
 		
 		cbxGubun.initComp();
-		
-//		cbxGubun.addItem(ShippersTable.GUBUN_NORMAL);
-//		
-//		cbxGubun.addItem(ShippersTable.GUBUN_CONSOLE);
-//		
-//		cbxGubun.addItem(ShippersTable.GUBUN_INLAND);
-//		
+
 		cbxGubun.addActionListener(new ActionListener() {
 
 			@Override
@@ -248,10 +231,7 @@ public class ScheduleCreateOptionDialog extends MainTypeDialog{
 					}
 					bo.setSelected(false);
 					NotificationManager.showNotification(Notification.Type.WARNING, String.format("월요일(%s) 정보가 없습니다.", monday) );
-					
 				}
-				
-				
 			}});
 		
 		cbxTableDateList = new KSGComboBox();
@@ -278,11 +258,6 @@ public class ScheduleCreateOptionDialog extends MainTypeDialog{
 				
 			}
 		});
-		
-//		rdoCompany.setVisible(false);
-//		rdoPage.setVisible(false);
-//		txfOptionInput.setVisible(false);
-		
 	}
 	
 	private KSGPanel buildCenter()
@@ -399,6 +374,7 @@ public class ScheduleCreateOptionDialog extends MainTypeDialog{
 
 		this.setVisible(true);
 	}
+	
 	/**
 	 * 
 	 */

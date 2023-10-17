@@ -11,6 +11,9 @@ import com.dtp.api.exception.ApiCallException;
 import com.dtp.api.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksg.common.model.CommandMap;
+import com.ksg.view.comp.notification.Notification;
+import com.ksg.view.comp.notification.Notification.Type;
+import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.workbench.common.comp.View;
 
 import lombok.extern.slf4j.Slf4j;
@@ -135,7 +138,16 @@ public abstract class AbstractController {
 			if(view != null)
 			{
 				view.setModel( model);
-				view.updateView();
+				try
+				{
+					view.updateView();	
+				}catch(Exception e)
+				{
+					e.printStackTrace();
+					NotificationManager.showNotification(Type.WARNING, "unhandleed error:"+e.getMessage());
+					
+				}
+				
 			}
 		}
 

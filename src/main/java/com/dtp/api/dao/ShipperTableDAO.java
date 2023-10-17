@@ -9,6 +9,15 @@ import com.ksg.domain.ADVData;
 import com.ksg.domain.ShippersTable;
 import com.ksg.domain.TablePort;
 
+/**
+ * 
+ * @FileName : ShipperTableDAO.java
+ * @Project : KSG2
+ * @Date : 2023. 5. 16
+ * @작성자 : ch.park
+ * @변경이력 :
+ * @프로그램 설명 :
+ */
 public class ShipperTableDAO extends AbstractDAO{
 	
 	public ShipperTableDAO()
@@ -59,10 +68,8 @@ public class ShipperTableDAO extends AbstractDAO{
 	
 	public Object updateShipperTableDateByList(String inputDate, List tableIdList) throws SQLException {
 		
-		HashMap<Object, Object>param  = new HashMap<Object, Object>();
-		
-		param.put("date_isusse", inputDate);
-		
+		HashMap<Object, Object>param  = new HashMap<Object, Object>();		
+		param.put("date_isusse", inputDate);		
 		param.put("tableIDList", tableIdList);
 		
 		return update(namespace+".updateShipperTableDate", param);
@@ -70,7 +77,6 @@ public class ShipperTableDAO extends AbstractDAO{
 
 	public Object deleteADV(String table_id) throws SQLException {
 		return delete(namespace+".deleteADV" , table_id);
-		
 	}
 
 	public Object insertADV(ADVData param) throws SQLException {

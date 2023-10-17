@@ -1,5 +1,6 @@
 package com.ksg.workbench.admin.menu;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -18,43 +19,27 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.util.UIScale;
 import com.ksg.workbench.admin.LightDarkMode;
 
-;
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 public class Menu extends JPanel{
-
-	//	 private final String menuItems[][] = {
-	//		        {"~MAIN~"},
-	//		        {"Dashboard"},
-	//		        {"~WEB APP~"},
-	//		        {"Email", "Inbox", "Read", "Compost"},
-	//		        {"Chat"},
-	//		        {"Calendar"},
-	//		        {"~COMPONENT~"},
-	//		        {"Advanced UI", "Cropper", "Owl Carousel", "Sweet Alert"},
-	//		        {"Forms", "Basic Elements", "Advanced Elements", "SEditors", "Wizard"},
-	//		        {"~OTHER~"},
-	//		        {"Charts", "Apex", "Flot", "Peity", "Sparkline"},
-	//		        {"Icons", "Feather Icons", "Flag Icons", "Mdi Icons"},
-	//		        {"Special Pages", "Blank page", "Faq", "Invoice", "Profile", "Pricing", "Timeline"},
-	//		        {"Logout"}
-	//		    };
 
 	private final String menuItems[][] = {
 			{"~광고정보관리~"},
-			{"광고정보조회"},
-			{"광고정보입력"},
+			{"광고정보조회 및 입력"},
+			{"광고정보입력(자동)"},
 			{"광고정보출력"},
-			{"~WEB APP~"},
-			{"Email", "Inbox", "Read", "Compost"},
-			{"Chat"},
-			{"Calendar"},
 			{"~스케줄관리~"},
-			{"Advanced UI", "Cropper", "Owl Carousel", "Sweet Alert"},
-			{"Forms", "Basic Elements", "Advanced Elements", "SEditors", "Wizard"},
+			{"일반스케줄", "Console", "Inland"},
+			{"웹스케줄"},			
 			{"~기초정보관리~"},
-			{"Charts", "Apex", "Flot", "Peity", "Sparkline"},
-			{"Icons", "Feather Icons", "Flag Icons", "Mdi Icons"},
-			{"Special Pages", "Blank page", "Faq", "Invoice", "Profile", "Pricing", "Timeline"},
+			{"공통코드"},
+			{"지역정보"},
+			{"항구정보"},
+			{"선사정보"},
+			{"선박정보"},
+			
 			{"Logout"}
 	};
 
@@ -96,6 +81,7 @@ public class Menu extends JPanel{
 
 	private void init() {
 		setLayout(new MenuLayout());
+		this.setBackground(Color.white);
 		putClientProperty(FlatClientProperties.STYLE, ""
 				+ "border:20,2,2,2;"
 				+ "background:$Menu.background;"
@@ -108,6 +94,7 @@ public class Menu extends JPanel{
 
 		//  Menu
 		scroll = new JScrollPane();
+		scroll.setBackground(Color.white);
 		panelMenu = new JPanel(new MenuItemLayout(this));
 		panelMenu.putClientProperty(FlatClientProperties.STYLE, ""
 				+ "border:5,5,5,5;"
@@ -128,17 +115,20 @@ public class Menu extends JPanel{
 		lightDarkMode = new LightDarkMode();
 		add(header);
 		add(scroll);
-		add(lightDarkMode);
+		//add(lightDarkMode);
 	}
 
 	private void createMenu() {
+		
+		log.info("create Menu");
+		
 		int index = 0;
 		for (int i = 0; i < menuItems.length; i++) {
 			String menuName = menuItems[i][0];
 			if (menuName.startsWith("~") && menuName.endsWith("~")) {
 				panelMenu.add(createTitle(menuName));
 			} else {
-				MenuItem menuItem = new MenuItem(this, menuItems[i], index++, events);
+				MenuItem menuItem = new MenuItem(this, menuItems[i], index++,  events);
 				panelMenu.add(menuItem);
 			}
 		}

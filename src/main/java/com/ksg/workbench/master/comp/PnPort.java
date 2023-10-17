@@ -115,6 +115,24 @@ public class PnPort extends PnBase implements ActionListener{
 		callApi("pnPort.init");
 
 	}
+	
+	public PnPort() {
+
+		super();
+		
+		this.initComp();
+
+		this.addComponentListener(this);
+
+		this.setController(new PortController());
+
+		this.add(buildCenter());
+
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		
+		callApi("pnPort.init");
+
+	}
 	private void initComp() {
 		cbxField = new KSGComboBox();
 

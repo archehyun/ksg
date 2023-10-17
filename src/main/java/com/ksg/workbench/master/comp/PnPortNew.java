@@ -134,7 +134,27 @@ public class PnPortNew extends PnBase implements ActionListener{
 
 	public PnPortNew(BaseInfoUI baseInfoUI) {
 
+		
 		super(baseInfoUI);
+		
+		this.initComp();
+
+		this.addComponentListener(this);
+
+		this.setController(new PortController());
+
+		this.add(buildCenter());
+
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+		
+		codeService = new CodeServiceImpl();
+		
+		callApi("pnPort.init");
+
+	}
+	public PnPortNew() {
+
+		super();
 		
 		this.initComp();
 

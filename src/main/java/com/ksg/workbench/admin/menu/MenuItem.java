@@ -66,11 +66,14 @@ public class MenuItem extends JPanel {
 	private float animate;
 
 	private PopupSubmenu popup;
+	
 
-	public MenuItem(Menu menu, String menus[], int menuIndex, List<MenuEvent> events) {
+
+	public MenuItem(Menu menu, String menus[], int menuIndex,  List<MenuEvent> events) {
 		this.menu = menu;
 		this.menus = menus;
 		this.menuIndex = menuIndex;
+
 		this.events = events;
 		init();
 	}

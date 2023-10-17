@@ -80,6 +80,13 @@ public class PnArea extends PnBase implements ActionListener{
 		this.add(buildCenter());	
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 	}
+	public PnArea() {
+		super();
+		
+		this.addComponentListener(this);
+		this.add(buildCenter());	
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+	}
 
 	private KSGPanel buildCenter()
 	{

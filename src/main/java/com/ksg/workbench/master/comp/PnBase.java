@@ -49,15 +49,18 @@ public abstract class PnBase extends KSGPanel implements ComponentListener, View
 	public BaseInfoUI getBaseInfoUI() {
 		return baseInfoUI;
 	}
-
-
-	public PnBase(BaseInfoUI baseInfoUI) {
-
-		this.baseInfoUI = baseInfoUI;
-
+	public PnBase()
+	{
 		this.setLayout(new BorderLayout());		
 
 		this.setBorder(BorderFactory.createLineBorder(Color.gray));
+	}
+
+	public PnBase(BaseInfoUI baseInfoUI) {
+
+		this();
+		
+		this.baseInfoUI = baseInfoUI;		
 	}
 	
 	

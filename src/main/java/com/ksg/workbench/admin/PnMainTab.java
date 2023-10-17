@@ -17,7 +17,12 @@ import com.ksg.workbench.admin.menu.Menu;
 import com.ksg.workbench.admin.menu.MenuAction;
 import com.ksg.workbench.common.comp.KSGView;
 
+import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 
+ */
+@Slf4j
 public class PnMainTab extends KSGView{
 	
 	private List<KSGPanel> viewList;
@@ -25,6 +30,20 @@ public class PnMainTab extends KSGView{
 	private JTabbedPane pane;
 	
 	private Menu pnLeft;
+	
+	String menu_array[][]= {
+							{"광고정보 조회"},
+							{"광고정보 입력"},
+							{"광고정보 출력"},
+							{"Schedule 확인","Schedule 확인", "Schedule 확인"},
+							{"Schedule 확인"},
+							{"공통정보"},
+							{"지역정보"},
+							{"항구정보"},
+							{"선사정보"},
+							{"선박정보"},
+							{"기초정보관리"}
+							};
 	
 	public PnMainTab()
 	{
@@ -55,7 +74,9 @@ public class PnMainTab extends KSGView{
 	
     private void initMenuEvent() {
     	pnLeft.addMenuEvent((int index, int subIndex, String menuId, MenuAction action) -> {
-    		System.out.println(1);
+    		
+    		System.out.println("index:"+index+",subIndex:"+subIndex+",menuId:"+menuId);
+    		showPanel(menu_array[index][subIndex]);
         });
     }
 	
@@ -88,7 +109,14 @@ public class PnMainTab extends KSGView{
 		}
 	}
 	
+	/**
+	 * 메뉴 표시
+	 * @param menuId
+	 * @param menuSubId
+	 */
 	public void showPanel(String menuId, String menuSubId) {
+		
+		log.info("show Panel");
 		
 		int index =pane.indexOfTab(menuId);
 		
@@ -103,6 +131,7 @@ public class PnMainTab extends KSGView{
 				CommandMap param = new CommandMap();
 
 				param.put("menuId", menuId);
+				
 				param.put("menuSumId", menuSubId);
 
 				callApi("showMenu", param);	
@@ -159,7 +188,7 @@ public class PnMainTab extends KSGView{
 
 			addView(menuId, pn);
 			
-			pnLeft.setSelectedMenu(0, 0);
+//			pnLeft.setSelectedMenu(0, 0);
 
 		}
 	};

@@ -146,6 +146,20 @@ public class PnVessel extends PnBase implements ActionListener {
 
 		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 	}
+	public PnVessel() {
+
+		super();
+		
+		this.initComp();
+
+		this.setController(new VesselController());
+
+		this.addComponentListener(this);
+
+		this.add(buildCenter());
+
+		this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+	}
 
 	private void initComp() {
 		
