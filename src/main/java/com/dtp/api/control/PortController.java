@@ -101,13 +101,9 @@ public class PortController  extends AbstractController{
     	log.info("start:{}",param);
         
         String port_name 		= (String) param.get("port_name");
-        
         String port_area 		= (String) param.get("port_area");
-        
         String port_nationality = (String) param.get("port_nationality");
-        
         String area_code 		= (String) param.get("area_code");
-        
         String contents 		= (String) param.get("contents");
 
         PortInfo port = PortInfo.builder()
@@ -135,7 +131,6 @@ public class PortController  extends AbstractController{
     	log.info("start:{}",param);
         
         String port_name = (String) param.get("port_name");
-        
         String port_abbr = (String) param.get("port_abbr");
 
         PortInfo port = PortInfo.builder()
@@ -178,7 +173,6 @@ public class PortController  extends AbstractController{
     	log.info("start:{}",param);
     	
         String port_name = (String) param.get("port_name");
-        
         String port_abbr = (String) param.get("port_abbr");
         
         PortInfo portParam = PortInfo.builder()
@@ -201,13 +195,9 @@ public class PortController  extends AbstractController{
     	log.info("start:{}",param);
         
         String port_name = (String) param.get("port_name");
-        
         String port_area = (String) param.get("port_area");
-        
         String port_nationality = (String) param.get("port_nationality");
-
         String area_code = (String) param.get("area_code");
-        
         String contents = (String) param.get("contents");
 
         PortInfo port = PortInfo.builder()
@@ -236,15 +226,10 @@ public class PortController  extends AbstractController{
     	log.info("start:{}",param);
         
         int id 					= (int) param.get("id");
-        
         String port_name 		= (String) param.get("port_name");
-        
         String port_area 		= (String) param.get("port_area");
-        
         String port_nationality = (String) param.get("port_nationality");
-
         String area_code 		= (String) param.get("area_code");
-        
         String contents 		= (String) param.get("contents");
 
         PortInfo port = PortInfo.builder()
@@ -345,13 +330,13 @@ public class PortController  extends AbstractController{
     	
     	CommandMap returnMap = new CommandMap();
     	
-    	String code_type = (String) param.get("code_type");
+    	String code_type 	= (String) param.get("code_type");
     	
-    	String code_name = (String) param.get("code_name");
+    	String code_name 	= (String) param.get("code_name");
     	
-		Code codeParam = Code.builder().code_type(code_type).code_name(code_name).build();
+		Code codeParam 		= Code.builder().code_type(code_type).code_name(code_name).build();
 		
-		List<Code> li=codeService.selectCodeDetailListByCondition(codeParam);
+		List<Code> li		= codeService.selectCodeDetailListByCondition(codeParam);
 		
 		log.info("code list:{}", li.size());
 		
@@ -376,7 +361,6 @@ public class PortController  extends AbstractController{
     	String port_name = (String) param.get("port_name");
     	
     	PortInfo  portParam = PortInfo.builder().port_name(port_name).build();
-    	
 		
 		List<PortInfo> li=service.selectListByCondtion(portParam);
 		

@@ -27,8 +27,6 @@ public interface VesselService {
 
 	public List<Vessel> selectListByCondtion(Vessel param) throws Exception;
 
-	public List<Vessel> selectListByKeys(List names) throws Exception;
-	
 	public List<Vessel> selectDetailList(String param) throws Exception;
 
 	public Vessel selectDeatileById(String id)throws Exception;

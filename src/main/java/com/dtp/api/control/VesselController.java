@@ -38,10 +38,11 @@ public class VesselController extends AbstractController{
 	
 	private VesselService service;
 	
-	private CodeServiceImpl codeService= new CodeServiceImpl();
+	private CodeServiceImpl codeService;
 
     public VesselController() {
         super();
+        codeService= new CodeServiceImpl();
         service = new VesselServiceImpl();
     }
 
@@ -56,14 +57,13 @@ public class VesselController extends AbstractController{
     {
     	log.info("start:{}",param);
 
-        String vessel_name =(String) param.get("vessel_name");
-        
-        String vessel_type =(String) param.get("vessel_type");
-        
-        String vessel_company =(String) param.get("vessel_company");
+        String vessel_name 		= (String) param.get("vessel_name");
+        String vessel_type 		= (String) param.get("vessel_type");
+        String vessel_company 	= (String) param.get("vessel_company");
         
         Vessel vessel = Vessel.builder()
                                 .vessel_name(vessel_name)
+                                //TODO °³¼±
                                 .vessel_use(param.containsKey("vessel_use")? (Integer) param.get("vessel_use"):-1)
                                 .vessel_type(vessel_type)
                                 .vessel_company(vessel_company)
@@ -84,7 +84,6 @@ public class VesselController extends AbstractController{
         log.info("end");
 
         return model;
-        
     }
     
     /**
@@ -161,7 +160,6 @@ public class VesselController extends AbstractController{
     	log.info("start:{}",param);
         
         String vessel_name 		= (String) param.get("vessel_name");
-        
         String vessel_abbr 		= (String) param.get("vessel_abbr");
 
         Vessel vessel = Vessel.builder()
@@ -205,7 +203,6 @@ public class VesselController extends AbstractController{
     	log.info("start:{}",param);
         
         String vessel_name = (String) param.get("vessel_name");
-        
         String vessel_abbr = (String) param.get("vessel_abbr");
         
         Vessel vesselparam = Vessel.builder().vessel_name(vessel_name).vessel_abbr(vessel_abbr).build();
@@ -227,15 +224,10 @@ public class VesselController extends AbstractController{
     	log.info("start:{}",param);
         
         String vessel_name = (String) param.get("vessel_name");
-        
         String vessel_abbr = (String) param.get("vessel_abbr");
-        
         String vessel_type = (String) param.get("vessel_type");
-        
         String vessel_mmsi = (String) param.get("vessel_mmsi");
-        
         String vessel_company = (String) param.get("vessel_company");
-        
         Integer vessel_use = (Integer) param.get("vessel_use");
 
         Vessel vessel = Vessel.builder()
@@ -266,17 +258,11 @@ public class VesselController extends AbstractController{
         int id = (int) param.get("id");
         
         String vessel_name 		= (String) param.get("vessel_name");
-        
         String vessel_abbr 		= (String) param.get("vessel_abbr");
-        
         String vessel_type 		= (String) param.get("vessel_type");
-        
         String vessel_mmsi 		= (String) param.get("vessel_mmsi");
-        
         String vessel_company 	= (String) param.get("vessel_company");
-        
         String contents 		= (String) param.get("contents");
-        
         Integer vessel_use 		= (Integer) param.get("vessel_use");
 
         Vessel vessel 			= Vessel.builder()

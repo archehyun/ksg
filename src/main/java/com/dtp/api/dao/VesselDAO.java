@@ -42,11 +42,6 @@ public class VesselDAO extends AbstractDAO{
 		return selectList("vessel.selectVesselDetailList", param);
 	}
 	
-	public List selectByVesselNames(List names) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	// -- select -- //
 	public Vessel selectById(String vessel_name) throws SQLException {
 		

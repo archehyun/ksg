@@ -83,7 +83,6 @@ public class ScheduleController extends AbstractController{
 		portService = new PortServiceImpl();
 		
 		objectMapper = new ObjectMapper();
-
 	}
 
 	public CommandMap selectScheduleList(String inOoutType, String date) throws Exception

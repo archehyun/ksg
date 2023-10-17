@@ -84,14 +84,11 @@ public class ShipperTableController extends AbstractController{
 
 		});
 
-
 		groupCount = 10;
 
 		Map<Integer, Map<String,List<ShippersTable>>> pageMap= tableList.stream()
 				.collect(Collectors.groupingBy(table -> (int)(table.getPage()/groupCount),
 						Collectors.groupingBy(o ->o.getPage()+":"+o.getCompany_abbr())));
-
-
 
 		Object keys[]=pageMap.keySet().toArray();
 
@@ -123,8 +120,6 @@ public class ShipperTableController extends AbstractController{
 
 		return returnMap;
 	}
-
-
 
 	@ControlMethod(serviceId = "shipperTableMgtUI2.fnSearch")
 	public CommandMap fnSelect(CommandMap param) throws SQLException
@@ -200,9 +195,9 @@ public class ShipperTableController extends AbstractController{
 		List<ShippersTable> tableList=service.selectTableAll();
 
 		List<String> companyNameList= tableList.stream()
-				.map(ShippersTable::getCompany_abbr)
-				.distinct()
-				.collect(Collectors.toList());
+												.map(ShippersTable::getCompany_abbr)
+												.distinct()
+												.collect(Collectors.toList());
 
 		// 페이지 목록 조회
 		List<Integer> pageList= tableList.stream()
@@ -334,6 +329,7 @@ public class ShipperTableController extends AbstractController{
 	public CommandMap addTableInfoDialog_insert(CommandMap param) throws Exception
 	{
 		log.info("start:{}",param);
+		
 		ShippersTable target = ShippersTable.builder()
 											.table_id((String) param.get("table_id"))
 											.title((String) param.get("title"))

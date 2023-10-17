@@ -16,7 +16,6 @@ import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.comp.PnArea;
 import com.ksg.workbench.master.comp.PnCommonCode;
 import com.ksg.workbench.master.comp.PnCompany;
-import com.ksg.workbench.master.comp.PnPort;
 import com.ksg.workbench.master.comp.PnPortNew;
 import com.ksg.workbench.master.comp.PnVessel;
 import com.ksg.workbench.print.PrintADVUI;
@@ -166,8 +165,6 @@ public class MainController extends AbstractController{
 		return model;
     }
 	
-
-	
 	class Menu
 	{
 		public Menu(String menuGroup, String menuId, String menuName)
@@ -181,9 +178,6 @@ public class MainController extends AbstractController{
 		private String parentMenuId;
 		private String menuName;
 	}
-	
-
-
 }
 
 

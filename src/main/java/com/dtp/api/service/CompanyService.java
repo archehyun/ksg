@@ -15,6 +15,4 @@ public interface CompanyService {
 	public Company updateCompay(Company company)throws Exception;
 
 	public Company selectCompanyById(String id)throws Exception;
-
-
 }

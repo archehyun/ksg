@@ -10,8 +10,6 @@
  *******************************************************************************/
 package com.ksg.domain;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -33,7 +31,6 @@ public class Vessel extends BaseInfo{
 	public static final int NON_USE=1;
 	
 	public static final int USE=0;
-	
 	
 	private String vessel_name; // ¼±¹Ú¸í
 	
@@ -73,6 +70,5 @@ public class Vessel extends BaseInfo{
 		+getVessel_mmsi()+","
 		+getInput_date()+"]";
 	}
-
 
 }

@@ -116,13 +116,9 @@ public class CompanyController extends AbstractController{
 		log.info("start:{}", param);
 
         String company_name = (String) param.get("company_name");
-        
         String company_abbr = (String) param.get("company_abbr");
-        
         String agent_name 	= (String) param.get("agent_name");
-        
         String agent_abbr 	= (String) param.get("agent_abbr");
-        
         String contents 	= (String) param.get("contents");
 
         Company company = Company.builder()
@@ -184,15 +180,10 @@ public class CompanyController extends AbstractController{
 		log.info("start:{}", param);
         
         String company_name 		= (String) param.get("company_name");
-        
         String company_abbr 		= (String) param.get("company_abbr");
-        
         String agent_name 			= (String) param.get("agent_name");
-        
         String agent_abbr 			= (String) param.get("agent_abbr");
-        
         String base_company_abbr 	= (String) param.get("base_company_abbr");
-        
         String contents 			= (String) param.get("contents");
 
         Company company = Company	.builder()                                

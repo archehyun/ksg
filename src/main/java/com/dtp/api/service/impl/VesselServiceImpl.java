@@ -58,13 +58,7 @@ public class VesselServiceImpl implements VesselService{
 
 		return result;
 	}
-	@Override
-	public List<Vessel> selectListByKeys(List names) throws Exception
-	{
-		List result = dao.selectByVesselNames(names);
-		
-		return result;
-	}
+	
 	
 	@Override
 	public Vessel selectVesselDetailByKey(Vessel param) throws Exception

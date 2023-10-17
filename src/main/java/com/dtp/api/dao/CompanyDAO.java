@@ -6,8 +6,6 @@ import java.util.List;
 import com.ksg.common.dao.AbstractDAO;
 import com.ksg.domain.Company;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * 
  * @FileName : CompanyDAO.java

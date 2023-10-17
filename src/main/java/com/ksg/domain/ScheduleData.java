@@ -35,6 +35,7 @@ import lombok.Setter;
 public class ScheduleData implements Comparable<Object>{
 
 	public static final String INBOUND = "I";
+	
 	public static final String OUTBOUND = "O";
 
 	private String agent; // 에이전트

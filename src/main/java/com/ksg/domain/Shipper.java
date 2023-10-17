@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.ksg.domain;
 
+
+@Deprecated
 public class Shipper extends BaseInfo{
 	private String id;
 	private String name;
