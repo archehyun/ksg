@@ -258,7 +258,7 @@ public class PnCompany extends PnBase implements ActionListener{
 
 		pnMain.add(pnSearchAndCount,BorderLayout.EAST);
 
-		pnMain.add(buildTitleIcon("사용자 정보"),BorderLayout.WEST);
+		pnMain.add(buildTitleIcon("선사 정보"),BorderLayout.WEST);
 
 		return pnMain;
 	}	

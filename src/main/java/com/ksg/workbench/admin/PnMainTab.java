@@ -184,6 +184,8 @@ public class PnMainTab extends KSGView{
 			
 			KSGPanel pn= (KSGPanel) result.get("view");
 			
+			if(pn == null) return;
+			
 			pn.setName(menuId);
 
 			addView(menuId, pn);

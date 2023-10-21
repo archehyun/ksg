@@ -33,10 +33,8 @@ import com.ksg.domain.ScheduleData;
 import com.ksg.print.logic.quark.v1.XTGManager;
 import com.ksg.service.BaseService;
 import com.ksg.service.CompanyService;
-import com.ksg.service.ScheduleService;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.BaseServiceImpl;
-import com.ksg.service.impl.CompanyServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
 
 public class BuildOutboundCommand implements IFCommand {
@@ -52,7 +50,7 @@ public class BuildOutboundCommand implements IFCommand {
 	private XTGManager xtgManager;
 	public BuildOutboundCommand() {
 		scheduleService = new ScheduleServiceImpl();
-		companyService = new CompanyServiceImpl();
+		//companyService = new CompanyServiceImpl();
 		baseService = new BaseServiceImpl();
 		xtgManager = new XTGManager();
 	}

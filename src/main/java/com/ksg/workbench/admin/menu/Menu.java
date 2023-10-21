@@ -115,7 +115,7 @@ public class Menu extends JPanel{
 		lightDarkMode = new LightDarkMode();
 		add(header);
 		add(scroll);
-		//add(lightDarkMode);
+		add(lightDarkMode);
 	}
 
 	private void createMenu() {
@@ -277,7 +277,4 @@ public class Menu extends JPanel{
 			}
 		}
 	}
-
-
-
 }

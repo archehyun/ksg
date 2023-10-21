@@ -52,10 +52,14 @@ import com.ksg.service.impl.ADVServiceImpl;
 import com.ksg.service.impl.ShipperTableServiceImpl;
 import com.ksg.service.impl.TableServiceImpl;
 import com.ksg.view.comp.checkbox.PageInfoCheckBox;
+import com.ksg.view.comp.notification.Notification;
+import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.admin.KSGMainFrame;
 import com.ksg.workbench.adv.dialog.AddAdvDialog;
 import com.ksg.workbench.adv.dialog.AdjestADVListDialog;
+
+import ch.qos.logback.core.subst.Token.Type;
 
 /**
  * 
@@ -488,7 +492,8 @@ public class ADVListPanel extends KSGPanel implements ActionListener, MouseWheel
 
 			if(sheetList.size()==0)
 			{
-				JOptionPane.showMessageDialog(null, "선택된 sheet가 없습니다.");	
+				NotificationManager.showNotification(Notification.Type.WARNING, "선택된 sheet가 없습니다.");
+				
 				manager.isWorkMoniter=false;
 				return  resultCancel;
 			}

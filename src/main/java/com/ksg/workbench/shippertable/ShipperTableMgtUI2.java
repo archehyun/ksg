@@ -467,6 +467,8 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		tableH.addColumn(new KSGTableColumn("in_to_port", "도착항",110, SwingConstants.LEFT ));
 		tableH.addColumn(new KSGTableColumn("out_port", "출발항", 110, SwingConstants.LEFT ));
 		tableH.addColumn(new KSGTableColumn("out_to_port", "도착항",110, SwingConstants.LEFT));
+		
+		tableH.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		//TODO 컬럼 가운데 정렬
 

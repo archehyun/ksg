@@ -121,7 +121,7 @@ public class PnCommonCode extends PnBase implements ActionListener{
 		
 		Hcolumns[1].columnName = "ÄÚµå¸í";
 		
-		Hcolumns[1].size = 100;
+		Hcolumns[1].size = 200;
 		Hcolumns[1].ALIGNMENT = SwingConstants.LEFT;
 
 		Hcolumns[2] = new KSGTableColumn();

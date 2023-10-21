@@ -165,8 +165,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 	private String cardTable[]={ADV_SEARCH,ADV_INPUT,SCHEDULE_SEARCH,BASE_MAIN,ADV_PRINT};
 
-//	private BaseActionListener baseAction = new BaseActionListener();
-
 	private AdvertisementActionListener advActionListener = new AdvertisementActionListener();
 
 	private ScheduleActionListener scheduleActionListener = new ScheduleActionListener();
@@ -244,9 +242,8 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		return pnMain;
 	}
 
-	//화면 초기화
 	/**
-	 * 
+	 * 화면 초기화 
 	 */
 	public void createAndUpdateUI()
 	{
@@ -450,14 +447,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		//광고정보관리 메뉴 ================================
 
 		BiggerMenu AdvMenu = new BiggerMenu(adv_menu[0]);
-
-		/*
-		 * this.addMenuItem(AdvMenu, ADV_SEARCH, KeyEvent.VK_X,advActionListener);
-		 * this.addMenuItem(AdvMenu, ADV_INPUT, KeyEvent.VK_X,advActionListener);
-		 * this.addMenuItem(AdvMenu, ADV_PRINT, KeyEvent.VK_X,advActionListener);
-		 * AdvMenu.addSeparator(); this.addMenuItem(AdvMenu, ADV_INPUT_SEARCH,
-		 * KeyEvent.VK_X,advActionListener);
-		 */
 		
 		for(int i =1;i<adv_menu.length;i++)
 		{
@@ -470,29 +459,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 				this.addMenuItem(AdvMenu, adv_menu[i], KeyEvent.VK_X,advActionListener);
 			}
 		}
-		//===============================================
 
 		//기초정보관리 메뉴================================
-//		BiggerMenu BaseInfoMenu = new BiggerMenu(BASE_MAIN);
-//
-//		this.addMenuItem(BaseInfoMenu, BASE_CODE,baseAction);
-//		this.addMenuItem(BaseInfoMenu, BASE_AREA,baseAction);
-//		this.addMenuItem(BaseInfoMenu, BASE_COMPANY,baseAction);
-//		this.addMenuItem(BaseInfoMenu, BASE_PORT,baseAction);
-//		this.addMenuItem(BaseInfoMenu, BASE_PORT_ABBR,baseAction);
-//		this.addMenuItem(BaseInfoMenu, BASE_VESSEL,baseAction);
-//		this.addMenuItem(BaseInfoMenu, BASE_VESSEL_ABBR,baseAction);
-//		
-		
-		BiggerMenu BaseInfoMenu = new BiggerMenu(master_menu[0]);
 
-		/*
-		 * this.addMenuItem(AdvMenu, ADV_SEARCH, KeyEvent.VK_X,advActionListener);
-		 * this.addMenuItem(AdvMenu, ADV_INPUT, KeyEvent.VK_X,advActionListener);
-		 * this.addMenuItem(AdvMenu, ADV_PRINT, KeyEvent.VK_X,advActionListener);
-		 * AdvMenu.addSeparator(); this.addMenuItem(AdvMenu, ADV_INPUT_SEARCH,
-		 * KeyEvent.VK_X,advActionListener);
-		 */
+		BiggerMenu BaseInfoMenu = new BiggerMenu(master_menu[0]);
 		
 		for(int i =1;i<master_menu.length;i++)
 		{
@@ -932,21 +902,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 			}
 		}
 	}
-
-	// 기초 정보 관련 액션
-	/**
-	 * @author archehyun
-	 *
-	 */
-//	class BaseActionListener implements ActionListener
-//	{
-//		public BaseActionListener() {
-//		}
-//		public void actionPerformed(ActionEvent e) {
-//			
-//			pnMainView.showPanel(BASE_MAIN);
-//		}
-//	}
 
 	// 광고정보 관련 액션
 	class AdvertisementActionListener implements ActionListener

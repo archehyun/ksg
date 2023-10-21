@@ -75,8 +75,7 @@ public class PnXLS extends PnOption{
 		
 		this.add(buildCenter());
 		
-		boolean s =Boolean.valueOf( viewPropeties.getProperty("view.showleft"));
-		cbxShowLeft.setSelected(s);
+
 		
 	}
 	
@@ -132,9 +131,9 @@ public class PnXLS extends PnOption{
 		
 		KSGPanel pnShowLeft = new KSGPanel();
 		
-		cbxShowLeft = new JCheckBox("왼쪽 메뉴 표시", true);
-		
-		pnBox.add(createComp(cbxShowLeft));
+//		cbxShowLeft = new JCheckBox("왼쪽 메뉴 표시", true);
+//		
+//		pnBox.add(createComp(cbxShowLeft));
 		
 		
 		KSGPanel pnMain=new KSGPanel(new BorderLayout());
@@ -300,9 +299,9 @@ public class PnXLS extends PnOption{
 //		
 //		propertis.setProperty(KSGPropertis.PROPERTIES_DOUBLEKEY, chxDoubleKeyword.isSelected()+"|"+cboUpDown.getSelectedItem());
 		
-		viewPropeties.setProperty("view.showleft",  Boolean.toString( cbxShowLeft.isSelected()));
-
-		viewPropeties.store();
+//		viewPropeties.setProperty("view.showleft",  Boolean.toString( cbxShowLeft.isSelected()));
+//
+//		viewPropeties.store();
 		
 	}
 }

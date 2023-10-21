@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -25,11 +26,11 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.comp.SheetModel;
 
 @SuppressWarnings("serial")
-public class SheetSelectDialog extends KSGDialog {
+public class SheetSelectDialog extends KSGDialog implements ActionListener{
 	ActionEvent e;
 	private JTable _tblSheetNameList;
 	private Font defaultFont;
-	
+	DirectionAaction  directionAction = new DirectionAaction();
 	public int result=0;
 	public SheetSelectDialog(JTable _tblSheetNameList) {
 		
@@ -66,53 +67,15 @@ public class SheetSelectDialog extends KSGDialog {
 	
 	private KSGPanel buildControl()
 	{
-		
 		KSGPanel pnControl = new KSGPanel(new BorderLayout());
-		
-
 		JButton butOK = new JButton("확인");
-		butOK.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-				SheetSelectDialog.this.setVisible(false);
-				SheetSelectDialog.this.dispose();
-				result = 1;
-
-			}});
+		butOK.addActionListener(this);
 		JButton butUp = new JButton("▲");
 		butUp.setFont(defaultFont);
-		butUp.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-				int row=_tblSheetNameList.getSelectedRow();
-				int col=_tblSheetNameList.getSelectedColumn();
-				if(row==-1)
-					return ;
-				SheetModel model = (SheetModel) _tblSheetNameList.getModel();
-				model.upRow(row);
-				if(row!=0)
-					_tblSheetNameList.changeSelection(row-1, col, false, false);
-					_tblSheetNameList.updateUI();
-				
-				
-			}});
+		butUp.addActionListener(directionAction);
 		
 		JButton butDown = new JButton("▼");
-		butDown.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-				
-				int row=_tblSheetNameList.getSelectedRow();
-				int col=_tblSheetNameList.getSelectedColumn();
-				if(row==-1)
-					return ;
-				SheetModel model = (SheetModel) _tblSheetNameList.getModel();
-				model.downRow(row);
-				
-				if(row<_tblSheetNameList.getRowCount()-1)
-				_tblSheetNameList.changeSelection(row+1, col, false, false);
-				_tblSheetNameList.updateUI();
-			}});
+		butDown.addActionListener(directionAction);
 		butDown.setFont(defaultFont);
 		KSGPanel pnRight = new KSGPanel();
 		pnRight.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -125,29 +88,15 @@ public class SheetSelectDialog extends KSGDialog {
 		cbxtotal.addItemListener(new ItemListener() {
 
 			public void itemStateChanged(ItemEvent e) {
-				System.out.println(e.getStateChange());
-				switch (e.getStateChange()) {
-				case ItemEvent.DESELECTED:
-					int row =_tblSheetNameList.getRowCount();
-					for(int i=0;i<row;i++)
-					{
-						Boolean use=(Boolean) _tblSheetNameList.getValueAt(i, 3);
-						
-						_tblSheetNameList.setValueAt(false, i, 3);
-					}
-					break;
-				case ItemEvent.SELECTED:
-					int row2 =_tblSheetNameList.getRowCount();
-					for(int i=0;i<row2;i++)
-					{
-						Boolean use=(Boolean) _tblSheetNameList.getValueAt(i, 3);
-						
-						_tblSheetNameList.setValueAt(true, i, 3);
-					}
-					break;
-				default:
-					break;
+				int row =_tblSheetNameList.getRowCount();
+				
+				for(int i=0;i<row;i++)
+				{
+					Boolean use=(Boolean) _tblSheetNameList.getValueAt(i, 3);
+					
+					_tblSheetNameList.setValueAt(e.getStateChange()==ItemEvent.SELECTED?true:false, i, 3);
 				}
+
 				_tblSheetNameList.updateUI();
 
 			}
@@ -167,5 +116,49 @@ public class SheetSelectDialog extends KSGDialog {
 		
 		return panel;
 	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String command = e.getActionCommand();
+		
+		if("확인".equals(command))
+		{
+			SheetSelectDialog.this.setVisible(false);
+			SheetSelectDialog.this.dispose();
+			result = 1;
+		}
+		
+	}
+	class DirectionAaction implements ActionListener
+	{
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			int row=_tblSheetNameList.getSelectedRow();
+			
+			int col=_tblSheetNameList.getSelectedColumn();
+			
+			if(row==-1|| col==-1) return ;
+			
+			SheetModel model = (SheetModel) _tblSheetNameList.getModel();
+			
+			String command = e.getActionCommand();
+			if("▲".equals(command))
+			{
+				model.upRow(row);
+				if(row!=0)
+					_tblSheetNameList.changeSelection(row-1, col, false, false);
+					_tblSheetNameList.updateUI();
+			}
+			else if("▼".equals(command))
+			{
+				
+				model.downRow(row);
+				
+				if(row<_tblSheetNameList.getRowCount()-1)
+				_tblSheetNameList.changeSelection(row+1, col, false, false);
+				_tblSheetNameList.updateUI();
+			}
+		}
+	}
 }

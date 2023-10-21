@@ -17,7 +17,7 @@ public class CompanyServiceImplTest {
 	@Before
 	public void setUp()
 	{
-		companyService = new CompanyServiceImpl();
+		
 	}
 
 	@Test

@@ -407,8 +407,11 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		butImportFile.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
+				
 				SearchPanel.this.advListPanel.initInfo();
+				
 				logger.debug("import xls");
+				
 				if(selectedInput.equals("File"))
 				{
 					searchXLS();
@@ -1238,10 +1241,7 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		try{
 			logger.info("엑셀 정보 불러오기");
 
-			if(selectedCompany==null)
-			{
-				return;
-			}
+			if(selectedCompany==null) return;
 
 			DefaultListModel model = (DefaultListModel) pageList.getModel();
 
@@ -1272,9 +1272,6 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 								selectXLSFilePath,pageInfoList);	
 			}
 
-
-
-
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -1290,11 +1287,13 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 		if(command.equals("불러오기"))
 		{
 			logger.debug("import xls");
-			this.advListPanel.initInfo();			
+			
+			this.advListPanel.initInfo();
+			
 			if(selectedInput.equals("File"))
 			{
 				searchXLS();
-				//actionImportADVInfo();
+			
 
 			}else
 			{
@@ -1318,12 +1317,8 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 			pageList.setModel(model);
 
 			advListPanel.initTable();
-
-
-			//butAdjust.setEnabled(false);
+		
 		}
-
-
 	}
 
 	/**
@@ -1380,11 +1375,8 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 					model.addElement(d);
 				}
 			}
-
 		}
-
 	}
-
 
 	class PageListDialog extends KSGDialog implements ActionListener
 	{

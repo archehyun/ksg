@@ -65,24 +65,10 @@ public class App
 			log.info("DB Connected..");
 
 			
-
-			//UIManager.put("Button.background", new ColorUIResource(Color.DARK_GRAY));
-			//UIManager.put("Button.forground", new ColorUIResource(Color.white));
-			
 			try {
 				UIManager.setLookAndFeel(
 						UIManager.getSystemLookAndFeelClassName());
 				
-//				for (Map.Entry<Object, Object> entry : javax.swing.UIManager.getDefaults().entrySet()) {
-//				    Object key = entry.getKey();
-//				    Object value = javax.swing.UIManager.get(key);
-//				    if (value != null && value instanceof javax.swing.plaf.FontUIResource) {
-//				        javax.swing.plaf.FontUIResource fr=(javax.swing.plaf.FontUIResource)value;
-//				        javax.swing.plaf.FontUIResource f = new javax.swing.plaf.FontUIResource("µ¸À½Ã¼", fr.getStyle(), 12);
-//				        javax.swing.UIManager.put(key, f);
-//				    }
-//				}
-	 
 				 
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -93,6 +79,8 @@ public class App
 			} catch (UnsupportedLookAndFeelException e) {
 				e.printStackTrace();
 			}
+			
+//			FlatLightLaf.setup();
 		
 			UIManager.put("ComboBox.background", new ColorUIResource(Color.white));
 			

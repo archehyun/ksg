@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -24,6 +25,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import com.ksg.common.util.KSGPropertis;
 import com.ksg.view.comp.KSGViewUtil;
 import com.ksg.view.comp.panel.KSGPanel;
 
@@ -61,6 +63,8 @@ public class PnApperance extends PnOption {
 	private JColorChooser tcc;
 
 	private JButton butEdit;
+	
+	JCheckBox cbxShowLeftMenu = new JCheckBox();
 	
 	public PnApperance(PreferenceDialog preferenceDialog) {
 		
@@ -159,11 +163,23 @@ public class PnApperance extends PnOption {
 		
 		pnLight.add(butEdit);
 		
-		
 		pnMain.add(pnTitle, BorderLayout.NORTH);
 		
-		pnMain.add(new JScrollPane(tree));
+		KSGPanel pnCenter = new KSGPanel(new BorderLayout());
 		
+		pnCenter.add(new JScrollPane(tree));
+		
+		KSGPanel pnLeftMenu= new KSGPanel(new FlowLayout(FlowLayout.LEFT));
+		
+		pnLeftMenu.add(new JLabel("왼쪽 메뉴 표시"));
+		
+		cbxShowLeftMenu.setBackground(Color.white);
+		
+		pnLeftMenu.add(cbxShowLeftMenu);
+		
+		pnMain.add(pnCenter);
+		
+		pnMain.add(pnLeftMenu,BorderLayout.SOUTH);
 		pnMain.add(pnLight,BorderLayout.EAST);
 		
 		pnMain.setBorder(BorderFactory.createEmptyBorder(0,15, 5,5));
@@ -194,9 +210,7 @@ public class PnApperance extends PnOption {
 			group.forEach(o -> groupNode.add(new ColorNode(o.value, o.key)));
 			
 			root.add(groupNode);
-			
 		}
-
 		
 	    tree.setModel(new DefaultTreeModel( root));
 	    
@@ -260,7 +274,8 @@ public class PnApperance extends PnOption {
 
 	@Override
 	public void saveAction() {
-		
+		viewPropeties.setProperty("view.showleft",  Boolean.toString( cbxShowLeftMenu.isSelected()));
+		viewPropeties.store();
 	}
 
 	
@@ -275,6 +290,10 @@ public class PnApperance extends PnOption {
 		
 		loadTree();
 		
+		boolean isShowLeftMenu =Boolean.valueOf(viewPropeties.getProperty("view.showleft"));
+		
+		cbxShowLeftMenu.setSelected(isShowLeftMenu);
+		
 	}
 	
 	class ColorNode extends DefaultMutableTreeNode
@@ -286,9 +305,5 @@ public class PnApperance extends PnOption {
 			super(name);
 			this.key = key;
 		}
-		
 	}
-
-	
-
 }

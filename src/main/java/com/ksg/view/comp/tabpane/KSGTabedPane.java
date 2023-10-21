@@ -28,6 +28,7 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 	public KSGTabedPane()
 	{ 
 		setOpaque(false);
+		
 		this.setUI(new TabUI());
 
 	}
