@@ -21,6 +21,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -29,17 +33,27 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
+import com.dtp.api.service.CompanyService;
+import com.dtp.api.service.impl.CompanyServiceImpl;
 import com.dtp.api.util.PortIndexUitl;
 import com.ksg.common.model.CommandMap;
+import com.ksg.common.util.ViewUtil;
 import com.ksg.domain.Company;
 import com.ksg.domain.ShippersTable;
 import com.ksg.view.comp.button.KSGGradientButton;
@@ -236,24 +250,153 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-
-				SearchCompanyDialog2 searchCompanyDialog = new SearchCompanyDialog2();
-
-				searchCompanyDialog.createAndUpdateUI();
-
-				CommandMap result  = (CommandMap) searchCompanyDialog.resultObj;
-
-				if(result  == null)return;
 				
-				String company_name = (String) result.get("company_name");
-				String company_abbr = (String) result.get("company_abbr");
-				String agent_name = (String) result.get("agent_name");
+				boolean flag = true;
 				
-				txfCompany_Abbr.setText(company_abbr);
-				
-				txfCompany_name.setText(company_name);
+				if(flag)
+				{
 
-				txfAgent.setText(agent_name);
+					SearchCompanyDialog2 searchCompanyDialog = new SearchCompanyDialog2();
+
+					searchCompanyDialog.createAndUpdateUI();
+
+					CommandMap result  = (CommandMap) searchCompanyDialog.resultObj;
+
+					if(result  == null)return;
+					
+					String company_name = (String) result.get("company_name");
+					String company_abbr = (String) result.get("company_abbr");
+					String agent_name = (String) result.get("agent_name");
+					
+					txfCompany_Abbr.setText(company_abbr);
+					
+					txfCompany_name.setText(company_name);
+
+					txfAgent.setText(agent_name);
+				}
+				else
+				{
+					final JDialog dialog = new JDialog();
+
+					try {
+						
+						CompanyService advService = new CompanyServiceImpl();
+						List li=advService.selectCompanyListByCondition(new Company());
+
+						DefaultMutableTreeNode root = new DefaultMutableTreeNode("전체선사:"+li.size());
+						Iterator iter =li.iterator();
+						while(iter.hasNext())
+						{
+							Company company = (Company) iter.next();
+							DefaultMutableTreeNode sub = new DefaultMutableTreeNode(company.getCompany_abbr());
+							root.add(sub);						
+						}
+
+						dialog.setTitle("Company Selection");
+						KSGPanel pnMain = new KSGPanel();
+						pnMain.setLayout( new BorderLayout());
+						final JTree tree = new JTree(root);
+						tree.addMouseListener(new MouseAdapter() {
+
+							public void mouseClicked(MouseEvent arg0) {
+								if(arg0.getClickCount()>1)
+								{
+									TreePath path=tree.getSelectionPath();
+									if(path.getPathCount()!=1)
+									{
+										String company=path.getLastPathComponent().toString();
+										//setTableIndex(company);										
+										txfCompany_Abbr.setText(company);
+										
+										
+										dialog.setVisible(false);
+										dialog.dispose();
+									}
+								}
+
+							}
+						});
+						tree.addTreeSelectionListener(new TreeSelectionListener(){
+
+							public void valueChanged(TreeSelectionEvent e) {
+								TreePath path=e.getNewLeadSelectionPath();
+
+								if(path.getPathCount()!=1)
+									System.out.println(path.getLastPathComponent());	
+
+							}});
+
+
+						pnMain.add(new JScrollPane(tree),BorderLayout.CENTER);
+						KSGPanel pnSubPnControl = new KSGPanel();
+						pnSubPnControl.setLayout(new FlowLayout(FlowLayout.RIGHT));
+						JButton butOK = new JButton("OK");
+
+						butOK.addActionListener(new ActionListener(){
+
+							public void actionPerformed(ActionEvent e) 
+							{
+								TreePath path=tree.getSelectionPath();
+								if(path.getPathCount()!=1)
+								{
+
+									String company=path.getLastPathComponent().toString();
+									try {
+										
+										Company companyInfo=advService.selectCompanyById(company);									
+										txfCompany_Abbr.setText(companyInfo.getCompany_abbr());
+										txfAgent.setText(companyInfo.getAgent_abbr());
+										txfCompany_name.setText(companyInfo.getCompany_name());
+										
+										
+										
+									} catch (SQLException e1) {
+										JOptionPane.showMessageDialog(null, "error:"+e1.getMessage());
+										e1.printStackTrace();
+									} catch (Exception e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+								}
+
+								dialog.setVisible(false);
+								dialog.dispose();							
+							}});
+						butOK.setPreferredSize(new Dimension(80,28));
+						pnSubPnControl.add(butOK);
+						JButton butCancel = new JButton("Cancel");
+
+						butCancel.addActionListener(new ActionListener(){
+
+							public void actionPerformed(ActionEvent e) {
+								dialog.setVisible(false);
+								dialog.dispose();
+
+							}});
+						pnSubPnControl.add(butCancel);
+						butCancel.setPreferredSize(new Dimension(80,28));
+						KSGPanel pnTitleInfo = new KSGPanel();
+						pnTitleInfo.setLayout(new FlowLayout(FlowLayout.LEFT));
+						pnTitleInfo.add(new JLabel("Chose the Company"));
+						pnMain.add(pnTitleInfo,BorderLayout.NORTH);
+						pnMain.add(pnSubPnControl,BorderLayout.SOUTH);
+						dialog.add(pnMain);					
+						dialog.setSize(400, 400);
+						ViewUtil.center(dialog, false);
+						dialog.setVisible(true);
+
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (Exception e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+				}
+				
+						
+						
+
 				
 			}});
 

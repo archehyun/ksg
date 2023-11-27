@@ -132,17 +132,16 @@ public class ShipperTableController extends AbstractController{
 
 		try {
 
-			//TODO NUMBER ERROR
 			shipperTable = ShippersTable.builder()
-					.table_id((String) param.get("table_id"))
-					.title((String) param.get("title"))
-					.company_abbr((String) param.get("company_abbr"))
-					.page(param.containsKey("page")?Integer.parseInt((String) param.get("page")):-1)
-					.gubun((String) param.get("gubun"))
-					.agent((String) param.get("agent"))
-					.date_isusse((String) param.get("date_isusse"))
-					.table_index(param.containsKey("table_index")?Integer.parseInt((String) param.get("table_index")):-1)
-					.build(); 
+										.table_id((String) param.get("table_id"))
+										.title((String) param.get("title"))
+										.company_abbr((String) param.get("company_abbr"))
+										.page(param.containsKey("page")?Integer.parseInt( String.valueOf(param.get("page"))):-1)
+										.gubun((String) param.get("gubun"))
+										.agent((String) param.get("agent"))
+										.date_isusse((String) param.get("date_isusse"))
+										.table_index(param.containsKey("table_index")?Integer.parseInt((String) param.get("table_index")):-1)
+										.build();
 
 		}catch(NumberFormatException e)
 		{
