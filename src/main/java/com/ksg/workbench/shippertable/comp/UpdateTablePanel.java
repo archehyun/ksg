@@ -255,7 +255,6 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 				
 				if(flag)
 				{
-
 					SearchCompanyDialog2 searchCompanyDialog = new SearchCompanyDialog2();
 
 					searchCompanyDialog.createAndUpdateUI();
@@ -269,13 +268,13 @@ public class UpdateTablePanel extends KSGPanel implements FocusListener{
 					String agent_name = (String) result.get("agent_name");
 					
 					txfCompany_Abbr.setText(company_abbr);
-					
 					txfCompany_name.setText(company_name);
-
 					txfAgent.setText(agent_name);
 				}
 				else
 				{
+					
+					//TODO : ªË¡¶
 					final JDialog dialog = new JDialog();
 
 					try {

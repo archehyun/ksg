@@ -1,7 +1,4 @@
 package com.dtp.api.control;
-
-
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +20,8 @@ import com.ksg.domain.TablePort;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author ch.park
+ * @class 		: ShipperTableController
+ * @author		: ch.park
  */
 @Slf4j
 public class ShipperTableController extends AbstractController{

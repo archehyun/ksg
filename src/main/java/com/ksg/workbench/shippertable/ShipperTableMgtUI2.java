@@ -104,31 +104,22 @@ import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 /**
-
- * @FileName : ShipperTableMgtUI2.java
-
- * @Project : KSG2
-
- * @Date : 2022. 3. 15. 
-
- * @작성자 : pch
-
- * @변경이력 :
-
+ * @FileName 	: ShipperTableMgtUI2.java
+ * @Project 	: KSG2
+ * @Date 		: 2022. 3. 15. 
+ * @작성자 		: ch.park
+ * @변경이력 		: 
  * @프로그램 설명 : 광고 정보 조회 화면
-
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "serial" })
 @Slf4j
 public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 {	
-	private static final String ACTION_SEARCH 		= "조회";
-
 	private static final String ACTION_UPDATE_DATE 	= "입력일자 수정";
 
 	private KSGViewUtil propeties = KSGViewUtil.getInstance();
 	
-	Font labelFont = new Font("맑은고딕",Font.BOLD,12);
+	private Font labelFont = new Font("맑은고딕",Font.BOLD,12);
 
 	/**
 	 * @author 박창현
@@ -181,15 +172,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		}
 	}
 
-	private static final int _LEFT_SIZE = 250;
-
-	public static final int ADV_TYPE = 0;
-
-	private static final long serialVersionUID = 1L;
-
-	private static final String STRING_ERROR_NO_ADV_INFO = "광고정보가 없습니다. 광고 정보를 추가 하시겠습니까?";
-
-	public static final int TABLE_TYPE = 1;
+	private static final int _LEFT_SIZE = 250;	
 
 	private KSGPanel 			pnADVInfo, pnleftMenu, pnShipperInfo,pnTable;	
 
@@ -237,7 +220,7 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 	private SearchOptionKeyAdapter keyAdapter;
 
-	private JLabel lblCompany,lblCount,lblDivision, lblPage, lblIndex, lblItem, lblDateSearch;
+	private JLabel lblCompany,lblDivision, lblPage, lblIndex, lblItem, lblDateSearch;
 
 	private JMenuItem itemDateUpdate;
 
@@ -270,7 +253,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 		createAndUpdateUI(); 
 
 		callApi("shipperTableMgtUI2.init");
-
 	}
 
 	private void insertAction()

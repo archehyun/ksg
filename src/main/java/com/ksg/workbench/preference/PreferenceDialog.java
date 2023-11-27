@@ -281,6 +281,8 @@ public class PreferenceDialog extends KSGDialog implements ActionListener {
 
 		return jTree;
 	}
+	
+	//TODO 저장 시 에러 발생
 	public void saveAction()
 	{
 		Iterator<PnOption> iterator = preferenceList.iterator();
