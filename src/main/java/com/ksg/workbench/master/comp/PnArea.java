@@ -60,7 +60,7 @@ public class PnArea extends PnBase implements ActionListener{
 
 	private JTextField txfSearch;
 
-	private JLabel lblTable,lblTotal;
+	private JLabel lblTable;
 	
 	private KSGTablePanel tableH;
 
@@ -129,7 +129,6 @@ public class PnArea extends PnBase implements ActionListener{
 	private KSGPanel buildSearchPanel() {
 		KSGPanel pnSearch = new KSGPanel();
 		pnSearch.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		lblTotal = new JLabel();		
 		lblTable = new JLabel("지역 정보");
 		lblTable.setSize(200, 25);
 		lblTable.setFont(new Font("돋움",0,16));
@@ -138,7 +137,7 @@ public class PnArea extends PnBase implements ActionListener{
 		JLabel lbl = new JLabel("필드명 : ");
 		cbxField = new JComboBox();
 		txfSearch = new JTextField(15);
-		JLabel label = new JLabel("개 항목");
+		
 		JButton butUpSearch = new JButton("검색");
 
 		cbxField.setPreferredSize(new Dimension(150,23));
@@ -153,11 +152,6 @@ public class PnArea extends PnBase implements ActionListener{
 		pnSearch.add(butUpSearch);
 		Box pnSearchAndCount = Box.createVerticalBox();
 		pnSearchAndCount.add(pnSearch);
-
-		KSGPanel pnCountInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-		pnCountInfo.add(lblTotal);
-		pnCountInfo.add(label);
-		pnSearchAndCount.add(pnCountInfo);
 
 		KSGPanel pnCount = new KSGPanel();
 		pnCount.setLayout(new FlowLayout(FlowLayout.LEFT));
