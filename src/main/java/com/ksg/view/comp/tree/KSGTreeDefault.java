@@ -112,7 +112,7 @@ public class KSGTreeDefault extends KSGTree{
 	};
 	public static final char[] CHOSEONG = { 
 		//ぁ  あ  い  ぇ  え  ぉ  け  げ  こ  さ
-		'ぁ', 'あ', 'い', 'ぇ', 'ぉ', 'け', 'げ', 'こ', 'さ', 
+		'ぁ', 'あ', 'い', 'ぇ', 'ぉ' , 'け', 'げ', 'こ', 'さ', 
 		//ざ  し  じ  す  ず  せ  ぜ  そ  ぞ
 		'ざ', 'し', 'じ', 'す', 'ず', 'せ','ぜ', 'そ', 'ぞ' 
 	};

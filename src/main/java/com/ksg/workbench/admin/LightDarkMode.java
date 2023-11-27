@@ -67,6 +67,7 @@ public class LightDarkMode extends JPanel {
         buttonLight.addActionListener((ActionEvent e) -> {
             changeMode(false);
         });
+        
 
         add(buttonLight);
         add(buttonDark);

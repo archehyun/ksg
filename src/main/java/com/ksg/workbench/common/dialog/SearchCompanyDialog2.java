@@ -36,13 +36,9 @@ import com.ksg.view.comp.table.KSGTablePanel;
 /**
 
  * @FileName : SearchPortDialog.java
-
  * @Date : 2021. 3. 31. 
-
  * @작성자 : 박창현
-
  * @변경이력 :
-
  * @프로그램 설명 : 항구 조회
 
  */
@@ -64,6 +60,7 @@ public class SearchCompanyDialog2 extends MainTypeDialog implements ActionListen
 		super();
 
 		this.setController(new CompanyController());
+		this.addComponentListener(this);
 
 	}
 
@@ -234,20 +231,24 @@ public class SearchCompanyDialog2 extends MainTypeDialog implements ActionListen
 			
 			String paramTwo = txfSub.getText();
 			
+			CommandMap param = new CommandMap();
+			
 			if(paramOne.isEmpty()&&paramTwo.isEmpty())
 			{
-				tableH.clearResult();
+//				tableH.clearResult();
+				
 			}
 			else
 			{
-				CommandMap param = new CommandMap();
+				
 				
 				param.put(searchType, paramOne);
 				
 				param.put(subType, paramTwo);
 				
-				callApi("selectCompanyListByCondition", param);
+				
 			}
+			callApi("selectCompanyListByCondition", param);
 
 		}
 	}
@@ -324,7 +325,7 @@ public class SearchCompanyDialog2 extends MainTypeDialog implements ActionListen
 	@Override
 	public void componentShown(ComponentEvent e) {
 
-//		callApi("searchPortDialog.init");
+		callApi("searchCompanyDialog2.init");
 	}
 
 	@Override
@@ -335,6 +336,12 @@ public class SearchCompanyDialog2 extends MainTypeDialog implements ActionListen
 		String serviceId = (String) result.get("serviceId");
 
 		if("selectCompanyListByCondition".equals(serviceId)) {
+
+			List portList = (List )result.get("data");
+
+			this.tableH.setResultData(portList);
+		}
+		if("searchCompanyDialog2.init".equals(serviceId)) {
 
 			List portList = (List )result.get("data");
 

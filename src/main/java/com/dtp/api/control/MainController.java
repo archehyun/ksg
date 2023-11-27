@@ -24,6 +24,10 @@ import com.ksg.workbench.shippertable.ShipperTableMgtUI2;
 
 import lombok.extern.slf4j.Slf4j;
 
+
+/**
+ * @author ch.park
+ */
 @Slf4j
 public class MainController extends AbstractController{
 	

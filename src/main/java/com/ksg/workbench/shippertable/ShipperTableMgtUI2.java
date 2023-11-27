@@ -721,7 +721,6 @@ public class ShipperTableMgtUI2 extends ShipperTableAbstractMgtUI
 
 			pnMain.setPreferredSize(new Dimension(220,0));
 
-
 			return pnMain;
 	}
 

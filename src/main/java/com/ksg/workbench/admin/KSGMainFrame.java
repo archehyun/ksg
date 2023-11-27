@@ -163,8 +163,6 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 	public static String NAME="ksgframe";
 
-	private String cardTable[]={ADV_SEARCH,ADV_INPUT,SCHEDULE_SEARCH,BASE_MAIN,ADV_PRINT};
-
 	private AdvertisementActionListener advActionListener = new AdvertisementActionListener();
 
 	private ScheduleActionListener scheduleActionListener = new ScheduleActionListener();
@@ -1005,14 +1003,7 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 
 			String menuId=(String) result.get("menuId");
 
-			cardLayout.show(pnCenter,  menuId);
-
-			KSGPanel pn= (KSGPanel) result.get("view");
-
-			//			if(pnMain!=null)
-
-			//			pnMain.showPanel(pn);
-
+			cardLayout.show(pnCenter,  menuId);			
 		}
 		
 		if("schedule.delete".equals(serviceId)) {

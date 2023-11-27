@@ -2,14 +2,26 @@ package com.ksg.workbench.admin;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.border.EmptyBorder;
 
 import com.dtp.api.control.MainController;
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.formdev.flatlaf.util.UIScale;
 import com.ksg.common.model.CommandMap;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.tabpane.KSGTabedPane;
@@ -25,9 +37,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PnMainTab extends KSGView{
 	
+	private String img_url = "images/icon/";
+	
+	private JButton menuButton;
+	
 	private List<KSGPanel> viewList;
 	
 	private JTabbedPane pane;
+	
+	private JPanel pnMain;
+	
+	LayeredPanel layeredPanel;
 	
 	private Menu pnLeft;
 	
@@ -57,19 +77,73 @@ public class PnMainTab extends KSGView{
 		
 		pnLeft = new Menu();
 		
-		pnLeft.setPreferredSize(new Dimension(250,1000));
-//		
-//		pnLeft.setBackground(Color.decode("#f5ffff"));
-
+		layeredPanel = new LayeredPanel();
+		
+		initMenuArrowIcon();
+		
+		   menuButton.putClientProperty(FlatClientProperties.STYLE, ""
+	                + "background:$Menu.button.background;"
+	                + "arc:999;"
+	                + "focusWidth:0;"
+	                + "borderWidth:0");
+		   
+	        menuButton.addActionListener((ActionEvent e) -> {
+	            setMenuFull(!pnLeft.isMenuFull());
+	        });
+	        
 		initMenuEvent();
-		
-		this.add(pane);
-		
-		if(s) this.add(pnLeft, BorderLayout.WEST);
 		
 		viewList = new ArrayList<KSGPanel>();
 		
 		this.setController(new MainController());
+		
+		
+        initMenuEvent();
+        
+        
+        layeredPanel.setLayer(menuButton, JLayeredPane.POPUP_LAYER);
+        layeredPanel.add(menuButton);
+        layeredPanel.add(pnLeft);
+        layeredPanel.add(pnCenter());
+        
+        this.add(s?layeredPanel:pane);
+	}
+	
+	 private void setMenuFull(boolean full) {
+	        String icon;
+	        if (getComponentOrientation().isLeftToRight()) {
+	            icon = (full) ? "menu_left.svg" : "menu_right.svg";
+	        } else {
+	            icon = (full) ? "menu_right.svg" : "menu_left.svg";
+	        }
+	        menuButton.setIcon(new FlatSVGIcon(img_url + icon, 0.8f));
+	        
+	        pnLeft.setMenuFull(full);
+	        
+	        revalidate();
+	    }
+	
+	
+	
+    private void initMenuArrowIcon() {
+        if (menuButton == null) {
+            menuButton = new JButton();
+        }
+        String icon = (getComponentOrientation().isLeftToRight()) ? "menu_left.svg" : "menu_right.svg";
+        
+        menuButton.setIcon(new FlatSVGIcon(img_url + icon, 0.8f));
+    }
+	
+	public JComponent pnCenter()
+	{
+		pnMain = new JPanel(new BorderLayout());
+		
+		pane = new KSGTabedPane();
+		
+		pnMain.add(pane);
+		
+		return pnMain;
+		
 	}
 	
     private void initMenuEvent() {
@@ -190,8 +264,69 @@ public class PnMainTab extends KSGView{
 
 			addView(menuId, pn);
 			
-//			pnLeft.setSelectedMenu(0, 0);
-
 		}
-	};
+	}
+	 private class MainFormLayout implements LayoutManager {
+
+	        @Override
+	        public void addLayoutComponent(String name, Component comp) {
+	        }
+
+	        @Override
+	        public void removeLayoutComponent(Component comp) {
+	        }
+
+	        @Override
+	        public Dimension preferredLayoutSize(Container parent) {
+	            synchronized (parent.getTreeLock()) {
+	                return new Dimension(5, 5);
+	            }
+	        }
+
+	        @Override
+	        public Dimension minimumLayoutSize(Container parent) {
+	            synchronized (parent.getTreeLock()) {
+	                return new Dimension(0, 0);
+	            }
+	        }
+
+	        @Override
+	        public void layoutContainer(Container parent) {
+	            synchronized (parent.getTreeLock()) {
+	                boolean ltr = parent.getComponentOrientation().isLeftToRight();
+	                Insets insets = UIScale.scale(parent.getInsets());
+	                int x = insets.left;
+	                int y = insets.top;
+	                int width = parent.getWidth() - (insets.left + insets.right);
+	                int height = parent.getHeight() - (insets.top + insets.bottom);
+	                int menuWidth = UIScale.scale(pnLeft.isMenuFull() ? pnLeft.getMenuMaxWidth() : pnLeft.getMenuMinWidth());
+	                int menuX = ltr ? x : x + width - menuWidth;
+	                pnLeft.setBounds(menuX, y, menuWidth, height);
+	                int menuButtonWidth = menuButton.getPreferredSize().width;
+	                int menuButtonHeight = menuButton.getPreferredSize().height;
+	                int menubX;
+	                if (ltr) {
+	                    menubX = (int) (x + menuWidth - (menuButtonWidth * (pnLeft.isMenuFull() ? 0.5f : 0.3f)));
+	                } else {
+	                    menubX = (int) (menuX - (menuButtonWidth * (pnLeft.isMenuFull() ? 0.5f : 0.7f)));
+	                }
+	                menuButton.setBounds(menubX, UIScale.scale(30), menuButtonWidth, menuButtonHeight);
+	                int gap = UIScale.scale(5);
+	                int bodyWidth = width - menuWidth - gap;
+	                int bodyHeight = height;
+	                int bodyx = ltr ? (x + menuWidth + gap) : x;
+	                int bodyy = y;
+	                pnMain.setBounds(bodyx, bodyy, bodyWidth, bodyHeight);
+	            }
+	        }
+	    }
+	 
+	 class LayeredPanel extends JLayeredPane
+	 {
+		 public LayeredPanel() {
+			 setBorder(new EmptyBorder(5, 5, 5, 5));
+		        
+		     setLayout(new MainFormLayout());
+		}
+	 }
 }

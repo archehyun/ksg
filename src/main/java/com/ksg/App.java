@@ -11,6 +11,7 @@
 package com.ksg;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -19,8 +20,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.ColorUIResource;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.PropertiManager;
+import com.ksg.view.comp.KSGViewUtil;
 import com.ksg.workbench.KSGLogin;
 import com.ksg.workbench.admin.KSGMainFrame;
 
@@ -43,29 +48,23 @@ import lombok.extern.slf4j.Slf4j;
 
   */
 @Slf4j
-
 public class App 
-{
-	
+{	
 	PropertiManager manager = PropertiManager.getInstance();
-
-	public App() 
-	{	
-//		ApplicationContext ac = new AnnotationConfigApplicationContext(ViewConfiguration.class);
-	}
-
 
 	private ServerSocket serverSocket;
 
-
 	public void start() {
 		try{
+			KSGViewUtil viewPropeties = KSGViewUtil.getInstance();
 	
 			log.info("PROGRAM START");
 			log.info("DB Connected..");
 
 			
 			try {
+				
+				
 				UIManager.setLookAndFeel(
 						UIManager.getSystemLookAndFeelClassName());
 				
@@ -80,7 +79,26 @@ public class App
 				e.printStackTrace();
 			}
 			
-//			FlatLightLaf.setup();
+			boolean s =Boolean.valueOf( viewPropeties.getProperty("view.showleft"));
+			
+			
+			if(s)
+			{
+				EventQueue.invokeLater(() -> {
+					
+					
+		            FlatAnimatedLafChange.showSnapshot();
+		            
+//		            FlatIntelliJLaf.setup();
+		            FlatLightLaf.setup();
+		            
+		            FlatLaf.updateUI();
+		           
+		            FlatAnimatedLafChange.hideSnapshotWithAnimation();
+		            
+//		            checkStyle();
+		        });
+			}
 		
 			UIManager.put("ComboBox.background", new ColorUIResource(Color.white));
 			
@@ -94,20 +112,15 @@ public class App
 			
 			frame.completeCardLayout();
 
-
 		}catch(Exception e)
 		{
 			log.error(e.getMessage());
 			e.printStackTrace();
-
 		}
 	}
 
 	public static void main(String[] args) {
-		
-		
 		new App().start();
-
 	}
 
 	public void process(int port) {
@@ -131,6 +144,4 @@ public class App
 		} catch (IOException e) {
 		}
 	}
-	
-
 }

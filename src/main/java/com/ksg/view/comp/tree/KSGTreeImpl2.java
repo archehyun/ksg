@@ -124,7 +124,7 @@ public class KSGTreeImpl2 extends KSGTree implements KSGObserver{
 	}
 	public static final char[] CHOSEONG = { 
 		//ぁ  あ  い  ぇ  え  ぉ  け  げ  こ  さ
-		'ぁ', 'あ', 'い', 'ぇ', 'ぉ', 'け', 'げ', 'こ', 'さ', 
+		'ぁ', 'あ', 'い','ぇ', 'ぉ', 'け', 'げ', 'こ', 'さ', 
 		//ざ  し  じ  す  ず  せ  ぜ  そ  ぞ
 		'ざ', 'し', 'じ', 'す', 'ず', 'せ','ぜ', 'そ', 'ぞ' /*,
 		'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S',

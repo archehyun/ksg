@@ -38,9 +38,7 @@ public class Menu extends JPanel{
 			{"지역정보"},
 			{"항구정보"},
 			{"선사정보"},
-			{"선박정보"},
-			
-			{"Logout"}
+			{"선박정보"}
 	};
 
 	public boolean isMenuFull() {
@@ -87,7 +85,8 @@ public class Menu extends JPanel{
 				+ "background:$Menu.background;"
 				+ "arc:10");
 		header = new JLabel(headerName);
-		header.setIcon(new ImageIcon(getClass().getResource("/raven/icon/png/logo.png")));
+
+		header.setIcon(new ImageIcon(getClass().getResource("/images/logo.png")));
 		header.putClientProperty(FlatClientProperties.STYLE, ""
 				+ "font:$Menu.header.font;"
 				+ "foreground:$Menu.foreground");
@@ -119,9 +118,9 @@ public class Menu extends JPanel{
 	}
 
 	private void createMenu() {
-		
+
 		log.info("create Menu");
-		
+
 		int index = 0;
 		for (int i = 0; i < menuItems.length; i++) {
 			String menuName = menuItems[i][0];
@@ -171,12 +170,13 @@ public class Menu extends JPanel{
 			setSelected(index, subIndex);
 		}
 	}
-	
+
 	public void runEvent(int index, int subIndex) {
 		MenuAction menuAction = new MenuAction();
 		for (MenuEvent event : events) {
 			event.menuSelected(index, subIndex,"",menuAction);
 		}
+
 		if (!menuAction.isCancel()) {
 			setSelected(index, subIndex);
 		}
@@ -216,8 +216,11 @@ public class Menu extends JPanel{
 	}
 
 	private JLabel header;
+	
 	private JScrollPane scroll;
+	
 	private JPanel panelMenu;
+	
 	private LightDarkMode lightDarkMode;
 
 	private class MenuLayout implements LayoutManager {
@@ -243,8 +246,7 @@ public class Menu extends JPanel{
 				return new Dimension(0, 0);
 			}
 		}
-
-
+		
 		@Override
 		public void layoutContainer(Container parent) {
 			synchronized (parent.getTreeLock()) {

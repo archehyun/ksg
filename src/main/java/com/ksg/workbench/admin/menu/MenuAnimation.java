@@ -19,11 +19,9 @@ public class MenuAnimation {
         Animator animator = new Animator(400, new Animator.TimingTarget() {
             @Override
             public void timingEvent(float f) {
-                if (show) {
-                    menu.setAnimate(f);
-                } else {
-                    menu.setAnimate(1f - f);
-                }
+            	
+            	menu.setAnimate(show?f:1f - f);
+                
                 menu.revalidate();
             }
 

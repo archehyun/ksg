@@ -40,18 +40,12 @@ import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.UpdateAreaInfodialog;
 
-
-
 /**
 
   * @FileName : PnArea.java
-
   * @Date : 2021. 2. 25. 
-
   * @작성자 : 박창현
-
   * @변경이력 :
-
   * @프로그램 설명 : 지역 정보관리 화면
 
   */

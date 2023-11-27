@@ -76,6 +76,35 @@ public class CompanyController extends AbstractController{
 	 * @return
 	 * @throws Exception
 	 */
+	@ControlMethod(serviceId = "searchCompanyDialog2.init")	
+    public CommandMap init(CommandMap param) throws Exception
+    {
+		log.info("start:{}", param);
+		
+		Company companyParam = Company	.builder()
+										.build();
+		
+		List<Company> resultList = (List<Company>) service.selectCompanyListByCondition(companyParam);
+		
+		List<CommandMap> result=resultList.stream()
+										.map(o -> objectMapper.convertValue(o, CommandMap.class))
+										.collect(Collectors.toList());
+								
+		CommandMap model = new CommandMap();
+		
+        model.put("data", result);
+        
+        log.info("end");
+		
+		return model;
+    }
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
 	@ControlMethod(serviceId = "selectCompanyListByCondition")	
     public CommandMap selectCompanyListByCondition(CommandMap param) throws Exception
     {

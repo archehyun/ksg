@@ -45,10 +45,12 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 
 		JLabel lbl = new JLabel(title);
 
-		lbl.setForeground(Color.black.brighter());
+//		lbl.setForeground(Color.black.brighter());
 
 		// Add some spacing between text and icon, and position text to the RHS.
+		
 		lbl.setIconTextGap(5);
+		
 		lbl.setHorizontalTextPosition(SwingConstants.RIGHT);       
 
 		KSGPanel pnMain = new KSGPanel(new FlowLayout(FlowLayout.LEFT))
@@ -59,10 +61,13 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 				Component comps[]=this.getComponents();
 				for(Component comp:comps)
 				{
-					//comp.setBackground(bg);
+					comp.setBackground(bg);
 				}
 
+				
 				super.setBackground(bg);
+				super.setOpaque(false);
+				
 			}
 		};
 		pnMain.add(lbl);
@@ -107,9 +112,6 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 		@Override
 		protected void installDefaults() {
 			super.installDefaults();
-//						deSelectColor= new Color(0X2d5ff5);
-//
-//						selectColor = new Color(0X2d5ff5).brighter();
 
 			deSelectColor 	= Color.decode("#ebebeb");
 
@@ -126,7 +128,7 @@ public class KSGTabedPane extends JTabbedPane implements ActionListener{
 			focus 			= new Color(0, 0, 0, 0);
 		}
 
-		@Override//    ww   w   .d  e    m  o  2  s  . c o    m
+		@Override
 		protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
 			return 32;
 		}

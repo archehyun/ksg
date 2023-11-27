@@ -22,7 +22,9 @@ import com.ksg.domain.TablePort;
 
 import lombok.extern.slf4j.Slf4j;
 
-
+/**
+ * @author ch.park
+ */
 @Slf4j
 public class ShipperTableController extends AbstractController{
 
@@ -34,7 +36,7 @@ public class ShipperTableController extends AbstractController{
 	};
 	public static final char[] CHOSEONG = { 
 			//ぁ  あ  い  ぇ  え  ぉ  け  げ  こ  さ
-			'ぁ', 'あ', 'い', 'ぇ', 'ぉ', 'け', 'げ', 'こ', 'さ', 
+			'ぁ', 'あ', 'い' , 'ぇ', 'ぉ', 'け', 'げ', 'こ', 'さ', 
 			//ざ  し  じ  す  ず  せ  ぜ  そ  ぞ
 			'ざ', 'し', 'じ', 'す', 'ず', 'せ','ぜ', 'そ', 'ぞ' 
 	};

@@ -16,8 +16,10 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.table.JTableHeader;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import com.ksg.view.comp.button.KSGGradientButton;
 import com.ksg.view.comp.label.BoldLabel;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -105,8 +107,8 @@ public class KSGTablePanel extends KSGPanel{
 	              return new GroupableTableHeader(columnModel);
 	          }
 		};
-
-		table.setGridColor(Color.lightGray);
+		
+		
 
 		this.add(new JScrollPane(table));
 
@@ -126,7 +128,7 @@ public class KSGTablePanel extends KSGPanel{
 
 		table = new KSGAbstractTable(model);
 
-		table.setGridColor(Color.lightGray);
+		
 
 		this.add(new JScrollPane(table));
 
