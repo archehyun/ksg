@@ -93,6 +93,21 @@ public class CreateNomalSchedule {
 	{
 		return tableData.getTS()!=null&&tableData.getTS().equals("TS");
 	}
+	
+	public String toKey(ScheduleData data)
+	{
+		return String.format("ScheduleData{tableId='%s', company_abbr='%s',vessel='%s', voyage_num='%s', fromPort='%s', toPort='%s', DateF='%s', DateT='%s', date_issue='%s'}", 
+				data.getTable_id(), 
+				data.getCompany_abbr(), 
+				data.getVessel(),
+				data.getVoyage_num(),
+				data.getFromPort(), 
+				data.getPort(),
+				data.getDateF(),
+				data.getDateT(),
+				data.getDate_issue()
+				);
+	}
 
 	public ScheduleData createScheduleData(ShippersTable table,
 			String table_id,

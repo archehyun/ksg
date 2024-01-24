@@ -476,8 +476,8 @@ public class WebScheduleTask extends SimpleTask{
 					data.setFromPort(port);
 					data.setPort(FromPort);
 				}
-				logger.debug(data.getTable_id()+"\t"+data.toWebSchedule()+"\n");
-				writer.write(scheduleID+"\t"+data.toWebSchedule()+"\n");
+				logger.debug(data.getTable_id()+"\t"+toWebSchedule(data)+"\n");
+				writer.write(scheduleID+"\t"+toWebSchedule(data)+"\n");
 
 
 				scheduleID++;
@@ -488,6 +488,47 @@ public class WebScheduleTask extends SimpleTask{
 			totalScheduleList.clear();
 
 		}
+	}
+	
+	public String toWebSchedule(ScheduleData data)
+	{
+		String dateT="";
+		String dateF="";
+		String dateTBack="";
+		String dateFBack="";
+		String dateTS="";
+		try {
+			dateF=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(data.getDateF()));
+			dateT=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(data.getDateT()));
+			dateFBack=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(data.getDateFBack()));
+			dateTBack=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(data.getDateTBack()));
+
+			if(data.getTs_date()!=null)
+			{
+				dateTS=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(data.getTs_date()));
+				//			System.out.println(this.getTs_date()+","+dateTBack);
+			}
+		} catch (ParseException e) {
+			dateF=data.getDateF();
+			dateT=data.getDateT();
+			System.err.println(e.getMessage());
+		}
+		return (data.getInOutType().equals("O")?"E":data.getInOutType())+"\t"
+		+data.getFromPort()+"\t"
+		+dateF+"\t"
+		+dateFBack+"\t"
+		+data.getPort()+"\t"
+		+dateT+"\t"
+		+dateTBack+"\t"
+		+data.getVessel()+"\t"
+		+data.getVoyage_num()+"\t"
+		+(data.getTs_vessel()==null?"":data.getTs_vessel())+"\t"
+		+(data.getTs_voyage_num()==null?"":data.getTs_voyage_num())+"\t"
+		+data.getCompany_abbr()+"\t"
+		+data.getAgent()+"\t"
+		+(data.getTS()==null?"":data.getTS())+"\t"
+		+data.toRouteDesc()+"\t\t"
+		+(data.getTs_date()=="-"?"":dateTS);
 	}
 	private boolean biggerDate(String onedate, String twodate) {
 

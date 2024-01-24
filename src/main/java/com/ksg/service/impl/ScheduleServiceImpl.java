@@ -29,7 +29,6 @@ import com.ksg.dao.SchduleDAO;
 import com.ksg.dao.impl.ADVScheduleDAO;
 import com.ksg.dao.impl.ScheduleDAOImpl;
 import com.ksg.domain.PortInfo;
-import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
 import com.ksg.schedule.logic.KSGHashMap;
 import com.ksg.service.ScheduleServiceV2;
@@ -593,11 +592,11 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 
 
 	@Override
-	public List<Schedule> selecteAll(CommandMap param) throws SQLException {
+	public List<ScheduleData> selecteAll(CommandMap param) throws SQLException {
 
 		log.debug("param:{}", param);
 
-		Schedule schedule = Schedule.builder()
+		ScheduleData schedule = ScheduleData.builder()
 				.date_issue((String) param.get("date_issue"))
 				.InOutType((String) param.get("inOutType"))
 				.gubun((String) param.get("gubun"))
@@ -607,13 +606,7 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		return  scheduleDAO.selectAll(schedule);
 	}
 
-	@Override
-	public List<Schedule> selecteScheduleListByCondition(Schedule param) throws SQLException {
 
-		log.debug("param:{}", param);
-
-		return  scheduleDAO.selectScheduleLisByCondition(param);
-	}
 
 	@Override
 	public Object insertScheduleBulkData(List<ScheduleData> scheduleList) throws SQLException {

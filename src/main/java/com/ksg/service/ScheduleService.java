@@ -14,14 +14,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.ksg.common.model.CommandMap;
-import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
 
 public interface ScheduleService extends PageService{
 	
-	public List<Schedule> selecteScheduleListByCondition(Schedule param) throws SQLException;
+	public List<ScheduleData> selecteScheduleListByCondition(ScheduleData param) throws SQLException;
 	
-	public List<Schedule> selecteAll(CommandMap param) throws SQLException;
+	public List<ScheduleData> selecteAll(CommandMap param) throws SQLException;
 	
 	/**
 	 * @param data
@@ -33,10 +32,7 @@ public interface ScheduleService extends PageService{
 	
 	public Object insertScheduleBulkData(List<ScheduleData> scheduleList)				throws SQLException;
 	
-	public int deleteSchedule()												throws SQLException;
-
-	List<ScheduleData> selecteScheduleListByCondition(ScheduleData param) throws SQLException;
-	
+	public int deleteSchedule()												throws SQLException;	
 }
 
 

@@ -31,7 +31,6 @@ import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.Code;
 import com.ksg.domain.PortInfo;
-import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
 import com.ksg.domain.ScheduleEnum;
 import com.ksg.domain.ShippersTable;
@@ -91,7 +90,7 @@ public class ScheduleController extends AbstractController{
 		
 		CommandMap result = new CommandMap();
 
-		Schedule param = new Schedule();
+		ScheduleData param = new ScheduleData();
 		
 		param .setDate_issue(date);
 		

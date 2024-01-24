@@ -21,6 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.ksg.commands.IFCommand;
+import com.ksg.common.util.KSGDateUtil;
 import com.ksg.domain.AreaInfo;
 import com.ksg.domain.PortInfo;
 import com.ksg.domain.ScheduleData;
@@ -30,7 +31,7 @@ import com.ksg.service.ScheduleService;
 import com.ksg.service.ScheduleSubService;
 import com.ksg.service.impl.BaseServiceImpl;
 import com.ksg.service.impl.ScheduleServiceImpl;
-
+import java.text.ParseException;
 public class BuildWebScheduleCommand2 implements IFCommand {
 	private BaseService baseService;
 	private ScheduleSubService scheduleService;
@@ -147,7 +148,7 @@ public class BuildWebScheduleCommand2 implements IFCommand {
 			for(int i=0;i<scheduleDataList.size();i++)
 			{
 				ScheduleData data=(ScheduleData) scheduleDataList.get(i);
-				buffer.append(data.toWebScheduleString()+"\n");
+				buffer.append(toWebScheduleString(data)+"\n");
 				
 			}
 				
@@ -157,5 +158,29 @@ public class BuildWebScheduleCommand2 implements IFCommand {
 	public static void main(String[] args) {
 		BuildWebScheduleCommand2  b= new BuildWebScheduleCommand2();
 		b.execute();
+	}
+	
+	public String toWebScheduleString(ScheduleData data)
+	{
+		// 순번, E/I, 출발항구명, 
+
+		String dateT="";
+		String dateF="";
+		try {
+			dateF=KSGDateUtil.format2(KSGDateUtil.toDate(data.getDateF()));
+			dateT=KSGDateUtil.format2(KSGDateUtil.toDate(data.getDateT()));
+		} catch (ParseException e) {
+			dateF=data.getDateF();
+			dateT=data.getDateT();
+			e.printStackTrace();
+		}
+
+
+		return "0\t"+data.getInOutType()+"\t"+data.getFromPort()+"\t"+data.getDateF()+"\t"+data.getDateF()+"\t"+
+		data.getPort()+"\t"+data.getDateT()+"\t"+data.getDateT()+"\t"+data.getVessel()+"\t"+data.getVoyage_num()+"\t"+
+		" \t \t \t"+data.getCompany_abbr()+"\t"+data.getAgent()+"\t "+
+		data.getFromPort()+data.getDateF()+data.getDateF()+
+		data.getPort()+data.getDateT()+data.getDateT()+data.getVessel()+data.getVoyage_num()+data.getCompany_abbr()
+		;
 	}
 }

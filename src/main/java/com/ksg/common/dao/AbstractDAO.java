@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
+import com.ksg.domain.ScheduleData;
 
 /**DAO 추상 클래스
  * @date 2021-02024
@@ -63,5 +64,6 @@ public abstract class AbstractDAO {
 	public Object delete(String queryId, Object params) throws SQLException {
 		return sqlMap.delete(queryId, params);
 	}
+
 
 }

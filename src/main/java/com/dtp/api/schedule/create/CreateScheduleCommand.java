@@ -667,5 +667,20 @@ public abstract class CreateScheduleCommand implements IFCommand, ScheduleExecut
 		KSGModelManager.getInstance().workProcessText=message;
 		KSGModelManager.getInstance().execute(processMessageDialog.getName());
 	}
+	
+	public String toKey(ScheduleData data)
+	{
+		return String.format("ScheduleData{tableId='%s', company_abbr='%s',vessel='%s', voyage_num='%s', fromPort='%s', toPort='%s', DateF='%s', DateT='%s', date_issue='%s'}", 
+				data.getTable_id(), 
+				data.getCompany_abbr(), 
+				data.getVessel(),
+				data.getVoyage_num(),
+				data.getFromPort(), 
+				data.getPort(),
+				data.getDateF(),
+				data.getDateT(),
+				data.getDate_issue()
+				);
+	}
 
 }

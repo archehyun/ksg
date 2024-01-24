@@ -227,7 +227,7 @@ public class CreateNormalSchdeduleCommandNew2 extends CreateScheduleCommand
 		//TODO ±³Ã¼
 		scheduleService.deleteScheduleById(table_id);
 
-		List<ScheduleData> newList=insertList.stream().filter(KSGListUtil.distinctByKey(m -> m.toKey())).collect(Collectors.toList());;
+		List<ScheduleData> newList=insertList.stream().filter(KSGListUtil.distinctByKey(m -> toKey(m))).collect(Collectors.toList());;
 
 		Collection<List<ScheduleData>> partitions = KSGListUtil.partition(newList, 50);
 

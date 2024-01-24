@@ -25,7 +25,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import com.ksg.common.util.KSGPropertis;
 import com.ksg.view.comp.KSGViewUtil;
 import com.ksg.view.comp.panel.KSGPanel;
 

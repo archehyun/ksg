@@ -19,12 +19,9 @@ import com.ksg.common.dao.AbstractDAO;
 import com.ksg.common.model.CommandMap;
 import com.ksg.dao.SchduleDAO;
 import com.ksg.domain.PortInfo;
-import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
 
-public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
-
-	
+public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {	
 	
 	public ScheduleDAOImpl() {
 		super();
@@ -271,15 +268,12 @@ public class ScheduleDAOImpl extends AbstractDAO implements SchduleDAO {
 		return sqlMap.queryForList("schedule.selectScheduleListByCondition",param);
 	}
 	@Override
-	public List<Schedule> selectAll(Schedule param) throws SQLException {
+	public List<ScheduleData> selectAll(ScheduleData param) throws SQLException {
 		return sqlMap.queryForList("schedule.selectAll",param);
 	}
+
 	@Override
-	public List<Schedule> selectScheduleLisByCondition(Schedule schedule) throws SQLException {
-		return selectList("schedule.selectScheduleListByCondition2", schedule);
-	}
-	@Override
-	public List<Schedule> selectAll() throws Exception {
+	public List<ScheduleData> selectAll() throws Exception {
 		
 		return sqlMap.queryForList("schedule.selectAll");
 	}

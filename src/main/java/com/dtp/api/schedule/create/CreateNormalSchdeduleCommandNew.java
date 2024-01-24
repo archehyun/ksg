@@ -292,7 +292,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 
 				if(flag)
 				{
-					List newList=insertList.stream().filter(distinctByKey(m -> m.toKey())).collect(Collectors.toList());;
+					List newList=insertList.stream().filter(distinctByKey(m -> toKey(m))).collect(Collectors.toList());;
 
 					Collection<List<ScheduleData>> partitions = partition(newList, 50);
 
@@ -1220,6 +1220,7 @@ public class CreateNormalSchdeduleCommandNew extends CreateScheduleCommand
 		return result;
 
 	}
+
 	private void insertScheduleNew(ScheduleData data)
 	{
 		try

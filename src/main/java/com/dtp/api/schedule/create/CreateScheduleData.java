@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Vector;
 import java.util.stream.Collectors;
 
 import com.ksg.commands.schedule.NotSupportedDateTypeException;

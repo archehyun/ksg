@@ -21,9 +21,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-
-
 /**
  * @author 박창현
  *
@@ -87,7 +84,9 @@ public class ScheduleData implements Comparable<Object>{
 	private String orderby;
 
 	private String fromDate;
+	
 	private String toDate;
+	
 
 	private String table_date; 
 
@@ -114,39 +113,6 @@ public class ScheduleData implements Comparable<Object>{
 			return -1;
 		}
 	}
-	
-	public int getIntVoyage_num() {
-		return this.getNumericVoyage(voyage_num);
-	}
-	
-	private int getNumericVoyage(String voyage_num)
-	{
-
-		int result=0;
-
-		String temp="";
-		if(voyage_num==null)
-			return 0;
-		for(int i=0;i<voyage_num.length();i++)
-		{
-			try{
-				temp+=Integer.parseInt(String.valueOf(voyage_num.charAt(i)));
-			}catch(NumberFormatException e)
-			{
-				//				return 0;
-			}
-		}
-		try{
-			result=Integer.valueOf(temp);
-		}catch(Exception e)
-		{
-			return 0;
-		}
-
-		return result;
-	}
-
-
 
 	public void setDateF(String dateF) 
 	{
@@ -212,103 +178,9 @@ public class ScheduleData implements Comparable<Object>{
 	}
 
 
-	public String  toTotalString()
-	{
-		String dateT="";
-		String dateF="";
-		try {
-			dateF=KSGDateUtil.format2(KSGDateUtil.toDateBySearch(this.getDateF()));
-			dateT=KSGDateUtil.format2(KSGDateUtil.toDateBySearch(this.getDateT()));
-		} catch (ParseException e) {
-			dateF=this.getDateF();
-			dateT=this.getDateT();
-			e.printStackTrace();
-		}
-		return "["+this.getTable_id()+"\t"+this.getFromPort()+"\t"+dateF+"\t"+
-		this.getVessel()+"\t"+
-		this.getCompany_abbr()+"\t"+
-		dateT+"]";
-	}
-	public String toWebSchedule()
-	{
-		String dateT="";
-		String dateF="";
-		String dateTBack="";
-		String dateFBack="";
-		String dateTS="";
-		try {
-			dateF=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(this.getDateF()));
-			dateT=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(this.getDateT()));
-			dateFBack=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(this.getDateFBack()));
-			dateTBack=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(this.getDateTBack()));
-
-			if(this.getTs_date()!=null)
-			{
-				dateTS=KSGDateUtil.format5(KSGDateUtil.toDateBySearch(this.getTs_date()));
-				//			System.out.println(this.getTs_date()+","+dateTBack);
-			}
-		} catch (ParseException e) {
-			dateF=this.getDateF();
-			dateT=this.getDateT();
-			System.err.println(e.getMessage());
-		}
-		return (this.getInOutType().equals("O")?"E":this.getInOutType())+"\t"
-		+this.getFromPort()+"\t"
-		+dateF+"\t"
-		+dateFBack+"\t"
-		+this.getPort()+"\t"
-		+dateT+"\t"
-		+dateTBack+"\t"
-		+this.getVessel()+"\t"
-		+this.getVoyage_num()+"\t"
-		+(this.getTs_vessel()==null?"":this.getTs_vessel())+"\t"
-		+(this.getTs_voyage_num()==null?"":this.getTs_voyage_num())+"\t"
-		+this.getCompany_abbr()+"\t"
-		+this.getAgent()+"\t"
-		+(this.getTS()==null?"":this.getTS())+"\t"
-		+this.toRouteDesc()+"\t\t"
-		+(this.getTs_date()=="-"?"":dateTS);
-	}
-	public String toWebScheduleString()
-	{
-		// 순번, E/I, 출발항구명, 
-
-		String dateT="";
-		String dateF="";
-		try {
-			dateF=KSGDateUtil.format2(KSGDateUtil.toDate(this.getDateF()));
-			dateT=KSGDateUtil.format2(KSGDateUtil.toDate(this.getDateT()));
-		} catch (ParseException e) {
-			dateF=this.getDateF();
-			dateT=this.getDateT();
-			e.printStackTrace();
-		}
-
-
-		return "0\t"+this.getInOutType()+"\t"+this.getFromPort()+"\t"+this.getDateF()+"\t"+this.getDateF()+"\t"+
-		this.getPort()+"\t"+this.getDateT()+"\t"+this.getDateT()+"\t"+this.getVessel()+"\t"+this.getVoyage_num()+"\t"+
-		" \t \t \t"+this.getCompany_abbr()+"\t"+this.getAgent()+"\t "+
-		this.getFromPort()+this.getDateF()+this.getDateF()+
-		this.getPort()+this.getDateT()+this.getDateT()+this.getVessel()+this.getVoyage_num()+this.getCompany_abbr()
-		;
-	}
 
 	private String operator;
 
-	public String toKey()
-	{
-		return String.format("ScheduleData{tableId='%s', company_abbr='%s',vessel='%s', voyage_num='%s', fromPort='%s', toPort='%s', DateF='%s', DateT='%s', date_issue='%s'}", 
-				this.getTable_id(), 
-				this.getCompany_abbr(), 
-				this.getVessel(),
-				this.getVoyage_num(),
-				this.getFromPort(), 
-				this.getPort(),
-				this.getDateF(),
-				this.getDateT(),
-				this.getDate_issue()
-				);
-	}
 
 
 

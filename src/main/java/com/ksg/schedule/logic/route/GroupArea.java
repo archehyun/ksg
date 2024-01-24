@@ -60,7 +60,7 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 	public void addSchedule(ScheduleData data) throws SQLException, ParseException, VesselNullException 
 	{
 
-		String key =data.getVessel()+"\r\n"+data.getIntVoyage_num();
+		String key =data.getVessel()+"\r\n"+getNumericVoyage(data.getVoyage_num());
 		
 		
 		if(this.containsKey(key))
@@ -78,6 +78,33 @@ public class GroupArea extends HashMap<String, GroupVessel> implements Comparabl
 			this.put(key, new GroupVessel(data,this.orderByType));
 		}
 		
+	}
+	
+	private int getNumericVoyage(String voyage_num)
+	{
+
+		int result=0;
+
+		String temp="";
+		if(voyage_num==null)
+			return 0;
+		for(int i=0;i<voyage_num.length();i++)
+		{
+			try{
+				temp+=Integer.parseInt(String.valueOf(voyage_num.charAt(i)));
+			}catch(NumberFormatException e)
+			{
+				//				return 0;
+			}
+		}
+		try{
+			result=Integer.valueOf(temp);
+		}catch(Exception e)
+		{
+			return 0;
+		}
+
+		return result;
 	}
 
 	// 지역 이름을 기준으로 정렬

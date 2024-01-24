@@ -17,7 +17,6 @@ import java.util.Map;
 
 import com.ksg.common.model.CommandMap;
 import com.ksg.domain.PortInfo;
-import com.ksg.domain.Schedule;
 import com.ksg.domain.ScheduleData;
 public interface SchduleDAO {
 	
@@ -203,18 +202,15 @@ public interface SchduleDAO {
 	
 	public List selectInlandScheduleDateList()throws SQLException;
 	
-	public List<ScheduleData> selectScheduleLisByCondition(ScheduleData schedule) throws SQLException;
+
+	public List<ScheduleData> selectAll(ScheduleData schedule) throws SQLException;
 	
-	public List<Schedule> selectScheduleLisByCondition(Schedule schedule) throws SQLException;
-	
-	public List<Schedule> selectAll(Schedule schedule) throws SQLException;
-	
-	public List<Schedule> selectAll() throws  Exception;
+	public List<ScheduleData> selectAll() throws  Exception;
 	
 	public Object insertScheduleBulkData(List<ScheduleData> scheduleList) throws SQLException;
 	
 	public int deleteScheduleById(String table_id) throws SQLException;
 	
-	
+	public List<ScheduleData> selectScheduleLisByCondition(ScheduleData param) throws SQLException;
 	
 }
