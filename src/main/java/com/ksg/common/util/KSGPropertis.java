@@ -13,9 +13,14 @@ package com.ksg.common.util;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.Properties;
 
 import com.ibatis.common.resources.Resources;
+import com.ksg.view.comp.notification.NotificationManager;
+
+
+import com.ksg.view.comp.notification.Notification;
 
 public class KSGPropertis extends Properties{
 	
@@ -69,7 +74,7 @@ public class KSGPropertis extends Properties{
 	};
 	
 	
-	private  String KSG_PROPERTIES_TXT = "config/ksg.properties";
+	private  String KSG_PROPERTIES_TXT = "./config/ksg.properties";
 	
 	private static KSGPropertis instance = new KSGPropertis();
 	public static KSGPropertis getIntance()
@@ -87,8 +92,9 @@ public class KSGPropertis extends Properties{
 	}
 	private void load() {
 		try {
+			Reader re =Resources.getResourceAsReader("config/ksg.properties");
 			
-			this.load(Resources.getResourceAsReader("config/ksg.properties"));
+			this.load(re);
 		} catch (FileNotFoundException e) 
 		{
 			e.printStackTrace();
@@ -108,16 +114,18 @@ public class KSGPropertis extends Properties{
 	{
 		this.KSG_PROPERTIES_TXT=fileName;
 	}
-	public void store()
-	{
+	public void store()  
+	{	
+			
 		try {
-			//TODO 저장 위치 확인
 			this.store(new FileOutputStream(KSG_PROPERTIES_TXT), "no commments");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+//			NotificationManager.showNotification(Notification.Type.WARNING, e.getMessage());
+		}
+		
 	}
 
 }

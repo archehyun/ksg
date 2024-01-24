@@ -65,11 +65,9 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.textfield.LookAheadTextField;
 import com.ksg.view.comp.textfield.StringArrayLookAhead;
 import com.ksg.workbench.KSGLogin;
-import com.ksg.workbench.adv.ADVManageUI;
 import com.ksg.workbench.common.comp.View;
 import com.ksg.workbench.common.dialog.SearchADVCountDialog;
 import com.ksg.workbench.common.dialog.WebScheduleCreateDialog;
-import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.preference.PreferenceDialog;
 
 import lombok.extern.slf4j.Slf4j;
@@ -78,13 +76,9 @@ import lombok.extern.slf4j.Slf4j;
 /**
 
  * @FileName : KSGMainFrame.java
-
  * @Date : 2021. 4. 17. 
-
  * @작성자 : 박창현
-
  * @변경이력 :
-
  * @프로그램 설명 :
 
  */
@@ -93,15 +87,13 @@ import lombok.extern.slf4j.Slf4j;
 public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, View{
 
 	private AbstractController controller;
-
+	
 	public void setController(AbstractController constroller)
 	{
 		this.controller =constroller;
 	}
 	private CommandMap model;
-
-	private static final String MONDAY = "월요일";
-	
+	private static final String MONDAY = "월요일";	
 	private static final String SCHEDULE_WORLDWIDE	= "항로별 스케줄 생성";
 	private static final String SCHEDULE_INBOUND	= "Inbound 스케줄 생성";
 	private static final String SCHEDULE_OUTBOUND	= "Outbound 스케줄 생성";
@@ -121,43 +113,32 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	private static final String BASE_VESSEL 		= "선박정보";
 	private static final String BASE_VESSEL_ABBR 	= "선박약어정보";
 	
-	private String[] adv_menu = {"광고정보관리", ADV_SEARCH, ADV_INPUT,"-", ADV_PRINT, ADV_INPUT_SEARCH};
-	
+	private String[] adv_menu = {"광고정보관리", ADV_SEARCH, ADV_INPUT,"-", ADV_PRINT, ADV_INPUT_SEARCH};	
 	private String[] master_menu = {"기초정보관리", BASE_CODE,"-", BASE_AREA, BASE_COMPANY, BASE_PORT, BASE_VESSEL};
-
-	private LookAheadTextField txfImportDate;
-
+	
+	private String[][] toolbar_menu= {{"광고 조회", "images/menu_search.gif", ADV_SEARCH},
+									{"광고 입력","images/importxls8.gif",ADV_INPUT},
+									{"광고 출력","images/export.gif",ADV_PRINT},
+									{"스케줄 관리","images/menu_schedule.gif",SCHEDULE_SEARCH},
+									{"기초정보관리","images/db_table8.gif",BASE_MAIN}
+									};
+	
 	private static String TITLE="KSG DTP System";
-
+	
 	private KSGModelManager modelManager = KSGModelManager.getInstance();
-
 	private CardLayout cardLayout= new CardLayout();
-
 	ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
-
 	private IFCommand scheduleCommand;
-
 	protected JDialog optionDialog;
-
 	private LookAheadTextField txfDate;
-
-	private BaseInfoUI pnBaseInfo;
-
-	private ADVManageUI pnAdvAdd;
-
-	private KSGPanel pnCenter,pnSearch,pnPrintADV;
-
+	private KSGPanel pnCenter;
 	private KSGPanel pnSchedule;
-
 	private KSGModelManager manager;
-
 	private JMenuBar menuBar;
-
-	private JToolBar toolbar;
-
+	
 	private KSGLogin login;
-
 	private JProgressBar workprocess;
+	private ToolBar myToolBar;
 
 	private JLabel lblWorkProcessText;
 
@@ -178,15 +159,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	public KSGMainFrame(KSGLogin login) 
 	{	
 		this.setName(NAME);
-
 		NotificationManager.getInstance().setFrame(this);
-
 		this.setController(new MainController());
-
 		manager = KSGModelManager.getInstance();
-
 		manager.addObservers(this);
-
 		this.login = login;
 	}
 
@@ -228,15 +204,11 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 	private KSGPanel buildCenter() 
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout(0,10));
-
 		pnCenter = new KSGPanel();
-
 		pnCenter.setLayout(cardLayout);
-
 		pnMain.add(this.pnMainView);
-
 		pnMain.add(buildButtom(),BorderLayout.SOUTH);
-
+		
 		return pnMain;
 	}
 
@@ -316,121 +288,34 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 		return pnMain;
 	}
 
-	private void addToolBarButton(String butName, String img, String action)
-	{
-		JButton butSearch = new JButton(butName,new ImageIcon(img));
-
-		butSearch.setPreferredSize(new Dimension(20,20));
-		
-		butSearch.setActionCommand(action);
-
-		butSearch.setBorderPainted(false);
-
-		butSearch.setVerticalAlignment(0);
-
-		butSearch.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				pnMainView.showPanel(e.getActionCommand());
-			}
-		});
-		toolbar.add(butSearch);
-	}
-
+	
 	/** 툴바 생성
 	 * @return
 	 */
 	private Component buildToolBar() 
 	{
-		toolbar = new JToolBar();
-
-		toolbar.setPreferredSize(new Dimension(-1,45));
-
-		toolbar.setBorderPainted(true);
-
-		addToolBarButton("광고 조회","images/menu_search.gif",ADV_SEARCH);
-
-		addToolBarButton("광고 입력","images/importxls8.gif",ADV_INPUT);
-
-		addToolBarButton("광고 출력","images/export.gif",ADV_PRINT);
-
-		addToolBarButton("스케줄 관리","images/menu_schedule.gif",SCHEDULE_SEARCH);
-
-		addToolBarButton(BASE_MAIN,"images/db_table8.gif",BASE_MAIN);
-
-		StringArrayLookAhead lookAhead = new StringArrayLookAhead(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
-		txfImportDate = new LookAheadTextField("광고입력수 조회",10,lookAhead);
-
-		txfImportDate.setMaximumSize(new Dimension(100,25));
-
-		txfImportDate.addKeyListener(new KeyAdapter(){
-			public void keyReleased(KeyEvent e) {
-
-				if(e.getKeyCode()==KeyEvent.VK_ENTER)
-				{
-					String date=txfImportDate.getText();
-
-					if(!KSGDateUtil.isDashFomatt(date))
-					{
-						JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, "입력 형식(2000.1.1)이 틀렸습니다. "+date);
-
-						toolbar.requestFocus();
-
-						return;
-					}
-
-					try {
-						String searchDate = KSGDateUtil.toDate3(date).toString();
-						
-						CommandMap param = new CommandMap();
-						
-						param.put("searchDate", searchDate);
-						
-						callApi("searchTableCount", param);
-
-					} 
-					catch (DateFormattException e2) {
-						JOptionPane.showMessageDialog(null, "error:"+e2.getMessage());
-						e2.printStackTrace();
-					}
-				}
-			}
-		});
-
-		JCheckBox cbxImportDate = new JCheckBox(MONDAY,false);
-
-		cbxImportDate.setFont(KSGModelManager.getInstance().defaultFont);
-
-		cbxImportDate.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-				
-				JCheckBox bo =(JCheckBox) e.getSource();
-				
-				if(bo.isSelected()) txfImportDate.setText(KSGDateUtil.dashformat(KSGDateUtil.nextMonday(new Date())));
-			}
-		});
-
-		toolbar.addSeparator();
+		myToolBar = new ToolBar(this);
 		
-		toolbar.add(txfImportDate);
-
-		return toolbar;
+		for(int i=0;i<toolbar_menu.length;i++)
+		{
+			myToolBar.createToolBarButton(toolbar_menu[i][0], toolbar_menu[i][1], toolbar_menu[i][2]);
+		}
+		myToolBar.initComponent();
+		
+		return myToolBar;
 	}
-
+	
+	public void showPanel(String command)
+	{
+		pnMainView.showPanel(command);	
+	}	
 
 	private JMenuBar crateMenuBar() 
 	{
-		menuBar = new JMenuBar();
-		
-		BiggerMenu fileMenu = new BiggerMenu("File");
-		
+		menuBar = new JMenuBar();		
+		BiggerMenu fileMenu = new BiggerMenu("File");		
 		fileMenu.setMnemonic(KeyEvent.VK_F);
-
-		JMenuItem ExitMenu = new JMenuItem("Exit", KeyEvent.VK_X);
-		
+		JMenuItem ExitMenu = new JMenuItem("Exit", KeyEvent.VK_X);		
 		ExitMenu.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
@@ -1020,8 +905,10 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 			int count=(int) result.get("count");
 
 			JOptionPane.showMessageDialog(KSGModelManager.getInstance().frame, date+" : "+count+"건");
+			
+			myToolBar.requestFocus();
 
-			toolbar.requestFocus();
+
 		}
 	}
 
@@ -1093,42 +980,26 @@ public class KSGMainFrame extends JFrame implements ActionListener,KSGObserver, 
 				}});
 
 			pnInput.add(txfDate);
-
 			pnInput.add(cbxMondya);
-
 			KSGPanel pnOption = new KSGPanel(new FlowLayout(FlowLayout.LEFT));
-
 			pnOption.setVisible(false);
-
 			Box box = Box.createVerticalBox();
-
 			KSGPanel pn1 = new KSGPanel();
-
 			pn1.setLayout(new FlowLayout(FlowLayout.LEADING));
-
 			pn1.add(new JLabel("Sort 할 날짜를 입력 하세요"));
-
 			box.add(pn1);
-
 			box.add(pnInput);
-
 			pnMain.add(box);
-
 			return pnMain;
 		}
 
 		public void createAndUpdateUI()
 		{
 			setModal(true);
-
 			setTitle("스케줄 생성");
-
 			getContentPane().add(buildCenter());
-
 			getContentPane().add(buildControl(),BorderLayout.SOUTH);
-
 			ViewUtil.center(this, true);
-
 			setVisible(true);
 		}
 

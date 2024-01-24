@@ -17,6 +17,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -76,6 +78,7 @@ import com.ksg.view.comp.checkbox.KSGCheckBox;
 import com.ksg.view.comp.checkbox.PageInfoCheckBox;
 import com.ksg.view.comp.combobox.KSGCompboBox2;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTable;
 import com.ksg.view.comp.table.KSGTableImpl;
@@ -1563,7 +1566,7 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 			this.table = table;
 		}
 
-		private void fileAddAction() {
+		private void fileAddAction() throws FileNotFoundException, IOException {
 
 			logger.debug("file add:");
 
@@ -1706,7 +1709,12 @@ public class SearchPanel extends KSGPanel implements ActionListener{
 
 			if(command.equals(COMMAND_ADD))
 			{
-				fileAddAction();
+				try {
+					fileAddAction();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+					NotificationManager.showNotification(e1.getMessage());
+				}
 			}
 			else if(command.equals(COMMAND_DEL))
 			{

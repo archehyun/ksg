@@ -38,13 +38,11 @@ import com.ksg.view.comp.panel.KSGPanel;
 
 public class PnKeyWord extends PnOption {
 
-
 	private JList listKeyword;
 
 	private String selectedKeyword="vessel";
 
 	private Font defaultfont;
-
 
 	private KSGPropertis propertis = KSGPropertis.getIntance();
 
@@ -354,8 +352,16 @@ public class PnKeyWord extends PnOption {
 				propertis.setProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_DIVIDER, divider);
 
 				propertis.setProperty(KSGPropertis.PROPERTIES_VESSEL_VOY_COUNT, String.valueOf(cc));
-
-				propertis.store();
+				try {
+					propertis.store();
+				}
+				catch(Exception ee)
+				{
+					ee.printStackTrace();
+					NotificationManager.showNotification(ee.getMessage());
+					
+				}
+				
 
 				setVisible(false);
 

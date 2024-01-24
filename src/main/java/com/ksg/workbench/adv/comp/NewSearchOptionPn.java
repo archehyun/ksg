@@ -36,6 +36,8 @@ import com.ksg.commands.SearchSheetNameCommand;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.KSGPropertis;
 import com.ksg.view.comp.FileInfo;
+import com.ksg.view.comp.notification.Notification;
+import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.adv.dialog.ViewXLSFileDialog;
 
@@ -392,36 +394,46 @@ public class NewSearchOptionPn extends KSGPanel{
 			File[] selectedFiles = fileChooser.getSelectedFiles();
 
 			//_txfXLSFile.setText(selectedFile.getName());
-
-			for(int i=0;i<selectedFiles.length;i++)
-			{
-				DefaultListModel filemodel=(DefaultListModel) fileLi.getModel();
-
-				for(int j=0;j<filemodel.size();j++)
+			
+			try {
+				for(int i=0;i<selectedFiles.length;i++)
 				{
-					FileInfo t = (FileInfo) filemodel.get(j);
-					if(t.file.equals(selectedFiles[i].getName()))
+					DefaultListModel filemodel=(DefaultListModel) fileLi.getModel();
+
+					for(int j=0;j<filemodel.size();j++)
 					{
-						JOptionPane.showMessageDialog(null, "동일 항목이 존재합니다.");
-						return;
+						FileInfo t = (FileInfo) filemodel.get(j);
+						if(t.file.equals(selectedFiles[i].getName()))
+						{
+							JOptionPane.showMessageDialog(null, "동일 항목이 존재합니다.");
+							return;
+						}
 					}
+					FileInfo fileInfo= new FileInfo();
+					fileInfo.file = selectedFiles[i].getName();
+					fileInfo.filePath = selectedFiles[i].getAbsolutePath();
+					KSGPropertis pp=KSGPropertis.getIntance();
+					// 위치 저장
+					pp.setProperty(KSGPropertis.DATA_LOCATION, selectedFiles[i].getParent());
+					
+					pp.store();
+
+
+					filemodel.addElement(fileInfo);
+
+					selectXLSFilePath = selectedFiles[i].getAbsolutePath();
+
+
+					updateSheetNameList(fileLi,table);
 				}
-				FileInfo fileInfo= new FileInfo();
-				fileInfo.file = selectedFiles[i].getName();
-				fileInfo.filePath = selectedFiles[i].getAbsolutePath();
-				KSGPropertis pp=KSGPropertis.getIntance();
-				// 위치 저장
-				pp.setProperty(KSGPropertis.DATA_LOCATION, selectedFiles[i].getParent());
-				pp.store();
-
-
-				filemodel.addElement(fileInfo);
-
-				selectXLSFilePath = selectedFiles[i].getAbsolutePath();
-
-
-				updateSheetNameList(fileLi,table);
 			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				NotificationManager.showNotification(e.getMessage());
+			}
+
+			
 		}
 	}
 
