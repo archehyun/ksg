@@ -13,6 +13,16 @@ import com.ksg.domain.TablePort;
 
 import lombok.extern.slf4j.Slf4j;
 
+
+/**
+ * 
+ * @FileName : ShipperTableServiceImpl.java
+ * @Project : KSG2
+ * @Date : 2023. 5. 16
+ * @작성자 : ch.park
+ * @변경이력 :
+ * @프로그램 설명 :
+ */
 @Slf4j
 public class ShipperTableServiceImpl implements ShipperTableService{
 

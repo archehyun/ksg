@@ -22,6 +22,7 @@ import com.ksg.common.model.CommandMap;
 import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.view.comp.dialog.KSGDialog;
+import com.ksg.view.comp.notification.Notification;
 import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.dialog.MainTypeDialog;
@@ -30,29 +31,20 @@ import com.ksg.workbench.common.dialog.MainTypeDialog;
 /**
 
   * @FileName : CommonCodeDetailInsertPop.java
-
   * @Date : 2021. 3. 19. 
-
   * @작성자 : 박창현
-
   * @변경이력 :
-
   * @프로그램 설명 :
 
   */
 @SuppressWarnings("serial")
 public class InsertCommonCodeDetailDialog extends MainTypeDialog {
 	
-	private JTextField txfCodeField;
-	
-	private JTextField txfCodeNameEng;
-	
-	private JTextField txfCodeType;
-	
-	private JTextField txfCodeNameKor;
-
-	
-	HashMap<String, Object> param;
+	private JTextField txfCodeField;	
+	private JTextField txfCodeNameEng;	
+	private JTextField txfCodeType;	
+	private JTextField txfCodeNameKor;	
+	private HashMap<String, Object> param;
 	
 	private String codeType;
 	
@@ -79,18 +71,13 @@ public class InsertCommonCodeDetailDialog extends MainTypeDialog {
 	{
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
 		
-		pnCenter.add(createFormItem(txfCodeType,"코드타입"));
-		
-		pnCenter.add(createFormItem(txfCodeField,"코드Field"));
-		
-		pnCenter.add(createFormItem(txfCodeNameEng, "코드영문명"));
-		
+		pnCenter.add(createFormItem(txfCodeType,"코드타입"));		
+		pnCenter.add(createFormItem(txfCodeField,"코드Field"));		
+		pnCenter.add(createFormItem(txfCodeNameEng, "코드영문명"));		
 		pnCenter.add(createFormItem(txfCodeNameKor,"코드명"));
 
-		KSGPanel pnMain = new KSGPanel();
-		
-		pnMain.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		
+		KSGPanel pnMain = new KSGPanel();		
+		pnMain.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));		
 		pnMain.add(pnCenter);
 		
 		return pnMain;
@@ -120,15 +107,11 @@ public class InsertCommonCodeDetailDialog extends MainTypeDialog {
 				return;
 			}
 			
-			
 			CommandMap param = new CommandMap();
 			
 			param.put("code_field", codeField);
-			
 			param.put("code_name", codeNameEng);
-			
 			param.put("code_type", codeType);
-			
 			param.put("code_name_kor", codeNameKor);
 			
 			callApi("insertCodeDetail", param);
@@ -146,26 +129,19 @@ public class InsertCommonCodeDetailDialog extends MainTypeDialog {
 		this.setModal(true);
 
 		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
-
 		this.addComp(buildCenter(),BorderLayout.CENTER);
-
 		this.addComp(buildControl(),BorderLayout.SOUTH);
 
 		ViewUtil.center(this,true);
-
 		this.setResizable(false);
-
 		this.setVisible(true);
 	}
 	
 	private void initComp() {
 		
-		txfCodeField 	= new JTextField(15);
-		
-		txfCodeNameEng 	= new JTextField(15);
-		
-		txfCodeType 	= new JTextField(15);
-		
+		txfCodeField 	= new JTextField(15);		
+		txfCodeNameEng 	= new JTextField(15);		
+		txfCodeType 	= new JTextField(15);		
 		txfCodeNameKor 	= new JTextField(15);
 		
 		txfCodeType.setEditable(false);
@@ -176,42 +152,28 @@ public class InsertCommonCodeDetailDialog extends MainTypeDialog {
 	public void componentShown(ComponentEvent e) {
 		
 		txfCodeType.setText((String)param.get("code_name"));
-		
 	}
 	
 	@Override
 	public void updateView() {
-
-
+		
 		CommandMap resultMap= this.getModel();
-
 		boolean success = (boolean) resultMap.get("success");
 
 		if(success)
 		{
-
 			String serviceId=(String) resultMap.get("serviceId");
 
 			if("insertCodeDetail".equals(serviceId))
 			{	
-				
 				NotificationManager.showNotification("추가했습니다.");
-				
 				result = KSGDialog.SUCCESS;
-				
 				close();
-
 			}
-
 		}
 		else{  
-			String error = (String) resultMap.get("error");
-			
-			JOptionPane.showMessageDialog(this, error);
+			String error = (String) resultMap.get("error");			
+			NotificationManager.showNotification(Notification.Type.WARNING, error);
 		}
-
 	}
-
-
 }
-

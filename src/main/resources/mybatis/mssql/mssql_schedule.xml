@@ -15,101 +15,100 @@
 <sqlMap namespace="schedule">
 
 
-<sql id="selectSQL">SELECT * FROM TB_SCHEDULE_INFO</sql>
+<sql id="selectSQL">SELECT * FROM TB_SCHEDULE_INFO
+</sql>
 
 <sql id="WHERE">
-			<dynamic prepend="where">
-		    	<isNotNull property="table_id" prepend="and">
-					table_id=#table_id#
-				</isNotNull>
-				<isNotNull property="company_abbr" prepend="and">
-					company_abbr=#company_abbr#
-				</isNotNull>
-				<isNotNull property="agent" prepend="and">
-					agent=#agent#
-				</isNotNull>								
-				<isNotNull property="date_issue" prepend="and">
-					date_issue=#date_issue#
-				</isNotNull>
-				<isNotNull property="inOutType" prepend="and">
-					inOutType=#inOutType#
-				</isNotNull>
-				<isNotNull property="vessel" prepend="and">
-					vessel=#vessel#
-				</isNotNull>
-				<isNotNull property="voyage_num" prepend="and">
-					voyage_num=#voyage_num#
-				</isNotNull>
-				<isNotNull property="area_name" prepend="and">
-					area_name=#area_name#
-				</isNotNull>
-				<isNotNull property="gubun" prepend="and">
-					gubun=#gubun#
-				</isNotNull>
-				<isNotNull property="fromPort" prepend="and">
-					fromPort=#fromPort#
-				</isNotNull>
-				<isNotNull property="port" prepend="and">
-					port=#port#
-				</isNotNull>
-				<isNotNull property="n_voyage_num" prepend="and">
-					n_voyage_num=#n_voyage_num#
-				</isNotNull>
-  
-		</dynamic>
+	<dynamic prepend="where">
+    	<isNotNull property="table_id" prepend="and">
+			table_id=#table_id#
+		</isNotNull>
+		<isNotNull property="company_abbr" prepend="and">
+			company_abbr=#company_abbr#
+		</isNotNull>
+		<isNotNull property="agent" prepend="and">
+			agent=#agent#
+		</isNotNull>								
+		<isNotNull property="date_issue" prepend="and">
+			date_issue=#date_issue#
+		</isNotNull>
+		<isNotNull property="inOutType" prepend="and">
+			inOutType=#inOutType#
+		</isNotNull>
+		<isNotNull property="vessel" prepend="and">
+			vessel=#vessel#
+		</isNotNull>
+		<isNotNull property="voyage_num" prepend="and">
+			voyage_num=#voyage_num#
+		</isNotNull>
+		<isNotNull property="area_name" prepend="and">
+			area_name=#area_name#
+		</isNotNull>
+		<isNotNull property="gubun" prepend="and">
+			gubun=#gubun#
+		</isNotNull>
+		<isNotNull property="fromPort" prepend="and">
+			fromPort=#fromPort#
+		</isNotNull>
+		<isNotNull property="port" prepend="and">
+			port=#port#
+		</isNotNull>
+		<isNotNull property="n_voyage_num" prepend="and">
+			n_voyage_num=#n_voyage_num#
+		</isNotNull>
+	</dynamic>
 
 </sql>
 
 <sql id="LIKE_WHERE">
-			<dynamic prepend="where">
-		    	<isNotNull property="table_id" prepend="and">
-					table_id like '%$table_id$%'
-				</isNotNull>
-				<isNotNull property="company_abbr" prepend="and">
-					company_abbr=#company_abbr#
-				</isNotNull>
-				<isNotNull property="agent" prepend="and">
-					agent=#agent#
-				</isNotNull>								
-				<isNotNull property="date_issue" prepend="and">
-					date_issue=#date_issue#
-				</isNotNull>
-				<isNotNull property="inOutType" prepend="and">
-					inOutType=#inOutType#
-				</isNotNull>
-				<isNotNull property="vessel" prepend="and">
-					vessel=#vessel#
-				</isNotNull>
-				<isNotNull property="voyage_num" prepend="and">
-					voyage_num=#voyage_num#
-				</isNotNull>
-				<isNotNull property="area_name" prepend="and">
-					area_name=#area_name#
-				</isNotNull>
-				<isNotNull property="gubun" prepend="and">
-					gubun=#gubun#
-				</isNotNull>
-				<isNotNull property="fromPort" prepend="and">
-					fromPort=#fromPort#
-				</isNotNull>
-				<isNotNull property="port" prepend="and">
-					port=#port#
-				</isNotNull>
-				<isNotNull property="n_voyage_num" prepend="and">
-					n_voyage_num=#n_voyage_num#
-				</isNotNull>
-  
-		</dynamic>
+	<dynamic prepend="where">
+    	<isNotNull property="table_id" prepend="and">
+			table_id like '%$table_id$%'
+		</isNotNull>
+		<isNotNull property="company_abbr" prepend="and">
+			company_abbr=#company_abbr#
+		</isNotNull>
+		<isNotNull property="agent" prepend="and">
+			agent=#agent#
+		</isNotNull>								
+		<isNotNull property="date_issue" prepend="and">
+			date_issue=#date_issue#
+		</isNotNull>
+		<isNotNull property="inOutType" prepend="and">
+			inOutType=#inOutType#
+		</isNotNull>
+		<isNotNull property="vessel" prepend="and">
+			vessel=#vessel#
+		</isNotNull>
+		<isNotNull property="voyage_num" prepend="and">
+			voyage_num=#voyage_num#
+		</isNotNull>
+		<isNotNull property="area_name" prepend="and">
+			area_name=#area_name#
+		</isNotNull>
+		<isNotNull property="gubun" prepend="and">
+			gubun=#gubun#
+		</isNotNull>
+		<isNotNull property="fromPort" prepend="and">
+			fromPort=#fromPort#
+		</isNotNull>
+		<isNotNull property="port" prepend="and">
+			port=#port#
+		</isNotNull>
+		<isNotNull property="n_voyage_num" prepend="and">
+			n_voyage_num=#n_voyage_num#
+		</isNotNull>
+	</dynamic>
 
 </sql>
 
 
 <!-- select -->
 
-
 <select id="selectScheduleListByPage"  resultClass="java.util.HashMap" parameterClass="java.util.HashMap">		
 		
-		SELECT * FROM ( SELECT ROW_NUMBER() OVER (ORDER BY table_id) 
+		SELECT * 
+		FROM ( SELECT ROW_NUMBER() OVER (ORDER BY table_id) 
 		
 		AS ROWNUM, * FROM $TABLE_NAME$
 		WITH (NOLOCK) 
@@ -124,45 +123,41 @@
 		SELECT * /* selectScheduleListByCondition */
 		FROM TB_SCHEDULE_INFO
 		<dynamic prepend="where">
-				<isNotNull property="gubun" prepend="and">
-					gubun=#gubun#
-				</isNotNull>
-				<isNotNull property="date_issue" prepend="and">
-					date_issue=#date_issue#
-				</isNotNull>
-				<isNotNull property="inOutType" prepend="and">
-					inOutType=#inOutType#
-				</isNotNull>
-				
-				<isNotNull property="fromPort" prepend="and">
-					fromPort=#fromPort#
-				</isNotNull>
-				<isNotNull property="port" prepend="and">
-					port=#port#
-				</isNotNull>
-				<isNotNull property="area_name" prepend="and">
-					area_name=#area_name#
-				</isNotNull>
-				
-				<isNotNull property="agent" prepend="and">
-					
-					agent like '%$agent$%'
-				</isNotNull>
-				
-				<isNotNull property="vessel" prepend="and">
-					
-					vessel like '%$vessel$%'
-				</isNotNull>
-				<isNotNull property="company_abbr" prepend="and">
-					
-					company_abbr like '%$company_abbr$%'
-				</isNotNull>	
-				
-				<isNotNull property="table_id" prepend="and">
-					
-					table_id like '%$table_id$%'
-				</isNotNull>				
-				
+			<isNotNull property="gubun" prepend="and">
+				gubun=#gubun#
+			</isNotNull>
+			<isNotNull property="date_issue" prepend="and">
+				date_issue=#date_issue#
+			</isNotNull>
+			<isNotNull property="inOutType" prepend="and">
+				inOutType=#inOutType#
+			</isNotNull>
+			
+			<isNotNull property="fromPort" prepend="and">
+				fromPort=#fromPort#
+			</isNotNull>
+			<isNotNull property="port" prepend="and">
+				port=#port#
+			</isNotNull>
+			<isNotNull property="area_name" prepend="and">
+				area_name=#area_name#
+			</isNotNull>
+			
+			<isNotNull property="agent" prepend="and">					
+				agent like '%$agent$%'
+			</isNotNull>
+			
+			<isNotNull property="vessel" prepend="and">					
+				vessel like '%$vessel$%'
+			</isNotNull>
+			<isNotNull property="company_abbr" prepend="and">
+				company_abbr like '%$company_abbr$%'
+			</isNotNull>	
+			
+			<isNotNull property="table_id" prepend="and">
+				table_id like '%$table_id$%'
+			</isNotNull>				
+			
 		</dynamic>
 	</select>
 	
@@ -192,7 +187,7 @@
 			</dynamic>
 		</select>
 	
-	<select id="selectAll" resultClass="com.ksg.domain.Schedule" parameterClass="com.ksg.domain.Schedule">
+	<select id="selectAll" resultClass="com.ksg.domain.ScheduleData" parameterClass="com.ksg.domain.ScheduleData">
 		SELECT * 
 		FROM TB_SCHEDULE_INFO
 		<dynamic prepend="where">
@@ -370,27 +365,24 @@
 	
 	
 	<select id="selectScheduledAreaList" resultClass="java.util.HashMap">
-	
-	SELECT 
-			area_name 
-	FROM 	TB_SCHEDULE_INFO 
-	GROUP BY area_name 
-	ORDER BY area_name
-	
+		SELECT 
+				area_name 
+		FROM 	TB_SCHEDULE_INFO 
+		GROUP BY area_name 
+		ORDER BY area_name
 	</select>
 	
 	<select id="selectScheduledPortList" resultClass="java.util.HashMap">
 	
-	select port from TB_SCHEDULE_INFO
+	SELECT port 
+	FROM TB_SCHEDULE_INFO
 	<dynamic prepend="where">
-	
 		<isNotNull property="area_name" prepend="and">
 			area_name=#area_name#
 		</isNotNull>
 	</dynamic>
-	
-	
-	group by port order by port
+	GROUP BY port 
+	ORDER BY port
 	</select>
 	
 	<select id="selectScheduledFromPortList" resultClass="java.util.HashMap">
@@ -479,43 +471,42 @@
 <!-- count -->
 
 	<select id="selectCount" resultClass="int" parameterClass="java.util.HashMap">
-		select count(*) from TB_SCHEDULE_INFO
+		SELECT count(*) 
+		FROM TB_SCHEDULE_INFO
 		<dynamic prepend="where">
-		
-		    	<isNotNull property="table_id" prepend="and">
-					table_id=#table_id#
-				</isNotNull>
-				<isNotNull property="company_abbr" prepend="and">
-					company_abbr=#company_abbr#
-				</isNotNull>
-				<isNotNull property="agent" prepend="and">
-					agent=#agent#
-				</isNotNull>								
-				<isNotNull property="date_issue" prepend="and">
-					date_issue=#date_issue#
-				</isNotNull>
-				<isNotNull property="inOutType" prepend="and">
-					inOutType=#inOutType#
-				</isNotNull>
-				<isNotNull property="vessel" prepend="and">
-					vessel=#vessel#
-				</isNotNull>
-				<isNotNull property="voyage_num" prepend="and">
-					voyage_num=#voyage_num#
-				</isNotNull>
-				<isNotNull property="area_name" prepend="and">
-					area_name=#area_name#
-				</isNotNull>
-				<isNotNull property="gubun" prepend="and">
-					gubun=#gubun#
-				</isNotNull>
-				<isNotNull property="fromPort" prepend="and">
-					fromPort=#fromPort#
-				</isNotNull>
-				<isNotNull property="port" prepend="and">
-					port=#port#
-				</isNotNull>
-  
+	    	<isNotNull property="table_id" prepend="and">
+				table_id=#table_id#
+			</isNotNull>
+			<isNotNull property="company_abbr" prepend="and">
+				company_abbr=#company_abbr#
+			</isNotNull>
+			<isNotNull property="agent" prepend="and">
+				agent=#agent#
+			</isNotNull>								
+			<isNotNull property="date_issue" prepend="and">
+				date_issue=#date_issue#
+			</isNotNull>
+			<isNotNull property="inOutType" prepend="and">
+				inOutType=#inOutType#
+			</isNotNull>
+			<isNotNull property="vessel" prepend="and">
+				vessel=#vessel#
+			</isNotNull>
+			<isNotNull property="voyage_num" prepend="and">
+				voyage_num=#voyage_num#
+			</isNotNull>
+			<isNotNull property="area_name" prepend="and">
+				area_name=#area_name#
+			</isNotNull>
+			<isNotNull property="gubun" prepend="and">
+				gubun=#gubun#
+			</isNotNull>
+			<isNotNull property="fromPort" prepend="and">
+				fromPort=#fromPort#
+			</isNotNull>
+			<isNotNull property="port" prepend="and">
+				port=#port#
+			</isNotNull>  
 		</dynamic>	
 	</select>
 

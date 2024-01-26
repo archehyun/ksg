@@ -106,32 +106,32 @@
 
 	<sql id="TableList">
 	SELECT 
-			table_id
-			,table_index
-			,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
-			
-			,vsl_row
-			,title
-			,out_port
-			,common_shipping
-			,company_abbr
-			,TS
-			,company_name
-			,gubun
-			,page
-			,agent
-			,quark_format
-			,port_col
-			,out_to_port
-			,in_to_port
-			,in_port
-			,othercell
-			,console_cfs
-			,d_time
-			,c_time
-			,console_page
-			,inland_indexs
-			,bookPage
+		table_id
+		,table_index
+		,CONVERT(CHAR(10), date_isusse,23) AS date_isusse 
+		
+		,vsl_row
+		,title
+		,out_port
+		,common_shipping
+		,company_abbr
+		,TS
+		,company_name
+		,gubun
+		,page
+		,agent
+		,quark_format
+		,port_col
+		,out_to_port
+		,in_to_port
+		,in_port
+		,othercell
+		,console_cfs
+		,d_time
+		,c_time
+		,console_page
+		,inland_indexs
+		,bookPage
 	FROM 	TB_TABLE_INFO
 	</sql>
 	
@@ -180,32 +180,32 @@
 	<select id="selectShipperTableListAllByCondition" resultMap="allTableMap" parameterClass="com.ksg.domain.ShippersTable">
 		SELECT /* selectShipperTableListAllByCondition */
 			A.table_id,
-				A.table_index,
-				CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse,
-				A.table_date,
-				A.vsl_row,
-				A.title,
-				A.out_port,
-				A.common_shipping,
-				A.company_abbr,
-				A.TS,
-				A.company_name,
-				A.gubun,
-				A.page,
-				A.agent,
-				A.quark_format,
-				A.port_col,
-				A.out_to_port,
-				A.in_to_port,
-				A.in_port,
-				A.othercell,
-				A.console_cfs,
-				A.d_time,
-				A.c_time,
-				A.console_page,
-				A.inland_indexs,
-				A.bookPage,
-				B.data as data 
+			A.table_index,
+			CONVERT(CHAR(10), A.date_isusse,23) AS date_isusse,
+			A.table_date,
+			A.vsl_row,
+			A.title,
+			A.out_port,
+			A.common_shipping,
+			A.company_abbr,
+			A.TS,
+			A.company_name,
+			A.gubun,
+			A.page,
+			A.agent,
+			A.quark_format,
+			A.port_col,
+			A.out_to_port,
+			A.in_to_port,
+			A.in_port,
+			A.othercell,
+			A.console_cfs,
+			A.d_time,
+			A.c_time,
+			A.console_page,
+			A.inland_indexs,
+			A.bookPage,
+			B.data as data 
 		FROM 	TB_TABLE_INFO A JOIN TB_ADV_INFO B
 		ON A. 	table_id= B.table_id
 		WHERE 	A.date_isusse=#date_isusse#
@@ -359,7 +359,7 @@
 				 date_isusse=#date_isusse#
 			</isNotNull>
 		</dynamic>
-	order by page, table_index 
+	ORDER BY page, table_index 
 	</select>
 
 	<select id="selectShipperTableListByPage" resultClass="java.util.HashMap">
@@ -569,60 +569,58 @@
 		</isNotEmpty> 
 		
 		<isNotEqual compareValue="-1" prepend="," property="table_index">
-		table_index=#table_index#		
+			table_index=#table_index#		
 		</isNotEqual>
-		
-
-		
+				
 		<isNotEmpty prepend="," property="common_shipping">
-		common_shipping=#common_shipping#				
+			common_shipping=#common_shipping#				
 		</isNotEmpty>
 		
 		<isNotNull prepend="," property="out_to_port">
-		out_to_port=#out_to_port#				
+			out_to_port=#out_to_port#				
 		</isNotNull>		
 		
 		<isNotNull prepend="," property="in_to_port">
-		in_to_port=#in_to_port#
+			in_to_port=#in_to_port#
 		</isNotNull>
 		
 		<isNotNull prepend="," property="out_port">
-		out_port=#out_port#
+			out_port=#out_port#
 		</isNotNull>		
 		
 		<isNotNull prepend="," property="in_port">
-		in_port=#in_port#
+			in_port=#in_port#
 		</isNotNull>
 		
 		<isNotEmpty prepend="," property="gubun">
-		gubun=#gubun#				
+			gubun=#gubun#				
 		</isNotEmpty>
 		
 		<isEmpty prepend="," property="gubun">
-		gubun=#gubun#				
+			gubun=#gubun#				
 		</isEmpty>		
 		
 		<isNotNull prepend="," property="console_cfs">
-		console_cfs=#console_cfs#
+			console_cfs=#console_cfs#
 		</isNotNull>
 		<isNotNull prepend="," property="console_page">
-		console_page=#console_page#
+			console_page=#console_page#
 		</isNotNull>
 		<isNotNull prepend="," property="inland_indexs">					
-		inland_indexs=#inland_indexs#
+			inland_indexs=#inland_indexs#
 		</isNotNull>
 		<isNotEqual compareValue="-1" prepend="," property="c_time">
-		c_time=#c_time#
+			c_time=#c_time#
 		</isNotEqual>
 		<isNotEqual compareValue="-1" prepend="," property="d_time">
-		d_time=#d_time#
+			d_time=#d_time#
 		</isNotEqual>
 		
 		<isNotEqual  prepend="," property="date_isusse">
-		date_isusse=#date_isusse#
+			date_isusse=#date_isusse#
 		</isNotEqual>		
 		
-		where table_id=#table_id#
+		WHERE table_id=#table_id#
 	</update>
 	
 	<update id="update" parameterClass="com.ksg.domain.ShippersTable">
@@ -679,9 +677,10 @@
 			table_date =#table_date#
 		 
 		WHERE table_id=#table_id#
-	</update>
+	</update>	
 	
-
+	<!--========================== INSERT ==========================-->
+	
 	<insert id="insertShipperPort_temp" parameterClass="java.util.HashMap">
 		INSERT TB_TABLE_PORTLIST (
 			 table_id,
@@ -716,21 +715,17 @@
 			  )
 	 </insert>
 	
-	 	
-	<delete id="deleteShipperPortList"  parameterClass="java.util.HashMap">
-		
+	<!--========================== DELETE ==========================--> 	
+	<delete id="deleteShipperPortList"  parameterClass="java.util.HashMap">		
 		DELETE 
 		FROM TB_TABLE_PORTLIST
 		WHERE table_id = #table_id#
-
 	</delete>
 	
 	<delete id="deleteShipperTablePortById">
-		
 		DELETE 
 		FROM TB_TABLE_PORTLIST
 		WHERE table_id = #table_id#
-
 	</delete>
 	
 	<!-- count -->

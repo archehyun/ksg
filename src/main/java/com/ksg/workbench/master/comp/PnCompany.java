@@ -41,7 +41,7 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.master.BaseInfoUI;
-import com.ksg.workbench.master.dialog.UpdateCompanyInfoDialog;
+import com.ksg.workbench.master.dialog.ManageCompanyInfoDialog;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -291,7 +291,7 @@ public class PnCompany extends PnBase implements ActionListener{
 			}
 			else if(command.equals(KSGPageTablePanel.INSERT))
 			{
-				KSGDialog dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.INSERT);
+				KSGDialog dialog = new ManageCompanyInfoDialog(ManageCompanyInfoDialog.INSERT);
 
 				dialog.createAndUpdateUI();
 
@@ -323,13 +323,13 @@ public class PnCompany extends PnBase implements ActionListener{
 
 				HashMap<String, Object> port=(HashMap<String, Object>) tableH.getValueAt(row);
 
-				dialog = new UpdateCompanyInfoDialog(UpdateCompanyInfoDialog.UPDATE,port);
+				dialog = new ManageCompanyInfoDialog(ManageCompanyInfoDialog.UPDATE,port);
 
 				dialog .createAndUpdateUI();
 
 				int result = dialog.result;
 
-				if(result==UpdateCompanyInfoDialog.SUCCESS)
+				if(result==ManageCompanyInfoDialog.SUCCESS)
 				{
 					fnSearch();
 				}

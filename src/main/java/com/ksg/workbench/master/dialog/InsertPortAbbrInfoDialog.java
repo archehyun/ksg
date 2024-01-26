@@ -21,7 +21,6 @@ import javax.swing.JTextField;
 
 import com.dtp.api.control.PortController;
 import com.ksg.common.model.CommandMap;
-import com.ksg.common.model.KSGModelManager;
 import com.ksg.common.util.ViewUtil;
 import com.ksg.view.comp.notification.NotificationManager;
 import com.ksg.view.comp.panel.KSGPanel;
@@ -87,9 +86,7 @@ public class InsertPortAbbrInfoDialog extends MainTypeDialog {
 	private void initComp() {
 		
 		txfPortAbbr = new JTextField(20);
-		
 		txfPortName = new JTextField(20);
-		
 		txfPortName.setEditable(false);
 	}
 
@@ -124,7 +121,6 @@ public class InsertPortAbbrInfoDialog extends MainTypeDialog {
 			CommandMap param = new CommandMap();
 
 			param.put("port_name", port_name);
-
 			param.put("port_abbr", port_abbr);
 
 			callApi("insertPortDetail", param);

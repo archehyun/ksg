@@ -39,15 +39,10 @@ import lombok.extern.slf4j.Slf4j;
 /**
 
  * @FileName : ScheduleServiceImpl.java
-
  * @Project : KSG2
-
  * @Date : 2022. 3. 8. 
-
  * @작성자 : pch
-
  * @변경이력 :
-
  * @프로그램 설명 :
 
  */
@@ -55,9 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("unchecked")
 public class ScheduleServiceImpl extends AbstractServiceImpl implements ScheduleSubService, ScheduleServiceV2{
 
-	private SchduleDAO scheduleDAO;
-
-	private Vector<KSGHashMap> ksgHashMapList;
+	private SchduleDAO scheduleDAO;	
 
 	private ADVScheduleDAO advScheduleDAO;	
 
@@ -606,8 +599,6 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		return  scheduleDAO.selectAll(schedule);
 	}
 
-
-
 	@Override
 	public Object insertScheduleBulkData(List<ScheduleData> scheduleList) throws SQLException {
 		
@@ -620,7 +611,4 @@ public class ScheduleServiceImpl extends AbstractServiceImpl implements Schedule
 		return scheduleDAO.deleteScheduleById(table_id);
 		
 	}
-
-
-
 }

@@ -56,17 +56,11 @@ import com.ksg.workbench.common.dialog.MainTypeDialog;
 /**
 
   * @FileName : ScheduleCreateOptionDialog.java
-
   * @Project : KSG2
-
   * @Date : 2022. 11. 22. 
-
   * @작성자 : pch
-
   * @변경이력 :
-
   * @프로그램 설명 : 스케줄 생성시 입력 날짜 및 옵셥 값 설정 화면
-
   */
 public class ScheduleCreateOptionDialog extends MainTypeDialog{
 

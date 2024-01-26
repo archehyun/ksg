@@ -65,7 +65,7 @@ import com.ksg.view.comp.table.KSGTableColumn;
 import com.ksg.view.comp.table.KSGTablePanel;
 import com.ksg.workbench.master.BaseInfoUI;
 import com.ksg.workbench.master.dialog.InsertPortAbbrInfoDialog;
-import com.ksg.workbench.master.dialog.UpdatePortInfoDialog;
+import com.ksg.workbench.master.dialog.ManagePortInfoDialog;
 
 import lombok.extern.slf4j.Slf4j;
 import mycomp.comp.MyTable;
@@ -131,7 +131,6 @@ public class PnPortNew extends PnBase implements ActionListener{
 	private CodeServiceImpl codeService;
 
 	public PnPortNew(BaseInfoUI baseInfoUI) {
-
 		
 		super(baseInfoUI);
 		
@@ -595,7 +594,7 @@ public class PnPortNew extends PnBase implements ActionListener{
 		}
 		else if(command.equals(KSGTablePanel.INSERT))
 		{
-			KSGDialog dialog = new UpdatePortInfoDialog(UpdatePortInfoDialog.INSERT);
+			KSGDialog dialog = new ManagePortInfoDialog(ManagePortInfoDialog.INSERT);
 
 			dialog.createAndUpdateUI();
 
@@ -867,7 +866,7 @@ public class PnPortNew extends PnBase implements ActionListener{
 					{				
 						HashMap<String, Object> param = (HashMap<String, Object>) tableH.getValueAt(row);
 
-						dialog = new UpdatePortInfoDialog(UpdatePortInfoDialog.UPDATE,param);
+						dialog = new ManagePortInfoDialog(ManagePortInfoDialog.UPDATE,param);
 
 						dialog.createAndUpdateUI();
 

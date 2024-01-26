@@ -33,9 +33,9 @@ public class MainController extends AbstractController{
 	
 	private TableService tableService;
 	
-	ArrayList<Menu> menuList = new ArrayList<MainController.Menu>();
+	private ArrayList<Menu> menuList = new ArrayList<MainController.Menu>();
 	
-	ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
+	private ScheduleServiceManager serviceManager =ScheduleServiceManager.getInstance();
 	
 	private ScheduleSubService scheduleService= new ScheduleServiceImpl();
 	
@@ -44,6 +44,7 @@ public class MainController extends AbstractController{
 		tableService=new TableServiceImpl();
 	}
 	
+	//TODO MVC 패턴 적용
 	@ControlMethod(serviceId = "showMenu")
     public CommandMap showMenu(CommandMap param) throws Exception
     {								
@@ -82,7 +83,6 @@ public class MainController extends AbstractController{
         {
         	model.put("view", new PnArea());
         }
-        
         
         else if("선사정보".equals(menuId))
         {

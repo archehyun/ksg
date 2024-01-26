@@ -49,57 +49,50 @@ import com.ksg.view.comp.dialog.KSGDialog;
 import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.dialog.MainTypeDialog;
 
+
 /**
- * 항구 정보 수정 다이어그램
- * 
- * @author 박창현
- *
+
+ * @FileName : ManagePortInfoDialog.java
+ * @Project : KSG2
+ * @Date : 2022. 11. 22. 
+ * @작성자 : pch
+ * @변경이력 :
+ * @프로그램 설명 : 항구 정보 수정 다이어그램
  */
 @SuppressWarnings("serial")
-public class UpdatePortInfoDialog extends MainTypeDialog
+public class ManagePortInfoDialog extends MainTypeDialog
 {
 	private HashMap<String, Object> param;
-
 	private JTextField txfPort_name;
-
 	private JTextField txfPort_nationailty;
-
 	private JTextField txfPort_area;
-
-	private JTextField txfArea_code;	
-
+	private JTextField txfArea_code;
 	private SearchAreaDialog searchAreaDailog;
-
 	private CommandMap areaMap;
 
-	public UpdatePortInfoDialog(int type)
+	public ManagePortInfoDialog(int type)
 	{
 		super();
 
 		this.setController(new PortController());
 
-		this.type = type;
-		
+		this.type = type;		
 
 		switch (type) {
-		case UPDATE:
-			
+		case UPDATE:			
 			titleInfo = "항구정보 수정";
 			
 			break;
-		case INSERT:
-			
+		case INSERT:			
 			titleInfo = "항구정보 추가";
 
 			break;
-
 		}
-
 
 		areaMap = new CommandMap();
 	}
 
-	public UpdatePortInfoDialog(int type, HashMap<String, Object> param) {
+	public ManagePortInfoDialog(int type, HashMap<String, Object> param) {
 
 		this(type);
 
@@ -108,16 +101,11 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 	
 	private void initComp()
 	{
-		txfPort_name = new JTextField(20);
-
+		txfPort_name 		= new JTextField(20);
 		txfPort_nationailty = new JTextField(20);
-
-		txfPort_area = new JTextField(20);
-
-		txfArea_code = new JTextField(5);
-
+		txfPort_area 		= new JTextField(20);
+		txfArea_code 		= new JTextField(5);
 		txfArea_code.setEditable(false);
-
 		txfPort_area.setEditable(false);
 
 	}
@@ -125,62 +113,41 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 
 		initComp();
 		
-		this.setModal(true);
-		
+		this.setModal(true);		
 		this.addComponentListener(this);
-
 		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
-
 		this.addComp(buildCenter(),BorderLayout.CENTER);
-
 		this.addComp(buildControl(),BorderLayout.SOUTH);
 		
 		ViewUtil.center(this, true);
-
 		this.setResizable(false);
-
 		this.setVisible(true);
 
 	}
 
 	public KSGPanel buildCenter()
 	{
-		KSGGradientButton butSearchCode = new KSGGradientButton("코드 검색", "images/search3.png");
-		
+		KSGGradientButton butSearchCode = new KSGGradientButton("코드 검색", "images/search3.png");		
 		butSearchCode.setGradientColor(Color.decode("#215f00"), Color.decode("#3cac00"));
-
 		butSearchCode.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-
-				searchAreaDailog = new SearchAreaDialog(UpdatePortInfoDialog.this);
-
+				searchAreaDailog = new SearchAreaDialog(ManagePortInfoDialog.this);
 				searchAreaDailog.createAndUpdateUI();
 
 			}});
 
 		Box pnCenter = Box.createVerticalBox();
-
 		pnCenter.add(createFormItem(txfPort_name, "항구명"));
-
-		pnCenter.add(createFormItem(txfPort_nationailty, "나라"));
-		
-		Box area = Box.createHorizontalBox();
-		
-		area.add(txfArea_code);
-		
-		area.add(Box.createHorizontalStrut(25));
-		
+		pnCenter.add(createFormItem(txfPort_nationailty, "나라"));		
+		Box area = Box.createHorizontalBox();		
+		area.add(txfArea_code);		
+		area.add(Box.createHorizontalStrut(25));		
 		area.add(butSearchCode);
-
 		pnCenter.add(createFormItem(area, "지역코드"));
-
 		pnCenter.add(createFormItem(txfPort_area, "지역명"));	
-
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-
 		pnMain.add(pnCenter);
 
 		return pnMain;
@@ -216,13 +183,9 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 			CommandMap param = new CommandMap();
 
 			param.put("area_code", txfArea_code.getText());
-
 			param.put("port_name", txfPort_name.getText());
-
 			param.put("port_nationality", txfPort_nationailty.getText());
-
 			param.put("port_area", txfPort_area.getText());
-
 			param.put("base_port_name", this.param.get("port_name"));
 
 			callApi("updatePort", param);
@@ -248,13 +211,9 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 			}
 
 			CommandMap param = new CommandMap();
-
 			param.put("area_code", txfArea_code.getText());
-
 			param.put("port_name", txfPort_name.getText());
-
 			param.put("port_nationality", txfPort_nationailty.getText());
-
 			param.put("port_area", txfPort_area.getText());
 
 			callApi("insertPort", param);
@@ -271,24 +230,17 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 	}
 
 	@Override
-	public void componentShown(ComponentEvent e) {
-
-		if(param!=null)
-		{	
-			txfArea_code.setText((String) param.get("area_code"));
-
-			txfPort_area.setText((String) param.get("port_area"));
-
-			txfPort_name.setText((String) param.get("port_name"));
-
-			txfPort_nationailty.setText((String) param.get("port_nationality"));
-		}
+	public void componentShown(ComponentEvent e) {		
 
 		switch (type) {
 		case UPDATE:
 
 			lblTitle.setText("항구정보 수정");
 			butOK.setActionCommand("수정");
+			txfArea_code.setText((String) param.get("area_code"));
+			txfPort_area.setText((String) param.get("port_area"));
+			txfPort_name.setText((String) param.get("port_name"));
+			txfPort_nationailty.setText((String) param.get("port_nationality"));
 
 			break;
 		case INSERT:
@@ -307,9 +259,7 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 	class SearchAreaDialog extends KSGDialog
 	{
 		private JButton butOk;
-
 		private JButton butCancel;
-
 		public SearchAreaDialog(JDialog dialog)		
 		{
 			super(dialog);
@@ -319,9 +269,7 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 		private KSGPanel buildCenter()
 		{
 			KSGPanel pnMain = new KSGPanel(new BorderLayout());
-
 			pnMain.setBorder(BorderFactory.createEmptyBorder(5,7,5,7));
-
 			DefaultMutableTreeNode root = new DefaultMutableTreeNode("전체지역");
 
 			for(String areaName: areaMap.keySet())
@@ -350,13 +298,9 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 
 						case 2:
 							String area1=path.getLastPathComponent().toString();
-
 							CommandMap areaInfo = (CommandMap) areaMap.get(area1);
-
 							txfArea_code.setText(String.valueOf(areaInfo.get("area_code")));
-
 							txfPort_area.setText(String.valueOf(areaInfo.get("area_name")));
-
 							butOk.setEnabled(true);
 
 							break;
@@ -364,13 +308,9 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 						case 3:
 
 							String area2=path.getLastPathComponent().toString();
-
 							CommandMap areaInfo2 = (CommandMap) areaMap.get(area2);
-
 							txfArea_code.setText(String.valueOf(areaInfo2.get("area_code")));
-
 							txfPort_area.setText(String.valueOf(areaInfo2.get("area_name")));
-
 							butOk.setEnabled(true);
 
 							break;
@@ -378,9 +318,7 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 						default:
 
 							butOk.setEnabled(false);
-
 							txfArea_code.setText("");
-
 							txfPort_area.setText("");
 
 							break;
@@ -443,13 +381,9 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 		public void createAndUpdateUI() {
 
 			getContentPane().add(buildControl(),BorderLayout.SOUTH);
-
 			getContentPane().add(buildCenter(),BorderLayout.CENTER);
-
 			setSize(400,510);
-
-			setLocation(UpdatePortInfoDialog.this.getX()+UpdatePortInfoDialog.this.getWidth(), UpdatePortInfoDialog.this.getY());
-
+			setLocation(ManagePortInfoDialog.this.getX()+ManagePortInfoDialog.this.getWidth(), ManagePortInfoDialog.this.getY());
 			setVisible(true);
 		}
 	}
@@ -458,15 +392,11 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 	public void updateView() {
 
 		CommandMap resultMap= this.getModel();
-
 		String serviceId=(String) resultMap.get("serviceId");
-
 		if("insertPort".equals(serviceId))
 		{	
 			result = SUCCESS;
-
-			JOptionPane.showMessageDialog(UpdatePortInfoDialog.this,"추가했습니다.");
-
+			JOptionPane.showMessageDialog(ManagePortInfoDialog.this,"추가했습니다.");
 			this.setVisible(false);
 
 			this.dispose();
@@ -475,9 +405,7 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 		else if("updatePort".equals(serviceId))
 		{	
 			result = SUCCESS;
-
-			JOptionPane.showMessageDialog(UpdatePortInfoDialog.this,"수정했습니다.");
-
+			JOptionPane.showMessageDialog(ManagePortInfoDialog.this,"수정했습니다.");
 			this.setVisible(false);
 
 			this.dispose();
@@ -485,7 +413,6 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 		else if("portDialog.init".equals(serviceId))
 		{	
 			List<CommandMap> li = (List<CommandMap>) resultMap.get("areaMap");
-
 			for(CommandMap item:li)
 			{
 				areaMap.put(String.valueOf(item.get("area_name")), item);
@@ -509,7 +436,6 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 				boolean leaf, int row, boolean hasFocus) {
 
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode)value;
-
 			TreeNode t = node.getParent();
 
 			if(t== null) return this;
@@ -535,16 +461,9 @@ public class UpdatePortInfoDialog extends MainTypeDialog
 			{
 				this.setForeground(Color.black);
 			}
-
-
 			setText(String.valueOf(value));
 
 			return this;
 		}
-
 	}
-
-
-
-
 }

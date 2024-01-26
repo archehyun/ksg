@@ -52,6 +52,7 @@ import com.ksg.workbench.master.BaseInfoUI;
  * @author 박창현
  * @설명 항구정보 입력 폼
  */
+@Deprecated
 public class InsertPortInfoDialog extends BaseInfoDialog
 {
 	
@@ -59,11 +60,8 @@ public class InsertPortInfoDialog extends BaseInfoDialog
 
 
 	private JTextField txfPort_name;
-
 	private JTextField txfPort_nationailty;
-
 	private JTextField txfPort_area;
-
 	private JTextField txfArea_code;
 	
 	private PortService service;

@@ -30,26 +30,19 @@ import com.ksg.view.comp.panel.KSGPanel;
 import com.ksg.workbench.common.dialog.MainTypeDialog;
 
 @SuppressWarnings("serial")
-public class UpdateCompanyInfoDialog extends MainTypeDialog  {
-	/**
-	 * 
-	 */
+public class ManageCompanyInfoDialog extends MainTypeDialog  {
 
 	private JTextField txfCompany_name; // 선사명
-
 	private JTextField txfCompany_abbr; // 선사 약어
-
 	private JTextField txfAgent_name;// 에이전트명
-
 	private JTextField txfAgent_abbr;// 에이전트 약어
-
 	private JTextArea txaContents;// 비고
 
 	private int type;
 
 	private HashMap<String, Object> company;
 
-	public UpdateCompanyInfoDialog(int type)
+	public ManageCompanyInfoDialog(int type)
 	{
 		super();
 
@@ -77,7 +70,7 @@ public class UpdateCompanyInfoDialog extends MainTypeDialog  {
 		}
 	}
 
-	public UpdateCompanyInfoDialog(int type, HashMap<String, Object> company)
+	public ManageCompanyInfoDialog(int type, HashMap<String, Object> company)
 	{
 		this(type);
 		
@@ -86,38 +79,29 @@ public class UpdateCompanyInfoDialog extends MainTypeDialog  {
 	private void initComp()
 	{
 		txfCompany_name = new JTextField(20);
-
 		txfCompany_abbr = new JTextField(20);
-
 		txfAgent_name = new JTextField(20);
-
 		txfAgent_abbr = new JTextField(20);
-
 		txaContents = new JTextArea(8,32);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 
 		String command = e.getActionCommand();
-
-		if(command.equals("수정"))
+		if(command.equals("수정")||(command.equals("추가")))
 		{
 			CommandMap param = new CommandMap();
 
 			param.put("company_name", txfCompany_name.getText());
-
 			param.put("company_abbr", txfCompany_abbr.getText());
-
 			param.put("agent_name", txfAgent_name.getText());
-
 			param.put("agent_abbr", txfAgent_abbr.getText());
-
 			param.put("contents", txaContents.getText());
-
 			param.put("base_company_abbr", txfCompany_abbr.getText());
-
-			callApi("updateCompany", param);
-
+			
+			callApi(command.equals("수정")? "updateCompany":"insertCompany", param);
+			
+			
 		}else if(command.equals("취소"))
 		{
 			result = FAILE;
@@ -125,25 +109,7 @@ public class UpdateCompanyInfoDialog extends MainTypeDialog  {
 			this.setVisible(false);
 
 			this.dispose();
-		}
-		else if(command.equals("추가"))
-		{
-			CommandMap param = new CommandMap();
-
-			param.put("company_name", txfCompany_name.getText());
-
-			param.put("company_abbr", txfCompany_abbr.getText());
-
-			param.put("agent_name", txfAgent_name.getText());
-
-			param.put("agent_abbr", txfAgent_abbr.getText());
-
-			param.put("contents", txaContents.getText());
-
-			param.put("base_company_abbr", txfCompany_abbr.getText());
-
-			callApi("insertCompany", param);
-		}
+		}		
 	}
 
 	public void createAndUpdateUI() 
@@ -153,15 +119,10 @@ public class UpdateCompanyInfoDialog extends MainTypeDialog  {
 		this.setModal(true);
 
 		this.getContentPane().add(buildHeader(titleInfo),BorderLayout.NORTH);
-
 		this.addComp(buildCenter(),BorderLayout.CENTER);
-
 		this.addComp(buildControl(),BorderLayout.SOUTH);
-
 		ViewUtil.center(this,true);
-
 		this.setResizable(false);
-
 		this.setVisible(true);
 
 	}
@@ -169,23 +130,14 @@ public class UpdateCompanyInfoDialog extends MainTypeDialog  {
 	public KSGPanel buildCenter()
 	{
 		KSGPanel pnMain = new KSGPanel(new BorderLayout());
-
 		txaContents.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-
 		Box pnCenter = new Box(BoxLayout.Y_AXIS);
-
 		pnCenter.add( createFormItem(txfCompany_name,"선사명"));
-
 		pnCenter.add( createFormItem(txfCompany_abbr,"선사명 약어"));
-
 		pnCenter.add(createFormItem(txfAgent_name,"에이전트"));
-
 		pnCenter.add(createFormItem(txfAgent_abbr,"에이전트 약어"));
-
 		pnCenter.add(createFormItem(txaContents,"비고"));
-
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-
 		pnMain.add(pnCenter);
 
 		return pnMain;
@@ -196,22 +148,15 @@ public class UpdateCompanyInfoDialog extends MainTypeDialog  {
 
 		title = "선사 정보 관리";
 
-		if(company!=null)
-		{
-			this.txfCompany_abbr.setText((String) company.get("company_abbr"));
-
-			this.txfCompany_name.setText((String) company.get("company_name"));
-
-			this.txfAgent_abbr.setText((String) company.get("agent_abbr"));
-
-			this.txfAgent_name.setText((String) company.get("agent_name"));
-
-			this.txaContents.setText((String) company.get("contents"));
-		}
 		switch (type) {
 		case UPDATE:
 
 			butOK.setActionCommand("수정");
+			this.txfCompany_abbr.setText((String) company.get("company_abbr"));
+			this.txfCompany_name.setText((String) company.get("company_name"));
+			this.txfAgent_abbr.setText((String) company.get("agent_abbr"));
+			this.txfAgent_name.setText((String) company.get("agent_name"));
+			this.txaContents.setText((String) company.get("contents"));
 
 			break;
 		case INSERT:

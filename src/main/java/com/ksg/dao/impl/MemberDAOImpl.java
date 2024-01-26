@@ -21,8 +21,6 @@ import com.ksg.domain.Member;
 
 public class MemberDAOImpl extends AbstractDAO implements MemberDAO
 {
-	
-
 	public MemberDAOImpl() 
 	{
 		super();

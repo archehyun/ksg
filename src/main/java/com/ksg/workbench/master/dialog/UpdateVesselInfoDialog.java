@@ -13,8 +13,6 @@ package com.ksg.workbench.master.dialog;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -28,7 +26,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
@@ -71,18 +68,12 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 	private static final long serialVersionUID = 1L;
 
 	private  String LABEL,vesselName;
-
 	private JTextField txfCompanyName;
-
 	private JTextField txfMMSI;	
-
 	private JList listVesselAbbr;
-
 	private KSGComboBox cbxConType;
-
 	private JCheckBox chbUse;
-
-	HashMap<String, Object> info;
+	private HashMap<String, Object> info;
 
 	private JCheckBox cbxMMSICheck;
 
@@ -92,11 +83,8 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 		super();
 
 		this.setController( new VesselController());
-
-		this.info = item;
-		
+		this.info = item;		
 		this.titleInfo="신규 선박 정보 수정";
-
 		this.addComponentListener(this);
 	}
 	public void createAndUpdateUI() 
@@ -120,15 +108,11 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 
 	private void initComp() {
 		txfCompanyName = new JTextField(20);
-
 		txfCompanyName.setEditable(false);
-
 		txfCompanyName.setEnabled(false);
-
 		chbUse= new KSGCheckBox("사용안함");		
 
 		txfMMSI = new JFormattedTextField(new NumberFormatter(new DecimalFormat("#")));
-
 		txfMMSI.setPreferredSize(new Dimension(75,20));
 
 		txfMMSI.addKeyListener(new KeyAdapter() {
@@ -143,17 +127,14 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 
 
 		cbxConType = new KSGComboBox("conType");
-
 		cbxMMSICheck = new KSGCheckBox("없음");
-
 		cbxMMSICheck.setSelected(false);
-
 		cbxMMSICheck.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				txfMMSI.setEnabled(!cbxMMSICheck.isSelected());				
+				txfMMSI.setEnabled(!cbxMMSICheck.isSelected());	
 
 				String mmsi = (String) info.get("vessel_mmsi");
 
@@ -185,44 +166,18 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 		});
 		
 	}
-//	private KSGPanel buildTitle() {
-//		KSGPanel pnTitle = new KSGPanel();
-//
-//		pnTitle.setLayout(new FlowLayout(FlowLayout.LEFT));
-//
-//		pnTitle.setBackground(Color.white);
-//
-//		LABEL ="선박 명: ";
-//
-//		LABEL +=info.get("vessel_name");
-//
-//		vesselName = (String) info.get("vessel_name");
-//
-//		JLabel label = new JLabel(LABEL);
-//
-//		label.setFont(new Font("돋움",0,16));
-//
-//		pnTitle.add(label);
-//
-//		return pnTitle;
-//	}
 
 	private KSGPanel buildCenter()
 	{	
-		Box pnCenter = new Box(BoxLayout.Y_AXIS);
-
-		pnCenter.add(createFormItem(cbxConType, "선박 타입"));
-
-		pnCenter.add(createFormItem(txfMMSI,cbxMMSICheck, "MMSI"));
-
-		pnCenter.add(createFormItem(txfCompanyName,butSearchCompany,"대표 선사"));
-
-		pnCenter.add(createFormItem(chbUse,"사용 유무"));
-
 		KSGPanel pnMain = new KSGPanel();
-
 		pnMain.setBorder(BorderFactory.createEmptyBorder(5,10,5,10));	
-
+		
+		Box pnCenter = new Box(BoxLayout.Y_AXIS);
+		pnCenter.add(createFormItem(cbxConType, "선박 타입"));
+		pnCenter.add(createFormItem(txfMMSI,cbxMMSICheck, "MMSI"));
+		pnCenter.add(createFormItem(txfCompanyName,butSearchCompany,"대표 선사"));
+		pnCenter.add(createFormItem(chbUse,"사용 유무"));
+		
 		pnMain.add(pnCenter);
 
 		return pnMain;
@@ -271,9 +226,7 @@ public class UpdateVesselInfoDialog extends MainTypeDialog{
 		cbxConType.initComp();
 
 		String vessel_type 		= (String) info.get("vessel_type");
-
 		String vessel_company 	= (String) info.get("vessel_company");
-
 		String vessel_mmsi 		= (String) info.get("vessel_mmsi");
 
 		int use=(Integer)info.get("vessel_use");

@@ -209,7 +209,6 @@ public class ScheduleMgtUI extends AbstractMgtUI implements ActionListener, Comp
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				chxInboundLogic.setVisible(cbxInboundSchedule.isSelected());
 			}
 		});
